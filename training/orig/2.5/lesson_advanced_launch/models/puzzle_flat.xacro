@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<robot  xmlns:xacro="http://ros.org/wiki/xacro" name="part">
+
+  <!-- This contains the macro "ses_part_macro" that places the clip wrt the tool tip -->
+  <include filename="$(find lesson_advanced_launch)/models/part.macro.xacro" />
+
+  <!-- Run the macro with the part name and offsets -->
+  <xacro:ses_part_macro model_name="puzzle_flat.dae"
+                        model_x="0.0110"
+                        model_y="0.0030"
+                        model_z="-0.0379"
+                        model_rr="0.0"
+                        model_rp="-0.2618"
+                        model_ry="0" />
+                        <!--model_x="0.0110"
+                        model_y="0.0030"
+                        model_z="0.0315"
+                        model_rr="0"
+                        model_rp="-0.2618"
+                        model_ry="0" /-->
+</robot>

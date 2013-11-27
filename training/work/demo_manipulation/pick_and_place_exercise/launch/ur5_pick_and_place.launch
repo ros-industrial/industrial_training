@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- pick and place node -->
+  <node pkg="pick_and_place_exercise" type="pick_and_place_node" name="pick_and_place_node" output="screen">
+    <rosparam command="load" file="$(find pick_and_place_exercise)/config/ur5/pick_and_place_parameters.yaml"/>
+  </node>
+
+</launch>

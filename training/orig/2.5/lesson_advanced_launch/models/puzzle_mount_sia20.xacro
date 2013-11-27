@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="tool">
+
+  <include filename="$(find xacro_properties)/properties.xacro" /> <!--contains properties such as "pi" and "deg"-->
+  
+  <link name="tool0" />
+  
+  <joint name="tool0-ee_base" type="fixed" >
+    <parent link="tool0" />
+    <child link="ee_base" />
+    <origin xyz="0 0 0" rpy="${-180*deg} 0 ${90*deg}" />
+  </joint>  
+
+  <!-- link "ee_base" and connected joints-->
+  <link name="ee_base" >
+    <visual>
+      <geometry>
+        <mesh filename="package://lesson_advanced_launch/models/puzzle_mount_sia20_visual.stl" />
+      </geometry>>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://lesson_advanced_launch/models/puzzle_mount_sia20_collision.dae" />
+      </geometry>
+    </collision>
+  </link>
+ 
+  <!-- tool1 is the point that parts connect to the tool -->
+  <link name="tool1" />
+  <joint name="ee_base-tool1" type="fixed" >
+    <parent link="ee_base" />
+    <child link="tool1" />
+    <origin xyz="-0.0083 0.0541 0.0143" rpy="${30*deg} ${-30*deg} 0" />
+  </joint>
+
+</robot>

@@ -1,0 +1,14 @@
+<package>
+  <description brief="lesson_tf_terminal">
+
+     lesson_tf_terminal
+
+  </description>
+  <author>dsolomon</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/lesson_tf_terminal</url>
+
+</package>
+
+

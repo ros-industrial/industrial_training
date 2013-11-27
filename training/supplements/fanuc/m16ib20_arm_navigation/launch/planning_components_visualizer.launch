@@ -1,0 +1,10 @@
+<launch>
+    <include file="$(find m16ib20_arm_navigation)/launch/m16ib20_planning_environment.launch" />
+    <include file="$(find industrial_deprecated)/launch/planning_environment_visualization_prerequisites.launch" />
+    <include file="$(find m16ib20_arm_navigation)/launch/constraint_aware_kinematics.launch" />
+    <include file="$(find m16ib20_arm_navigation)/launch/ompl_planning.launch" />
+    <include file="$(find m16ib20_arm_navigation)/launch/trajectory_filter_server.launch" />
+    <node pkg="rviz" type="rviz" name="rviz_planning_components" args="-d $(find m16ib20_arm_navigation)/config/planning_components_visualizer.rviz" />
+    <node pkg="move_arm" type="planning_components_visualizer" name="planning_components_visualizer" output="screen" />
+    <node pkg="robot_state_publisher" type="state_publisher" name="rob_st_pub" />
+</launch>

@@ -1,0 +1,59 @@
+<launch>
+
+  <!-- This launch file provides a socket-based connection to industrial robots
+       that implement the standard ROS Industrial simple_message protocol.
+	   *** Motion control is implemented by STREAMING path data to the robot ***
+           (for DOWNLOAD-based path-control, use a different launch file)
+
+       Several nodes are started, to supply both low-level robot communication
+       and higher-level actionlib support:
+         - robot_state : publishes current joint positions and robot state data
+         - motion_streaming_interface : command robot motion by sending motion points to robot
+         - joint_trajectory_action : actionlib interface to control robot motion
+
+    Usage:
+      robot_interface_streaming.launch robot_ip:=<value> J23_factor:=<-1,0,1> use_bswap:=<true,false>
+  -->
+
+  <!-- robot_ip: IP-address of the robot's socket-messaging server -->
+  <arg name="robot_ip" />
+
+  <!-- J23_factor: set to correct factor to compensate for J23 coupling:
+      -1 : negative coupling (J3' = J3 - J2)
+       0 : no coupling (J3' == J3)
+       1 : positive coupling (J3' = J3 + J2)
+  -->
+  <arg name="J23_factor" />
+
+  <!-- Load the byte-swapping versions of Fanuc nodes if required -->
+  <arg name="use_bswap" />
+
+  <!-- copy the specified parameters to the Parameter Server, for 
+       use by nodes below -->
+  <param name="/robot_ip_address" type="str" value="$(arg robot_ip)" />
+  <param name="/J23_factor" type="int" value="$(arg J23_factor)" />
+
+  <!-- robot_state: publishes joint positions and robot-state data
+       (from socket connection to robot)
+  -->
+  <include file="$(find fanuc_common)/launch/fanuc_robot_state.launch">
+    <arg name="robot_ip"   value="$(arg robot_ip)" />
+    <arg name="J23_factor" value="$(arg J23_factor)" />
+    <arg name="use_bswap"  value="$(arg use_bswap)" />
+  </include>
+
+  <!-- motion_streaming_interface: sends robot motion commands by 
+       STREAMING path to robot (using socket connection to robot) 
+  -->
+  <include file="$(find fanuc_common)/launch/fanuc_motion_streaming_interface.launch">
+    <arg name="robot_ip"   value="$(arg robot_ip)" />
+    <arg name="J23_factor" value="$(arg J23_factor)" />
+    <arg name="use_bswap"  value="$(arg use_bswap)" />
+  </include>
+
+  <!-- joint_trajectory_action: provides actionlib interface for 
+       high-level robot control
+  -->
+  <node pkg="industrial_robot_client" type="joint_trajectory_action" 
+    name="joint_trajectory_action" />
+</launch>

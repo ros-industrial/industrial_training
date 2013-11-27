@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<launch>
+	<node pkg="rviz" type="rviz" name="rviz" args="-d $(find sensor_config)/rviz/sensor_config.rviz"/>
+	<param name="robot_description" command="$(find xacro)/xacro.py '$(find robot_config)/urdf/ur5_workspace.xacro'"/>
+
+  	<!-- publish the robot state (tf transforms) -->
+ 	 <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />	
+
+	<!-- sensor setup -->
+	<include file="$(find sensor_config)/launch/ur5_sensor_setup.launch"/>	
+	
+	<!-- ar tag detection node -->	
+	<remap from="/usb_cam/image_raw" to="/kinect/rgb/image_rect"/>
+	<remap from="/usb_cam/camera_info" to="/kinect/rgb/camera_info"/>
+	<node name="ar_pose" pkg="ar_pose" type="ar_multi" respawn="false" output="screen">
+		<param name="marker_width" type="double" value="80.0"/>
+		<param name="marker_center_x" type="double" value="0.0"/>
+		<param name="marker_center_y" type="double" value="0.0"/>
+		<param name="use_history" type="bool" value="true"/>
+		<param name="marker_pattern_list" type="string" value="$(find ar_pose)/data/target_info"/>
+		<param name="threshold" type="int" value="100"/>
+  	</node>
+
+
+</launch>

@@ -1,0 +1,15 @@
+world_frame_id: world_frame
+tag_frame_id: ar_tag
+arm_group_name: manipulator
+tcp_link_name: tcp_frame
+wrist_link_name: ee_link
+home_pose_name: home
+wait_pose_name: wait
+approach_distance: 0.05
+retreat_distance: 0.05
+box_width: 0.1
+box_length: 0.1
+box_height: 0.17
+box_place_x: -0.8
+box_place_y: -0.2
+box_place_z: 0.17

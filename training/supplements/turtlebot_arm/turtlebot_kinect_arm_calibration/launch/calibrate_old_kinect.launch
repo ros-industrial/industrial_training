@@ -1,0 +1,15 @@
+<launch>
+
+  <node name="calibrate_kinect_checkerboard" pkg="turtlebot_kinect_arm_calibration" type="calibrate_kinect_checkerboard" output="screen">
+    <param name="camera_frame" value="/openni_camera" />
+    <param name="fixed_frame" value="/base_link" />
+    <param name="gripper_tip_x" value="-0.002" />
+    <param name="gripper_tip_y" value="0.020" />
+    <param name="gripper_tip_z" value="-0.0185" />
+  </node>
+
+  <node name="checkerboard_image_view" pkg="image_view" type="image_view">
+    <remap from="image" to="/calibrate_kinect_checkerboard/calibration_pattern_out" />
+    <param name="autosize" value="true" />
+  </node>
+</launch>

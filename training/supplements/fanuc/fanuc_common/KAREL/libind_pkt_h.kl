@@ -1,0 +1,143 @@
+-- Software License Agreement (BSD License)
+--
+-- Copyright (c) 2012, TU Delft Robotics Institute
+-- All rights reserved.
+--
+-- Redistribution and use in source and binary forms, with or without
+-- modification, are permitted provided that the following conditions
+-- are met:
+--
+--  * Redistributions of source code must retain the above copyright
+--    notice, this list of conditions and the following disclaimer.
+--  * Redistributions in binary form must reproduce the above
+--    copyright notice, this list of conditions and the following
+--    disclaimer in the documentation and/or other materials provided
+--    with the distribution.
+--  * Neither the name of the TU Delft Robotics Institute nor the names 
+--    of its contributors may be used to endorse or promote products 
+--    derived from this software without specific prior written 
+--    permission.
+--
+-- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+-- "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+-- LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+-- FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+-- COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+-- INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+-- BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+-- LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+-- CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+-- LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+-- ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+-- POSSIBILITY OF SUCH DAMAGE.
+
+
+
+--------------------------------------------------------------------------------
+-- 
+-- libind_pkt routine prototypes
+-- 
+-- author: G.A. vd. Hoorn
+-- 
+--------------------------------------------------------------------------------
+
+
+
+
+--------------------------------------------------------------------------------
+-- 
+-- Constructor: resets the given packet.
+-- 
+-- [in    ]  this    : the packet to initialise
+-- [return]          :    0 IFF no error
+--                     <  0 on any error
+-- 
+--------------------------------------------------------------------------------
+ROUTINE ipkt_ctor(this : ind_pkt_t) : INTEGER FROM libind_pkt
+
+
+
+
+--------------------------------------------------------------------------------
+-- 
+-- Reset state of the packet.
+-- 
+-- [in    ]  this    : the packet to reset
+-- 
+--------------------------------------------------------------------------------
+ROUTINE ipkt_reset(this : ind_pkt_t) FROM libind_pkt
+
+
+
+
+--------------------------------------------------------------------------------
+-- 
+-- Serialise the packet. Write bytestream to 'fd'.
+-- 
+-- [in    ]  this    : the packet to serialise
+-- [in    ]  fd      : file desc to write to
+-- [return]          :    0 IFF no error
+--                     <  0 on any error
+-- 
+--------------------------------------------------------------------------------
+ROUTINE ipkt_srlise(this : ind_pkt_t; fd : FILE) : INTEGER FROM libind_pkt
+
+
+
+
+--------------------------------------------------------------------------------
+-- 
+-- Deserialise a packet. Read bytestream from 'fd'.
+-- 
+-- Assumption: 'fd' contains enough bytes for at least one packet.
+-- 
+-- [in    ]  this    : the packet to deserialise into
+-- [in    ]  fd      : file desc to read from
+-- [return]          :    0 IFF no error
+--                     <  0 on any error
+-- 
+--------------------------------------------------------------------------------
+ROUTINE ipkt_dsrlse(this : ind_pkt_t; fd : FILE) : INTEGER FROM libind_pkt
+
+
+
+
+--------------------------------------------------------------------------------
+-- 
+-- Return string representation of pkt (excluding joint_data array).
+-- 
+-- [in    ]  this    : the packet.
+-- [return]          : string representation of given packet.
+-- 
+--------------------------------------------------------------------------------
+ROUTINE ipkt_tostr(this : ind_pkt_t) : STRING FROM libind_pkt
+
+
+
+
+--------------------------------------------------------------------------------
+-- 
+-- Dump string rep of pkt (excluding joint_data array) to file descriptor 'fd'.
+-- 
+-- [in    ]  this    : the packet to dump
+-- [in    ]  fd      : file desc to write string representation to.
+-- 
+--------------------------------------------------------------------------------
+ROUTINE ipkt_dump(this : ind_pkt_t; fd : FILE) FROM libind_pkt
+
+
+
+
+--------------------------------------------------------------------------------
+-- 
+-- Checks the number of bytes available in the given file descriptor 'fd', and 
+-- deserialises one packet into 'pkt' if there are enough.
+-- 
+-- [in    ]  fd      : file desc to check
+-- [in    ]  this    : the packet to deserialise into if 'fd' contains enough
+--                     bytes.
+-- [return]          : < 0 on any error, otherwise number of packets
+--                     deserialised (always max 1 in this implementation)
+-- 
+--------------------------------------------------------------------------------
+ROUTINE ipkt_checkfd(fd : FILE; pkt : ind_pkt_t) : INTEGER FROM libind_pkt

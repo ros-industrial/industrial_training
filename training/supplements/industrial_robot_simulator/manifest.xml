@@ -1,0 +1,23 @@
+<package>
+  <description brief="industrial_robot_simulator">
+
+  The industrial robot simulator is a stand in for industrial robot driver node(s).  It adheres to the driver specification for industrial robot controllers.
+
+  </description>
+  <author>Shaun Edwards</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/industrial_robot_client</url>
+  <depend package="roscpp"/>
+  <depend package="std_msgs"/>
+  <depend package="sensor_msgs"/>
+  <depend package="control_msgs"/>
+  <depend package="trajectory_msgs"/>
+  
+  <depend package="industrial_robot_client"/>
+  
+  <export>
+    <cpp cflags="-I${prefix}/include/"/>
+  </export>
+
+</package>

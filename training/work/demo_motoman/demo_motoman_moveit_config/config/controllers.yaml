@@ -1,0 +1,6 @@
+controller_manager_ns: pr2_controller_manager
+controller_list:
+  - name: ""
+    ns: joint_trajectory_action
+    default: true
+    joints: [joint_s, joint_l, joint_e, joint_u, joint_r, joint_b, joint_t]

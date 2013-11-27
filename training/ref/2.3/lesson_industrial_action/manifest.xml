@@ -1,0 +1,20 @@
+<package>
+  <description brief="lesson_industrial_action">
+
+     lesson_industrial_action
+
+  </description>
+  <author>dsolomon</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/lesson_industrial_action</url>
+  <depend package="roscpp"/>
+  <depend package="control_msgs"/>
+  <depend package="trajectory_msgs"/>
+  <depend package="actionlib_msgs"/>
+  <depend package="actionlib"/>
+  <depend package="industrial_utils"/>
+
+</package>
+
+

@@ -1,0 +1,25 @@
+<!--
+  Manipulator specific version of 'robot_interface_streaming.launch'.
+
+  Defaults provided for M-16iB/20:
+   - J23_factor = 1
+   - use_bswap = true
+   - 6 joints
+
+  Usage:
+    robot_interface_streaming_m16ib20.launch robot_ip:=<value>
+-->
+<launch>
+  <!-- robot_ip: IP-address of the robot's socket-messaging server -->
+  <arg name="robot_ip" />
+
+  <arg name="J23_factor" default="1" />
+  <arg name="use_bswap" default="true" />
+  <rosparam command="load" file="$(find fanuc_config)/config/joint_names_m16ib20.yaml" />
+
+  <include file="$(find fanuc_common)/launch/robot_interface_streaming.launch">
+    <arg name="robot_ip"   value="$(arg robot_ip)" />
+    <arg name="J23_factor" value="$(arg J23_factor)" />
+    <arg name="use_bswap"  value="$(arg use_bswap)" />
+  </include>
+</launch>

@@ -1,0 +1,10 @@
+<launch>
+  <param name="/use_sim_time" value="true" />
+
+  <node pkg="industrial_deprecated" name="wall_clock_server" type="fake_time.py" />
+
+  <include file="$(find planning_environment)/launch/environment_server.launch" >
+    <arg name="use_monitor" value="false"/>
+    <arg name="use_collision_map" value="false"/>
+  </include>
+</launch>

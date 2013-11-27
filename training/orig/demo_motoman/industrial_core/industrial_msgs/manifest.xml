@@ -1,0 +1,17 @@
+<package>
+  <description brief="industrial_msgs">
+
+     The industrial message package containes industrial specific messages definitions. This package is part of the ROS-Industrial program.
+
+  </description>
+  <author>Shaun M. Edwards</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/industrial_msg</url>
+
+  <depend package="std_msgs"/>
+  <depend package="trajectory_msgs"/>
+
+</package>
+
+

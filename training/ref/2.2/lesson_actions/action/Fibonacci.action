@@ -1,0 +1,18 @@
+# Content from http://www.ros.org/wiki/actionlib_tutorials/Tutorials/SimpleActionServer%28ExecuteCallbackMethod%29
+
+#Add action definition here in the following format:
+#goal definition
+#---
+#result definition
+#---
+#feedback definition
+#---
+
+#goal
+int32 order
+---
+#result
+int32[] sequence
+---
+#feedback
+int32[] sequence

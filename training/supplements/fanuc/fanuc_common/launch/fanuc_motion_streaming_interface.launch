@@ -1,0 +1,27 @@
+<!-- 
+  Wrapper launch file for the Fanuc specific motion streaming interface node.
+-->
+<launch>
+  <!-- IP of robot (or PC running simulation) -->
+  <arg name="robot_ip" />
+
+  <!-- J23_factor: set to correct factor to compensate for J23 coupling:
+      -1 : negative coupling (J3' = J3 - J2)
+       0 : no coupling       (J3' = J3)
+       1 : positive coupling (J3' = J3 + J2)
+  -->
+  <arg name="J23_factor" />
+
+  <!-- Load the byte-swapping version of robot_state if required -->
+  <arg name="use_bswap" />
+
+  <!-- put them on the parameter server -->
+  <param name="/robot_ip_address" type="str" value="$(arg robot_ip)" />
+  <param name="/J23_factor"       type="int" value="$(arg J23_factor)" />
+
+  <!-- load the correct version of the motion streaming node -->
+  <node if="$(arg use_bswap)" name="motion_streaming_interface"
+    pkg="fanuc_common" type="motion_streaming_interface_bswap" />
+  <node unless="$(arg use_bswap)" name="motion_streaming_interface"
+    pkg="fanuc_common" type="motion_streaming_interface" />
+</launch>

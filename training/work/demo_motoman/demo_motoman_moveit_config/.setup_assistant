@@ -1,0 +1,8 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: workcell_config
+    relative_path: urdf/workcell.urdf
+  SRDF:
+    relative_path: config/sia20d_workcell.srdf
+  CONFIG:
+    generated_timestamp: 1370330569

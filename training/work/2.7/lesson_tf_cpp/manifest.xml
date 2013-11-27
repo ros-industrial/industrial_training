@@ -1,0 +1,17 @@
+<package>
+  <description brief="lesson_tf_cpp">
+
+     lesson_tf_cpp
+
+  </description>
+  <author>dsolomon</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/lesson_tf_cpp</url>
+  <depend package="roscpp"/>
+  <depend package="tf"/>
+  <depend package="geometry_msgs"/>
+
+</package>
+
+

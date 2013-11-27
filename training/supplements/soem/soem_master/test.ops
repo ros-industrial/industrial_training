@@ -1,0 +1,3 @@
+import("soem_beckhoff_drivers")
+loadComponent("Master","soem_master::SoemMasterComponent")
+Master.displayAvailableDrivers()

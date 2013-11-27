@@ -1,0 +1,16 @@
+<package>
+  <description brief="lesson_move_group">
+
+     lesson_move_group
+
+  </description>
+  <author>Jeremy Zoss</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/lesson_move_group</url>
+  <depend package="roscpp"/>
+  <depend package="moveit_core"/>
+
+</package>
+
+

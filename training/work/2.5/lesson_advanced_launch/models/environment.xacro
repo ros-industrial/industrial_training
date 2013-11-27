@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="ses_environment">
+    
+  
+  <include filename="$(find xacro_properties)/properties.xacro" /> <!--contains properties such as "pi" and "deg"-->
+  
+  
+  <!-- link "world" and connected joints -->
+  <link name="world" />
+  
+  <joint name="world-robot_base" type="fixed" >
+    <parent link="world" />
+    <child link="base_link" />
+    <origin xyz="0 0 0" rpy="0 ${0*deg} 0" />
+  </joint>
+  
+  <joint name="world-grinder" type="fixed" >
+    <parent link="world" />
+    <child link="grinder" />
+    <origin xyz="0.523 -0.609 0.6226" rpy="${-90*deg} 0 ${45*deg}" />
+  </joint>
+  
+
+  <!-- link "grinder" and connected joints -->
+  <link name="grinder" >
+    <visual>
+      <geometry>
+        <mesh filename="package://lesson_advanced_launch/models/grinder_visual.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://lesson_advanced_launch/models/grinder_collision.dae" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="base_link" /> <!--references the robot base-->
+
+
+</robot>
+

@@ -1,0 +1,16 @@
+<launch>
+  <!-- By default we do not overwrite the URDF. Change the following to true to change the default behavior -->
+  <arg name="load_robot_description" default="false"/>
+
+  <!-- Load universal robotic description format (URDF) -->
+  <param if="$(arg load_robot_description)" name="robot_description" textfile="$(find motoman_config)/cfg/sia20d_mesh.xml" />
+      
+  <!-- The semantic description that corresponds to the URDF -->
+  <param name="robot_description_semantic" textfile="$(find SIA20D_moveit_config)/config/SIA20D_Mesh.srdf" />
+  
+  <!-- Load to the parameter server yaml files -->
+  <group ns="robot_description_planning">    
+    <rosparam command="load" file="$(find SIA20D_moveit_config)/config/joint_limits.yaml"/>
+  </group>
+  
+</launch>

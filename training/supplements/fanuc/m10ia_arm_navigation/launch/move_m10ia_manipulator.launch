@@ -1,0 +1,7 @@
+<launch>
+    <node pkg="move_arm" type="move_arm_simple_action" name="m10ia_move_m10ia_manipulator">
+        <param name="group" type="string" value="m10ia_manipulator" />
+        <remap from="arm_ik" to="m10ia_m10ia_manipulator_kinematics/get_constraint_aware_ik" />
+        <param name="controller_action_name" type="string" value="m10ia_manipulator_controller/follow_joint_trajectory" />
+    </node>
+</launch>

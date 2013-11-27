@@ -1,0 +1,31 @@
+<package>
+  <description brief="dx100">
+
+     The dx100 package includes nodes for interfacing with a motoman
+	DX100 industrial controller.
+     
+  </description>
+  <author>Shaun Edwards (Southwest Research Institute)</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/dx100</url>
+  <depend package="std_msgs"/>
+  <depend package="roscpp"/>
+  <depend package="actionlib" />
+  <depend package="trajectory_msgs"/>
+  <depend package="actionlib_msgs" />
+  <depend package="control_msgs" />
+  <depend package="sensor_msgs" />
+  <depend package="simple_message" />
+  <depend package="urdf" />
+  <depend package="industrial_msgs"/>
+  <depend package="industrial_robot_client" />
+
+  <export>
+    <cpp cflags="-I${prefix}/include/"/>
+  </export>
+
+
+</package>
+
+

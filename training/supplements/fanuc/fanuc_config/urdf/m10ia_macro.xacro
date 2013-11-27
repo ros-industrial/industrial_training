@@ -1,0 +1,171 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+	<xacro:macro name="m10ia" params="prefix">
+
+
+		<!-- links -->
+		<link name="${prefix}base_link">
+			<visual>
+				<origin xyz="0 0 0" rpy="-1.578 0 0"/>
+				<geometry>
+					<mesh filename="package://fanuc_config/meshes/m10ia/visual/base_link.stl"/>
+				</geometry>
+				<material name="fgrey">
+					<color rgba="0.20 0.20 0.20 1"/>
+				</material>
+			</visual>
+			<collision>
+				<origin xyz="0 0 0" rpy="-1.578 0 0"/>
+				<geometry>
+					<mesh filename="package://fanuc_config/meshes/m10ia/collision/base_link.stl"/>
+				</geometry>
+			</collision>
+		</link>
+		<link name="${prefix}link_1">
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="package://fanuc_config/meshes/m10ia/visual/link_1.stl"/>
+				</geometry>
+				<material name="fyel">
+					<color rgba="0.9 0.9 0 1"/>
+				</material>
+			</visual>
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="package://fanuc_config/meshes/m10ia/collision/link_1.stl"/>
+				</geometry>
+			</collision>
+		</link>
+		<link name="${prefix}link_2">
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="package://fanuc_config/meshes/m10ia/visual/link_2.stl"/>
+				</geometry>
+				<material name="fyel"/>
+			</visual>
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="package://fanuc_config/meshes/m10ia/collision/link_2.stl"/>
+				</geometry>
+			</collision>
+		</link>
+		<link name="${prefix}link_3">
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="package://fanuc_config/meshes/m10ia/visual/link_3.stl"/>
+				</geometry>
+				<material name="fyel"/>
+			</visual>
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="package://fanuc_config/meshes/m10ia/collision/link_3.stl"/>
+				</geometry>
+			</collision>
+		</link>
+		<link name="${prefix}link_4">
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="package://fanuc_config/meshes/m10ia/visual/link_4.stl"/>
+				</geometry>
+				<material name="fyel"/>
+			</visual>
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="package://fanuc_config/meshes/m10ia/collision/link_4.stl"/>
+				</geometry>
+			</collision>
+		</link>
+		<link name="${prefix}link_5">
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="package://fanuc_config/meshes/m10ia/visual/link_5.stl"/>
+				</geometry>
+				<material name="fyel"/>
+			</visual>
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="package://fanuc_config/meshes/m10ia/collision/link_5.stl"/>
+				</geometry>
+			</collision>
+		</link>
+		<link name="${prefix}link_6">
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="package://fanuc_config/meshes/m10ia/visual/link_6.stl"/>
+				</geometry>
+				<material name="fblack">
+					<color rgba="0.1 0.1 0.1 1"/>
+				</material>
+			</visual>
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="package://fanuc_config/meshes/m10ia/collision/link_6.stl"/>
+				</geometry>
+			</collision>
+		</link>
+		<link name="${prefix}tool0"/>
+
+
+		<!-- joints -->
+		<joint name="${prefix}joint_1" type="revolute">
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<parent link="base_link"/>
+			<child link="link_1"/>
+			<axis xyz="0 0 1"/>
+			<limit lower="-5.93" upper="5.93" effort="0" velocity="3.665"/>
+		</joint>
+		<joint name="${prefix}joint_2" type="revolute">
+			<origin xyz="0.15 -0.04 0.45" rpy="0 0 0"/>
+			<parent link="link_1"/>
+			<child link="link_2"/>
+			<axis xyz="0 1 0"/>
+			<limit lower="-4.36" upper="4.36" effort="0" velocity="3.32"/>
+		</joint>
+		<joint name="${prefix}joint_3" type="revolute">
+			<origin xyz="0 -0.0225 0.6" rpy="0 0 0"/>
+			<parent link="link_2"/>
+			<child link="link_3"/>
+			<axis xyz="0 1 0"/>
+			<limit lower="-5.06" upper="5.06" effort="0" velocity="3.665"/>
+		</joint>
+		<joint name="${prefix}joint_4" type="revolute">
+			<origin xyz="0.1805 0.0625 0.2" rpy="0 0 0"/>
+			<parent link="link_3"/>
+			<child link="link_4"/>
+			<axis xyz="1 0 0"/>
+			<limit lower="-6.63" upper="6.63" effort="0" velocity="6.98"/>
+		</joint>
+		<joint name="${prefix}joint_5" type="revolute">
+			<origin xyz="0.4595 -0.0565 0" rpy="0 0 0"/>
+			<parent link="link_4"/>
+			<child link="link_5"/>
+			<axis xyz="0 1 0"/>
+			<limit lower="-6.63" upper="6.63" effort="0" velocity="3.98"/>
+		</joint>
+		<joint name="${prefix}joint_6" type="revolute">
+			<origin xyz="0.1 0.0565 0" rpy="0 0 0"/>
+			<parent link="link_5"/>
+			<child link="link_6"/>
+			<axis xyz="1 0 0"/>
+			<limit lower="-12.566" upper="12.566" effort="0" velocity="10.47"/>
+		</joint>
+		<joint name="${prefix}joint_6-tool0" type="fixed">
+			<parent link="link_6"/>
+			<child link="tool0"/>
+			<origin xyz="0.1 0.0565 0" rpy="0 0 0"/>
+		</joint>
+
+	</xacro:macro>
+</robot>

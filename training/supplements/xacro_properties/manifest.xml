@@ -1,0 +1,14 @@
+<package>
+  <description brief="xacro_properties">
+
+     xacro_properties
+
+  </description>
+  <author>dsolomon</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/xacro_properties</url>
+
+</package>
+
+

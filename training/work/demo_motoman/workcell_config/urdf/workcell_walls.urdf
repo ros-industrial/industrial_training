@@ -1,0 +1,132 @@
+<?xml version="1.0"?>
+<robot name="walls">
+
+  <link name="front_wall">
+    <visual>
+      <geometry>
+        <box size=".02 2.397 1.0" />
+      </geometry>
+      <material name="orange_transparent">
+        <color rgba="1 0.5 0 0.2"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <box size=".02 2.397 1.0" />
+      </geometry>
+      <material name="orange_transparent"/>      
+    </collision>
+  </link>
+  
+  <link name="right_wall">
+    <visual>
+      <geometry>
+        <box size="1.2 .02 1"/>
+      </geometry>
+      <material name="orange_transparent"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="1.2 .02 1"/>
+      </geometry>
+      <material name="orange_transparent"/>
+    </collision>
+  </link>
+  
+  <link name="left_wall">
+    <visual>
+      <geometry>
+        <box size="1.2 .02 1"/>
+      </geometry>
+      <material name="orange_transparent"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="1.2 .02 1"/>
+      </geometry>
+      <material name="orange_transparent"/>
+    </collision>
+  </link>  
+
+  <link name="diag_wall">
+    <visual>
+      <geometry>
+        <box size=".75 .02 1"/>
+      </geometry>
+      <material name="orange_transparent"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size=".75 .02 1"/>
+      </geometry>
+      <material name="orange_transparent"/>
+    </collision>
+  </link>  
+  
+  <link name="back_wall">
+    <visual>
+      <geometry>
+        <box size=".02 2.099 1"/>
+      </geometry>
+      <material name="orange_transparent"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size=".02 2.099 1"/>
+      </geometry>
+      <material name="orange_transparent"/>
+    </collision>
+  </link>
+
+  <link name="floor">
+    <visual>
+      <geometry>
+        <box size="1.25 2.4 .1"/>
+      </geometry>
+      <material name="orange_transparent"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="1.25 2.4 .1"/>
+      </geometry>
+      <material name="orange_transparent"/>
+    </collision>
+  </link>  
+      
+  <joint name="base_to_front" type="fixed">
+    <parent link="base_link"/>
+    <child link="front_wall"/>
+    <origin xyz="1.06 0 .5" rpy="0 0 0" />
+  </joint>
+  
+  <joint name="base_to_right" type="fixed">
+    <parent link="base_link"/>
+    <child link="right_wall"/>
+    <origin xyz=".45 -1.124 0.5" rpy="0 0 -.14"/>
+  </joint>
+  
+  <joint name="base_to_left" type="fixed">
+    <parent link="base_link"/>
+    <child link="left_wall"/>
+    <origin xyz=".45 1.124 0.5" rpy="0 0 .14"/>
+  </joint>
+
+  <joint name="base_to_diag" type="fixed">
+    <parent link="base_link"/>
+    <child link="diag_wall"/>
+    <origin xyz=".788 -.851 0.5" rpy="0 0 .785"/>
+  </joint>
+
+  <joint name="base_to_back" type="fixed">
+    <parent link="base_link"/>
+    <child link="back_wall"/>
+    <origin xyz="-.25 0 0.5" />
+  </joint>
+
+  <joint name="base_to_floor" type="fixed">
+    <parent link="base_link"/>
+    <child link="floor"/>
+    <origin xyz=".45 0 -0.05" />
+  </joint>
+    
+</robot>

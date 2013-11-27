@@ -1,0 +1,11 @@
+<launch>
+
+  <!-- This launch file creates a listener and manager node that use the simple
+       message protocol.  The manager node simplifies 
+  -->
+  
+  <node pkg="lesson_simple_message" type="sm_talker" name="talker" output="screen"/>
+  <node pkg="lesson_simple_message" type="sm_manager" name="manager" output="screen"/>
+
+</launch>
+

@@ -1,0 +1,18 @@
+<package>
+  <description brief="industrial_deprecated">
+
+     The Industrial deprecated package contains nodes, launch files, etc... that are slated for deprecation.  This package is the last place something will end up before being deleted.  If you are missing a package/node and find it's contents here, then you should consider a replacement.
+
+  </description>
+  <author>Shaun M. Edwards</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/industrial_deprecated</url>
+  
+  <depend package="rosgraph_msgs" />
+  <depend package="rospy" />
+  <depend package="planning_environment" />
+
+</package>
+
+

@@ -1,0 +1,43 @@
+joint_limits:
+  ur5_arm_shoulder_pan_joint:
+    has_position_limits: true
+    has_velocity_limits: true
+    max_velocity: 4.0
+    has_acceleration_limits: true
+    max_acceleration: 2
+    angle_wraparound: false
+  ur5_arm_shoulder_lift_joint:
+    has_position_limits: true
+    has_velocity_limits: true
+    max_velocity: 2.0
+    has_acceleration_limits: true
+    max_acceleration: 1
+    angle_wraparound: false
+  ur5_arm_elbow_joint:
+    has_position_limits: true
+    has_velocity_limits: true
+    max_velocity: 2.0
+    has_acceleration_limits: true
+    max_acceleration: 1
+    angle_wraparound: false
+  ur5_arm_wrist_1_joint:
+    has_position_limits: true
+    has_velocity_limits: true
+    max_velocity: 2.0
+    has_acceleration_limits: true
+    max_acceleration: 1
+    angle_wraparound: false
+  ur5_arm_wrist_2_joint:
+    has_position_limits: true
+    has_velocity_limits: true
+    max_velocity: 2.0
+    has_acceleration_limits: true
+    max_acceleration: 1
+    angle_wraparound: false
+  ur5_arm_wrist_3_joint:
+    has_position_limits: true
+    has_velocity_limits: true
+    max_velocity: 2.0
+    has_acceleration_limits: true
+    max_acceleration: 2 # max: 20
+    angle_wraparound: false

@@ -1,0 +1,13 @@
+<package>
+	<description brief="artoolkit">
+	     Artoolkit Library
+	</description>
+	<author>Gautier Dumonteil</author>
+	<license>GPL</license>
+	<review status="3rdparty" notes=""/>
+	<url>http://www.ros.org/wiki/artoolkit</url>
+	<versioncontrol type="svn" url="https://artoolkit.svn.sourceforge.net/svnroot/artoolkit/trunk"/>
+	<export>
+  		<cpp cflags="-I${prefix}/include/ -I${prefix}/include/AR/sys" lflags="-L${prefix}/lib -Wl,-rpath,${prefix}/lib -lAR -lARgsub -lARMulti -lARvideo"/>
+	</export>
+</package>

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+<!--This macro is designed to be run by a part xacro in the ses_parts/ package -->
+<xacro:macro name="ses_part_macro" params="model_name model_x model_y model_z model_rr model_rp model_ry" >
+
+  <!-- tool1 is the point at which parts connect to the tool -->
+  <!-- it is also referneced in tool.macro.xacro -->
+  <link name="tool1" />
+
+  <joint name="tool1-part" type="fixed" >
+    <parent link="tool1" />
+    <child link="part" />
+    <origin xyz="${model_x} ${model_y} ${model_z}" rpy="${model_rr} ${model_rp} ${model_ry}" />
+  </joint>
+      
+  <link name="part" >
+    <visual>
+      <geometry>
+        <mesh filename="package://lesson_advanced_launch/models/${model_name}" />
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://lesson_advanced_launch/models/${model_name}" />
+      </geometry>
+    </collision>
+  </link>
+  
+</xacro:macro>  
+</robot>

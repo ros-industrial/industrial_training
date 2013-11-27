@@ -1,0 +1,7 @@
+<launch>
+    <!--Direct urdf method-->
+    <param name="robot_description" textfile="$(find motoman_config)/cfg/mh5_mesh.xml" />
+    
+    <!--Generate urdf from xacro method-->
+    <!-- param name="robot_description" command="$(find xacro)/xacro.py '$(find motoman_config)/cfg/mh5_mesh.xacro'" /--> 
+</launch>

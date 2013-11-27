@@ -1,0 +1,12 @@
+<launch>
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - >
+  < 1. Set a parameter that describes the robot
+  < 2. Start a JointStatePublisher node - publishes joint states of all non-fixed joints
+  < 3. Start a RobotStatePublisher node - publishes tf info for all robot transforms
+  < 4. Start rviz with a pre-configured display
+  < - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+    <param name="robot_description" textfile="$(find motoman_config)/cfg/sia5.xml" />
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+    <node name="rviz" pkg="rviz" type="rviz" args="--display-config $(find lesson_advanced_launch)/config/advanced_launch1.rviz"/>
+</launch>

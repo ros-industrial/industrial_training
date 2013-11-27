@@ -1,0 +1,16 @@
+<package>
+  <description brief="lesson_simple_message">
+
+     lesson_custom_service
+
+  </description>
+  <author>dsolomon</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/lesson_custom_service</url>
+  <depend package="simple_message"/>
+  <depend package="roscpp"/>
+
+</package>
+
+

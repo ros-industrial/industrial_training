@@ -1,0 +1,27 @@
+<package>
+  <description brief="robot_io">
+
+     robot_io
+
+  </description>
+  <author>Jnicho</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/robot_io</url>
+
+  <depend package="roscpp"/>
+  
+  <!--For SOEM installation, see
+  http://ros.org/wiki/Industrial/Tutorials/Simple_EtherCAT_Network_IO-->
+  <depend package="soem_master"/>  
+  <depend package="ocl"/>
+  <depend package="soem_beckhoff_drivers"/>
+  
+  <!--Grasping messages-->
+  <depend package="object_manipulation_msgs"/>
+  <depend package="actionlib"/>
+
+
+</package>
+
+

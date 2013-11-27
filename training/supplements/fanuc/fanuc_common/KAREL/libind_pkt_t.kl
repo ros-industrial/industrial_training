@@ -1,0 +1,120 @@
+-- Software License Agreement (BSD License)
+--
+-- Copyright (c) 2012, 2013, TU Delft Robotics Institute
+-- All rights reserved.
+--
+-- Redistribution and use in source and binary forms, with or without
+-- modification, are permitted provided that the following conditions
+-- are met:
+--
+--  * Redistributions of source code must retain the above copyright
+--    notice, this list of conditions and the following disclaimer.
+--  * Redistributions in binary form must reproduce the above
+--    copyright notice, this list of conditions and the following
+--    disclaimer in the documentation and/or other materials provided
+--    with the distribution.
+--  * Neither the name of the TU Delft Robotics Institute nor the names 
+--    of its contributors may be used to endorse or promote products 
+--    derived from this software without specific prior written 
+--    permission.
+--
+-- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+-- "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+-- LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+-- FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+-- COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+-- INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+-- BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+-- LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+-- CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+-- LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+-- ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+-- POSSIBILITY OF SUCH DAMAGE.
+
+
+
+--------------------------------------------------------------------------------
+-- 
+-- libind_pkt shared type / constant decls
+-- 
+-- author: G.A. vd. Hoorn
+-- 
+--------------------------------------------------------------------------------
+
+TYPE
+	-- union like (for now)
+	ind_pkt_t FROM libindu_pkt = STRUCTURE
+		length_     : INTEGER           -- length of payload
+		msg_type_   : INTEGER           -- type of message
+		comm_type_  : INTEGER           -- 
+		reply_type_ : INTEGER           -- 
+		seq_nr_     : INTEGER           -- 
+		joint_data_ : ARRAY[10] OF REAL -- joint data, radians (floats)
+		velocity_   : REAL              -- only if msg type 11
+		duration_   : REAL              -- only if msg type 11
+	ENDSTRUCTURE
+
+
+
+
+CONST
+	-- 
+	-- Standard ports
+	-- 
+	RI_TCP_TRAJR = 11000
+	RI_TCP_STATE = 11002
+
+
+	-- 
+	-- Sizes (in bytes) of various types
+	-- 
+	RI_SZ_PREFIX =    4  -- bytes: size of shared prefix
+	RI_SZ_HDR    =   12  -- bytes: size of shared header
+	RI_SZB_JPOS  =   44  -- bytes: size of body of JOINT_POSITION
+	RI_SZB_TRAJP =   52  -- bytes: size of body of JOINT_TRAJ_PT
+	RI_SZB_STA   =   28  -- bytes: size of body of STATUS
+
+
+	-- 
+	-- Special sequence values
+	-- 
+	RI_SEQ_STRJD =   -1  -- START_TRAJECTORY_DOWNLOAD
+	RI_SEQ_STRJS =   -2  -- START_TRAJECOTRY_STREAMING
+	RI_SEQ_ETRAJ =   -3  -- END_TRAJECTORY
+	RI_SEQ_STPRJ =   -4  -- STOP_TRAJECTORY
+
+
+	-- 
+	-- Message types
+	-- 
+	RI_MT_INVAL  =    0  -- INVALID
+	RI_MT_PING   =    1  -- PING
+
+	RI_MT_JOINTP =   10  -- JOINT_POSITION
+	RI_MT_JOINT  =   10  -- JOINT
+	RI_MT_JTRAJP =   11  -- JOINT_TRAJ_PT
+	RI_MT_JNTRAJ =   12  -- JOINT_TRAJ
+	RI_MT_STATUS =   13  -- STATUS
+
+	RI_MT_RINPUT =   20  -- READ_INPUT
+	RI_MT_WOUTPT =   21  -- WRITE_OUTPUT
+
+	RI_MT_SWRI_B = 1000  -- SWRI_MSG_BEGIN
+	RI_MT_MMAN_B = 2000  -- MOTOMAN_MSG_BEGIN
+
+
+	-- 
+	-- Communication types
+	-- 
+	RI_CT_INVAL  =    0  -- INVALID
+	RI_CT_TOPIC  =    1  -- TOPIC
+	RI_CT_SVCREQ =    2  -- SERVICE_REQUEST
+	RI_CT_SVCRPL =    3  -- SERVICE_REPLY
+
+
+	-- 
+	-- Reply types
+	-- 
+	RI_RT_INVAL  =    0  -- INVALID
+	RI_RT_SUCC   =    1  -- SUCCESS
+	RI_RT_FAIL   =    2  -- FAILURE

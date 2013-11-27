@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<robot name="sia20d_workcell" xmlns:xacro="http://ros.org/wiki/xacro">
+	<include filename="$(find motoman_config)/cfg/sia20d_mesh_macro.xacro"/>
+	<include filename="$(find workcell_config)/urdf/workcell_walls.urdf"/>
+
+	<xacro:sia20d_mesh prefix=""/>
+
+</robot>

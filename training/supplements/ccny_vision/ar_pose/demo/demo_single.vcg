@@ -1,0 +1,74 @@
+Background\ ColorB=0
+Background\ ColorG=0
+Background\ ColorR=0
+Camera\ Config=0.271361 1.73117 12.3814 -0.0703899 0.411883 -0.714206
+Camera\ Type=rviz::OrbitViewController
+Camera.Enabled=1
+Camera.Image\ Rendering=background & overlay
+Camera.Image\ Topic=/usb_cam/image_raw
+Camera.Overlay\ Alpha=0.5
+Camera.Queue\ Size=2
+Camera.Transport\ Hint=raw
+Camera.Zoom\ Factor=1
+Fixed\ Frame=/camera_rgb_optical_frame
+Grid.Alpha=0.5
+Grid.Cell\ Size=1
+Grid.ColorB=0
+Grid.ColorG=0
+Grid.ColorR=0.654902
+Grid.Enabled=1
+Grid.Line\ Style=0
+Grid.Line\ Width=0.03
+Grid.Normal\ Cell\ Count=0
+Grid.OffsetX=0
+Grid.OffsetY=0
+Grid.OffsetZ=0
+Grid.Plane=0
+Grid.Plane\ Cell\ Count=10
+Grid.Reference\ Frame=<Fixed Frame>
+Markers.Enabled=1
+Markers.Marker\ Topic=visualization_marker
+Markers.Queue\ Size=100
+Markers.basic_shapes=1
+Property\ Grid\ Splitter=309,78
+Property\ Grid\ State=expanded=.Global Options,TF.Enabled,Camera.Enabled,Grid.Enabled;splitterratio=0.5
+QMainWindow=000000ff00000000fd000000030000000000000140000002e9fc0200000002fb000000100044006900730070006c006100790073010000001d000001d5000000ee00fffffffb0000000c00430061006d00650072006101000001f80000010e0000001900ffffff0000000100000131000002e9fc0200000003fb0000001e0054006f006f006c002000500072006f0070006500720074006900650073010000001d000000c00000006700fffffffb0000000a0056006900650077007301000000e30000015d000000bb00fffffffb0000001200530065006c0065006300740069006f006e0100000246000000c00000006700ffffff000000030000046c0000003efc0100000001fb0000000800540069006d006501000000000000046c000002bf00ffffff000001ef000002e900000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+TF.All\ Enabled=1
+TF.Enabled=1
+TF.Frame\ Timeout=15
+TF.Marker\ Scale=1
+TF.Show\ Arrows=1
+TF.Show\ Axes=1
+TF.Show\ Names=1
+TF.Update\ Interval=0
+Target\ Frame=/camera_rgb_optical_frame
+Tool\ 2D\ Nav\ GoalTopic=goal
+Tool\ 2D\ Pose\ EstimateTopic=initialpose
+[Display0]
+ClassName=rviz::TFDisplay
+Name=TF
+[Display1]
+ClassName=rviz::MarkerDisplay
+Name=Markers
+[Display2]
+ClassName=rviz::CameraDisplay
+Name=Camera
+[Display3]
+ClassName=rviz::GridDisplay
+Name=Grid
+[TF.Frames.]
+4x4_1.Enabled=1
+4x4_100.Enabled=1
+4x4_2.Enabled=1
+camera_depth_frame.Enabled=1
+camera_depth_optical_frame.Enabled=1
+camera_link.Enabled=1
+camera_rgb_frame.Enabled=1
+camera_rgb_optical_frame.Enabled=1
+usb_cam.Enabled=1
+world.Enabled=1
+[Window]
+Height=878
+Width=1148
+X=-7
+Y=0

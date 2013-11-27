@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<robot name="abb_irb2400_blue_room" xmlns:xacro="http://ros.org/wiki/xacro">
+	<include filename="$(find abb_common)/urdf/irb_2400_macro.xacro"/>
+
+	<!-- instantiating xacros -->
+	<xacro:irb_2400 prefix=""/>
+
+
+	<!-- color definitions -->
+        <material name="blue">
+                <color rgba="0 0 1 1"/>
+        </material>
+	<material name="yellow">
+                        <color rgba="1 1 0 1"/>
+        </material>
+        <material name="orange">
+                <color rgba="1 0.66 0.48 1"/>
+        </material>
+        <material name="red">
+                <color rgba="1 0 0 1"/>
+        </material>
+        <material name="light_blue">
+                <color rgba="0.78 0.94 0.965 1"/>
+        </material>
+
+	
+
+	<!-- link definitions -->
+	<link name="robot_rear_wall_link">
+		<collision>
+			<origin xyz="0 1 0" rpy="0 0 0"/>
+			<geometry>
+				<box size="0.25 2.0 2.0"/>
+			</geometry>
+			<material name="red"/>
+		</collision>
+	</link>
+
+	<link name="robot_table_link">
+		<collision>
+			<origin xyz="0 0 -0.125" rpy="0 0 0"/>
+			<geometry>
+				<box size="4.0 4.0 0.25"/>
+			</geometry>
+			<material name="red"/>
+		</collision>
+	</link>
+	
+	<!-- joint definitions -->
+	<joint name="base_to_robot_rear_wall" type ="fixed">
+		<origin xyz="-0.5 -1.0 1.0" rpy="0 0 0"/>
+		<parent link="base_link"/>
+		<child link="robot_rear_wall_link"/>
+	</joint>
+
+	<joint name="base_to_robot_table" type ="fixed">
+		<origin xyz="0 0 0" rpy="0 0 0"/>
+		<parent link="base_link"/>
+		<child link="robot_table_link"/>
+	</joint>
+
+	
+</robot>

@@ -1,0 +1,27 @@
+<package>
+  <description brief="m10ia_arm_navigation">
+
+     m10ia_arm_navigation
+
+  </description>
+  <author>Christina Gomez (Southwest Research Institute)</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/m10ia_arm_navigation</url>
+  <depend package="planning_environment"/>
+  <depend package="kinematics_base"/>
+  <depend package="arm_kinematics_constraint_aware"/>
+  <depend package="ompl_ros_interface"/>
+  <depend package="trajectory_filter_server"/>
+  <depend package="constraint_aware_spline_smoother"/>
+  <depend package="move_arm"/>
+  <depend package="warehouse_ros"/>
+  <depend package="robot_state_publisher"/>
+  <depend package="interpolated_ik_motion_planner"/>
+  <depend package="rviz"/>
+  <depend package="move_arm_warehouse"/>
+  <depend package="industrial_deprecated"/>
+
+</package>
+
+

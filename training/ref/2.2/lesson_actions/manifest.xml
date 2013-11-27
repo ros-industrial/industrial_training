@@ -1,0 +1,19 @@
+<package>
+  <description brief="lesson_actions">
+
+     lesson_actions
+
+  </description>
+  <author>dsolomon</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/lesson_actions</url>
+  <depend package="roscpp"/>
+  <depend package="roslib"/>
+  <depend package="actionlib"/>
+  <depend package="actionlib_msgs"/>
+  <depend package="std_msgs"/>
+  
+</package>
+
+

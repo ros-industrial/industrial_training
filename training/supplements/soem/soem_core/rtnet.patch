@@ -1,0 +1,175 @@
+--- src/nicdrv.c	2011-05-09 12:36:45.000000000 +0200
++++ src/nicdrv.c	2012-04-23 10:59:50.000000000 +0200
+@@ -64,16 +64,20 @@
+  * compensate. If needed the packets from interface A are resend through interface B.
+  * This layer if fully transparent for the higher layers.
+  */
+-
+-#include <sys/types.h>
++#ifdef HAVE_RTNET
++#include <rtnet.h>
++#else
+ #include <sys/ioctl.h>
+-#include <net/if.h> 
+ #include <sys/socket.h> 
++#include <sys/types.h>
++#include <fcntl.h>
++#endif
++
++#include <net/if.h> 
+ #include <unistd.h>
+ #include <sys/time.h> 
+ #include <arpa/inet.h>
+ #include <stdio.h>
+-#include <fcntl.h>
+ #include <string.h>
+ #include <netpacket/packet.h>
+ #include <pthread.h>
+@@ -81,6 +85,7 @@
+ #include "ethercattype.h"
+ #include "nicdrv.h"
+ 
++
+ /** Redundancy modes */
+ enum
+ {
+@@ -176,9 +181,15 @@
+ /** second MAC word is used for identification */
+ #define RX_SEC secMAC[1]
+ 
++#ifdef HAVE_RTNET
+ pthread_mutex_t ec_getindex_mutex = PTHREAD_MUTEX_INITIALIZER;
+ pthread_mutex_t ec_tx_mutex = PTHREAD_MUTEX_INITIALIZER;
+ pthread_mutex_t ec_rx_mutex = PTHREAD_MUTEX_INITIALIZER;
++#else
++pthread_mutex_t ec_getindex_mutex;
++pthread_mutex_t ec_tx_mutex;
++pthread_mutex_t ec_rx_mutex;
++#endif
+ 
+ /** Basic setup to connect NIC to socket.
+  * @param[in] ifname	    = Name of NIC device, f.e. "eth0"
+@@ -194,6 +205,10 @@
+ 	struct sockaddr_ll sll;
+ 	int *psock;
+ 
++	pthread_mutex_init( &ec_getindex_mutex, 0 );
++	pthread_mutex_init( &ec_tx_mutex, 0 );
++	pthread_mutex_init( &ec_rx_mutex, 0 );
++
+ 	rval = 0;
+ 	if (secondary)
+ 	{
+@@ -208,31 +223,73 @@
+ 	}	
+ 	/* we use RAW packet socket, with packet type ETH_P_ECAT */
+ 	*psock = socket(PF_PACKET, SOCK_RAW, htons(ETH_P_ECAT));
++	if(*psock<0){
++	  printf("creation of socket failed:%d\n",*psock);
++	  return 0;
++	}
++	/* connect socket to NIC by name */
++	strcpy(ifr.ifr_name, ifname);
++	r = ioctl(*psock, SIOCGIFINDEX, &ifr);
++	if(r<0){
++	  printf("getting socket index failed:%d, %s\n",r,strerror(-r));
++	}
++	  
++
+ 	timeout.tv_sec =  0;
+ 	timeout.tv_usec = 1;
+-	 
++#ifdef HAVE_RTNET
++	r = ioctl(*psock,RTNET_RTIOC_TIMEOUT,&timeout);
++	if(r<0){
++	  printf("setting socket timeout failed:%d, %s\n",r,strerror(-r));
++	}
++#else
++
+ 	r = setsockopt(*psock, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout));
++	if(r<0){
++	  printf("setting socket options rcvtimeo failed:%d, %s\n",r,strerror(-r));
++	}
++
+ 	r = setsockopt(*psock, SOL_SOCKET, SO_SNDTIMEO, &timeout, sizeof(timeout));
++	if(r<0){
++	  printf("setting socket options sndtimeo failed:%d, %s\n",r,strerror(-r));
++	}
++
+ 	i = 1;
+ 	r = setsockopt(*psock, SOL_SOCKET, SO_DONTROUTE, &i, sizeof(i));
+-	/* connect socket to NIC by name */
+-	strcpy(ifr.ifr_name, ifname);
+-	r = ioctl(*psock, SIOCGIFINDEX, &ifr);
++	if(r<0){
++	  printf("setting socket options dontroute failed:%d, %s\n",r,strerror(-r));
++	}
++
++#endif
++
++
+ 	ifindex = ifr.ifr_ifindex;
++#ifdef HAVE_RTNET
+ 	strcpy(ifr.ifr_name, ifname);
+ 	ifr.ifr_flags = 0;
+ 	/* reset flags of NIC interface */
+ 	r = ioctl(*psock, SIOCGIFFLAGS, &ifr);
++	if(r<0){
++	  printf("resetting socket flags failed:%d, %s\n",r,strerror(-r));
++	}
+ 	/* set flags of NIC interface, here promiscuous and broadcast */
+-	ifr.ifr_flags = ifr.ifr_flags || IFF_PROMISC || IFF_BROADCAST;
++	ifr.ifr_flags = ifr.ifr_flags | IFF_PROMISC | IFF_BROADCAST;
+ 	r = ioctl(*psock, SIOCGIFFLAGS, &ifr);
++	if(r<0){
++	  printf("setting socket flags failed:%d, %s\n",r,strerror(-r));
++	}
++#endif
++
+ 	/* bind socket to protocol, in this case RAW EtherCAT */
+ 	sll.sll_family = AF_PACKET;
+ 	sll.sll_ifindex = ifindex;
+ 	sll.sll_protocol = htons(ETH_P_ECAT);
+ 	r = bind(*psock, (struct sockaddr *)&sll, sizeof(sll));
++	if(r<0){
++	  printf("binding socket failed:%d, %s\n",r,strerror(-r));
++	}
+ 	/* get flags */
+-	fl = fcntl(*psock, F_GETFL, 0);
++	//fl = fcntl(*psock, F_GETFL, 0);
+ 	/* set nodelay option, so make socket non-blocking */
+ //	r = fcntl(*psock, F_SETFL, fl | O_NDELAY);
+ 	/* setup ethernet headers in tx buffers so we don't have to repeat it */
+@@ -244,7 +301,7 @@
+ 	ec_setupheader(&ec_txbuf2);
+ 	ec_errcnt = ec_incnt = 0;
+ 	if (r == 0) rval = 1;
+-	
++
+ 	return rval;
+ }
+ 
+diff -uar src/slaveinfo.c src/slaveinfo.c
+--- src/slaveinfo.c    2010-03-07 15:48:41.000000000 +0100
++++ src/slaveinfo.c    2011-05-16 14:28:49.476931001 +0200
+@@ -22,6 +22,10 @@
+ #include "ethercatdc.h"
+ #include "ethercatprint.h"
+ 
++#ifdef HAVE_RTNET
++#include <sys/mman.h>
++#endif
++
+ char IOmap[4096];
+ ec_ODlistt ODlist;
+ ec_OElistt OElist;
+@@ -281,6 +286,9 @@
+ 	
+ 	if (argc > 1)
+ 	{		
++#ifdef HAVE_RTNET
++               mlockall(MCL_CURRENT | MCL_FUTURE);
++#endif
+ 		if ((argc > 2) && (strncmp(argv[2], "-sdo", sizeof("-sdo")) == 0)) printSDO = TRUE;
+ 		/* start slaveinfo */
+ 		slaveinfo(argv[1]);

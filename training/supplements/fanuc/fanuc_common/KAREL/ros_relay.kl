@@ -1,0 +1,433 @@
+-- Software License Agreement (BSD License)
+--
+-- Copyright (c) 2012, 2013, TU Delft Robotics Institute
+-- All rights reserved.
+--
+-- Redistribution and use in source and binary forms, with or without
+-- modification, are permitted provided that the following conditions
+-- are met:
+--
+--  * Redistributions of source code must retain the above copyright
+--    notice, this list of conditions and the following disclaimer.
+--  * Redistributions in binary form must reproduce the above
+--    copyright notice, this list of conditions and the following
+--    disclaimer in the documentation and/or other materials provided
+--    with the distribution.
+--  * Neither the name of the TU Delft Robotics Institute nor the names 
+--    of its contributors may be used to endorse or promote products 
+--    derived from this software without specific prior written 
+--    permission.
+--
+-- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+-- "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+-- LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+-- FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+-- COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+-- INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+-- BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+-- LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+-- CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+-- LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+-- ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+-- POSSIBILITY OF SUCH DAMAGE.
+
+
+PROGRAM ros_relay
+--------------------------------------------------------------------------------
+-- 
+-- ROS Industrial joint trajectory relay.
+-- 
+-- Currently only supports joint trajectory point streaming.
+-- 
+-- Joint motion speed is limited (hard coded) to 20%. Termination is hard 
+-- coded at CNT 50%.
+-- 
+-- NB: This is a work in progress, and as such should NOT be run on real 
+--     hardware.
+-- 
+-- Assumptions:
+--   - User Socket Messaging (USM) is supported by robot
+--   - TAG 'S4' used for USM
+--   - There is only 1 motion group
+--   - The TP program 'ros_movesm' exists on the robot
+--   - Position register 1 is available
+--   - Integer registers 1 & 2 are available
+-- 
+-- TODO:
+--   - use motion speed from JOINT_TRAJ_PT message
+-- 
+-- 
+-- author: G.A. vd. Hoorn
+-- 
+--------------------------------------------------------------------------------
+%ALPHABETIZE
+%COMMENT = 'r14'
+%NOBUSYLAMP
+%NOLOCKGROUP
+%NOPAUSE = COMMAND + TPENABLE + ERROR
+
+
+
+
+--------------------------------------------------------------------------------
+-- 
+-- remote types & constants
+-- 
+--------------------------------------------------------------------------------
+%INCLUDE libssock_t
+%INCLUDE libind_pkt_t
+
+
+
+
+--------------------------------------------------------------------------------
+-- 
+-- local types & constants
+-- 
+--------------------------------------------------------------------------------
+VAR
+	sock_        : ssock_t
+	sock_fd_     : FILE       -- file descriptor has to be declared here
+	pkt_in       : ind_pkt_t  -- incoming joint commands
+	pkt_out      : ind_pkt_t  -- outgoing reply msgs
+	new_j_pos    : JOINTPOS
+	stat_        : INTEGER
+	sleep_time   : INTEGER
+	do_it        : BOOLEAN
+
+
+
+CONST
+	LOG_PFIX     = 'RREL '  -- 
+
+	MOTION_TAG   =  4       -- which server tag to use
+
+	MOVE_PREG    =  1       -- position register to use with ros_movesm
+	MOVE_SPD_REG =  1       -- integer registers to use with ros_movesm
+	MOVE_CNT_REG =  2       -- 
+
+	MOVE_SPEED   = 20       -- speed to use with ros_movesm (percentage of maximum)
+	MOVE_CNT     = 50       -- CNT value to use with ros_movesm
+
+	LOOP_HZ      = 40       -- Hz
+
+	RI_MSM_RDY   =  1       -- ros_movesm ready signal (waits for new point)
+	RI_MSM_DRDY  =  2       -- relay data ready signal (reset by ros_movesm)
+
+
+
+
+--------------------------------------------------------------------------------
+-- 
+-- remote routine prototypes
+-- 
+--------------------------------------------------------------------------------
+%INCLUDE libssock_h
+%INCLUDE libind_pkt_h
+%INCLUDE libind_log_h
+%INCLUDE libind_mth_h
+
+
+
+
+--------------------------------------------------------------------------------
+-- 
+-- Lokale routines
+-- 
+--------------------------------------------------------------------------------
+ROUTINE exec_move(pkt : ind_pkt_t) : INTEGER FROM ros_relay
+ROUTINE req_next(pkt : ind_pkt_t; sock_fd : FILE) : INTEGER FROM ros_relay
+ROUTINE send_err(pkt : ind_pkt_t; sock_fd : FILE) : INTEGER FROM ros_relay
+
+
+
+
+--------------------------------------------------------------------------------
+-- 
+-- Main program
+-- 
+--------------------------------------------------------------------------------
+BEGIN
+	-- init
+	stat_      = 0
+	sleep_time = ROUND(1000.0 / LOOP_HZ)
+	do_it      = TRUE
+
+
+	-- enable log output
+	log_clear
+
+
+	-- init server socket
+	stat_ = ssock_ctor(sock_, RI_TCP_TRAJR, MOTION_TAG)
+	IF stat_ <> 0 THEN
+		IF stat_ = TAG_CONF_ERR THEN
+			log_error_a(LOG_PFIX + 'TAG config error. TAG nr:', MOTION_TAG)
+		ELSE
+			log_error_a(LOG_PFIX + 'ssock_ctor err:', stat_)
+		ENDIF
+		-- nothing we can do, abort
+		GOTO exit_on_err
+	ENDIF
+
+
+	-- init incoming packet
+	stat_ = ipkt_ctor(pkt_in)
+
+
+	-- init reply packet
+	stat_ = ipkt_ctor(pkt_out)
+	-- setup fields: we reply with JOINT_POSITION packets
+	USING pkt_out DO
+		length_    = (RI_SZ_HDR + RI_SZB_JPOS)
+		msg_type_   = RI_MT_JOINTP
+		comm_type_  = RI_CT_SVCRPL -- TODO: is this the correct reply type?
+		reply_type_ = RI_RT_SUCC
+		-- rest is set by ctor
+	ENDUSING
+
+
+	-- make sure socket is closed
+	-- don t care about result
+	stat_ = ssock_dconnf(sock_)
+
+
+	-- 
+	WHILE do_it DO
+
+		-- inform user
+		log_info(LOG_PFIX + 'Waiting for ROS traj relay')
+
+		-- set socket in 'binary mode' (unformatted)
+		-- KAREL Reference Manual, MARRC75KR07091E Rev C, sec 7.3.1
+		SET_FILE_ATR(sock_fd_, ATR_UF)
+
+		-- wait for connection
+		stat_ = ssock_accpt2(sock_, sock_fd_)
+		IF stat_ <> 0 THEN
+			log_error_a(LOG_PFIX + 'sock_accept err:', stat_)
+			-- can't continue
+			GOTO exit_discon
+		ENDIF
+
+		-- inform user
+		log_info(LOG_PFIX + 'Connected')
+
+		-- got client, start relay loop
+		WHILE do_it DO
+
+			-- get new packet from the socket
+			-- TODO: this assumes 1 packet per iteration (ok for now)
+			stat_ = ipkt_checkfd(sock_fd_, pkt_in)
+			IF stat_ < 0 THEN
+				log_error_a(LOG_PFIX + 'check_socket err:', stat_)
+
+				-- can't continue
+				GOTO exit_discon
+			ENDIF
+
+			-- see if there were any packets
+			IF stat_ > 0 THEN
+
+				-- check sequence number for special values
+				IF (pkt_in.seq_nr_ < 0) THEN
+					-- 
+					SELECT pkt_in.seq_nr_ OF
+						-- 
+						CASE (RI_SEQ_STRJD):
+							log_info(LOG_PFIX + 'Download start')
+							log_warn(LOG_PFIX + 'Trajectory downloading not supported')
+
+						-- 
+						CASE (RI_SEQ_STRJS):
+							log_info(LOG_PFIX + 'Stream start')
+							log_warn(LOG_PFIX + 'Trajectory stream start unhandled, ignoring point')
+
+						-- 
+						CASE (RI_SEQ_ETRAJ):
+							log_info(LOG_PFIX + 'Trajectory end')
+							log_warn(LOG_PFIX + 'Trajectory end unhandled, not supported')
+
+						-- 
+						CASE (RI_SEQ_STPRJ):
+							log_info(LOG_PFIX + 'Trajectory stop')
+							-- cancel motion (if any)
+							CANCEL
+							stat_ = req_next(pkt_in, sock_fd_)
+							IF stat_ <> 0 THEN
+								-- can't continue
+								log_error_a(LOG_PFIX + 'Failed to ack stop, err:', stat_)
+								GOTO exit_discon
+							ENDIF
+
+						-- unknown special sequence nr
+						ELSE:
+							log_warn_a(LOG_PFIX + 'unknown seq nr:', pkt_in.seq_nr_)
+							log_warn(LOG_PFIX + 'please report')
+
+					ENDSELECT
+
+
+				ELSE
+
+					-- notify ROS node we want a new trajectory node
+					stat_ = req_next(pkt_in, sock_fd_)
+					IF stat_ <> 0 THEN
+						-- can't continue
+						log_error_a(LOG_PFIX + 'req_next err:', stat_)
+						GOTO exit_discon
+					ENDIF
+
+					-- 
+					stat_ = exec_move(pkt_in)
+					IF stat_ <> 0 THEN
+						-- can't continue, send error
+						stat_ = send_err(pkt_in, sock_fd_)
+						-- don't care about result
+						log_error_a(LOG_PFIX + 'exec_move err:', stat_)
+						-- 
+						GOTO exit_discon
+					ENDIF
+
+				ENDIF
+
+			ELSE
+				-- no packets waiting; and no motion in progress,
+				-- sleep a little (1/T)
+				DELAY sleep_time
+
+			ENDIF
+
+		-- inner WHILE TRUE DO
+		ENDWHILE
+
+		-- exit with forced disconnect
+exit_discon::
+		stat_ = ssock_dconn2(sock_, sock_fd_)
+
+	-- outer WHILE TRUE DO
+	ENDWHILE
+
+
+exit_on_err::
+	-- nothing
+
+END ros_relay
+
+
+
+
+--------------------------------------------------------------------------------
+-- 
+-- Update joint positions according to contents of ROS Industrial packet.
+-- 
+-- This routine communicates the new joint positions to the 'Move SM' TPE 
+-- program using the 'MOVE_PREG' position register.
+-- 
+-- [in    ]  pkt     : packet containing new joint positions
+-- [out   ]          :    0 IFF no error
+--                       -1 IFF new position not reachable
+--                     < -1 on any other error
+-- 
+--------------------------------------------------------------------------------
+ROUTINE exec_move
+VAR
+	stat__ : INTEGER
+BEGIN
+	-- ROS sends radians, so convert
+	arr_rad2deg(pkt.joint_data_)
+
+	-- convert reals to jointpos
+	CNV_REL_JPOS(pkt.joint_data_, new_j_pos, stat__)
+	IF stat__ <> 0 THEN RETURN (-stat__); ENDIF
+
+	-- check to make sure point can be reached before performing motion
+	IF J_IN_RANGE(new_j_pos) = FALSE THEN
+		RETURN (-1)
+	ENDIF
+
+	-- sync
+	WAIT FOR (FLG[RI_MSM_RDY] = ON)
+
+	-- setup registers
+	-- init position
+	SET_JPOS_REG(MOVE_PREG, new_j_pos, stat__)
+	IF stat__ <> 0 THEN RETURN (-stat__); ENDIF
+
+	-- init motion speed (constant for now)
+	SET_INT_REG(MOVE_SPD_REG, MOVE_SPEED, stat__)
+	IF stat__ <> 0 THEN RETURN (-stat__); ENDIF
+
+	-- init motion termination (constant for now)
+	SET_INT_REG(MOVE_CNT_REG, MOVE_CNT, stat__)
+	IF stat__ <> 0 THEN RETURN (-stat__); ENDIF
+
+	-- exec
+	FLG[RI_MSM_DRDY] = ON
+	WAIT FOR (FLG[RI_MSM_DRDY] = OFF)
+
+	-- done
+	RETURN (0)
+END exec_move
+
+
+
+
+--------------------------------------------------------------------------------
+-- 
+-- Request next trajectory point from ROS node. Also sort of 'Send ACK'.
+--
+-- [in    ]  pkt     : the packet to send
+-- [in    ]  sock_fd : file descriptor on the open socket
+-- [out   ]          : 0 IFF no error
+-- 
+--------------------------------------------------------------------------------
+ROUTINE req_next
+VAR
+	stat__ : INTEGER
+BEGIN
+	-- 
+	stat__ = 0
+
+	-- copy seq_nr from packet we ack
+	-- this is NOT done by the sedwards protocol implementations (debugging aid)
+	pkt_out.seq_nr_ = pkt.seq_nr_
+	pkt_out.reply_type_ = RI_RT_SUCC
+
+	-- send ROS node request for next point
+	stat__ = ipkt_srlise(pkt_out, sock_fd_)
+
+	-- done
+	RETURN (-ABS(stat__))
+END req_next
+
+
+
+
+--------------------------------------------------------------------------------
+-- 
+-- Send NACK to ROS node. Something erred
+--
+-- [in    ]  pkt     : the packet to send
+-- [in    ]  sock_fd : file descriptor on the open socket
+-- [out   ]          : 0 IFF no error
+-- 
+--------------------------------------------------------------------------------
+ROUTINE send_err
+VAR
+	stat__ : INTEGER
+BEGIN
+	-- 
+	stat__ = 0
+
+	-- copy seq_nr from the packet we NACK
+	-- this is NOT done by the sedwards protocol implementations (debugging aid)
+	pkt_out.seq_nr_     = pkt.seq_nr_
+	pkt_out.reply_type_ = RI_RT_FAIL
+
+	-- send ROS node request for next point
+	stat__ = ipkt_srlise(pkt_out, sock_fd_)
+
+	-- done
+	RETURN (-ABS(stat__))
+END send_err

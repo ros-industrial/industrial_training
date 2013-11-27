@@ -1,0 +1,14 @@
+<package>
+  <description brief="lesson_urdf">
+
+     lesson_urdf
+
+  </description>
+  <author>dsolomon</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/lesson_urdf</url>
+
+</package>
+
+

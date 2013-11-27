@@ -1,0 +1,51 @@
+planner_configs:
+  SBLkConfig1:
+    type: kinematic::SBL
+  LBKPIECEkConfig1:
+    type: kinematic::LBKPIECE
+groups:
+  - m10ia_manipulator
+  - m10ia_manipulator_cartesian
+m10ia_manipulator:
+  planner_type: JointPlanner
+  planner_configs:
+    - SBLkConfig1
+    - LBKPIECEkConfig1
+  projection_evaluator: joint_state
+m10ia_manipulator_cartesian:
+  parent_frame: base_link
+  physical_group: m10ia_manipulator
+  planner_type: RPYIKTaskSpacePlanner
+  state_spaces:
+    - x
+    - y
+    - z
+    - roll
+    - pitch
+    - yaw
+  x:
+    type: Linear
+    min: -2.0
+    max: 2.0
+  y:
+    type: Linear
+    min: -2.0
+    max: 2.0
+  z:
+    type: Linear
+    min: -2.0
+    max: 2.0
+  roll:
+    type: Revolute
+  pitch:
+    type: Revolute
+  yaw:
+    type: Revolute
+  planner_configs:
+    - SBLkConfig1
+    - LBKPIECEkConfig1
+  kinematics_solver: arm_kinematics_constraint_aware/KDLArmKinematicsPlugin
+  tip_name: tool0
+  root_name: base_link
+  projection_evaluator: joint_state
+  longest_valid_segment_fraction: 0.001

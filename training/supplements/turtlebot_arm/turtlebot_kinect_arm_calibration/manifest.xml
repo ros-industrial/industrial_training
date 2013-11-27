@@ -1,0 +1,26 @@
+<package>
+  <description brief="turtlebot_kinect_arm_calibration">
+
+     turtlebot_kinect_arm_calibration allows calibration of a kinect to a TurtleBot arm, including a kinect on-board and off-board the TurtleBot for more precise manipulation.
+
+  </description>
+  <author>Helen Oleynikova</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/turtlebot_kinect_arm_calibration</url>
+
+  <rosdep name="eigen"/>
+
+  <depend package="roscpp"/>
+  <depend package="visualization_msgs"/>
+  <depend package="tf"/>
+  <depend package="opencv2"/>
+  <depend package="image_geometry"/>
+  <depend package="pcl"/>
+  <depend package="pcl_ros"/>
+  <depend package="image_transport"/>
+  <depend package="cv_bridge"/>
+
+</package>
+
+

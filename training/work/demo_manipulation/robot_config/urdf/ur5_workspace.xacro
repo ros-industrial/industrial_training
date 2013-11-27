@@ -1,0 +1,68 @@
+<?xml version="1.0" ?>
+<robot name="ur5_workspace" xmlns:xacro="http://ros.org/wiki/xacro">
+	<include filename="$(find robot_config)/urdf/vacuum_gripper_macro.xacro"/>
+	<include filename="$(find ur5_description)/urdf/gazebo.urdf.xacro" />
+  	<include filename="$(find robot_config)/urdf/ur5_model.urdf.xacro" />	
+	<include filename="$(find robot_config)/urdf/workspace_components.xacro"/>
+	<include filename="$(find robot_config)/urdf/kinect_sensor_macro.xacro"/>
+
+	<!-- property list -->
+	<xacro:property name="workcell_height" value="1"/>
+	<xacro:property name="robot_stand_height" value="0.20"/>
+	<xacro:property name="vacuum_gripper_width" value="0.088"/>
+	<xacro:property name="arm_prefix" value=""/>
+
+	<!-- instantiating arm and gripper -->	
+	<xacro:ur5_robot prefix="${arm_prefix}"/>
+	<xacro:vacuum_gripper_definition prefix="${arm_prefix}" gripper_adjustment="0.01"/>
+
+	<!-- instantiating workcell definitions -->
+	<xacro:workcell_zone2_components/>
+	<!-- end of workcell definitions -->
+
+	<!-- arm-workcell link definitions -->
+	<link name="ur5_stand">
+		<visual>
+			<geometry>
+				<cylinder radius="0.0735" length="${robot_stand_height}"/>
+			</geometry>
+			<material name="orange_transparent"/>
+		</visual>
+		<collision>
+			<geometry>
+				<cylinder radius="0.0735" length="${robot_stand_height}"/>
+			</geometry>
+			<material name="blue_transparent"/>
+		</collision>
+	</link>
+
+	<!-- instantiating sensor definitions -->
+
+	<xacro:sensor_definitions prefix="${arm_prefix}" parent_link="ur5_stand" 
+		x_val="-0.981" y_val="0.190" z_val="1.015" pitch="1.145" yaw="0.035" roll="0.019" /> 
+	<!-- end of sensor definitions -->
+
+	<joint name="world_to_stand" type="fixed">
+		<parent link="world_frame"/>
+		<child link="ur5_stand"/>
+		<origin xyz="-0.238 0 ${robot_stand_height * 0.5}"/>
+	</joint>
+	<!-- end of arm-workcell link definitions -->
+
+	<!-- arm-workcell joint definitions -->
+	<joint name="stand_to_base" type="fixed">
+		<parent link="ur5_stand"/>
+		<child link="${arm_prefix}base_link"/>
+		<origin xyz="0 0 ${robot_stand_height * 0.5}" rpy="0 0 2.355"/>
+	</joint>
+		
+	<!-- end of arm workcell joint definitions-->
+
+	<!-- arm-gripper coupling joint definitions -->
+	<joint name="${arm_prefix}to_gripper" type="fixed">
+		<parent link="${arm_prefix}ee_link"/>
+		<child link="${arm_prefix}gripper_frame"/>
+		<origin xyz="0 0 0" rpy="-1.57 0 -1.57"/> <!-- 0 1.57 0 -->
+	</joint>
+	<!-- end of arm-gripper coupling joint definitions -->
+</robot>

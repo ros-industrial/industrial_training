@@ -1,0 +1,11 @@
+<launch>
+
+  <!-- This launch file creates a listener and talker node that use the simple
+       message protocol (similar to ROS talker/lister example
+  -->
+  
+  <node pkg="lesson_simple_message" type="sm_talker" name="talker" output="screen"/>
+  <node pkg="lesson_simple_message" type="sm_listener" name="listener" output="screen"/>
+
+</launch>
+

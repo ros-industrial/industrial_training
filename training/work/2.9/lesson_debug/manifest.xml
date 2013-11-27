@@ -1,0 +1,15 @@
+<package>
+  <description brief="lesson_debug">
+
+     lesson_debug
+
+  </description>
+  <author>dsolomon</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/lesson_debug</url>
+  <depend package="roscpp"/>
+
+</package>
+
+

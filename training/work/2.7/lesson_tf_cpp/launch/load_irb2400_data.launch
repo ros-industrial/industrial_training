@@ -1,0 +1,7 @@
+<launch>
+    <!--Direct urdf method-->
+    <param name="robot_description" textfile="$(find abb_common)/urdf/irb_2400.urdf" />
+    
+    <!--Generate urdf from xacro method-->
+    <!-- param name="robot_description" command="$(find xacro)/xacro.py '$(find abb_common)/urdf/irb_2400.xacro'" /--> 
+</launch>

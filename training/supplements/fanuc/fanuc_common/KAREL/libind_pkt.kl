@@ -1,0 +1,328 @@
+-- Software License Agreement (BSD License)
+--
+-- Copyright (c) 2012, 2013, TU Delft Robotics Institute
+-- All rights reserved.
+--
+-- Redistribution and use in source and binary forms, with or without
+-- modification, are permitted provided that the following conditions
+-- are met:
+--
+--  * Redistributions of source code must retain the above copyright
+--    notice, this list of conditions and the following disclaimer.
+--  * Redistributions in binary form must reproduce the above
+--    copyright notice, this list of conditions and the following
+--    disclaimer in the documentation and/or other materials provided
+--    with the distribution.
+--  * Neither the name of the TU Delft Robotics Institute nor the names 
+--    of its contributors may be used to endorse or promote products 
+--    derived from this software without specific prior written 
+--    permission.
+--
+-- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+-- "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+-- LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+-- FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+-- COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+-- INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+-- BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+-- LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+-- CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+-- LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+-- ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+-- POSSIBILITY OF SUCH DAMAGE.
+
+
+PROGRAM libind_pkt
+--------------------------------------------------------------------------------
+-- 
+-- Library routines for creating / processing ROS Industrial packets
+-- 
+-- Note: in its current state this library can only deserialise
+--       JOINT_POSITION (or JOINT) and JOINT_TRAJ_PT messages.
+-- 
+-- TODO: handle other types of incoming messages properly.
+-- 
+-- 
+-- author: G.A. vd. Hoorn
+-- 
+--------------------------------------------------------------------------------
+%NOLOCKGROUP
+%NOPAUSE= COMMAND + TPENABLE + ERROR
+%COMMENT = 'ROS Ind Packets'
+
+
+
+
+--------------------------------------------------------------------------------
+-- 
+-- local types & constants
+-- 
+--------------------------------------------------------------------------------
+%INCLUDE libind_pkt_t
+%INCLUDE ktype_sz_t
+
+
+
+
+--------------------------------------------------------------------------------
+-- 
+-- remote routine prototypes
+-- 
+--------------------------------------------------------------------------------
+
+
+
+
+--------------------------------------------------------------------------------
+-- 
+-- local routine prototypes
+-- 
+--------------------------------------------------------------------------------
+%INCLUDE libind_pkt_h
+
+
+
+
+--------------------------------------------------------------------------------
+-- 
+-- Empty body
+-- 
+--------------------------------------------------------------------------------
+BEGIN
+END libind_pkt
+
+
+
+
+ROUTINE ipkt_ctor
+BEGIN
+	-- just reset packet
+	ipkt_reset(this)
+	-- cannot fail
+	RETURN (0)
+END ipkt_ctor
+
+
+
+
+ROUTINE ipkt_reset
+VAR
+	len__ : INTEGER
+	d__   : INTEGER
+BEGIN
+	-- 
+	len__ = ARRAY_LEN(this.joint_data_)
+	d__   = 0
+
+	-- zero array with joint angles
+	FOR d__ = 1 TO len__ DO
+		this.joint_data_[d__] = 0.0
+	ENDFOR
+
+	-- set up ROS industrial packet fields
+	USING this DO
+		-- default to JOINT_POSITION size
+		length_     = (RI_SZ_HDR + RI_SZB_JPOS)
+		msg_type_   =  0
+		comm_type_  =  0
+		reply_type_ =  0
+		seq_nr_     =  0
+		duration_   =  0.0
+		velocity_   =  0.0
+	ENDUSING
+END ipkt_reset
+
+
+
+
+ROUTINE ipkt_srlise
+VAR
+	i__        : INTEGER
+	stat__     : INTEGER
+	array_sz__ : INTEGER
+BEGIN
+	--
+	i__ = 0
+	stat__ = 0
+	array_sz__ = ARRAY_LEN(this.joint_data_)
+
+	-- make sure pkt len is correct
+	IF (this.msg_type_ = RI_MT_JTRAJP) THEN
+		this.length_ = (RI_SZ_HDR + RI_SZB_TRAJP)
+	ENDIF
+
+	-- write out all fields ..
+	WRITE fd(this.length_)
+	stat__ = IO_STATUS(fd)
+	IF stat__ <> 0 THEN RETURN (-stat__); ENDIF
+
+	WRITE fd(this.msg_type_)
+	stat__ = IO_STATUS(fd)
+	IF stat__ <> 0 THEN RETURN (-stat__); ENDIF
+
+	WRITE fd(this.comm_type_)
+	stat__ = IO_STATUS(fd)
+	IF stat__ <> 0 THEN RETURN (-stat__); ENDIF
+
+	WRITE fd(this.reply_type_)
+	stat__ = IO_STATUS(fd)
+	IF stat__ <> 0 THEN RETURN (-stat__); ENDIF
+
+	WRITE fd(this.seq_nr_)
+	stat__ = IO_STATUS(fd)
+	IF stat__ <> 0 THEN RETURN (-stat__); ENDIF
+
+	-- now the array
+	FOR i__ = 1 TO array_sz__ DO
+		WRITE fd(this.joint_data_[i__])
+
+		-- check
+		stat__ = IO_STATUS(fd)
+		IF stat__ <> 0 THEN RETURN (-stat__); ENDIF
+	ENDFOR
+
+	-- 
+	IF (this.msg_type_ = RI_MT_JTRAJP) THEN
+		WRITE fd(this.velocity_)
+		stat__ = IO_STATUS(fd)
+		IF stat__ <> 0 THEN RETURN (-stat__); ENDIF
+
+		WRITE fd(this.duration_)
+		stat__ = IO_STATUS(fd)
+		IF stat__ <> 0 THEN RETURN (-stat__); ENDIF
+	ENDIF
+
+	-- .. and end with a CR
+	WRITE fd(CR)
+
+	-- done
+	stat__ = IO_STATUS(fd)
+	RETURN (-stat__)
+END ipkt_srlise
+
+
+
+
+ROUTINE ipkt_dsrlse
+VAR
+	i__        : INTEGER
+	stat__     : INTEGER
+	array_sz__ : INTEGER
+BEGIN
+	--
+	i__ = 0
+	stat__ = 0
+	array_sz__ = ARRAY_LEN(this.joint_data_)
+
+	-- read in all fields ..
+	READ fd(this.length_)
+	stat__ = IO_STATUS(fd)
+	IF stat__ <> 0 THEN RETURN (-stat__); ENDIF
+
+	READ fd(this.msg_type_)
+	stat__ = IO_STATUS(fd)
+	IF stat__ <> 0 THEN RETURN (-stat__); ENDIF
+
+	READ fd(this.comm_type_)
+	stat__ = IO_STATUS(fd)
+	IF stat__ <> 0 THEN RETURN (-stat__); ENDIF
+
+	READ fd(this.reply_type_)
+	stat__ = IO_STATUS(fd)
+	IF stat__ <> 0 THEN RETURN (-stat__); ENDIF
+
+	READ fd(this.seq_nr_)
+	stat__ = IO_STATUS(fd)
+	IF stat__ <> 0 THEN RETURN (-stat__); ENDIF
+
+	-- now the array
+	FOR i__ = 1 TO array_sz__ DO
+		READ fd(this.joint_data_[i__])
+
+		-- check
+		stat__ = IO_STATUS(fd)
+		IF stat__ <> 0 THEN RETURN (-stat__); ENDIF
+	ENDFOR
+
+	-- 
+	IF (this.msg_type_ = RI_MT_JTRAJP) &
+		AND (this.length_ >= (RI_SZ_HDR + RI_SZB_TRAJP)) 
+	THEN
+		READ fd(this.velocity_)
+		stat__ = IO_STATUS(fd)
+		IF stat__ <> 0 THEN RETURN (-stat__); ENDIF
+
+		READ fd(this.duration_)
+		stat__ = IO_STATUS(fd)
+		IF stat__ <> 0 THEN RETURN (-stat__); ENDIF
+	ENDIF
+
+	-- done
+	stat__ = IO_STATUS(fd)
+	RETURN (-stat__)
+END ipkt_dsrlse
+
+
+
+
+ROUTINE ipkt_tostr
+VAR
+	len_str__ : STRING[20]
+	mt_str__  : STRING[20]
+	ct_str__  : STRING[20]
+	rt_str__  : STRING[20]
+	nr_str__  : STRING[30]
+BEGIN
+	-- TODO: check for 'uninitialised' data and handle 
+	--       those (add 'unknown' or something)
+	CNV_INT_STR(this.length_     , 1, 10, len_str__)
+	CNV_INT_STR(this.msg_type_   , 1, 10, mt_str__)
+	CNV_INT_STR(this.comm_type_  , 1, 10, ct_str__)
+	CNV_INT_STR(this.reply_type_ , 1, 10, rt_str__)
+	CNV_INT_STR(this.seq_nr_     , 1, 10, nr_str__)
+
+	-- done
+	RETURN ('pkt (l,mt,ct,rt,seq):' + len_str__ + ';' + mt_str__ + ';' &
+		+ ct_str__ + ';' + rt_str__ + ';' + nr_str__)
+END ipkt_tostr
+
+
+
+
+ROUTINE ipkt_dump
+BEGIN
+	WRITE fd(ipkt_tostr(this), CR)
+END ipkt_dump
+
+
+
+
+ROUTINE ipkt_checkfd
+VAR
+	stat__      : INTEGER
+	bytes_ahd__ : INTEGER
+BEGIN
+
+	bytes_ahd__ = 0
+	stat__      = 0
+
+	-- check nr of bytes in buffer
+	BYTES_AHEAD(fd, bytes_ahd__, stat__)
+	IF stat__ <> 0 THEN RETURN (-stat__); ENDIF
+
+	-- is there enough for a packet?
+	IF (bytes_ahd__ >= (RI_SZ_HDR + RI_SZB_JPOS)) THEN
+
+		-- deserialise
+		stat__ = ipkt_dsrlse(pkt, fd)
+		IF stat__ <> 0 THEN RETURN (-ABS(stat__)); ENDIF
+
+		-- notify user of packet we deserialised
+		RETURN (1)
+	-- 
+	ENDIF
+
+	-- done
+	RETURN (-ABS(stat__))
+
+END ipkt_checkfd

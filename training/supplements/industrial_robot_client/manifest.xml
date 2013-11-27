@@ -1,0 +1,29 @@
+<package>
+  <description brief="industrial_robot_client">
+
+     industrial robot client contains generic clients for connecting 
+     to industrial robot controllers with servers that adhere to the
+     simple message protocol.
+
+  </description>
+  <author>Jeremy Zoss</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/industrial_robot_client</url>
+  
+  <depend package="roscpp"/>
+  <depend package="std_msgs"/>
+  <depend package="sensor_msgs"/>
+  <depend package="control_msgs"/>
+  <depend package="trajectory_msgs"/>
+  <depend package="simple_message"/>
+  <depend package="actionlib_msgs" />
+  <depend package="actionlib"/>
+  <depend package="urdf"/>
+  <depend package="industrial_msgs"/>
+  <depend package="industrial_utils"/>
+  
+  <export>
+    <cpp cflags="-I${prefix}/include/" lflags="-L${prefix}/lib"/>
+  </export>
+</package>

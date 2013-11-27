@@ -1,0 +1,16 @@
+<package>
+  <description brief="lesson_simple_parameters">
+
+     lesson_simple_parameters
+
+  </description>
+  <author>Ian R. Meinzen</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/lesson_simple_parameters</url>
+
+  <depend package="roscpp"/>
+ 
+</package>
+
+

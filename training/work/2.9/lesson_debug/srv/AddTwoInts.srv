@@ -1,0 +1,7 @@
+# Content from http://www.ros.org/wiki/ROS/Tutorials/WritingServiceClient%28c%2B%2B%29
+
+int64 a
+int64 b
+---
+int64 sum
+int64 e

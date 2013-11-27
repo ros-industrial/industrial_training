@@ -1,0 +1,12 @@
+<launch>
+
+  <!--Load ROS nodes to provide low-level control of a robot using the DX100 -->
+  <!--  usage: robot_interface.launch robot_ip:=<value> -->
+
+	<arg name="robot_ip" />
+
+	<node pkg="dx100" type="robot_state" name="robot_state" args="$(arg robot_ip)"/>
+	<node pkg="dx100" type="motion_interface" name="motion_interface" args=$(arg robot_ip)"/>
+	<node pkg="dx100" type="joint_trajectory_action" name="joint_trajectory_action" />
+
+</launch>

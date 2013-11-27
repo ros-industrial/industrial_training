@@ -1,0 +1,7 @@
+<launch>
+    <include file="$(find irb_2400_arm_navigation)/launch/irb_2400_planning_environment.launch" />
+    <node pkg="ompl_ros_interface" type="ompl_ros" name="ompl_planning">
+        <param name="default_planner_config" type="string" value="SBLkConfig1" />
+        <rosparam command="load" file="$(find irb_2400_arm_navigation)/config/ompl_planning.yaml" />
+    </node>
+</launch>

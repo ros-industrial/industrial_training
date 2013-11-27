@@ -1,0 +1,18 @@
+<package>
+  <description brief="abb_common">
+
+     abb_common
+
+  </description>
+  <author>Shaun Edwards</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/abb_common</url>
+  
+  <depend package="industrial_robot_client"/>
+  <depend package="roscpp"/>
+  <depend package="urdf"/>
+
+</package>
+
+

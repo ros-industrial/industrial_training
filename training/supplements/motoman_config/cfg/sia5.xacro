@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+
+<!--Generates a urdf from the macro in sia5_macro.xacro -->
+
+<robot name="sia5" xmlns:xacro="http://ros.org/wiki/xacro">
+	<include filename="$(find motoman_config)/cfg/sia5_macro.xacro"/>
+	<xacro:sia5 prefix=""/>
+</robot>

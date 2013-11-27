@@ -1,0 +1,39 @@
+#!/usr/bin/python
+
+from signal import *
+from time import sleep
+from sys import argv
+
+run_flag = True
+
+def sigterm_ignore(signum, frame):
+    print "Received SIGTERM, but ignoring"
+
+def sigterm_handler(signum, frame):
+    global run_flag
+    print "Received SIGTERM, exiting"
+    run_flag = False
+
+def main(kill_on_ctrl_c):
+    global run_flag
+
+    iteration = 0
+    while run_flag:
+        try:
+            print "I've done something %d times...." % iteration
+            iteration = iteration + 1
+            sleep(1)
+        except KeyboardInterrupt:
+            if kill_on_ctrl_c:
+                print "Got a Control+C, exiting..."
+                break
+            else:
+                print "Got a Control+C, ignoring..."
+    print "Loop exited"
+
+if '__main__' == __name__:
+    if len(argv) > 2:
+        signal(SIGTERM, sigterm_ignore)
+    else:
+        signal(SIGTERM, sigterm_handler)
+    main(len(argv)<=1)

@@ -1,0 +1,23 @@
+<launch>
+    <!--Joint trajectory server and associated param-->
+    <rosparam param="controller_joint_names" >
+        ['joint_s', 'joint_l', 'joint_e', 'joint_u', 'joint_r', 'joint_b', 'joint_t']
+    </rosparam>
+    <node name="action_server" pkg="industrial_robot_client" type="joint_trajectory_action" />
+
+    <!--Industrial robot controller simulator -->
+    <node name="robot_controller_simulator" pkg="industrial_robot_simulator" type="industrial_robot_simulator" />
+
+    <!--Robot state publisehr and associated param (for viewing in rviz)-->
+    <param name="robot_description" textfile="$(find motoman_config)/cfg/sia20d_mesh.xml" />
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+    
+    <!--Brings up rviz with the proper display configuration-->
+    <node name="rviz" pkg="rviz" type="rviz" args="--display-config $(find lesson_basic_launch)/lesson_basic_launch.rviz" />
+    
+    <!--Run the action client once. To run again, in a new terminal 
+    $rosrun lesson_basic_launch jointaction_client
+    -->
+    <node name="action_client" pkg="lesson_basic_launch" type="jointaction_client"/>
+  
+</launch>

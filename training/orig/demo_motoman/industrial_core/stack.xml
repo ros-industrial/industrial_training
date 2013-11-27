@@ -1,0 +1,15 @@
+<stack>
+  <description brief="industrial_core">ROS-Industrial core stack contains packages and libraries for supporing industrial systems</description>
+  <author>Shaun Edwards/sedwards@swri.org</author>
+  <license>BSD</license>  
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/industrial_core</url>
+  <depend stack="common" /> <!-- actionlib -->
+  <depend stack="common_msgs" /> <!-- actionlib_msgs, geometry_msgs, sensor_msgs, trajectory_msgs -->
+  <depend stack="control" /> <!-- control_msgs -->
+  <depend stack="robot_model" /> <!-- urdf -->
+  <depend stack="ros" />
+  <depend stack="ros_comm" /> <!-- std_msgs, rospy, roscpp -->
+  <depend stack="arm_navigation" /> <!-- planning environment -->
+
+</stack>

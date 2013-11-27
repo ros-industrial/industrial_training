@@ -1,0 +1,15 @@
+<package>
+  <description brief="lesson_simple_topic">
+
+     lesson_simple_topic
+
+  </description>
+  <author>Ian R. Meinzen</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/lesson_simple_topic</url>
+
+  <depend package="roscpp"/>
+</package>
+
+

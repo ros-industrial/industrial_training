@@ -1,0 +1,20 @@
+<package>
+  <description brief="lesson_basic_launch">
+
+     lesson_basic_launch
+
+  </description>
+  <author>dsolomon</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/lesson_basic_launch</url>
+  <depend package="roscpp"/>
+  <depend package="control_msgs"/>
+  <depend package="trajectory_msgs"/>
+  <depend package="actionlib_msgs"/>
+  <depend package="actionlib"/>
+  <depend package="industrial_utils"/>
+
+</package>
+
+

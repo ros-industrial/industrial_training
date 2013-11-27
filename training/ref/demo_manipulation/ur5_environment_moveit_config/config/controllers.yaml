@@ -1,0 +1,13 @@
+controller_manager_ns: pr2_controller_manager
+controller_list:
+  - name: ""
+    ns: joint_trajectory_action
+    default: true
+    joints:
+      - elbow_joint
+      - shoulder_lift_joint
+      - shoulder_pan_joint
+      - wrist_1_joint
+      - wrist_2_joint
+      - wrist_3_joint
+

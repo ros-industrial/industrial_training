@@ -1,0 +1,5 @@
+global_integer_value: 10
+simple_parameters:
+  integer_value: 27
+  point: {x: 1.4, y: 3.25}
+  simple_string: Test Value

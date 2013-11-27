@@ -1,0 +1,8 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: robot_config
+    relative_path: urdf/ur5_workspace.urdf
+  SRDF:
+    relative_path: config/ur5_workspace.srdf
+  CONFIG:
+    generated_timestamp: 1369409038

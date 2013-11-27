@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="tool">
+
+  <include filename="$(find xacro_properties)/properties.xacro" /> <!--contains properties such as "pi" and "deg"-->
+  
+  <link name="tool0" />
+  
+  <joint name="tool0-tool_base" type="fixed" >
+    <parent link="tool0" />
+    <child link="tool_base" />
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </joint>  
+
+  <!-- link "ee_base" and connected joints-->
+  <link name="tool_base" />
+      
+  <joint name="tool_base-tool1" type="fixed" >
+    <parent link="tool_base" />
+    <child link="tool1" />
+    <origin xyz="0 0 0" rpy="0 0 ${0*deg}" />
+  </joint>
+
+  <!-- tool1 is the point that parts connect to the tool -->
+  <link name="tool1" />
+
+</robot>
