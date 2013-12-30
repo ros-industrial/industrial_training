@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 import sys, yaml
 import roslib; roslib.load_manifest('fs100')
