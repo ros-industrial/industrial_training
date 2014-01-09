@@ -35,6 +35,15 @@
 		</collision>
 	</link>
 
+	<link name="octomap_keepout">
+		<collision>
+			<geometry>
+				<cylinder radius="0.14" length="${robot_stand_height * 2}"/>
+			</geometry>
+			<material name="blue_transparent"/>
+		</collision>
+	</link>
+
 	<!-- instantiating sensor definitions -->
 
 	<xacro:sensor_definitions prefix="${arm_prefix}" parent_link="ur5_stand" 
@@ -46,6 +55,13 @@
 		<child link="ur5_stand"/>
 		<origin xyz="-0.238 0 ${robot_stand_height * 0.5}"/>
 	</joint>
+
+	<joint name="world_to_octomap_keepout" type="fixed">
+		<parent link="world_frame"/>
+		<child link="octomap_keepout"/>
+		<origin xyz="-0.238 0 ${robot_stand_height}"/>
+	</joint>
+
 	<!-- end of arm-workcell link definitions -->
 
 	<!-- arm-workcell joint definitions -->
