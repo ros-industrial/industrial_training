@@ -1,9 +1,7 @@
 <?xml version="1.0" ?>
 <launch>
-	<group ns="move_group">
-		<param name="octomap_frame" type="string" value="world_frame" />
-		<param name="octomap_resolution" type="double" value="0.01" />
-		<param name="max_range" type="double" value="5.0" />
-		<rosparam command="load" file="$(find ur5_environment_moveit_config)/config/sensors.yaml" />
-	</group>
+	<param name="octomap_frame" type="string" value="world_frame" />
+	<param name="octomap_resolution" type="double" value="0.04" />
+	<param name="max_range" type="double" value="5.0" />
+	<rosparam command="load" file="$(find ur5_environment_moveit_config)/config/sensors.yaml" />
 </launch>

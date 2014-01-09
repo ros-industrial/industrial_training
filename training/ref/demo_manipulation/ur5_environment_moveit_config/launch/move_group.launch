@@ -24,7 +24,7 @@
     <arg name="moveit_manage_controllers" value="true" />
   </include>
 
-  <include  file="$(find ur5_environment_moveit_config)/launch/sensor_manager.launch" if="$(arg allow_trajectory_execution)">
+  <include ns="move_group" file="$(find ur5_environment_moveit_config)/launch/sensor_manager.launch" if="$(arg allow_trajectory_execution)">
     <arg name="moveit_sensor_manager" value="ur5_workspace" /> 
   </include>
 
