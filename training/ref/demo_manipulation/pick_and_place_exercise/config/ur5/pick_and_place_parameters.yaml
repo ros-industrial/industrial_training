@@ -10,6 +10,6 @@ retreat_distance: 0.05
 box_width: 0.1
 box_length: 0.1
 box_height: 0.17
-box_place_x: -0.8
-box_place_y: -0.2
+box_place_x: -0.4
+box_place_y: 0.6
 box_place_z: 0.17
