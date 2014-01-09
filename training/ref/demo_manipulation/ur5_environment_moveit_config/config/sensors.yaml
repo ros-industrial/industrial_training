@@ -1,10 +1,20 @@
 sensors: 
  - sensor_plugin: occupancy_map_monitor/PointCloudOctomapUpdater
+   sensor_frame: world_frame
    point_cloud_topic: /kinect/depth_registered/points
    max_range: 5.0
    frame_subsample: 1
    point_subsample: 1
-   self_mask:
-    self_see_links:
-      - name: shoulder_link
-        padding: 0.1
+   shape_padding: 0.008
+   filtered_cloud_topic: octomap_cloud
+#   self_mask:
+#    min_sensor_dist: .8
+#    self_see_default_padding: .04
+#    self_see_default_scale: 1.0
+#    self_see_links:
+#      - name: shoulder_link
+#        padding: 0.1
+#        scale: 1.2
+#      - name: base_link
+#        padding: 0.1
+#        scale: 1.2
