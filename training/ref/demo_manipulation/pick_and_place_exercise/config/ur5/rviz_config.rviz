@@ -10,6 +10,7 @@ Panels:
         - /TF1/Frames1
         - /TF1/Tree1
         - /RobotModel1
+        - /RobotModel1/Links1
         - /PointCloud21
         - /PointCloud22
       Splitter Ratio: 0.587444
@@ -106,7 +107,7 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: false
+          Value: true
         gripper_body:
           Alpha: 1
           Show Axes: false
@@ -153,11 +154,21 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: false
+        octomap_keepout:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         right_wall2:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: false
+        roof2:
+          Alpha: 0.5
+          Show Axes: false
+          Show Trail: false
+          Value: true
         shoulder_link:
           Alpha: 1
           Show Axes: false
@@ -246,8 +257,8 @@ Visualization Manager:
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 0.192105
-        Min Value: 0.00499988
+        Max Value: 0.420977
+        Min Value: 0.0079999
         Value: true
       Axis: Z
       Channel Name: x
@@ -294,17 +305,17 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 1.41736
+      Distance: 2.5059
       Focal Point:
         X: -0.440323
         Y: 0.302664
         Z: 0.301166
       Name: Current View
       Near Clip Distance: 0.01
-      Pitch: 0.2598
+      Pitch: 0.364799
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 1.57356
+      Yaw: 1.73356
     Saved: ~
 Window Geometry:
   Displays:
