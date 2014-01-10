@@ -62,6 +62,7 @@
     <disable_collisions link1="base_link" link2="left_wall2" reason="Never" />
     <disable_collisions link1="base_link" link2="octomap_keepout" reason="Default" />
     <disable_collisions link1="base_link" link2="right_wall2" reason="Never" />
+    <disable_collisions link1="base_link" link2="roof2" reason="Never" />
     <disable_collisions link1="base_link" link2="shoulder_link" reason="Adjacent" />
     <disable_collisions link1="base_link" link2="table_base2" reason="Never" />
     <disable_collisions link1="base_link" link2="ur5_stand" reason="Adjacent" />
@@ -74,6 +75,7 @@
     <disable_collisions link1="cover_part1" link2="left_wall2" reason="Adjacent" />
     <disable_collisions link1="cover_part1" link2="octomap_keepout" reason="Adjacent" />
     <disable_collisions link1="cover_part1" link2="right_wall2" reason="Adjacent" />
+    <disable_collisions link1="cover_part1" link2="roof2" reason="Adjacent" />
     <disable_collisions link1="cover_part1" link2="shoulder_link" reason="Never" />
     <disable_collisions link1="cover_part1" link2="table_base2" reason="Adjacent" />
     <disable_collisions link1="cover_part1" link2="ur5_stand" reason="Adjacent" />
@@ -85,6 +87,7 @@
     <disable_collisions link1="cover_part2" link2="left_wall2" reason="Adjacent" />
     <disable_collisions link1="cover_part2" link2="octomap_keepout" reason="Adjacent" />
     <disable_collisions link1="cover_part2" link2="right_wall2" reason="Adjacent" />
+    <disable_collisions link1="cover_part2" link2="roof2" reason="Adjacent" />
     <disable_collisions link1="cover_part2" link2="shoulder_link" reason="Never" />
     <disable_collisions link1="cover_part2" link2="table_base2" reason="Adjacent" />
     <disable_collisions link1="cover_part2" link2="ur5_stand" reason="Adjacent" />
@@ -108,6 +111,7 @@
     <disable_collisions link1="front_wall2" link2="left_wall2" reason="Adjacent" />
     <disable_collisions link1="front_wall2" link2="octomap_keepout" reason="Adjacent" />
     <disable_collisions link1="front_wall2" link2="right_wall2" reason="Adjacent" />
+    <disable_collisions link1="front_wall2" link2="roof2" reason="Adjacent" />
     <disable_collisions link1="front_wall2" link2="shoulder_link" reason="Never" />
     <disable_collisions link1="front_wall2" link2="table_base2" reason="Adjacent" />
     <disable_collisions link1="front_wall2" link2="upper_arm_link" reason="Never" />
@@ -128,6 +132,7 @@
     <disable_collisions link1="kinect_frame" link2="left_wall2" reason="Never" />
     <disable_collisions link1="kinect_frame" link2="octomap_keepout" reason="Never" />
     <disable_collisions link1="kinect_frame" link2="right_wall2" reason="Never" />
+    <disable_collisions link1="kinect_frame" link2="roof2" reason="Never" />
     <disable_collisions link1="kinect_frame" link2="shoulder_link" reason="Never" />
     <disable_collisions link1="kinect_frame" link2="table_base2" reason="Never" />
     <disable_collisions link1="kinect_frame" link2="upper_arm_link" reason="Never" />
@@ -140,6 +145,7 @@
     <disable_collisions link1="kinect_ir_link" link2="left_wall2" reason="Never" />
     <disable_collisions link1="kinect_ir_link" link2="octomap_keepout" reason="Never" />
     <disable_collisions link1="kinect_ir_link" link2="right_wall2" reason="Never" />
+    <disable_collisions link1="kinect_ir_link" link2="roof2" reason="Never" />
     <disable_collisions link1="kinect_ir_link" link2="shoulder_link" reason="Never" />
     <disable_collisions link1="kinect_ir_link" link2="table_base2" reason="Never" />
     <disable_collisions link1="kinect_ir_link" link2="upper_arm_link" reason="Never" />
@@ -151,6 +157,7 @@
     <disable_collisions link1="kinect_link" link2="left_wall2" reason="Never" />
     <disable_collisions link1="kinect_link" link2="octomap_keepout" reason="Never" />
     <disable_collisions link1="kinect_link" link2="right_wall2" reason="Never" />
+    <disable_collisions link1="kinect_link" link2="roof2" reason="Default" />
     <disable_collisions link1="kinect_link" link2="shoulder_link" reason="Never" />
     <disable_collisions link1="kinect_link" link2="table_base2" reason="Never" />
     <disable_collisions link1="kinect_link" link2="upper_arm_link" reason="Never" />
@@ -161,6 +168,7 @@
     <disable_collisions link1="kinect_rgb_link" link2="left_wall2" reason="Never" />
     <disable_collisions link1="kinect_rgb_link" link2="octomap_keepout" reason="Never" />
     <disable_collisions link1="kinect_rgb_link" link2="right_wall2" reason="Never" />
+    <disable_collisions link1="kinect_rgb_link" link2="roof2" reason="Never" />
     <disable_collisions link1="kinect_rgb_link" link2="shoulder_link" reason="Never" />
     <disable_collisions link1="kinect_rgb_link" link2="table_base2" reason="Never" />
     <disable_collisions link1="kinect_rgb_link" link2="upper_arm_link" reason="Never" />
@@ -170,6 +178,7 @@
     <disable_collisions link1="kinect_rgb_link" link2="wrist_3_link" reason="Never" />
     <disable_collisions link1="left_wall2" link2="octomap_keepout" reason="Adjacent" />
     <disable_collisions link1="left_wall2" link2="right_wall2" reason="Adjacent" />
+    <disable_collisions link1="left_wall2" link2="roof2" reason="Adjacent" />
     <disable_collisions link1="left_wall2" link2="shoulder_link" reason="Never" />
     <disable_collisions link1="left_wall2" link2="table_base2" reason="Adjacent" />
     <disable_collisions link1="left_wall2" link2="upper_arm_link" reason="Never" />
@@ -178,10 +187,12 @@
     <disable_collisions link1="left_wall2" link2="wrist_2_link" reason="Never" />
     <disable_collisions link1="left_wall2" link2="wrist_3_link" reason="Never" />
     <disable_collisions link1="octomap_keepout" link2="right_wall2" reason="Adjacent" />
+    <disable_collisions link1="octomap_keepout" link2="roof2" reason="Adjacent" />
     <disable_collisions link1="octomap_keepout" link2="shoulder_link" reason="Default" />
     <disable_collisions link1="octomap_keepout" link2="table_base2" reason="Adjacent" />
     <disable_collisions link1="octomap_keepout" link2="upper_arm_link" reason="Default" />
     <disable_collisions link1="octomap_keepout" link2="ur5_stand" reason="Adjacent" />
+    <disable_collisions link1="right_wall2" link2="roof2" reason="Adjacent" />
     <disable_collisions link1="right_wall2" link2="shoulder_link" reason="Never" />
     <disable_collisions link1="right_wall2" link2="table_base2" reason="Adjacent" />
     <disable_collisions link1="right_wall2" link2="upper_arm_link" reason="Never" />
@@ -189,6 +200,10 @@
     <disable_collisions link1="right_wall2" link2="wrist_1_link" reason="Never" />
     <disable_collisions link1="right_wall2" link2="wrist_2_link" reason="Never" />
     <disable_collisions link1="right_wall2" link2="wrist_3_link" reason="Never" />
+    <disable_collisions link1="roof2" link2="shoulder_link" reason="Never" />
+    <disable_collisions link1="roof2" link2="table_base2" reason="Adjacent" />
+    <disable_collisions link1="roof2" link2="upper_arm_link" reason="Never" />
+    <disable_collisions link1="roof2" link2="ur5_stand" reason="Adjacent" />
     <disable_collisions link1="shoulder_link" link2="table_base2" reason="Never" />
     <disable_collisions link1="shoulder_link" link2="upper_arm_link" reason="Adjacent" />
     <disable_collisions link1="shoulder_link" link2="ur5_stand" reason="Never" />
