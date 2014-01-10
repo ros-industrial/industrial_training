@@ -263,9 +263,23 @@
       <material name="blue_transparent"/>
     </collision>
   </link>
+  <link name="roof2">
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 1"/>
+      <geometry>
+        <box size="1.3875 2.22 0.04"/>
+      </geometry>
+      <material name="blue_transparent"/>
+    </collision>
+  </link>
   <joint name="workcell_to_table_base2" type="fixed">
     <parent link="world_frame"/>
     <child link="table_base2"/>
+    <origin rpy="0 0 0" xyz="-0.69375 0 0"/>
+  </joint>
+  <joint name="workcell_to_roof2" type="fixed">
+    <parent link="world_frame"/>
+    <child link="roof2"/>
     <origin rpy="0 0 0" xyz="-0.69375 0 0"/>
   </joint>
   <link name="front_wall2">
