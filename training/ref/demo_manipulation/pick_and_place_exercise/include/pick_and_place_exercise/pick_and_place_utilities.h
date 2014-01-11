@@ -10,6 +10,7 @@
 
 #include <geometry_msgs/Pose.h>
 #include <tf/transform_datatypes.h>
+#include <moveit_msgs/AttachedCollisionObject.h>
 
 std::vector<geometry_msgs::Pose> create_manipulation_poses(double retreat_dis,
 		double approach_dis,const tf::Transform &target_tf);
@@ -26,6 +27,8 @@ class pick_and_place_config
 public:
   std::string ARM_GROUP_NAME;  // MoveIt Planning Group associated with the robot arm
   std::string GRASP_ACTION_NAME;  // Action name used to control suction gripper
+  std::string ATTACHED_OBJECT_TOPIC; // Topic for publishing objects that attach to gripper
+  std::string ATTACHED_OBJECT_ID; // id for attached object
   std::string TCP_LINK_NAME;   // Link / frame name for the suction gripper tool-tip
   std::string WRIST_LINK_NAME; // Link / frame name for the robot wrist tool-flange
   std::string WORLD_FRAME_ID;  // Frame name for the fixed world reference frame
@@ -37,11 +40,14 @@ public:
   tf::Transform BOX_PLACE_TF;  // Transform from the WORLD frame to the PLACE location
   double RETREAT_DISTANCE;     // Distance to back away from pick/place pose after grasp/release
   double APPROACH_DISTANCE;    // Distance to stand off from pick/place pose before grasp/release
+  moveit_msgs::AttachedCollisionObject ATTACHED_COLLISION_OBJECT; // object attached to the robot gripper
 
   pick_and_place_config()
   {
     ARM_GROUP_NAME  = "manipulator";
     TCP_LINK_NAME   = "tcp_frame";
+    ATTACHED_OBJECT_TOPIC = "attached_collision_object";
+    ATTACHED_OBJECT_ID = "attached_object";
     WRIST_LINK_NAME = "ee_link";
     WORLD_FRAME_ID  = "world_frame";
     HOME_POSE_NAME  = "home";
