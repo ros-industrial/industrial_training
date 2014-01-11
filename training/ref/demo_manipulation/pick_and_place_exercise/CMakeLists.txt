@@ -37,5 +37,7 @@ rosbuild_add_executable(pick_and_place_node src/nodes/pick_and_place_node.cpp
 	src/tasks/move_through_pick_poses.cpp
 	src/tasks/create_place_moves.cpp
 	src/tasks/move_through_place_poses.cpp
+	src/tasks/pickup_box.cpp
+	src/tasks/place_box.cpp
 	src/utilities/pick_and_place_utilities.cpp)
 
