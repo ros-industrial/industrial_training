@@ -87,6 +87,36 @@ bool pick_and_place_config::init()
   {
     BOX_SIZE = Vector3(l,w,h);
     BOX_PLACE_TF.setOrigin(Vector3(x,y,z));
+
+    // building geometric primitive for attached object
+    shape_msgs::SolidPrimitive shape;
+    shape.type = shape_msgs::SolidPrimitive::BOX;
+    shape.dimensions.resize(3);
+    shape.dimensions[0] = BOX_SIZE.getX();
+    shape.dimensions[1] = BOX_SIZE.getY();
+    shape.dimensions[2] = BOX_SIZE.getZ();
+
+    // creating pose of object relative to tcp
+    geometry_msgs::Pose pose;
+    pose.position.x = 0;
+    pose.position.y = 0;
+    pose.position.z = 0.5f* BOX_SIZE.getZ();
+    pose.orientation.x = pose.orientation.y = pose.orientation.z = 0;
+    pose.orientation.w = 1;
+
+    // creating underlying collision object
+    moveit_msgs::CollisionObject cobj;
+    cobj.primitives.clear(); cobj.primitives.push_back(shape);
+    cobj.primitive_poses.clear(); cobj.primitive_poses.push_back(pose);
+    cobj.header.frame_id = WORLD_FRAME_ID;
+    cobj.id = ATTACHED_OBJECT_ID;
+
+    // creating attached collision object message
+    ATTACHED_COLLISION_OBJECT.link_name = TCP_LINK_NAME;
+    ATTACHED_COLLISION_OBJECT.object = cobj;
+    ATTACHED_COLLISION_OBJECT.object.header.frame_id = TCP_LINK_NAME;
+
+
     return true;
   }
   else
