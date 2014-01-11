@@ -48,6 +48,10 @@ int main(int argc,char** argv)
   // grasp action client initialization
   GraspActionClient grasp_action_client(cfg.GRASP_ACTION_NAME,true);
 
+  // attached object publisher
+  ros::Publisher attach_object_publisher =
+		  nh.advertise<moveit_msgs::AttachedCollisionObject>(cfg.ATTACHED_OBJECT_TOPIC,1);
+
   // waiting to establish connections
   while(ros::ok() &&
       !grasp_action_client.waitForServer(ros::Duration(2.0f)))
@@ -73,13 +77,13 @@ int main(int argc,char** argv)
   pick_poses = create_pick_moves(tf_listener, box_pose);
 
   // plan/execute the sequence of "pick" moves
-  move_through_pick_poses(move_group,grasp_action_client,pick_poses);
+  pickup_box(move_group,attach_object_publisher,grasp_action_client,pick_poses);
 
   // build a sequence of poses to "Place" the box
   place_poses = create_place_moves(tf_listener);
 
   // plan/execute the "place" moves
-  move_through_place_poses(move_group,grasp_action_client,place_poses);
+  place_box(move_group,attach_object_publisher,grasp_action_client,place_poses);
 
   // move back to the "clear" position
   move_to_wait_position(move_group);
