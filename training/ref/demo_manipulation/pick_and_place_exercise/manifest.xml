@@ -19,6 +19,9 @@
   <depend package="actionlib"/>
   <depend package="industrial_robot_client" />
   <depend package="industrial_robot_simulator" />
+  <depend package="pcl_ros"/>
+  <depend package="pcl_msgs"/>
+  <depend package="pcl"/>
 </package>
 
 
