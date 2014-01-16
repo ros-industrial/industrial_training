@@ -27,6 +27,7 @@ std::vector<geometry_msgs::Pose> create_pick_moves(tf::TransformListener &tf_lis
 
   // task variables
   tf::Transform world_to_tcp_tf;
+  tf::Transform world_to_box_tf;
   tf::StampedTransform tcp_to_wrist_tf;
   std::vector<geometry_msgs::Pose> tcp_pick_poses, wrist_pick_poses;
 
@@ -34,9 +35,10 @@ std::vector<geometry_msgs::Pose> create_pick_moves(tf::TransformListener &tf_lis
   //   - we manually specify the box-height, as this is difficult to determine from the AR tag
   //   - the orientation is set to point the end-effector "down" towards the box
   /* Fill Code: [ use the 'setOrigin' to set the position of 'world_to_tcp_tf'] */
-  tf::Vector3 box_position(box_pose.position.x, box_pose.position.y, cfg.BOX_SIZE.getZ());
+  tf::poseMsgToTF(box_pose,world_to_box_tf);
+  tf::Vector3 box_position(box_pose.position.x, box_pose.position.y, box_pose.position.z);
   world_to_tcp_tf.setOrigin(box_position);
-  world_to_tcp_tf.setRotation(tf::Quaternion(M_PI, 0, M_PI/2.0f));
+  world_to_tcp_tf.setRotation(world_to_box_tf.getRotation()* tf::Quaternion(M_PI, 0, M_PI/2.0f));
 
   // create pick poses for tcp
   tcp_pick_poses = create_manipulation_poses(cfg.RETREAT_DISTANCE, cfg.APPROACH_DISTANCE, world_to_tcp_tf);
