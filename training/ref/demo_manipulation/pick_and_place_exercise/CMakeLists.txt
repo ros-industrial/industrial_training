@@ -29,7 +29,8 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 #rosbuild_add_executable(example examples/example.cpp)
 #target_link_libraries(example ${PROJECT_NAME})
 
-rosbuild_add_executable(pick_and_place_node src/nodes/pick_and_place_node.cpp
+rosbuild_add_executable(pick_and_place_node 
+	src/nodes/pick_and_place_node.cpp
 	src/tasks/move_to_wait_position.cpp
 	src/tasks/set_gripper.cpp
 	src/tasks/set_object_in_world.cpp
@@ -42,4 +43,6 @@ rosbuild_add_executable(pick_and_place_node src/nodes/pick_and_place_node.cpp
 	src/tasks/pickup_box.cpp
 	src/tasks/place_box.cpp
 	src/utilities/pick_and_place_utilities.cpp)
+	
+rosbuild_add_executable(target_recognition_node src/nodes/target_recognition_node.cpp)
 
