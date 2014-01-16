@@ -9,6 +9,9 @@
 #include <pick_and_place_exercise/pick_and_place.h>
 
 pick_and_place_config cfg;  // global var
+ros::Publisher marker_publisher; // publishes scene objects
+ros::Publisher collision_object_publisher;
+ros::Publisher attach_object_publisher; // publishes objects for use in path planning
 
 // =============================== Main Thread ===============================
 int main(int argc,char** argv)
@@ -42,6 +45,9 @@ int main(int argc,char** argv)
     return 0;
   }
 
+  // initializing marker publisher
+  marker_publisher = nh.advertise<visualization_msgs::Marker>(cfg.MARKER_TOPIC,1);
+
   // moveit interface initialization
   move_group_interface::MoveGroup move_group(cfg.ARM_GROUP_NAME);
 
@@ -49,7 +55,7 @@ int main(int argc,char** argv)
   GraspActionClient grasp_action_client(cfg.GRASP_ACTION_NAME,true);
 
   // attached object publisher
-  ros::Publisher attach_object_publisher =
+  attach_object_publisher =
 		  nh.advertise<moveit_msgs::AttachedCollisionObject>(cfg.ATTACHED_OBJECT_TOPIC,1);
 
   // waiting to establish connections
@@ -77,7 +83,7 @@ int main(int argc,char** argv)
   pick_poses = create_pick_moves(tf_listener, box_pose);
 
   // plan/execute the sequence of "pick" moves
-  pickup_box(move_group,attach_object_publisher,grasp_action_client,pick_poses);
+  pickup_box(move_group,attach_object_publisher,grasp_action_client,pick_poses,box_pose);
 
   // build a sequence of poses to "Place" the box
   place_poses = create_place_moves(tf_listener);
