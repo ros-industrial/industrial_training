@@ -11,6 +11,8 @@
 #include <geometry_msgs/Pose.h>
 #include <tf/transform_datatypes.h>
 #include <moveit_msgs/AttachedCollisionObject.h>
+#include <moveit_msgs/Constraints.h>
+#include <visualization_msgs/Marker.h>
 
 std::vector<geometry_msgs::Pose> create_manipulation_poses(double retreat_dis,
 		double approach_dis,const tf::Transform &target_tf);
@@ -21,6 +23,9 @@ std::vector<geometry_msgs::Pose> transform_from_tcp_to_wrist(tf::Transform tcp_t
 std::ostream& operator<<(std::ostream& os, const tf::Vector3 vec);
 std::ostream& operator<<(std::ostream& os, const geometry_msgs::Point pt);
 
+moveit_msgs::Constraints create_path_orientation_constraints(const geometry_msgs::Pose &goal_pose,
+		float x_tolerance,float y_tolerance,float z_tolerance,std::string link_name);
+
 // =============================== Config Parameters ===============================
 class pick_and_place_config
 {
@@ -28,6 +33,9 @@ public:
   std::string ARM_GROUP_NAME;  // MoveIt Planning Group associated with the robot arm
   std::string GRASP_ACTION_NAME;  // Action name used to control suction gripper
   std::string ATTACHED_OBJECT_TOPIC; // Topic for publishing objects that attach to gripper
+  std::string COLLISION_OBJECT_TOPIC; // Topic for publishing collision objects to the world.
+  std::string MARKER_TOPIC; // Topic for publishing visualization of attached object.
+  std::string POINT_CLOUD_TOPIC; // Topic containing the 3d sensor data
   std::string ATTACHED_OBJECT_ID; // id for attached object
   std::string TCP_LINK_NAME;   // Link / frame name for the suction gripper tool-tip
   std::string WRIST_LINK_NAME; // Link / frame name for the robot wrist tool-flange
@@ -40,13 +48,16 @@ public:
   tf::Transform BOX_PLACE_TF;  // Transform from the WORLD frame to the PLACE location
   double RETREAT_DISTANCE;     // Distance to back away from pick/place pose after grasp/release
   double APPROACH_DISTANCE;    // Distance to stand off from pick/place pose before grasp/release
-  moveit_msgs::AttachedCollisionObject ATTACHED_COLLISION_OBJECT; // object attached to the robot gripper
+  moveit_msgs::AttachedCollisionObject ATTACHED_COLLISION_OBJECT; // target object
+  visualization_msgs::Marker MARKER_MESSAGE; // visual representation of target object
 
   pick_and_place_config()
   {
     ARM_GROUP_NAME  = "manipulator";
     TCP_LINK_NAME   = "tcp_frame";
     ATTACHED_OBJECT_TOPIC = "attached_collision_object";
+    POINT_CLOUD_TOPIC = "/kinect/depth_registered/points";
+    MARKER_TOPIC = "pick_and_place_marker";
     ATTACHED_OBJECT_ID = "attached_object";
     WRIST_LINK_NAME = "ee_link";
     WORLD_FRAME_ID  = "world_frame";
