@@ -58,6 +58,9 @@ int main(int argc,char** argv)
   attach_object_publisher =
 		  nh.advertise<moveit_msgs::AttachedCollisionObject>(cfg.ATTACHED_OBJECT_TOPIC,1);
 
+  // collision object
+  collision_object_publisher = nh.advertise<moveit_msgs::CollisionObject>(cfg.COLLISION_OBJECT_TOPIC,1);
+
   // waiting to establish connections
   while(ros::ok() &&
       !grasp_action_client.waitForServer(ros::Duration(2.0f)))
@@ -69,6 +72,9 @@ int main(int argc,char** argv)
   /* ========================================*/
   /* Pick & Place Tasks                      */
   /* ========================================*/
+
+  // detaching/removing object
+  set_attached_object(false);
 
   // move to a "clear" position
   move_to_wait_position(move_group);
