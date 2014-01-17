@@ -227,6 +227,7 @@
       </material>
     </visual>
     <collision>
+      <!--<origin xyz="0 0 0.03"/>-->
       <geometry>
         <box size="0.044 0.088 0.0946"/>
       </geometry>
@@ -393,10 +394,18 @@
       <material name="blue_transparent"/>
     </collision>
   </link>
-  <link name="octomap_keepout">
+  <link name="base_padding">
     <collision>
       <geometry>
         <cylinder length="0.4" radius="0.14"/>
+      </geometry>
+      <material name="blue_transparent"/>
+    </collision>
+  </link>
+  <link name="wrist_3_padding">
+    <collision>
+      <geometry>
+        <cylinder length="0.12" radius="0.14"/>
       </geometry>
       <material name="blue_transparent"/>
     </collision>
@@ -501,9 +510,14 @@
     <child link="ur5_stand"/>
     <origin xyz="-0.238 0 0.1"/>
   </joint>
-  <joint name="world_to_octomap_keepout" type="fixed">
+  <joint name="wrist_3_link_to_wrist_3_padding" type="fixed">
+    <parent link="wrist_3_link"/>
+    <child link="wrist_3_padding"/>
+    <origin rpy="1.57 0 0" xyz="0 0.09 0"/>
+  </joint>
+  <joint name="world_to_base_padding" type="fixed">
     <parent link="world_frame"/>
-    <child link="octomap_keepout"/>
+    <child link="base_padding"/>
     <origin xyz="-0.238 0 0.2"/>
   </joint>
   <!-- end of arm-workcell link definitions -->

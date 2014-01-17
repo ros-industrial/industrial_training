@@ -35,10 +35,19 @@
 		</collision>
 	</link>
 
-	<link name="octomap_keepout">
+	<link name="base_padding">
 		<collision>
 			<geometry>
 				<cylinder radius="0.14" length="${robot_stand_height * 2}"/>
+			</geometry>
+			<material name="blue_transparent"/>
+		</collision>
+	</link>
+
+	<link name="wrist_3_padding">
+		<collision>
+			<geometry>
+				<cylinder radius="0.14" length="0.12"/>
 			</geometry>
 			<material name="blue_transparent"/>
 		</collision>
@@ -56,9 +65,15 @@
 		<origin xyz="-0.238 0 ${robot_stand_height * 0.5}"/>
 	</joint>
 
-	<joint name="world_to_octomap_keepout" type="fixed">
+	<joint name="wrist_3_link_to_wrist_3_padding" type="fixed">
+		<parent link="wrist_3_link"/>
+		<child link="wrist_3_padding"/>
+		<origin xyz="0 0.09 0" rpy="1.57 0 0"/>
+	</joint>
+
+	<joint name="world_to_base_padding" type="fixed">
 		<parent link="world_frame"/>
-		<child link="octomap_keepout"/>
+		<child link="base_padding"/>
 		<origin xyz="-0.238 0 ${robot_stand_height}"/>
 	</joint>
 
