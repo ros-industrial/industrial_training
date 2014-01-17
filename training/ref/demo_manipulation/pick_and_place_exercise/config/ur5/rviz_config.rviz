@@ -13,7 +13,6 @@ Panels:
         - /RobotModel1/Links1
         - /PointCloud21
         - /Marker1
-        - /Marker1/Status1
         - /Marker1/Namespaces1
         - /PointCloud22
       Splitter Ratio: 0.587444
@@ -36,7 +35,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: ""
+    SyncSource: PointCloud2
 Visualization Manager:
   Class: ""
   Displays:
@@ -87,6 +86,11 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
+        base_padding:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: false
         cover_part1:
           Alpha: 1
           Show Axes: false
@@ -157,11 +161,6 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: false
-        octomap_keepout:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
         right_wall2:
           Alpha: 1
           Show Axes: false
@@ -215,6 +214,11 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
+        wrist_3_padding:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
       Name: RobotModel
       Robot Description: robot_description
       TF Prefix: ""
@@ -254,14 +258,14 @@ Visualization Manager:
       Marker Topic: /pick_and_place_marker
       Name: Marker
       Namespaces:
-        : true
+        {}
       Queue Size: 1
       Value: true
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 0.404373
-        Min Value: 0.0079999
+        Max Value: 0.415939
+        Min Value: 0.0250037
         Value: true
       Axis: Z
       Channel Name: x
@@ -308,17 +312,17 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 2.69765
+      Distance: 0.853748
       Focal Point:
-        X: -0.440323
-        Y: 0.302664
-        Z: 0.301166
+        X: -0.542203
+        Y: 0.217672
+        Z: 0.431097
       Name: Current View
       Near Clip Distance: 0.01
-      Pitch: 0.509799
+      Pitch: 0.464798
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 2.29356
+      Yaw: 1.95355
     Saved: ~
 Window Geometry:
   Displays:
@@ -336,5 +340,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1209
-  X: 59
-  Y: 37
+  X: 56
+  Y: 64
