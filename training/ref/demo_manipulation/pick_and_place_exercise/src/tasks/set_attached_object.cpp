@@ -32,15 +32,21 @@ void set_attached_object(bool attach, const geometry_msgs::Pose &pose)
 
 		cfg.ATTACHED_COLLISION_OBJECT.object.primitive_poses[0].orientation = q;
 		cfg.MARKER_MESSAGE.pose.orientation = q;
+
+		marker_publisher.publish(cfg.MARKER_MESSAGE);
+		attach_object_publisher.publish(cfg.ATTACHED_COLLISION_OBJECT);
 	}
 	else
 	{
 		cfg.ATTACHED_COLLISION_OBJECT.object.operation = moveit_msgs::CollisionObject::REMOVE;
 		cfg.MARKER_MESSAGE.action = visualization_msgs::Marker::DELETE;
+
+		marker_publisher.publish(cfg.MARKER_MESSAGE);
+		collision_object_publisher.publish(cfg.ATTACHED_COLLISION_OBJECT.object);// removing from world
+		attach_object_publisher.publish(cfg.ATTACHED_COLLISION_OBJECT);
 	}
 
-	marker_publisher.publish(cfg.MARKER_MESSAGE);
-	attach_object_publisher.publish(cfg.ATTACHED_COLLISION_OBJECT);
+
 
 }
 
