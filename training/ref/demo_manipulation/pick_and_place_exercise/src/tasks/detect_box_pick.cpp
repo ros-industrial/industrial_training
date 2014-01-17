@@ -35,13 +35,13 @@ geometry_msgs::Pose detect_box_pick(tf::TransformListener &tf_listener)
 
   // use transform listener to find the box's pick pose (relative to world frame)
   /* Fill Code: [ use the 'lookupTransform' method in the transform listener] */
-  tf_listener.lookupTransform(cfg.WORLD_FRAME_ID,cfg.TAG_FRAME_ID,ros::Time(0.0f),world_to_box_pick_tf);
+  tf_listener.lookupTransform(cfg.WORLD_FRAME_ID,cfg.BOX_PICK_FRAME_ID,ros::Time(0.0f),world_to_box_pick_tf);
 
   // save pose in 'box_pose'
   /* Fill Code: [ use the 'tf::poseTFToMsg' to convert a TF transform into a pose message] */
   tf::poseTFToMsg(world_to_box_pick_tf,box_pose);
 
-  // detecting height
+/*  // detecting height
   pcl::PointCloud<pcl::PointXYZ>::Ptr raw_cloud(new pcl::PointCloud<pcl::PointXYZ>);
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
   sensor_msgs::PointCloud2ConstPtr sensor_cloud =
@@ -89,7 +89,7 @@ geometry_msgs::Pose detect_box_pick(tf::TransformListener &tf_listener)
 	  box_pose.position.z = centroid[2];
   }
 
-  set_object_in_world(true,box_pose);
+  set_object_in_world(true,box_pose);*/
 
   return box_pose;
 }
