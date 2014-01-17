@@ -100,7 +100,7 @@ bool pick_and_place_config::init()
       && nh.getParam("world_frame_id",WORLD_FRAME_ID)
       && nh.getParam("home_pose_name",HOME_POSE_NAME)
       && nh.getParam("wait_pose_name",WAIT_POSE_NAME)
-      && nh.getParam("tag_frame_id",TAG_FRAME_ID)
+      && nh.getParam("box_pick_frame_id",BOX_PICK_FRAME_ID)
       && nh.getParam("box_width",w)
       && nh.getParam("box_length",l)
       && nh.getParam("box_height",h)
@@ -117,9 +117,9 @@ bool pick_and_place_config::init()
     shape_msgs::SolidPrimitive shape;
     shape.type = shape_msgs::SolidPrimitive::BOX;
     shape.dimensions.resize(3);
-    shape.dimensions[0] = BOX_SIZE.getX()*1.1f;
-    shape.dimensions[1] = BOX_SIZE.getY()*1.1f;
-    shape.dimensions[2] = BOX_SIZE.getZ()*1.5f;
+    shape.dimensions[0] = BOX_SIZE.getX();
+    shape.dimensions[1] = BOX_SIZE.getY();
+    shape.dimensions[2] = BOX_SIZE.getZ();
 
     // creating pose of object relative to tcp
     geometry_msgs::Pose pose;
