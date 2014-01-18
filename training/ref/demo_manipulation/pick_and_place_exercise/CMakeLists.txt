@@ -19,7 +19,7 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 #uncomment if you have defined messages
 #rosbuild_genmsg()
 #uncomment if you have defined services
-#rosbuild_gensrv()
+rosbuild_gensrv()
 
 #common commands for building c++ executables and libraries
 #rosbuild_add_library(${PROJECT_NAME} src/example.cpp)
@@ -44,5 +44,5 @@ rosbuild_add_executable(pick_and_place_node
 	src/tasks/place_box.cpp
 	src/utilities/pick_and_place_utilities.cpp)
 	
-rosbuild_add_executable(target_recognition_node src/nodes/target_recognition_node.cpp)
+rosbuild_add_executable(target_recognition_service src/services/target_recognition_service.cpp)
 
