@@ -1,5 +1,5 @@
 world_frame_id: world_frame
-box_pick_frame_id: box_pick_frame
+ar_frame_id: ar_tag
 arm_group_name: manipulator
 tcp_link_name: tcp_frame
 wrist_link_name: ee_link
