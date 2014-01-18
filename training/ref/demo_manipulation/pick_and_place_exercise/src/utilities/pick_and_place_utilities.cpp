@@ -100,7 +100,7 @@ bool pick_and_place_config::init()
       && nh.getParam("world_frame_id",WORLD_FRAME_ID)
       && nh.getParam("home_pose_name",HOME_POSE_NAME)
       && nh.getParam("wait_pose_name",WAIT_POSE_NAME)
-      && nh.getParam("box_pick_frame_id",BOX_PICK_FRAME_ID)
+      && nh.getParam("ar_frame_id",AR_TAG_FRAME_ID)
       && nh.getParam("box_width",w)
       && nh.getParam("box_length",l)
       && nh.getParam("box_height",h)
@@ -137,10 +137,10 @@ bool pick_and_place_config::init()
     cobj.id = ATTACHED_OBJECT_ID;
 
     // creating attached collision object message
-    ATTACHED_COLLISION_OBJECT.link_name = TCP_LINK_NAME;
+    ATTACHED_COLLISION_OBJECT.link_name = WRIST_LINK_NAME;
     ATTACHED_COLLISION_OBJECT.object = cobj;
     ATTACHED_COLLISION_OBJECT.object.header.frame_id = TCP_LINK_NAME;
-    ATTACHED_COLLISION_OBJECT.touch_links.push_back("gripper_body");
+    //ATTACHED_COLLISION_OBJECT.touch_links.push_back("gripper_body");
 
     // creating visual object
     MARKER_MESSAGE.header.frame_id = TCP_LINK_NAME;
