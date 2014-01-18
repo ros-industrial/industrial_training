@@ -2,9 +2,9 @@
 <launch>
 
   <!-- target recognition node -->
-  <remap from="sensor_cloud" to="/kinect/depth_registered/points"/>
-  <node pkg="pick_and_place_exercise" type="target_recognition_node" name="target_recognition_node" output="log">
-    <rosparam command="load" file="$(find pick_and_place_exercise)/config/ur5/target_recognition_parameters.yaml"/>
+  <!--<remap from="sensor_cloud" to="/kinect/depth_registered/points"/>-->
+  <node pkg="pick_and_place_exercise" type="target_recognition_service" name="target_recognition_service" output="log">
+	<rosparam command="load" file="$(find pick_and_place_exercise)/config/ur5/target_recognition_parameters.yaml"/>
   </node>
 
 </launch>
