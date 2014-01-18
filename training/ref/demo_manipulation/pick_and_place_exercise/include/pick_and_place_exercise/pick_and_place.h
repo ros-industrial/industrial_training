@@ -34,7 +34,7 @@ void set_attached_object(bool attach,const geometry_msgs::Pose &pose = geometry_
 
 void set_object_in_world(bool add,const geometry_msgs::Pose &pose= geometry_msgs::Pose());
 
-geometry_msgs::Pose detect_box_pick(tf::TransformListener &tf_listener);
+geometry_msgs::Pose detect_box_pick();
 
 std::vector<geometry_msgs::Pose> create_pick_moves(tf::TransformListener &tf_listener,
 		geometry_msgs::Pose &box_pose);
