@@ -50,6 +50,7 @@ int main(int argc,char** argv)
 
   // moveit interface initialization
   move_group_interface::MoveGroup move_group(cfg.ARM_GROUP_NAME);
+  move_group.setPlanningTime(10.0f);
 
   // grasp action client initialization
   GraspActionClient grasp_action_client(cfg.GRASP_ACTION_NAME,true);
@@ -73,6 +74,10 @@ int main(int argc,char** argv)
   /* Pick & Place Tasks                      */
   /* ========================================*/
 
+
+  // updates the obstacle map
+  detect_box_pick();
+
   // detaching/removing object
   set_attached_object(false);
 
@@ -83,7 +88,7 @@ int main(int argc,char** argv)
   set_gripper(grasp_action_client, false);
 
   // get the box position from perception node
-  box_pose = detect_box_pick(tf_listener);
+  box_pose = detect_box_pick();
 
   // build a sequence of poses to "Pick" the box
   pick_poses = create_pick_moves(tf_listener, box_pose);
