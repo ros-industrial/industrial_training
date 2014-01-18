@@ -13,6 +13,7 @@
 #include <moveit_msgs/AttachedCollisionObject.h>
 #include <moveit_msgs/Constraints.h>
 #include <visualization_msgs/Marker.h>
+#include <pick_and_place_exercise/GetTargetPose.h>
 
 std::vector<geometry_msgs::Pose> create_manipulation_poses(double retreat_dis,
 		double approach_dis,const tf::Transform &target_tf);
@@ -35,12 +36,13 @@ public:
   std::string ATTACHED_OBJECT_TOPIC; // Topic for publishing objects that attach to gripper
   std::string COLLISION_OBJECT_TOPIC; // Topic for publishing collision objects to the world.
   std::string MARKER_TOPIC; // Topic for publishing visualization of attached object.
-  std::string POINT_CLOUD_TOPIC; // Topic containing the 3d sensor data
+  std::string TARGET_RECOGNITION_SERVICE; // service for requesting box pick pose
+  std::string SENSOR_DATA_TOPIC; // Topic containing the 3d sensor data
   std::string ATTACHED_OBJECT_ID; // id for attached object
   std::string TCP_LINK_NAME;   // Link / frame name for the suction gripper tool-tip
   std::string WRIST_LINK_NAME; // Link / frame name for the robot wrist tool-flange
   std::string WORLD_FRAME_ID;  // Frame name for the fixed world reference frame
-  std::string BOX_PICK_FRAME_ID;    // Frame name for the "AR Tag" mounted to the target box
+  std::string AR_TAG_FRAME_ID;    // Frame name for the "AR Tag" mounted to the target box
   std::string HOME_POSE_NAME;  // Named pose for robot Home position (set in SRDF)
   std::string WAIT_POSE_NAME;  // Named pose for robot WAIT position (set in SRDF)
   tf::Vector3 BOX_SIZE;        // Size of the target box
@@ -57,14 +59,14 @@ public:
     TCP_LINK_NAME   = "tcp_frame";
     ATTACHED_OBJECT_TOPIC = "attached_collision_object";
     COLLISION_OBJECT_TOPIC = "collision_object";
-    POINT_CLOUD_TOPIC = "/kinect/depth_registered/points";
     MARKER_TOPIC = "pick_and_place_marker";
+    TARGET_RECOGNITION_SERVICE = "target_recognition";
     ATTACHED_OBJECT_ID = "attached_object";
     WRIST_LINK_NAME = "ee_link";
     WORLD_FRAME_ID  = "world_frame";
     HOME_POSE_NAME  = "home";
     WAIT_POSE_NAME  = "wait";
-    BOX_PICK_FRAME_ID    = "box_pick_frame";
+    AR_TAG_FRAME_ID    = "ar_frame";
     GRASP_ACTION_NAME = "grasp_execution_action";
     BOX_SIZE        = tf::Vector3(0.1f, 0.1f, 0.1f);
     BOX_PICK_TF     = tf::Transform(tf::Quaternion::getIdentity(), tf::Vector3(-0.8f,0.2f,BOX_SIZE.getZ()));
