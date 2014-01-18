@@ -25,71 +25,44 @@
     - lookupTransform can also look "in the past".  Use Time=0 to get the most-recent transform.
     - tf::poseTFToMsg allows converting transforms into Pose messages
 */
-geometry_msgs::Pose detect_box_pick(tf::TransformListener &tf_listener)
+geometry_msgs::Pose detect_box_pick()
 {
   //ROS_ERROR_STREAM("detect_box_pick is not implemented yet.  Aborting."); exit(1);
 
-  // task variables
-  tf::StampedTransform world_to_box_pick_tf;
-  geometry_msgs::Pose box_pose;
+  // creating request object
+  pick_and_place_exercise::GetTargetPose srv;
+  srv.request.shape = cfg.ATTACHED_COLLISION_OBJECT.object.primitives[0];
+  srv.request.world_frame_id = cfg.WORLD_FRAME_ID;
+  srv.request.ar_tag_frame_id = cfg.AR_TAG_FRAME_ID;
 
-  // use transform listener to find the box's pick pose (relative to world frame)
-  /* Fill Code: [ use the 'lookupTransform' method in the transform listener] */
-  tf_listener.lookupTransform(cfg.WORLD_FRAME_ID,cfg.BOX_PICK_FRAME_ID,ros::Time(0.0f),world_to_box_pick_tf);
-
-  // save pose in 'box_pose'
-  /* Fill Code: [ use the 'tf::poseTFToMsg' to convert a TF transform into a pose message] */
-  tf::poseTFToMsg(world_to_box_pick_tf,box_pose);
-
-/*  // detecting height
-  pcl::PointCloud<pcl::PointXYZ>::Ptr raw_cloud(new pcl::PointCloud<pcl::PointXYZ>);
-  pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
-  sensor_msgs::PointCloud2ConstPtr sensor_cloud =
-		  ros::topic::waitForMessage<sensor_msgs::PointCloud2>(cfg.POINT_CLOUD_TOPIC,ros::Duration(2.0f));
-
-  if(sensor_cloud == sensor_msgs::PointCloud2ConstPtr())
+  if(!ros::service::waitForService(cfg.TARGET_RECOGNITION_SERVICE,10000))
   {
-	  // no point cloud message received, defaulting to box height
-	  box_pose.position.z = cfg.BOX_SIZE.getZ();
-	  ROS_INFO_STREAM("No point cloud message received, using box height "<<cfg.BOX_SIZE.getZ());
+	  ROS_ERROR_STREAM("Service wait timeout on service '"<<cfg.TARGET_RECOGNITION_SERVICE<<"'");
+  }
+
+  // calling service
+  geometry_msgs::Pose box_pose;
+  if(ros::service::call(cfg.TARGET_RECOGNITION_SERVICE,srv))
+  {
+	  if(srv.response.succeeded)
+	  {
+		  box_pose = srv.response.target_pose;
+	  }
+	  else
+	  {
+		  ROS_ERROR_STREAM("target recognition failed, exiting");
+		  exit(0);
+	  }
   }
   else
   {
-	  ROS_INFO_STREAM("point cloud message received, estimating surface");
-
-	  // converting message to point cloud type
-	  pcl::fromROSMsg<pcl::PointXYZ>(*sensor_cloud,*raw_cloud);
-
-	  // applying transform
-	  pcl_ros::transformPointCloud<pcl::PointXYZ>(cfg.WORLD_FRAME_ID,
-			  *raw_cloud,*cloud,tf_listener);
-
-	  // applying filter in x axis
-	  float min = box_pose.position.x - 0.2*cfg.BOX_SIZE.x();
-	  float max = box_pose.position.x + 0.2*cfg.BOX_SIZE.x();
-	  pcl::PassThrough<pcl::PointXYZ> filter;
-	  filter.setInputCloud(cloud);
-	  filter.setFilterFieldName("x");
-	  filter.setFilterLimits(min,max);
-	  filter.filter(*cloud);
-
-	  // applying filter in y axis
-	  min = box_pose.position.y - 0.2*cfg.BOX_SIZE.y();
-	  max = box_pose.position.y + 0.2*cfg.BOX_SIZE.y();
-	  filter.setInputCloud(cloud);
-	  filter.setFilterFieldName("y");
-	  filter.setFilterLimits(min,max);
-	  filter.filter(*cloud);
-
-	  // computing centroid
-	  Eigen::Vector4f centroid;
-	  pcl::compute3DCentroid(*cloud,centroid);
-
-	  // setting z value
-	  box_pose.position.z = centroid[2];
+	  ROS_ERROR_STREAM("Service call for target recognition failed with response '"<<
+			  (srv.response.succeeded ?"SUCCESS":"FAILURE")
+					  <<"', exiting");
+	  exit(0);
   }
 
-  set_object_in_world(true,box_pose);*/
+  ros::Duration(1).sleep();
 
   return box_pose;
 }
