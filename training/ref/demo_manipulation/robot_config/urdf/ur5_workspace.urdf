@@ -302,6 +302,25 @@
     <child link="front_wall2"/>
     <origin rpy="0 0 0" xyz="-1.3375 0 0.5"/>
   </joint>
+  <link name="back_wall2">
+    <visual>
+      <geometry>
+        <box size="0.04 2.0 1"/>
+      </geometry>
+      <material name="gray_transparent"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.04 2.0 1"/>
+      </geometry>
+      <material name="blue_transparent"/>
+    </collision>
+  </link>
+  <joint name="world_frame_to_back_wall2" type="fixed">
+    <parent link="world_frame"/>
+    <child link="back_wall2"/>
+    <origin rpy="0 0 0" xyz="0.2 0 0.5"/>
+  </joint>
   <link name="left_wall2">
     <visual>
       <geometry>
@@ -405,7 +424,7 @@
   <link name="wrist_3_padding">
     <collision>
       <geometry>
-        <cylinder length="0.12" radius="0.14"/>
+        <cylinder length="0.12" radius="0.10"/>
       </geometry>
       <material name="blue_transparent"/>
     </collision>
