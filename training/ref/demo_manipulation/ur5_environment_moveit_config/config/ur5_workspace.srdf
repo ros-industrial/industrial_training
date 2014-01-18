@@ -52,6 +52,21 @@
     <!--VIRTUAL JOINT: Purpose: this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->
     <virtual_joint name="world_joint" type="fixed" parent_frame="base_link" child_link="world_frame" />
     <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
+    <disable_collisions link1="back_wall2" link2="base_link" reason="Never" />
+    <disable_collisions link1="back_wall2" link2="base_padding" reason="Adjacent" />
+    <disable_collisions link1="back_wall2" link2="cover_part1" reason="Adjacent" />
+    <disable_collisions link1="back_wall2" link2="cover_part2" reason="Adjacent" />
+    <disable_collisions link1="back_wall2" link2="front_wall2" reason="Adjacent" />
+    <disable_collisions link1="back_wall2" link2="kinect_frame" reason="Never" />
+    <disable_collisions link1="back_wall2" link2="kinect_ir_link" reason="Never" />
+    <disable_collisions link1="back_wall2" link2="kinect_link" reason="Never" />
+    <disable_collisions link1="back_wall2" link2="kinect_rgb_link" reason="Never" />
+    <disable_collisions link1="back_wall2" link2="left_wall2" reason="Adjacent" />
+    <disable_collisions link1="back_wall2" link2="right_wall2" reason="Adjacent" />
+    <disable_collisions link1="back_wall2" link2="roof2" reason="Adjacent" />
+    <disable_collisions link1="back_wall2" link2="shoulder_link" reason="Never" />
+    <disable_collisions link1="back_wall2" link2="table_base2" reason="Adjacent" />
+    <disable_collisions link1="back_wall2" link2="ur5_stand" reason="Adjacent" />
     <disable_collisions link1="base_link" link2="base_padding" reason="Default" />
     <disable_collisions link1="base_link" link2="cover_part1" reason="Never" />
     <disable_collisions link1="base_link" link2="cover_part2" reason="Never" />
@@ -177,6 +192,7 @@
     <disable_collisions link1="kinect_link" link2="wrist_1_link" reason="Never" />
     <disable_collisions link1="kinect_link" link2="wrist_2_link" reason="Never" />
     <disable_collisions link1="kinect_link" link2="wrist_3_link" reason="Never" />
+    <disable_collisions link1="kinect_link" link2="wrist_3_padding" reason="Never" />
     <disable_collisions link1="kinect_rgb_link" link2="left_wall2" reason="Never" />
     <disable_collisions link1="kinect_rgb_link" link2="right_wall2" reason="Never" />
     <disable_collisions link1="kinect_rgb_link" link2="roof2" reason="Never" />

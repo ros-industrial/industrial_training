@@ -23,13 +23,13 @@ planner_configs:
     type: geometric::PRMstar
 manipulator:
   planner_configs:
-    - RRTConnectkConfigDefault
     - SBLkConfigDefault
     - ESTkConfigDefault
     - LBKPIECEkConfigDefault
     - BKPIECEkConfigDefault
     - KPIECEkConfigDefault
     - RRTkConfigDefault
+    - RRTConnectkConfigDefault
     - RRTstarkConfigDefault
     - TRRTkConfigDefault
     - PRMkConfigDefault
