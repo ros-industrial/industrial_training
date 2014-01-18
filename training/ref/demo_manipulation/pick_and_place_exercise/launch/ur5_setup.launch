@@ -16,7 +16,6 @@
     
     <!-- static frame publisher for simulation -->
     <node pkg="tf" type="static_transform_publisher" name="world_to_tag" args="-0.8 0.2 0.17 0 0 0 world_frame ar_tag 1"/>
-    <node pkg="tf" type="static_transform_publisher" name="world_to_box_pick" args="-0.8 0.2 0.17 0 0 0 world_frame box_pick_frame 1"/>	
   </group>
 
   <!-- hardware-interface nodes -->
