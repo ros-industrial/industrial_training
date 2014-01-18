@@ -1,4 +1,1 @@
-world_frame_id: world_frame
-tag_frame_id: ar_tag
-box_width: 0.17
-box_length: 0.17
+sensor_topic: /kinect/depth_registered/points
