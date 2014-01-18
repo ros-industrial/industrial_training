@@ -22,28 +22,39 @@
 #include <boost/make_shared.hpp>
 #include <tf/transform_listener.h>
 #include <tf/transform_broadcaster.h>
+#include <pick_and_place_exercise/GetTargetPose.h>
 #include <math.h>
 
 // alias
 typedef pcl::PointCloud<pcl::PointXYZ> Cloud;
 
 // constants
-const std::string SENSOR_CLOUD_TOPIC = "sensor_cloud";
 const std::string FILTERED_CLOUD_TOPIC = "filtered_cloud";
+const std::string TARGET_RECOGNITION_SERVICE = "target_recognition";
 const std::string BOX_PICK_FRAME_ID = "box_pick_frame";
 const float BOX_PADDING_SCALE = 1.5f;
 
-// parameters
+// global variables
 std::string AR_TAG_FRAME_ID = "";
 std::string WORLD_FRAME_ID = "";
 double BOX_WIDTH;
 double BOX_LENGTH;
+sensor_msgs::PointCloud2 FILTERED_CLOUD_MSG;
+sensor_msgs::PointCloud2 SENSOR_CLOUD_MSG;
+
+// ros parameter
+std::string SENSOR_CLOUD_TOPIC = "sensor_cloud";
+
+// ros service server
+ros::ServiceServer target_detection_server;
 
 // ros publishers and subscribers
-ros::Publisher filtered_cloud_pubisher;
-ros::Subscriber sensor_cloud_subscriber;
+ros::Publisher filtered_cloud_publisher;
 
-void point_cloud_callback(sensor_msgs::PointCloud2ConstPtr msg);
+// function signatures
+bool target_recognition_callback(pick_and_place_exercise::GetTargetPose::Request& req,
+		pick_and_place_exercise::GetTargetPose::Response& res);
+bool grab_sensor_snapshot(sensor_msgs::PointCloud2& msg);
 bool get_ar_transform(tf::Transform& world_to_ar_tf);
 void filter_box(const tf::Transform& world_to_sensor_tf,
 		const tf::Transform& world_to_box_pick_tf,const Cloud &sensor_cloud,
@@ -51,36 +62,152 @@ void filter_box(const tf::Transform& world_to_sensor_tf,
 double detect_box_height(const Cloud& cloud,
 		const tf::Transform &world_to_ar_tf);
 
+// main program
 int main(int argc,char** argv)
 {
 	ros::init(argc,argv,"target_recognition_node");
-	ros::NodeHandle nh("~");
-	ros::NodeHandle ph; // public handle
+	ros::NodeHandle nh;
+	ros::NodeHandle ph("~");
 
-	// load parameters
-	if(nh.getParam("tag_frame_id",AR_TAG_FRAME_ID) &&
-			nh.getParam("world_frame_id",WORLD_FRAME_ID) &&
-			nh.getParam("box_width",BOX_WIDTH) &&
-			nh.getParam("box_length",BOX_LENGTH))
+
+	// read parameters
+	if(ph.getParam("sensor_topic",SENSOR_CLOUD_TOPIC))
 	{
-		ROS_INFO_STREAM("Parameters loaded");
+		ROS_INFO_STREAM("target recognition read parameters successfully");
 	}
 	else
 	{
-		ROS_ERROR_STREAM("Parameters not found, exiting");
-		return 0;
+		ROS_ERROR_STREAM("target recognition did not find parameters");
 	}
 
-	// initializing publisher and subscriber
-	sensor_cloud_subscriber = ph.subscribe(SENSOR_CLOUD_TOPIC,1,point_cloud_callback);
-	filtered_cloud_pubisher = ph.advertise<sensor_msgs::PointCloud2>(FILTERED_CLOUD_TOPIC,1);
+	// initializing service server
+	target_detection_server = nh.advertiseService(TARGET_RECOGNITION_SERVICE,target_recognition_callback);
+
+	// initializing publisher
+	filtered_cloud_publisher = nh.advertise<sensor_msgs::PointCloud2>(FILTERED_CLOUD_TOPIC,1);
+
+	// initializing cloud messages
+	FILTERED_CLOUD_MSG = sensor_msgs::PointCloud2();
 	while(ros::ok())
 	{
-		//ros::Duration(0.2f).sleep();
-		ros::spin();
+		ros::Duration(0.5f).sleep();
+		ros::spinOnce();
+		filtered_cloud_publisher.publish(FILTERED_CLOUD_MSG);
 	}
 
 	return 0;
+}
+
+bool grab_sensor_snapshot(sensor_msgs::PointCloud2& msg)
+{
+	// grab sensor data snapshot
+	sensor_msgs::PointCloud2ConstPtr msg_ptr =
+			ros::topic::waitForMessage<sensor_msgs::PointCloud2>(SENSOR_CLOUD_TOPIC,
+					ros::Duration(5.0f));
+
+	// check for empty message
+	if(msg_ptr != sensor_msgs::PointCloud2ConstPtr())
+	{
+
+		msg = *msg_ptr;
+	}
+
+	return msg_ptr != sensor_msgs::PointCloud2ConstPtr();
+}
+
+bool target_recognition_callback(pick_and_place_exercise::GetTargetPose::Request& req,
+		pick_and_place_exercise::GetTargetPose::Response& res)
+{
+	// transform listener and broadcaster
+	static tf::TransformListener tf_listener;
+
+	// transforms
+	tf::StampedTransform world_to_sensor_tf;
+	tf::Transform world_to_box_pick_tf;
+	tf::Transform world_to_ar_tf;
+	tf::Vector3 box_pick_position;
+
+	// updating global variables
+	BOX_LENGTH = req.shape.dimensions[0];
+	BOX_WIDTH = req.shape.dimensions[1];
+	WORLD_FRAME_ID = req.world_frame_id;
+	AR_TAG_FRAME_ID = req.ar_tag_frame_id;
+
+	if(get_ar_transform(world_to_ar_tf))
+	{
+
+		// check for empty message
+		sensor_msgs::PointCloud2 msg;
+		if(grab_sensor_snapshot(msg))
+		{
+			ROS_INFO_STREAM("Cloud message received");
+		}
+		else
+		{
+			//tf::poseTFToMsg(world_to_ar_tf,res.target_pose);
+			ROS_ERROR_STREAM("Cloud message not found, returning detection failure");
+			res.succeeded = false;
+			return true;
+		}
+
+		// convert from message to point cloud
+		Cloud::Ptr sensor_cloud_ptr(new Cloud());
+		pcl::fromROSMsg<pcl::PointXYZ>(msg,*sensor_cloud_ptr);
+
+		// applying statistical removal
+		pcl::StatisticalOutlierRemoval<pcl::PointXYZ> sor;
+		sor.setInputCloud (sensor_cloud_ptr);
+		sor.setMeanK (50);
+		sor.setStddevMulThresh (1.0);
+		sor.filter (*sensor_cloud_ptr);
+
+		// creating cloud message for publisher
+		Cloud::Ptr filtered_cloud_ptr(new Cloud());
+
+		// getting sensor transform
+		try
+		{
+			tf_listener.lookupTransform(WORLD_FRAME_ID,msg.header.frame_id,
+							ros::Time(0),world_to_sensor_tf);
+		}
+		catch(tf::LookupException &e)
+		{
+			//return;
+		}
+		catch(tf::ExtrapolationException &e)
+		{
+			//return;
+		}
+
+		// converting to world coordinates
+		pcl_ros::transformPointCloud<pcl::PointXYZ>(WORLD_FRAME_ID,
+			  *sensor_cloud_ptr,*sensor_cloud_ptr,tf_listener);
+
+		// find height of box top surface
+		float height = detect_box_height(*sensor_cloud_ptr,world_to_ar_tf);
+
+		// updating box pick transform
+		world_to_box_pick_tf = world_to_ar_tf;
+		box_pick_position = world_to_box_pick_tf.getOrigin();
+		box_pick_position.setZ(height);
+		world_to_box_pick_tf.setOrigin(box_pick_position);
+
+		// filtering box from sensor cloud
+		filter_box(world_to_sensor_tf,world_to_box_pick_tf,*sensor_cloud_ptr,*filtered_cloud_ptr);
+
+		// converting to message
+		pcl::toROSMsg(*filtered_cloud_ptr,FILTERED_CLOUD_MSG);
+
+		// populating response
+		tf::poseTFToMsg(world_to_box_pick_tf,res.target_pose);
+		res.succeeded = true;
+	}
+	else
+	{
+		res.succeeded = false;
+	}
+
+	return true;
 }
 
 bool get_ar_transform(tf::Transform& world_to_ar_tf)
@@ -121,8 +248,8 @@ double detect_box_height(const Cloud& cloud,
 	Cloud::Ptr filtered_cloud_ptr(new Cloud);
 
 	// applying filter in x axis
-	float min = world_to_ar_tf.getOrigin().x() - 0.2f*BOX_LENGTH;
-	float max = world_to_ar_tf.getOrigin().x() + 0.2f*BOX_LENGTH;
+	float min = world_to_ar_tf.getOrigin().x() - 0.1f*BOX_LENGTH;
+	float max = world_to_ar_tf.getOrigin().x() + 0.1f*BOX_LENGTH;
 	pcl::PassThrough<pcl::PointXYZ> filter;
 	filter.setInputCloud(cloud_ptr);
 	filter.setFilterFieldName("x");
@@ -130,8 +257,8 @@ double detect_box_height(const Cloud& cloud,
 	filter.filter(*filtered_cloud_ptr);
 
 	// applying filter in y axis
-	min = world_to_ar_tf.getOrigin().y()- 0.2f*BOX_WIDTH;
-	max = world_to_ar_tf.getOrigin().y() + 0.2f*BOX_WIDTH;;
+	min = world_to_ar_tf.getOrigin().y()- 0.1f*BOX_WIDTH;
+	max = world_to_ar_tf.getOrigin().y() + 0.1f*BOX_WIDTH;;
 	filter.setInputCloud(filtered_cloud_ptr);
 	filter.setFilterFieldName("y");
 	filter.setFilterLimits(min,max);
@@ -208,71 +335,3 @@ void filter_box(const tf::Transform& world_to_sensor_tf,
 
 }
 
-void point_cloud_callback(sensor_msgs::PointCloud2ConstPtr msg)
-{
-	static tf::TransformListener tf_listener;
-	static tf::TransformBroadcaster tf_broadcaster;
-
-	// convert from message to point cloud
-	Cloud::Ptr sensor_cloud_ptr(new Cloud());
-    pcl::fromROSMsg<pcl::PointXYZ>(*msg,*sensor_cloud_ptr);
-
-    // applying statistical removal
-    pcl::StatisticalOutlierRemoval<pcl::PointXYZ> sor;
-	sor.setInputCloud (sensor_cloud_ptr);
-	sor.setMeanK (50);
-	sor.setStddevMulThresh (1.0);
-	sor.filter (*sensor_cloud_ptr);
-
-    // creating cloud message for publisher
-    Cloud::Ptr filtered_cloud_ptr(new Cloud());
-    sensor_msgs::PointCloud2 filtered_cloud_msg;
-
-    // detecting ar tag
-    static tf::StampedTransform world_to_box_pick_tf;
-    static tf::StampedTransform world_to_sensor_tf;
-    tf::Transform world_to_ar_tf = tf::Transform::getIdentity();
-    tf::Vector3 pos;
-    if(get_ar_transform(world_to_ar_tf))
-    {
-
-		// getting sensor transform
-		try
-		{
-			tf_listener.lookupTransform(WORLD_FRAME_ID,msg->header.frame_id,
-							ros::Time(0),world_to_sensor_tf);
-		}
-		catch(tf::LookupException &e)
-		{
-			//return;
-		}
-		catch(tf::ExtrapolationException &e)
-		{
-			//return;
-		}
-
-		// converting to world coordinates
-		pcl_ros::transformPointCloud<pcl::PointXYZ>(WORLD_FRAME_ID,
-			  *sensor_cloud_ptr,*sensor_cloud_ptr,tf_listener);
-
-		float height = detect_box_height(*sensor_cloud_ptr,world_to_ar_tf);
-
-		// broadcasting box pick transform
-		world_to_box_pick_tf = tf::StampedTransform(world_to_ar_tf,
-			  ros::Time(0),WORLD_FRAME_ID,BOX_PICK_FRAME_ID);
-		pos = world_to_box_pick_tf.getOrigin();
-		pos.setZ(height);
-		world_to_box_pick_tf.setOrigin(pos);
-		tf_broadcaster.sendTransform(world_to_box_pick_tf);
-	}
-
-	// filtering box from sensor cloud
-	filter_box(world_to_sensor_tf,world_to_box_pick_tf,*sensor_cloud_ptr,*filtered_cloud_ptr);
-
-	// converting to message
-	pcl::toROSMsg(*filtered_cloud_ptr,filtered_cloud_msg);
-
-	// publishing
-	filtered_cloud_pubisher.publish(filtered_cloud_msg);
-
-}
