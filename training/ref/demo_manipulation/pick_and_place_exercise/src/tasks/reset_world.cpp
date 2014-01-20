@@ -13,35 +13,41 @@
     - Publishes object marker for visualization.
   Hints:
 */
-void set_object_in_world(bool add, const geometry_msgs::Pose &pose)
+void reset_world()
 {
   //ROS_ERROR_STREAM("set_attached_object is not implemented yet.  Aborting."); exit(1);
 
-	// update pose
-	moveit_msgs::AttachedCollisionObject  col_obj = cfg.ATTACHED_COLLISION_OBJECT;
+	// planning scene message
+	moveit_msgs::PlanningScene planning_scene;
+
+	// removing attached objects from robot
+	set_attached_object(false);
+
+	// detecting object pose
+	geometry_msgs::Pose pose = detect_box_pick();
+
+	// creating collision and visualization messages
+	moveit_msgs::CollisionObject  col_obj = cfg.ATTACHED_COLLISION_OBJECT.object;
 	visualization_msgs::Marker marker = cfg.MARKER_MESSAGE;
 
-	if(add)
-	{
-		col_obj.object.header.frame_id = cfg.WORLD_FRAME_ID;
-		col_obj.object.primitive_poses[0] = pose;
-		col_obj.object.primitive_poses[0].position.z = pose.position.z - 0.5f*cfg.BOX_SIZE.z();
-		//col_obj.link_name = cfg.WORLD_FRAME_ID;
-		marker.header.frame_id = cfg.WORLD_FRAME_ID;
-		marker.pose = col_obj.object.primitive_poses[0];
+	// updating pose
+	col_obj.header.frame_id = cfg.WORLD_FRAME_ID;
+	col_obj.primitive_poses[0] = pose;
+	col_obj.primitive_poses[0].position.z = 0.5f *col_obj.primitive_poses[0].position.z;
+	marker.header.frame_id = cfg.WORLD_FRAME_ID;
+	marker.pose = col_obj.primitive_poses[0];
 
-		col_obj.object.operation = moveit_msgs::CollisionObject::ADD;
-		//col_obj.touch_links.push_back("gripper_body");
-		marker.action = visualization_msgs::Marker::ADD;
-	}
-	else
-	{
-		col_obj.object.operation = moveit_msgs::CollisionObject::REMOVE;
-		marker.action = visualization_msgs::Marker::DELETE;
-	}
+	// set object operation
+	col_obj.operation = moveit_msgs::CollisionObject::ADD;
+	marker.action = visualization_msgs::Marker::ADD;
 
+	// filling planning scene
+	planning_scene.world.collision_objects.push_back(col_obj);
+	planning_scene.is_diff = true;
+
+	// publishing messages
 	marker_publisher.publish(marker);
-	attach_object_publisher.publish(col_obj);
+	planning_scene_publisher.publish(planning_scene);
 
 }
 
