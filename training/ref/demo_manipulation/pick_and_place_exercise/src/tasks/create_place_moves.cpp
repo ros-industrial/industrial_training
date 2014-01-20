@@ -45,6 +45,7 @@ std::vector<geometry_msgs::Pose> create_place_moves(tf::TransformListener& tf_li
 
   // find transform from tcp to wrist (in TCP frame)
   /* Fill Code: [ use the 'lookupTransform' method in the transform listener] */
+  tf_listener.waitForTransform(cfg.TCP_LINK_NAME, cfg.WRIST_LINK_NAME, ros::Time(0.0f), ros::Duration(3.0f));
   tf_listener.lookupTransform(cfg.TCP_LINK_NAME, cfg.WRIST_LINK_NAME, ros::Time(0.0f), tcp_to_wrist_tf);
 
   // transform list of pick positions from TCP frame to wrist frame
