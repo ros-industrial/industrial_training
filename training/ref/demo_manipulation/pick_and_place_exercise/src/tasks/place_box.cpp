@@ -16,7 +16,6 @@
 */
 
 void place_box(move_group_interface::MoveGroup& move_group,
-		ros::Publisher& attached_object_publisher,
 		GraspActionClient& grasp_action_client,
 		std::vector<geometry_msgs::Pose>& place_poses)
 {
