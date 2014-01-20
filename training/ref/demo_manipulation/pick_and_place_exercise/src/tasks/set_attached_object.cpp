@@ -17,11 +17,12 @@ void set_attached_object(bool attach, const geometry_msgs::Pose &pose)
 {
   //ROS_ERROR_STREAM("set_attached_object is not implemented yet.  Aborting."); exit(1);
 
-	// update pose
-
+	moveit_msgs::PlanningScene planning_scene;
 	if(attach)
 	{
 		cfg.ATTACHED_COLLISION_OBJECT.object.operation = moveit_msgs::CollisionObject::ADD;
+		moveit_msgs::CollisionObject remove_obj = cfg.ATTACHED_COLLISION_OBJECT.object;
+		remove_obj.operation = moveit_msgs::CollisionObject::REMOVE;
 		cfg.MARKER_MESSAGE.action = visualization_msgs::Marker::ADD;
 
 		// updating orientation
@@ -33,18 +34,35 @@ void set_attached_object(bool attach, const geometry_msgs::Pose &pose)
 		cfg.ATTACHED_COLLISION_OBJECT.object.primitive_poses[0].orientation = q;
 		cfg.MARKER_MESSAGE.pose.orientation = q;
 
-		marker_publisher.publish(cfg.MARKER_MESSAGE);
-		attach_object_publisher.publish(cfg.ATTACHED_COLLISION_OBJECT);
+		// updating planning scene message
+		planning_scene.world.collision_objects.push_back(remove_obj);
+		planning_scene.robot_state.attached_collision_objects.push_back(cfg.ATTACHED_COLLISION_OBJECT);
+		planning_scene.is_diff = true;
+
+		//marker_publisher.publish(cfg.MARKER_MESSAGE);
+		//planning_scene_publisher.publish(planning_scene);
+		//attach_object_publisher.publish(cfg.ATTACHED_COLLISION_OBJECT);
+
 	}
 	else
 	{
 		cfg.ATTACHED_COLLISION_OBJECT.object.operation = moveit_msgs::CollisionObject::REMOVE;
 		cfg.MARKER_MESSAGE.action = visualization_msgs::Marker::DELETE;
 
-		marker_publisher.publish(cfg.MARKER_MESSAGE);
-		collision_object_publisher.publish(cfg.ATTACHED_COLLISION_OBJECT.object);// removing from world
-		attach_object_publisher.publish(cfg.ATTACHED_COLLISION_OBJECT);
+		// updating planning scene message
+		planning_scene.world.collision_objects.push_back(cfg.ATTACHED_COLLISION_OBJECT.object);
+		planning_scene.robot_state.attached_collision_objects.push_back(cfg.ATTACHED_COLLISION_OBJECT);
+		planning_scene.is_diff = true;
+
+		//marker_publisher.publish(cfg.MARKER_MESSAGE);
+		//collision_object_publisher.publish(cfg.ATTACHED_COLLISION_OBJECT.object);// removing from world
+		//attach_object_publisher.publish(cfg.ATTACHED_COLLISION_OBJECT);
 	}
+
+	marker_publisher.publish(cfg.MARKER_MESSAGE);
+	planning_scene_publisher.publish(planning_scene);
+
+	ros::Duration(2.0f).sleep();
 
 
 
