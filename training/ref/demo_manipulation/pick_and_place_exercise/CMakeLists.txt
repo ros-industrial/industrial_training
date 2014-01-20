@@ -33,7 +33,7 @@ rosbuild_add_executable(pick_and_place_node
 	src/nodes/pick_and_place_node.cpp
 	src/tasks/move_to_wait_position.cpp
 	src/tasks/set_gripper.cpp
-	src/tasks/set_object_in_world.cpp
+	src/tasks/reset_world.cpp
 	src/tasks/set_attached_object.cpp
 	src/tasks/detect_box_pick.cpp
 	src/tasks/create_pick_moves.cpp
