@@ -12,6 +12,7 @@ pick_and_place_config cfg;  // global var
 ros::Publisher marker_publisher; // publishes scene objects
 ros::Publisher collision_object_publisher;
 ros::Publisher attach_object_publisher; // publishes objects for use in path planning
+ros::Publisher planning_scene_publisher; // scene publisher;
 
 // =============================== Main Thread ===============================
 int main(int argc,char** argv)
@@ -52,6 +53,9 @@ int main(int argc,char** argv)
   move_group_interface::MoveGroup move_group(cfg.ARM_GROUP_NAME);
   move_group.setPlanningTime(10.0f);
 
+  // planning scene publisher
+  planning_scene_publisher = nh.advertise<moveit_msgs::PlanningScene>("planning_scene",1);
+
   // grasp action client initialization
   GraspActionClient grasp_action_client(cfg.GRASP_ACTION_NAME,true);
 
@@ -74,18 +78,14 @@ int main(int argc,char** argv)
   /* Pick & Place Tasks                      */
   /* ========================================*/
 
-
   // updates the obstacle map
-  detect_box_pick();
-
-  // detaching/removing object
-  set_attached_object(false);
-
-  // move to a "clear" position
-  move_to_wait_position(move_group);
+  reset_world();
 
   // open the gripper (suction off)
   set_gripper(grasp_action_client, false);
+
+  // move to a "clear" position
+  move_to_wait_position(move_group);
 
   // get the box position from perception node
   box_pose = detect_box_pick();
@@ -94,13 +94,13 @@ int main(int argc,char** argv)
   pick_poses = create_pick_moves(tf_listener, box_pose);
 
   // plan/execute the sequence of "pick" moves
-  pickup_box(move_group,attach_object_publisher,grasp_action_client,pick_poses,box_pose);
+  pickup_box(move_group,grasp_action_client,pick_poses,box_pose);
 
   // build a sequence of poses to "Place" the box
   place_poses = create_place_moves(tf_listener);
 
   // plan/execute the "place" moves
-  place_box(move_group,attach_object_publisher,grasp_action_client,place_poses);
+  place_box(move_group,grasp_action_client,place_poses);
 
   // move back to the "clear" position
   move_to_wait_position(move_group);
