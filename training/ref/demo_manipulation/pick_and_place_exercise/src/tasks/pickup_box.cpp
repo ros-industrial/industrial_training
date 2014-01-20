@@ -21,7 +21,6 @@
     - The 'setPoseTarget' method allows you to set a "pose" as your target to move the robot.
 */
 void pickup_box(move_group_interface::MoveGroup& move_group,
-		ros::Publisher& attached_object_publisher,
 		GraspActionClient& grasp_action_client,
 		std::vector<geometry_msgs::Pose>& pick_poses,const geometry_msgs::Pose& box_pose)
 {
