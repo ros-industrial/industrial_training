@@ -6,14 +6,6 @@
  */
 
 #include <pick_and_place_exercise/pick_and_place.h>
-#include <sensor_msgs/PointCloud2.h>
-#include <sensor_msgs/point_cloud_conversion.h>
-#include <pcl/ros/conversions.h>
-#include <pcl/point_cloud.h>
-#include <pcl/point_types.h>
-#include <pcl/filters/passthrough.h>
-#include <pcl/common/centroid.h>
-#include <pcl_ros/transforms.h>
 
 /* DETECTING BOX PICK POSE
   Goal:
@@ -30,7 +22,7 @@ geometry_msgs::Pose detect_box_pick()
   //ROS_ERROR_STREAM("detect_box_pick is not implemented yet.  Aborting."); exit(1);
 
   // creating request object
-  pick_and_place_exercise::GetTargetPose srv;
+  object_manipulation_msgs::GetTargetPose srv;
   srv.request.shape = cfg.ATTACHED_COLLISION_OBJECT.object.primitives[0];
   srv.request.world_frame_id = cfg.WORLD_FRAME_ID;
   srv.request.ar_tag_frame_id = cfg.AR_TAG_FRAME_ID;
