@@ -14,7 +14,6 @@
 #include <moveit_msgs/PlanningScene.h>
 #include <object_manipulation_msgs/GraspHandPostureExecutionAction.h>
 #include <tf/transform_listener.h>
-
 #include <pick_and_place_exercise/pick_and_place_utilities.h>
 
 // =============================== aliases ===============================
