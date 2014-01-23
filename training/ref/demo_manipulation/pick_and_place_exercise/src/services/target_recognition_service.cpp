@@ -32,13 +32,15 @@ typedef pcl::PointCloud<pcl::PointXYZ> Cloud;
 const std::string FILTERED_CLOUD_TOPIC = "filtered_cloud";
 const std::string TARGET_RECOGNITION_SERVICE = "target_recognition";
 const std::string BOX_PICK_FRAME_ID = "box_pick_frame";
-const float BOX_PADDING_SCALE = 1.5f;
+const float BOX_HEIGHT_TOLERANCE = 0.02f;
+const float BOX_PADDING_SCALE = 1.8f;
 
 // global variables
 std::string AR_TAG_FRAME_ID = "";
 std::string WORLD_FRAME_ID = "";
-double BOX_WIDTH;
-double BOX_LENGTH;
+float BOX_WIDTH;
+float BOX_LENGTH;
+float BOX_HEIGHT;
 sensor_msgs::PointCloud2 FILTERED_CLOUD_MSG;
 sensor_msgs::PointCloud2 SENSOR_CLOUD_MSG;
 
@@ -89,9 +91,9 @@ int main(int argc,char** argv)
 	FILTERED_CLOUD_MSG = sensor_msgs::PointCloud2();
 	while(ros::ok())
 	{
-		ros::Duration(0.5f).sleep();
+		ros::Duration(0.1f).sleep();
 		ros::spinOnce();
-		filtered_cloud_publisher.publish(FILTERED_CLOUD_MSG);
+		//filtered_cloud_publisher.publish(FILTERED_CLOUD_MSG);
 	}
 
 	return 0;
@@ -129,6 +131,7 @@ bool target_recognition_callback(object_manipulation_msgs::GetTargetPose::Reques
 	// updating global variables
 	BOX_LENGTH = req.shape.dimensions[0];
 	BOX_WIDTH = req.shape.dimensions[1];
+	BOX_HEIGHT = req.shape.dimensions[2];
 	WORLD_FRAME_ID = req.world_frame_id;
 	AR_TAG_FRAME_ID = req.ar_tag_frame_id;
 
@@ -185,21 +188,47 @@ bool target_recognition_callback(object_manipulation_msgs::GetTargetPose::Reques
 		// find height of box top surface
 		float height = detect_box_height(*sensor_cloud_ptr,world_to_ar_tf);
 
-		// updating box pick transform
-		world_to_box_pick_tf = world_to_ar_tf;
-		box_pick_position = world_to_box_pick_tf.getOrigin();
-		box_pick_position.setZ(height);
-		world_to_box_pick_tf.setOrigin(box_pick_position);
+		if(height - BOX_HEIGHT > -BOX_HEIGHT_TOLERANCE )
+		{
 
-		// filtering box from sensor cloud
-		filter_box(world_to_sensor_tf,world_to_box_pick_tf,*sensor_cloud_ptr,*filtered_cloud_ptr);
+			// updating box pick transform
+			world_to_box_pick_tf = world_to_ar_tf;
+			box_pick_position = world_to_box_pick_tf.getOrigin();
+			box_pick_position.setZ(height);
+			world_to_box_pick_tf.setOrigin(box_pick_position);
 
-		// converting to message
-		pcl::toROSMsg(*filtered_cloud_ptr,FILTERED_CLOUD_MSG);
+			// filtering box from sensor cloud
+			filter_box(world_to_sensor_tf,
+					world_to_box_pick_tf,*sensor_cloud_ptr,*filtered_cloud_ptr);
 
-		// populating response
-		tf::poseTFToMsg(world_to_box_pick_tf,res.target_pose);
-		res.succeeded = true;
+			// filter box at requested locations
+			for(unsigned int i =0;i < req.remove_at_poses.size();i++)
+			{
+				tf::Transform world_to_box;
+				tf::poseMsgToTF(req.remove_at_poses[i],world_to_box);
+
+				// copying last filter cloud
+				pcl::copyPointCloud(*filtered_cloud_ptr,*sensor_cloud_ptr);
+
+				// filter box from last computed cloud
+				filter_box(world_to_sensor_tf,world_to_box,*sensor_cloud_ptr,*filtered_cloud_ptr);
+			}
+
+			// converting to message
+			pcl::toROSMsg(*filtered_cloud_ptr,FILTERED_CLOUD_MSG);
+
+			// populating response
+			tf::poseTFToMsg(world_to_box_pick_tf,res.target_pose);
+			res.succeeded = true;
+
+			// publishing cloud
+			filtered_cloud_publisher.publish(FILTERED_CLOUD_MSG);
+		}
+		else
+		{
+			res.succeeded = false;
+			ROS_ERROR_STREAM("Estimated pick height was smaller than box height");
+		}
 	}
 	else
 	{
