@@ -51,8 +51,17 @@ int main(int argc,char** argv)
   move_group_interface::MoveGroup move_group(application.cfg.ARM_GROUP_NAME);
   move_group.setPlanningTime(10.0f);
 
+  // initializing marker publisher
+  application.marker_publisher = nh.advertise<visualization_msgs::Marker>(
+		  application.cfg.MARKER_TOPIC,1);
+
+  // initializing target recognition client
+  application.target_recognition_client = nh.serviceClient<object_manipulation_msgs::GetTargetPose>(
+		  application.cfg.TARGET_RECOGNITION_SERVICE);
+
   // planning scene publisher
-  application.planning_scene_publisher = nh.advertise<moveit_msgs::PlanningScene>("planning_scene",1);
+  application.planning_scene_publisher = nh.advertise<moveit_msgs::PlanningScene>(
+		  application.cfg.PLANNING_SCENE_TOPIC,1);
 
   // grasp action client initialization
   GraspActionClient grasp_action_client(application.cfg.GRASP_ACTION_NAME,true);
