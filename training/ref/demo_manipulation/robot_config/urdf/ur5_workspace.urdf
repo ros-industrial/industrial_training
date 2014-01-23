@@ -302,6 +302,25 @@
     <child link="front_wall2"/>
     <origin rpy="0 0 0" xyz="-1.3375 0 0.5"/>
   </joint>
+  <link name="back_wall2">
+    <visual>
+      <geometry>
+        <box size="0.04 2.0 1"/>
+      </geometry>
+      <material name="gray_transparent"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.04 2.0 1"/>
+      </geometry>
+      <material name="blue_transparent"/>
+    </collision>
+  </link>
+  <joint name="world_frame_to_back_wall2" type="fixed">
+    <parent link="world_frame"/>
+    <child link="back_wall2"/>
+    <origin rpy="0 0 0" xyz="0.2 0 0.5"/>
+  </joint>
   <link name="left_wall2">
     <visual>
       <geometry>
@@ -406,6 +425,14 @@
     <collision>
       <geometry>
         <cylinder length="0.12" radius="0.10"/>
+      </geometry>
+      <material name="blue_transparent"/>
+    </collision>
+  </link>
+  <link name="attached_object_link">
+    <collision>
+      <geometry>
+        <box size="0.17 0.17 0.17"/>
       </geometry>
       <material name="blue_transparent"/>
     </collision>
@@ -520,6 +547,11 @@
     <child link="base_padding"/>
     <origin xyz="-0.238 0 0.2"/>
   </joint>
+  <joint name="tcp_to_attached_object" type="fixed">
+    <parent link="tcp_frame"/>
+    <child link="attached_object_link"/>
+    <origin xyz="0 0 0.085"/>
+  </joint>
   <!-- end of arm-workcell link definitions -->
   <!-- arm-workcell joint definitions -->
   <joint name="stand_to_base" type="fixed">
@@ -537,4 +569,3 @@
   </joint>
   <!-- end of arm-gripper coupling joint definitions -->
 </robot>
-

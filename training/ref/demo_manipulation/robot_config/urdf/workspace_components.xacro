@@ -140,8 +140,8 @@
 		</joint>
 		<xacro:workcell_element name="front_wall2" parent="world_frame"
 			 length="0.1" width="2.220" height="${workcell_height}" offset_x="-1.3375" offset_y="0"/>		 
-		<!--<xacro:workcell_element name="back_wall2" parent="world_frame"
-			 length="0.04" width="2.00" height="${workcell_height}" offset_x="0.20" offset_y="0"/>-->
+		<xacro:workcell_element name="back_wall2" parent="world_frame"
+			 length="0.04" width="2.00" height="${workcell_height}" offset_x="0.20" offset_y="0"/>
 		<xacro:workcell_element name="left_wall2" parent="world_frame" 
 			length="1.384" width="0.1" height="${workcell_height}" offset_x="-0.601" offset_y="1.060"/>
 		<xacro:workcell_element name="right_wall2" parent="world_frame" 
