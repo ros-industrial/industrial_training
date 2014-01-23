@@ -62,10 +62,8 @@ void PickAndPlace::place_box(
 	/*   - HINT: this should be the second pose in the sequence of place_poses */
       set_gripper(grasp_action_client, false);
 
-      // detach box
+      // detaching box
       set_attached_object(false);
-
-      move_group.detachObject(cfg.ATTACHED_COLLISION_OBJECT.object.id);
     }
   }
 }

@@ -26,6 +26,9 @@ geometry_msgs::Pose PickAndPlace::detect_box_pick()
   srv.request.shape = cfg.ATTACHED_COLLISION_OBJECT.object.primitives[0];
   srv.request.world_frame_id = cfg.WORLD_FRAME_ID;
   srv.request.ar_tag_frame_id = cfg.AR_TAG_FRAME_ID;
+  geometry_msgs::Pose place_pose;
+  tf::poseTFToMsg(cfg.BOX_PLACE_TF,place_pose);
+  srv.request.remove_at_poses.push_back(place_pose);
 
   if(!ros::service::waitForService(cfg.TARGET_RECOGNITION_SERVICE,10000))
   {
@@ -34,7 +37,7 @@ geometry_msgs::Pose PickAndPlace::detect_box_pick()
 
   // calling service
   geometry_msgs::Pose box_pose;
-  if(ros::service::call(cfg.TARGET_RECOGNITION_SERVICE,srv))
+  if(target_recognition_client.call(srv))
   {
 	  if(srv.response.succeeded)
 	  {

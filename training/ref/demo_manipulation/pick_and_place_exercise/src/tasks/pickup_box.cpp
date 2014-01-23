@@ -81,10 +81,6 @@ void PickAndPlace::pickup_box(
 	    {
 	    	// attach box to end effector
 	    	set_attached_object(true,box_pose);
-	    	move_group.attachObject(cfg.ATTACHED_COLLISION_OBJECT.object.id,
-	    			cfg.ATTACHED_COLLISION_OBJECT.link_name);
-
-	    	ros::Duration(2.0f).sleep();
 	    }
 
 	  }

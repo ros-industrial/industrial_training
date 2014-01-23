@@ -38,16 +38,16 @@ void PickAndPlace::set_attached_object(bool attach, const geometry_msgs::Pose &p
 		cfg.ATTACHED_COLLISION_OBJECT.object.primitive_poses[0].orientation = q;
 		cfg.MARKER_MESSAGE.pose.orientation = q;
 
+		// modifying collision matrix
+		planning_scene.allowed_collision_matrix.default_entry_names.push_back(cfg.ATTACHED_LINK_NAME);
+		planning_scene.allowed_collision_matrix.default_entry_values.push_back(true);
+
 		// updating planning scene message
-		//planning_scene.world.collision_objects.push_back(remove_obj);
+		planning_scene.world.collision_objects.push_back(remove_obj);
 		planning_scene.robot_state.attached_collision_objects.push_back(cfg.ATTACHED_COLLISION_OBJECT);
 		planning_scene.robot_state.is_diff = true;
 		planning_scene.is_diff = true;
 
-		//marker_publisher.publish(cfg.MARKER_MESSAGE);
-		//planning_scene_publisher.publish(planning_scene);
-		//attach_object_publisher.publish(cfg.ATTACHED_COLLISION_OBJECT);
-		attach_object_publisher.publish(cfg.ATTACHED_COLLISION_OBJECT);
 
 	}
 	else
@@ -59,15 +59,13 @@ void PickAndPlace::set_attached_object(bool attach, const geometry_msgs::Pose &p
 		planning_scene.world.collision_objects.push_back(cfg.ATTACHED_COLLISION_OBJECT.object);
 		planning_scene.robot_state.attached_collision_objects.push_back(cfg.ATTACHED_COLLISION_OBJECT);
 		planning_scene.robot_state.is_diff = true;
+		planning_scene.allowed_collision_matrix.default_entry_names.push_back(cfg.ATTACHED_LINK_NAME);
+		planning_scene.allowed_collision_matrix.default_entry_values.push_back(false);
 		planning_scene.is_diff = true;
 
-		//marker_publisher.publish(cfg.MARKER_MESSAGE);
-		collision_object_publisher.publish(cfg.ATTACHED_COLLISION_OBJECT.object);// removing from world
-		attach_object_publisher.publish(cfg.ATTACHED_COLLISION_OBJECT);
 	}
 
 	marker_publisher.publish(cfg.MARKER_MESSAGE);
-	//planning_scene_publisher.publish(planning_scene);
 
 	//ros::Duration(2.0f).sleep();
 
