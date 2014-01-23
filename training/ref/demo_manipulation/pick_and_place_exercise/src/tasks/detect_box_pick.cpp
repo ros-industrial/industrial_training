@@ -17,7 +17,7 @@
     - lookupTransform can also look "in the past".  Use Time=0 to get the most-recent transform.
     - tf::poseTFToMsg allows converting transforms into Pose messages
 */
-geometry_msgs::Pose detect_box_pick()
+geometry_msgs::Pose PickAndPlace::detect_box_pick()
 {
   //ROS_ERROR_STREAM("detect_box_pick is not implemented yet.  Aborting."); exit(1);
 
@@ -39,6 +39,7 @@ geometry_msgs::Pose detect_box_pick()
 	  if(srv.response.succeeded)
 	  {
 		  box_pose = srv.response.target_pose;
+		  ROS_INFO_STREAM("target recognition succeeded");
 	  }
 	  else
 	  {

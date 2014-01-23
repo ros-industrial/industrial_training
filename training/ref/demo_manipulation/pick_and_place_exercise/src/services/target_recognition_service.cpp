@@ -69,7 +69,6 @@ int main(int argc,char** argv)
 	ros::NodeHandle nh;
 	ros::NodeHandle ph("~");
 
-
 	// read parameters
 	if(ph.getParam("sensor_topic",SENSOR_CLOUD_TOPIC))
 	{

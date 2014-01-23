@@ -13,7 +13,7 @@
     - Confirm that the gripper was successfully opened or closed.  Exit program on failure;
   Hints:
 */
-void set_gripper(GraspActionClient& grasp_action_client, bool do_grasp)
+void PickAndPlace::set_gripper(GraspActionClient& grasp_action_client, bool do_grasp)
 {
   //ROS_ERROR_STREAM("set_gripper is not implemented yet.  Aborting."); exit(1);
 

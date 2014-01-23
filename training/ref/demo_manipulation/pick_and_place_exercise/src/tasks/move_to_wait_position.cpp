@@ -17,7 +17,8 @@
     - Once the target is set you can call the 'move' method in order to go to that target.
 */
 
-void move_to_wait_position(move_group_interface::MoveGroup& move_group)
+void PickAndPlace::move_to_wait_position(
+		move_group_interface::MoveGroup& move_group)
 {
   //ROS_ERROR_STREAM("move_to_wait_position is not implemented yet.  Aborting."); exit(1);
 

@@ -19,7 +19,8 @@
       can be used to prepare the robot for planning.
     - The 'setPoseTarget' method allows you to set a "pose" as your target to move the robot.
 */
-void move_through_pick_poses(move_group_interface::MoveGroup& move_group, GraspActionClient& grasp_action_client,
+void PickAndPlace::move_through_pick_poses(
+		move_group_interface::MoveGroup& move_group, GraspActionClient& grasp_action_client,
                              std::vector<geometry_msgs::Pose>& pick_poses)
 {
   //ROS_ERROR_STREAM("move_through_pick_poses is not implemented yet.  Aborting."); exit(1);

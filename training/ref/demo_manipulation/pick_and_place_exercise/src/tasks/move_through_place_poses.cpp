@@ -15,7 +15,8 @@
     - Use the methods seen so far such as 'move', 'sendGoal', 'waitForResult' as needed
 */
 
-void move_through_place_poses(move_group_interface::MoveGroup& move_group,GraspActionClient& grasp_action_client,
+void PickAndPlace::move_through_place_poses(
+		move_group_interface::MoveGroup& move_group,GraspActionClient& grasp_action_client,
                               std::vector<geometry_msgs::Pose>& place_poses)
 {
   //ROS_ERROR_STREAM("move_through_place_poses is not implemented yet.  Aborting."); exit(1);

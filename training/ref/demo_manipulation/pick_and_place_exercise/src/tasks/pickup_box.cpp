@@ -20,7 +20,8 @@
       can be used to prepare the robot for planning.
     - The 'setPoseTarget' method allows you to set a "pose" as your target to move the robot.
 */
-void pickup_box(move_group_interface::MoveGroup& move_group,
+void PickAndPlace::pickup_box(
+		move_group_interface::MoveGroup& move_group,
 		GraspActionClient& grasp_action_client,
 		std::vector<geometry_msgs::Pose>& pick_poses,const geometry_msgs::Pose& box_pose)
 {
@@ -49,6 +50,7 @@ void pickup_box(move_group_interface::MoveGroup& move_group,
 	    // set the current pose as the target
 	    /* Fill Code: [ use the 'setPoseTarget' method in the 'move_group' object and pass the current pose in 'pick_poses'] */
 		move_group.setPoseTarget(pick_poses[i]);
+		move_group.setStartStateToCurrentState();
 
 	    // moving arm to current pick pose
 	    /* Fill Code: [ use the 'move' method in the 'move_group' object and save the result in the 'success' variable] */
@@ -79,6 +81,10 @@ void pickup_box(move_group_interface::MoveGroup& move_group,
 	    {
 	    	// attach box to end effector
 	    	set_attached_object(true,box_pose);
+	    	move_group.attachObject(cfg.ATTACHED_COLLISION_OBJECT.object.id,
+	    			cfg.ATTACHED_COLLISION_OBJECT.link_name);
+
+	    	ros::Duration(2.0f).sleep();
 	    }
 
 	  }

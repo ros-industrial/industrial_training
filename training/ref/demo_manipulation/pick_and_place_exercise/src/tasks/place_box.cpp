@@ -15,7 +15,8 @@
     - Use the methods seen so far such as 'move', 'sendGoal', 'waitForResult' as needed
 */
 
-void place_box(move_group_interface::MoveGroup& move_group,
+void PickAndPlace::place_box(
+		move_group_interface::MoveGroup& move_group,
 		GraspActionClient& grasp_action_client,
 		std::vector<geometry_msgs::Pose>& place_poses)
 {
@@ -36,6 +37,7 @@ void place_box(move_group_interface::MoveGroup& move_group,
     // set the current place pose as the target
     /* Fill Code: [ use the 'setPoseTarget' method and pass the current pose in 'place_poses'] */
     move_group.setPoseTarget(place_poses[i]);
+    move_group.setStartStateToCurrentState();
 
     // move arm to current place pose
     /* Fill Code: [ call the 'move' method to execute the move ] */
@@ -62,6 +64,8 @@ void place_box(move_group_interface::MoveGroup& move_group,
 
       // detach box
       set_attached_object(false);
+
+      move_group.detachObject(cfg.ATTACHED_COLLISION_OBJECT.object.id);
     }
   }
 }

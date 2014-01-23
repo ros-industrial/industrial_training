@@ -21,7 +21,8 @@
     - Look into the 'create_manipulation_poses' function and observe how each pick pose is created.
     - Use the 'transform_from_tcp_to_wrist' function to populate the 'wrist_pick_poses' array.
 */
-std::vector<geometry_msgs::Pose> create_pick_moves(tf::TransformListener &tf_listener, geometry_msgs::Pose &box_pose)
+std::vector<geometry_msgs::Pose> PickAndPlace::create_pick_moves(
+		tf::TransformListener &tf_listener, geometry_msgs::Pose &box_pose)
 {
   //ROS_ERROR_STREAM("create_pick_moves is not implemented yet.  Aborting."); exit(1);
 
