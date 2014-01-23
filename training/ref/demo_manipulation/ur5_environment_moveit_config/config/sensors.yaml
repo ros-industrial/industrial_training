@@ -5,7 +5,7 @@ sensors:
    max_range: 5.0
    frame_subsample: 10
    point_subsample: 10
-   shape_padding: 0.03
+   shape_padding: 0.01
    shape_scale: 1
    filtered_cloud_topic: octomap_cloud
 #   self_mask:
