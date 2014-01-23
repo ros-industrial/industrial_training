@@ -35,6 +35,7 @@ public:
 	ros::Publisher collision_object_publisher;
 	ros::Publisher attach_object_publisher;
 	ros::Publisher planning_scene_publisher;
+	ros::ServiceClient target_recognition_client;
 
 // =============================== Task Functions ===============================
 	void move_to_wait_position(move_group_interface::MoveGroup& move_group);
