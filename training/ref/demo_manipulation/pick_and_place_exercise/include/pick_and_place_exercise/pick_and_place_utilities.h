@@ -33,8 +33,10 @@ class pick_and_place_config
 public:
   std::string ARM_GROUP_NAME;  // MoveIt Planning Group associated with the robot arm
   std::string GRASP_ACTION_NAME;  // Action name used to control suction gripper
+  std::string ATTACHED_LINK_NAME; // Attached object link
   std::string ATTACHED_OBJECT_TOPIC; // Topic for publishing objects that attach to gripper
   std::string COLLISION_OBJECT_TOPIC; // Topic for publishing collision objects to the world.
+  std::string PLANNING_SCENE_TOPIC; // Topic for publishing the planning scene
   std::string MARKER_TOPIC; // Topic for publishing visualization of attached object.
   std::string TARGET_RECOGNITION_SERVICE; // service for requesting box pick pose
   std::string SENSOR_DATA_TOPIC; // Topic containing the 3d sensor data
@@ -57,8 +59,10 @@ public:
   {
     ARM_GROUP_NAME  = "manipulator";
     TCP_LINK_NAME   = "tcp_frame";
+    ATTACHED_LINK_NAME = "attached_object_link";
     ATTACHED_OBJECT_TOPIC = "attached_collision_object";
     COLLISION_OBJECT_TOPIC = "collision_object";
+    PLANNING_SCENE_TOPIC = "planning_scene";
     MARKER_TOPIC = "pick_and_place_marker";
     TARGET_RECOGNITION_SERVICE = "target_recognition";
     ATTACHED_OBJECT_ID = "attached_object";
