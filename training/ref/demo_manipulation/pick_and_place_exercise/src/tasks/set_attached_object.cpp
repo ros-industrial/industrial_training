@@ -45,7 +45,7 @@ void PickAndPlace::set_attached_object(bool attach, const geometry_msgs::Pose &p
 		// updating planning scene message
 		planning_scene.world.collision_objects.push_back(remove_obj);
 		planning_scene.robot_state.attached_collision_objects.push_back(cfg.ATTACHED_COLLISION_OBJECT);
-		planning_scene.robot_state.is_diff = true;
+		//planning_scene.robot_state.is_diff = true;
 		planning_scene.is_diff = true;
 
 
@@ -58,7 +58,7 @@ void PickAndPlace::set_attached_object(bool attach, const geometry_msgs::Pose &p
 		// updating planning scene message
 		planning_scene.world.collision_objects.push_back(cfg.ATTACHED_COLLISION_OBJECT.object);
 		planning_scene.robot_state.attached_collision_objects.push_back(cfg.ATTACHED_COLLISION_OBJECT);
-		planning_scene.robot_state.is_diff = true;
+		//planning_scene.robot_state.is_diff = true;
 		planning_scene.allowed_collision_matrix.default_entry_names.push_back(cfg.ATTACHED_LINK_NAME);
 		planning_scene.allowed_collision_matrix.default_entry_values.push_back(false);
 		planning_scene.is_diff = true;

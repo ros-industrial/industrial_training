@@ -13,7 +13,7 @@
 #include <moveit_msgs/AttachedCollisionObject.h>
 #include <moveit_msgs/Constraints.h>
 #include <visualization_msgs/Marker.h>
-#include <object_manipulation_msgs/GetTargetPose.h>
+#include <pick_and_place_exercise/GetTargetPose.h>
 
 std::vector<geometry_msgs::Pose> create_manipulation_poses(double retreat_dis,
 		double approach_dis,const tf::Transform &target_tf);

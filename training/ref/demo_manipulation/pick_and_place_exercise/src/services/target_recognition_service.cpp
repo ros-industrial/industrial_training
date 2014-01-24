@@ -8,7 +8,7 @@
 #include <ros/ros.h>
 #include <sensor_msgs/PointCloud2.h>
 #include <sensor_msgs/point_cloud_conversion.h>
-#include <pcl_conversions/pcl_conversions.h>
+#include <pcl/ros/conversions.h>
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 #include <pcl/filters/passthrough.h>
@@ -22,7 +22,7 @@
 #include <boost/make_shared.hpp>
 #include <tf/transform_listener.h>
 #include <tf/transform_broadcaster.h>
-#include <object_manipulation_msgs/GetTargetPose.h>
+#include <pick_and_place_exercise/GetTargetPose.h>
 #include <math.h>
 
 // alias
@@ -54,8 +54,8 @@ ros::ServiceServer target_detection_server;
 ros::Publisher filtered_cloud_publisher;
 
 // function signatures
-bool target_recognition_callback(object_manipulation_msgs::GetTargetPose::Request& req,
-		object_manipulation_msgs::GetTargetPose::Response& res);
+bool target_recognition_callback(pick_and_place_exercise::GetTargetPose::Request& req,
+		pick_and_place_exercise::GetTargetPose::Response& res);
 bool grab_sensor_snapshot(sensor_msgs::PointCloud2& msg);
 bool get_ar_transform(tf::Transform& world_to_ar_tf);
 void filter_box(const tf::Transform& world_to_sensor_tf,
@@ -116,8 +116,8 @@ bool grab_sensor_snapshot(sensor_msgs::PointCloud2& msg)
 	return msg_ptr != sensor_msgs::PointCloud2ConstPtr();
 }
 
-bool target_recognition_callback(object_manipulation_msgs::GetTargetPose::Request& req,
-		object_manipulation_msgs::GetTargetPose::Response& res)
+bool target_recognition_callback(pick_and_place_exercise::GetTargetPose::Request& req,
+		pick_and_place_exercise::GetTargetPose::Response& res)
 {
 	// transform listener and broadcaster
 	static tf::TransformListener tf_listener;

@@ -22,7 +22,7 @@ geometry_msgs::Pose PickAndPlace::detect_box_pick()
   //ROS_ERROR_STREAM("detect_box_pick is not implemented yet.  Aborting."); exit(1);
 
   // creating request object
-  object_manipulation_msgs::GetTargetPose srv;
+  pick_and_place_exercise::GetTargetPose srv;
   srv.request.shape = cfg.ATTACHED_COLLISION_OBJECT.object.primitives[0];
   srv.request.world_frame_id = cfg.WORLD_FRAME_ID;
   srv.request.ar_tag_frame_id = cfg.AR_TAG_FRAME_ID;

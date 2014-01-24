@@ -1,4 +1,4 @@
-/*
+	/*
  * Manipulation Lab
  * pick_and_place_node.cpp
  *
@@ -56,7 +56,7 @@ int main(int argc,char** argv)
 		  application.cfg.MARKER_TOPIC,1);
 
   // initializing target recognition client
-  application.target_recognition_client = nh.serviceClient<object_manipulation_msgs::GetTargetPose>(
+  application.target_recognition_client = nh.serviceClient<pick_and_place_exercise::GetTargetPose>(
 		  application.cfg.TARGET_RECOGNITION_SERVICE);
 
   // planning scene publisher
