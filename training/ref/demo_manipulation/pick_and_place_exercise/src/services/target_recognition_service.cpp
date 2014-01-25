@@ -226,6 +226,12 @@ bool target_recognition_callback(pick_and_place_exercise::GetTargetPose::Request
 		}
 		else
 		{
+			// converting to message
+			pcl::toROSMsg(*sensor_cloud_ptr,FILTERED_CLOUD_MSG);
+
+			// publishing original cloud
+			filtered_cloud_publisher.publish(FILTERED_CLOUD_MSG);
+
 			res.succeeded = false;
 			ROS_ERROR_STREAM("Estimated pick height was smaller than box height");
 		}
