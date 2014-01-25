@@ -49,7 +49,9 @@ int main(int argc,char** argv)
 
   // moveit interface initialization
   move_group_interface::MoveGroup move_group(application.cfg.ARM_GROUP_NAME);
+  move_group.setStartStateToCurrentState();
   move_group.setPlanningTime(10.0f);
+
 
   // initializing marker publisher
   application.marker_publisher = nh.advertise<visualization_msgs::Marker>(
