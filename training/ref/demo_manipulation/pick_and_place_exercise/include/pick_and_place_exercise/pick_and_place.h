@@ -15,6 +15,7 @@
 #include <object_manipulation_msgs/GraspHandPostureExecutionAction.h>
 #include <tf/transform_listener.h>
 #include <pick_and_place_exercise/pick_and_place_utilities.h>
+#include <moveit/planning_scene_monitor/planning_scene_monitor.h>
 
 // =============================== aliases ===============================
 typedef actionlib::SimpleActionClient<object_manipulation_msgs::GraspHandPostureExecutionAction> GraspActionClient;
@@ -36,6 +37,7 @@ public:
 	ros::Publisher attach_object_publisher;
 	ros::Publisher planning_scene_publisher;
 	ros::ServiceClient target_recognition_client;
+	planning_scene_monitor::PlanningSceneMonitorPtr scene_monitor_ptr;
 
 // =============================== Task Functions ===============================
 	void move_to_wait_position(move_group_interface::MoveGroup& move_group);
