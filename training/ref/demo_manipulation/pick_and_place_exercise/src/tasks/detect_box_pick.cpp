@@ -46,8 +46,9 @@ geometry_msgs::Pose PickAndPlace::detect_box_pick()
 	  }
 	  else
 	  {
-		  ROS_ERROR_STREAM("target recognition failed, exiting");
-		  exit(0);
+		  ROS_ERROR_STREAM("target recognition failed");
+		  return box_pose;
+
 	  }
   }
   else
@@ -58,8 +59,37 @@ geometry_msgs::Pose PickAndPlace::detect_box_pick()
 	  exit(0);
   }
 
-  ros::Duration(1).sleep();
+	// creating collision and visualization messages
+    moveit_msgs::PlanningScene planning_scene;
+	moveit_msgs::CollisionObject  col_obj;// = cfg.ATTACHED_COLLISION_OBJECT.object;
+	visualization_msgs::Marker marker = cfg.MARKER_MESSAGE;
 
-  return box_pose;
+	// updating pose of collision object
+	col_obj.id = cfg.ATTACHED_COLLISION_OBJECT.object.id;
+	col_obj.header.frame_id = cfg.WORLD_FRAME_ID;
+	col_obj.primitives = cfg.ATTACHED_COLLISION_OBJECT.object.primitives;
+	col_obj.primitive_poses.push_back(box_pose);
+	col_obj.primitive_poses[0].position.z = 0.5f *col_obj.primitive_poses[0].position.z;
+	marker.header.frame_id = cfg.WORLD_FRAME_ID;
+	marker.pose = col_obj.primitive_poses[0];
+
+	// set object operation
+	col_obj.operation = moveit_msgs::CollisionObject::ADD;
+	marker.action = visualization_msgs::Marker::ADD;
+
+	// modifying collision matrix
+	planning_scene.allowed_collision_matrix.default_entry_names.push_back(cfg.ATTACHED_LINK_NAME);
+	planning_scene.allowed_collision_matrix.default_entry_values.push_back(false);
+	planning_scene.is_diff = true;
+	// filling planning scene
+
+	// publishing messages
+	marker_publisher.publish(marker);
+	//planning_scene_publisher.publish(planning_scene);
+	//collision_object_publisher.publish(col_obj);
+
+	ros::Duration(2.0f).sleep();
+
+	return box_pose;
 }
 
