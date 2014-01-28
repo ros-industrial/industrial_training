@@ -15,7 +15,6 @@
 */
 void PickAndPlace::reset_world()
 {
-  //ROS_ERROR_STREAM("set_attached_object is not implemented yet.  Aborting."); exit(1);
 
 	// removing attached objects from robot
 	set_attached_object(false);
