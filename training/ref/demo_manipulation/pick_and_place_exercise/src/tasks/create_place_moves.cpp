@@ -22,8 +22,7 @@
     - Use the 'transform_from_tcp_to_wrist' function to populate the 'wrist_place_poses' array.
 */
 
-std::vector<geometry_msgs::Pose> PickAndPlace::create_place_moves(
-		tf::TransformListener& tf_listener)
+std::vector<geometry_msgs::Pose> PickAndPlace::create_place_moves()
 {
   //ROS_ERROR_STREAM("create_place_moves is not implemented yet.  Aborting."); exit(1);
 
@@ -46,8 +45,8 @@ std::vector<geometry_msgs::Pose> PickAndPlace::create_place_moves(
 
   // find transform from tcp to wrist (in TCP frame)
   /* Fill Code: [ use the 'lookupTransform' method in the transform listener] */
-  tf_listener.waitForTransform(cfg.TCP_LINK_NAME, cfg.WRIST_LINK_NAME, ros::Time(0.0f), ros::Duration(3.0f));
-  tf_listener.lookupTransform(cfg.TCP_LINK_NAME, cfg.WRIST_LINK_NAME, ros::Time(0.0f), tcp_to_wrist_tf);
+  transform_listener_ptr->waitForTransform(cfg.TCP_LINK_NAME, cfg.WRIST_LINK_NAME, ros::Time(0.0f), ros::Duration(3.0f));
+  transform_listener_ptr->lookupTransform(cfg.TCP_LINK_NAME, cfg.WRIST_LINK_NAME, ros::Time(0.0f), tcp_to_wrist_tf);
 
   // transform list of pick positions from TCP frame to wrist frame
   /* Fill Code: [ use the 'transform_from_tcp_to_wrist' function and save results into 'wrist_place_poses'] */

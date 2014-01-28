@@ -25,7 +25,6 @@ int main(int argc,char** argv)
   // ros initialization
   ros::init(argc,argv,"pick_and_place_node");
   ros::NodeHandle nh;
-  tf::TransformListener tf_listener; // queries tf to find transforms
   ros::AsyncSpinner spinner(2);
   spinner.start();
 
@@ -43,20 +42,22 @@ int main(int argc,char** argv)
     return 0;
   }
 
-  // initializing marker publisher
+  // marker publisher
   application.marker_publisher = nh.advertise<visualization_msgs::Marker>(
 		  application.cfg.MARKER_TOPIC,1);
 
-  // moveit interface initialization
-  move_group_interface::MoveGroup move_group(application.cfg.ARM_GROUP_NAME);
-  move_group.setPlanningTime(10.0f);
+  // moveit interface
+  application.move_group_ptr = MoveGroupPtr(
+		  new move_group_interface::MoveGroup(application.cfg.ARM_GROUP_NAME));
 
+  // transform listener
+  application.transform_listener_ptr = TransformListenerPtr(new tf::TransformListener());
 
-  // initializing marker publisher
+  // marker publisher
   application.marker_publisher = nh.advertise<visualization_msgs::Marker>(
 		  application.cfg.MARKER_TOPIC,1);
 
-  // initializing target recognition client
+  // target recognition client
   application.target_recognition_client = nh.serviceClient<pick_and_place_exercise::GetTargetPose>(
 		  application.cfg.TARGET_RECOGNITION_SERVICE);
 
@@ -64,23 +65,29 @@ int main(int argc,char** argv)
   application.planning_scene_publisher = nh.advertise<moveit_msgs::PlanningScene>(
 		  application.cfg.PLANNING_SCENE_TOPIC,1);
 
-  // grasp action client initialization
-  GraspActionClient grasp_action_client(application.cfg.GRASP_ACTION_NAME,true);
+  // grasp action client 
+  application.grasp_action_client_ptr = GraspActionClientPtr(
+		  new GraspActionClient(application.cfg.GRASP_ACTION_NAME,true));
 
   // attached object publisher
   application.attach_object_publisher =
 		  nh.advertise<moveit_msgs::AttachedCollisionObject>(
 				  application.cfg.ATTACHED_OBJECT_TOPIC,1);
 
-  // collision object
+  // collision object publisher
   application.collision_object_publisher =
 		  nh.advertise<moveit_msgs::CollisionObject>(application.cfg.COLLISION_OBJECT_TOPIC,1);
 
   // waiting to establish connections
   while(ros::ok() &&
-      !grasp_action_client.waitForServer(ros::Duration(2.0f)))
+      !application.grasp_action_client_ptr->waitForServer(ros::Duration(2.0f)))
   {
-    ROS_INFO_STREAM("Waiting for servers");
+    ROS_INFO_STREAM("Waiting for grasp action servers");
+  }
+
+  if(ros::ok() && !application.target_recognition_client.waitForExistence(ros::Duration(2.0f)))
+  {
+	  ROS_INFO_STREAM("Waiting for service'"<<application.cfg.TARGET_RECOGNITION_SERVICE<<"'");
   }
 
 
@@ -92,28 +99,28 @@ int main(int argc,char** argv)
   application.reset_world();
 
   // open the gripper (suction off)
-  application.set_gripper(grasp_action_client, false);
+  application.set_gripper(false);
 
   // move to a "clear" position
-  application.move_to_wait_position(move_group);
+  application.move_to_wait_position();
 
   // get the box position from perception node
   box_pose = application.detect_box_pick();
 
   // build a sequence of poses to "Pick" the box
-  pick_poses = application.create_pick_moves(tf_listener, box_pose);
+  pick_poses = application.create_pick_moves(box_pose);
 
   // plan/execute the sequence of "pick" moves
-  application.pickup_box(move_group,grasp_action_client,pick_poses,box_pose);
+  application.pickup_box(pick_poses,box_pose);
 
   // build a sequence of poses to "Place" the box
-  place_poses = application.create_place_moves(tf_listener);
+  place_poses = application.create_place_moves();
 
   // plan/execute the "place" moves
-  application.place_box(move_group,grasp_action_client,place_poses);
+  application.place_box(place_poses);
 
   // move back to the "clear" position
-  application.move_to_wait_position(move_group);
+  application.move_to_wait_position();
 
   return 0;
 }

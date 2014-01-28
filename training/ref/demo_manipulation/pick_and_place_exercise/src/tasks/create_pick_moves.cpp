@@ -21,8 +21,7 @@
     - Look into the 'create_manipulation_poses' function and observe how each pick pose is created.
     - Use the 'transform_from_tcp_to_wrist' function to populate the 'wrist_pick_poses' array.
 */
-std::vector<geometry_msgs::Pose> PickAndPlace::create_pick_moves(
-		tf::TransformListener &tf_listener, geometry_msgs::Pose &box_pose)
+std::vector<geometry_msgs::Pose> PickAndPlace::create_pick_moves(geometry_msgs::Pose &box_pose)
 {
   //ROS_ERROR_STREAM("create_pick_moves is not implemented yet.  Aborting."); exit(1);
 
@@ -46,8 +45,8 @@ std::vector<geometry_msgs::Pose> PickAndPlace::create_pick_moves(
 
   // find transform from tcp to wrist (in TCP frame)
   /* Fill Code: [ use the 'lookupTransform' method in the transform listener] */
-  tf_listener.waitForTransform(cfg.TCP_LINK_NAME, cfg.WRIST_LINK_NAME,ros::Time::now(),ros::Duration(3.0f));
-  tf_listener.lookupTransform(cfg.TCP_LINK_NAME, cfg.WRIST_LINK_NAME, ros::Time(0.0f), tcp_to_wrist_tf);
+  transform_listener_ptr->waitForTransform(cfg.TCP_LINK_NAME, cfg.WRIST_LINK_NAME,ros::Time::now(),ros::Duration(3.0f));
+  transform_listener_ptr->lookupTransform(cfg.TCP_LINK_NAME, cfg.WRIST_LINK_NAME, ros::Time(0.0f), tcp_to_wrist_tf);
 
   // transform list of pick positions from TCP frame to wrist frame
   /* Fill Code: [ use the 'transform_from_tcp_to_wrist' function and save results into 'wrist_pick_poses'] */

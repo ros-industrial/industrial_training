@@ -15,10 +15,7 @@
     - Use the methods seen so far such as 'move', 'sendGoal', 'waitForResult' as needed
 */
 
-void PickAndPlace::place_box(
-		move_group_interface::MoveGroup& move_group,
-		GraspActionClient& grasp_action_client,
-		std::vector<geometry_msgs::Pose>& place_poses)
+void PickAndPlace::place_box(std::vector<geometry_msgs::Pose>& place_poses)
 {
   //ROS_ERROR_STREAM("move_through_place_poses is not implemented yet.  Aborting."); exit(1);
 
@@ -28,19 +25,19 @@ void PickAndPlace::place_box(
 
   // set the referenceFrame and EndEffectorLink
   /* Fill Code: [ use the 'setEndEffectorLink' and 'setPoseReferenceFrame' methods of 'move_group'] */
-  move_group.setEndEffectorLink(cfg.WRIST_LINK_NAME);
-  move_group.setPoseReferenceFrame(cfg.WORLD_FRAME_ID);
+  move_group_ptr->setEndEffectorLink(cfg.WRIST_LINK_NAME);
+  move_group_ptr->setPoseReferenceFrame(cfg.WORLD_FRAME_ID);
 
   // move the robot to each wrist place pose
   for(unsigned int i = 0; i < place_poses.size(); i++)
   {
     // set the current place pose as the target
     /* Fill Code: [ use the 'setPoseTarget' method and pass the current pose in 'place_poses'] */
-    move_group.setPoseTarget(place_poses[i]);
+    move_group_ptr->setPoseTarget(place_poses[i]);
 
     // move arm to current place pose
     /* Fill Code: [ call the 'move' method to execute the move ] */
-    success = move_group.move();
+    success = move_group_ptr->move();
 
     if(success)
     {
@@ -59,7 +56,7 @@ void PickAndPlace::place_box(
 	/* Fill Code: [ call the 'set_gripper' function with the appropriate arguments ] */
 	/*   - only call this once, after the target position has been reached */
 	/*   - HINT: this should be the second pose in the sequence of place_poses */
-      set_gripper(grasp_action_client, false);
+      set_gripper(false);
 
       // detaching box
       set_attached_object(false);

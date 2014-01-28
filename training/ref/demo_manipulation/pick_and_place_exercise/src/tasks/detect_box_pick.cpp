@@ -30,11 +30,6 @@ geometry_msgs::Pose PickAndPlace::detect_box_pick()
   tf::poseTFToMsg(cfg.BOX_PLACE_TF,place_pose);
   srv.request.remove_at_poses.push_back(place_pose);
 
-  if(!ros::service::waitForService(cfg.TARGET_RECOGNITION_SERVICE,10000))
-  {
-	  ROS_ERROR_STREAM("Service wait timeout on service '"<<cfg.TARGET_RECOGNITION_SERVICE<<"'");
-  }
-
   // calling service
   geometry_msgs::Pose box_pose;
   if(target_recognition_client.call(srv))
