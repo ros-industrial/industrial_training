@@ -6,4 +6,12 @@
     <rosparam command="load" file="$(find pick_and_place_exercise)/config/ur5/pick_and_place_parameters.yaml"/>
   </node>
 
+  <include file="$(find ur5_environment_moveit_config)/launch/move_group.launch">
+    <arg name="publish_monitored_planning_scene" value="true" />
+  </include>
+
+  <rosparam command="load" file="$(find ur5_environment_moveit_config)/config/joint_names.yaml"/>
+
+  <include file="$(find ur5_environment_moveit_config)/launch/default_warehouse_db.launch" />
+
 </launch>
