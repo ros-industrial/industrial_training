@@ -96,7 +96,6 @@ bool pick_and_place_config::init()
 
   if(nh.getParam("arm_group_name",ARM_GROUP_NAME)
       && nh.getParam("tcp_link_name",TCP_LINK_NAME)
-      && nh.getParam("attached_link_name",ATTACHED_LINK_NAME)
       && nh.getParam("wrist_link_name",WRIST_LINK_NAME)
       && nh.getParam("world_frame_id",WORLD_FRAME_ID)
       && nh.getParam("home_pose_name",HOME_POSE_NAME)
