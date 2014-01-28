@@ -3,9 +3,9 @@ sensors:
    sensor_frame: world_frame
    point_cloud_topic: /filtered_cloud
    max_range: 5.0
-   frame_subsample: 10
-   point_subsample: 10
-   shape_padding: 0.01
+   frame_subsample: 1
+   point_subsample: 1
+   shape_padding: 0.02
    shape_scale: 1
    filtered_cloud_topic: octomap_cloud
 #   self_mask:
