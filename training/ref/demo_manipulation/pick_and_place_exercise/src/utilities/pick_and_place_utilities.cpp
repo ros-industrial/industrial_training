@@ -97,6 +97,7 @@ bool pick_and_place_config::init()
   if(nh.getParam("arm_group_name",ARM_GROUP_NAME)
       && nh.getParam("tcp_link_name",TCP_LINK_NAME)
       && nh.getParam("wrist_link_name",WRIST_LINK_NAME)
+      && nh.getParam("attached_object_link",ATTACHED_OBJECT_LINK_NAME)
       && nh.getParam("world_frame_id",WORLD_FRAME_ID)
       && nh.getParam("home_pose_name",HOME_POSE_NAME)
       && nh.getParam("wait_pose_name",WAIT_POSE_NAME)
@@ -113,7 +114,7 @@ bool pick_and_place_config::init()
     BOX_SIZE = Vector3(l,w,h);
     BOX_PLACE_TF.setOrigin(Vector3(x,y,z));
 
-    // building geometric primitive for attached object
+    // building geometric primitive for target
     shape_msgs::SolidPrimitive shape;
     shape.type = shape_msgs::SolidPrimitive::BOX;
     shape.dimensions.resize(3);
@@ -128,19 +129,6 @@ bool pick_and_place_config::init()
     pose.position.z = 0.5f* BOX_SIZE.getZ();
     pose.orientation.x = pose.orientation.y = pose.orientation.z = 0;
     pose.orientation.w = 1;
-
-    // creating underlying collision object
-    moveit_msgs::CollisionObject cobj;
-    cobj.primitives.clear(); cobj.primitives.push_back(shape);
-    cobj.primitive_poses.clear(); cobj.primitive_poses.push_back(pose);
-    cobj.header.frame_id = WORLD_FRAME_ID;
-    cobj.id = ATTACHED_OBJECT_ID;
-
-    // creating attached collision object message
-    ATTACHED_COLLISION_OBJECT.link_name = WRIST_LINK_NAME;
-    ATTACHED_COLLISION_OBJECT.object = cobj;
-    ATTACHED_COLLISION_OBJECT.object.header.frame_id = TCP_LINK_NAME;
-    //ATTACHED_COLLISION_OBJECT.touch_links.push_back("gripper_body");
 
     // creating visual object
     MARKER_MESSAGE.header.frame_id = TCP_LINK_NAME;

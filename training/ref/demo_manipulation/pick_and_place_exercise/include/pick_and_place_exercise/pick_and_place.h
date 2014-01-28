@@ -16,6 +16,7 @@
 #include <tf/transform_listener.h>
 #include <pick_and_place_exercise/pick_and_place_utilities.h>
 #include <moveit/planning_scene_monitor/planning_scene_monitor.h>
+#include <moveit/robot_model_loader/robot_model_loader.h>
 
 // =============================== aliases ===============================
 typedef actionlib::SimpleActionClient<object_manipulation_msgs::GraspHandPostureExecutionAction> GraspActionClient;
@@ -35,8 +36,6 @@ public:
 // =============================== global members =====================================
 	pick_and_place_config cfg;
 	ros::Publisher marker_publisher;
-	ros::Publisher collision_object_publisher;
-	ros::Publisher attach_object_publisher;
 	ros::Publisher planning_scene_publisher;
 	ros::ServiceClient target_recognition_client;
 	GraspActionClientPtr grasp_action_client_ptr;

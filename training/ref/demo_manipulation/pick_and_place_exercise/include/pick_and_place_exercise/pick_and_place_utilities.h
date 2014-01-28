@@ -36,6 +36,7 @@ public:
   std::string ARM_GROUP_NAME;  // MoveIt Planning Group associated with the robot arm
   std::string TCP_LINK_NAME;   // Link / frame name for the suction gripper tool-tip
   std::string WRIST_LINK_NAME; // Link / frame name for the robot wrist tool-flange
+  std::string ATTACHED_OBJECT_LINK_NAME; // attached object link in robot
   std::string WORLD_FRAME_ID;  // Frame name for the fixed world reference frame
   std::string AR_TAG_FRAME_ID;    // Frame name for the "AR Tag" mounted to the target box
   std::string HOME_POSE_NAME;  // Named pose for robot Home position (set in SRDF)
@@ -45,32 +46,22 @@ public:
   double RETREAT_DISTANCE;     // Distance to back away from pick/place pose after grasp/release
   double APPROACH_DISTANCE;    // Distance to stand off from pick/place pose before grasp/release
 
-
   // =============================== Variables ===============================
   std::string GRASP_ACTION_NAME;  // Action name used to control suction gripper
-  std::string ATTACHED_OBJECT_TOPIC; // Topic for publishing objects that attaches to gripper
-  std::string COLLISION_OBJECT_TOPIC; // Topic for publishing collision objects to the world.
-  std::string PLANNING_SCENE_TOPIC; // Topic for publishing the planning scene
-  std::string MONITORED_PLANNING_SCENE_TOPIC;
   std::string MARKER_TOPIC; // Topic for publishing visualization of attached object.
   std::string TARGET_RECOGNITION_SERVICE; // service for requesting box pick pose
-  std::string ATTACHED_OBJECT_ID; // id for attached object
 
   // =============================== Messages ===============================
-  moveit_msgs::AttachedCollisionObject ATTACHED_COLLISION_OBJECT; // target object
   visualization_msgs::Marker MARKER_MESSAGE; // visual representation of target object
 
   pick_and_place_config()
   {
     ARM_GROUP_NAME  = "manipulator";
     TCP_LINK_NAME   = "tcp_frame";
-    ATTACHED_OBJECT_TOPIC = "attached_collision_object";
-    COLLISION_OBJECT_TOPIC = "collision_object";
-    PLANNING_SCENE_TOPIC = "planning_scene";
     MARKER_TOPIC = "pick_and_place_marker";
     TARGET_RECOGNITION_SERVICE = "target_recognition";
-    ATTACHED_OBJECT_ID = "attached_object";
     WRIST_LINK_NAME = "ee_link";
+    ATTACHED_OBJECT_LINK_NAME = "attached_object_link";
     WORLD_FRAME_ID  = "world_frame";
     HOME_POSE_NAME  = "home";
     WAIT_POSE_NAME  = "wait";

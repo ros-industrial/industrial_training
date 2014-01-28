@@ -46,6 +46,10 @@ int main(int argc,char** argv)
   application.marker_publisher = nh.advertise<visualization_msgs::Marker>(
 		  application.cfg.MARKER_TOPIC,1);
 
+  // planning scene publisher
+  application.planning_scene_publisher = nh.advertise<moveit_msgs::PlanningScene>(
+  		"planning_scene",1);
+
   // moveit interface
   application.move_group_ptr = MoveGroupPtr(
 		  new move_group_interface::MoveGroup(application.cfg.ARM_GROUP_NAME));
@@ -61,22 +65,10 @@ int main(int argc,char** argv)
   application.target_recognition_client = nh.serviceClient<pick_and_place_exercise::GetTargetPose>(
 		  application.cfg.TARGET_RECOGNITION_SERVICE);
 
-  // planning scene publisher
-  application.planning_scene_publisher = nh.advertise<moveit_msgs::PlanningScene>(
-		  application.cfg.PLANNING_SCENE_TOPIC,1);
-
   // grasp action client 
   application.grasp_action_client_ptr = GraspActionClientPtr(
 		  new GraspActionClient(application.cfg.GRASP_ACTION_NAME,true));
 
-  // attached object publisher
-  application.attach_object_publisher =
-		  nh.advertise<moveit_msgs::AttachedCollisionObject>(
-				  application.cfg.ATTACHED_OBJECT_TOPIC,1);
-
-  // collision object publisher
-  application.collision_object_publisher =
-		  nh.advertise<moveit_msgs::CollisionObject>(application.cfg.COLLISION_OBJECT_TOPIC,1);
 
   // waiting to establish connections
   while(ros::ok() &&
