@@ -78,7 +78,6 @@ geometry_msgs::Pose PickAndPlace::detect_box_pick()
 	marker.action = visualization_msgs::Marker::ADD;
 
 	// modifying collision matrix
-	planning_scene.allowed_collision_matrix.default_entry_names.push_back(cfg.ATTACHED_LINK_NAME);
 	planning_scene.allowed_collision_matrix.default_entry_values.push_back(false);
 	planning_scene.is_diff = true;
 	// filling planning scene
