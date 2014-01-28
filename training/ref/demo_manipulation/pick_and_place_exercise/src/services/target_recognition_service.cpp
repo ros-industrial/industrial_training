@@ -222,6 +222,7 @@ bool target_recognition_callback(pick_and_place_exercise::GetTargetPose::Request
 			res.succeeded = true;
 
 			// publishing cloud
+			FILTERED_CLOUD_MSG.header.stamp = ros::Time::now()-ros::Duration(0.5f);
 			filtered_cloud_publisher.publish(FILTERED_CLOUD_MSG);
 		}
 		else
@@ -230,6 +231,7 @@ bool target_recognition_callback(pick_and_place_exercise::GetTargetPose::Request
 			pcl::toROSMsg(*sensor_cloud_ptr,FILTERED_CLOUD_MSG);
 
 			// publishing original cloud
+			FILTERED_CLOUD_MSG.header.stamp = ros::Time::now()-ros::Duration(0.5f);
 			filtered_cloud_publisher.publish(FILTERED_CLOUD_MSG);
 
 			res.succeeded = false;
