@@ -29,7 +29,6 @@ void PickAndPlace::place_box(
   // set the referenceFrame and EndEffectorLink
   /* Fill Code: [ use the 'setEndEffectorLink' and 'setPoseReferenceFrame' methods of 'move_group'] */
   move_group.setEndEffectorLink(cfg.WRIST_LINK_NAME);
-  move_group.getCurrentState()->updateLinkTransforms();
   move_group.setPoseReferenceFrame(cfg.WORLD_FRAME_ID);
 
   // move the robot to each wrist place pose
@@ -38,7 +37,6 @@ void PickAndPlace::place_box(
     // set the current place pose as the target
     /* Fill Code: [ use the 'setPoseTarget' method and pass the current pose in 'place_poses'] */
     move_group.setPoseTarget(place_poses[i]);
-    move_group.setStartStateToCurrentState();
 
     // move arm to current place pose
     /* Fill Code: [ call the 'move' method to execute the move ] */

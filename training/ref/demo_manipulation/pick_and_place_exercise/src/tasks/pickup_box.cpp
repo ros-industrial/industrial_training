@@ -42,8 +42,6 @@ void PickAndPlace::pickup_box(
 	  //   - if not specified, MoveIt will use the parent frame of the SRDF "Virtual Joint"
 	  /* Fill Code: [ use the 'setPoseReferenceFrame' in the 'move_group' object] */
 	  move_group.setPoseReferenceFrame(cfg.WORLD_FRAME_ID);
-	  move_group.getCurrentState()->updateLinkTransforms();
-	  move_group.setStartStateToCurrentState();
 
 	  // move the robot to each wrist pick pose
 	  for(unsigned int i = 0; i < pick_poses.size(); i++)
@@ -52,7 +50,7 @@ void PickAndPlace::pickup_box(
 	    // set the current pose as the target
 	    /* Fill Code: [ use the 'setPoseTarget' method in the 'move_group' object and pass the current pose in 'pick_poses'] */
 		move_group.setPoseTarget(pick_poses[i]);
-		move_group.setStartStateToCurrentState();
+		//move_group.setStartStateToCurrentState();
 
 	    // moving arm to current pick pose
 	    /* Fill Code: [ use the 'move' method in the 'move_group' object and save the result in the 'success' variable] */
