@@ -41,12 +41,11 @@
   <!-- publish the robot state (tf transforms) -->
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
 
-  <include file="$(find ur5_environment_moveit_config)/launch/move_group.launch">
+  <!--<include file="$(find ur5_environment_moveit_config)/launch/move_group.launch">
     <arg name="publish_monitored_planning_scene" value="true" />
-  </include>
+  </include>-->
 
   <rosparam command="load" file="$(find ur5_environment_moveit_config)/config/joint_names.yaml"/>
 
   <include file="$(find ur5_environment_moveit_config)/launch/default_warehouse_db.launch" />
-
 </launch>
