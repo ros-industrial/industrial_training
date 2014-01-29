@@ -28,6 +28,9 @@ void PickAndPlace::place_box(std::vector<geometry_msgs::Pose>& place_poses)
   move_group_ptr->setEndEffectorLink(cfg.WRIST_LINK_NAME);
   move_group_ptr->setPoseReferenceFrame(cfg.WORLD_FRAME_ID);
 
+  // set allowed planning time
+  move_group_ptr->setPlanningTime(60.0f);
+
   // move the robot to each wrist place pose
   for(unsigned int i = 0; i < place_poses.size(); i++)
   {

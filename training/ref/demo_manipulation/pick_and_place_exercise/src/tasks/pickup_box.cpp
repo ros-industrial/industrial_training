@@ -34,6 +34,9 @@ void PickAndPlace::pickup_box(std::vector<geometry_msgs::Pose>& pick_poses,const
 	  /* Fill Code: [ use the 'setEndEffectorLink' in the 'move_group' object] */
 	  move_group_ptr->setEndEffectorLink(cfg.WRIST_LINK_NAME);
 
+	  // set allowed planning time
+	  move_group_ptr->setPlanningTime(60.0f);
+
 	  // set world frame as the reference
 	  //   - the target position is specified relative to this frame
 	  //   - if not specified, MoveIt will use the parent frame of the SRDF "Virtual Joint"
@@ -41,7 +44,6 @@ void PickAndPlace::pickup_box(std::vector<geometry_msgs::Pose>& pick_poses,const
 	  move_group_ptr->setPoseReferenceFrame(cfg.WORLD_FRAME_ID);
 
 	  // move the robot to each wrist pick pose
-	  move_group_ptr->setPlanningTime(10.0f);
 	  for(unsigned int i = 0; i < pick_poses.size(); i++)
 	  {
 
