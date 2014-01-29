@@ -17,17 +17,24 @@ void PickAndPlace::set_attached_object(bool attach, const geometry_msgs::Pose &p
 {
   //ROS_ERROR_STREAM("set_attached_object is not implemented yet.  Aborting."); exit(1);
 
-	moveit_msgs::PlanningScene planning_scene;
-	moveit_msgs::CollisionObject remove_obj;
+	robot_model_loader::RobotModelLoader robot_model_loader("robot_description");
+	robot_model::RobotModelPtr kinematic_model = robot_model_loader.getModel();
+	planning_scene::PlanningScene planning_scene(kinematic_model);
+	planning_scene.setCurrentState(*move_group_ptr->getCurrentState());
+	collision_detection::AllowedCollisionMatrix &acm = planning_scene.getAllowedCollisionMatrixNonConst();
+
+
+	acm.setEntry("attached_object_link","<octomap>",!attach);
+	acm.setDefaultEntry("attached_object_link",!attach);
+
+	// create planning scene message
+	moveit_msgs::PlanningScene planning_scene_msg;
+	planning_scene.getPlanningSceneMsg(planning_scene_msg);
+	planning_scene_msg.is_diff = true;
+	planning_scene_msg.world = moveit_msgs::PlanningSceneWorld();
+
 	if(attach)
 	{
-		cfg.ATTACHED_COLLISION_OBJECT.object.operation = moveit_msgs::CollisionObject::ADD;
-		cfg.ATTACHED_COLLISION_OBJECT.object.header.frame_id = cfg.TCP_LINK_NAME;
-
-		remove_obj.id= cfg.ATTACHED_COLLISION_OBJECT.object.id;
-		remove_obj.header.frame_id = cfg.WORLD_FRAME_ID;
-		remove_obj.operation = moveit_msgs::CollisionObject::REMOVE;
-		cfg.MARKER_MESSAGE.action = visualization_msgs::Marker::ADD;
 
 		// updating orientation
 		geometry_msgs::Quaternion q = pose.orientation;
@@ -35,35 +42,21 @@ void PickAndPlace::set_attached_object(bool attach, const geometry_msgs::Pose &p
 		q.y = -q.y;
 		q.z = -q.z;
 
-		cfg.ATTACHED_COLLISION_OBJECT.object.primitive_poses[0].orientation = q;
+		// updating box marker
 		cfg.MARKER_MESSAGE.pose.orientation = q;
-
-		// modifying collision matrix
-		planning_scene.allowed_collision_matrix.default_entry_values.push_back(true);
-
-		// updating planning scene message
-		planning_scene.world.collision_objects.push_back(remove_obj);
-		planning_scene.robot_state.attached_collision_objects.push_back(cfg.ATTACHED_COLLISION_OBJECT);
-		//planning_scene.robot_state.is_diff = true;
-		planning_scene.is_diff = true;
-
+		cfg.MARKER_MESSAGE.action = visualization_msgs::Marker::ADD;
 
 	}
 	else
 	{
-		cfg.ATTACHED_COLLISION_OBJECT.object.operation = moveit_msgs::CollisionObject::REMOVE;
 		cfg.MARKER_MESSAGE.action = visualization_msgs::Marker::DELETE;
-
-		// updating planning scene message
-		planning_scene.world.collision_objects.push_back(cfg.ATTACHED_COLLISION_OBJECT.object);
-		planning_scene.robot_state.attached_collision_objects.push_back(cfg.ATTACHED_COLLISION_OBJECT);
-		//planning_scene.robot_state.is_diff = true;
-		planning_scene.allowed_collision_matrix.default_entry_values.push_back(false);
-		planning_scene.is_diff = true;
 
 	}
 
+	planning_scene_publisher.publish(planning_scene_msg);
 	marker_publisher.publish(cfg.MARKER_MESSAGE);
+
+	ros::Duration(1.0f).sleep();
 
 }
 
