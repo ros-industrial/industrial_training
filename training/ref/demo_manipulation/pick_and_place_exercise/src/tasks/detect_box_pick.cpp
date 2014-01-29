@@ -21,9 +21,17 @@ geometry_msgs::Pose PickAndPlace::detect_box_pick()
 {
   //ROS_ERROR_STREAM("detect_box_pick is not implemented yet.  Aborting."); exit(1);
 
+  // creating shape for recognition
+  shape_msgs::SolidPrimitive shape;
+  shape.type = shape_msgs::SolidPrimitive::BOX;
+  shape.dimensions.resize(3);
+  shape.dimensions[0] = cfg.BOX_SIZE.getX();
+  shape.dimensions[1] = cfg.BOX_SIZE.getY();
+  shape.dimensions[2] = cfg.BOX_SIZE.getZ();
+
   // creating request object
   pick_and_place_exercise::GetTargetPose srv;
-  srv.request.shape = cfg.ATTACHED_COLLISION_OBJECT.object.primitives[0];
+  srv.request.shape = shape;
   srv.request.world_frame_id = cfg.WORLD_FRAME_ID;
   srv.request.ar_tag_frame_id = cfg.AR_TAG_FRAME_ID;
   geometry_msgs::Pose place_pose;
@@ -54,35 +62,17 @@ geometry_msgs::Pose PickAndPlace::detect_box_pick()
 	  exit(0);
   }
 
-	// creating collision and visualization messages
-    moveit_msgs::PlanningScene planning_scene;
-	moveit_msgs::CollisionObject  col_obj;// = cfg.ATTACHED_COLLISION_OBJECT.object;
+  // updating box marker
 	visualization_msgs::Marker marker = cfg.MARKER_MESSAGE;
-
-	// updating pose of collision object
-	col_obj.id = cfg.ATTACHED_COLLISION_OBJECT.object.id;
-	col_obj.header.frame_id = cfg.WORLD_FRAME_ID;
-	col_obj.primitives = cfg.ATTACHED_COLLISION_OBJECT.object.primitives;
-	col_obj.primitive_poses.push_back(box_pose);
-	col_obj.primitive_poses[0].position.z = 0.5f *col_obj.primitive_poses[0].position.z;
 	marker.header.frame_id = cfg.WORLD_FRAME_ID;
-	marker.pose = col_obj.primitive_poses[0];
+	marker.pose = box_pose;
+	marker.pose.position.z = 0.5f * box_pose.position.z;
 
 	// set object operation
-	col_obj.operation = moveit_msgs::CollisionObject::ADD;
 	marker.action = visualization_msgs::Marker::ADD;
-
-	// modifying collision matrix
-	planning_scene.allowed_collision_matrix.default_entry_values.push_back(false);
-	planning_scene.is_diff = true;
-	// filling planning scene
 
 	// publishing messages
 	marker_publisher.publish(marker);
-	//planning_scene_publisher.publish(planning_scene);
-	//collision_object_publisher.publish(col_obj);
-
-	ros::Duration(2.0f).sleep();
 
 	return box_pose;
 }
