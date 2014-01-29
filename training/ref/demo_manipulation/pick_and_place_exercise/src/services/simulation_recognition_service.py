@@ -29,20 +29,21 @@ def recognition_callback(req):
 	# lookup tranform
 	try:
 		(trans,rot) = tf_listener.lookupTransform(world_frame,ar_frame,rospy.Time(0))
-		rospy.loginfo("ar_frame '%s' relative to '%s' detected",ar_frame,world_frame)
+		rospy.loginfo("ar_frame '%s' relative to '%s' detected",ar_frame,world_frame)		
 		
 		#modifying height
-		trans.z = shape.dimensions[2]
+		height = shape.dimensions[2] if (len(shape.dimensions)==3) else trans[2]
 
 		# creating pose
 		pose = geometry_msgs.msg.Pose()
-		pose.position.x = trans.x
-		pose.position.y = trans.y
-		pose.position.z = trans.z
-		pose.orientation.x = rot.x
-		pose.orientation.y = rot.y
-		pose.orientation.z = rot.z
-		pose.orientation.w = rot.w
+		pose.position.x = trans[0]
+		pose.position.y = trans[1]
+		pose.position.z = height
+		pose.orientation.x = rot[1]
+		pose.orientation.y = rot[2]
+		pose.orientation.z = rot[3]
+		pose.orientation.w = rot[0]
+
 
 		res.target_pose = pose
 		res.succeeded = True	

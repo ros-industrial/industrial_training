@@ -16,6 +16,10 @@
     
     <!-- static frame publisher for simulation -->
     <node pkg="tf" type="static_transform_publisher" name="world_to_tag" args="-0.8 0.2 0.17 0 0 0 world_frame ar_tag 1"/>
+
+    <!-- detection node (simulation) -->
+    <node pkg="pick_and_place_exercise" type="simulation_recognition_service.py" name="target_recognition_service"/>
+
   </group>
 
   <!-- hardware-interface nodes -->
