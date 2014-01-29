@@ -87,7 +87,7 @@ int main(int argc,char** argv)
   /* Pick & Place Tasks                      */
   /* ========================================*/
 
-  // updates the obstacle map
+  // clears the scene and gets a new obstacle map
   application.reset_world();
 
   // open the gripper (suction off)
@@ -96,7 +96,7 @@ int main(int argc,char** argv)
   // move to a "clear" position
   application.move_to_wait_position();
 
-  // get the box position from perception node
+  // get the box position and gets new octomap
   box_pose = application.detect_box_pick();
 
   // build a sequence of poses to "Pick" the box

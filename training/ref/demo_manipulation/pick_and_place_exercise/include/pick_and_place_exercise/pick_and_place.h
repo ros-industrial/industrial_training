@@ -50,7 +50,7 @@ public:
 	void set_attached_object(bool attach,
 			const geometry_msgs::Pose &pose = geometry_msgs::Pose());
 
-	void reset_world();
+	void reset_world(bool refresh_octomap = true);
 
 	geometry_msgs::Pose detect_box_pick();
 

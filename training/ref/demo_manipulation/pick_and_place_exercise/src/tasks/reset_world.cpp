@@ -7,20 +7,39 @@
 
 #include <pick_and_place_exercise/pick_and_place.h>
 
-/*    SET OBJECT IN WORLD
+/*    RESET WORLD
   Goal:
-    - Attaches or detaches target to arms end-effector link.
-    - Publishes object marker for visualization.
   Hints:
 */
-void PickAndPlace::reset_world()
+void PickAndPlace::reset_world(bool refresh_octomap)
 {
 
-	// removing attached objects from robot
-	set_attached_object(false);
+	// clear entire scene
+	robot_model_loader::RobotModelLoader robot_model_loader("robot_description");
+	robot_model::RobotModelPtr kinematic_model = robot_model_loader.getModel();
+	planning_scene::PlanningScene planning_scene(kinematic_model);
+	planning_scene.setCurrentState(*move_group_ptr->getCurrentState());
+	collision_detection::AllowedCollisionMatrix &acm = planning_scene.getAllowedCollisionMatrixNonConst();
+
+	// modifying allowed collision matrix
+	acm.setEntry(cfg.ATTACHED_OBJECT_LINK_NAME,"<octomap>",true);
+	acm.setDefaultEntry(cfg.ATTACHED_OBJECT_LINK_NAME,true);
+
+	// create planning scene message
+	moveit_msgs::PlanningScene planning_scene_msg;
+	planning_scene.getPlanningSceneMsg(planning_scene_msg);
+	planning_scene_msg.is_diff = false;
+	planning_scene_msg.world = moveit_msgs::PlanningSceneWorld();
+
+	// publishing planning scene
+	planning_scene_publisher.publish(planning_scene_msg);
+	ros::Duration(1.0f).sleep();
 
 	// get new sensor snapshot
-	detect_box_pick();
+	if(refresh_octomap)
+	{
+		detect_box_pick();
+	}
 
 }
 
