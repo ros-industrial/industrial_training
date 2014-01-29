@@ -48,7 +48,7 @@ int main(int argc,char** argv)
 
   // planning scene publisher
   application.planning_scene_publisher = nh.advertise<moveit_msgs::PlanningScene>(
-  		"planning_scene",1);
+  		application.cfg.PLANNING_SCENE_TOPIC,1);
 
   // moveit interface
   application.move_group_ptr = MoveGroupPtr(

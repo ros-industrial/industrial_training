@@ -23,9 +23,9 @@ void PickAndPlace::set_attached_object(bool attach, const geometry_msgs::Pose &p
 	planning_scene.setCurrentState(*move_group_ptr->getCurrentState());
 	collision_detection::AllowedCollisionMatrix &acm = planning_scene.getAllowedCollisionMatrixNonConst();
 
-
-	acm.setEntry("attached_object_link","<octomap>",!attach);
-	acm.setDefaultEntry("attached_object_link",!attach);
+	// modifying allowed collision matrix
+	acm.setEntry(cfg.ATTACHED_OBJECT_LINK_NAME,"<octomap>",!attach);
+	acm.setDefaultEntry(cfg.ATTACHED_OBJECT_LINK_NAME,!attach);
 
 	// create planning scene message
 	moveit_msgs::PlanningScene planning_scene_msg;
@@ -33,25 +33,16 @@ void PickAndPlace::set_attached_object(bool attach, const geometry_msgs::Pose &p
 	planning_scene_msg.is_diff = true;
 	planning_scene_msg.world = moveit_msgs::PlanningSceneWorld();
 
-	if(attach)
-	{
+	// updating orientation
+	geometry_msgs::Quaternion q = pose.orientation;
+	q.x = -q.x;
+	q.y = -q.y;
+	q.z = -q.z;
+	cfg.MARKER_MESSAGE.pose.orientation = q;
 
-		// updating orientation
-		geometry_msgs::Quaternion q = pose.orientation;
-		q.x = -q.x;
-		q.y = -q.y;
-		q.z = -q.z;
-
-		// updating box marker
-		cfg.MARKER_MESSAGE.pose.orientation = q;
-		cfg.MARKER_MESSAGE.action = visualization_msgs::Marker::ADD;
-
-	}
-	else
-	{
-		cfg.MARKER_MESSAGE.action = visualization_msgs::Marker::DELETE;
-
-	}
+	// updating action
+	cfg.MARKER_MESSAGE.action =
+			attach ? visualization_msgs::Marker::ADD : visualization_msgs::Marker::DELETE;
 
 	planning_scene_publisher.publish(planning_scene_msg);
 	marker_publisher.publish(cfg.MARKER_MESSAGE);

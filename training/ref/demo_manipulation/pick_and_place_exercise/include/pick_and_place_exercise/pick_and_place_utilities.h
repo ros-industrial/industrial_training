@@ -49,6 +49,7 @@ public:
   // =============================== Variables ===============================
   std::string GRASP_ACTION_NAME;  // Action name used to control suction gripper
   std::string MARKER_TOPIC; // Topic for publishing visualization of attached object.
+  std::string PLANNING_SCENE_TOPIC; // Topic for publishing the planning scene
   std::string TARGET_RECOGNITION_SERVICE; // service for requesting box pick pose
 
   // =============================== Messages ===============================
@@ -59,6 +60,7 @@ public:
     ARM_GROUP_NAME  = "manipulator";
     TCP_LINK_NAME   = "tcp_frame";
     MARKER_TOPIC = "pick_and_place_marker";
+    PLANNING_SCENE_TOPIC = "planning_scene";
     TARGET_RECOGNITION_SERVICE = "target_recognition";
     WRIST_LINK_NAME = "ee_link";
     ATTACHED_OBJECT_LINK_NAME = "attached_object_link";
