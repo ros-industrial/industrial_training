@@ -188,54 +188,43 @@ bool target_recognition_callback(pick_and_place_exercise::GetTargetPose::Request
 		// find height of box top surface
 		float height = detect_box_height(*sensor_cloud_ptr,world_to_ar_tf);
 
-		if(height - BOX_HEIGHT > -BOX_HEIGHT_TOLERANCE )
+		// updating box pick transform
+		world_to_box_pick_tf = world_to_ar_tf;
+		box_pick_position = world_to_box_pick_tf.getOrigin();
+		box_pick_position.setZ(height);
+		world_to_box_pick_tf.setOrigin(box_pick_position);
+
+		// filtering box from sensor cloud
+		filter_box(world_to_sensor_tf,
+				world_to_box_pick_tf,*sensor_cloud_ptr,*filtered_cloud_ptr);
+
+		// filter box at requested locations
+		for(unsigned int i =0;i < req.remove_at_poses.size();i++)
 		{
+			tf::Transform world_to_box;
+			tf::poseMsgToTF(req.remove_at_poses[i],world_to_box);
 
-			// updating box pick transform
-			world_to_box_pick_tf = world_to_ar_tf;
-			box_pick_position = world_to_box_pick_tf.getOrigin();
-			box_pick_position.setZ(height);
-			world_to_box_pick_tf.setOrigin(box_pick_position);
+			// copying last filter cloud
+			pcl::copyPointCloud(*filtered_cloud_ptr,*sensor_cloud_ptr);
 
-			// filtering box from sensor cloud
-			filter_box(world_to_sensor_tf,
-					world_to_box_pick_tf,*sensor_cloud_ptr,*filtered_cloud_ptr);
-
-			// filter box at requested locations
-			for(unsigned int i =0;i < req.remove_at_poses.size();i++)
-			{
-				tf::Transform world_to_box;
-				tf::poseMsgToTF(req.remove_at_poses[i],world_to_box);
-
-				// copying last filter cloud
-				pcl::copyPointCloud(*filtered_cloud_ptr,*sensor_cloud_ptr);
-
-				// filter box from last computed cloud
-				filter_box(world_to_sensor_tf,world_to_box,*sensor_cloud_ptr,*filtered_cloud_ptr);
-			}
-
-			// converting to message
-			pcl::toROSMsg(*filtered_cloud_ptr,FILTERED_CLOUD_MSG);
-
-			// populating response
-			tf::poseTFToMsg(world_to_box_pick_tf,res.target_pose);
-			res.succeeded = true;
-
-			// publishing cloud
-			FILTERED_CLOUD_MSG.header.stamp = ros::Time::now()-ros::Duration(0.5f);
-			filtered_cloud_publisher.publish(FILTERED_CLOUD_MSG);
+			// filter box from last computed cloud
+			filter_box(world_to_sensor_tf,world_to_box,*sensor_cloud_ptr,*filtered_cloud_ptr);
 		}
-		else
+
+		// converting to message
+		pcl::toROSMsg(*filtered_cloud_ptr,FILTERED_CLOUD_MSG);
+
+		// populating response
+		tf::poseTFToMsg(world_to_box_pick_tf,res.target_pose);
+		res.succeeded = height - BOX_HEIGHT > -BOX_HEIGHT_TOLERANCE ;
+
+		// publishing cloud
+		FILTERED_CLOUD_MSG.header.stamp = ros::Time::now()-ros::Duration(0.5f);
+		filtered_cloud_publisher.publish(FILTERED_CLOUD_MSG);
+
+		if(!res.succeeded)
 		{
-			// converting to message
-			pcl::toROSMsg(*sensor_cloud_ptr,FILTERED_CLOUD_MSG);
-
-			// publishing original cloud
-			FILTERED_CLOUD_MSG.header.stamp = ros::Time::now()-ros::Duration(0.5f);
-			filtered_cloud_publisher.publish(FILTERED_CLOUD_MSG);
-
-			res.succeeded = false;
-			ROS_ERROR_STREAM("Estimated pick height was smaller than box height");
+			ROS_ERROR_STREAM("Estimated pick height was smaller than box height: "<<height);
 		}
 	}
 	else
