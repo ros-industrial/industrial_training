@@ -74,7 +74,7 @@ void PickAndPlace::pickup_box(std::vector<geometry_msgs::Pose>& pick_poses,const
 	    }
 
 
-	    if(i == 1)
+	    if(i == 2)
 	    {
 	    	// attach box to end effector
 	    	set_attached_object(true,box_pose);

@@ -50,6 +50,12 @@ void PickAndPlace::place_box(std::vector<geometry_msgs::Pose>& place_poses)
     }
 
 
+    if(i ==0)
+    {
+      // detaching box
+      set_attached_object(false);
+    }
+
     if(i == 1)
     {
 	// turn off gripper suction after reaching target pose
@@ -57,10 +63,8 @@ void PickAndPlace::place_box(std::vector<geometry_msgs::Pose>& place_poses)
 	/*   - only call this once, after the target position has been reached */
 	/*   - HINT: this should be the second pose in the sequence of place_poses */
       set_gripper(false);
-
-      // detaching box
-      set_attached_object(false);
     }
+
   }
 }
 
