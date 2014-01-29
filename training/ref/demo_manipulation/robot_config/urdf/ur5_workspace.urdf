@@ -229,7 +229,7 @@
     <collision>
       <!--<origin xyz="0 0 0.03"/>-->
       <geometry>
-        <box size="0.044 0.088 0.0946"/>
+        <box size="0.044 0.088 0.16"/>
       </geometry>
       <material name="another_blue2">
         <color rgba="0.38 0.54 0.83 1"/>
@@ -569,3 +569,4 @@
   </joint>
   <!-- end of arm-gripper coupling joint definitions -->
 </robot>
+
