@@ -2,7 +2,7 @@
 \mainpage
 \htmlinclude manifest.html
 
-\b pick_and_place_exercise 
+\b collision_avoidance_pick_and_place 
 
 <!-- 
 Provide an overview of your package.
