@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<robot name="ur5_workspace" xmlns:xacro="http://ros.org/wiki/xacro">
+<robot name="ur5_collision_avoidance" xmlns:xacro="http://ros.org/wiki/xacro">
 	<xacro:include filename="$(find robot_config)/urdf/vacuum_gripper_macro.xacro"/>
   	<xacro:include filename="$(find robot_config)/urdf/ur5_model.urdf.xacro" />	
 	<xacro:include filename="$(find robot_config)/urdf/workspace_components.xacro"/>
