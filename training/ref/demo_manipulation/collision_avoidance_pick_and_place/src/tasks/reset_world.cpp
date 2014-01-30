@@ -5,13 +5,13 @@
  *      Author: ros-industrial
  */
 
-#include <pick_and_place_exercise/pick_and_place.h>
+#include <collision_avoidance_pick_and_place/pick_and_place.h>
 
 /*    RESET WORLD
   Goal:
   Hints:
 */
-void PickAndPlace::reset_world(bool refresh_octomap)
+void collision_avoidance_pick_and_place::PickAndPlace::reset_world(bool refresh_octomap)
 {
 
 	// clear entire scene

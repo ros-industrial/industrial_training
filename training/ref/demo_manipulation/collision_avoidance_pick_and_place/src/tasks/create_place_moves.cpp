@@ -5,7 +5,7 @@
  *      Author: ros-industrial
  */
 
-#include <pick_and_place_exercise/pick_and_place.h>
+#include <collision_avoidance_pick_and_place/pick_and_place.h>
 
 /*    CREATE PLACE MOVES
   Goal:
@@ -22,7 +22,7 @@
     - Use the 'transform_from_tcp_to_wrist' function to populate the 'wrist_place_poses' array.
 */
 
-std::vector<geometry_msgs::Pose> PickAndPlace::create_place_moves()
+std::vector<geometry_msgs::Pose> collision_avoidance_pick_and_place::PickAndPlace::create_place_moves()
 {
   //ROS_ERROR_STREAM("create_place_moves is not implemented yet.  Aborting."); exit(1);
 

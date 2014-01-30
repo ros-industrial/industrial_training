@@ -6,7 +6,9 @@
  *      Author: ros developer 
  */
 
-#include <pick_and_place_exercise/pick_and_place.h>
+#include <collision_avoidance_pick_and_place/pick_and_place.h>
+
+using namespace collision_avoidance_pick_and_place;
 
 // =============================== Main Thread ===============================
 int main(int argc,char** argv)
@@ -18,7 +20,7 @@ int main(int argc,char** argv)
   /*	INITIALIZING ROS NODE
       Goal:
       - Observe all steps needed to properly initialize a ros node.
-      - Look into the 'cfg' global var to take notice of the parameters that
+      - Look into the 'cfg' member of PickAndPlace to take notice of the parameters that
         are available for the rest of the program. */
   /* =========================================================================================*/
 
@@ -62,7 +64,7 @@ int main(int argc,char** argv)
 		  application.cfg.MARKER_TOPIC,1);
 
   // target recognition client
-  application.target_recognition_client = nh.serviceClient<pick_and_place_exercise::GetTargetPose>(
+  application.target_recognition_client = nh.serviceClient<collision_avoidance_pick_and_place::GetTargetPose>(
 		  application.cfg.TARGET_RECOGNITION_SERVICE);
 
   // grasp action client 

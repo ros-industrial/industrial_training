@@ -5,7 +5,7 @@
  *      Author: ros-industrial
  */
 
-#include <pick_and_place_exercise/pick_and_place.h>
+#include <collision_avoidance_pick_and_place/pick_and_place.h>
 
 /*    SET GRIPPER
   Goal:
@@ -13,7 +13,7 @@
     - Confirm that the gripper was successfully opened or closed.  Exit program on failure;
   Hints:
 */
-void PickAndPlace::set_gripper(bool do_grasp)
+void collision_avoidance_pick_and_place::PickAndPlace::set_gripper(bool do_grasp)
 {
   //ROS_ERROR_STREAM("set_gripper is not implemented yet.  Aborting."); exit(1);
 

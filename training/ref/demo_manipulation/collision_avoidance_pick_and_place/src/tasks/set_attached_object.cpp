@@ -5,7 +5,7 @@
  *      Author: ros-industrial
  */
 
-#include <pick_and_place_exercise/pick_and_place.h>
+#include <collision_avoidance_pick_and_place/pick_and_place.h>
 
 /*    SET ATTACHED OBJECT
   Goal:
@@ -13,7 +13,7 @@
     - Publishes object marker for visualization.
   Hints:
 */
-void PickAndPlace::set_attached_object(bool attach, const geometry_msgs::Pose &pose)
+void collision_avoidance_pick_and_place::PickAndPlace::set_attached_object(bool attach, const geometry_msgs::Pose &pose)
 {
   //ROS_ERROR_STREAM("set_attached_object is not implemented yet.  Aborting."); exit(1);
 

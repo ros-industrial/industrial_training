@@ -22,7 +22,7 @@
 #include <boost/make_shared.hpp>
 #include <tf/transform_listener.h>
 #include <tf/transform_broadcaster.h>
-#include <pick_and_place_exercise/GetTargetPose.h>
+#include <collision_avoidance_pick_and_place/GetTargetPose.h>
 #include <math.h>
 
 // alias
@@ -54,8 +54,8 @@ ros::ServiceServer target_detection_server;
 ros::Publisher filtered_cloud_publisher;
 
 // function signatures
-bool target_recognition_callback(pick_and_place_exercise::GetTargetPose::Request& req,
-		pick_and_place_exercise::GetTargetPose::Response& res);
+bool target_recognition_callback(collision_avoidance_pick_and_place::GetTargetPose::Request& req,
+		collision_avoidance_pick_and_place::GetTargetPose::Response& res);
 bool grab_sensor_snapshot(sensor_msgs::PointCloud2& msg);
 bool get_ar_transform(tf::Transform& world_to_ar_tf);
 void filter_box(const tf::Transform& world_to_sensor_tf,
@@ -116,8 +116,8 @@ bool grab_sensor_snapshot(sensor_msgs::PointCloud2& msg)
 	return msg_ptr != sensor_msgs::PointCloud2ConstPtr();
 }
 
-bool target_recognition_callback(pick_and_place_exercise::GetTargetPose::Request& req,
-		pick_and_place_exercise::GetTargetPose::Response& res)
+bool target_recognition_callback(collision_avoidance_pick_and_place::GetTargetPose::Request& req,
+		collision_avoidance_pick_and_place::GetTargetPose::Response& res)
 {
 	// transform listener and broadcaster
 	static tf::TransformListener tf_listener;

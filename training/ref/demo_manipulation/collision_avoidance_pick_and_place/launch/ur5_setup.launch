@@ -18,7 +18,7 @@
     <node pkg="tf" type="static_transform_publisher" name="world_to_tag" args="-0.8 0.2 0.17 0 0 0 world_frame ar_tag 1"/>
 
     <!-- detection node (simulation) -->
-    <node pkg="pick_and_place_exercise" type="simulation_recognition_service.py" name="target_recognition_service"/>
+    <node pkg="collision_avoidance_pick_and_place" type="simulation_recognition_service.py" name="target_recognition_service"/>
 
   </group>
 
@@ -35,7 +35,7 @@
     <include file="$(find sensor_config)/launch/ur5_sensor_setup.launch"/>
 
     <!-- detection node -->
-    <include file="$(find pick_and_place_exercise)/launch/ur5_target_recognition.launch"/>
+    <include file="$(find collision_avoidance_pick_and_place)/launch/ur5_target_recognition.launch"/>
     
     <!-- ar tag detection node -->	
     <node name="ar_pose" pkg="ar_pose" type="ar_multi" respawn="false">
@@ -54,7 +54,7 @@
 
   <!-- rviz -->
   <node name="$(anon rviz)" pkg="rviz" type="rviz" respawn="false" 
-        args="-d $(find pick_and_place_exercise)/config/ur5/rviz_config.rviz" output="screen">
+        args="-d $(find collision_avoidance_pick_and_place)/config/ur5/rviz_config.rviz" output="screen">
     <rosparam command="load" file="$(find ur5_environment_moveit_config)/config/kinematics.yaml"/>
   </node>
 

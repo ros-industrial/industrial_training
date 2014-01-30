@@ -6,7 +6,7 @@
  */
 
 
-#include <pick_and_place_exercise/pick_and_place.h>
+#include <collision_avoidance_pick_and_place/pick_and_place.h>
 
 /* MOVE ARM THROUGH PICK POSES
   Goal:
@@ -20,7 +20,7 @@
       can be used to prepare the robot for planning.
     - The 'setPoseTarget' method allows you to set a "pose" as your target to move the robot.
 */
-void PickAndPlace::pickup_box(std::vector<geometry_msgs::Pose>& pick_poses,const geometry_msgs::Pose& box_pose)
+void collision_avoidance_pick_and_place::PickAndPlace::pickup_box(std::vector<geometry_msgs::Pose>& pick_poses,const geometry_msgs::Pose& box_pose)
 {
 	  //ROS_ERROR_STREAM("move_through_pick_poses is not implemented yet.  Aborting."); exit(1);
 
