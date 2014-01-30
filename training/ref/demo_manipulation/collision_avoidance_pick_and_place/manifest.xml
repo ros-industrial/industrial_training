@@ -1,13 +1,13 @@
 <package>
-  <description brief="pick_and_place_exercise">
+  <description brief="collision_avoidance_pick_and_place">
 
-     pick_and_place_exercise
+     collision_avoidance_pick_and_place
 
   </description>
   <author>Jnicho</author>
   <license>BSD</license>
   <review status="unreviewed" notes=""/>
-  <url>http://ros.org/wiki/pick_and_place_exercise</url>
+  <url>http://ros.org/wiki/collision_avoidance_pick_and_place</url>
   <depend package="roscpp"/>
   <depend package="ar_pose"/>
   <depend package="std_msgs"/>
