@@ -1,4 +1,4 @@
-/*
+	/*
  * Manipulation Lab
  * pick_and_place_node.cpp
  *
@@ -7,8 +7,6 @@
  */
 
 #include <pick_and_place_exercise/pick_and_place.h>
-
-pick_and_place_config cfg;  // global var
 
 // =============================== Main Thread ===============================
 int main(int argc,char** argv)
@@ -27,12 +25,14 @@ int main(int argc,char** argv)
   // ros initialization
   ros::init(argc,argv,"pick_and_place_node");
   ros::NodeHandle nh;
-  tf::TransformListener tf_listener; // queries tf to find transforms
   ros::AsyncSpinner spinner(2);
   spinner.start();
 
+  // creating pick and place instance
+  PickAndPlace application;
+
   // reading parameters
-  if(cfg.init())
+  if(application.cfg.init())
   {
     ROS_INFO_STREAM("Parameters successfully read");
   }
@@ -42,17 +42,44 @@ int main(int argc,char** argv)
     return 0;
   }
 
-  // moveit interface initialization
-  move_group_interface::MoveGroup move_group(cfg.ARM_GROUP_NAME);
+  // marker publisher
+  application.marker_publisher = nh.advertise<visualization_msgs::Marker>(
+		  application.cfg.MARKER_TOPIC,1);
 
-  // grasp action client initialization
-  GraspActionClient grasp_action_client(cfg.GRASP_ACTION_NAME,true);
+  // planning scene publisher
+  application.planning_scene_publisher = nh.advertise<moveit_msgs::PlanningScene>(
+  		application.cfg.PLANNING_SCENE_TOPIC,1);
+
+  // moveit interface
+  application.move_group_ptr = MoveGroupPtr(
+		  new move_group_interface::MoveGroup(application.cfg.ARM_GROUP_NAME));
+
+  // transform listener
+  application.transform_listener_ptr = TransformListenerPtr(new tf::TransformListener());
+
+  // marker publisher
+  application.marker_publisher = nh.advertise<visualization_msgs::Marker>(
+		  application.cfg.MARKER_TOPIC,1);
+
+  // target recognition client
+  application.target_recognition_client = nh.serviceClient<pick_and_place_exercise::GetTargetPose>(
+		  application.cfg.TARGET_RECOGNITION_SERVICE);
+
+  // grasp action client 
+  application.grasp_action_client_ptr = GraspActionClientPtr(
+		  new GraspActionClient(application.cfg.GRASP_ACTION_NAME,true));
+
 
   // waiting to establish connections
   while(ros::ok() &&
-      !grasp_action_client.waitForServer(ros::Duration(2.0f)))
+      !application.grasp_action_client_ptr->waitForServer(ros::Duration(2.0f)))
   {
-    ROS_INFO_STREAM("Waiting for servers");
+    ROS_INFO_STREAM("Waiting for grasp action servers");
+  }
+
+  if(ros::ok() && !application.target_recognition_client.waitForExistence(ros::Duration(2.0f)))
+  {
+	  ROS_INFO_STREAM("Waiting for service'"<<application.cfg.TARGET_RECOGNITION_SERVICE<<"'");
   }
 
 
@@ -60,29 +87,32 @@ int main(int argc,char** argv)
   /* Pick & Place Tasks                      */
   /* ========================================*/
 
-  // move to a "clear" position
-  move_to_wait_position(move_group);
+  // clears the scene and gets a new obstacle map
+  application.reset_world();
 
   // open the gripper (suction off)
-  set_gripper(grasp_action_client, false);
+  application.set_gripper(false);
 
-  // get the box position from perception node
-  box_pose = detect_box_pick(tf_listener);
+  // move to a "clear" position
+  application.move_to_wait_position();
+
+  // get the box position and gets new octomap
+  box_pose = application.detect_box_pick();
 
   // build a sequence of poses to "Pick" the box
-  pick_poses = create_pick_moves(tf_listener, box_pose);
+  pick_poses = application.create_pick_moves(box_pose);
 
   // plan/execute the sequence of "pick" moves
-  move_through_pick_poses(move_group,grasp_action_client,pick_poses);
+  application.pickup_box(pick_poses,box_pose);
 
   // build a sequence of poses to "Place" the box
-  place_poses = create_place_moves(tf_listener);
+  place_poses = application.create_place_moves();
 
   // plan/execute the "place" moves
-  move_through_place_poses(move_group,grasp_action_client,place_poses);
+  application.place_box(place_poses);
 
   // move back to the "clear" position
-  move_to_wait_position(move_group);
+  application.move_to_wait_position();
 
   return 0;
 }

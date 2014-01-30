@@ -15,7 +15,11 @@
     <node pkg="robot_io" type="simulated_grasp_action_server" name="gripper_action_server" output="screen"/>
     
     <!-- static frame publisher for simulation -->
-    <node pkg="tf" type="static_transform_publisher" name="world_to_tag" args="-0.8 0.2 0.17 0 0 0 world_frame ar_tag 1"/>	
+    <node pkg="tf" type="static_transform_publisher" name="world_to_tag" args="-0.8 0.2 0.17 0 0 0 world_frame ar_tag 1"/>
+
+    <!-- detection node (simulation) -->
+    <node pkg="pick_and_place_exercise" type="simulation_recognition_service.py" name="target_recognition_service"/>
+
   </group>
 
   <!-- hardware-interface nodes -->
@@ -29,6 +33,9 @@
 
     <!-- sensor setup -->
     <include file="$(find sensor_config)/launch/ur5_sensor_setup.launch"/>
+
+    <!-- detection node -->
+    <include file="$(find pick_and_place_exercise)/launch/ur5_target_recognition.launch"/>
     
     <!-- ar tag detection node -->	
     <node name="ar_pose" pkg="ar_pose" type="ar_multi" respawn="false">

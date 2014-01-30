@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
 <robot name="sia20d_workspace" xmlns:xacro="http://ros.org/wiki/xacro">
-	<include filename="$(find motoman_config)/cfg/sia20d_mesh_macro.xacro"/>
-	<include filename="$(find robot_config)/urdf/vacuum_gripper_macro.xacro"/>
-	<include filename="$(find robot_config)/urdf/workspace_components.xacro"/>
-	<include filename="$(find robot_config)/urdf/kinect_sensor_macro.xacro"/>
+	<xacro:include filename="$(find motoman_config)/cfg/sia20d_mesh_macro.xacro"/>
+	<xacro:include filename="$(find robot_config)/urdf/vacuum_gripper_macro.xacro"/>
+	<xacro:include filename="$(find robot_config)/urdf/workspace_components.xacro"/>
+	<xacro:include filename="$(find robot_config)/urdf/kinect_sensor_macro.xacro"/>
 
 	<!-- property list -->
 	<xacro:property name="workcell_height" value="1"/>

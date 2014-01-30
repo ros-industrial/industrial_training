@@ -6,10 +6,13 @@
  */
 
 #include <pick_and_place_exercise/pick_and_place_utilities.h>
+#include <moveit/kinematic_constraints/utils.h>
+#include <boost/assign/std/vector.hpp>
 #include <iostream>
 #include <ros/ros.h>
 
 using namespace tf;
+using namespace boost::assign;
 
 // =============================== Utility functions ===============================
 
@@ -54,6 +57,28 @@ std::vector<geometry_msgs::Pose> transform_from_tcp_to_wrist(tf::Transform tcp_t
   return wrist_poses;
 }
 
+moveit_msgs::Constraints create_path_orientation_constraints(const geometry_msgs::Pose &goal_pose,
+		float x_tolerance,float y_tolerance,float z_tolerance,std::string link_name)
+{
+	moveit_msgs::Constraints path_constraints = moveit_msgs::Constraints();
+	path_constraints.name = "tcp_orientation_constraint";
+
+	// setting constraint properties
+	moveit_msgs::OrientationConstraint orientation_constraint = moveit_msgs::OrientationConstraint();
+	orientation_constraint.header.frame_id="world_frame";
+	//orientation_constraint.orientation = goal_pose.orientation;
+	orientation_constraint.orientation.w = 1;
+	orientation_constraint.absolute_x_axis_tolerance = x_tolerance;
+	orientation_constraint.absolute_y_axis_tolerance = y_tolerance;
+	orientation_constraint.absolute_z_axis_tolerance = z_tolerance;
+	orientation_constraint.weight = 1.0f;
+	orientation_constraint.link_name = link_name;
+
+	// adding orientation constraint to path_constraints object
+	path_constraints.orientation_constraints.push_back(orientation_constraint);
+	return path_constraints;
+}
+
 std::ostream& operator<<(std::ostream& os, const tf::Vector3 vec)
 {
   return os << "[" << vec.getX() << ", " << vec.getY() << ", " << vec.getZ() << "]";
@@ -72,10 +97,11 @@ bool pick_and_place_config::init()
   if(nh.getParam("arm_group_name",ARM_GROUP_NAME)
       && nh.getParam("tcp_link_name",TCP_LINK_NAME)
       && nh.getParam("wrist_link_name",WRIST_LINK_NAME)
+      && nh.getParam("attached_object_link",ATTACHED_OBJECT_LINK_NAME)
       && nh.getParam("world_frame_id",WORLD_FRAME_ID)
       && nh.getParam("home_pose_name",HOME_POSE_NAME)
       && nh.getParam("wait_pose_name",WAIT_POSE_NAME)
-      && nh.getParam("tag_frame_id",TAG_FRAME_ID)
+      && nh.getParam("ar_frame_id",AR_TAG_FRAME_ID)
       && nh.getParam("box_width",w)
       && nh.getParam("box_length",l)
       && nh.getParam("box_height",h)
@@ -87,6 +113,39 @@ bool pick_and_place_config::init()
   {
     BOX_SIZE = Vector3(l,w,h);
     BOX_PLACE_TF.setOrigin(Vector3(x,y,z));
+
+    // building geometric primitive for target
+    shape_msgs::SolidPrimitive shape;
+    shape.type = shape_msgs::SolidPrimitive::BOX;
+    shape.dimensions.resize(3);
+    shape.dimensions[0] = BOX_SIZE.getX();
+    shape.dimensions[1] = BOX_SIZE.getY();
+    shape.dimensions[2] = BOX_SIZE.getZ();
+
+    // creating pose of object relative to tcp
+    geometry_msgs::Pose pose;
+    pose.position.x = 0;
+    pose.position.y = 0;
+    pose.position.z = 0.5f* BOX_SIZE.getZ();
+    pose.orientation.x = pose.orientation.y = pose.orientation.z = 0;
+    pose.orientation.w = 1;
+
+    // creating visual object
+    MARKER_MESSAGE.header.frame_id = TCP_LINK_NAME;
+    MARKER_MESSAGE.type = visualization_msgs::Marker::CUBE;
+    MARKER_MESSAGE.pose = pose;
+    MARKER_MESSAGE.id = 0;
+    MARKER_MESSAGE.color.r = 0;
+    MARKER_MESSAGE.color.g = 0;
+    MARKER_MESSAGE.color.b = 1;
+    MARKER_MESSAGE.color.a = 0.5f;
+    MARKER_MESSAGE.lifetime = ros::Duration(100); // persists forever
+    MARKER_MESSAGE.frame_locked = true;
+    MARKER_MESSAGE.scale.x = shape.dimensions[0];
+    MARKER_MESSAGE.scale.y = shape.dimensions[1];
+    MARKER_MESSAGE.scale.z = shape.dimensions[2];
+
+
     return true;
   }
   else

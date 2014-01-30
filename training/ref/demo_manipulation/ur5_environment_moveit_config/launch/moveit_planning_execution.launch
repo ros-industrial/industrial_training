@@ -27,9 +27,10 @@
 <remap from="/follow_joint_trajectory/goal" to="/joint_trajectory_action/goal" />
 <remap from="/follow_joint_trajectory/cancel" to="/joint_trajectory_action/cancel" />
 	<node name="ur5_driver" pkg="ur5_driver" type="driver.py" args="$(arg robot_ip)" required="true" output="screen">
-		<!--param name="prefix" value=""/-->
 		<param name="prevent_programming" value="false"/>
 	</node>
+
+	<!--<node name="ur_driver" pkg="ur_driver" type="driver.py" args="$(arg robot_ip)" required="true" output="screen" />-->
 
 	<!-- TF Buffer Server -->
 	<node pkg="tf2_ros" type="buffer_server" name="tf2_buffer_server" output="screen">
@@ -40,12 +41,11 @@
   <!-- publish the robot state (tf transforms) -->
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
 
-  <include file="$(find ur5_environment_moveit_config)/launch/move_group.launch">
+  <!--<include file="$(find ur5_environment_moveit_config)/launch/move_group.launch">
     <arg name="publish_monitored_planning_scene" value="true" />
-  </include>
+  </include>-->
 
   <rosparam command="load" file="$(find ur5_environment_moveit_config)/config/joint_names.yaml"/>
 
   <include file="$(find ur5_environment_moveit_config)/launch/default_warehouse_db.launch" />
-
 </launch>

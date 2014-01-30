@@ -17,22 +17,63 @@
     - lookupTransform can also look "in the past".  Use Time=0 to get the most-recent transform.
     - tf::poseTFToMsg allows converting transforms into Pose messages
 */
-geometry_msgs::Pose detect_box_pick(tf::TransformListener &tf_listener)
+geometry_msgs::Pose PickAndPlace::detect_box_pick()
 {
   //ROS_ERROR_STREAM("detect_box_pick is not implemented yet.  Aborting."); exit(1);
 
-  // task variables
-  tf::StampedTransform world_to_box_pick_tf;
+  // creating shape for recognition
+  shape_msgs::SolidPrimitive shape;
+  shape.type = shape_msgs::SolidPrimitive::BOX;
+  shape.dimensions.resize(3);
+  shape.dimensions[0] = cfg.BOX_SIZE.getX();
+  shape.dimensions[1] = cfg.BOX_SIZE.getY();
+  shape.dimensions[2] = cfg.BOX_SIZE.getZ();
+
+  // creating request object
+  pick_and_place_exercise::GetTargetPose srv;
+  srv.request.shape = shape;
+  srv.request.world_frame_id = cfg.WORLD_FRAME_ID;
+  srv.request.ar_tag_frame_id = cfg.AR_TAG_FRAME_ID;
+  geometry_msgs::Pose place_pose;
+  tf::poseTFToMsg(cfg.BOX_PLACE_TF,place_pose);
+  srv.request.remove_at_poses.push_back(place_pose);
+
+  // calling service
   geometry_msgs::Pose box_pose;
+  if(target_recognition_client.call(srv))
+  {
+	  if(srv.response.succeeded)
+	  {
+		  box_pose = srv.response.target_pose;
+		  ROS_INFO_STREAM("target recognition succeeded");
+	  }
+	  else
+	  {
+		  ROS_ERROR_STREAM("target recognition failed");
+		  return box_pose;
 
-  // use transform listener to find the box's pick pose (relative to world frame)
-  /* Fill Code: [ use the 'lookupTransform' method in the transform listener] */
-  tf_listener.lookupTransform(cfg.WORLD_FRAME_ID,cfg.TAG_FRAME_ID,ros::Time(0.0f),world_to_box_pick_tf);
+	  }
+  }
+  else
+  {
+	  ROS_ERROR_STREAM("Service call for target recognition failed with response '"<<
+			  (srv.response.succeeded ?"SUCCESS":"FAILURE")
+					  <<"', exiting");
+	  exit(0);
+  }
 
-  // save pose in 'box_pose'
-  /* Fill Code: [ use the 'tf::poseTFToMsg' to convert a TF transform into a pose message] */
-  tf::poseTFToMsg(world_to_box_pick_tf,box_pose);
+  // updating box marker
+	visualization_msgs::Marker marker = cfg.MARKER_MESSAGE;
+	marker.header.frame_id = cfg.WORLD_FRAME_ID;
+	marker.pose = box_pose;
+	marker.pose.position.z = 0.5f * box_pose.position.z;
 
-  return box_pose;
+	// set object operation
+	marker.action = visualization_msgs::Marker::ADD;
+
+	// publishing messages
+	marker_publisher.publish(marker);
+
+	return box_pose;
 }
 

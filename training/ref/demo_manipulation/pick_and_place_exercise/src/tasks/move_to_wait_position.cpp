@@ -17,7 +17,7 @@
     - Once the target is set you can call the 'move' method in order to go to that target.
 */
 
-void move_to_wait_position(move_group_interface::MoveGroup& move_group)
+void PickAndPlace::move_to_wait_position()
 {
   //ROS_ERROR_STREAM("move_to_wait_position is not implemented yet.  Aborting."); exit(1);
 
@@ -26,11 +26,11 @@ void move_to_wait_position(move_group_interface::MoveGroup& move_group)
 
   // set robot wait target
   /* Fill Code: [ use the 'setNamedTarget' method in the 'move_group' object] */
-  move_group.setNamedTarget(cfg.WAIT_POSE_NAME);
+  move_group_ptr->setNamedTarget(cfg.WAIT_POSE_NAME);
 
   // move the robot
   /* Fill Code: [ use the 'move' method in the 'move_group' object and save the result in the 'success' variable] */
-  success = move_group.move();
+  success = move_group_ptr->move();
   if(success)
   {
     ROS_INFO_STREAM("Move " << cfg.WAIT_POSE_NAME<< " Succeeded");

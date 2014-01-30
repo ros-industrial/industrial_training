@@ -13,7 +13,7 @@
     - Confirm that the gripper was successfully opened or closed.  Exit program on failure;
   Hints:
 */
-void set_gripper(GraspActionClient& grasp_action_client, bool do_grasp)
+void PickAndPlace::set_gripper(bool do_grasp)
 {
   //ROS_ERROR_STREAM("set_gripper is not implemented yet.  Aborting."); exit(1);
 
@@ -29,12 +29,12 @@ void set_gripper(GraspActionClient& grasp_action_client, bool do_grasp)
     grasp_goal.goal = object_manipulation_msgs::GraspHandPostureExecutionGoal::RELEASE;
 
   /* Fill Code: [ use the 'sendGoal' method of the grasp client to open gripper] */
-  grasp_action_client.sendGoal(grasp_goal);
+  grasp_action_client_ptr->sendGoal(grasp_goal);
 
   // confirm that gripper opened
   /* Fill Code: [ use the 'waitForResult' to check and save result in success variable] */
   /*   - can you specify a timeout for the wait command? */
-  success = grasp_action_client.waitForResult(ros::Duration(4.0f));
+  success = grasp_action_client_ptr->waitForResult(ros::Duration(4.0f));
 
   if(success)
   {
