@@ -4,7 +4,7 @@
   <arg name="robot_ip" unless="$(arg sim)"/>
 
   <!-- moveit components -->
-  <include file="$(find ur5_environment_moveit_config)/launch/moveit_planning_execution.launch">
+  <include file="$(find ur5_collision_avoidance_moveit_config)/launch/moveit_planning_execution.launch">
     <arg name="sim" value="$(arg sim)"/>
     <arg unless="$(arg sim)" name="robot_ip" value="$(arg robot_ip)"/>
   </include>
@@ -55,7 +55,7 @@
   <!-- rviz -->
   <node name="$(anon rviz)" pkg="rviz" type="rviz" respawn="false" 
         args="-d $(find collision_avoidance_pick_and_place)/config/ur5/rviz_config.rviz" output="screen">
-    <rosparam command="load" file="$(find ur5_environment_moveit_config)/config/kinematics.yaml"/>
+    <rosparam command="load" file="$(find ur5_collision_avoidance_moveit_config)/config/kinematics.yaml"/>
   </node>
 
 </launch>
