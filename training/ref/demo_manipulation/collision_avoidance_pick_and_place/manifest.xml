@@ -1,0 +1,29 @@
+<package>
+  <description brief="collision_avoidance_pick_and_place">
+
+     collision_avoidance_pick_and_place
+
+  </description>
+  <author>Jnicho</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/collision_avoidance_pick_and_place</url>
+  <depend package="roscpp"/>
+  <depend package="ar_pose"/>
+  <depend package="std_msgs"/>
+  <depend package="moveit_msgs"/>
+  <depend package="shape_msgs"/>
+  <depend package="moveit_ros_manipulation"/>
+  <depend package="moveit_ros_move_group"/>
+  <depend package="moveit_ros_planning_interface"/>
+  <depend package="robot_io"/>
+  <depend package="object_manipulation_msgs"/>
+  <depend package="actionlib"/>
+  <depend package="industrial_robot_client" />
+  <depend package="industrial_robot_simulator" />
+  <depend package="pcl_ros"/>
+  <depend package="pcl_msgs"/>
+
+</package>
+
+

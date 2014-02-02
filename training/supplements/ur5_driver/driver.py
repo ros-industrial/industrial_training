@@ -234,7 +234,7 @@ class CommanderTCPHandler(SocketServer.BaseRequestHandler):
                     raise EOF("EOF on recv")
                 return more
             else:
-                now = rospy.get_rostime()
+                now = rospy.Time.now()
                 if self.last_joint_states and \
                         self.last_joint_states.header.stamp < now - rospy.Duration(1.0):
                     rospy.logerr("Stopped hearing from robot (last heard %.3f sec ago).  Disconnected" % \
@@ -669,7 +669,7 @@ def main():
 
     # Reads the maximum velocity
     global max_velocity
-    max_velocity = rospy.get_param("~max_velocity", 0.5)
+    max_velocity = rospy.get_param("~max_velocity", 2.0)
 
     # Sets up the server for the robot to connect to
     server = TCPServer(("", 50001), CommanderTCPHandler)

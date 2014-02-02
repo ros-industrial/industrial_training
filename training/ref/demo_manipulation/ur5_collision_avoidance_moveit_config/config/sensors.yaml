@@ -1,0 +1,29 @@
+sensors: 
+ - sensor_plugin: occupancy_map_monitor/PointCloudOctomapUpdater
+   sensor_frame: world_frame
+   point_cloud_topic: /filtered_cloud
+   max_range: 5.0
+   frame_subsample: 1
+   point_subsample: 1
+   shape_padding: 0.02
+   shape_scale: 1
+   filtered_cloud_topic: octomap_cloud
+#   self_mask:
+#    min_sensor_dist: .8
+#    self_see_default_padding: .04
+#    self_see_default_scale: 1.0
+#    self_see_links:
+#      - name: shoulder_link
+#        padding: 0.2
+#        #scale: 1.2
+#      - name: base_link
+#        padding: 0.2
+#        #scale: 1.2
+#      - name: wrist_3_link
+#        padding: 0.2
+#      - name: wrist_2_link
+#        padding: 0.2
+#      - name: wrist_1_link
+#        padding: 0.2
+#      - name: forearm_link
+#        padding: 0.2
