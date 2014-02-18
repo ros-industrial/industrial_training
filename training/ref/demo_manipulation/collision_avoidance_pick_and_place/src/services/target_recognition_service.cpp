@@ -170,7 +170,7 @@ bool target_recognition_callback(collision_avoidance_pick_and_place::GetTargetPo
 		try
 		{
 			tf_listener.lookupTransform(WORLD_FRAME_ID,msg.header.frame_id,
-							ros::Time(0),world_to_sensor_tf);
+					ros::Time::now() - ros::Duration(0.2f),world_to_sensor_tf);
 		}
 		catch(tf::LookupException &e)
 		{
@@ -245,7 +245,7 @@ bool get_ar_transform(tf::Transform& world_to_ar_tf)
 	try
 	{
 		tf_listener.lookupTransform(WORLD_FRAME_ID,AR_TAG_FRAME_ID,
-				ros::Time(0),world_to_ar_tf_stamped);
+				ros::Time::now() - ros::Duration(0.2f),world_to_ar_tf_stamped);
 
 		// copying transform data
 		world_to_ar_tf.setRotation( world_to_ar_tf_stamped.getRotation());
@@ -346,7 +346,7 @@ void filter_box(const tf::Transform& world_to_sensor_tf,
 	prism.setInputCloud(sensor_cloud_ptr);
 	prism.setInputPlanarHull( pick_surface_cloud_ptr);
 	prism.setHeightLimits(-10,10);
-	prism.setViewPoint(viewpoint.x(),viewpoint.y(),viewpoint.z());
+	//prism.setViewPoint(viewpoint.x(),viewpoint.y(),viewpoint.z());
 	prism.segment(*inliers);
 
 	//pcl::copyPointCloud(*sensor_cloud_ptr,indices.indices,filtered_cloud);
