@@ -51,6 +51,12 @@ void collision_avoidance_pick_and_place::PickAndPlace::pickup_box(std::vector<ge
 	    /* Fill Code: [ use the 'setPoseTarget' method in the 'move_group' object and pass the current pose in 'pick_poses'] */
 	  	move_group_ptr->setPoseTarget(pick_poses[i]);
 
+	    if(i == 2)
+	    {
+	    	// attach box to end effector
+	    	set_attached_object(true,box_pose);
+	    }
+
 	    // moving arm to current pick pose
 	    /* Fill Code: [ use the 'move' method in the 'move_group' object and save the result in the 'success' variable] */
 	    success = move_group_ptr->move();
@@ -73,12 +79,6 @@ void collision_avoidance_pick_and_place::PickAndPlace::pickup_box(std::vector<ge
 		/* Fill Code: [ call the 'set_gripper' function to turn on suction ] */
 	      set_gripper(true);
 
-	    }
-
-	    if(i == 1)
-	    {
-	    	// attach box to end effector
-	    	set_attached_object(true,box_pose);
 	    }
 
 	  }

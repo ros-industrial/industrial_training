@@ -23,6 +23,8 @@ void collision_avoidance_pick_and_place::PickAndPlace::place_box(std::vector<geo
   object_manipulation_msgs::GraspHandPostureExecutionGoal grasp_goal;
   bool success;
 
+
+
   // set the referenceFrame and EndEffectorLink
   /* Fill Code: [ use the 'setEndEffectorLink' and 'setPoseReferenceFrame' methods of 'move_group'] */
   move_group_ptr->setEndEffectorLink(cfg.WRIST_LINK_NAME);
@@ -34,9 +36,21 @@ void collision_avoidance_pick_and_place::PickAndPlace::place_box(std::vector<geo
   // move the robot to each wrist place pose
   for(unsigned int i = 0; i < place_poses.size(); i++)
   {
+
     // set the current place pose as the target
     /* Fill Code: [ use the 'setPoseTarget' method and pass the current pose in 'place_poses'] */
     move_group_ptr->setPoseTarget(place_poses[i]);
+
+  	if(i==0 || i == 1)
+  	{
+      // attaching box
+      set_attached_object(true);
+  	}
+  	else
+  	{
+      // detaching box
+      set_attached_object(false);
+  	}
 
     // move arm to current place pose
     /* Fill Code: [ call the 'move' method to execute the move ] */
@@ -61,9 +75,6 @@ void collision_avoidance_pick_and_place::PickAndPlace::place_box(std::vector<geo
 	/*   - HINT: this should be the second pose in the sequence of place_poses */
       set_gripper(false);
 
-
-      // detaching box
-      set_attached_object(false);
     }
 
   }
