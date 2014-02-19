@@ -49,7 +49,7 @@ void collision_avoidance_pick_and_place::PickAndPlace::pickup_box(std::vector<ge
 
 	    // set the current pose as the target
 	    /* Fill Code: [ use the 'setPoseTarget' method in the 'move_group' object and pass the current pose in 'pick_poses'] */
-		move_group_ptr->setPoseTarget(pick_poses[i]);
+	  	move_group_ptr->setPoseTarget(pick_poses[i]);
 
 	    // moving arm to current pick pose
 	    /* Fill Code: [ use the 'move' method in the 'move_group' object and save the result in the 'success' variable] */
@@ -75,8 +75,7 @@ void collision_avoidance_pick_and_place::PickAndPlace::pickup_box(std::vector<ge
 
 	    }
 
-
-	    if(i == 2)
+	    if(i == 1)
 	    {
 	    	// attach box to end effector
 	    	set_attached_object(true,box_pose);

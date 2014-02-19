@@ -53,12 +53,6 @@ void collision_avoidance_pick_and_place::PickAndPlace::place_box(std::vector<geo
     }
 
 
-    if(i ==0)
-    {
-      // detaching box
-      set_attached_object(false);
-    }
-
     if(i == 1)
     {
 	// turn off gripper suction after reaching target pose
@@ -66,6 +60,10 @@ void collision_avoidance_pick_and_place::PickAndPlace::place_box(std::vector<geo
 	/*   - only call this once, after the target position has been reached */
 	/*   - HINT: this should be the second pose in the sequence of place_poses */
       set_gripper(false);
+
+
+      // detaching box
+      set_attached_object(false);
     }
 
   }
