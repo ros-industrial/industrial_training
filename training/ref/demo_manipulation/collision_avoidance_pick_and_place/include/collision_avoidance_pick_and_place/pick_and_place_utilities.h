@@ -54,6 +54,7 @@ public:
 
   // =============================== Messages ===============================
   visualization_msgs::Marker MARKER_MESSAGE; // visual representation of target object
+  moveit_msgs::CollisionObject ATTACHED_OBJECT; // attached object message
 
   pick_and_place_config()
   {

@@ -145,6 +145,11 @@ bool pick_and_place_config::init()
     MARKER_MESSAGE.scale.y = shape.dimensions[1];
     MARKER_MESSAGE.scale.z = shape.dimensions[2];
 
+    // create attached object
+    ATTACHED_OBJECT.header.frame_id = TCP_LINK_NAME;
+    ATTACHED_OBJECT.id=ATTACHED_OBJECT_LINK_NAME;
+    ATTACHED_OBJECT.primitives.push_back(shape);
+    ATTACHED_OBJECT.primitive_poses.push_back(pose);
 
     return true;
   }
