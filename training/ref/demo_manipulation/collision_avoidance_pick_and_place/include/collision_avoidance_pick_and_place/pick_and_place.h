@@ -14,9 +14,11 @@
 #include <moveit_msgs/PlanningScene.h>
 #include <object_manipulation_msgs/GraspHandPostureExecutionAction.h>
 #include <tf/transform_listener.h>
+#include <tf_conversions/tf_eigen.h>
 #include <collision_avoidance_pick_and_place/pick_and_place_utilities.h>
 #include <moveit/planning_scene_monitor/planning_scene_monitor.h>
 #include <moveit/robot_model_loader/robot_model_loader.h>
+#include <geometric_shapes/shape_operations.h>
 
 // =============================== aliases ===============================
 typedef actionlib::SimpleActionClient<object_manipulation_msgs::GraspHandPostureExecutionAction> GraspActionClient;
