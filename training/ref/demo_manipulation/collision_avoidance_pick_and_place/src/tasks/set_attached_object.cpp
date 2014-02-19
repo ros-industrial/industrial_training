@@ -17,34 +17,48 @@ void collision_avoidance_pick_and_place::PickAndPlace::set_attached_object(bool 
 {
   //ROS_ERROR_STREAM("set_attached_object is not implemented yet.  Aborting."); exit(1);
 
-	robot_model_loader::RobotModelLoader robot_model_loader("robot_description");
-	robot_model::RobotModelPtr kinematic_model = robot_model_loader.getModel();
-	planning_scene::PlanningScene planning_scene(kinematic_model);
-	planning_scene.setCurrentState(*move_group_ptr->getCurrentState());
-	collision_detection::AllowedCollisionMatrix &acm = planning_scene.getAllowedCollisionMatrixNonConst();
+	// get robot state
+	robot_state::RobotStatePtr current_state= move_group_ptr->getCurrentState();
 
-	// modifying allowed collision matrix
-	acm.setEntry(cfg.ATTACHED_OBJECT_LINK_NAME,"<octomap>",!attach);
-	acm.setDefaultEntry(cfg.ATTACHED_OBJECT_LINK_NAME,!attach);
+	if(attach)
+	{
+		// updating orientation
+		geometry_msgs::Quaternion q = pose.orientation;
+		q.x = -q.x;
+		q.y = -q.y;
+		q.z = -q.z;
+		cfg.MARKER_MESSAGE.pose.orientation = q;
+		cfg.ATTACHED_OBJECT.primitive_poses[0].orientation = q;
 
-	// create planning scene message
-	moveit_msgs::PlanningScene planning_scene_msg;
-	planning_scene.getPlanningSceneMsg(planning_scene_msg);
-	planning_scene_msg.is_diff = true;
-	planning_scene_msg.world = moveit_msgs::PlanningSceneWorld();
+		// constructing shape
+		std::vector<shapes::ShapeConstPtr> shapes_array;
+		shapes::ShapeConstPtr shape( shapes::constructShapeFromMsg( cfg.ATTACHED_OBJECT.primitives[0]));
+		shapes_array.push_back(shape);
 
-	// updating orientation
-	geometry_msgs::Quaternion q = pose.orientation;
-	q.x = -q.x;
-	q.y = -q.y;
-	q.z = -q.z;
-	cfg.MARKER_MESSAGE.pose.orientation = q;
+		// constructing pose
+		tf::Transform attached_tf;
+		tf::poseMsgToTF(cfg.ATTACHED_OBJECT.primitive_poses[0],attached_tf);
+		EigenSTL::vector_Affine3d pose_array(1);
+		tf::transformTFToEigen(attached_tf,pose_array[0]);
 
-	// updating action
+		// attaching
+		current_state->attachBody(cfg.ATTACHED_OBJECT_LINK_NAME,shapes_array,pose_array,std::vector<std::string>(),cfg.TCP_LINK_NAME);
+	}
+	else
+	{
+
+		// detaching
+		current_state->clearAttachedBodies(cfg.ATTACHED_OBJECT_LINK_NAME);
+	}
+
+	// setting moveit interface start state
+	move_group_ptr->setStartState(*current_state);
+
+	// updating marker action
 	cfg.MARKER_MESSAGE.action =
 			attach ? visualization_msgs::Marker::ADD : visualization_msgs::Marker::DELETE;
 
-	planning_scene_publisher.publish(planning_scene_msg);
+	// publish marker
 	marker_publisher.publish(cfg.MARKER_MESSAGE);
 
 	ros::Duration(1.0f).sleep();
