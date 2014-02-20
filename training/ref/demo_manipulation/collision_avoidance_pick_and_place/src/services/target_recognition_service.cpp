@@ -91,7 +91,7 @@ int main(int argc,char** argv)
 	FILTERED_CLOUD_MSG = sensor_msgs::PointCloud2();
 	while(ros::ok())
 	{
-		ros::Duration(0.1f).sleep();
+		ros::Duration(0.2f).sleep();
 		ros::spinOnce();
 		//filtered_cloud_publisher.publish(FILTERED_CLOUD_MSG);
 	}
@@ -212,6 +212,7 @@ bool target_recognition_callback(collision_avoidance_pick_and_place::GetTargetPo
 		}
 
 		// converting to message
+		FILTERED_CLOUD_MSG = sensor_msgs::PointCloud2();
 		pcl::toROSMsg(*filtered_cloud_ptr,FILTERED_CLOUD_MSG);
 
 		// populating response
