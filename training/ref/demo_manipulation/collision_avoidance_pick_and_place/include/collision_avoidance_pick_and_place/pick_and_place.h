@@ -56,7 +56,7 @@ namespace collision_avoidance_pick_and_place
 		void set_gripper(bool do_grasp);
 
 		void set_attached_object(bool attach,
-				const geometry_msgs::Pose &pose,moveit_msgs::RobotState &robot_state);
+				const geometry_msgs::Pose &pose = geometry_msgs::Pose());
 
 		void reset_world(bool refresh_octomap = true);
 
@@ -72,7 +72,7 @@ namespace collision_avoidance_pick_and_place
 
 
 		bool create_motion_plan(const geometry_msgs::Pose &pose_target,
-				const moveit_msgs::RobotState &start_robot_state,move_group_interface::MoveGroup::Plan &plan);
+				move_group_interface::MoveGroup::Plan &plan);
 
 	};
 }
