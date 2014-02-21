@@ -11,7 +11,7 @@
   Goal:
     - Find the box's position in the world frame using the transform listener.
         * this transform is published by the kinect AR-tag perception node
-    - Save the pose into 'box_pose'.
+    - Save the pose into 'box_pick_pose'.
 
   Hints:
     - lookupTransform can also look "in the past".  Use Time=0 to get the most-recent transform.
@@ -39,18 +39,18 @@ geometry_msgs::Pose collision_avoidance_pick_and_place::PickAndPlace::detect_box
   srv.request.remove_at_poses.push_back(place_pose);
 
   // calling service
-  geometry_msgs::Pose box_pose;
+  geometry_msgs::Pose box_pick_pose;
   if(target_recognition_client.call(srv))
   {
 	  if(srv.response.succeeded)
 	  {
-		  box_pose = srv.response.target_pose;
+		  box_pick_pose = srv.response.target_pose;
 		  ROS_INFO_STREAM("target recognition succeeded");
 	  }
 	  else
 	  {
 		  ROS_ERROR_STREAM("target recognition failed");
-		  return box_pose;
+		  exit(0);
 
 	  }
   }
@@ -65,8 +65,8 @@ geometry_msgs::Pose collision_avoidance_pick_and_place::PickAndPlace::detect_box
   // updating box marker
 	visualization_msgs::Marker marker = cfg.MARKER_MESSAGE;
 	marker.header.frame_id = cfg.WORLD_FRAME_ID;
-	marker.pose = box_pose;
-	marker.pose.position.z = 0.5f * box_pose.position.z;
+	marker.pose = box_pick_pose;
+	marker.pose.position.z = box_pick_pose.position.z - 0.5f*marker.scale.z;
 
 	// set object operation
 	marker.action = visualization_msgs::Marker::ADD;
@@ -74,6 +74,7 @@ geometry_msgs::Pose collision_avoidance_pick_and_place::PickAndPlace::detect_box
 	// publishing messages
 	marker_publisher.publish(marker);
 
-	return box_pose;
+
+	return box_pick_pose;
 }
 

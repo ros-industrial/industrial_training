@@ -33,9 +33,6 @@ void collision_avoidance_pick_and_place::PickAndPlace::pickup_box(std::vector<ge
 	  /* Fill Code: [ use the 'setEndEffectorLink' in the 'move_group' object] */
 	  move_group_ptr->setEndEffectorLink(cfg.WRIST_LINK_NAME);
 
-	  // set allowed planning time
-	  move_group_ptr->setPlanningTime(60.0f);
-
 	  // set world frame as the reference
 	  //   - the target position is specified relative to this frame
 	  //   - if not specified, MoveIt will use the parent frame of the SRDF "Virtual Joint"
@@ -45,20 +42,9 @@ void collision_avoidance_pick_and_place::PickAndPlace::pickup_box(std::vector<ge
 	  // move the robot to each wrist pick pose
 	  for(unsigned int i = 0; i < pick_poses.size(); i++)
 	  {
-	  	moveit_msgs::RobotState robot_state;
-	    if(i == 2)
-	    {
-	    	// attach box to end effector
-	    	set_attached_object(true,box_pose,robot_state);
-	    }
-	    else
-	    {
-	    	// detach box
-	    	set_attached_object(false,geometry_msgs::Pose(),robot_state);
-	    }
 
 	    move_group_interface::MoveGroup::Plan plan;
-	    success = create_motion_plan(pick_poses[i],robot_state,plan) && move_group_ptr->execute(plan);
+	    success = create_motion_plan(pick_poses[i],plan) && move_group_ptr->execute(plan);
 
 	    // verifying move completion
 	    if(success)
@@ -77,7 +63,12 @@ void collision_avoidance_pick_and_place::PickAndPlace::pickup_box(std::vector<ge
 		// turn on gripper suction after approach pose
 		/* Fill Code: [ call the 'set_gripper' function to turn on suction ] */
 	      set_gripper(true);
+	    }
 
+	    if(i == 2)
+	    {
+	    	// attach box to end effector
+	    	set_attached_object(true,box_pose);
 	    }
 
 	  }

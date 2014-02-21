@@ -22,7 +22,7 @@ namespace collision_avoidance_pick_and_place
 {
 
 bool PickAndPlace::create_motion_plan(const geometry_msgs::Pose &pose_target,
-		const moveit_msgs::RobotState &start_robot_state,move_group_interface::MoveGroup::Plan &plan)
+		move_group_interface::MoveGroup::Plan &plan)
 {
 	// creating motion plan
 	moveit_msgs::GetMotionPlan motion_plan;
@@ -38,7 +38,7 @@ bool PickAndPlace::create_motion_plan(const geometry_msgs::Pose &pose_target,
 	moveit_msgs::Constraints pose_goal = kinematic_constraints::constructGoalConstraints(cfg.WRIST_LINK_NAME,p,position_tolerances,
 			orientation_tolerances);
 
-	req.start_state = start_robot_state;
+	robot_state::robotStateToRobotStateMsg(*move_group_ptr->getCurrentState(),req.start_state);
 	req.group_name = cfg.ARM_GROUP_NAME;
 	req.goal_constraints.push_back(pose_goal);
 	req.allowed_planning_time = 60.0f;

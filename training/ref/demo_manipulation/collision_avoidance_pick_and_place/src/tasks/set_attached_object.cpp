@@ -16,45 +16,39 @@
 
 namespace collision_avoidance_pick_and_place
 {
-void PickAndPlace::set_attached_object(bool attach, const geometry_msgs::Pose &pose,moveit_msgs::RobotState &robot_state)
+void PickAndPlace::set_attached_object(bool attach, const geometry_msgs::Pose &pose)
 {
   //ROS_ERROR_STREAM("set_attached_object is not implemented yet.  Aborting."); exit(1);
 
-	// get robot state
-	robot_state::RobotStatePtr current_state= move_group_ptr->getCurrentState();
+  // adding attached box to collision matrix
+	robot_model_loader::RobotModelLoader robot_model_loader("robot_description");
+	robot_model::RobotModelPtr kinematic_model = robot_model_loader.getModel();
+	planning_scene::PlanningScene planning_scene(kinematic_model);
+	planning_scene.setCurrentState(*move_group_ptr->getCurrentState());
+	collision_detection::AllowedCollisionMatrix &acm = planning_scene.getAllowedCollisionMatrixNonConst();
 
-	if(attach)
+	// modifying allowed collision matrix
+	acm.setDefaultEntry(cfg.ATTACHED_OBJECT_LINK_NAME,!attach);
+	acm.setEntry(cfg.ATTACHED_OBJECT_LINK_NAME,"<octomap>",!attach);
+	for(unsigned int i = 0;i < cfg.TOUCH_LINKS.size();i++)
 	{
-		// updating orientation
-		geometry_msgs::Quaternion q = pose.orientation;
-		q.x = -q.x;
-		q.y = -q.y;
-		q.z = -q.z;
-		q.w = 1;
-		cfg.MARKER_MESSAGE.pose.orientation = q;
-		cfg.ATTACHED_OBJECT.primitive_poses[0].orientation = q;
-
-		// constructing shape
-		std::vector<shapes::ShapeConstPtr> shapes_array;
-		shapes::ShapeConstPtr shape( shapes::constructShapeFromMsg( cfg.ATTACHED_OBJECT.primitives[0]));
-		shapes_array.push_back(shape);
-
-		// constructing pose
-		tf::Transform attached_tf;
-		tf::poseMsgToTF(cfg.ATTACHED_OBJECT.primitive_poses[0],attached_tf);
-		EigenSTL::vector_Affine3d pose_array(1);
-		tf::transformTFToEigen(attached_tf,pose_array[0]);
-
-		// attaching
-		current_state->attachBody(cfg.ATTACHED_OBJECT_LINK_NAME,shapes_array,pose_array,std::vector<std::string>(),cfg.TCP_LINK_NAME);
+		acm.setEntry(cfg.ATTACHED_OBJECT_LINK_NAME,cfg.TOUCH_LINKS[i],false);
 	}
-	else
-	{
 
-		// detaching
-		if(current_state->hasAttachedBody(cfg.ATTACHED_OBJECT_LINK_NAME))
-				current_state->clearAttachedBodies(cfg.ATTACHED_OBJECT_LINK_NAME);
-	}
+	// create planning scene message
+	moveit_msgs::PlanningScene planning_scene_msg;
+	planning_scene.getPlanningSceneMsg(planning_scene_msg);
+	planning_scene_msg.is_diff = true;
+	planning_scene_msg.world = moveit_msgs::PlanningSceneWorld();
+
+
+	// updating orientation
+	geometry_msgs::Quaternion q = pose.orientation;
+	q.x = -q.x;
+	q.y = -q.y;
+	q.z = -q.z;
+	q.w = 1;
+	cfg.MARKER_MESSAGE.pose.orientation = q;
 
 	// updating marker action
 	cfg.MARKER_MESSAGE.action =
@@ -62,9 +56,8 @@ void PickAndPlace::set_attached_object(bool attach, const geometry_msgs::Pose &p
 
 	// publish messages
 	marker_publisher.publish(cfg.MARKER_MESSAGE);
-
-	// save robot state data
-	robot_state::robotStateToRobotStateMsg(*current_state,robot_state);
+	planning_scene_publisher.publish(planning_scene_msg);
+	ros::Duration(1.0f).sleep();
 
 }
 
