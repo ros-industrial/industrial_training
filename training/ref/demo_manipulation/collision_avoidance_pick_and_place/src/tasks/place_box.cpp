@@ -15,12 +15,12 @@
     - Use the methods seen so far such as 'move', 'sendGoal', 'waitForResult' as needed
 */
 
-void collision_avoidance_pick_and_place::PickAndPlace::place_box(std::vector<geometry_msgs::Pose>& place_poses)
+void collision_avoidance_pick_and_place::PickAndPlace::place_box(std::vector<geometry_msgs::Pose>& place_poses,
+		const geometry_msgs::Pose& box_pose)
 {
   //ROS_ERROR_STREAM("move_through_place_poses is not implemented yet.  Aborting."); exit(1);
 
   // task variables
-  object_manipulation_msgs::GraspHandPostureExecutionGoal grasp_goal;
   bool success;
 
 
@@ -36,25 +36,23 @@ void collision_avoidance_pick_and_place::PickAndPlace::place_box(std::vector<geo
   // move the robot to each wrist place pose
   for(unsigned int i = 0; i < place_poses.size(); i++)
   {
-
-    // set the current place pose as the target
-    /* Fill Code: [ use the 'setPoseTarget' method and pass the current pose in 'place_poses'] */
-    move_group_ptr->setPoseTarget(place_poses[i]);
-
+  	moveit_msgs::RobotState robot_state;
   	if(i==0 || i == 1)
   	{
       // attaching box
-      set_attached_object(true);
+      set_attached_object(true,box_pose,robot_state);
+
+    	ROS_INFO_STREAM("Robot State with attached payload at place move ["<<i<<"] :\n"<<robot_state);
   	}
   	else
   	{
       // detaching box
-      set_attached_object(false);
+      set_attached_object(false,geometry_msgs::Pose(),robot_state);
   	}
 
-    // move arm to current place pose
-    /* Fill Code: [ call the 'move' method to execute the move ] */
-    success = move_group_ptr->move();
+  	// create motion plan
+    move_group_interface::MoveGroup::Plan plan;
+    success = create_motion_plan(place_poses[i],robot_state,plan) && move_group_ptr->execute(plan);
 
     if(success)
     {

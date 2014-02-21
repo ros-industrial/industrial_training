@@ -51,6 +51,7 @@ public:
   std::string MARKER_TOPIC; // Topic for publishing visualization of attached object.
   std::string PLANNING_SCENE_TOPIC; // Topic for publishing the planning scene
   std::string TARGET_RECOGNITION_SERVICE; // service for requesting box pick pose
+  std::string MOTION_PLAN_SERVICE; // service for requesting moveit for a motion plan
 
   // =============================== Messages ===============================
   visualization_msgs::Marker MARKER_MESSAGE; // visual representation of target object
@@ -63,6 +64,7 @@ public:
     MARKER_TOPIC = "pick_and_place_marker";
     PLANNING_SCENE_TOPIC = "planning_scene";
     TARGET_RECOGNITION_SERVICE = "target_recognition";
+    MOTION_PLAN_SERVICE = "plan_kinematic_path";
     WRIST_LINK_NAME = "ee_link";
     ATTACHED_OBJECT_LINK_NAME = "attached_object_link";
     WORLD_FRAME_ID  = "world_frame";

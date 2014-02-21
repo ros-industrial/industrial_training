@@ -25,7 +25,6 @@ void collision_avoidance_pick_and_place::PickAndPlace::pickup_box(std::vector<ge
 	  //ROS_ERROR_STREAM("move_through_pick_poses is not implemented yet.  Aborting."); exit(1);
 
 	  // task variables
-	  object_manipulation_msgs::GraspHandPostureExecutionGoal grasp_goal;
 	  bool success;
 
 	  // set the wrist as the end-effector link
@@ -46,20 +45,20 @@ void collision_avoidance_pick_and_place::PickAndPlace::pickup_box(std::vector<ge
 	  // move the robot to each wrist pick pose
 	  for(unsigned int i = 0; i < pick_poses.size(); i++)
 	  {
-
-	    // set the current pose as the target
-	    /* Fill Code: [ use the 'setPoseTarget' method in the 'move_group' object and pass the current pose in 'pick_poses'] */
-	  	move_group_ptr->setPoseTarget(pick_poses[i]);
-
+	  	moveit_msgs::RobotState robot_state;
 	    if(i == 2)
 	    {
 	    	// attach box to end effector
-	    	set_attached_object(true,box_pose);
+	    	set_attached_object(true,box_pose,robot_state);
+	    }
+	    else
+	    {
+	    	// detach box
+	    	set_attached_object(false,geometry_msgs::Pose(),robot_state);
 	    }
 
-	    // moving arm to current pick pose
-	    /* Fill Code: [ use the 'move' method in the 'move_group' object and save the result in the 'success' variable] */
-	    success = move_group_ptr->move();
+	    move_group_interface::MoveGroup::Plan plan;
+	    success = create_motion_plan(pick_poses[i],robot_state,plan) && move_group_ptr->execute(plan);
 
 	    // verifying move completion
 	    if(success)

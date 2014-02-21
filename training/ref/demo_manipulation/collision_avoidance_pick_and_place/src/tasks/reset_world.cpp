@@ -15,7 +15,8 @@ void collision_avoidance_pick_and_place::PickAndPlace::reset_world(bool refresh_
 {
 
 	// detach box if one is attached
-	set_attached_object(false);
+	moveit_msgs::RobotState robot_state;
+	set_attached_object(false,geometry_msgs::Pose(),robot_state);
 
 	// get new sensor snapshot
 	if(refresh_octomap)

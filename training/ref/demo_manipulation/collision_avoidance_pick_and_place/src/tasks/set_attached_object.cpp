@@ -13,13 +13,12 @@
     - Publishes object marker for visualization.
   Hints:
 */
-void collision_avoidance_pick_and_place::PickAndPlace::set_attached_object(bool attach, const geometry_msgs::Pose &pose)
+
+namespace collision_avoidance_pick_and_place
+{
+void PickAndPlace::set_attached_object(bool attach, const geometry_msgs::Pose &pose,moveit_msgs::RobotState &robot_state)
 {
   //ROS_ERROR_STREAM("set_attached_object is not implemented yet.  Aborting."); exit(1);
-
-	robot_model_loader::RobotModelLoader robot_model_loader("robot_description");
-	robot_model::RobotModelPtr kinematic_model = robot_model_loader.getModel();
-	planning_scene::PlanningScene planning_scene(kinematic_model);
 
 	// get robot state
 	robot_state::RobotStatePtr current_state= move_group_ptr->getCurrentState();
@@ -57,24 +56,17 @@ void collision_avoidance_pick_and_place::PickAndPlace::set_attached_object(bool 
 				current_state->clearAttachedBodies(cfg.ATTACHED_OBJECT_LINK_NAME);
 	}
 
-	// create planning scene message
-	planning_scene.setCurrentState(*current_state);
-	moveit_msgs::PlanningScene planning_scene_msg;
-	planning_scene.getPlanningSceneMsg(planning_scene_msg);
-	planning_scene_msg.is_diff = true;
-	planning_scene_msg.world = moveit_msgs::PlanningSceneWorld();
-	move_group_ptr->setStartStateToCurrentState();
-	//move_group_ptr->setStartState(*current_state);
-
 	// updating marker action
 	cfg.MARKER_MESSAGE.action =
 			attach ? visualization_msgs::Marker::ADD : visualization_msgs::Marker::DELETE;
 
 	// publish messages
 	marker_publisher.publish(cfg.MARKER_MESSAGE);
-	//planning_scene_publisher.publish(planning_scene_msg);
 
-	ros::Duration(1.0f).sleep();
+	// save robot state data
+	robot_state::robotStateToRobotStateMsg(*current_state,robot_state);
+
+}
 
 }
 

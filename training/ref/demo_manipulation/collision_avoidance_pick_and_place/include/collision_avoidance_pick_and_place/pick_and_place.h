@@ -18,6 +18,9 @@
 #include <collision_avoidance_pick_and_place/pick_and_place_utilities.h>
 #include <moveit/planning_scene_monitor/planning_scene_monitor.h>
 #include <moveit/robot_model_loader/robot_model_loader.h>
+#include <moveit_msgs/GetMotionPlan.h>
+#include <moveit/robot_state/conversions.h>
+#include <moveit/kinematic_constraints/utils.h>
 #include <geometric_shapes/shape_operations.h>
 
 // =============================== aliases ===============================
@@ -42,6 +45,7 @@ namespace collision_avoidance_pick_and_place
 		ros::Publisher marker_publisher;
 		ros::Publisher planning_scene_publisher;
 		ros::ServiceClient target_recognition_client;
+		ros::ServiceClient motion_plan_client;
 		GraspActionClientPtr grasp_action_client_ptr;
 		MoveGroupPtr move_group_ptr;
 		TransformListenerPtr transform_listener_ptr;
@@ -52,7 +56,7 @@ namespace collision_avoidance_pick_and_place
 		void set_gripper(bool do_grasp);
 
 		void set_attached_object(bool attach,
-				const geometry_msgs::Pose &pose = geometry_msgs::Pose());
+				const geometry_msgs::Pose &pose,moveit_msgs::RobotState &robot_state);
 
 		void reset_world(bool refresh_octomap = true);
 
@@ -64,7 +68,11 @@ namespace collision_avoidance_pick_and_place
 
 		void pickup_box(std::vector<geometry_msgs::Pose>& pick_poses,const geometry_msgs::Pose& box_pose);
 
-		void place_box(std::vector<geometry_msgs::Pose>& place_poses);
+		void place_box(std::vector<geometry_msgs::Pose>& place_poses,const geometry_msgs::Pose& box_pose);
+
+
+		bool create_motion_plan(const geometry_msgs::Pose &pose_target,
+				const moveit_msgs::RobotState &start_robot_state,move_group_interface::MoveGroup::Plan &plan);
 
 	};
 }
