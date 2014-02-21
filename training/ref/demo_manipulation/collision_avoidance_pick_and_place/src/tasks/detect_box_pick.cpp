@@ -50,7 +50,7 @@ geometry_msgs::Pose collision_avoidance_pick_and_place::PickAndPlace::detect_box
 	  else
 	  {
 		  ROS_ERROR_STREAM("target recognition failed");
-		  return box_pose;
+		  exit(0);
 
 	  }
   }
