@@ -50,12 +50,16 @@ std::string SENSOR_CLOUD_TOPIC = "sensor_cloud";
 // ros service server
 ros::ServiceServer target_detection_server;
 
+// ros subscriber
+ros::Subscriber point_cloud_subscriber;
+
 // ros publishers and subscribers
 ros::Publisher filtered_cloud_publisher;
 
 // function signatures
 bool target_recognition_callback(collision_avoidance_pick_and_place::GetTargetPose::Request& req,
 		collision_avoidance_pick_and_place::GetTargetPose::Response& res);
+void point_cloud_callback(const sensor_msgs::PointCloud2ConstPtr msg);
 bool grab_sensor_snapshot(sensor_msgs::PointCloud2& msg);
 bool get_transform(std::string target,std::string source,tf::Transform& trg_to_src_tf);
 void filter_box(const tf::Transform& world_to_sensor_tf,
@@ -87,6 +91,9 @@ int main(int argc,char** argv)
 	// initializing publisher
 	filtered_cloud_publisher = nh.advertise<sensor_msgs::PointCloud2>(FILTERED_CLOUD_TOPIC,1);
 
+	// initializing subscriber
+	point_cloud_subscriber = nh.subscribe(SENSOR_CLOUD_TOPIC,1,point_cloud_callback);
+
 	// initializing cloud messages
 	FILTERED_CLOUD_MSG = sensor_msgs::PointCloud2();
 	while(ros::ok())
@@ -117,6 +124,12 @@ bool grab_sensor_snapshot(sensor_msgs::PointCloud2& msg)
 	return msg_ptr != sensor_msgs::PointCloud2ConstPtr();
 }
 
+void point_cloud_callback(const sensor_msgs::PointCloud2ConstPtr msg)
+{
+	SENSOR_CLOUD_MSG = sensor_msgs::PointCloud2(*msg);
+	//SENSOR_CLOUD_MSG = *msg;
+}
+
 bool target_recognition_callback(collision_avoidance_pick_and_place::GetTargetPose::Request& req,
 		collision_avoidance_pick_and_place::GetTargetPose::Response& res)
 {
@@ -137,18 +150,24 @@ bool target_recognition_callback(collision_avoidance_pick_and_place::GetTargetPo
 	AR_TAG_FRAME_ID = req.ar_tag_frame_id;
 
 	// get point cloud message
-	sensor_msgs::PointCloud2 msg;
-	if(grab_sensor_snapshot(msg))
+	sensor_msgs::PointCloud2 msg = SENSOR_CLOUD_MSG;
+	if(msg.data.size() == 0)
 	{
-		ROS_INFO_STREAM("Cloud message received");
+			ROS_ERROR_STREAM("Cloud message is invalid, returning detection failure");
+			res.succeeded = false;
+			return true;
 	}
-	else
-	{
-		//tf::poseTFToMsg(world_to_ar_tf,res.target_pose);
-		ROS_ERROR_STREAM("Cloud message not found, returning detection failure");
-		res.succeeded = false;
-		return true;
-	}
+//	if(grab_sensor_snapshot(msg))
+//	{
+//		ROS_INFO_STREAM("Cloud message received");
+//	}
+//	else
+//	{
+//		//tf::poseTFToMsg(world_to_ar_tf,res.target_pose);
+//		ROS_ERROR_STREAM("Cloud message not found, returning detection failure");
+//		res.succeeded = false;
+//		return true;
+//	}
 
 	// looking up transforms
 	if(get_transform(WORLD_FRAME_ID , AR_TAG_FRAME_ID,world_to_ar_tf) &&
@@ -237,7 +256,7 @@ bool get_transform(std::string target,std::string source,tf::Transform& trg_to_s
 	try
 	{
 		tf_listener.waitForTransform(target,source,ros::Time::now(),ros::Duration(4.0f));
-		tf_listener.lookupTransform(target,source,ros::Time::now()-ros::Duration(0.5f),trg_to_src_stamped);
+		tf_listener.lookupTransform(target,source,ros::Time::now()-ros::Duration(0.2f),trg_to_src_stamped);
 
 		// copying transform data
 		trg_to_src_tf.setRotation( trg_to_src_stamped.getRotation());
@@ -250,6 +269,11 @@ bool get_transform(std::string target,std::string source,tf::Transform& trg_to_s
 		return false;
 	}
 	catch(tf::ExtrapolationException &e)
+	{
+		ROS_ERROR_STREAM("transform lookup for '"<<AR_TAG_FRAME_ID<<"' failed");
+		return false;
+	}
+	catch(tf::TransformException &e)
 	{
 		ROS_ERROR_STREAM("transform lookup for '"<<AR_TAG_FRAME_ID<<"' failed");
 		return false;
