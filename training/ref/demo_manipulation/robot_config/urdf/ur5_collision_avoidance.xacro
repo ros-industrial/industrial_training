@@ -57,14 +57,14 @@
 		</collision>
 	</link>
 
-	<!--<link name="attached_object_link">
+	<link name="attached_object_link">
 		<collision>
 			<geometry>
 				<box size="${attached_object_length} ${attached_object_width} ${attached_object_height}"/>
 			</geometry>
 			<material name="blue_transparent"/>
 		</collision>
-	</link>-->
+	</link>
 
 	<!-- instantiating sensor definitions -->
 
@@ -90,11 +90,11 @@
 		<origin xyz="-0.238 0 ${robot_stand_height}"/>
 	</joint>
 
-	<!--<joint name="tcp_to_attached_object" type="fixed">
+	<joint name="tcp_to_attached_object" type="fixed">
 		<parent link="tcp_frame"/>
 		<child link="attached_object_link"/>
 		<origin xyz="0 0 ${0.5 * attached_object_height}"/>
-	</joint>-->
+	</joint>
 
 	<!-- end of arm-workcell link definitions -->
 
