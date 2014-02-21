@@ -20,6 +20,7 @@
 #include <pcl/surface/convex_hull.h>
 #include <pcl/common/common.h>
 #include <boost/make_shared.hpp>
+#include <tf_conversions/tf_eigen.h>
 #include <tf/transform_listener.h>
 #include <tf/transform_broadcaster.h>
 #include <collision_avoidance_pick_and_place/GetTargetPose.h>
@@ -27,6 +28,7 @@
 
 // alias
 typedef pcl::PointCloud<pcl::PointXYZ> Cloud;
+typedef boost::shared_ptr<tf::TransformListener> TransformListenerPtr;
 
 // constants
 const std::string FILTERED_CLOUD_TOPIC = "filtered_cloud";
@@ -55,6 +57,9 @@ ros::Subscriber point_cloud_subscriber;
 
 // ros publishers and subscribers
 ros::Publisher filtered_cloud_publisher;
+
+// transform listener
+TransformListenerPtr transform_listener_ptr;
 
 // function signatures
 bool target_recognition_callback(collision_avoidance_pick_and_place::GetTargetPose::Request& req,
@@ -94,8 +99,12 @@ int main(int argc,char** argv)
 	// initializing subscriber
 	point_cloud_subscriber = nh.subscribe(SENSOR_CLOUD_TOPIC,1,point_cloud_callback);
 
+	// initializing transform listener
+	transform_listener_ptr = TransformListenerPtr(new tf::TransformListener(nh,ros::Duration(1.0f)));
+
 	// initializing cloud messages
 	FILTERED_CLOUD_MSG = sensor_msgs::PointCloud2();
+
 	while(ros::ok())
 	{
 		ros::Duration(0.2f).sleep();
@@ -134,7 +143,7 @@ bool target_recognition_callback(collision_avoidance_pick_and_place::GetTargetPo
 		collision_avoidance_pick_and_place::GetTargetPose::Response& res)
 {
 	// transform listener and broadcaster
-	static tf::TransformListener tf_listener;
+	//tf::TransformListener tf_listener;
 
 	// transforms
 	tf::StampedTransform world_to_sensor_tf;
@@ -157,17 +166,6 @@ bool target_recognition_callback(collision_avoidance_pick_and_place::GetTargetPo
 			res.succeeded = false;
 			return true;
 	}
-//	if(grab_sensor_snapshot(msg))
-//	{
-//		ROS_INFO_STREAM("Cloud message received");
-//	}
-//	else
-//	{
-//		//tf::poseTFToMsg(world_to_ar_tf,res.target_pose);
-//		ROS_ERROR_STREAM("Cloud message not found, returning detection failure");
-//		res.succeeded = false;
-//		return true;
-//	}
 
 	// looking up transforms
 	if(get_transform(WORLD_FRAME_ID , AR_TAG_FRAME_ID,world_to_ar_tf) &&
@@ -190,8 +188,10 @@ bool target_recognition_callback(collision_avoidance_pick_and_place::GetTargetPo
 		Cloud::Ptr filtered_cloud_ptr(new Cloud());
 
 		// converting to world coordinates
-		pcl_ros::transformPointCloud<pcl::PointXYZ>(WORLD_FRAME_ID,
-			  *sensor_cloud_ptr,*sensor_cloud_ptr,tf_listener);
+		Eigen::Affine3d eigen_3d;
+		tf::transformTFToEigen(world_to_sensor_tf,eigen_3d);
+		Eigen::Affine3f eigen_3f(eigen_3d);
+		pcl::transformPointCloud(*sensor_cloud_ptr,*sensor_cloud_ptr,eigen_3f);
 
 		// find height of box top surface
 		double height;
@@ -225,9 +225,11 @@ bool target_recognition_callback(collision_avoidance_pick_and_place::GetTargetPo
 			filter_box(world_to_sensor_tf,world_to_box,*sensor_cloud_ptr,*filtered_cloud_ptr);
 		}
 
+		// transforming to world frame
+		pcl::transformPointCloud(*filtered_cloud_ptr,*filtered_cloud_ptr,eigen_3f.inverse());
+
 		// converting to message
 		FILTERED_CLOUD_MSG = sensor_msgs::PointCloud2();
-		FILTERED_CLOUD_MSG.data.clear();
 		pcl::toROSMsg(*filtered_cloud_ptr,FILTERED_CLOUD_MSG);
 
 		// populating response
@@ -249,14 +251,14 @@ bool target_recognition_callback(collision_avoidance_pick_and_place::GetTargetPo
 bool get_transform(std::string target,std::string source,tf::Transform& trg_to_src_tf)
 {
 	// create tf listener and broadcaster
-	static tf::TransformListener tf_listener;
+	//static tf::TransformListener tf_listener;
 	tf::StampedTransform trg_to_src_stamped;
 
 	// find ar tag transform
 	try
 	{
-		tf_listener.waitForTransform(target,source,ros::Time::now(),ros::Duration(4.0f));
-		tf_listener.lookupTransform(target,source,ros::Time::now()-ros::Duration(0.2f),trg_to_src_stamped);
+		transform_listener_ptr->waitForTransform(target,source,ros::Time::now(),ros::Duration(4.0f));
+		transform_listener_ptr->lookupTransform(target,source,ros::Time::now() - ros::Duration(0.2f),trg_to_src_stamped);
 
 		// copying transform data
 		trg_to_src_tf.setRotation( trg_to_src_stamped.getRotation());
