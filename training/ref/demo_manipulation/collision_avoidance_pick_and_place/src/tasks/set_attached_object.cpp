@@ -53,7 +53,7 @@ void PickAndPlace::set_attached_object(bool attach, const geometry_msgs::Pose &p
 
 		// detaching
 		if(current_state->hasAttachedBody(cfg.ATTACHED_OBJECT_LINK_NAME))
-				current_state->clearAttachedBodies(cfg.ATTACHED_OBJECT_LINK_NAME);
+				current_state->clearAttachedBody(cfg.ATTACHED_OBJECT_LINK_NAME);
 	}
 
 	// updating marker action
