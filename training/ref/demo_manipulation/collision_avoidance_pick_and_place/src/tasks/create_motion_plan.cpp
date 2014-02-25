@@ -39,6 +39,7 @@ bool PickAndPlace::create_motion_plan(const geometry_msgs::Pose &pose_target,
 			orientation_tolerances);
 
 	req.start_state = start_robot_state;
+	req.start_state.is_diff = false;
 	req.group_name = cfg.ARM_GROUP_NAME;
 	req.goal_constraints.push_back(pose_goal);
 	req.allowed_planning_time = 60.0f;
