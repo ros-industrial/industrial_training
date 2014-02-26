@@ -13,7 +13,7 @@ from geometry_msgs.msg import Pose
 
 
 #constants
-COLLISION_OBJECT_TOPIC = "collision_objects";
+COLLISION_OBJECT_TOPIC = "collision_object";
 
 def create_collision_object(shape_type,pos,size,frame_id,op,object_id):
 
