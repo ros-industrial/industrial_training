@@ -7,6 +7,7 @@
 
 #include <collision_avoidance_pick_and_place/pick_and_place_utilities.h>
 #include <moveit/kinematic_constraints/utils.h>
+#include <tf/transform_listener.h>
 #include <boost/assign/std/vector.hpp>
 #include <iostream>
 #include <ros/ros.h>
@@ -93,6 +94,7 @@ bool pick_and_place_config::init()
 {
   ros::NodeHandle nh("~");
   double w, l, h, x, y, z;
+  XmlRpc::XmlRpcValue list;
 
   if(nh.getParam("arm_group_name",ARM_GROUP_NAME)
       && nh.getParam("tcp_link_name",TCP_LINK_NAME)
@@ -108,11 +110,25 @@ bool pick_and_place_config::init()
       && nh.getParam("box_place_x",x)
       && nh.getParam("box_place_y",y)
       && nh.getParam("box_place_z",z)
+      && nh.getParam("touch_links",list)
       && nh.getParam("retreat_distance",RETREAT_DISTANCE)
       && nh.getParam("approach_distance",APPROACH_DISTANCE))
   {
     BOX_SIZE = Vector3(l,w,h);
     BOX_PLACE_TF.setOrigin(Vector3(x,y,z));
+
+    // parsing touch links list
+    for(int32_t i =0 ; i < list.size();i++)
+    {
+    	if(list[i].getType() == XmlRpc::XmlRpcValue::TypeString)
+    	{
+    		TOUCH_LINKS.push_back(static_cast<std::string>(list[i]));
+    	}
+    	else
+    	{
+    		ROS_ERROR_STREAM("touch links list contains invalid data.  Provide an array of strings 'touch_links:{link_a,link_b,link_c ..}'");
+    	}
+    }
 
     // building geometric primitive for target
     shape_msgs::SolidPrimitive shape;
@@ -123,17 +139,18 @@ bool pick_and_place_config::init()
     shape.dimensions[2] = BOX_SIZE.getZ();
 
     // creating pose of object relative to tcp
-    geometry_msgs::Pose pose;
-    pose.position.x = 0;
-    pose.position.y = 0;
-    pose.position.z = 0.5f* BOX_SIZE.getZ();
-    pose.orientation.x = pose.orientation.y = pose.orientation.z = 0;
-    pose.orientation.w = 1;
+    geometry_msgs::Pose tcp_to_box_pose;
+    tcp_to_box_pose.position.x = 0;
+    tcp_to_box_pose.position.y = 0;
+    tcp_to_box_pose.position.z = 0.5f* BOX_SIZE.getZ();
+    tcp_to_box_pose.orientation.x = tcp_to_box_pose.orientation.y = tcp_to_box_pose.orientation.z = 0;
+    tcp_to_box_pose.orientation.w = 1;
+
 
     // creating visual object
     MARKER_MESSAGE.header.frame_id = TCP_LINK_NAME;
     MARKER_MESSAGE.type = visualization_msgs::Marker::CUBE;
-    MARKER_MESSAGE.pose = pose;
+    MARKER_MESSAGE.pose = tcp_to_box_pose;
     MARKER_MESSAGE.id = 0;
     MARKER_MESSAGE.color.r = 0;
     MARKER_MESSAGE.color.g = 0;
@@ -145,6 +162,11 @@ bool pick_and_place_config::init()
     MARKER_MESSAGE.scale.y = shape.dimensions[1];
     MARKER_MESSAGE.scale.z = shape.dimensions[2];
 
+    // create attached object
+    ATTACHED_OBJECT.header.frame_id = TCP_LINK_NAME;
+    ATTACHED_OBJECT.id=ATTACHED_OBJECT_LINK_NAME;
+    ATTACHED_OBJECT.primitives.push_back(shape);
+    ATTACHED_OBJECT.primitive_poses.push_back(tcp_to_box_pose);
 
     return true;
   }

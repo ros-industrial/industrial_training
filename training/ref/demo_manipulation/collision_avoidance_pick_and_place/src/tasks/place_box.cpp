@@ -15,12 +15,12 @@
     - Use the methods seen so far such as 'move', 'sendGoal', 'waitForResult' as needed
 */
 
-void collision_avoidance_pick_and_place::PickAndPlace::place_box(std::vector<geometry_msgs::Pose>& place_poses)
+void collision_avoidance_pick_and_place::PickAndPlace::place_box(std::vector<geometry_msgs::Pose>& place_poses,
+		const geometry_msgs::Pose& box_pose)
 {
   //ROS_ERROR_STREAM("move_through_place_poses is not implemented yet.  Aborting."); exit(1);
 
   // task variables
-  object_manipulation_msgs::GraspHandPostureExecutionGoal grasp_goal;
   bool success;
 
   // set the referenceFrame and EndEffectorLink
@@ -28,19 +28,12 @@ void collision_avoidance_pick_and_place::PickAndPlace::place_box(std::vector<geo
   move_group_ptr->setEndEffectorLink(cfg.WRIST_LINK_NAME);
   move_group_ptr->setPoseReferenceFrame(cfg.WORLD_FRAME_ID);
 
-  // set allowed planning time
-  move_group_ptr->setPlanningTime(60.0f);
-
   // move the robot to each wrist place pose
   for(unsigned int i = 0; i < place_poses.size(); i++)
   {
-    // set the current place pose as the target
-    /* Fill Code: [ use the 'setPoseTarget' method and pass the current pose in 'place_poses'] */
-    move_group_ptr->setPoseTarget(place_poses[i]);
-
-    // move arm to current place pose
-    /* Fill Code: [ call the 'move' method to execute the move ] */
-    success = move_group_ptr->move();
+  	// create motion plan
+    move_group_interface::MoveGroup::Plan plan;
+    success = create_motion_plan(place_poses[i],plan) && move_group_ptr->execute(plan);
 
     if(success)
     {
@@ -53,12 +46,6 @@ void collision_avoidance_pick_and_place::PickAndPlace::place_box(std::vector<geo
     }
 
 
-    if(i ==0)
-    {
-      // detaching box
-      set_attached_object(false);
-    }
-
     if(i == 1)
     {
 	// turn off gripper suction after reaching target pose
@@ -67,6 +54,12 @@ void collision_avoidance_pick_and_place::PickAndPlace::place_box(std::vector<geo
 	/*   - HINT: this should be the second pose in the sequence of place_poses */
       set_gripper(false);
     }
+
+  	if(i==0 )
+  	{
+      // attaching box
+      set_attached_object(false);
+  	}
 
   }
 }

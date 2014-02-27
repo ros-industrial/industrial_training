@@ -25,7 +25,6 @@ void collision_avoidance_pick_and_place::PickAndPlace::pickup_box(std::vector<ge
 	  //ROS_ERROR_STREAM("move_through_pick_poses is not implemented yet.  Aborting."); exit(1);
 
 	  // task variables
-	  object_manipulation_msgs::GraspHandPostureExecutionGoal grasp_goal;
 	  bool success;
 
 	  // set the wrist as the end-effector link
@@ -33,9 +32,6 @@ void collision_avoidance_pick_and_place::PickAndPlace::pickup_box(std::vector<ge
 	  //   - if not specified, MoveIt will use the last link in the arm group
 	  /* Fill Code: [ use the 'setEndEffectorLink' in the 'move_group' object] */
 	  move_group_ptr->setEndEffectorLink(cfg.WRIST_LINK_NAME);
-
-	  // set allowed planning time
-	  move_group_ptr->setPlanningTime(60.0f);
 
 	  // set world frame as the reference
 	  //   - the target position is specified relative to this frame
@@ -47,13 +43,8 @@ void collision_avoidance_pick_and_place::PickAndPlace::pickup_box(std::vector<ge
 	  for(unsigned int i = 0; i < pick_poses.size(); i++)
 	  {
 
-	    // set the current pose as the target
-	    /* Fill Code: [ use the 'setPoseTarget' method in the 'move_group' object and pass the current pose in 'pick_poses'] */
-		move_group_ptr->setPoseTarget(pick_poses[i]);
-
-	    // moving arm to current pick pose
-	    /* Fill Code: [ use the 'move' method in the 'move_group' object and save the result in the 'success' variable] */
-	    success = move_group_ptr->move();
+	    move_group_interface::MoveGroup::Plan plan;
+	    success = create_motion_plan(pick_poses[i],plan) && move_group_ptr->execute(plan);
 
 	    // verifying move completion
 	    if(success)
@@ -72,9 +63,7 @@ void collision_avoidance_pick_and_place::PickAndPlace::pickup_box(std::vector<ge
 		// turn on gripper suction after approach pose
 		/* Fill Code: [ call the 'set_gripper' function to turn on suction ] */
 	      set_gripper(true);
-
 	    }
-
 
 	    if(i == 2)
 	    {

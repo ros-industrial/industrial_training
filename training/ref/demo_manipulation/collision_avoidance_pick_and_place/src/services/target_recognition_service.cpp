@@ -20,6 +20,7 @@
 #include <pcl/surface/convex_hull.h>
 #include <pcl/common/common.h>
 #include <boost/make_shared.hpp>
+#include <tf_conversions/tf_eigen.h>
 #include <tf/transform_listener.h>
 #include <tf/transform_broadcaster.h>
 #include <collision_avoidance_pick_and_place/GetTargetPose.h>
@@ -27,6 +28,7 @@
 
 // alias
 typedef pcl::PointCloud<pcl::PointXYZ> Cloud;
+typedef boost::shared_ptr<tf::TransformListener> TransformListenerPtr;
 
 // constants
 const std::string FILTERED_CLOUD_TOPIC = "filtered_cloud";
@@ -50,19 +52,26 @@ std::string SENSOR_CLOUD_TOPIC = "sensor_cloud";
 // ros service server
 ros::ServiceServer target_detection_server;
 
+// ros subscriber
+ros::Subscriber point_cloud_subscriber;
+
 // ros publishers and subscribers
 ros::Publisher filtered_cloud_publisher;
+
+// transform listener
+TransformListenerPtr transform_listener_ptr;
 
 // function signatures
 bool target_recognition_callback(collision_avoidance_pick_and_place::GetTargetPose::Request& req,
 		collision_avoidance_pick_and_place::GetTargetPose::Response& res);
+void point_cloud_callback(const sensor_msgs::PointCloud2ConstPtr msg);
 bool grab_sensor_snapshot(sensor_msgs::PointCloud2& msg);
-bool get_ar_transform(tf::Transform& world_to_ar_tf);
+bool get_transform(std::string target,std::string source,tf::Transform& trg_to_src_tf);
 void filter_box(const tf::Transform& world_to_sensor_tf,
 		const tf::Transform& world_to_box_pick_tf,const Cloud &sensor_cloud,
 		Cloud& filtered_cloud);
-double detect_box_height(const Cloud& cloud,
-		const tf::Transform &world_to_ar_tf);
+bool detect_box_height(const Cloud& cloud,
+		const tf::Transform &world_to_ar_tf,double& height );
 
 // main program
 int main(int argc,char** argv)
@@ -87,11 +96,18 @@ int main(int argc,char** argv)
 	// initializing publisher
 	filtered_cloud_publisher = nh.advertise<sensor_msgs::PointCloud2>(FILTERED_CLOUD_TOPIC,1);
 
+	// initializing subscriber
+	point_cloud_subscriber = nh.subscribe(SENSOR_CLOUD_TOPIC,1,point_cloud_callback);
+
+	// initializing transform listener
+	transform_listener_ptr = TransformListenerPtr(new tf::TransformListener(nh,ros::Duration(1.0f)));
+
 	// initializing cloud messages
 	FILTERED_CLOUD_MSG = sensor_msgs::PointCloud2();
+
 	while(ros::ok())
 	{
-		ros::Duration(0.1f).sleep();
+		ros::Duration(0.2f).sleep();
 		ros::spinOnce();
 		//filtered_cloud_publisher.publish(FILTERED_CLOUD_MSG);
 	}
@@ -102,8 +118,9 @@ int main(int argc,char** argv)
 bool grab_sensor_snapshot(sensor_msgs::PointCloud2& msg)
 {
 	// grab sensor data snapshot
+	ros::NodeHandle nh;
 	sensor_msgs::PointCloud2ConstPtr msg_ptr =
-			ros::topic::waitForMessage<sensor_msgs::PointCloud2>(SENSOR_CLOUD_TOPIC,
+			ros::topic::waitForMessage<sensor_msgs::PointCloud2>(SENSOR_CLOUD_TOPIC,nh,
 					ros::Duration(5.0f));
 
 	// check for empty message
@@ -116,11 +133,17 @@ bool grab_sensor_snapshot(sensor_msgs::PointCloud2& msg)
 	return msg_ptr != sensor_msgs::PointCloud2ConstPtr();
 }
 
+void point_cloud_callback(const sensor_msgs::PointCloud2ConstPtr msg)
+{
+	SENSOR_CLOUD_MSG = sensor_msgs::PointCloud2(*msg);
+	//SENSOR_CLOUD_MSG = *msg;
+}
+
 bool target_recognition_callback(collision_avoidance_pick_and_place::GetTargetPose::Request& req,
 		collision_avoidance_pick_and_place::GetTargetPose::Response& res)
 {
 	// transform listener and broadcaster
-	static tf::TransformListener tf_listener;
+	//tf::TransformListener tf_listener;
 
 	// transforms
 	tf::StampedTransform world_to_sensor_tf;
@@ -135,22 +158,20 @@ bool target_recognition_callback(collision_avoidance_pick_and_place::GetTargetPo
 	WORLD_FRAME_ID = req.world_frame_id;
 	AR_TAG_FRAME_ID = req.ar_tag_frame_id;
 
-	if(get_ar_transform(world_to_ar_tf))
+	// get point cloud message
+	sensor_msgs::PointCloud2 msg = SENSOR_CLOUD_MSG;
+	if(msg.data.size() == 0)
 	{
-
-		// check for empty message
-		sensor_msgs::PointCloud2 msg;
-		if(grab_sensor_snapshot(msg))
-		{
-			ROS_INFO_STREAM("Cloud message received");
-		}
-		else
-		{
-			//tf::poseTFToMsg(world_to_ar_tf,res.target_pose);
-			ROS_ERROR_STREAM("Cloud message not found, returning detection failure");
+			ROS_ERROR_STREAM("Cloud message is invalid, returning detection failure");
 			res.succeeded = false;
 			return true;
-		}
+	}
+
+	// looking up transforms
+	if(get_transform(WORLD_FRAME_ID , AR_TAG_FRAME_ID,world_to_ar_tf) &&
+			get_transform(WORLD_FRAME_ID,msg.header.frame_id,world_to_sensor_tf))
+	{
+
 
 		// convert from message to point cloud
 		Cloud::Ptr sensor_cloud_ptr(new Cloud());
@@ -166,27 +187,20 @@ bool target_recognition_callback(collision_avoidance_pick_and_place::GetTargetPo
 		// creating cloud message for publisher
 		Cloud::Ptr filtered_cloud_ptr(new Cloud());
 
-		// getting sensor transform
-		try
-		{
-			tf_listener.lookupTransform(WORLD_FRAME_ID,msg.header.frame_id,
-							ros::Time(0),world_to_sensor_tf);
-		}
-		catch(tf::LookupException &e)
-		{
-			//return;
-		}
-		catch(tf::ExtrapolationException &e)
-		{
-			//return;
-		}
-
 		// converting to world coordinates
-		pcl_ros::transformPointCloud<pcl::PointXYZ>(WORLD_FRAME_ID,
-			  *sensor_cloud_ptr,*sensor_cloud_ptr,tf_listener);
+		Eigen::Affine3d eigen_3d;
+		tf::transformTFToEigen(world_to_sensor_tf,eigen_3d);
+		Eigen::Affine3f eigen_3f(eigen_3d);
+		pcl::transformPointCloud(*sensor_cloud_ptr,*sensor_cloud_ptr,eigen_3f);
 
 		// find height of box top surface
-		float height = detect_box_height(*sensor_cloud_ptr,world_to_ar_tf);
+		double height;
+		if(!detect_box_height(*sensor_cloud_ptr,world_to_ar_tf,height) )
+		{
+			ROS_ERROR_STREAM("Target height detection failed");
+			res.succeeded = false;
+			return true;
+		}
 
 		// updating box pick transform
 		world_to_box_pick_tf = world_to_ar_tf;
@@ -211,21 +225,20 @@ bool target_recognition_callback(collision_avoidance_pick_and_place::GetTargetPo
 			filter_box(world_to_sensor_tf,world_to_box,*sensor_cloud_ptr,*filtered_cloud_ptr);
 		}
 
+		// transforming to world frame
+		pcl::transformPointCloud(*filtered_cloud_ptr,*filtered_cloud_ptr,eigen_3f.inverse());
+
 		// converting to message
+		FILTERED_CLOUD_MSG = sensor_msgs::PointCloud2();
 		pcl::toROSMsg(*filtered_cloud_ptr,FILTERED_CLOUD_MSG);
 
 		// populating response
 		tf::poseTFToMsg(world_to_box_pick_tf,res.target_pose);
-		res.succeeded = height - BOX_HEIGHT > -BOX_HEIGHT_TOLERANCE ;
+		res.succeeded = true ;
 
 		// publishing cloud
 		FILTERED_CLOUD_MSG.header.stamp = ros::Time::now()-ros::Duration(0.5f);
 		filtered_cloud_publisher.publish(FILTERED_CLOUD_MSG);
-
-		if(!res.succeeded)
-		{
-			ROS_ERROR_STREAM("Estimated pick height was smaller than box height: "<<height);
-		}
 	}
 	else
 	{
@@ -235,46 +248,52 @@ bool target_recognition_callback(collision_avoidance_pick_and_place::GetTargetPo
 	return true;
 }
 
-bool get_ar_transform(tf::Transform& world_to_ar_tf)
+bool get_transform(std::string target,std::string source,tf::Transform& trg_to_src_tf)
 {
 	// create tf listener and broadcaster
-	static tf::TransformListener tf_listener;
-	tf::StampedTransform world_to_ar_tf_stamped;
+	//static tf::TransformListener tf_listener;
+	tf::StampedTransform trg_to_src_stamped;
 
 	// find ar tag transform
 	try
 	{
-		tf_listener.lookupTransform(WORLD_FRAME_ID,AR_TAG_FRAME_ID,
-				ros::Time(0),world_to_ar_tf_stamped);
+		transform_listener_ptr->waitForTransform(target,source,ros::Time::now(),ros::Duration(4.0f));
+		transform_listener_ptr->lookupTransform(target,source,ros::Time::now() - ros::Duration(0.2f),trg_to_src_stamped);
 
 		// copying transform data
-		world_to_ar_tf.setRotation( world_to_ar_tf_stamped.getRotation());
-		world_to_ar_tf.setOrigin(world_to_ar_tf_stamped.getOrigin());
+		trg_to_src_tf.setRotation( trg_to_src_stamped.getRotation());
+		trg_to_src_tf.setOrigin(trg_to_src_stamped.getOrigin());
 
 	}
 	catch(tf::LookupException &e)
 	{
+		ROS_ERROR_STREAM("transform lookup for '"<<AR_TAG_FRAME_ID<<"' failed");
 		return false;
 	}
 	catch(tf::ExtrapolationException &e)
 	{
+		ROS_ERROR_STREAM("transform lookup for '"<<AR_TAG_FRAME_ID<<"' failed");
+		return false;
+	}
+	catch(tf::TransformException &e)
+	{
+		ROS_ERROR_STREAM("transform lookup for '"<<AR_TAG_FRAME_ID<<"' failed");
 		return false;
 	}
 
 	return true;
 }
 
-
-double detect_box_height(const Cloud& cloud,
-		const tf::Transform &world_to_ar_tf)
+bool detect_box_height(const Cloud& cloud,
+		const tf::Transform &world_to_ar_tf,double& height )
 {
 	// cloud objects
 	Cloud::Ptr cloud_ptr= boost::make_shared<Cloud>(cloud);
 	Cloud::Ptr filtered_cloud_ptr(new Cloud);
 
 	// applying filter in x axis
-	float min = world_to_ar_tf.getOrigin().x() - 0.1f*BOX_LENGTH;
-	float max = world_to_ar_tf.getOrigin().x() + 0.1f*BOX_LENGTH;
+	float min = world_to_ar_tf.getOrigin().x() - 0.2f*BOX_LENGTH;
+	float max = world_to_ar_tf.getOrigin().x() + 0.2f*BOX_LENGTH;
 	pcl::PassThrough<pcl::PointXYZ> filter;
 	filter.setInputCloud(cloud_ptr);
 	filter.setFilterFieldName("x");
@@ -282,8 +301,8 @@ double detect_box_height(const Cloud& cloud,
 	filter.filter(*filtered_cloud_ptr);
 
 	// applying filter in y axis
-	min = world_to_ar_tf.getOrigin().y()- 0.1f*BOX_WIDTH;
-	max = world_to_ar_tf.getOrigin().y() + 0.1f*BOX_WIDTH;;
+	min = world_to_ar_tf.getOrigin().y()- 0.2f*BOX_WIDTH;
+	max = world_to_ar_tf.getOrigin().y() + 0.2f*BOX_WIDTH;;
 	filter.setInputCloud(filtered_cloud_ptr);
 	filter.setFilterFieldName("y");
 	filter.setFilterLimits(min,max);
@@ -291,13 +310,13 @@ double detect_box_height(const Cloud& cloud,
 
 	// computing centroid
 	Eigen::Vector4f centroid;
-	pcl::compute3DCentroid(*filtered_cloud_ptr,centroid);
+	int count = pcl::compute3DCentroid(*filtered_cloud_ptr,centroid);
+	height = centroid[2];
 
-	ROS_WARN_STREAM("Detected height is: "<<centroid[2]);
+	ROS_INFO_STREAM("Detected height is: "<<centroid[2]);
 
 	// return z value
-	return centroid[2];
-
+	return count != 0;
 }
 
 void filter_box(const tf::Transform& world_to_sensor_tf,
@@ -346,7 +365,7 @@ void filter_box(const tf::Transform& world_to_sensor_tf,
 	prism.setInputCloud(sensor_cloud_ptr);
 	prism.setInputPlanarHull( pick_surface_cloud_ptr);
 	prism.setHeightLimits(-10,10);
-	prism.setViewPoint(viewpoint.x(),viewpoint.y(),viewpoint.z());
+	//prism.setViewPoint(viewpoint.x(),viewpoint.y(),viewpoint.z());
 	prism.segment(*inliers);
 
 	//pcl::copyPointCloud(*sensor_cloud_ptr,indices.indices,filtered_cloud);

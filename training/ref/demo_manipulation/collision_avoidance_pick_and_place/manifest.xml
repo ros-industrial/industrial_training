@@ -23,6 +23,7 @@
   <depend package="industrial_robot_simulator" />
   <depend package="pcl_ros"/>
   <depend package="pcl_msgs"/>
+  <depend package="tf_conversions"/>
 
 </package>
 

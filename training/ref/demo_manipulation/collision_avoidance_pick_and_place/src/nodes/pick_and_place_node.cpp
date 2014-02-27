@@ -56,6 +56,9 @@ int main(int argc,char** argv)
   application.move_group_ptr = MoveGroupPtr(
 		  new move_group_interface::MoveGroup(application.cfg.ARM_GROUP_NAME));
 
+  // motion plan client
+  application.motion_plan_client = nh.serviceClient<moveit_msgs::GetMotionPlan>(application.cfg.MOTION_PLAN_SERVICE);
+
   // transform listener
   application.transform_listener_ptr = TransformListenerPtr(new tf::TransformListener());
 
@@ -111,7 +114,7 @@ int main(int argc,char** argv)
   place_poses = application.create_place_moves();
 
   // plan/execute the "place" moves
-  application.place_box(place_poses);
+  application.place_box(place_poses,box_pose);
 
   // move back to the "clear" position
   application.move_to_wait_position();
