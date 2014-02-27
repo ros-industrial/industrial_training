@@ -4,8 +4,8 @@ industrial_training
 This branch was created in order to address the issue of attached objects not being checked for collisions agains sensor data <octomap>
 
 Setup:
-  - add the 'supplements' and 'ref' directories to the ROS_PACKAGE_PATH variable
-  - roscd collision_avoidance_pick_and_place and run rosmake
+  - add the 'industrial_training/training/supplements' and 'industrial_training/training/ref/demo_manipulation' directories to the ROS_PACKAGE_PATH variable
+  - roscd into collision_avoidance_pick_and_place and run rosmake
 
 Run Demo in this order:
   - Terminal 1: roslaunch collision_avoidance_pick_and_place ur5_setup.launch
