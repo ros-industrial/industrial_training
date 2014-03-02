@@ -46,7 +46,7 @@ void PickAndPlace::set_attached_object(bool attach, const geometry_msgs::Pose &p
 		tf::transformTFToEigen(attached_tf,pose_array[0]);
 
 		// attaching
-		current_state->attachBody(cfg.ATTACHED_OBJECT_LINK_NAME,shapes_array,pose_array,std::vector<std::string>(),cfg.TCP_LINK_NAME);
+		current_state->attachBody(cfg.ATTACHED_OBJECT_LINK_NAME,shapes_array,pose_array,cfg.TOUCH_LINKS,cfg.TCP_LINK_NAME);
 	}
 	else
 	{

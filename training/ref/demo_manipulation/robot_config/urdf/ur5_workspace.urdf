@@ -227,15 +227,30 @@
       </material>
     </visual>
     <collision>
+      <!--<origin xyz="0 0 0.03"/>-->
       <geometry>
-        <box size="0.044 0.088 0.0946"/>
+        <box size="0.044 0.088 0.16"/>
       </geometry>
       <material name="another_blue2">
         <color rgba="0.38 0.54 0.83 1"/>
       </material>
     </collision>
   </link>
-  <link name="tcp_frame"/>
+  <link name="tcp_frame">
+    <visual>
+      <geometry>
+        <sphere radius="0.005"/>
+      </geometry>
+      <material name="white">
+        <color rgba="1 1 1 0.5"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <sphere radius="0.005"/>
+      </geometry>
+    </collision>
+  </link>
   <joint name="gripper_to_palm" type="fixed">
     <parent link="gripper_frame"/>
     <child link="gripper_body"/>
@@ -263,9 +278,23 @@
       <material name="blue_transparent"/>
     </collision>
   </link>
+  <link name="roof2">
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 1"/>
+      <geometry>
+        <box size="1.3875 2.22 0.04"/>
+      </geometry>
+      <material name="blue_transparent"/>
+    </collision>
+  </link>
   <joint name="workcell_to_table_base2" type="fixed">
     <parent link="world_frame"/>
     <child link="table_base2"/>
+    <origin rpy="0 0 0" xyz="-0.69375 0 0"/>
+  </joint>
+  <joint name="workcell_to_roof2" type="fixed">
+    <parent link="world_frame"/>
+    <child link="roof2"/>
     <origin rpy="0 0 0" xyz="-0.69375 0 0"/>
   </joint>
   <link name="front_wall2">
@@ -286,6 +315,25 @@
     <parent link="world_frame"/>
     <child link="front_wall2"/>
     <origin rpy="0 0 0" xyz="-1.3375 0 0.5"/>
+  </joint>
+  <link name="back_wall2">
+    <visual>
+      <geometry>
+        <box size="0.04 2.0 1"/>
+      </geometry>
+      <material name="gray_transparent"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.04 2.0 1"/>
+      </geometry>
+      <material name="blue_transparent"/>
+    </collision>
+  </link>
+  <joint name="world_frame_to_back_wall2" type="fixed">
+    <parent link="world_frame"/>
+    <child link="back_wall2"/>
+    <origin rpy="0 0 0" xyz="0.2 0 0.5"/>
   </joint>
   <link name="left_wall2">
     <visual>
@@ -496,4 +544,3 @@
   </joint>
   <!-- end of arm-gripper coupling joint definitions -->
 </robot>
-
