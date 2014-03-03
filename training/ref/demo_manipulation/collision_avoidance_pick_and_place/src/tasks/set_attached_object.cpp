@@ -32,7 +32,7 @@ void PickAndPlace::set_attached_object(bool attach, const geometry_msgs::Pose &p
 	acm.setEntry(cfg.ATTACHED_OBJECT_LINK_NAME,"<octomap>",!attach);
 	for(unsigned int i = 0;i < cfg.TOUCH_LINKS.size();i++)
 	{
-		acm.setEntry(cfg.ATTACHED_OBJECT_LINK_NAME,cfg.TOUCH_LINKS[i],false);
+		acm.setEntry(cfg.ATTACHED_OBJECT_LINK_NAME,cfg.TOUCH_LINKS[i],true);
 	}
 
 	// create planning scene message
