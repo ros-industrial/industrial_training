@@ -73,6 +73,7 @@ geometry_msgs::Pose collision_avoidance_pick_and_place::PickAndPlace::detect_box
 
 	// publishing messages
 	marker_publisher.publish(marker);
+	ros::Duration(2.0f).sleep();
 
 
 	return box_pick_pose;

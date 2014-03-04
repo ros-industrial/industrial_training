@@ -93,7 +93,7 @@ int main(int argc,char** argv)
   /* ========================================*/
 
   // clears the scene and gets a new obstacle map
-  application.reset_world();
+  application.reset_world(false);
 
   // open the gripper (suction off)
   application.set_gripper(false);

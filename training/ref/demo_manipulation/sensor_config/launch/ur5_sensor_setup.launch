@@ -7,7 +7,7 @@
 	"2@0" : Use first device found on USB bus 2
 	-->
 	<arg name="sensor_usb_bus" default="002"/>
-	<arg name="sensor_usb_device" default="000"/>
+	<arg name="sensor_usb_device" default="006"/>
 	<arg name="arm_prefix" default=""/>
 	<arg name="camera_name" default="camera"/>
 	<arg name="device_id" default="$(arg sensor_usb_bus)@$(arg sensor_usb_device)" />
