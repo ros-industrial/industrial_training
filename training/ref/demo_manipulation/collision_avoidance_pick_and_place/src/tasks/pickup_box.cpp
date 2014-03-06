@@ -46,16 +46,9 @@ void collision_avoidance_pick_and_place::PickAndPlace::pickup_box(std::vector<ge
 	  for(unsigned int i = 0; i < pick_poses.size(); i++)
 	  {
 	  	moveit_msgs::RobotState robot_state;
-	    if(i == 2)
-	    {
-	    	// attach box to end effector
-	    	set_attached_object(true,box_pose,robot_state);
-	    }
-	    else
-	    {
-	    	// detach box
-	    	set_attached_object(false,geometry_msgs::Pose(),robot_state);
-	    }
+
+	    // detach box
+		set_attached_object(false,geometry_msgs::Pose(),robot_state);
 
 	    move_group_interface::MoveGroup::Plan plan;
 	    success = create_motion_plan(pick_poses[i],robot_state,plan) && move_group_ptr->execute(plan);
