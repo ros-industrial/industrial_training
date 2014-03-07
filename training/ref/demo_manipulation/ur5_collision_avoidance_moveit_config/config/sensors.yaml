@@ -7,5 +7,5 @@ sensors:
    point_subsample: 1
    padding_offset: 0.02
    padding_scale: 1.0
-   filtered_cloud_topic: octomap_cloud
+#   filtered_cloud_topic: octomap_cloud # enable when need to republish process cloud from move_group
 
