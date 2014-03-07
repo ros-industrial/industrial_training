@@ -1,16 +1,46 @@
 industrial_training
 ===================
 
-This branch was created in order to address the issue of attached objects not being checked for collisions agains sensor data <octomap>
+Training material for ROS-Industrial.
 
-Setup:
-  - add the 'industrial_training/training/supplements' and 'industrial_training/training/ref/demo_manipulation' directories to the ROS_PACKAGE_PATH variable
-  - roscd into collision_avoidance_pick_and_place and run rosmake
 
-Run Demo in this order:
-  - Terminal 1: roslaunch collision_avoidance_pick_and_place ur5_setup.launch
-  - Terminal 2: roslaunch collision_avoidance_pick_and_place ur5_pick_and_place.launch
+## IO dependencies installation
+===================
+The following instructions are base on the guidelines provided in :
+https://github.com/orocos/rtt_ros_integration
 
-Once running the arm will pick and place a box while avoiding collisions with the sensor data.  The box will go right through the obstacles (octomap) in most cases.
+### Build orocos from source
 
-The launch flie from the second terminal needs to be restarted in order for the arm to run once again. The launch file from the first terminal may continue to run permanently.
+```shell
+export OROCOS_TARGET=gnulinux
+mkdir -p ~/ros/hydro/catkin_underlay_isolated/src/orocos
+cd ~/ros/hydro/catkin_underlay_isolated
+git clone --recursive git://gitorious.org/orocos-toolchain/orocos_toolchain.git -b toolchain-2.7 src/orocos/orocos_toolchain
+catkin_make_isolated --install
+```
+
+Then create the 'devel' directory by running the following:
+```shell
+catkin_make
+```
+
+This will fail to build since there are non-catkin packages in this repo.  This is
+ok since the 'devel' directory and the setup scripts will be created regardless.
+
+### Build rtt-ros-integration from source
+
+```shell
+mkdir -p ~/ros/hydro/catkin_underlay/src
+cd ~/ros/hydro/catkin_underlay
+git clone https://github.com/orocos/rtt_ros_integration.git src/rtt_ros_integration
+source ../catkin_underlay_isolated/devel/setup.sh
+catkin_make --jobs=2
+source devel/setup.sh
+```
+
+### Add workspace to your environment setup
+In your .bashrc script add the following line:
+
+```shell
+source "~/ros/hydro/catkin_underlay/devel/setup.sh"
+```
