@@ -33,6 +33,7 @@ rosbuild_gensrv()
 
 
 rosbuild_add_executable(target_recognition_service src/services/target_recognition_service.cpp)
+rosbuild_add_executable(generate_cloud_node src/nodes/generate_point_cloud.cpp)
 
 rosbuild_add_executable(pick_and_place_node 
 	src/nodes/pick_and_place_node.cpp

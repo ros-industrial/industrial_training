@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
 <robot name="ur5_workspace" xmlns:xacro="http://ros.org/wiki/xacro">
-	<include filename="$(find robot_config)/urdf/vacuum_gripper_macro.xacro"/>
-  	<include filename="$(find robot_config)/urdf/ur5_model.urdf.xacro" />	
-	<include filename="$(find robot_config)/urdf/workspace_components.xacro"/>
-	<include filename="$(find robot_config)/urdf/kinect_sensor_macro.xacro"/>
+	<xacro:include filename="$(find robot_config)/urdf/vacuum_gripper_macro.xacro"/>
+  	<xacro:include filename="$(find robot_config)/urdf/ur5_model.urdf.xacro" />	
+	<xacro:include filename="$(find robot_config)/urdf/workspace_components.xacro"/>
+	<xacro:include filename="$(find robot_config)/urdf/kinect_sensor_macro.xacro"/>
 
 	<!-- property list -->
 	<xacro:property name="workcell_height" value="1"/>
