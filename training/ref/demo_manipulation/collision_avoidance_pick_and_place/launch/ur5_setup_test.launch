@@ -13,13 +13,13 @@
   <node pkg="robot_io" type="simulated_grasp_action_server" name="gripper_action_server" output="screen"/>
 
   <!-- static frame publisher for simulation -->
-  <node pkg="tf" type="static_transform_publisher" name="world_to_tag" args="-0.8 0.2 0.17 0 0 0 world_frame ar_tag 100"/>
+  <node pkg="tf" type="static_transform_publisher" name="world_to_tag" args="-0.8 0.2 0.17 0.785 0 0 world_frame ar_tag 100"/>
 
   <!-- detection node (simulation with bag data) -->
 
   <include file="$(find collision_avoidance_pick_and_place)/launch/ur5_target_recognition.launch"/>
   <include if="$(arg use_bag_data)" file="$(find collision_avoidance_pick_and_place)/launch/publish_sensor_data_bag.launch"/>
-  <include unless="$(arg use_bag_data)" if="$(arg use_generated_cloud)" file="$(find collision_avoidance_pick_and_place)/launch/ur5_generate_test_cloud_obstacles.launch"/>
+  <include if="$(arg use_generated_cloud)" file="$(find collision_avoidance_pick_and_place)/launch/ur5_generate_test_cloud_obstacles.launch"/>
 
   <!-- rviz -->
   <node name="$(anon rviz)" pkg="rviz" type="rviz" respawn="false" 
