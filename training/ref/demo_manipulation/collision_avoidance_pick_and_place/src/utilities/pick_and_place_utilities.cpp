@@ -138,19 +138,16 @@ bool pick_and_place_config::init()
     shape.dimensions[1] = BOX_SIZE.getY();
     shape.dimensions[2] = BOX_SIZE.getZ();
 
-    // creating pose of object relative to tcp
-    geometry_msgs::Pose tcp_to_box_pose;
-    tcp_to_box_pose.position.x = 0;
-    tcp_to_box_pose.position.y = 0;
-    tcp_to_box_pose.position.z = 0.5f* BOX_SIZE.getZ();
-    tcp_to_box_pose.orientation.x = tcp_to_box_pose.orientation.y = tcp_to_box_pose.orientation.z = 0;
-    tcp_to_box_pose.orientation.w = 1;
-
+    // setting pose of object relative to tcp
+    tf::poseTFToMsg(tf::Transform::getIdentity(),TCP_TO_BOX_POSE);
+    TCP_TO_BOX_POSE.position.x = 0;
+    TCP_TO_BOX_POSE.position.y = 0;
+    TCP_TO_BOX_POSE.position.z = 0.5f* BOX_SIZE.getZ();
 
     // creating visual object
     MARKER_MESSAGE.header.frame_id = TCP_LINK_NAME;
     MARKER_MESSAGE.type = visualization_msgs::Marker::CUBE;
-    MARKER_MESSAGE.pose = tcp_to_box_pose;
+    MARKER_MESSAGE.pose = TCP_TO_BOX_POSE;
     MARKER_MESSAGE.id = 0;
     MARKER_MESSAGE.color.r = 0;
     MARKER_MESSAGE.color.g = 0;
@@ -166,7 +163,7 @@ bool pick_and_place_config::init()
     ATTACHED_OBJECT.header.frame_id = TCP_LINK_NAME;
     ATTACHED_OBJECT.id=ATTACHED_OBJECT_LINK_NAME;
     ATTACHED_OBJECT.primitives.push_back(shape);
-    ATTACHED_OBJECT.primitive_poses.push_back(tcp_to_box_pose);
+    ATTACHED_OBJECT.primitive_poses.push_back(TCP_TO_BOX_POSE);
 
     return true;
   }

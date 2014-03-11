@@ -38,7 +38,8 @@ std::vector<geometry_msgs::Pose> collision_avoidance_pick_and_place::PickAndPlac
   tf::poseMsgToTF(box_pose,world_to_box_tf);
   tf::Vector3 box_position(box_pose.position.x, box_pose.position.y, box_pose.position.z);
   world_to_tcp_tf.setOrigin(box_position);
-  world_to_tcp_tf.setRotation(tf::Quaternion(M_PI, 0, M_PI/2.0f));
+  world_to_tcp_tf.setRotation(world_to_box_tf.getRotation()* tf::Quaternion(tf::Vector3(1,0,0),M_PI));  // invert z vector direction
+  //world_to_tcp_tf.setRotation(tf::Quaternion(M_PI, 0, M_PI/2.0f));
 
   // create pick poses for tcp
   tcp_pick_poses = create_manipulation_poses(cfg.RETREAT_DISTANCE, cfg.APPROACH_DISTANCE, world_to_tcp_tf);
