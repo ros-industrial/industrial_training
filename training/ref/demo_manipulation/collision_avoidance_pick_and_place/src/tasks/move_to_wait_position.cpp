@@ -28,6 +28,9 @@ void collision_avoidance_pick_and_place::PickAndPlace::move_to_wait_position()
   /* Fill Code: [ use the 'setNamedTarget' method in the 'move_group' object] */
   move_group_ptr->setNamedTarget(cfg.WAIT_POSE_NAME);
 
+  // set allowed planning time
+  move_group_ptr->setPlanningTime(60.0f);
+
   // move the robot
   /* Fill Code: [ use the 'move' method in the 'move_group' object and save the result in the 'success' variable] */
   success = move_group_ptr->move();
