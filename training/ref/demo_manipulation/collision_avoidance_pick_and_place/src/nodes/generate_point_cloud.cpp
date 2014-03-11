@@ -30,7 +30,7 @@ class GeneratePointCloud
 	struct Description
 	{
 		tf::Vector3 size;
-		tf::Vector3 position;
+		tf::Transform transform;
 		double resolution;
 	};
 
@@ -56,6 +56,9 @@ class GeneratePointCloud
 			numeric_fields.insert(std::make_pair("x",0));
 			numeric_fields.insert(std::make_pair("y",0));
 			numeric_fields.insert(std::make_pair("z",0));
+			numeric_fields.insert(std::make_pair("rx",0));
+			numeric_fields.insert(std::make_pair("ry",0));
+			numeric_fields.insert(std::make_pair("rz",0));
 			numeric_fields.insert(std::make_pair("l",0));
 			numeric_fields.insert(std::make_pair("w",0));
 			numeric_fields.insert(std::make_pair("h",0));
@@ -91,7 +94,9 @@ class GeneratePointCloud
 						// populating structure
 						Description d;
 						d.size = tf::Vector3(numeric_fields["l"],numeric_fields["w"],numeric_fields["h"]);
-						d.position = tf::Vector3(numeric_fields["x"],numeric_fields["y"],numeric_fields["z"]);
+						d.transform = tf::Transform(
+								tf::Quaternion(numeric_fields["ry"],numeric_fields["rx"],numeric_fields["rz"]),
+								tf::Vector3(numeric_fields["x"],numeric_fields["y"],numeric_fields["z"]));
 						d.resolution = numeric_fields["resolution"];
 
 						cloud_descriptions_.push_back(d);
@@ -141,9 +146,8 @@ class GeneratePointCloud
 
 
 				// transforming box
-				tf::Transform t = tf::Transform(tf::Quaternion::getIdentity(),desc.position);
 				Eigen::Affine3d eigen3d;
-				tf::transformTFToEigen(t,eigen3d);
+				tf::transformTFToEigen(desc.transform,eigen3d);
 				pcl::transformPointCloud(box,box,Eigen::Affine3f(eigen3d));
 
 				// concatenating box
