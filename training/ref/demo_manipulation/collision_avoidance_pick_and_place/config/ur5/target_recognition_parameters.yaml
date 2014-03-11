@@ -1,1 +1,2 @@
-sensor_topic: /kinect/depth_registered/points
+box_filter_scale: 1.2
+angle_tolerance: 0.017 # 1 degree
