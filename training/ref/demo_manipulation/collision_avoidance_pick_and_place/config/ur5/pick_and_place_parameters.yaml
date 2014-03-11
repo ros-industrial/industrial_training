@@ -8,8 +8,8 @@ home_pose_name: home
 wait_pose_name: wait
 approach_distance: 0.05
 retreat_distance: 0.05
-box_width: 0.17
 box_length: 0.17
+box_width: 0.17
 box_height: 0.17
 box_place_x: -0.4
 box_place_y: 0.6
