@@ -74,6 +74,16 @@ namespace collision_avoidance_pick_and_place
 		bool create_motion_plan(const geometry_msgs::Pose &pose_target,
 				const moveit_msgs::RobotState &start_robot_state,move_group_interface::MoveGroup::Plan &plan);
 
+		void show_box(bool show=true)
+		{
+			// updating marker action
+			cfg.MARKER_MESSAGE.action =
+					show ? visualization_msgs::Marker::ADD : visualization_msgs::Marker::DELETE;
+
+			// publish messages
+			marker_publisher.publish(cfg.MARKER_MESSAGE);
+		}
+
 	};
 }
 

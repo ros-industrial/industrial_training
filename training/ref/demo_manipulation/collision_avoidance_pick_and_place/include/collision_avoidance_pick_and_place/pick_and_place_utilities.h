@@ -47,16 +47,17 @@ public:
   double RETREAT_DISTANCE;     // Distance to back away from pick/place pose after grasp/release
   double APPROACH_DISTANCE;    // Distance to stand off from pick/place pose before grasp/release
 
-  // =============================== Variables ===============================
+  // =============================== Topic, services and action names ===============================
   std::string GRASP_ACTION_NAME;  // Action name used to control suction gripper
   std::string MARKER_TOPIC; // Topic for publishing visualization of attached object.
   std::string PLANNING_SCENE_TOPIC; // Topic for publishing the planning scene
   std::string TARGET_RECOGNITION_SERVICE; // service for requesting box pick pose
   std::string MOTION_PLAN_SERVICE; // service for requesting moveit for a motion plan
 
-  // =============================== Messages ===============================
+  // =============================== Messages and variables ===============================
   visualization_msgs::Marker MARKER_MESSAGE; // visual representation of target object
   moveit_msgs::CollisionObject ATTACHED_OBJECT; // attached object message
+  geometry_msgs::Pose TCP_TO_BOX_POSE;
 
   pick_and_place_config()
   {

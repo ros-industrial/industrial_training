@@ -41,13 +41,14 @@ void collision_avoidance_pick_and_place::PickAndPlace::place_box(std::vector<geo
   	{
       // attaching box
       set_attached_object(true,box_pose,robot_state);
+      show_box(true);
 
-    	ROS_INFO_STREAM("Robot State with attached payload at place move ["<<i<<"] :\n"<<robot_state);
   	}
   	else
   	{
       // detaching box
       set_attached_object(false,geometry_msgs::Pose(),robot_state);
+      show_box(false);
   	}
 
   	// create motion plan

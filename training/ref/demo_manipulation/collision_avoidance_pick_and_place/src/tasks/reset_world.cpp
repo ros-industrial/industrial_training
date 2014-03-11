@@ -24,6 +24,8 @@ void collision_avoidance_pick_and_place::PickAndPlace::reset_world(bool refresh_
 		detect_box_pick();
 	}
 
+	show_box(false);
+
 }
 
 

@@ -25,14 +25,6 @@ void PickAndPlace::set_attached_object(bool attach, const geometry_msgs::Pose &p
 
 	if(attach)
 	{
-		// updating orientation
-		geometry_msgs::Quaternion q = pose.orientation;
-		q.x = -q.x;
-		q.y = -q.y;
-		q.z = -q.z;
-		q.w = 1;
-		cfg.MARKER_MESSAGE.pose.orientation = q;
-		cfg.ATTACHED_OBJECT.primitive_poses[0].orientation = q;
 
 		// constructing shape
 		std::vector<shapes::ShapeConstPtr> shapes_array;
@@ -47,6 +39,10 @@ void PickAndPlace::set_attached_object(bool attach, const geometry_msgs::Pose &p
 
 		// attaching
 		current_state->attachBody(cfg.ATTACHED_OBJECT_LINK_NAME,shapes_array,pose_array,cfg.TOUCH_LINKS,cfg.TCP_LINK_NAME);
+
+		// update box marker
+		cfg.MARKER_MESSAGE.header.frame_id = cfg.TCP_LINK_NAME;
+		cfg.MARKER_MESSAGE.pose = cfg.TCP_TO_BOX_POSE;
 	}
 	else
 	{
@@ -56,16 +52,8 @@ void PickAndPlace::set_attached_object(bool attach, const geometry_msgs::Pose &p
 				current_state->clearAttachedBody(cfg.ATTACHED_OBJECT_LINK_NAME);
 	}
 
-	// updating marker action
-	cfg.MARKER_MESSAGE.action =
-			attach ? visualization_msgs::Marker::ADD : visualization_msgs::Marker::DELETE;
-
-	// publish messages
-	marker_publisher.publish(cfg.MARKER_MESSAGE);
-
 	// save robot state data
 	robot_state::robotStateToRobotStateMsg(*current_state,robot_state);
-
 }
 
 }

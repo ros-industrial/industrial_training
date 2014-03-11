@@ -64,15 +64,11 @@ geometry_msgs::Pose collision_avoidance_pick_and_place::PickAndPlace::detect_box
 
   // updating box marker
 	visualization_msgs::Marker marker = cfg.MARKER_MESSAGE;
-	marker.header.frame_id = cfg.WORLD_FRAME_ID;
-	marker.pose = box_pose;
-	marker.pose.position.z = 0.5f * box_pose.position.z;
+	cfg.MARKER_MESSAGE.header.frame_id = cfg.WORLD_FRAME_ID;
+	cfg.MARKER_MESSAGE.pose = box_pose;
+	cfg.MARKER_MESSAGE.pose.position.z = box_pose.position.z - 0.5f*cfg.BOX_SIZE.z();
 
-	// set object operation
-	marker.action = visualization_msgs::Marker::ADD;
-
-	// publishing messages
-	marker_publisher.publish(marker);
+	show_box(true);
 
 	return box_pose;
 }
