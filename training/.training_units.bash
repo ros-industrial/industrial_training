@@ -50,6 +50,15 @@ echo "export LIBGL_ALWAYS_SOFTWARE=1" >> $TRAINING_FILE
 source $TRAINING_FILE
 cd $UNIT_DIR
 
+# generate and source setup.bash if one doesn't exist
+if [ -d src ]; then
+ if [ ! -f devel/setup.bash ]; then
+   catkin_make
+ fi
+ 
+ source devel/setup.bash
+fi
+
 }   #end set_training_unit()
 
 function training_unit {
