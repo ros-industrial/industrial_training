@@ -1,14 +1,14 @@
 #include "ros/ros.h"
 //#include "lesson_custom_service/AddTwoInts.h"
 
-// bool add(lesson_custom_service::AddTwoInts::Request  &req,
-//          lesson_custom_service::AddTwoInts::Response &res)
-// {
-//   res.sum = req.a + req.b;
-//   ROS_INFO("request: x=%ld, y=%ld", (long int)req.a, (long int)req.b);
-//   ROS_INFO("sending back response: [%ld]", (long int)res.sum);
-//   return true;
-// }
+bool add(lesson_custom_service::AddTwoInts::Request  &req,
+         lesson_custom_service::AddTwoInts::Response &res)
+{
+//  res.sum = req.a + req.b;
+  ROS_INFO("request: x=%ld, y=%ld", (long int)req.a, (long int)req.b);
+  ROS_INFO("sending back response: [%ld]", (long int)res.sum);
+  return true;
+}
 
 int main(int argc, char **argv)
 {
