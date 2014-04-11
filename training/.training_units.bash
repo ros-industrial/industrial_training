@@ -53,9 +53,10 @@ cd $UNIT_DIR
 # generate and source setup.bash if one doesn't exist
 if [ -d src ]; then
  if [ ! -f devel/setup.bash ]; then
-   catkin_make
+   echo -e "\e[00;32m  Setting up catkin workspace ...\e[00m\n"
+   rm -r build &> /dev/null
+   catkin_make &> /dev/null
  fi
- 
  source devel/setup.bash
 fi
 
