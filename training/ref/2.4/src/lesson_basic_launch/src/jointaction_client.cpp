@@ -16,7 +16,7 @@ int main (int argc, char **argv)
 
   //get joint names and add to trajectory
   trajectory_msgs::JointTrajectory trajectory;
-  if (!industrial_utils::param::getJointNames("controller_joint_names", trajectory.joint_names))
+  if (!industrial_utils::param::getJointNames("controller_joint_names", "", trajectory.joint_names))
   {
     ROS_WARN("Unable to read 'controller_joint_names' param.  Using standard 6-DOF joint names.");
   }
