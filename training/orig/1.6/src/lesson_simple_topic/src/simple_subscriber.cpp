@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
     ros::NodeHandle node;
 
     // TODO: Uncomment the next 2 lines
-    //ros::Subscriber subscriber = node.subscribe("position", 1000, positionCallback);
-    //ros::spin();
+//   ros::Subscriber subscriber = node.subscribe("position", 1000, positionCallback);
+    ros::spin();
     return 0;
 }
