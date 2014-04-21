@@ -5,7 +5,7 @@
   <   Default Launch ex: $roslaunch lesson_tf_terminal advanced_system.launch  >
   <   Different part and Robot ex: $roslaunch lesson_tf_terminal advanced_system.launch part:=puzzle_bent robot:=irb2400 >
   < - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-  <arg name="robot" default="sia20" />              <!-- different robots can be used, ie robot:=irb2400 -->
+  <arg name="robot" default="irb2400" />              <!-- different robots can be used, ie robot:=irb2400 -->
   <arg name="part" default="puzzle_bent"/>          <!-- different parts can be used, ie part:=letterS -->
   <arg name="tool" default="puzzle_mount_sia20"/>   <!-- different tooling can be used ie: tool:=letterS_mount -->
   <arg name="show_rviz" default="true" />           <!-- launch with show_rviz:=false to disable rviz -->
