@@ -41,6 +41,16 @@ fi
 clear_training_unit # reset ROS_PACKAGE_PATH
 local TRAINING_PACKAGE_PATH=$UNIT_DIR:$TRAINING_DIR/supplements
 
+# generate and source setup.bash if one doesn't exist
+
+if [ -d $UNIT_DIR/src ]; then
+ if [ ! -f $UNIT_DIR/devel/setup.bash ]; then
+   echo -e "\e[00;32m  Setting up catkin workspace ...\e[00m"
+   rm -r $UNIT_DIR/build &> /dev/null
+   catkin_make -C $UNIT_DIR &> /dev/null
+ fi
+fi
+
 # save path (and other code) to file for re-use in new terminals
 echo "if [ -f $UNIT_DIR/devel/setup.bash ]; then" > $TRAINING_FILE
 echo " source $UNIT_DIR/devel/setup.bash" >> $TRAINING_FILE
@@ -51,17 +61,8 @@ echo "PS1=\"\[\e]0;ROS-I Training Unit $UNIT ($SUBDIR)\a\]\u@\h:\w\$ \"" >> $TRA
 echo "export LIBGL_ALWAYS_SOFTWARE=1" >> $TRAINING_FILE
 
 source $TRAINING_FILE
-cd $UNIT_DIR
 
-# generate and source setup.bash if one doesn't exist
-if [ -d src ]; then
- if [ ! -f devel/setup.bash ]; then
-   echo -e "\e[00;32m  Setting up catkin workspace ...\e[00m\n"
-   rm -r build &> /dev/null
-   catkin_make &> /dev/null
- fi
- source devel/setup.bash
-fi
+cd $UNIT_DIR
 
 }   #end set_training_unit()
 
