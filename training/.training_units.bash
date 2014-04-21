@@ -42,7 +42,10 @@ clear_training_unit # reset ROS_PACKAGE_PATH
 local TRAINING_PACKAGE_PATH=$UNIT_DIR:$TRAINING_DIR/supplements
 
 # save path (and other code) to file for re-use in new terminals
-echo "ROS_PACKAGE_PATH=$TRAINING_PACKAGE_PATH:\$ROS_PACKAGE_PATH" > $TRAINING_FILE
+echo "if [ -f $UNIT_DIR/devel/setup.bash ]; then" > $TRAINING_FILE
+echo " source $UNIT_DIR/devel/setup.bash" >> $TRAINING_FILE
+echo "fi" >> $TRAINING_FILE
+echo "ROS_PACKAGE_PATH=$TRAINING_PACKAGE_PATH:\$ROS_PACKAGE_PATH" >> $TRAINING_FILE
 echo "echo -e \"\n\e[00;32m  Switching to UNIT $UNIT ($SUBDIR copy)\e[00m\n\"" >> $TRAINING_FILE
 echo "PS1=\"\[\e]0;ROS-I Training Unit $UNIT ($SUBDIR)\a\]\u@\h:\w\$ \"" >> $TRAINING_FILE
 echo "export LIBGL_ALWAYS_SOFTWARE=1" >> $TRAINING_FILE
