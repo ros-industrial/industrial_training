@@ -30,12 +30,12 @@
  */
 
 // Common stuff for this exercise
-#include "lesson_simple_message/common.h"
+#include <lesson_simple_message/common.h>
 
 // Simple message
-#include "simple_message/simple_message.h"
-#include "simple_message/socket/tcp_server.h"
-#include "simple_message/messages/joint_message.h"
+#include <simple_message/simple_message.h>
+#include <simple_message/socket/tcp_server.h>
+#include <simple_message/messages/joint_message.h>
 
 // ROS core (not really required for simple message, but allows us to use roslaunch)
 #include "ros/ros.h"
