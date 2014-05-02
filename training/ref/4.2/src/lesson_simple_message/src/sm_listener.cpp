@@ -38,7 +38,7 @@
 #include <simple_message/messages/joint_message.h>
 
 // ROS core (not really required for simple message, but allows us to use roslaunch)
-#include "ros/ros.h"
+#include <ros/ros.h>
 
 // Using declarations to simplify code (BAD FORM, DON'T DO THIS)
 using namespace industrial::joint_message;
