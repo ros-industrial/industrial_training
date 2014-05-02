@@ -9,30 +9,129 @@ find_package(catkin REQUIRED COMPONENTS
   message_generation
 )
 
-#uncomment if you have defined messages
-#rosbuild_genmsg()
-#uncomment if you have defined services
-#rosbuild_gensrv()
 
-rosbuild_add_executable(lesson_move_group_1 src/lesson_move_group_1.cpp)
-target_link_libraries(lesson_move_group_1 moveit_move_group_interface)
+## System dependencies are found with CMake's conventions
+# find_package(Boost REQUIRED COMPONENTS system)
 
-rosbuild_add_executable(lesson_move_group_2 src/lesson_move_group_2.cpp)
-target_link_libraries(lesson_move_group_2 moveit_move_group_interface)
 
-rosbuild_add_executable(lesson_move_group_3 src/lesson_move_group_3.cpp)
-target_link_libraries(lesson_move_group_3 moveit_move_group_interface)
+## Uncomment this if the package has a setup.py. This macro ensures
+## modules and global scripts declared therein get installed
+## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
+# catkin_python_setup()
 
-rosbuild_add_executable(lesson_move_group_4 src/lesson_move_group_4.cpp)
-target_link_libraries(lesson_move_group_4 moveit_move_group_interface)
+#######################################
+## Declare ROS messages and services ##
+#######################################
 
-rosbuild_add_executable(lesson_move_group_5 src/lesson_move_group_5.cpp)
-target_link_libraries(lesson_move_group_5 moveit_move_group_interface)
+## Generate messages in the 'msg' folder
+# add_message_files(
+#   FILES
+#   Message1.msg
+#   Message2.msg
+# )
 
-#common commands for building c++ executables and libraries
-#rosbuild_add_library(${PROJECT_NAME} src/example.cpp)
-#target_link_libraries(${PROJECT_NAME} another_library)
-#rosbuild_add_boost_directories()
-#rosbuild_link_boost(${PROJECT_NAME} thread)
-#rosbuild_add_executable(example examples/example.cpp)
-#target_link_libraries(example ${PROJECT_NAME})
+## Generate services in the 'srv' folder
+# add_service_files(
+#   FILES
+#   Service1.srv
+#   Service2.srv
+# )
+
+## Generate actions in the 'action' folder
+# add_action_files(FILES Fibonacci.action)
+
+## Generate added messages and services with any dependencies listed here
+# generate_messages(DEPENDENCIES std_msgs actionlib_msgs)
+
+###################################
+## catkin specific configuration ##
+###################################
+## The catkin_package macro generates cmake config files for your package
+## Declare things to be passed to dependent projects
+## LIBRARIES: libraries you create in this project that dependent projects also need
+## CATKIN_DEPENDS: catkin_packages dependent projects also need
+## DEPENDS: system dependencies of this project that dependent projects also need
+catkin_package(
+   INCLUDE_DIRS include
+#  LIBRARIES lesson_actions
+   CATKIN_DEPENDS 
+     roscpp
+#     message_runtime
+#     actionlib_msgs
+#     actionlib
+#  DEPENDS system_lib
+)
+
+###########
+## Build ##
+###########
+
+## Specify additional locations of header files
+## Your package locations should be listed before other locations
+include_directories(include
+  ${catkin_INCLUDE_DIRS}
+)
+
+## Declare a cpp library
+# add_library(lesson_actions
+#   src/${PROJECT_NAME}/lesson_actions.cpp
+# )
+
+## Declare a cpp executable
+add_executable(lesson_move_group_1 src/lesson_move_group_1.cpp)
+target_link_libraries(lesson_move_group_1 ${catkin_LIBRARIES} moveit_move_group_interface)
+
+add_executable(lesson_move_group_2 src/lesson_move_group_2.cpp)
+target_link_libraries(lesson_move_group_2 ${catkin_LIBRARIES} moveit_move_group_interface)
+
+add_executable(lesson_move_group_3 src/lesson_move_group_3.cpp)
+target_link_libraries(lesson_move_group_3 ${catkin_LIBRARIES} moveit_move_group_interface)
+
+add_executable(lesson_move_group_4 src/lesson_move_group_4.cpp)
+target_link_libraries(lesson_move_group_4 ${catkin_LIBRARIES} moveit_move_group_interface)
+
+add_executable(lesson_move_group_5 src/lesson_move_group_5.cpp)
+target_link_libraries(lesson_move_group_5 ${catkin_LIBRARIES} moveit_move_group_interface)
+
+#############
+## Install ##
+#############
+
+# all install targets should use catkin DESTINATION variables
+# See http://ros.org/doc/api/catkin/html/adv_user_guide/variables.html
+
+## Mark executable scripts (Python etc.) for installation
+## in contrast to setup.py, you can choose the destination
+# install(PROGRAMS
+#   scripts/my_python_script
+#   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+# )
+
+## Mark executables and/or libraries for installation
+
+## Mark cpp header files for installation
+#install(DIRECTORY include/${PROJECT_NAME}/
+#  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+#  FILES_MATCHING PATTERN "*.h"
+#  PATTERN ".svn" EXCLUDE
+#)
+
+## Mark other files for installation (e.g. launch and bag files, etc.)
+# install(FILES
+#   # myfile1
+#   # myfile2
+#   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+# )
+
+#############
+## Testing ##
+#############
+
+## Add gtest based cpp test target and link libraries
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_lesson_actions.cpp)
+# if(TARGET ${PROJECT_NAME}-test)
+#   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
+# endif()
+
+## Add folders to be run by python nosetests
+# catkin_add_nosetests(test)
