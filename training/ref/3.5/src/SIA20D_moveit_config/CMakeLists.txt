@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(SIA20D_moveit_config)
 
-find_package(catkin REQUIRED)
+find_package(catkin REQUIRED COMPONENTS moveit_ros_move_group motoman_config)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -48,7 +48,7 @@ find_package(catkin REQUIRED)
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES lesson_urdf
-#  CATKIN_DEPENDS other_catkin_pkg
+   CATKIN_DEPENDS moveit_ros_move_group motoman_config
 #  DEPENDS system_lib
 )
 
