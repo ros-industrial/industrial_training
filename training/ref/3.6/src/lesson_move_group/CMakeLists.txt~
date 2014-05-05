@@ -6,7 +6,9 @@ project(lesson_move_group)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS 
   roscpp 
-  message_generation
+  moveit_core
+  moveit_ros_planning 
+  moveit_ros_planning_interface
 )
 
 
@@ -54,8 +56,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
    INCLUDE_DIRS include
 #  LIBRARIES lesson_actions
-   CATKIN_DEPENDS 
-     roscpp
+   CATKIN_DEPENDS roscpp moveit_core moveit_ros_planning moveit_ros_planning_interface
 #     message_runtime
 #     actionlib_msgs
 #     actionlib
@@ -79,19 +80,19 @@ include_directories(include
 
 ## Declare a cpp executable
 add_executable(lesson_move_group_1 src/lesson_move_group_1.cpp)
-target_link_libraries(lesson_move_group_1 ${catkin_LIBRARIES} moveit_move_group_interface)
+target_link_libraries(lesson_move_group_1 ${catkin_LIBRARIES})
 
 add_executable(lesson_move_group_2 src/lesson_move_group_2.cpp)
-target_link_libraries(lesson_move_group_2 ${catkin_LIBRARIES} moveit_move_group_interface)
+target_link_libraries(lesson_move_group_2 ${catkin_LIBRARIES})
 
 add_executable(lesson_move_group_3 src/lesson_move_group_3.cpp)
-target_link_libraries(lesson_move_group_3 ${catkin_LIBRARIES} moveit_move_group_interface)
+target_link_libraries(lesson_move_group_3 ${catkin_LIBRARIES})
 
 add_executable(lesson_move_group_4 src/lesson_move_group_4.cpp)
-target_link_libraries(lesson_move_group_4 ${catkin_LIBRARIES} moveit_move_group_interface)
+target_link_libraries(lesson_move_group_4 ${catkin_LIBRARIES})
 
 add_executable(lesson_move_group_5 src/lesson_move_group_5.cpp)
-target_link_libraries(lesson_move_group_5 ${catkin_LIBRARIES} moveit_move_group_interface)
+target_link_libraries(lesson_move_group_5 ${catkin_LIBRARIES})
 
 #############
 ## Install ##
@@ -108,11 +109,6 @@ target_link_libraries(lesson_move_group_5 ${catkin_LIBRARIES} moveit_move_group_
 # )
 
 ## Mark executables and/or libraries for installation
-install(TARGETS fibonacci_server fibonacci_client
-  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
 
 ## Mark cpp header files for installation
 #install(DIRECTORY include/${PROJECT_NAME}/
