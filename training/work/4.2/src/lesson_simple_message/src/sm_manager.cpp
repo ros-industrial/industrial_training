@@ -30,11 +30,11 @@
  */
 
 // Handler Class definition
-#include "simple_message/message_handler.h"
-#include "simple_message/messages/joint_message.h"
+#include <simple_message/message_handler.h>
+#include <simple_message/messages/joint_message.h>
 
 // ROS core (not really required for simple message, but allows us to use roslaunch)
-#include "ros/ros.h"
+#include <ros/ros.h>
 
 // Using declarations to simplify code (BAD FORM, DON'T DO THIS)
 using namespace industrial::joint_message;
@@ -101,12 +101,12 @@ private:
 
 
 // Common stuff for this exercise
-#include "lesson_simple_message/common.h"
+#include <lesson_simple_message/common.h>
 
 // Simple message
-#include "simple_message/simple_message.h"
-#include "simple_message/socket/tcp_server.h"
-#include "simple_message/message_manager.h"
+#include <simple_message/simple_message.h>
+#include <simple_message/socket/tcp_server.h>
+#include <simple_message/message_manager.h>
 
 
 // Using declarations to simplify code (BAD FORM, DON'T DO THIS)
