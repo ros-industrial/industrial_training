@@ -58,7 +58,7 @@ find_package(catkin REQUIRED COMPONENTS
 #     actionlib_msgs
 #     actionlib
 #  DEPENDS system_lib
-)
+catkin_package()
 
 ###########
 ## Build ##
