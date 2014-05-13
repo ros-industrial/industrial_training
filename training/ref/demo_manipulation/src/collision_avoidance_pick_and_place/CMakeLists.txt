@@ -1,41 +1,79 @@
-cmake_minimum_required(VERSION 2.4.6)
-include($ENV{ROS_ROOT}/core/rosbuild/rosbuild.cmake)
+cmake_minimum_required(VERSION 2.8.3)
+project(collision_avoidance_pick_and_place)
 
-# Set the build type.  Options are:
-#  Coverage       : w/ debug symbols, w/o optimization, w/ code-coverage
-#  Debug          : w/ debug symbols, w/o optimization
-#  Release        : w/o debug symbols, w/ optimization
-#  RelWithDebInfo : w/ debug symbols, w/ optimization
-#  MinSizeRel     : w/o debug symbols, w/ optimization, stripped binaries
-#set(ROS_BUILD_TYPE RelWithDebInfo)
+find_package(catkin REQUIRED COMPONENTS 
+  roscpp
+  moveit_msgs
+  moveit_ros_manipulation
+  moveit_ros_move_group
+  moveit_ros_planning_interface
+  robot_io
+  object_manipulation_msgs
+  actionlib
+  industrial_robot_client
+  industrial_robot_simulator
+  std_msgs
+  shape_msgs
+  pcl_ros
+  pcl_msgs
+  tf_conversions
+	message_generation
+)
 
-##rosbuild_add_generated_srvs(GetTargetPose.srv)
-#ADD_DEFINITIONS("-std=c++0x")
-rosbuild_init()
+include_directories(include
+  ${catkin_INCLUDE_DIRS}
+)
 
-#set the default path for built executables to the "bin" directory
-set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
-#set the default path for built libraries to the "lib" directory
-set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
+#######################################
+## Declare ROS messages and services ##
+#######################################
+## Generate services in the 'srv' folder
+add_service_files(
+   FILES
+   GetTargetPose.srv
+)
 
-#uncomment if you have defined messages
-##rosbuild_genmsg()
-#uncomment if you have defined services
-rosbuild_gensrv()
+## Generate added messages and services with any dependencies listed here
+generate_messages(
+	DEPENDENCIES   
+		std_msgs
+		shape_msgs
+		pcl_msgs)
 
-#common commands for building c++ executables and libraries
-#rosbuild_add_library(${PROJECT_NAME} src/example.cpp)
-#target_link_libraries(${PROJECT_NAME} another_library)
-#rosbuild_add_boost_directories()
-#rosbuild_link_boost(${PROJECT_NAME} thread)
-#rosbuild_add_executable(example examples/example.cpp)
-#target_link_libraries(example ${PROJECT_NAME})
+###################################
+## catkin specific configuration ##
+###################################
+catkin_package(
+	CATKIN_DEPENDS
+		roscpp
+		moveit_msgs
+		moveit_ros_manipulation
+		moveit_ros_move_group
+		moveit_ros_planning_interface
+		robot_io
+		object_manipulation_msgs
+		actionlib
+		industrial_robot_client
+		industrial_robot_simulator
+		std_msgs
+		shape_msgs
+		pcl_ros
+		pcl_msgs
+		tf_conversions
+		message_runtime
+)
 
+###########
+## Build ##
+###########
 
-rosbuild_add_executable(target_recognition_service src/services/target_recognition_service.cpp)
-rosbuild_add_executable(generate_cloud_node src/nodes/generate_point_cloud.cpp)
+add_executable(target_recognition_service src/services/target_recognition_service.cpp)
+target_link_libraries(target_recognition_service ${catkin_LIBRARIES})
 
-rosbuild_add_executable(pick_and_place_node 
+add_executable(generate_cloud_node src/nodes/generate_point_cloud.cpp)
+target_link_libraries(generate_cloud_node ${catkin_LIBRARIES})
+
+add_executable(pick_and_place_node 
 	src/nodes/pick_and_place_node.cpp
 	src/tasks/move_to_wait_position.cpp
 	src/tasks/set_gripper.cpp
@@ -43,11 +81,12 @@ rosbuild_add_executable(pick_and_place_node
 	src/tasks/set_attached_object.cpp
 	src/tasks/detect_box_pick.cpp
 	src/tasks/create_pick_moves.cpp
-    src/tasks/create_place_moves.cpp
+  src/tasks/create_place_moves.cpp
 	src/tasks/pickup_box.cpp
 	src/tasks/place_box.cpp	
 	src/tasks/create_motion_plan.cpp
 	src/utilities/pick_and_place_utilities.cpp)
+target_link_libraries(pick_and_place_node ${catkin_LIBRARIES})
 
 
 	
