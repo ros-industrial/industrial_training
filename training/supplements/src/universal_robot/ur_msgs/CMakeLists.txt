@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(ur_gazebo)
+project(ur_msgs)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS ur_description)
+find_package(catkin REQUIRED COMPONENTS message_generation)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -13,31 +13,31 @@ find_package(catkin REQUIRED COMPONENTS ur_description)
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
 ## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
-# catkin_python_setup()
+#catkin_python_setup()
 
 #######################################
 ## Declare ROS messages and services ##
 #######################################
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
-#   Message2.msg
-# )
+add_message_files(
+  FILES
+  IOState.msg
+  IOStates.msg
+)
 
 ## Generate services in the 'srv' folder
-# add_service_files(
-#   FILES
-#   Service1.srv
+add_service_files(
+  FILES
+  SetIOState.srv
 #   Service2.srv
-# )
+)
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
+generate_messages(
 #   DEPENDENCIES
-#   std_msgs  # Or other packages containing msgs
-# )
+#   control_msgs#   sensor_msgs
+)
 
 ###################################
 ## catkin specific configuration ##
@@ -49,8 +49,8 @@ find_package(catkin REQUIRED COMPONENTS ur_description)
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES ur_gazebo
-#  CATKIN_DEPENDS ur_description
+#  LIBRARIES ur_driver
+#  CATKIN_DEPENDS actionlib control_msgs rospy sensor_msgs
 #  DEPENDS system_lib
 )
 
@@ -63,29 +63,25 @@ catkin_package(
 # include_directories(include ${catkin_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
 
 ## Declare a cpp library
-# add_library(ur_gazebo
-#   src/${PROJECT_NAME}/ur_gazebo.cpp
+# add_library(ur_driver
+#   src/${PROJECT_NAME}/ur_driver.cpp
 # )
 
 ## Declare a cpp executable
-# add_executable(ur_gazebo_node src/ur_gazebo_node.cpp)
+# add_executable(ur_driver_node src/ur_driver_node.cpp)
 
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
-# add_dependencies(ur_gazebo_node ur_gazebo_generate_messages_cpp)
+# add_dependencies(ur_driver_node ur_driver_generate_messages_cpp)
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(ur_gazebo_node
+# target_link_libraries(ur_driver_node
 #   ${catkin_LIBRARIES}
 # )
 
 #############
 ## Install ##
 #############
-
-install(DIRECTORY launch DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
-install(DIRECTORY controller DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
-
 
 # all install targets should use catkin DESTINATION variables
 # See http://ros.org/doc/api/catkin/html/adv_user_guide/variables.html
@@ -98,7 +94,7 @@ install(DIRECTORY controller DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
 # )
 
 ## Mark executables and/or libraries for installation
-# install(TARGETS ur_gazebo ur_gazebo_node
+# install(TARGETS ur_driver ur_driver_node
 #   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -123,7 +119,7 @@ install(DIRECTORY controller DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_ur_gazebo.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_ur_driver.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
