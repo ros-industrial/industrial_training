@@ -161,24 +161,19 @@ namespace ar_pose
     // load pattern file
     ROS_INFO ("Loading pattern");
     patt_id_ = arLoadPatt (pattern_filename_);
-
     if (patt_id_ < 0)
     {
       ROS_ERROR ("Pattern file load error: %s", pattern_filename_);
       ROS_BREAK ();
     }
-    else{
-      ROS_INFO ("loaded patt_id = %d",patt_id_);
-    }
+
     sz_ = cvSize (cam_param_.xsize, cam_param_.ysize);
     capture_ = cvCreateImage (sz_, IPL_DEPTH_8U, 4);
   }
 
   void ARSinglePublisher::getTransformationCallback (const sensor_msgs::ImageConstPtr & image_msg)
   {
-
     ARUint8 *dataPtr;
-    cv_bridge::CvImagePtr mat_ptr;
     ARMarkerInfo *marker_info;
     int marker_num;
     int i, k;
@@ -187,19 +182,30 @@ namespace ar_pose
      * NOTE: the dataPtr format is BGR because the ARToolKit library was
      * build with V4L, dataPtr format change according to the 
      * ARToolKit configure option (see config.h).*/
+
+    cv_bridge::CvImagePtr cv_ptr;
+
     try
     {
-      //capture_ = bridge_.imgMsgToCv (image_msg, "bgr8");
-        mat_ptr = cv_bridge::toCvCopy(image_msg,sensor_msgs::image_encodings::BGR8);
-        if(capture_ != NULL) delete capture_;
-        capture_ = new IplImage(mat_ptr->image);
+      cv_ptr = cv_bridge::toCvCopy(image_msg, 
+          sensor_msgs::image_encodings::BGR8);
     }
-    catch (cv_bridge::Exception & e)
+    catch (cv_bridge::Exception& e)
+    {
+      ROS_ERROR("cv_bridge exception: %s", e.what());
+      return;
+    }
+
+    /*try
+    {
+      capture_ = bridge_.imgMsgToCv (image_msg, "bgr8");
+    }
+    catch (sensor_msgs::CvBridgeException & e)
     {
       ROS_ERROR ("Could not convert from '%s' to 'bgr8'.", image_msg->encoding.c_str ());
-    }
+    }*/
     //cvConvertImage(capture_,capture_,CV_CVTIMG_FLIP); //flip image
-    dataPtr = (ARUint8 *) capture_->imageData;
+    dataPtr = (ARUint8 *) cv_ptr->image.data; //capture_->imageData;
 
     // detect the markers in the video frame 
     if (arDetectMarker (dataPtr, threshold_, &marker_info, &marker_num) < 0)
@@ -207,7 +213,6 @@ namespace ar_pose
       ROS_FATAL ("arDetectMarker failed");
       ROS_BREAK ();             // FIXME: I don't think this should be fatal... -Bill
     }
-
 
     // check for known patterns
     k = -1;
@@ -227,8 +232,6 @@ namespace ar_pose
 
     if (k != -1)
     {
-      double cx = marker_info[k].vertex[0][0]+marker_info[k].vertex[1][0];
-      double cy = marker_info[k].vertex[2][1]+marker_info[k].vertex[3][1];
       // **** get the transformation between the marker and the real camera
       double arQuat[4], arPos[3];
 

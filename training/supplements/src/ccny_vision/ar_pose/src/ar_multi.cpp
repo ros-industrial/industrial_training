@@ -23,22 +23,12 @@
 #include "ar_pose/ar_multi.h"
 #include "ar_pose/object.h"
 
-std::string OBJECT_NAME = "ar_tag";
-
 int main (int argc, char **argv)
 {
   ros::init (argc, argv, "ar_single");
   ros::NodeHandle n;
   ar_pose::ARSinglePublisher ar_single (n);
-
-  ros::Duration loop_time(0.1f);
-  while(ros::ok()&& loop_time.sleep())
-  {
-	ros::spinOnce();
-  }
-
-//  ros::spin();
-
+  ros::spin ();
   return 0;
 }
 
@@ -48,7 +38,7 @@ namespace ar_pose
   {
     std::string local_path;
     std::string package_path = ros::package::getPath (ROS_PACKAGE_NAME);
-    std::string default_path = "data/object_4x4";
+	std::string default_path = "data/object_4x4";
     ros::NodeHandle n_param ("~");
     XmlRpc::XmlRpcValue xml_marker_center;
 
@@ -66,33 +56,33 @@ namespace ar_pose
       threshold_ = 100;
     ROS_INFO ("\tThreshold: %d", threshold_);
 	
-    //modifications to allow path list from outside the package
-    n_param.param ("marker_pattern_list", local_path, default_path);
-    if (local_path.compare(0,5,"data/") == 0){
-      //according to previous implementations, check if first 5 chars equal "data/"
-      sprintf (pattern_filename_, "%s/%s", package_path.c_str (), local_path.c_str ());
-    }
-    else{
-      //for new implementations, can pass a path outside the package_path
-      sprintf (pattern_filename_, "%s", local_path.c_str ());
-    }
-    ROS_INFO ("Marker Pattern Filename: %s", pattern_filename_);
-    
+	//modifications to allow path list from outside the package
+	n_param.param ("marker_pattern_list", local_path, default_path);
+	if (local_path.compare(0,5,"data/") == 0){
+	  //according to previous implementations, check if first 5 chars equal "data/"
+	  sprintf (pattern_filename_, "%s/%s", package_path.c_str (), local_path.c_str ());
+	}
+	else{
+	  //for new implementations, can pass a path outside the package_path
+	  sprintf (pattern_filename_, "%s", local_path.c_str ());
+	}
+	ROS_INFO ("Marker Pattern Filename: %s", pattern_filename_);
+	
     // **** subscribe
-    
+
     ROS_INFO ("Subscribing to info topic");
     sub_ = n_.subscribe (cameraInfoTopic_, 1, &ARSinglePublisher::camInfoCallback, this);
     getCamInfo_ = false;
-    
+
     // **** advertsie 
-    
+
     arMarkerPub_ = n_.advertise < ar_pose::ARMarkers > ("ar_pose_marker", 0);
     if(publishVisualMarkers_)
-      {
-	rvizMarkerPub_ = n_.advertise < visualization_msgs::Marker > ("visualization_marker", 0);
-      }
+    {
+		rvizMarkerPub_ = n_.advertise < visualization_msgs::Marker > ("visualization_marker", 0);
+	 }
   }
-  
+
   ARSinglePublisher::~ARSinglePublisher (void)
   {
     //cvReleaseImage(&capture_); //Don't know why but crash when release the image
@@ -146,40 +136,45 @@ namespace ar_pose
       ROS_BREAK ();
     ROS_DEBUG ("Objectfile num = %d", objectnum);
 
-    markerImageLocs_.create(objectnum,2,CV_32F); // the x an y location of center of marker in image
-    num_samples.clear();
-    for(int i=0;i<objectnum;i++) num_samples.push_back(0);
-
     sz_ = cvSize (cam_param_.xsize, cam_param_.ysize);
     capture_ = cvCreateImage (sz_, IPL_DEPTH_8U, 4);
   }
 
   void ARSinglePublisher::getTransformationCallback (const sensor_msgs::ImageConstPtr & image_msg)
   {
-
     ARUint8 *dataPtr;
     ARMarkerInfo *marker_info;
     int marker_num;
     int i, k, j;
-    cv_bridge::CvImagePtr mat_ptr;
 
     /* Get the image from ROSTOPIC
      * NOTE: the dataPtr format is BGR because the ARToolKit library was
      * build with V4L, dataPtr format change according to the 
      * ARToolKit configure option (see config.h).*/
-    try
+    /*try
     {
-      //capture_ = cv_bridge_.imgMsgToCv (image_msg, "bgr8");
-      mat_ptr = cv_bridge::toCvCopy(image_msg,sensor_msgs::image_encodings::BGR8);
-      //if(capture_ != NULL) delete capture_;
-      capture_ = new IplImage(mat_ptr->image);
+      capture_ = bridge_.imgMsgToCv (image_msg, "bgr8");
     }
-    catch (cv_bridge::Exception & e)
+    catch (sensor_msgs::CvBridgeException & e)
     {
       ROS_ERROR ("Could not convert from '%s' to 'bgr8'.", image_msg->encoding.c_str ());
     }
     //cvConvertImage(capture,capture,CV_CVTIMG_FLIP);
-    dataPtr = (ARUint8 *) capture_->imageData;
+    dataPtr = (ARUint8 *) capture_->imageData;*/
+
+    cv_bridge::CvImagePtr cv_ptr;
+
+    try
+    {
+      cv_ptr = cv_bridge::toCvCopy(image_msg, 
+          sensor_msgs::image_encodings::BGR8);
+    }
+    catch (cv_bridge::Exception& e)
+    {
+      ROS_ERROR("cv_bridge exception: %s", e.what());
+      return;
+    }
+    dataPtr = (ARUint8 *) cv_ptr->image.data; 
 
     // detect the markers in the video frame
     if (arDetectMarker (dataPtr, threshold_, &marker_info, &marker_num) < 0)
@@ -187,45 +182,6 @@ namespace ar_pose
       argCleanup ();
       ROS_BREAK ();
     }
-
-    std::string nn = ros::this_node::getName();
-    bool reset_average=false;
-    if (!n_.getParam (nn+"/reset_average", reset_average)){
-      n_.setParam(nn+"/reset_average",false);
-    }
-    else if(reset_average){
-      ROS_ERROR("Resetting Average");
-      n_.setParam(nn+"/reset_average",false);
-      for(i=0;i<objectnum;i++){
-	num_samples[i] = 0;
-	markerImageLocs_.at<float>(i,0) =0;
-	markerImageLocs_.at<float>(i,1) =0;
-      }
-    }
-
-    bool output_marker_xyz=false;
-    FILE *fp;
-    if (!n_.getParam (nn+"/Output_marker_xyz", output_marker_xyz)){
-      n_.setParam(nn+"/Output_marker_xyz",false);
-    }
-    std::string Marker_xyz_file("marker_xyz.txt");
-    if(output_marker_xyz){
-      if(!n_.getParam (nn+"/Marker_xyz_file", Marker_xyz_file)){
-	ROS_ERROR("Ros param Marker_xyz_file not set");
-	n_.setParam(nn+"/Output_marker_xyz",false);
-	output_marker_xyz=false;
-      }
-      else{ // open file
-	ROS_ERROR("Opening file Marker_xyz_file %s",Marker_xyz_file.c_str());
-	if(!(fp = fopen(Marker_xyz_file.c_str(),"w"))){
-	  ROS_ERROR("Could not open Marker xyz file: %s",Marker_xyz_file.c_str());
-	  ROS_ERROR("Ros param Marker_xyz_file not set");
-	  n_.setParam(nn+"/Output_marker_xyz",false);
-	  output_marker_xyz=false;
-	}
-      }
-    }
-    
 
     arPoseMarkers_.markers.clear ();
     // check for known patterns
@@ -248,20 +204,6 @@ namespace ar_pose
         object[i].visible = 0;
         continue;
       }
-
-
-
-      double cx = (marker_info[k].vertex[0][0]+marker_info[k].vertex[1][0])/2.0;
-      double cy = (marker_info[k].vertex[2][1]+marker_info[k].vertex[3][1])/2.0;
-      int m_id = marker_info[k].id;
-      cx = (markerImageLocs_.at<float>(m_id,0)*num_samples[m_id] + cx)/(num_samples[m_id]+1);
-      cy = (markerImageLocs_.at<float>(m_id,1)*num_samples[m_id] + cy)/(num_samples[m_id]+1);
-      num_samples[m_id]++;
-
-      markerImageLocs_.at<float>(m_id,0) = cx;
-      markerImageLocs_.at<float>(m_id,1) = cy;
-      ROS_INFO("Marker %d center = %f %f",m_id,cx,cy);
-
 
       // calculate the transform for each marker
       if (object[i].visible == 0)
@@ -324,8 +266,7 @@ namespace ar_pose
 
       if (publishTf_)
       {
-			//tf::StampedTransform camToMarker (t, image_msg->header.stamp, image_msg->header.frame_id, object[i].name);
-			tf::StampedTransform camToMarker (t, image_msg->header.stamp, image_msg->header.frame_id, OBJECT_NAME);
+			tf::StampedTransform camToMarker (t, image_msg->header.stamp, image_msg->header.frame_id, object[i].name);
 			broadcaster_.sendTransform(camToMarker);
       }
 
@@ -373,20 +314,9 @@ namespace ar_pose
 
         rvizMarkerPub_.publish (rvizMarker_);
         ROS_DEBUG ("Published visual marker");
-
-	if(output_marker_xyz){
-	  fprintf(fp,"%9.4f %9.4f %9.4f;\n",pos[0],pos[1],pos[2]);
-	}
-      }// if publish markers
-    }// for each object 
-    if(output_marker_xyz){
-      output_marker_xyz=false;
-      fclose(fp);
-      n_.setParam(nn+"/Output_marker_xyz",false);
-      output_marker_xyz=false;
+      }
     }
     arMarkerPub_.publish (arPoseMarkers_);
     ROS_DEBUG ("Published ar_multi markers");
-  }// end of function
-
+  }
 }                               // end namespace ar_pose

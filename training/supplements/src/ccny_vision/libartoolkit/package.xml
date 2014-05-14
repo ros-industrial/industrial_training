@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package>
+  <name>libartoolkit</name>
+  <version>0.0.1</version>
+  <description>
+    ARToolKit is a software library for building Augmented Reality (AR) applications. These are applications that involve the overlay of virtual imagery on the real world. For example, in the image to the right a three-dimensional virtual character appears standing on a real card. It can be seen by the user in the head set display they are wearing. When the user moves the card, the virtual character moves with it and appears attached to the real object.
+  </description>
+
+  <maintainer email="miquel.massot@uib.cat">Miquel Massot</maintainer>
+  <maintainer email="pl.negre@uib.cat">Pep Lluis Negre</maintainer>
+  <license>GPL</license>
+
+  <author>Philip R. Lamb</author>
+
+  <run_depend>catkin</run_depend>
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>eigen</build_depend>
+  <run_depend>eigen</run_depend>
+
+  <export>
+    <cpp lflags="-L${prefix}/lib -Wl,-rpath,${prefix}/lib -libAR -libARgsub -libARgsub_lite -libARgsubUtil -libARMulti -libARvideo" cflags="-I${prefix}/include/"/>
+  </export>
+
+</package>
