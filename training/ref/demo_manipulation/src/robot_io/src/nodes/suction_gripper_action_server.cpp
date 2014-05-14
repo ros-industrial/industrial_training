@@ -21,12 +21,12 @@
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
  * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
  * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * CONSEQUENTIAL DAMAgrasp_action_serverS (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIgrasp_action_serverNCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
+ * POSSIBILITY OF SUCH DAMAgrasp_action_server.
  */
 
 
@@ -34,35 +34,34 @@
 #include <actionlib/server/action_server.h>
 #include <object_manipulation_msgs/GraspHandPostureExecutionAction.h>
 #include <object_manipulation_msgs/GraspHandPostureExecutionGoal.h>
-#include <robot_io/DigitalOutputUpdate.h>
-#include <soem_beckhoff_drivers/DigitalMsg.h>
-
+#include <ur_msgs/SetIOState.h>
+#include <ur_msgs/IOStates.h>
 using namespace object_manipulation_msgs;
 using namespace actionlib;
 
 
-typedef robot_io::DigitalOutputUpdate::Request DigitalOutputType;
-
-static const std::string OUTPUT_TOPIC = "/digital_outputs";
-static const std::string INPUT_TOPIC = "/digital_inputs";
-static const std::string OUTPUT_SERVICE = "/digital_output_update";
+static const std::string INPUT_PIN_STATES_TOPIC = "/io_states";
+static const std::string SET_OUTPUT_PIN_SERVICE = "/set_io_state";
+static const unsigned int IO_PIN_COUNT = 8;
+static const int DEFAULT_SUCTION_COMMAND_PIN = 0;
+static const int DEFAULT_SUCTION_STATE_PIN = 1;
 
 class SuctionGripperActionServer
 {
 private:
-  typedef ActionServer<GraspHandPostureExecutionAction> GEAS;
-  typedef GEAS::GoalHandle GoalHandle;
+  typedef ActionServer<GraspHandPostureExecutionAction> grasp_action_serverAS;
+  typedef grasp_action_serverAS::GoalHandle GoalHandle;
 
 public:
   SuctionGripperActionServer(ros::NodeHandle &n) :
     node_(n),
     action_server_(node_, "grasp_execution_action",
-                   boost::bind(&SuctionGripperActionServer::goalCB, this, _1),
-                   boost::bind(&SuctionGripperActionServer::cancelCB, this, _1),
+                   boost::bind(&SuctionGripperActionServer::action_goal_callback, this, _1),
+                   boost::bind(&SuctionGripperActionServer::action_cancel_callback, this, _1),
                    false),
-   use_sensor_feedback_(false),
-   suction_on_output_channel_(DigitalOutputType::SUCTION1_ON),
-   suction_check_input_channel_(DigitalOutputType::SUCTION1_ON)
+   check_state_pin_(false),
+   suction_command_pin_(DEFAULT_SUCTION_COMMAND_PIN),
+   suction_state_pin_(DEFAULT_SUCTION_STATE_PIN)
   {
 
   }
@@ -71,48 +70,95 @@ public:
   {
   }
 
-  void init()
+  bool init()
   {
-	    ros::NodeHandle pn("/");
+	    ros::NodeHandle nh("");
 	    std::string nodeName = ros::this_node::getName();
 
 	    // service client
-	    service_client_ = pn.serviceClient<robot_io::DigitalOutputUpdate>(OUTPUT_SERVICE);
+	    service_client_ = nh.serviceClient<ur_msgs::SetIOState>(SET_OUTPUT_PIN_SERVICE);
 	    while(!service_client_.waitForExistence(ros::Duration(5.0f)))
 	    {
-	    	ROS_INFO_STREAM(nodeName<<": Waiting for "<<OUTPUT_SERVICE<<" to start");
+	    	ROS_INFO_STREAM(nodeName<<": Waiting for "<<SET_OUTPUT_PIN_SERVICE<<" to start");
 	    }
 
-	    if(!fetchParameters() )
+	    if(load_parameters() )
+	    {
+	    	ROS_INFO_STREAM(nodeName<<": Loaded parameters.");
+	    }
+	    else
 	    {
 	    	ROS_ERROR_STREAM(nodeName<<": Did not find required ros parameters, exiting");
-	    	ros::shutdown();
-	    	return;
+	    	return false;
 	    }
 
-	    if(!validateChannelIndices())
+	    if(!validate_pin_indices())
 	    {
 	    	ROS_ERROR_STREAM(nodeName<<": One or more parameter values are invalid");
-	    	ros::shutdown();
-	    	return;
+	    	return false;
 	    }
 
-	    action_server_.start();
-	    ROS_INFO_STREAM(nodeName<<": Grasp execution action node started");
+	    return true;
+  }
+
+  void start()
+  {
+
+	std::string nodeName = ros::this_node::getName();
+	action_server_.start();
+	ROS_INFO_STREAM(nodeName<<": Grasp execution action node started");
+  }
+
+  void test()
+  {
+	int pin;
+	double state;
+	std::string nodeName = ros::this_node::getName();
+	ur_msgs::SetIOState::Request req;
+	ur_msgs::SetIOState::Response res;
+
+	while(ros::ok())
+	{
+		std::cout<<"\nEnter pin and state [0.0 or 1.0]: ";
+		std::cin>>pin>>state;
+
+
+		if(pin <0)
+		{
+			break;
+		}
+		else
+		{
+			req.state.pin= pin;
+			req.state.state = state;
+
+			if(service_client_.call(req,res))
+			{
+				ROS_INFO_STREAM(nodeName + ": command succeeded");
+			}
+			else
+			{
+				ROS_INFO_STREAM(nodeName + ": command aborted");
+			}
+		}
+	}
+
+
+
+
   }
 
 private:
 
 
-  void goalCB(GoalHandle gh)
+  void action_goal_callback(GoalHandle gh)
   {
     std::string nodeName = ros::this_node::getName();
 
     ROS_INFO("%s",(nodeName + ": Received grasping goal").c_str());
 
-    robot_io::DigitalOutputUpdate::Request req;
-    robot_io::DigitalOutputUpdate::Response res;
-    bool success;
+    ur_msgs::SetIOState::Request req;
+    ur_msgs::SetIOState::Response res;
 
 	switch(gh.getGoal()->goal)
 	{
@@ -121,8 +167,8 @@ private:
 			gh.setAccepted();
 			ROS_INFO_STREAM(nodeName + ": Pre-grasp command accepted");
 
-			req.bit_index = suction_on_output_channel_;
-			req.output_bit_state = true;
+			req.state.pin= suction_command_pin_;
+			req.state.state = 1.0f;
 
 			if(service_client_.call(req,res))
 			{
@@ -143,16 +189,15 @@ private:
 			gh.setAccepted();
 			ROS_INFO_STREAM(nodeName + ": Grasp command accepted");
 
-			req.bit_index = suction_on_output_channel_;
-			req.output_bit_state = true;
-			success = service_client_.call(req,res);
+			req.state.pin= suction_command_pin_;
+			req.state.state = 1.0f;
 
-			if(success)
+			if(service_client_.call(req,res))
 			{
-				if(use_sensor_feedback_ && !checkSensorState())
+				if(check_state_pin_ && !check_sensor_state())
 				{
 					gh.setAborted();
-					ROS_INFO_STREAM(nodeName + ": Grasp command aborted");
+					ROS_INFO_STREAM(nodeName + ": Grasp check failed");
 					break;
 				}
 			}
@@ -172,8 +217,8 @@ private:
 			gh.setAccepted();
 			ROS_INFO_STREAM(nodeName + ": Release command accepted");
 
-			req.bit_index = suction_on_output_channel_;
-			req.output_bit_state = false;
+			req.state.pin= suction_command_pin_;
+			req.state.state = 0.0f;
 
 			if(service_client_.call(req,res))
 			{
@@ -197,7 +242,7 @@ private:
 
   }
 
-  void cancelCB(GoalHandle gh)
+  void action_cancel_callback(GoalHandle gh)
   {
     std::string nodeName = ros::this_node::getName();
 	ROS_INFO_STREAM(nodeName + ": Canceling current grasp action");
@@ -205,27 +250,26 @@ private:
     ROS_INFO_STREAM(nodeName + ": Current grasp action has been canceled");
   }
 
-  bool fetchParameters()
+  bool load_parameters()
   {
 	  ros::NodeHandle nh;
 
 	  bool success = true;
-	  nh.getParam("use_sensor_feedback",use_sensor_feedback_);
-	  success = success && nh.getParam("suction_on_output_channel",suction_on_output_channel_);
-	  success = success && nh.getParam("suction_check_output_channel",suction_check_input_channel_);
+	  success =  nh.getParam("use_sensor_feedback",check_state_pin_);
+	  success = success && nh.getParam("suction_on_output_channel",suction_command_pin_);
+	  success = success && nh.getParam("suction_check_output_channel",suction_state_pin_);
 	  return success;
   }
 
-  bool validateChannelIndices()
+  bool validate_pin_indices()
   {
-	  typedef robot_io::DigitalOutputUpdate::Request DigitalOutputType;
 
-	  if(suction_on_output_channel_ >= (int)DigitalOutputType::COUNT || suction_on_output_channel_ == (int)DigitalOutputType::COLLISION)
+	  if(suction_command_pin_ >= IO_PIN_COUNT)
 	  {
 		  return false;
 	  }
 
-	  if(suction_check_input_channel_ >= int(DigitalOutputType::COUNT))
+	  if(suction_state_pin_ >= IO_PIN_COUNT)
 	  {
 		  return false;
 	  }
@@ -233,42 +277,51 @@ private:
 	  return true;
   }
 
-  bool checkSensorState()
+  bool check_sensor_state()
   {
-	  ros::NodeHandle nh("/");
-	  soem_beckhoff_drivers::DigitalMsg::ConstPtr input_msg_ =
-			  ros::topic::waitForMessage<soem_beckhoff_drivers::DigitalMsg>(INPUT_TOPIC,nh,ros::Duration(2.0f));
-	  if(!input_msg_)
+	  ros::NodeHandle nh("");
+	  ur_msgs::IOState pin_state;
+	  ur_msgs::IOStatesConstPtr msg =
+			  ros::topic::waitForMessage<ur_msgs::IOStates>(INPUT_PIN_STATES_TOPIC,nh,ros::Duration(2.0f));
+	  if(!msg)
 	  {
-		  ROS_ERROR_STREAM(ros::this_node::getName()<<": Input message received invalid");
+		  ROS_ERROR_STREAM(ros::this_node::getName()<<": IOStates message not received");
 		  return true;
 	  }
 	  else
 	  {
-		  return ((input_msg_->values[suction_check_input_channel_] ==  1) ? true : false);
+		  pin_state = msg->states[suction_state_pin_];
+		  return (( pin_state.state >  0.0f) ? true : false);
 	  }
 
   }
 
   // ros comm
   ros::NodeHandle node_;
-  GEAS action_server_;
+  grasp_action_serverAS action_server_;
   ros::ServiceClient service_client_;
 
   // ros parameters
-  int suction_on_output_channel_; // index value to output channel for suction
-  int suction_check_input_channel_; // index value to input channel for vacuum sensor
-  bool use_sensor_feedback_;
+  int suction_command_pin_; // index value to output channel for suction
+  int suction_state_pin_; // index value to input channel for vacuum sensor
+  bool check_state_pin_;
 
 };
 
 int main(int argc, char** argv)
 {
 	ros::init(argc, argv, "grasp_execution_action_node");
-	ros::NodeHandle node("");
-	SuctionGripperActionServer ge(node);
-	ge.init();
-	ros::spin();
+	ros::AsyncSpinner spinner(4);
+	spinner.start();
+	ros::NodeHandle nh("");
+	SuctionGripperActionServer grasp_action_server(nh);
+	if(grasp_action_server.init())
+	{
+		//grasp_action_server.test();
+		grasp_action_server.start();
+	}
+
+	ros::waitForShutdown();
   return 0;
 }
 

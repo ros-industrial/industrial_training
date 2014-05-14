@@ -6,6 +6,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp 
   object_manipulation_msgs
   actionlib
+	ur_msgs
   message_generation  
 )
 
@@ -31,11 +32,12 @@ add_service_files(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-   CATKIN_DEPENDS 
-     roscpp
-     message_runtime
-     actionlib_msgs
-     actionlib
+	CATKIN_DEPENDS 
+		roscpp
+		message_runtime
+		ur_msgs
+		actionlib_msgs
+		actionlib
 )
 
 ###########
@@ -51,8 +53,8 @@ include_directories(include
 #add_executable(simple_grasp_action_server src/nodes/open_close_grasp_action_server.cpp)
 #target_link_libraries(simple_grasp_action_server ${catkin_LIBRARIES})
 
-#add_executable(suction_gripper_action_server src/nodes/suction_gripper_action_server.cpp)
-#target_link_libraries(suction_gripper_action_server ${catkin_LIBRARIES})
+add_executable(suction_gripper_action_server src/nodes/suction_gripper_action_server.cpp)
+target_link_libraries(suction_gripper_action_server ${catkin_LIBRARIES})
 
 #add_executable(digital_output_server src/nodes/digital_output_update_server.cpp)
 
