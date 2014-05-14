@@ -27,11 +27,10 @@
   <!-- hardware-interface nodes -->
   <group unless="$(arg sim)">
     <!-- grasp action service (real) -->
-    <include file="$(find robot_io)/launch/robot_io.launch"/>
     <node pkg="robot_io" type="suction_gripper_action_server" name="gripper_action_server" output="screen"/>
-    <param name="suction_on_output_channel" value="2"/>
+    <param name="suction_on_output_channel" value="0"/>
     <param name="suction_check_output_channel" value="1"/>
-    <param name="use_sensor_feedback" value="true"/>
+    <param name="use_sensor_feedback" value="false"/>
 
     <!-- sensor setup -->
     <include file="$(find sensor_config)/launch/ur5_sensor_setup.launch"/>
@@ -41,7 +40,7 @@
     
     <!-- ar tag detection node -->	
     <node name="ar_pose" pkg="ar_pose" type="ar_multi" respawn="false">
-      <remap from="/usb_cam/image_raw" to="/kinect/rgb/image_rect"/>
+      <remap from="/usb_cam/image_raw" to="/kinect/rgb/image_rect_color"/>
       <remap from="/usb_cam/camera_info" to="/kinect/rgb/camera_info"/>
   
       <param name="marker_width" type="double" value="80.0"/>
