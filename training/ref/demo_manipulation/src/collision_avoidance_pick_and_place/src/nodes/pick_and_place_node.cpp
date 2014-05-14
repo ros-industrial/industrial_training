@@ -96,7 +96,7 @@ int main(int argc,char** argv)
   application.reset_world();
 
   // open the gripper (suction off)
-  application.set_gripper(false);
+  //application.set_gripper(false);
 
   // move to a "clear" position
   application.move_to_wait_position();

@@ -62,6 +62,7 @@ void collision_avoidance_pick_and_place::PickAndPlace::place_box(std::vector<geo
     else
     {
       ROS_ERROR_STREAM("Place Move " << i <<" Failed");
+      set_gripper(false);
       exit(1);
     }
 

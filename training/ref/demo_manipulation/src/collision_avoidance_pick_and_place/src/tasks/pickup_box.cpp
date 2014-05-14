@@ -61,6 +61,7 @@ void collision_avoidance_pick_and_place::PickAndPlace::pickup_box(std::vector<ge
 	    else
 	    {
 	      ROS_ERROR_STREAM("Pick Move " << i <<" Failed");
+	      set_gripper(false);
 	      exit(1);
 	    }
 
