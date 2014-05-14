@@ -23,6 +23,8 @@
 #include "ar_pose/ar_multi.h"
 #include "ar_pose/object.h"
 
+std::string OBJECT_NAME = "ar_tag";
+
 int main (int argc, char **argv)
 {
   ros::init (argc, argv, "ar_single");
@@ -266,7 +268,8 @@ namespace ar_pose
 
       if (publishTf_)
       {
-			tf::StampedTransform camToMarker (t, image_msg->header.stamp, image_msg->header.frame_id, object[i].name);
+			//tf::StampedTransform camToMarker (t, image_msg->header.stamp, image_msg->header.frame_id, object[i].name);
+			tf::StampedTransform camToMarker (t, image_msg->header.stamp, image_msg->header.frame_id, OBJECT_NAME);
 			broadcaster_.sendTransform(camToMarker);
       }
 
