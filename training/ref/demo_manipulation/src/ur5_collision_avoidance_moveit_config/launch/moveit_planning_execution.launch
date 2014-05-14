@@ -27,11 +27,11 @@
 <remap from="/follow_joint_trajectory/result" to="/joint_trajectory_action/result" />
 <remap from="/follow_joint_trajectory/goal" to="/joint_trajectory_action/goal" />
 <remap from="/follow_joint_trajectory/cancel" to="/joint_trajectory_action/cancel" />
-	<node name="ur5_driver" pkg="ur5_driver" type="driver.py" args="$(arg robot_ip)" required="true" output="screen">
+	<!--<node name="ur5_driver" pkg="ur5_driver" type="driver.py" args="$(arg robot_ip)" required="true" output="screen">
 		<param name="prevent_programming" value="false"/>
-	</node>
+	</node>-->
 
-	<!--<node name="ur_driver" pkg="ur_driver" type="driver.py" args="$(arg robot_ip)" required="true" output="screen" />-->
+	<node name="ur_driver" pkg="ur_driver" type="driver.py" args="$(arg robot_ip)" required="true" output="screen" />
 
 	<!-- TF Buffer Server -->
 	<node pkg="tf2_ros" type="buffer_server" name="tf2_buffer_server" output="screen">
