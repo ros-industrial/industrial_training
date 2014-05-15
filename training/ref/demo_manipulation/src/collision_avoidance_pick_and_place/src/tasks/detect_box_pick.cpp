@@ -1,10 +1,3 @@
-/*
- * detect_box_pick.cpp
- *
- *  Created on: Jun 3, 2013
- *      Author: ros-industrial
- */
-
 #include <collision_avoidance_pick_and_place/pick_and_place.h>
 
 /* DETECTING BOX PICK POSE
@@ -38,7 +31,16 @@ geometry_msgs::Pose collision_avoidance_pick_and_place::PickAndPlace::detect_box
   tf::poseTFToMsg(cfg.BOX_PLACE_TF,place_pose);
   srv.request.remove_at_poses.push_back(place_pose);
 
-  // calling service
+  //
+  /* Fill Code:
+   * Goal:
+   * - Call target recognition service and save results.
+   * Hint:
+   * - Use the service response member to access the
+   * 	detected pose "srv.response.target_pose".
+   * - Assign the target_pose in the response to the box_pose variable in
+   * 	order to save the results.
+   * 	*/
   geometry_msgs::Pose box_pose;
   if(target_recognition_client.call(srv))
   {
@@ -62,7 +64,7 @@ geometry_msgs::Pose collision_avoidance_pick_and_place::PickAndPlace::detect_box
 	  exit(0);
   }
 
-  // updating box marker
+  // updating box marker for visualization in rviz
 	visualization_msgs::Marker marker = cfg.MARKER_MESSAGE;
 	cfg.MARKER_MESSAGE.header.frame_id = cfg.WORLD_FRAME_ID;
 	cfg.MARKER_MESSAGE.pose = box_pose;

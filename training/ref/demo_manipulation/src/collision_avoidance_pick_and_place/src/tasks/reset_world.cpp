@@ -1,10 +1,3 @@
-/*
- * open_gripper.cpp
- *
- *  Created on: Jun 3, 2013
- *      Author: ros-industrial
- */
-
 #include <collision_avoidance_pick_and_place/pick_and_place.h>
 
 /*    RESET WORLD
@@ -25,7 +18,6 @@ void collision_avoidance_pick_and_place::PickAndPlace::reset_world(bool refresh_
 	}
 
 	show_box(false);
-
 }
 
 

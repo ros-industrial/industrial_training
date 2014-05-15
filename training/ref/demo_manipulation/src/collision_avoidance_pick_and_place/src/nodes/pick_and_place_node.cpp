@@ -1,11 +1,3 @@
-	/*
- * Manipulation Lab
- * pick_and_place_node.cpp
- *
- *  Created on: May 21, 2013
- *      Author: ros developer 
- */
-
 #include <collision_avoidance_pick_and_place/pick_and_place.h>
 
 using namespace collision_avoidance_pick_and_place;
@@ -30,7 +22,7 @@ int main(int argc,char** argv)
   ros::AsyncSpinner spinner(2);
   spinner.start();
 
-  // creating pick and place instance
+  // creating pick and place application instance
   PickAndPlace application;
 
   // reading parameters
@@ -62,15 +54,15 @@ int main(int argc,char** argv)
   // transform listener
   application.transform_listener_ptr = TransformListenerPtr(new tf::TransformListener());
 
-  // marker publisher
+  // marker publisher (rviz visualization)
   application.marker_publisher = nh.advertise<visualization_msgs::Marker>(
 		  application.cfg.MARKER_TOPIC,1);
 
-  // target recognition client
+  // target recognition client (perception)
   application.target_recognition_client = nh.serviceClient<collision_avoidance_pick_and_place::GetTargetPose>(
 		  application.cfg.TARGET_RECOGNITION_SERVICE);
 
-  // grasp action client 
+  // grasp action client (vacuum gripper)
   application.grasp_action_client_ptr = GraspActionClientPtr(
 		  new GraspActionClient(application.cfg.GRASP_ACTION_NAME,true));
 
@@ -104,7 +96,7 @@ int main(int argc,char** argv)
   // plan/execute the sequence of "pick" moves
   application.pickup_box(pick_poses,box_pose);
 
-  // build a sequence of poses to "Place" the box
+  // build a sequence of poses to "place" the box
   place_poses = application.create_place_moves();
 
   // plan/execute the "place" moves

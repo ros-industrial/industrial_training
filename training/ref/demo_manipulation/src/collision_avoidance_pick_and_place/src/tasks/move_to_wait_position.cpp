@@ -1,10 +1,3 @@
-/*
- * task_move_to_wait_position.cpp
- *
- *  Created on: Jun 3, 2013
- *      Author: ros-industrial
- */
-
 #include <collision_avoidance_pick_and_place/pick_and_place.h>
 
 /* MOVING ARM TO WAIT POSITION
@@ -24,15 +17,23 @@ void collision_avoidance_pick_and_place::PickAndPlace::move_to_wait_position()
   // task variables
   bool success; // saves the move result
 
-  // set robot wait target
-  /* Fill Code: [ use the 'setNamedTarget' method in the 'move_group' object] */
+  /* Fill Code:
+   * Goal:
+   * - Set robot wait target
+   * Hints:
+   * - Use the 'setNamedTarget' method in the 'move_group' object.
+   * */
   move_group_ptr->setNamedTarget(cfg.WAIT_POSE_NAME);
 
   // set allowed planning time
   move_group_ptr->setPlanningTime(60.0f);
 
-  // move the robot
-  /* Fill Code: [ use the 'move' method in the 'move_group' object and save the result in the 'success' variable] */
+  /* Fill Code:
+   * Goal:
+   * - Move the robot
+   * Hints:
+   * - Use the 'move' method in the 'move_group' object and save the result
+   *  in the 'success' variable*/
   success = move_group_ptr->move();
   if(success)
   {

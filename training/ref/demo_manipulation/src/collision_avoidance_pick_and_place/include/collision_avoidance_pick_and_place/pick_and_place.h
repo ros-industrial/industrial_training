@@ -1,10 +1,3 @@
-/*
- * pick_and_place_headers.h
- *
- *  Created on: Jun 3, 2013
- *      Author: ros-industrial
- */
-
 #ifndef PICK_AND_PLACE_H_
 #define PICK_AND_PLACE_H_
 

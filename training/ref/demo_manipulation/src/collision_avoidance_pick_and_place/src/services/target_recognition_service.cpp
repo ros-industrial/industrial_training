@@ -1,10 +1,3 @@
-/*
- * target_recognition.cpp
- *
- *  Created on: Jan 16, 2014
- *      Author: ros-industrial
- */
-
 #include <ros/ros.h>
 #include <sensor_msgs/PointCloud2.h>
 #include <sensor_msgs/point_cloud_conversion.h>

@@ -1,10 +1,3 @@
-/*
- * move_through_place_poses.cpp
- *
- *  Created on: Jun 3, 2013
- *      Author: ros-industrial
- */
-
 #include <collision_avoidance_pick_and_place/pick_and_place.h>
 
 /* MOVE ARM THROUGH PLACE POSES
@@ -23,10 +16,11 @@ void collision_avoidance_pick_and_place::PickAndPlace::place_box(std::vector<geo
   // task variables
   bool success;
 
-
-
-  // set the referenceFrame and EndEffectorLink
-  /* Fill Code: [ use the 'setEndEffectorLink' and 'setPoseReferenceFrame' methods of 'move_group'] */
+  /* Fill Code:
+   * Goal:
+   * - Set the ReferenceFrame and EndEffectorLink
+   * Hints:
+   * - Use the 'setEndEffectorLink' and 'setPoseReferenceFrame' methods of 'move_group']*/
   move_group_ptr->setEndEffectorLink(cfg.WRIST_LINK_NAME);
   move_group_ptr->setPoseReferenceFrame(cfg.WORLD_FRAME_ID);
 
@@ -69,10 +63,14 @@ void collision_avoidance_pick_and_place::PickAndPlace::place_box(std::vector<geo
 
     if(i == 1)
     {
-	// turn off gripper suction after reaching target pose
-	/* Fill Code: [ call the 'set_gripper' function with the appropriate arguments ] */
-	/*   - only call this once, after the target position has been reached */
-	/*   - HINT: this should be the second pose in the sequence of place_poses */
+	/* Fill Code:
+	 * Goal:
+	 * - Turn off gripper suction after the release pose is reached.
+	 * Hints:
+	 * - Call the 'set_gripper' function to turn on suction.
+	 * - The input to the set_gripper method takes a "true" or "false"
+	 * 	  boolean argument.
+	 */
       set_gripper(false);
 
     }
