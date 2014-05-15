@@ -6,10 +6,8 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
-        - /TF1
         - /TF1/Frames1
         - /TF1/Tree1
-        - /RobotModel1
         - /PointCloud21
         - /Marker1
         - /Marker1/Namespaces1
@@ -36,7 +34,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: PointCloud2
+    SyncSource: ""
 Visualization Manager:
   Class: ""
   Displays:
@@ -526,5 +524,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1380
-  X: 37
+  X: 58
   Y: 130
