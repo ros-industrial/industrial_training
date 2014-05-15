@@ -4,13 +4,10 @@ project(lesson_move_group)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS 
-  roscpp 
-  moveit_core
-  moveit_ros_planning 
+find_package(catkin REQUIRED COMPONENTS
+  roscpp
   moveit_ros_planning_interface
 )
-
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -21,9 +18,29 @@ find_package(catkin REQUIRED COMPONENTS
 ## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
 # catkin_python_setup()
 
-#######################################
-## Declare ROS messages and services ##
-#######################################
+################################################
+## Declare ROS messages, services and actions ##
+################################################
+
+## To declare and build messages, services or actions from within this
+## package, follow these steps:
+## * Let MSG_DEP_SET be the set of packages whose message types you use in
+##   your messages/services/actions (e.g. std_msgs, actionlib_msgs, ...).
+## * In the file package.xml:
+##   * add a build_depend and a run_depend tag for each package in MSG_DEP_SET
+##   * If MSG_DEP_SET isn't empty the following dependencies might have been
+##     pulled in transitively but can be declared for certainty nonetheless:
+##     * add a build_depend tag for "message_generation"
+##     * add a run_depend tag for "message_runtime"
+## * In this file (CMakeLists.txt):
+##   * add "message_generation" and every package in MSG_DEP_SET to
+##     find_package(catkin REQUIRED COMPONENTS ...)
+##   * add "message_runtime" and every package in MSG_DEP_SET to
+##     catkin_package(CATKIN_DEPENDS ...)
+##   * uncomment the add_*_files sections below as needed
+##     and list every .msg/.srv/.action file to be processed
+##   * uncomment the generate_messages entry below
+##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
 # add_message_files(
@@ -40,26 +57,31 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate actions in the 'action' folder
-# add_action_files(FILES Fibonacci.action)
+# add_action_files(
+#   FILES
+#   Action1.action
+#   Action2.action
+# )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(DEPENDENCIES std_msgs actionlib_msgs)
+# generate_messages(
+#   DEPENDENCIES
+#   std_msgs  # Or other packages containing msgs
+# )
 
 ###################################
 ## catkin specific configuration ##
 ###################################
 ## The catkin_package macro generates cmake config files for your package
 ## Declare things to be passed to dependent projects
+## INCLUDE_DIRS: uncomment this if you package contains header files
 ## LIBRARIES: libraries you create in this project that dependent projects also need
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-   INCLUDE_DIRS include
-#  LIBRARIES lesson_actions
-   CATKIN_DEPENDS roscpp moveit_core moveit_ros_planning moveit_ros_planning_interface
-#     message_runtime
-#     actionlib_msgs
-#     actionlib
+#  INCLUDE_DIRS include
+#  LIBRARIES lesson_move_group
+#  CATKIN_DEPENDS moveit_core roscpp
 #  DEPENDS system_lib
 )
 
@@ -69,30 +91,31 @@ catkin_package(
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
-include_directories(include
+# include_directories(include)
+include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a cpp library
-# add_library(lesson_actions
-#   src/${PROJECT_NAME}/lesson_actions.cpp
+# add_library(lesson_move_group
+#   src/${PROJECT_NAME}/lesson_move_group.cpp
 # )
 
 ## Declare a cpp executable
 add_executable(lesson_move_group_1 src/lesson_move_group_1.cpp)
-target_link_libraries(lesson_move_group_1 ${catkin_LIBRARIES})
-
 add_executable(lesson_move_group_2 src/lesson_move_group_2.cpp)
-target_link_libraries(lesson_move_group_2 ${catkin_LIBRARIES})
-
 add_executable(lesson_move_group_3 src/lesson_move_group_3.cpp)
-target_link_libraries(lesson_move_group_3 ${catkin_LIBRARIES})
-
 add_executable(lesson_move_group_4 src/lesson_move_group_4.cpp)
-target_link_libraries(lesson_move_group_4 ${catkin_LIBRARIES})
 
-add_executable(lesson_move_group_5 src/lesson_move_group_5.cpp)
-target_link_libraries(lesson_move_group_5 ${catkin_LIBRARIES})
+## Add cmake target dependencies of the executable/library
+## as an example, message headers may need to be generated before nodes
+# add_dependencies(lesson_move_group_node lesson_move_group_generate_messages_cpp)
+
+## Specify libraries to link a library or executable target against
+ target_link_libraries(lesson_move_group_1 ${catkin_LIBRARIES})
+ target_link_libraries(lesson_move_group_2 ${catkin_LIBRARIES})
+ target_link_libraries(lesson_move_group_3 ${catkin_LIBRARIES})
+ target_link_libraries(lesson_move_group_4 ${catkin_LIBRARIES})
 
 #############
 ## Install ##
@@ -109,13 +132,18 @@ target_link_libraries(lesson_move_group_5 ${catkin_LIBRARIES})
 # )
 
 ## Mark executables and/or libraries for installation
+# install(TARGETS lesson_move_group lesson_move_group_node
+#   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+#   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+#   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+# )
 
 ## Mark cpp header files for installation
-#install(DIRECTORY include/${PROJECT_NAME}/
-#  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-#  FILES_MATCHING PATTERN "*.h"
-#  PATTERN ".svn" EXCLUDE
-#)
+# install(DIRECTORY include/${PROJECT_NAME}/
+#   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+#   FILES_MATCHING PATTERN "*.h"
+#   PATTERN ".svn" EXCLUDE
+# )
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
 # install(FILES
@@ -129,7 +157,7 @@ target_link_libraries(lesson_move_group_5 ${catkin_LIBRARIES})
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_lesson_actions.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_lesson_move_group.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
