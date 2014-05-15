@@ -12,7 +12,7 @@
 */
 geometry_msgs::Pose collision_avoidance_pick_and_place::PickAndPlace::detect_box_pick()
 {
-  //ROS_ERROR_STREAM("detect_box_pick is not implemented yet.  Aborting."); exit(1);
+  ROS_ERROR_STREAM("detect_box_pick is not implemented yet.  Aborting."); exit(1);
 
   // creating shape for recognition
   shape_msgs::SolidPrimitive shape;
@@ -31,22 +31,23 @@ geometry_msgs::Pose collision_avoidance_pick_and_place::PickAndPlace::detect_box
   tf::poseTFToMsg(cfg.BOX_PLACE_TF,place_pose);
   srv.request.remove_at_poses.push_back(place_pose);
 
-  //
   /* Fill Code:
    * Goal:
    * - Call target recognition service and save results.
    * Hint:
-   * - Use the service response member to access the
-   * 	detected pose "srv.response.target_pose".
-   * - Assign the target_pose in the response to the box_pose variable in
+   * - The member "target_recognition_client" can use its "call" method to
+   * 	make a ros service request.
+   * - Use the service response member "srv.response.target_pose" to access the
+   * 	detected pose.
+   * - Assign the "target_pose" in the response to the "box_pose" variable in
    * 	order to save the results.
    * 	*/
   geometry_msgs::Pose box_pose;
-  if(target_recognition_client.call(srv))
+  if(/* ========  ENTER CODE HERE ======== (replace "true")*/ true)
   {
 	  if(srv.response.succeeded)
 	  {
-		  box_pose = srv.response.target_pose;
+		  /* ========  ENTER CODE HERE ======== */
 		  ROS_INFO_STREAM("target recognition succeeded");
 	  }
 	  else

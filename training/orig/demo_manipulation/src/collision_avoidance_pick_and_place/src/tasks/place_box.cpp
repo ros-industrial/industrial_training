@@ -2,16 +2,16 @@
 
 /* MOVE ARM THROUGH PLACE POSES
   Goal:
-    - Move the robot to each place pose.
-    - Open gripper after reaching the target pose
+    - Move the robot through the entire place motion.
+    - Open gripper after reaching the release pose.
   Hints:
-    - Use the methods seen so far such as 'move', 'sendGoal', 'waitForResult' as needed
+    - Use the methods seen so far such as "move", "sendGoal", "waitForResult" whenever needed.
 */
 
 void collision_avoidance_pick_and_place::PickAndPlace::place_box(std::vector<geometry_msgs::Pose>& place_poses,
 		const geometry_msgs::Pose& box_pose)
 {
-  //ROS_ERROR_STREAM("move_through_place_poses is not implemented yet.  Aborting."); exit(1);
+  ROS_ERROR_STREAM("place_box is not implemented yet.  Aborting."); exit(1);
 
   // task variables
   bool success;
@@ -20,9 +20,10 @@ void collision_avoidance_pick_and_place::PickAndPlace::place_box(std::vector<geo
    * Goal:
    * - Set the ReferenceFrame and EndEffectorLink
    * Hints:
-   * - Use the 'setEndEffectorLink' and 'setPoseReferenceFrame' methods of 'move_group']*/
-  move_group_ptr->setEndEffectorLink(cfg.WRIST_LINK_NAME);
-  move_group_ptr->setPoseReferenceFrame(cfg.WORLD_FRAME_ID);
+   * - Use the "setEndEffectorLink" and "setPoseReferenceFrame" methods of "move_group_ptr"
+   */
+  /* ========  ENTER CODE HERE ======== */
+  /* ========  ENTER CODE HERE ======== */
 
   // set allowed planning time
   move_group_ptr->setPlanningTime(60.0f);
@@ -67,11 +68,11 @@ void collision_avoidance_pick_and_place::PickAndPlace::place_box(std::vector<geo
 	 * Goal:
 	 * - Turn off gripper suction after the release pose is reached.
 	 * Hints:
-	 * - Call the 'set_gripper' function to turn on suction.
+	 * - Call the "set_gripper" function to turn on suction.
 	 * - The input to the set_gripper method takes a "true" or "false"
 	 * 	  boolean argument.
 	 */
-      set_gripper(false);
+	 /* ========  ENTER CODE HERE ======== */
 
     }
 

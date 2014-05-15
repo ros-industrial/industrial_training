@@ -9,7 +9,7 @@
 */
 void collision_avoidance_pick_and_place::PickAndPlace::set_gripper(bool do_grasp)
 {
-  //ROS_ERROR_STREAM("set_gripper is not implemented yet.  Aborting."); exit(1);
+  ROS_ERROR_STREAM("set_gripper is not implemented yet.  Aborting."); exit(1);
 
   // task variables
   object_manipulation_msgs::GraspHandPostureExecutionGoal grasp_goal;
@@ -25,10 +25,10 @@ void collision_avoidance_pick_and_place::PickAndPlace::set_gripper(bool do_grasp
    * Goal:
    * - Send the grasp goal to the server.
    * Hints:
-   * - Use the 'sendGoal' method of the grasp client "grasp_action_client_ptr"
-   * to make a call the server.
+   * - Use the "sendGoal" method of the grasp client "grasp_action_client_ptr"
+   * to make a call to the server.
    */
-  grasp_action_client_ptr->sendGoal(grasp_goal);
+  /* ========  ENTER CODE HERE ======== */
 
 
   /* Fill Code:
@@ -40,7 +40,7 @@ void collision_avoidance_pick_and_place::PickAndPlace::set_gripper(bool do_grasp
    * - Timeouts in ros can be created using "ros::Duration(4.0f)".
    * - Save returned boolean from waitForResult() in the "success" variable.
    */
-  success = grasp_action_client_ptr->waitForResult(ros::Duration(4.0f));
+  /* ========  ENTER CODE HERE ======== */
 
   if(success)
   {

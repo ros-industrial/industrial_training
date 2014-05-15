@@ -4,9 +4,9 @@
   Goal:
     - Attaches or detaches a box payload to the arm.
   Hints:
-  	- Asks moveit to provide the current state of the robot using the
+  	- See how to ask moveit to provide the current state of the robot using the
   		"getCurrentState()" method in the "move_group_ptr" member.
-  	- Adds or removes the payload from the robot state object.
+  	- See how to add or remove the payload from the robot state object.
 */
 
 namespace collision_avoidance_pick_and_place

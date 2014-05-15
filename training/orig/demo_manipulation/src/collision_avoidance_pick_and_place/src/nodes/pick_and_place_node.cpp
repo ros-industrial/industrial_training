@@ -87,10 +87,13 @@ int main(int argc,char** argv)
   // move to a "clear" position
   application.move_to_wait_position();
 
-  // get the box position and gets new octomap
+  // turn off vacuum gripper
+  application.set_gripper(false);
+
+  // get the box position and orientation
   box_pose = application.detect_box_pick();
 
-  // build a sequence of poses to "Pick" the box
+  // build a sequence of poses to "pick" the box
   pick_poses = application.create_pick_moves(box_pose);
 
   // plan/execute the sequence of "pick" moves
