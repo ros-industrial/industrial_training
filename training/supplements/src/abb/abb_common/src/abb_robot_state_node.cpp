@@ -35,7 +35,6 @@
 
 using industrial_robot_client::robot_state_interface::RobotStateInterface;
 using industrial_robot_client::joint_relay_handler::JointRelayHandler;
-using industrial_utils::param::getJointNames;
 
 class ABB_JointRelayHandler : public JointRelayHandler
 {
@@ -71,8 +70,7 @@ int main(int argc, char** argv)
 
   // replace the JointRelayHandler with ABB-version
   ABB_JointRelayHandler jointHandler;  // for joint-linkage correction
-  std::vector<std::string> joint_names;
-  getJointNames("controller_joint_names", joint_names);
+  std::vector<std::string> joint_names = rsi.get_joint_names();
   jointHandler.init(rsi.get_connection(), joint_names);
   rsi.add_handler(&jointHandler);
 

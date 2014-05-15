@@ -168,9 +168,9 @@
 			  xyz="0 0 0"
 			  rpy="0 0 0" />
 			<parent
-			  link="base_link" />
+			  link="${prefix}base_link" />
 			<child
-			  link="link_1" />
+			  link="${prefix}link_1" />
 			<axis
 			  xyz="0 0 1" />
 			<limit
@@ -190,9 +190,9 @@
 			  xyz="0.1 0 0.615"
 			  rpy="0 0 0" />
 			<parent
-			  link="link_1" />
+			  link="${prefix}link_1" />
 			<child
-			  link="link_2" />
+			  link="${prefix}link_2" />
 			<axis
 			  xyz="0 1 0" />
 			<limit
@@ -212,9 +212,9 @@
 			  xyz="0 0 0.705"
 			  rpy="0 0 0" />
 			<parent
-			  link="link_2" />
+			  link="${prefix}link_2" />
 			<child
-			  link="link_3" />
+			  link="${prefix}link_3" />
 			<axis
 			  xyz="0 1 0" />
 			<limit
@@ -234,9 +234,9 @@
 			  xyz="0.258 0 0.135"
 			  rpy="0 0 0" />
 			<parent
-			  link="link_3" />
+			  link="${prefix}link_3" />
 			<child
-			  link="link_4" />
+			  link="${prefix}link_4" />
 			<axis
 			  xyz="1 0 0" />
 			<limit
@@ -256,9 +256,9 @@
 			  xyz="0.497 0 0"
 			  rpy="0 0 0" />
 			<parent
-			  link="link_4" />
+			  link="${prefix}link_4" />
 			<child
-			  link="link_5" />
+			  link="${prefix}link_5" />
 			<axis
 			  xyz="0 1 0" />
 			<limit
@@ -278,9 +278,9 @@
 			  xyz="0.085 0 0"
 			  rpy="0 0 0" />
 			<parent
-			  link="link_5" />
+			  link="${prefix}link_5" />
 			<child
-			  link="link_6" />
+			  link="${prefix}link_6" />
 			<axis
 			  xyz="1 0 0" />
 			<limit
@@ -296,8 +296,8 @@
 			  friction="0" />
 		</joint>
 		<joint name="${prefix}joint_6-tool0" type="fixed">
-			<parent link="link_6"/>
-			<child link="tool0"/>
+			<parent link="${prefix}link_6"/>
+			<child link="${prefix}tool0"/>
 			<origin xyz="0 0 0" rpy="0 0 0"/>
 		</joint>
 		<!-- end of joint list -->

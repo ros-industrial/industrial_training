@@ -34,6 +34,7 @@
 #include "industrial_utils/param_utils.h"
 
 using industrial_robot_client::joint_trajectory_downloader::JointTrajectoryDownloader;
+namespace StandardSocketPorts = industrial::simple_socket::StandardSocketPorts;
 
 class ABB_JointTrajectoryDownloader : public JointTrajectoryDownloader
 {
@@ -42,9 +43,9 @@ class ABB_JointTrajectoryDownloader : public JointTrajectoryDownloader
   bool J23_coupled_;
 
 public:
-  bool init()
+  bool init(std::string default_ip = "", int default_port = StandardSocketPorts::MOTION)
   {
-    if (!JointTrajectoryDownloader::init())  // call base-class init()
+    if (!JointTrajectoryDownloader::init(default_ip, default_port))  // call base-class init()
       return false;
 
     if (ros::param::has("J23_coupled"))

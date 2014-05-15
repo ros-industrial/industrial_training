@@ -1,0 +1,22 @@
+<launch>
+ # The planning and execution components of MoveIt! configured to run
+ # using a simulated ROS-Industrial node
+
+ #-------------------------------------
+ # These actions are normally handled in the "real" robot's bringup launch file
+ #
+ # load the URDF
+ <param name="robot_description" textfile="$(find abb_common)/urdf/irb_2400.urdf" />
+ # run the robot simulator and action interface nodes
+ <include file="$(find industrial_robot_simulator)/launch/robot_interface_simulator.launch" />
+
+ # publish the robot state (tf transforms)
+ <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+ #-------------------------------------
+
+ <include file="$(find irb_2400_moveit_config)/launch/move_group.launch">
+  <arg name="publish_monitored_planning_scene" value="true" />
+ </include>
+
+ <include file="$(find irb_2400_moveit_config)/launch/moveit_rviz.launch"/>
+</launch>
