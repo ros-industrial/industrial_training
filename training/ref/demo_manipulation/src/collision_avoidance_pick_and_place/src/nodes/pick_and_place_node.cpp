@@ -92,12 +92,6 @@ int main(int argc,char** argv)
   /* Pick & Place Tasks                      */
   /* ========================================*/
 
-  // clears the scene and gets a new obstacle map
-  application.reset_world();
-
-  // open the gripper (suction off)
-  //application.set_gripper(false);
-
   // move to a "clear" position
   application.move_to_wait_position();
 
