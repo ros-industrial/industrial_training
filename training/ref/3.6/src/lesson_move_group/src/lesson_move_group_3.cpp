@@ -19,7 +19,7 @@ int main(int argc, char **argv)
   joints["joint_b"] =  1.12;
   joints["joint_t"] =  0.00;
 
-  move_group_interface::MoveGroup group("manipulator");
+  moveit::planning_interface::MoveGroup group("manipulator");
   group.setJointValueTarget(joints);
   group.move();
 }

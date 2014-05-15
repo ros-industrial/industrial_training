@@ -9,7 +9,7 @@ int main(int argc, char **argv)
   ros::AsyncSpinner spinner(1);
   spinner.start();
 
-  move_group_interface::MoveGroup group("manipulator");
+  moveit::planning_interface::MoveGroup group("manipulator");
 
   // create a new pose that may be out-of-reach
   geometry_msgs::Pose pose = group.getRandomPose().pose;
