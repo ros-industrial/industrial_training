@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+
+<robot name="table" xmlns:xacro="http://ros.org/wiki/xacro">
+
+<xacro:macro name="table_leg" params="suffix len x y">
+  <link name="table_leg_${suffix}">
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 ${len}"/>
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </visual>
+  </link>
+  <joint name="table_leg_${suffix}" type="fixed">
+    <parent link="table_base"/>
+    <child link="table_leg_${suffix}"/>
+    <origin xyz="${x} ${y} ${len/2}" rpy="0 0 0"/>
+  </joint>
+</xacro:macro>
+
+<xacro:macro name="table" params="length width height">
+  <link name="table_base"/>
+  <link name="table_top">
+    <visual>
+      <geometry>
+        <box size="${length} ${width} 0.05"/>
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </visual>
+  </link>
+  <joint name="table_top" type="fixed">
+    <parent link="table_base"/>
+    <child link="table_top"/>
+    <origin xyz="0 0 ${height}" rpy="0 0 0"/>
+  </joint>
+
+  <xacro:table_leg suffix="1" len="${height}" x="${-length/2}" y="${-width/2}"/>
+  <xacro:table_leg suffix="2" len="${height}" x="${-length/2}" y="${width/2}"/>
+  <xacro:table_leg suffix="3" len="${height}" x="${length/2}" y="${width/2}"/>
+  <xacro:table_leg suffix="4" len="${height}" x="${length/2}" y="${-width/2}"/>
+</xacro:macro>
+</robot>
