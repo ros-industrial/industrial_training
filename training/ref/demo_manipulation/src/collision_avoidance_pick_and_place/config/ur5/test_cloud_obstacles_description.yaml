@@ -22,13 +22,13 @@ point_cloud_descriptions:
     resolution: 0.01
   - x: -0.40 # obstacle
     y: 0.35
-    z: 0.12
+    z: 0.10
     rx: 0.0
     ry: 0.0
     rz: 0.20
-    l: 0.36
-    w: 0.05
-    h: 0.24
+    l: 0.20
+    w: 0.04
+    h: 0.20
     resolution: 0.01
   - x: -0.60 # obstacle
     y: 0.43
