@@ -68,9 +68,11 @@ catkin_package(
 ###########
 
 add_executable(target_recognition_service src/services/target_recognition_service.cpp)
+add_dependencies(target_recognition_service ${PROJECT_NAME}_generate_messages_cpp)
 target_link_libraries(target_recognition_service ${catkin_LIBRARIES})
 
 add_executable(generate_cloud_node src/nodes/generate_point_cloud.cpp)
+add_dependencies(generate_cloud_node ${PROJECT_NAME}_generate_messages_cpp)
 target_link_libraries(generate_cloud_node ${catkin_LIBRARIES})
 
 add_executable(pick_and_place_node 
@@ -86,6 +88,7 @@ add_executable(pick_and_place_node
 	src/tasks/place_box.cpp	
 	src/tasks/create_motion_plan.cpp
 	src/utilities/pick_and_place_utilities.cpp)
+add_dependencies(pick_and_place_node ${PROJECT_NAME}_generate_messages_cpp)
 target_link_libraries(pick_and_place_node ${catkin_LIBRARIES})
 
 
