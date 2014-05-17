@@ -2,7 +2,7 @@
 
 <robot xmlns:xacro="http://ros.org/wiki/xacro" name="tool">
 
-  <include filename="$(find xacro_properties)/properties.xacro" /> <!--contains properties such as "pi" and "deg"-->
+  <xacro:include filename="$(find xacro_properties)/properties.xacro" /> <!--contains properties such as "pi" and "deg"-->
   
   <link name="tool0" />
   

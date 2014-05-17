@@ -3,7 +3,7 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro" name="ses_environment">
     
   
-  <include filename="$(find xacro_properties)/properties.xacro" /> <!--contains properties such as "pi" and "deg"-->
+  <xacro:include filename="$(find xacro_properties)/properties.xacro" /> <!--contains properties such as "pi" and "deg"-->
   
   
   <!-- link "world" and connected joints -->

@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<robot>
+<robot xmlns:xacro="colorpalette">
     <material name="yellow_transparent">
         <color rgba="0 1 1 0.4"/>
     </material>
