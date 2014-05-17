@@ -12,7 +12,7 @@
 		<param name="threshold" type="int" value="100"/>
 	</node>
 	
-	<node pkg="rosbag" type="play" name="rosbag" 
+	<node pkg="rosbag" type="rosbag" name="rosbag" 
 		args="play $(find ar_pose)/demo/usb_cam_topics_ar_multi.bag --clock -d 3"/>
 	
 </launch>

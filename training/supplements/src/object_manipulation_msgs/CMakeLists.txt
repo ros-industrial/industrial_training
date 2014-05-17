@@ -1,35 +1,65 @@
-cmake_minimum_required(VERSION 2.4.6)
-include($ENV{ROS_ROOT}/core/rosbuild/rosbuild.cmake)
+cmake_minimum_required(VERSION 2.8.3)
+project(object_manipulation_msgs)
 
-# Set the build type.  Options are:
-#  Coverage       : w/ debug symbols, w/o optimization, w/ code-coverage
-#  Debug          : w/ debug symbols, w/o optimization
-#  Release        : w/o debug symbols, w/ optimization
-#  RelWithDebInfo : w/ debug symbols, w/ optimization
-#  MinSizeRel     : w/o debug symbols, w/ optimization, stripped binaries
-#set(ROS_BUILD_TYPE RelWithDebInfo)
+## Find catkin macros and libraries
+find_package(catkin REQUIRED COMPONENTS 
+	message_generation
+	actionlib_msgs
+	std_msgs
+	geometry_msgs
+	sensor_msgs
+	trajectory_msgs
+	sensor_msgs
+	household_objects_database_msgs
+	shape_msgs
+	manipulation_msgs)
 
-#generate the actions
-rosbuild_find_ros_package(actionlib_msgs)
-include(${actionlib_msgs_PACKAGE_PATH}/cmake/actionbuild.cmake)
-genaction()
+#######################################
+## Declare ROS messages and services ##
+#######################################
 
-rosbuild_init()
+## Generate messages in the 'msg' folder
+add_message_files(
+   FILES
+   ManipulationResult.msg
+)
 
-#set the default path for built executables to the "bin" directory
-set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
-#set the default path for built libraries to the "lib" directory
-set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
+## Generate actions in the 'action' folder
+add_action_files(
+	DIRECTORY action
+	FILES GraspHandPostureExecution.action
+)
 
-#uncomment if you have defined messages
-rosbuild_genmsg()
-#uncomment if you have defined services
-rosbuild_gensrv()
+## Generate added messages and services with any dependencies listed here
+generate_messages(DEPENDENCIES 	actionlib_msgs
+	std_msgs
+	geometry_msgs
+	sensor_msgs
+	trajectory_msgs
+	sensor_msgs
+	household_objects_database_msgs
+	shape_msgs
+	manipulation_msgs)
 
-#common commands for building c++ executables and libraries
-#rosbuild_add_library(${PROJECT_NAME} src/example.cpp)
-#target_link_libraries(${PROJECT_NAME} another_library)
-#rosbuild_add_boost_directories()
-#rosbuild_link_boost(${PROJECT_NAME} thread)
-#rosbuild_add_executable(example examples/example.cpp)
-#target_link_libraries(example ${PROJECT_NAME})
+###################################
+## catkin specific configuration ##
+###################################
+## The catkin_package macro generates cmake config files for your package
+## Declare things to be passed to dependent projects
+## INCLUDE_DIRS: uncomment this if you package contains header files
+## LIBRARIES: libraries you create in this project that dependent projects also need
+## CATKIN_DEPENDS: catkin_packages dependent projects also need
+## DEPENDS: system dependencies of this project that dependent projects also need
+catkin_package(
+  CATKIN_DEPENDS 
+		message_runtime 	
+		actionlib_msgs
+		std_msgs
+		geometry_msgs
+		sensor_msgs
+		trajectory_msgs
+		sensor_msgs
+		household_objects_database_msgs
+		shape_msgs
+		manipulation_msgs
+)

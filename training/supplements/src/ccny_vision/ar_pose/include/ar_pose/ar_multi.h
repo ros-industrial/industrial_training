@@ -38,13 +38,13 @@
 #include <geometry_msgs/TransformStamped.h>
 #include <tf/transform_broadcaster.h>
 #include <image_transport/image_transport.h>
+#include <sensor_msgs/image_encodings.h>
 #include <sensor_msgs/CameraInfo.h>
 #include <visualization_msgs/Marker.h>
 #include <resource_retriever/retriever.h>
 
 #include <opencv/cv.h>
 #include <cv_bridge/cv_bridge.h>
-#include <sensor_msgs/image_encodings.h>
 
 #include <ar_pose/ARMarkers.h>
 #include <ar_pose/ARMarker.h>
@@ -68,20 +68,20 @@ namespace ar_pose
     void getTransformationCallback (const sensor_msgs::ImageConstPtr &);
     void camInfoCallback (const sensor_msgs::CameraInfoConstPtr &);
 
-    ros::NodeHandle n_;
-    tf::TransformBroadcaster broadcaster_;
-    ros::Subscriber sub_;
-    image_transport::Subscriber cam_sub_;
-    ros::Publisher arMarkerPub_;
-    
-    image_transport::ImageTransport it_;
-    //sensor_msgs::cv_bridge bridge_;
-    sensor_msgs::CameraInfo cam_info_;
-    
+      ros::NodeHandle n_;
+      tf::TransformBroadcaster broadcaster_;
+      ros::Subscriber sub_;
+      image_transport::Subscriber cam_sub_;
+      ros::Publisher arMarkerPub_;
+
+      image_transport::ImageTransport it_;
+      //sensor_msgs::CvBridge bridge_;
+      sensor_msgs::CameraInfo cam_info_;
+
     // **** for visualisation in rviz
-    ros::Publisher rvizMarkerPub_;
-    visualization_msgs::Marker rvizMarker_;
-    
+      ros::Publisher rvizMarkerPub_;
+      visualization_msgs::Marker rvizMarker_;
+
     // **** parameters
     ARParam cam_param_;         // Camera Calibration Parameters
     ARMultiMarkerInfoT *config; // AR Marker Info
@@ -89,15 +89,14 @@ namespace ar_pose
     int objectnum;
     char pattern_filename_[FILENAME_MAX];
 
-    ar_pose::ARMarkers arPoseMarkers_;
+      ar_pose::ARMarkers arPoseMarkers_;
     int threshold_;
     bool getCamInfo_;
     bool publishTf_;
     bool publishVisualMarkers_;
     CvSize sz_;
     IplImage *capture_;
-    cv::Mat markerImageLocs_;
-    std::vector<int> num_samples;
+
   };                            // end class ARSinglePublisher
 }                               //end namespace ar_pose
 

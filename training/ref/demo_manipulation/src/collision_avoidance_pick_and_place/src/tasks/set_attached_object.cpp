@@ -1,25 +1,18 @@
-/*
- * open_gripper.cpp
- *
- *  Created on: Jun 3, 2013
- *      Author: ros-industrial
- */
-
 #include <collision_avoidance_pick_and_place/pick_and_place.h>
 
 /*    SET ATTACHED OBJECT
   Goal:
-    - Attaches or detaches target to arms end-effector link.
-    - Publishes object marker for visualization.
+    - Attaches or detaches a box payload to the arm.
   Hints:
+  	- Asks moveit to provide the current state of the robot using the
+  		"getCurrentState()" method in the "move_group_ptr" member.
+  	- Adds or removes the payload from the robot state object.
 */
 
 namespace collision_avoidance_pick_and_place
 {
 void PickAndPlace::set_attached_object(bool attach, const geometry_msgs::Pose &pose,moveit_msgs::RobotState &robot_state)
 {
-  //ROS_ERROR_STREAM("set_attached_object is not implemented yet.  Aborting."); exit(1);
-
 	// get robot state
 	robot_state::RobotStatePtr current_state= move_group_ptr->getCurrentState();
 

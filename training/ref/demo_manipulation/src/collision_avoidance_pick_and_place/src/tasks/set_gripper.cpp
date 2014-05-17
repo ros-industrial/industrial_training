@@ -1,17 +1,11 @@
-/*
- * open_gripper.cpp
- *
- *  Created on: Jun 3, 2013
- *      Author: ros-industrial
- */
-
 #include <collision_avoidance_pick_and_place/pick_and_place.h>
 
 /*    SET GRIPPER
   Goal:
-    - Use the grasp action client to open or close the gripper.
-    - Confirm that the gripper was successfully opened or closed.  Exit program on failure;
+	  - Turn the vacuum gripper on or off.
   Hints:
+  	  - Use the grasp action client to send an grasp request to the grasp server.
+  	  - Confirm that the gripper was successfully opened or closed and exit on error
 */
 void collision_avoidance_pick_and_place::PickAndPlace::set_gripper(bool do_grasp)
 {
@@ -21,19 +15,31 @@ void collision_avoidance_pick_and_place::PickAndPlace::set_gripper(bool do_grasp
   object_manipulation_msgs::GraspHandPostureExecutionGoal grasp_goal;
   bool success;
 
-  // send grasp goal to open gripper
-  /* Fill Code: [ set the "suction off" goal using the correct GraspHandPostureExecutionGoal constant ] */
+  // set the corresponding gripper action in the "grasp_goal" object.
   if (do_grasp)
     grasp_goal.goal = object_manipulation_msgs::GraspHandPostureExecutionGoal::GRASP;
   else
     grasp_goal.goal = object_manipulation_msgs::GraspHandPostureExecutionGoal::RELEASE;
 
-  /* Fill Code: [ use the 'sendGoal' method of the grasp client to open gripper] */
+  /* Fill Code:
+   * Goal:
+   * - Send the grasp goal to the server.
+   * Hints:
+   * - Use the 'sendGoal' method of the grasp client "grasp_action_client_ptr"
+   * to make a call the server.
+   */
   grasp_action_client_ptr->sendGoal(grasp_goal);
 
-  // confirm that gripper opened
-  /* Fill Code: [ use the 'waitForResult' to check and save result in success variable] */
-  /*   - can you specify a timeout for the wait command? */
+
+  /* Fill Code:
+   * Goal:
+   * - Confirm that client service call succeeded.
+   * Hints:
+   * - Use the "waitForResult" method of the client to wait for completion.
+   * - Give "waitForResult" a timeout value of 4 seconds
+   * - Timeouts in ros can be created using "ros::Duration(4.0f)".
+   * - Save returned boolean from waitForResult() in the "success" variable.
+   */
   success = grasp_action_client_ptr->waitForResult(ros::Duration(4.0f));
 
   if(success)
