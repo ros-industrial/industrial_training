@@ -18,7 +18,7 @@
   <joint name="tool_base-tool1" type="fixed" >
     <parent link="tool_base" />
     <child link="tool1" />
-    <origin xyz="0 0 0" rpy="0 0 ${0*deg}" />
+    <origin xyz="0 0 0" rpy="0 0 ${-90*deg}" />
   </joint>
 
   <!-- tool1 is the point that parts connect to the tool -->
