@@ -1,8 +1,0 @@
-if [ -f /home/ros-industrial/industrial_training/training/work/2.5/devel/setup.bash ]; then
- source /home/ros-industrial/industrial_training/training/work/2.5/devel/setup.bash
-else
- ROS_PACKAGE_PATH=/home/ros-industrial/industrial_training/training/work/2.5:/home/ros-industrial/industrial_training/training/supplements:$ROS_PACKAGE_PATH
-fi
-echo -e "\n\e[00;32m  Switching to UNIT 2.5 (work copy)\e[00m\n"
-PS1="\[\e]0;ROS-I Training Unit 2.5 (work)\a\]\u@\h:\w$ "
-export LIBGL_ALWAYS_SOFTWARE=1
