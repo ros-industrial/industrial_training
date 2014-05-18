@@ -10,85 +10,35 @@ point_cloud_descriptions:
     w: 0.17
     h: 0.001
     resolution: 0.01
-  - x: -0.84 # obstacle
-    y: 0.4
-    z: 0.12
-    rx: 0.0
-    ry: 0.0
-    rz: 0.0
-    l: 0.12
-    w: 0.05
-    h: 0.24
-    resolution: 0.01
-  - x: -0.40 # obstacle
-    y: 0.35
+  - x: -0.60 # obstacle
+    y: 0.43
     z: 0.10
     rx: 0.0
     ry: 0.0
-    rz: 0.20
-    l: 0.20
-    w: 0.04
-    h: 0.20
-    resolution: 0.01
-  - x: -0.60 # obstacle
-    y: 0.43
-    z: 0.12
-    rx: 0.0
-    ry: 0.0
     rz: 0.0
     l: 0.05
     w: 0.05
-    h: 0.24
-    resolution: 0.01
-  - x: -0.64 # obstacle
-    y: 0.6
-    z: 0.12
-    rx: 0.0
-    ry: 0.0
-    rz: 0.0
-    l: 0.05
-    w: 0.1
-    h: 0.24
-    resolution: 0.01
-  - x: -0.65 # obstacle
-    y: -0.50
-    z: 0.24
-    rx: 0.0
-    ry: 0.0
-    rz: 0.0
-    l: 0.08
-    w: 0.08
-    h: 0.48
+    h: 0.20
     resolution: 0.01
   - x: -0.78 # obstacle
     y: -0.40
-    z: 0.24
+    z: 0.15
     rx: 0.0
     ry: 0.0
     rz: 0.0
     l: 0.07
     w: 0.05
-    h: 0.48
+    h: 0.30
     resolution: 0.01
   - x: -0.60 # obstacle
     y: -0.10
-    z: 0.16
+    z: 0.12
     rx: 0.0
     ry: 0.0
     rz: 0.785
     l: 0.07
     w: 0.05
-    h: 0.32
-    resolution: 0.01
-  - x: -0.82 # obstacle
-    y: 0.0
-    z: 0.16
-    rx: 0.0
-    ry: 0.0
-    rz: 0.40
-    l: 0.07
-    w: 0.05
-    h: 0.32
+    h: 0.24
     resolution: 0.01
   - x: -0.54 # obstacle
     y: 0.2
