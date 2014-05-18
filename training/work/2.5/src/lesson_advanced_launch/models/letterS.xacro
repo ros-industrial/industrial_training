@@ -7,7 +7,7 @@
 <!-- =================================================================================== -->
 
   <!-- This contains the macro "ses_part_macro" that places the clip wrt the tool tip -->
-  <include filename="$(find lesson_advanced_launch)/models/part.macro.xacro" />
+  <xacro:include filename="$(find lesson_advanced_launch)/models/part.macro.xacro" />
 
   <!-- Run the macro with the part name and offsets -->
   <xacro:ses_part_macro model_name="letterS.dae"
