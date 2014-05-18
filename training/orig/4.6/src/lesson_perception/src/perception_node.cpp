@@ -117,11 +117,6 @@ int main(int argc, char *argv[])
 
 
   /* ========================================
-   * Fill Code: POLYGONAL SEGMENTATION (OPTIONAL)
-   * ========================================*/
-
-
-  /* ========================================
    * CONVERT POINTCLOUD PCL->ROS
    * PUBLISH CLOUD
    * Fill Code: UPDATE AS NECESSARY
@@ -135,6 +130,17 @@ int main(int argc, char *argv[])
   /* ========================================
    * Fill Code: PUBLISH OTHER MARKERS (OPTIONAL)
    * ========================================*/
+
+
+  /* ========================================
+  * BROADCAST TRANSFORM (OPTIONAL)
+  * ========================================*/
+
+
+  /* ========================================
+   * Fill Code: POLYGONAL SEGMENTATION (OPTIONAL)
+   * ========================================*/
+
 
   }
   return 0;
