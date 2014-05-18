@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
   ros::NodeHandle priv_nh_("~");
 
   /*
-   * SET UP PARAMETERS (COULD TO BE INPUT FROM LAUNCH FILE/TERMINAL)
+   * SET UP PARAMETERS (COULD BE INPUT FROM LAUNCH FILE/TERMINAL)
    */
   std::string cloud_topic, world_frame, camera_frame;
   world_frame="world_frame";
@@ -75,66 +75,66 @@ int main(int argc, char *argv[])
   pcl::PointCloud<pcl::PointXYZ> cloud;
   pcl::fromROSMsg (transformed_cloud, cloud);
 
-  /*
-   * VOXEL GRID
-   */
-  //input clout must be a pointer, so we make a new cloud_ptr from the cloud object
-  pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_ptr(new pcl::PointCloud<pcl::PointXYZ>(cloud));
-  //output cloud - set up as pointer to ease transition into further processing
-  pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_voxel_filtered (new pcl::PointCloud<pcl::PointXYZ> ());
-  //create an instance of the pcl VoxelGrid
-  
+  /* ========================================
+   * Fill Code: VOXEL GRID
+   * ========================================*/
+
+
   ROS_INFO_STREAM("Original cloud  had " << cloud_ptr->size() << " points");
   ROS_INFO_STREAM("Downsampled cloud  with " << cloud_voxel_filtered->size() << " points");
 
-  /*
-   * PASSTHROUGH FILTER(S)
-   */
+  /* ========================================
+   * Fill Code: PASSTHROUGH FILTER(S)
+   * ========================================*/
+  //filter in x
+
+  //filter in y
+
+  //filter in z 
+
+  /* ========================================
+   * Fill Code: CROPBOX (OPTIONAL)
+   * ========================================*/
+
+  /* ========================================
+   * Fill Code: PLANE SEGEMENTATION
+   * ========================================*/
  
 
-  /*
-   * PLANE SEGEMENTATION
-   */
- 
-  /*
-   * PUBLISH PLANE MARKER (OPTIONAL)
-   */
+  /* ========================================
+   * Fill Code: PUBLISH PLANE MARKER (OPTIONAL)
+   * ========================================*/
 
 
-  /*
-   * EUCLIDEAN CLUSTER EXTRACTION (OPTIONAL)
-   */
+  /* ========================================
+   * Fill Code: EUCLIDEAN CLUSTER EXTRACTION (OPTIONAL/RECOMMENDED)
+   * ========================================*/
 
 
-  /*
-   * STATISTICAL OUTLIER REMOVAL (OPTIONAL)
-   */
+  /* ========================================
+   * Fill Code: STATISTICAL OUTLIER REMOVAL (OPTIONAL)
+   * ========================================*/
 
 
-  /*
+  /* ========================================
+   * Fill Code: POLYGONAL SEGMENTATION (OPTIONAL)
+   * ========================================*/
+
+
+  /* ========================================
+   * CONVERT POINTCLOUD PCL->ROS
    * PUBLISH CLOUD
-   */
+   * Fill Code: UPDATE AS NECESSARY
+   * ========================================*/
   sensor_msgs::PointCloud2::Ptr pc2_cloud (new sensor_msgs::PointCloud2);
   pcl::toROSMsg(*cloud_ptr, *pc2_cloud);
   pc2_cloud->header.frame_id=world_frame;
   pc2_cloud->header.stamp=ros::Time::now();
   object_pub.publish(pc2_cloud);
 
-  /*
-   * PUBLISH OTHER MARKERS (OPTIONAL)
-   */
-
-  /*
-   * BROADCAST TRANSFORM
-   */
-  static tf::TransformBroadcaster br;
-  tf::Transform transform;
-  //Here in the tf::Vector3(x,y,z) x,y, and z should be calculated based on the pointcloud filtering results
-  transform.setOrigin( tf::Vector3(cloud_ptr->at(1).x, cloud_ptr->at(1).y, cloud_ptr->at(1).z) );
-  tf::Quaternion q;
-  q.setRPY(0, 0, 0);
-  transform.setRotation(q);
-  br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), world_frame, "part"));
+  /* ========================================
+   * Fill Code: PUBLISH OTHER MARKERS (OPTIONAL)
+   * ========================================*/
 
   }
   return 0;
