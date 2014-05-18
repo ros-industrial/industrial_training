@@ -80,8 +80,8 @@ int main(int argc, char *argv[])
    * ========================================*/
 
 
-  ROS_INFO_STREAM("Original cloud  had " << cloud_ptr->size() << " points");
-  ROS_INFO_STREAM("Downsampled cloud  with " << cloud_voxel_filtered->size() << " points");
+  //ROS_INFO_STREAM("Original cloud  had " << cloud_ptr->size() << " points");
+  //ROS_INFO_STREAM("Downsampled cloud  with " << cloud_voxel_filtered->size() << " points");
 
   /* ========================================
    * Fill Code: PASSTHROUGH FILTER(S)
@@ -122,7 +122,7 @@ int main(int argc, char *argv[])
    * Fill Code: UPDATE AS NECESSARY
    * ========================================*/
   sensor_msgs::PointCloud2::Ptr pc2_cloud (new sensor_msgs::PointCloud2);
-  pcl::toROSMsg(*cloud_ptr, *pc2_cloud);
+  //pcl::toROSMsg(*cloud_ptr, *pc2_cloud);
   pc2_cloud->header.frame_id=world_frame;
   pc2_cloud->header.stamp=ros::Time::now();
   object_pub.publish(pc2_cloud);
