@@ -1,3 +1,14 @@
+
+#ifdef __i386__
+  #pragma message("i386 Architecture detected, disabling EIGEN VECTORIZATION")
+  #define EIGEN_DONT_VECTORIZE
+  #define EIGEN_DISABLE_UNALIGNED_ARRAY_ASSERT
+#else
+  #pragma message("64bit Architecture detected, enabling EIGEN VECTORIZATION")
+#endif
+
+
+
 #include <ros/ros.h>
 #include <sensor_msgs/PointCloud2.h>
 #include <sensor_msgs/point_cloud_conversion.h>
