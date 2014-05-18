@@ -288,9 +288,9 @@ int main(int argc, char *argv[])
    */
 
 
-  /*
-  * BROADCAST TRANSFORM
-  */
+  /* ========================================
+  * BROADCAST TRANSFORM (OPTIONAL)
+  * ========================================*/
   static tf::TransformBroadcaster br;
   tf::Transform part_transform;
   //Here in the tf::Vector3(x,y,z) x,y, and z should be calculated based on the pointcloud filtering results
