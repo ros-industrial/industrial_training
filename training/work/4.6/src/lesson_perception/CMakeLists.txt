@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   pcl_msgs
   pcl_ros
   pcl_conversions
+  visualization_msgs
 )
 find_package(PCL REQUIRED)
 
