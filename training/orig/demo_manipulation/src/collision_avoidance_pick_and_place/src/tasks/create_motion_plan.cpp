@@ -35,7 +35,7 @@ bool PickAndPlace::create_motion_plan(const geometry_msgs::Pose &pose_target,
 	req.group_name = cfg.ARM_GROUP_NAME;
 	req.goal_constraints.push_back(pose_goal);
 	req.allowed_planning_time = 60.0f;
-	req.num_planning_attempts = 10;
+	req.num_planning_attempts = 1;
 
 	// request motion plan
 	bool success = false;
