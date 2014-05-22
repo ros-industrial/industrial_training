@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="propertiesxacro">
+	<property name="pi" value="3.141592654" />
+	<property name="deg" value="0.017453293" /> <!--degrees to radians-->
+	
+	<xacro:include filename="$(find xacro_properties)/color_palette.xacro" />
+</robot>

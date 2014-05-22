@@ -45,8 +45,16 @@ local TRAINING_PACKAGE_PATH=$UNIT_DIR:$TRAINING_DIR/supplements
 
 if [ -d $UNIT_DIR/src ]; then
  if [ ! -f $UNIT_DIR/devel/setup.bash ]; then
+ 
+   if [ ! -f $TRAINING_DIR/supplements/devel/setup.bash ]; then
+     catkin_make -C $TRAINING_DIR/supplements &> /dev/null
+   fi
+ 
    echo -e "\e[00;32m  Setting up catkin workspace ...\e[00m"
+   
    rm -r $UNIT_DIR/build &> /dev/null
+   
+   source $TRAINING_DIR/supplements/devel/setup.bash
    catkin_make -C $UNIT_DIR &> /dev/null
  fi
 fi
@@ -54,8 +62,10 @@ fi
 # save path (and other code) to file for re-use in new terminals
 echo "if [ -f $UNIT_DIR/devel/setup.bash ]; then" > $TRAINING_FILE
 echo " source $UNIT_DIR/devel/setup.bash" >> $TRAINING_FILE
+echo "else" >> $TRAINING_FILE
+echo " ROS_PACKAGE_PATH=$TRAINING_PACKAGE_PATH:\$ROS_PACKAGE_PATH" >> $TRAINING_FILE
 echo "fi" >> $TRAINING_FILE
-echo "ROS_PACKAGE_PATH=$TRAINING_PACKAGE_PATH:\$ROS_PACKAGE_PATH" >> $TRAINING_FILE
+
 echo "echo -e \"\n\e[00;32m  Switching to UNIT $UNIT ($SUBDIR copy)\e[00m\n\"" >> $TRAINING_FILE
 echo "PS1=\"\[\e]0;ROS-I Training Unit $UNIT ($SUBDIR)\a\]\u@\h:\w\$ \"" >> $TRAINING_FILE
 echo "export LIBGL_ALWAYS_SOFTWARE=1" >> $TRAINING_FILE

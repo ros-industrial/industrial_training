@@ -1,0 +1,19 @@
+<package>
+  <name>abb_moveit_plugins</name>
+  <version>1.0.0</version>
+  <description>ABB-specific plugins for MoveIt</description>
+  <maintainer email="jzoss@swri.org">Jeremy Zoss</maintainer>
+  <license>BSD</license>
+  <url type="website">http://ros.org/wiki/industrial_core</url>
+  <author email="jzoss@swri.org">Jeremy Zoss</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>moveit_core</build_depend>
+  <build_depend>roscpp</build_depend>
+  <run_depend>moveit_core</run_depend>
+  <run_depend>roscpp</run_depend>
+
+  <export>
+    <moveit_core plugin="${prefix}/irb_2400_moveit_kinematics_plugin.xml"/>
+  </export>
+</package>

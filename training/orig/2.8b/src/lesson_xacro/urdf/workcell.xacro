@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<robot name="workcell" xmlns:xacro="http://ros.org/wiki/xacro">
+  <link name="world"/>
+
+  <!-- Include Robot definition here -->
+  <!--   - don't forget joint to connect world_frame to robot's base_link -->
+
+  <!-- Include Workpiece definition here -->
+
+  <!-- Include Gripper definition here -->
+  <!--    - connect gripper to robot tool0 frame -->
+
+  <!-- Include extra pieces here -->
+</robot>
+
