@@ -1,6 +1,6 @@
 image_width: 640
 image_height: 480
-camera_name: depth
+camera_name: depth_1205150255
 camera_matrix:
   rows: 3
   cols: 3
