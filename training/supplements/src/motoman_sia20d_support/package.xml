@@ -1,0 +1,47 @@
+
+<package>
+ <name>motoman_sia20d_support</name>
+ <version>0.3.3</version>
+ <description>
+  <p>
+      ROS Industrial support for the Motoman sia20d (and variants).
+    </p>
+  <p>
+      This package contains configuration data, 3D models and launch files
+      for Motoman sia20d manipulators.
+    </p>
+  <p>
+   <b>Specifications</b>
+  </p>
+  <ul>
+   <li>sia20d - Default</li>
+  </ul>
+  <p>
+      Joint limits and maximum joint velocities are based on the information 
+      found in the online 
+      http://www.motoman.com/datasheets/sia20d.pdf
+      All urdfs are based on the default motion and joint velocity limits, 
+      unless noted otherwise.
+    </p>
+  <p>
+      Before using any of the configuration files and / or meshes included
+      in this package, be sure to check they are correct for the particular
+      robot model and configuration you intend to use them with.
+    </p>
+ </description>
+ <author>Shaun Edwards</author>
+ <maintainer email="shaun.edwards@gmail.com"/>
+ <license>BSD</license>
+ <url type="website">http://ros.org/wiki/motoman_sia20d_support</url>
+ <url type="bugtracker">https://github.com/ros-industrial/motoman/issues</url>
+ <url type="repository">https://github.com/ros-industrial/motoman</url>
+ <buildtool_depend>catkin</buildtool_depend>
+ <build_depend>roslaunch</build_depend>
+ <run_depend>motoman_driver</run_depend>
+ <run_depend>robot_state_publisher</run_depend>
+ <run_depend>rviz</run_depend>
+ <run_depend>joint_state_publisher</run_depend>
+ <export>
+  <architecture_independent/>
+ </export>
+</package>

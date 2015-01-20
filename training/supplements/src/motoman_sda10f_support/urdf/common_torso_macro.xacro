@@ -1,0 +1,77 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+	<xacro:macro name="torso" params="name prefix">
+		<!-- link list -->
+		<link name="base_link">
+			<visual>
+				<geometry>
+					<mesh filename="package://motoman_sda10f_support/meshes/sda10f/visual/motoman_base.stl" />
+				</geometry>
+				<material name="blue">
+					<color rgba="0 0 1 1"/>
+				</material>
+			</visual>
+			<collision>
+				<geometry>
+					<mesh filename="package://motoman_sda10f_support/meshes/sda10f/collision/motoman_base.stl" />
+				</geometry>
+				<material name="yellow">
+					<color rgba="0 1 1 1"/>
+				</material>
+			</collision>
+		</link>
+		<link name="${prefix}link_b1">
+			<visual>
+				<origin rpy="0 0 0" xyz="0 0 0"/>
+				<geometry>
+					<mesh filename="package://motoman_sda10f_support/meshes/sda10f/visual/motoman_axis_b1.stl"/>
+				</geometry>
+				<material name="silver">
+					<color rgba="0.8 0.8 0.8 1"/>
+				</material>
+			</visual>
+			<collision>
+				<origin rpy="0 0 0" xyz="0 0 0"/>
+				<geometry>
+					<mesh filename="package://motoman_sda10f_support/meshes/sda10f/collision/motoman_axis_b1.stl" />
+				</geometry>
+				<material name="yellow"/>
+			</collision>
+		</link>
+		<link name="${prefix}link_b2">
+			<visual>
+				<origin rpy="0 0 0" xyz="0 0 0"/>
+				<geometry>
+					<mesh filename="package://motoman_sda10f_support/meshes/sda10f/visual/motoman_axis_b1.stl"/>
+				</geometry>
+				<material name="silver">
+					<color rgba="0.8 0.8 0.8 1"/>
+				</material>
+			</visual>
+			<collision>
+				<origin rpy="0 0 0" xyz="0 0 0"/>
+				<geometry>
+					<mesh filename="package://motoman_sda10f_support/meshes/sda10f/collision/motoman_axis_b1.stl" />
+				</geometry>
+				<material name="yellow"/>
+			</collision>
+		</link>
+		<!-- joint list -->
+		<joint name="${prefix}joint_b1" type="revolute">
+			<parent link="base_link"/>
+			<child link="${prefix}link_b1"/>
+			<origin xyz="0.09257 0 0.8835" rpy="0 0 0"/>
+			<axis xyz="0 0 1" />
+			<limit lower="-2.9570" upper="2.9570" effort="100" velocity="2.26" />
+		</joint>
+		<joint name="${prefix}joint_b2" type="revolute">
+			<parent link="base_link"/>
+			<child link="${prefix}link_b2"/>
+			<origin xyz="0.09257 0 0.8835" rpy="0 0 0"/>
+			<axis xyz="0 0 1" />
+			<limit lower="-2.9570" upper="2.9570" effort="100" velocity="2.26" />
+			<mimic joint="${prefix}joint_b1" multiplier="1" offset="0"/>
+		</joint>
+		<!-- end of joint list -->
+	</xacro:macro>
+</robot>

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package>
+  <name>motoman_msgs</name>
+  <version>0.0.0</version>
+  <description>set of messages to serve as support for the multi-groups driver</description>
+
+  <maintainer email="tdf@ipa.fhg.de">Thiago de Freitas</maintainer>
+
+  <license>BSD</license>
+  <url type="website">http://ros.org/wiki/motoman_msgs</url>
+  <author>Thiago de Freitas</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>industrial_msgs</build_depend>
+  <build_depend>trajectory_msgs</build_depend>
+  <build_depend>genmsg</build_depend>
+  <build_depend>message_generation</build_depend>
+  <run_depend>std_msgs</run_depend>
+  <run_depend>trajectory_msgs</run_depend>
+  <run_depend>industrial_msgs</run_depend>
+  <run_depend>genmsg</run_depend>
+  <run_depend>message_runtime</run_depend>
+</package>

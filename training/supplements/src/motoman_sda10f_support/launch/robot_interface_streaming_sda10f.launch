@@ -1,0 +1,24 @@
+
+<!--
+  Manipulator specific version of 'robot_interface_streaming.launch'.
+
+  Defaults provided for sda10f:
+   - 7 joints
+
+  Usage:
+    robot_interface_streaming_sda10f.launch robot_ip:=<value> controller:=<fs100|dx100>
+-->
+<launch>
+	<arg name="robot_ip" />
+	<arg name="version0" />
+	
+  <!-- controller: Controller name (fs100 or dx100) -->
+  <arg name="controller"/>
+
+	<rosparam command="load" file="$(find motoman_sda10f_support)/config/sda10f_state_interface.yaml" />
+
+	<include file="$(find motoman_driver)/launch/robot_interface_streaming_$(arg controller).launch">
+		<arg name="robot_ip"   value="$(arg robot_ip)" />
+		<arg name="version0"   value="$(arg version0)" />
+	</include>
+</launch>

@@ -1,0 +1,75 @@
+
+<!--
+  launch_test.xml - ROSlaunch tests
+
+  Usage Instructions:
+
+  1. Add the following to your CMakeLists.txt:
+    
+    find_package(roslaunch)
+    roslaunch_add_file_check(test/launch_test.xml)
+
+  2. Create a test directory under your package
+  3. Add the "launch_text.xml" file and fill out the test below.  Use the
+     following conventions:
+    a. Encapsulate each launch file test in it's own namespace.  By
+       convention the namespace should have the same name as the launch
+       file (minus ".launch" extension)
+    b. Create tests for each possible combination of parameters.  Utilize
+       sub-namespaces under the main namespace.
+
+  Notes:
+
+  1. XML extension is used in order to avoid beinging included
+  in roslaunch auto-complete.
+
+  2. Group tags with namespaces are used to avoid node name collisions when
+  testing multpile launch files
+-->
+<launch>
+	<arg name="req_arg" value="default"/>
+  <arg name="dx100" value="dx100"/>
+  <arg name="fs100" value="fs100" />
+
+  <group ns="load_sia10f">
+	  <include file="$(find motoman_sia10f_support)/launch/load_sia10f.launch"/>
+  </group>
+
+  <group ns="test_sia10f">
+	  <include file="$(find motoman_sia10f_support)/launch/test_sia10f.launch"/>
+  </group>
+
+
+  <group ns="robot_interface_streaming_sia10f">
+    <group ns="dx100" >
+	    <include file="$(find motoman_sia10f_support)/launch/robot_interface_streaming_sia10f.launch">
+		    <arg name="robot_ip"   value="$(arg req_arg)" />
+        <arg name="controller" value="$(arg dx100)"/>
+	    </include>
+    </group>
+
+    <group ns="fs100" >
+	    <include file="$(find motoman_sia10f_support)/launch/robot_interface_streaming_sia10f.launch">
+		    <arg name="robot_ip"   value="$(arg req_arg)" />
+        <arg name="controller" value="$(arg fs100)"/>
+	    </include>
+    </group>
+  </group>
+
+  <group ns="robot_state_visualize_sia10f">
+    <group ns="dx100" >
+	    <include file="$(find motoman_sia10f_support)/launch/robot_state_visualize_sia10f.launch">
+		    <arg name="robot_ip"   value="$(arg req_arg)" />
+        <arg name="controller" value="$(arg dx100)"/>
+	    </include>
+    </group>
+
+    <group ns="fs100" >
+	    <include file="$(find motoman_sia10f_support)/launch/robot_state_visualize_sia10f.launch">
+		    <arg name="robot_ip"   value="$(arg req_arg)" />
+        <arg name="controller" value="$(arg fs100)"/>
+	    </include>
+    </group>
+  </group>
+
+</launch>

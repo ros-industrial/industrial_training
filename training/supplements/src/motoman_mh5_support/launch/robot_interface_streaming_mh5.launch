@@ -1,0 +1,24 @@
+
+<!--
+  Manipulator specific version of 'robot_interface_streaming.launch'.
+
+  Defaults provided for mh5:
+   - 7 joints
+
+  Usage:
+    robot_interface_streaming_mh5.launch robot_ip:=<value> controller:=<fs100|dx100>
+-->
+<launch>
+	<arg name="robot_ip" />
+	
+  <!-- controller: Controller name (fs100 or dx100) -->
+  <arg name="controller"/>
+  <arg name="version0"/>
+
+	<rosparam command="load" file="$(find motoman_mh5_support)/config/joint_names_mh5.yaml" />
+
+	<include file="$(find motoman_driver)/launch/robot_interface_streaming_$(arg controller).launch">
+		<arg name="robot_ip"   value="$(arg robot_ip)" />
+        <arg name="version0"   value="$(arg version0)" />
+	</include>
+</launch>

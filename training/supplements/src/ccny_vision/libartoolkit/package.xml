@@ -11,7 +11,8 @@
   <license>GPL</license>
 
   <author>Philip R. Lamb</author>
-
+ <build_depend>cmake_modules</build_depend> # this line added by Ahmed Abdelmawgoud
+ <run_depend>cmake_modules</run_depend> # this line added by Ahmed Abdelmawgoud
   <run_depend>catkin</run_depend>
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>eigen</build_depend>
