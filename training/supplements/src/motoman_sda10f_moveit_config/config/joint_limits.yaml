@@ -1,0 +1,81 @@
+joint_limits:
+  arm_left_joint_4_u:
+    has_velocity_limits: true
+    max_velocity: 2.95
+    has_acceleration_limits: false
+    max_acceleration: 0
+  arm_right_joint_4_u:
+    has_velocity_limits: true
+    max_velocity: 2.95
+    has_acceleration_limits: false
+    max_acceleration: 0
+  arm_left_joint_7_t:
+    has_velocity_limits: true
+    max_velocity: 6.97
+    has_acceleration_limits: false
+    max_acceleration: 0
+  arm_left_joint_2_l:
+    has_velocity_limits: true
+    max_velocity: 2.95
+    has_acceleration_limits: false
+    max_acceleration: 0
+  arm_left_joint_6_b:
+    has_velocity_limits: true
+    max_velocity: 3.48
+    has_acceleration_limits: false
+    max_acceleration: 0
+  arm_right_joint_3_e:
+    has_velocity_limits: true
+    max_velocity: 2.95
+    has_acceleration_limits: false
+    max_acceleration: 0
+  arm_left_joint_1_s:
+    has_velocity_limits: true
+    max_velocity: 2.95
+    has_acceleration_limits: false
+    max_acceleration: 0
+  torso_joint_b2:
+    has_velocity_limits: true
+    max_velocity: 2.26
+    has_acceleration_limits: false
+    max_acceleration: 0
+  arm_right_joint_7_t:
+    has_velocity_limits: true
+    max_velocity: 6.97
+    has_acceleration_limits: false
+    max_acceleration: 0
+  arm_right_joint_1_s:
+    has_velocity_limits: true
+    max_velocity: 2.95
+    has_acceleration_limits: false
+    max_acceleration: 0
+  arm_right_joint_2_l:
+    has_velocity_limits: true
+    max_velocity: 2.95
+    has_acceleration_limits: false
+    max_acceleration: 0
+  torso_joint_b1:
+    has_velocity_limits: true
+    max_velocity: 2.26
+    has_acceleration_limits: false
+    max_acceleration: 0
+  arm_left_joint_5_r:
+    has_velocity_limits: true
+    max_velocity: 3.48
+    has_acceleration_limits: false
+    max_acceleration: 0
+  arm_right_joint_6_b:
+    has_velocity_limits: true
+    max_velocity: 3.48
+    has_acceleration_limits: false
+    max_acceleration: 0
+  arm_left_joint_3_e:
+    has_velocity_limits: true
+    max_velocity: 2.95
+    has_acceleration_limits: false
+    max_acceleration: 0
+  arm_right_joint_5_r:
+    has_velocity_limits: true
+    max_velocity: 3.48
+    has_acceleration_limits: false
+    max_acceleration: 0

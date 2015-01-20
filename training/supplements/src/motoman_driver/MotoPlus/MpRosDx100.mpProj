@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<MotoPlusProject>
+  <ProjectName>MpRosDx100</ProjectName>
+  <FilesInProject>
+    <FileForProject>Controller.c</FileForProject>
+    <FileForProject>Controller.h</FileForProject>
+    <FileForProject>CtrlGroup.c</FileForProject>
+    <FileForProject>CtrlGroup.h</FileForProject>
+    <FileForProject>MotionServer.c</FileForProject>
+    <FileForProject>MotionServer.h</FileForProject>
+    <FileForProject>mpMain.c</FileForProject>
+    <FileForProject>ParameterExtraction.h</FileForProject>
+    <FileForProject>ParameterExtraction_DX100.mpLib</FileForProject>
+    <FileForProject>SimpleMessage.c</FileForProject>
+    <FileForProject>SimpleMessage.h</FileForProject>
+    <FileForProject>StateServer.c</FileForProject>
+    <FileForProject>StateServer.h</FileForProject>
+  </FilesInProject>
+  <LastFileOpened>Controller.c</LastFileOpened>
+  <UsrInit>False</UsrInit>
+  <ProjectType>Executable</ProjectType>
+  <Debug>
+    <DebugIP>192.168.96.17</DebugIP>
+    <DebugUser>Net_Maint_Mng</DebugUser>
+    <DebugPass>99999999</DebugPass>
+  </Debug>
+  <Build>
+    <CompileCommand>mpbuilder\bin\ccpentium.exe -mcpu=pentiumiii -march=p3 -nostdlib -fno-builtin -fno-defer-pop -W -Werror-implicit-function-declaration -Wreturn-type -Wunused -Wuninitialized -Wunreachable-code -I"~ProjectDir~" -I"~IncludeDir~" -DCPU=PENTIUM4 -DDX100 -fvolatile -O -c "~FilePath~" -o "~OutputPath~"</CompileCommand>
+    <BuildCommand>mpbuilder\bin\ccpentium -nostdlib -r -Wl,-X -Wl~FileList~ -o "~OutputPath~"</BuildCommand>
+    <IncludeDir>C:\Program Files (x86)\Yaskawa\MotoPlusIDE_DX\mpbuilder\inc</IncludeDir>
+  </Build>
+  <ProjectFileVersion>v2.0.2</ProjectFileVersion>
+  <ConvertTabs>False</ConvertTabs>
+</MotoPlusProject>

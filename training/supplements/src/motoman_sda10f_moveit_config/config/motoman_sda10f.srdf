@@ -1,0 +1,107 @@
+<?xml version="1.0" ?>
+<!--This does not replace URDF, and is not an extension of URDF.
+    This is a format for representing semantic information about the robot structure.
+    A URDF file must exist for this robot as well, where the joints and the links that are referenced are defined
+-->
+<robot name="motoman_sda10f">
+    <!--GROUPS: Representation of a set of joints and links. This can be useful for specifying DOF to plan for, defining arms, end effectors, etc-->
+    <!--LINKS: When a link is specified, the parent joint of that link (if it exists) is automatically included-->
+    <!--JOINTS: When a joint is specified, the child link of that joint (which will always exist) is automatically included-->
+    <!--CHAINS: When a chain is specified, all the links along the chain (including endpoints) are included in the group. Additionally, all the joints that are parents to included links are also included. This means that joints along the chain and the parent joint of the base link are included in the group-->
+    <!--SUBGROUPS: Groups can also be formed by referencing to already defined group names-->
+    <group name="arm_left">
+        <joint name="arm_left_joint_1_s" />
+        <joint name="arm_left_joint_2_l" />
+        <joint name="arm_left_joint_3_e" />
+        <joint name="arm_left_joint_4_u" />
+        <joint name="arm_left_joint_5_r" />
+        <joint name="arm_left_joint_6_b" />
+        <joint name="arm_left_joint_7_t" />
+    </group>
+    <group name="arm_right">
+        <joint name="arm_right_joint_1_s" />
+        <joint name="arm_right_joint_2_l" />
+        <joint name="arm_right_joint_3_e" />
+        <joint name="arm_right_joint_4_u" />
+        <joint name="arm_right_joint_5_r" />
+        <joint name="arm_right_joint_6_b" />
+        <joint name="arm_right_joint_7_t" />
+    </group>
+    <group name="torso">
+        <joint name="torso_joint_b1" />
+        <joint name="torso_joint_b2" />
+    </group>
+    <group name="arms">
+        <group name="arm_left" />
+        <group name="arm_right" />
+    </group>
+    <group name="sda10f">
+        <group name="arms" />
+        <group name="torso" />
+    </group>
+    <!--VIRTUAL JOINT: Purpose: this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->
+    <virtual_joint name="FixedBase" type="fixed" parent_frame="world" child_link="base_link" />
+    <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
+    <disable_collisions link1="arm_left_link_1_s" link2="arm_left_link_2_l" reason="Adjacent" />
+    <disable_collisions link1="arm_left_link_1_s" link2="arm_left_link_3_e" reason="Never" />
+    <disable_collisions link1="arm_left_link_1_s" link2="arm_left_link_4_u" reason="Never" />
+    <disable_collisions link1="arm_left_link_1_s" link2="arm_right_link_1_s" reason="Never" />
+    <disable_collisions link1="arm_left_link_1_s" link2="arm_right_link_2_l" reason="Never" />
+    <disable_collisions link1="arm_left_link_1_s" link2="arm_right_link_3_e" reason="Never" />
+    <disable_collisions link1="arm_left_link_1_s" link2="arm_right_link_4_u" reason="Never" />
+    <disable_collisions link1="arm_left_link_1_s" link2="base_link" reason="Never" />
+    <disable_collisions link1="arm_left_link_1_s" link2="torso_link_b1" reason="Adjacent" />
+    <disable_collisions link1="arm_left_link_1_s" link2="torso_link_b2" reason="Default" />
+    <disable_collisions link1="arm_left_link_2_l" link2="arm_left_link_3_e" reason="Adjacent" />
+    <disable_collisions link1="arm_left_link_2_l" link2="arm_left_link_4_u" reason="Never" />
+    <disable_collisions link1="arm_left_link_2_l" link2="arm_left_link_5_r" reason="Never" />
+    <disable_collisions link1="arm_left_link_2_l" link2="arm_right_link_1_s" reason="Never" />
+    <disable_collisions link1="arm_left_link_2_l" link2="arm_right_link_2_l" reason="Never" />
+    <disable_collisions link1="arm_left_link_2_l" link2="arm_right_link_3_e" reason="Never" />
+    <disable_collisions link1="arm_left_link_2_l" link2="arm_right_link_4_u" reason="Never" />
+    <disable_collisions link1="arm_left_link_2_l" link2="base_link" reason="Never" />
+    <disable_collisions link1="arm_left_link_2_l" link2="torso_link_b1" reason="Never" />
+    <disable_collisions link1="arm_left_link_2_l" link2="torso_link_b2" reason="Never" />
+    <disable_collisions link1="arm_left_link_3_e" link2="arm_left_link_4_u" reason="Adjacent" />
+    <disable_collisions link1="arm_left_link_3_e" link2="arm_left_link_5_r" reason="Never" />
+    <disable_collisions link1="arm_left_link_3_e" link2="arm_left_link_6_b" reason="Never" />
+    <disable_collisions link1="arm_left_link_3_e" link2="arm_left_link_7_t" reason="Never" />
+    <disable_collisions link1="arm_left_link_3_e" link2="arm_right_link_1_s" reason="Never" />
+    <disable_collisions link1="arm_left_link_3_e" link2="arm_right_link_2_l" reason="Never" />
+    <disable_collisions link1="arm_left_link_3_e" link2="arm_right_link_3_e" reason="Never" />
+    <disable_collisions link1="arm_left_link_3_e" link2="arm_right_link_4_u" reason="Never" />
+    <disable_collisions link1="arm_left_link_4_u" link2="arm_left_link_5_r" reason="Adjacent" />
+    <disable_collisions link1="arm_left_link_4_u" link2="arm_left_link_6_b" reason="Never" />
+    <disable_collisions link1="arm_left_link_4_u" link2="arm_left_link_7_t" reason="Never" />
+    <disable_collisions link1="arm_left_link_4_u" link2="arm_right_link_1_s" reason="Never" />
+    <disable_collisions link1="arm_left_link_4_u" link2="arm_right_link_2_l" reason="Never" />
+    <disable_collisions link1="arm_left_link_4_u" link2="arm_right_link_3_e" reason="Never" />
+    <disable_collisions link1="arm_left_link_5_r" link2="arm_left_link_6_b" reason="Adjacent" />
+    <disable_collisions link1="arm_left_link_5_r" link2="arm_left_link_7_t" reason="Never" />
+    <disable_collisions link1="arm_left_link_6_b" link2="arm_left_link_7_t" reason="Adjacent" />
+    <disable_collisions link1="arm_right_link_1_s" link2="arm_right_link_2_l" reason="Adjacent" />
+    <disable_collisions link1="arm_right_link_1_s" link2="arm_right_link_3_e" reason="Never" />
+    <disable_collisions link1="arm_right_link_1_s" link2="arm_right_link_4_u" reason="Never" />
+    <disable_collisions link1="arm_right_link_1_s" link2="base_link" reason="Never" />
+    <disable_collisions link1="arm_right_link_1_s" link2="torso_link_b1" reason="Adjacent" />
+    <disable_collisions link1="arm_right_link_1_s" link2="torso_link_b2" reason="Default" />
+    <disable_collisions link1="arm_right_link_2_l" link2="arm_right_link_3_e" reason="Adjacent" />
+    <disable_collisions link1="arm_right_link_2_l" link2="arm_right_link_4_u" reason="Never" />
+    <disable_collisions link1="arm_right_link_2_l" link2="arm_right_link_5_r" reason="Never" />
+    <disable_collisions link1="arm_right_link_2_l" link2="base_link" reason="Never" />
+    <disable_collisions link1="arm_right_link_2_l" link2="torso_link_b1" reason="Never" />
+    <disable_collisions link1="arm_right_link_2_l" link2="torso_link_b2" reason="Never" />
+    <disable_collisions link1="arm_right_link_3_e" link2="arm_right_link_4_u" reason="Adjacent" />
+    <disable_collisions link1="arm_right_link_3_e" link2="arm_right_link_5_r" reason="Never" />
+    <disable_collisions link1="arm_right_link_3_e" link2="arm_right_link_6_b" reason="Never" />
+    <disable_collisions link1="arm_right_link_3_e" link2="arm_right_link_7_t" reason="Never" />
+    <disable_collisions link1="arm_right_link_4_u" link2="arm_right_link_5_r" reason="Adjacent" />
+    <disable_collisions link1="arm_right_link_4_u" link2="arm_right_link_6_b" reason="Never" />
+    <disable_collisions link1="arm_right_link_4_u" link2="arm_right_link_7_t" reason="Never" />
+    <disable_collisions link1="arm_right_link_5_r" link2="arm_right_link_6_b" reason="Adjacent" />
+    <disable_collisions link1="arm_right_link_5_r" link2="arm_right_link_7_t" reason="Never" />
+    <disable_collisions link1="arm_right_link_6_b" link2="arm_right_link_7_t" reason="Adjacent" />
+    <disable_collisions link1="base_link" link2="torso_link_b1" reason="Adjacent" />
+    <disable_collisions link1="base_link" link2="torso_link_b2" reason="Adjacent" />
+    <disable_collisions link1="torso_link_b1" link2="torso_link_b2" reason="Default" />
+</robot>

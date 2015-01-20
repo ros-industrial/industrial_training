@@ -1,0 +1,1 @@
+-mcpu=pentiumiii -march=p3 -nostdlib -fno-builtin -fno-defer-pop -W -Werror-implicit-function-declaration -Wreturn-type -Wunused -Wuninitialized -Wunreachable-code -I"~ProjectDir~" -I"~IncludeDir~" -DCPU=PENTIUM4 -DDX100 -fvolatile -O -c "~FilePath~" -o "~OutputPath~"
