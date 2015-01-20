@@ -1,6 +1,6 @@
 <package>
   <name>industrial_robot_simulator</name>
-  <version>0.3.3</version>
+  <version>0.3.4</version>
   <description>The industrial robot simulator is a stand in for industrial robot driver node(s).  It adheres to the driver specification for industrial robot controllers.</description>
 
   <maintainer email="sedwards@swri.org">Shaun Edwards</maintainer>

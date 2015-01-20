@@ -1,0 +1,29 @@
+﻿Build started 8/22/2014 10:45:19 AM.
+     1>Project "C:\Users\millete\Documents\GitHub\motoman\motoman_driver\MotoPlus\MpRosAllControllers.vcxproj" on node 2 (Build target(s)).
+     1>Build:
+         mpbuilder.exe -c DX100 -p "C:\Users\millete\Documents\GitHub\motoman\motoman_driver\MotoPlus\\" -n "MotoRosDX100" -o build
+         ------ Now building project: MotoRosDX100------
+         Compiling Controller.c
+         Compiling CtrlGroup.c
+     1>CtrlGroup.c : warning : In function `Ros_CtrlGroup_ConvertToRosPos'
+     1>CtrlGroup.c(275): warning : comparison of unsigned expression >= 0 is always true
+     1>CtrlGroup.c : warning : In function `Ros_CtrlGroup_ConvertToMotoPos'
+     1>CtrlGroup.c(308): warning : comparison of unsigned expression >= 0 is always true
+         Compiling MotionServer.c
+     1>MotionServer.c : warning : In function `Ros_MotionServer_ReadIO'
+     1>MotionServer.c(395): warning : unused parameter `controller'
+     1>MotionServer.c : warning : In function `Ros_MotionServer_WriteIO'
+     1>MotionServer.c(426): warning : unused parameter `controller'
+         Compiling mpMain.c
+         Compiling SimpleMessage.c
+         Compiling StateServer.c
+     1>StateServer.c : warning : In function `Ros_StateServer_SendState'
+     1>StateServer.c(105): warning : `fexMsgSize' might be used uninitialized in this function
+         Building MotoRosDX100.out
+         Build Successful!  Check 'DX100\MotoRosDX100' folder for MotoRosDX100.out
+         ------
+     1>Done Building Project "C:\Users\millete\Documents\GitHub\motoman\motoman_driver\MotoPlus\MpRosAllControllers.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:03.14

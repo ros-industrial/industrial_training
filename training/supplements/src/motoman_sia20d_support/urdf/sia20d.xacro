@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+
+<robot name="motoman_sia20d" xmlns:xacro="http://ros.org/wiki/xacro">
+	<xacro:include filename="$(find motoman_sia20d_support)/urdf/sia20d_macro.xacro" />
+	<xacro:motoman_sia20d prefix=""/>
+</robot>
+

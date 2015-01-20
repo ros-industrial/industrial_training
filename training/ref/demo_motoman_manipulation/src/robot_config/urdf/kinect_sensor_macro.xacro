@@ -1,0 +1,111 @@
+<?xml version="1.0" ?>
+<robot name="mantis_sensor" xmlns:xacro="http://ros.org/wiki/xacro">
+
+	<xacro:macro name="sensor_definitions" params="prefix parent_link x_val y_val z_val roll pitch yaw" >
+		<material name="${prefix}color_b">
+			<color rgba="0 0.8 1 0.4"/>
+		</material>	
+		<material name="${prefix}color_a">
+			<color rgba="0.8 0.2 1 0.2"/>
+		</material>	
+		<material name="${prefix}silver">
+			<color rgba="0.6 0.6 0.6 1"/>
+		</material> 
+		<!-- sensor main components -->
+		<link name="${prefix}kinect_link">
+			<collision>
+				<material name="${prefix}color_a"/>			
+				<geometry>
+					<box size="0.36 0.28 0.22"/>
+				</geometry>
+			</collision>
+		</link>
+		<link name="${prefix}kinect_keepout">
+			<!--collision>
+				<material name="${prefix}color_b"/>
+				<geometry>
+					<box size="0.2 0.32 ${z_val + 0.08}"/>
+				</geometry>
+			</collision-->
+		</link>
+		<!-- end of sensor main components -->
+
+	  	<!-- sensor links -->
+		<link name="${prefix}kinect_frame">
+			<visual>
+				<origin rpy="0 0 0" xyz="0 0 0"/>
+				<geometry>
+					<box size="0.064 0.28 0.04"/>
+				</geometry>
+				<material name="${prefix}silver"/>
+			</visual>
+			<collision>
+				<origin rpy="0 0 0" xyz="0 0 0"/>
+				<geometry>
+					<box size="0.064 0.28 0.04"/>
+				</geometry>
+			</collision>
+		</link>
+		<link name="${prefix}kinect_ir_link">
+			<visual>
+				<origin rpy="0 0 0" xyz="0 0 0"/>
+				<geometry>
+					<sphere radius="0.0005"/>
+				</geometry>
+			</visual>
+		</link>
+		<link name="${prefix}kinect_rgb_link">
+			<visual>
+				<origin rpy="0 0 0" xyz="0 0 0"/>
+				<geometry>
+					<sphere radius="0.0005"/>
+				</geometry>
+			</visual>
+		</link>
+		<link name="${prefix}kinect_ir_optical_frame"/>
+		<link name="${prefix}kinect_rgb_optical_frame"/>
+		<!-- end of sensor links -->
+
+		<!-- sensor joints -->
+		<joint name="${prefix}kinect_frame_joint" type="fixed">
+			<parent link="${prefix}kinect_link"/>
+			<child link="${prefix}kinect_frame"/>
+			<origin rpy="0 0 0" xyz="0 0 0"/>
+		</joint>
+		<joint name="${prefix}kinect_ir_joint" type="fixed">
+			<parent link="${prefix}kinect_frame"/>
+			<child link="${prefix}kinect_ir_link"/>
+			<origin rpy="0 0 0" xyz="0 0 0"/>
+		</joint>
+		<joint name="${prefix}kinect_ir_optical_frame_joint" type="fixed">
+			<parent link="${prefix}kinect_ir_link"/>
+			<child link="${prefix}kinect_ir_optical_frame"/>
+			<origin rpy="-1.57 0 -1.57" xyz="0 0 0"/>
+		</joint>	
+		<joint name="${prefix}kinect_rgb_joint" type="fixed">
+			<parent link="${prefix}kinect_ir_link"/>
+			<child link="${prefix}kinect_rgb_link"/>
+			<origin rpy="0 0 0" xyz="0 -0.03 0"/>
+		</joint>
+		<joint name="${prefix}kinect_rgb_optical_frame_joint" type="fixed">
+			<parent link="${prefix}kinect_rgb_link"/>
+			<child link="${prefix}kinect_rgb_optical_frame"/>
+			<origin rpy="-1.57 0 -1.57" xyz="0 0 0"/>
+		</joint>	
+	  	<!-- end of sensor joints -->	
+
+		<!-- world joints -->
+		<joint name="${prefix}${parent_link}_to_kinect_link" type="fixed">
+			<parent link="${parent_link}"/>
+			<child link="${prefix}kinect_link"/>
+			<origin xyz="${x_val} ${y_val} ${z_val}" rpy="${roll} ${pitch} ${yaw}"/>
+		</joint>
+		<joint name="${prefix}${parent_link}_to_kinect_keepout" type="fixed">
+			<parent link="${parent_link}"/>
+			<child link="${prefix}kinect_keepout"/>
+			<origin xyz="${x_val} ${y_val} ${(z_val * 0.5) + 0.04}" rpy="0 0 ${yaw}"/>
+		</joint>
+		<!-- end of world joints -->
+
+	</xacro:macro>
+</robot>

@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<MotoPlusProject>
+  <ProjectName>MpRosFS100</ProjectName>
+  <FilesInProject>
+    <FileForProject>Controller.c</FileForProject>
+    <FileForProject>Controller.h</FileForProject>
+    <FileForProject>CtrlGroup.c</FileForProject>
+    <FileForProject>CtrlGroup.h</FileForProject>
+    <FileForProject>MotionServer.c</FileForProject>
+    <FileForProject>MotionServer.h</FileForProject>
+    <FileForProject>mpMain.c</FileForProject>
+    <FileForProject>ParameterExtraction.h</FileForProject>
+    <FileForProject>ParameterExtraction_FS100.fsLib</FileForProject>
+    <FileForProject>SimpleMessage.c</FileForProject>
+    <FileForProject>SimpleMessage.h</FileForProject>
+    <FileForProject>StateServer.c</FileForProject>
+    <FileForProject>StateServer.h</FileForProject>
+  </FilesInProject>
+  <LastFileOpened>Controller.h</LastFileOpened>
+  <UsrInit>False</UsrInit>
+  <ProjectType>Executable</ProjectType>
+  <Debug>
+    <DebugIP>
+    </DebugIP>
+    <DebugUser>MOTOMANrobot</DebugUser>
+    <DebugPass>MOTOMANrobot</DebugPass>
+  </Debug>
+  <Build>
+    <CompileCommand>mpbuilder\gnu\4.1.2-vxworks-6.8\x86-win32\bin\ccppc.exe -g -te500v2 -fno-builtin -fsigned-char -Wall -Werror-implicit-function-declaration -DFS100 -DCPU=PPC32 -DTOOL_FAMILY=gnu -DTOOL=e500v2gnu -D_WRS_KERNEL -I"~ProjectDir~" -I"~IncludeDir~" -c "~FilePath~" -o "~OutputPath~"
+</CompileCommand>
+    <BuildCommand>mpbuilder\gnu\4.1.2-vxworks-6.8\x86-win32\bin\ccppc.exe -nostdlib -r -WI,-X -WI~FileList~ -o "~OutputPath~"
+</BuildCommand>
+    <IncludeDir>C:\Program Files (x86)\Yaskawa\MotoPlusIDE_FS\mpbuilder\inc</IncludeDir>
+  </Build>
+  <ProjectFileVersion>v1.3.3</ProjectFileVersion>
+  <ConvertTabs>False</ConvertTabs>
+</MotoPlusProject>

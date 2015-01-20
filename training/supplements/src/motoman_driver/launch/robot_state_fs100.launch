@@ -1,0 +1,20 @@
+<!--
+  Contoller specific version of 'robot_interface.launch'.
+
+
+  Usage:
+    robot_state_fs100.launch robot_ip:=<value>
+-->
+<launch>
+	<arg name="robot_ip" />
+	<arg name="use_bswap" value="true" />
+	<arg name="version0" value="true" />
+
+	<!--rosparam command="load" file="$(find motoman_config)/?" /-->
+
+	<include file="$(find motoman_driver)/launch/robot_state.launch">
+		<arg name="robot_ip"   value="$(arg robot_ip)" />
+		<arg name="use_bswap"  value="$(arg use_bswap)" />
+		<arg name="version0"  value="$(arg version0)" />
+	</include>
+</launch>

@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="DX100|Win32">
+      <Configuration>DX100</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DX200|Win32">
+      <Configuration>DX200</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="FS100|Win32">
+      <Configuration>FS100</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{64C31524-A3C4-49D4-AD04-955D44202226}</ProjectGuid>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DX100|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='FS100|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DX200|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='DX100|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='FS100|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DX200|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DX100|Win32'">
+    <NMakeBuildCommandLine>mpbuilder.exe -c $(Configuration) -p "$(ProjectDir)\" -n "MotoRos$(Configuration)" -o build</NMakeBuildCommandLine>
+    <NMakeOutput>MotoRos$(Configuration).out</NMakeOutput>
+    <NMakePreprocessorDefinitions>$(NMakePreprocessorDefinitions);$(Configuration)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>$(MP_VS_Install)$(Configuration)\inc</NMakeIncludeSearchPath>
+    <NMakeReBuildCommandLine>mpbuilder.exe -c $(Configuration) -p "$(ProjectDir)\" -n "MotoRos$(Configuration)" -o rebuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>mpbuilder.exe -c $(Configuration) -p "$(ProjectDir)\" -n "MotoRos$(Configuration)" -o clean</NMakeCleanCommandLine>
+    <NMakeForcedIncludes>
+    </NMakeForcedIncludes>
+    <OutDir>$(SolutionDir)output\$(Configuration)\</OutDir>
+    <IntDir>
+    </IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='FS100|Win32'">
+    <NMakeBuildCommandLine>mpbuilder.exe -c $(Configuration) -p "$(ProjectDir)\" -n "MotoRos$(Configuration)" -o build</NMakeBuildCommandLine>
+    <NMakeOutput>MotoRos$(Configuration).out</NMakeOutput>
+    <NMakePreprocessorDefinitions>$(NMakePreprocessorDefinitions);$(Configuration)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>$(MP_VS_Install)$(Configuration)\inc</NMakeIncludeSearchPath>
+    <NMakeReBuildCommandLine>mpbuilder.exe -c $(Configuration) -p "$(ProjectDir)\" -n "MotoRos$(Configuration)" -o rebuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>mpbuilder.exe -c $(Configuration) -p "$(ProjectDir)\" -n "MotoRos$(Configuration)" -o clean</NMakeCleanCommandLine>
+    <NMakeForcedIncludes>
+    </NMakeForcedIncludes>
+    <OutDir>$(SolutionDir)output\$(Configuration)\</OutDir>
+    <IntDir>
+    </IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DX200|Win32'">
+    <NMakeBuildCommandLine>mpbuilder.exe -c $(Configuration) -p "$(ProjectDir)\" -n "MotoRos$(Configuration)" -o build</NMakeBuildCommandLine>
+    <NMakeOutput>MotoRos$(Configuration).out</NMakeOutput>
+    <NMakePreprocessorDefinitions>$(NMakePreprocessorDefinitions);$(Configuration)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>$(MP_VS_Install)$(Configuration)\inc</NMakeIncludeSearchPath>
+    <NMakeReBuildCommandLine>mpbuilder.exe -c $(Configuration) -p "$(ProjectDir)\" -n "MotoRos$(Configuration)" -o rebuild</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>mpbuilder.exe -c $(Configuration) -p "$(ProjectDir)\" -n "MotoRos$(Configuration)" -o clean</NMakeCleanCommandLine>
+    <NMakeForcedIncludes>
+    </NMakeForcedIncludes>
+    <OutDir>$(SolutionDir)output\$(Configuration)\</OutDir>
+    <IntDir>
+    </IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DX200|Win32'">
+    <BuildLog>
+      <Path>_buildLog\MotoROS$(Configuration).log</Path>
+    </BuildLog>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DX100|Win32'">
+    <BuildLog>
+      <Path>_buildLog\MotoROS$(Configuration).log</Path>
+    </BuildLog>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='FS100|Win32'">
+    <BuildLog>
+      <Path>_buildLog\MotoROS$(Configuration).log</Path>
+    </BuildLog>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="DX100CompilerArguments.mps" />
+    <None Include="DX100LinkerArguments.mps" />
+    <None Include="DX200CompilerArguments.mps" />
+    <None Include="DX200LinkerArguments.mps" />
+    <None Include="FS100CompilerArguments.mps" />
+    <None Include="FS100LinkerArguments.mps" />
+    <None Include="ParameterExtraction_DX100.mpLib" />
+    <None Include="ParameterExtraction_DX200.dnLib" />
+    <None Include="ParameterExtraction_FS100.fsLib" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Controller.c" />
+    <ClCompile Include="CtrlGroup.c" />
+    <ClCompile Include="MotionServer.c" />
+    <ClCompile Include="mpMain.c" />
+    <ClCompile Include="SimpleMessage.c" />
+    <ClCompile Include="StateServer.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Controller.h" />
+    <ClInclude Include="CtrlGroup.h" />
+    <ClInclude Include="MotionServer.h" />
+    <ClInclude Include="ParameterExtraction.h" />
+    <ClInclude Include="SimpleMessage.h" />
+    <ClInclude Include="StateServer.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

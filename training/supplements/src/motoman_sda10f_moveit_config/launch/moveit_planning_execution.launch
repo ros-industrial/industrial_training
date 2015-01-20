@@ -1,0 +1,49 @@
+<launch>
+  <!-- The planning and execution components of MoveIt! configured to run -->
+  <!-- using the ROS-Industrial interface. -->
+ 
+  <rosparam command="load" file="$(find motoman_sda10f_support)/config/joint_names_sda10f.yaml"/>
+ 
+  <!-- the "sim" argument controls whether we connect to a Simulated or Real robot -->
+  <!--  - if sim=false, a robot_ip and controller(fs100|dx100) arguments is required -->
+  <arg name="sim" default="false" />
+  <arg name="robot_ip" unless="$(arg sim)" />
+  <arg name="controller" unless="$(arg sim)" />
+  <arg name="version0" unless="$(arg sim)" />
+ 
+  <!-- load the robot_description parameter before launching ROS-I nodes -->
+  <include file="$(find motoman_sda10f_moveit_config)/launch/planning_context.launch" >
+    <arg name="load_robot_description" value="true" />
+  </include>
+
+  <!-- run the robot simulator and action interface nodes -->
+  <group if="$(arg sim)">
+    <include file="$(find industrial_robot_simulator)/launch/robot_interface_simulator.launch" />
+  </group>
+
+  <!-- run the "real robot" interface nodes -->
+  <!--   - this typically includes: robot_state, motion_interface, and joint_7_trajectory_action nodes -->
+  <!--   - replace these calls with appropriate robot-specific calls or launch files -->
+  <group unless="$(arg sim)">
+    <include file="$(find motoman_sda10f_support)/launch/robot_interface_streaming_sda10f.launch" >
+      <arg name="robot_ip" value="$(arg robot_ip)"/>
+      <arg name="controller" value="$(arg controller)"/>
+      <arg name="version0" value="$(arg version0)" />
+    </include>
+  </group>
+
+  <!-- publish the robot state (tf transforms) -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+  <include file="$(find motoman_sda10f_moveit_config)/launch/move_group.launch">
+    <arg name="publish_monitored_planning_scene" value="true" />
+  </include>
+
+  <include file="$(find motoman_sda10f_moveit_config)/launch/moveit_rviz.launch">
+    <arg name="config" value="true"/>
+  </include>
+  
+  <include file="$(find motoman_sda10f_moveit_config)/launch/default_warehouse_db.launch" />
+
+</launch>
+

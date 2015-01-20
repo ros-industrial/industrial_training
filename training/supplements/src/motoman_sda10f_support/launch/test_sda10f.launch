@@ -1,0 +1,8 @@
+
+<launch>
+	<include file="$(find motoman_sda10f_support)/launch/load_sda10f.launch" />
+	<param name="use_gui" value="true" />
+	<node name="joint_1_state_publisher" pkg="joint_1_state_publisher" type="joint_1_state_publisher" />
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find industrial_robot_client)/config/robot_state_visualize.rviz" required="true" />
+</launch>

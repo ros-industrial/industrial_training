@@ -1,0 +1,19 @@
+﻿Build started 8/22/2014 10:45:13 AM.
+     1>Project "C:\Users\millete\Documents\GitHub\motoman\motoman_driver\MotoPlus\MpRosAllControllers.vcxproj" on node 2 (Build target(s)).
+     1>Build:
+         mpbuilder.exe -c DX200 -p "C:\Users\millete\Documents\GitHub\motoman\motoman_driver\MotoPlus\\" -n "MotoRosDX200" -o build
+         ------ Now building project: MotoRosDX200------
+         Compiling Controller.c
+         Compiling CtrlGroup.c
+         Compiling MotionServer.c
+         Compiling mpMain.c
+         Compiling SimpleMessage.c
+         Compiling StateServer.c
+         Building MotoRosDX200.out
+         Build Successful!  Check 'DX200\MotoRosDX200' folder for MotoRosDX200.out
+         ------
+     1>Done Building Project "C:\Users\millete\Documents\GitHub\motoman\motoman_driver\MotoPlus\MpRosAllControllers.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:03.11

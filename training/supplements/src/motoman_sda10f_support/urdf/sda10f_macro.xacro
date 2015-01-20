@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro"
+    name="sda10f">	
+        <xacro:include filename="$(find motoman_sda10f_support)/urdf/common_torso_macro.xacro" />
+        <xacro:include filename="$(find motoman_sda10f_support)/urdf/arm_macro.xacro" />
+        
+        <xacro:torso name="torso" prefix="torso_"/>
+
+        
+        <xacro:motoman_arm name="arm_left" prefix="arm_left_" parent="torso_link_b1" reflect="1">
+            <origin xyz="0.09996 0.0275 0.32214" rpy="1.57 0 0" />
+        </xacro:motoman_arm>      
+        
+        <xacro:motoman_arm name="arm_right" prefix="arm_right_" parent="torso_link_b1" reflect="-1">
+            <origin xyz="0.09996 -0.0275 0.32214" rpy="1.57 0 0" />
+        </xacro:motoman_arm>       
+</robot>
