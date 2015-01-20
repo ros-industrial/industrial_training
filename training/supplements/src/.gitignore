@@ -1,0 +1,23 @@
+# Temp files
+*~
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.sdf
+*.opensdf
+*.sdf
+*.suo
+motoman_driver/MotoPlus/_ErrorLog.txt
+motoman_driver/MotoPlus/MpRosAllControllers.sdf
+motoman_driver/MotoPlus/MpRosAllControllers.v11.suo

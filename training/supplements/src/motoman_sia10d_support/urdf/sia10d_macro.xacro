@@ -1,0 +1,289 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+	<xacro:macro name="motoman_sia10d" params="prefix">
+		<!-- link list -->
+		<link name="world">
+    		<origin xyz="0 0 0" rpy="0 0 0"/>
+  		</link>
+		<link name="${prefix}base_link">
+			<visual>
+				<geometry>
+					<mesh filename="package://motoman_sia10d_support/meshes/sia10d/visual/MOTOMAN_BASE.stl" />
+				</geometry>
+				<material name="blue">
+					<color rgba="0 0 1 1"/>
+				</material>
+			</visual>
+			<collision>
+				<geometry>
+					<mesh filename="package://motoman_sia10d_support/meshes/sia10d/collision/MOTOMAN_BASE.stl" />
+				</geometry>
+				<material name="yellow">
+					<color rgba="0 1 1 1"/>
+				</material>
+			</collision>
+			<inertial>
+      				<mass value="400" /> 	<!-- Arbitrarily large value, to simulate bolting down in case of absence of fixed joint -->
+      				<inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+    			</inertial>
+		</link>
+
+  		<gazebo reference="${prefix}base_link">
+    			<turnGravityOff>false</turnGravityOff>
+    			<selfCollide>true</selfCollide>
+			<material>Gazebo/Blue</material>
+  		</gazebo>
+
+		<link name="${prefix}link_s">
+			<visual>
+				<geometry>
+					<mesh filename="package://motoman_sia10d_support/meshes/sia10d/visual/MOTOMAN_AXIS_S.stl"/>
+				</geometry>
+				<material name="silver">
+					<color rgba="0.8 0.8 0.8 1"/>
+				</material>
+			</visual>
+			<collision>
+				<geometry>
+					<mesh filename="package://motoman_sia10d_support/meshes/sia10d/collision/MOTOMAN_AXIS_S.stl" />
+				</geometry>
+				<material name="yellow"/>
+			</collision>
+			<inertial>
+      				<mass value="13.746057" />
+      				<inertia ixx="0.070027808" ixy="0.0" ixz="0.0" iyy="0.077808312" iyz="0.0" izz="0.043654657"/>
+				<origin xyz="0.0 0.0046451930 -0.018976267" rpy="0.0 0.0 0.0"/>
+    			</inertial>
+		</link>
+
+  		<gazebo reference="${prefix}link_s">
+    			<turnGravityOff>false</turnGravityOff>
+    			<selfCollide>true</selfCollide>
+			<material>Gazebo/White</material>
+  		</gazebo>
+
+		<link name="${prefix}link_l">
+			<visual>
+				<origin rpy="1.57 3.1416 0" xyz="0 0 0"/>
+				<geometry>
+					<mesh filename="package://motoman_sia10d_support/meshes/sia10d/visual/MOTOMAN_AXIS_L.stl"/>
+				</geometry>
+				<material name="blue"/>
+			</visual>
+			<collision>
+				<origin rpy="1.57 3.1416 0" xyz="0 0 0"/>
+				<geometry>
+					<mesh filename="package://motoman_sia10d_support/meshes/sia10d/collision/MOTOMAN_AXIS_L.stl" />
+				</geometry>
+				<material name="yellow"/>
+			</collision>
+			<inertial>
+      				<mass value="5.227999" />
+      				<inertia ixx="0.016063413" ixy="0.0" ixz="0.0" iyy="0.10522920" iyz="0.0" izz="0.10250891"/>
+				<origin xyz="0.11422130 0.0 0.018935113" rpy="0.0 0.0 0.0"/>
+    			</inertial>
+		</link>
+
+  		<gazebo reference="${prefix}link_l">
+    			<turnGravityOff>false</turnGravityOff>
+    			<selfCollide>true</selfCollide>
+			<material>Gazebo/Blue</material>
+  		</gazebo>
+
+		<link name="${prefix}link_e">
+			<visual>
+				<origin rpy="0 0 3.1415" xyz="0 0 0"/>
+				<geometry>
+					<mesh filename="package://motoman_sia10d_support/meshes/sia10d/visual/MOTOMAN_AXIS_E.stl"/>
+				</geometry>
+				<material name="silver"/>
+			</visual>
+			<collision>
+				<origin rpy="0 0 3.1415" xyz="0 0 0"/>
+				<geometry>
+					<mesh filename="package://motoman_sia10d_support/meshes/sia10d/collision/MOTOMAN_AXIS_E.stl" />
+				</geometry>
+				<material name="yellow"/>
+			</collision>
+			<inertial>
+      				<mass value="4.7092004" />
+      				<inertia ixx="0.030190273" ixy="0.0" ixz="0.0" iyy="0.030943336" iyz="0.0" izz="0.0096760191"/>
+				<origin xyz="0.0 -0.011901001 -0.036023969" rpy="0.0 0.0 0.0"/>
+    			</inertial>
+		</link>
+
+  		<gazebo reference="${prefix}link_e">
+    			<turnGravityOff>false</turnGravityOff>
+    			<selfCollide>true</selfCollide>
+			<material>Gazebo/White</material>
+  		</gazebo>
+
+		<link name="${prefix}link_u">
+			<visual>
+				<origin rpy="1.57 -3.1415 0" xyz="0 0 0"/>
+				<geometry>
+					<mesh filename="package://motoman_sia10d_support/meshes/sia10d/visual/MOTOMAN_AXIS_U.stl"/>
+				</geometry>
+				<material name="blue"/>
+			</visual>
+			<collision>
+				<origin rpy="1.57 -3.1415 0" xyz="0 0 0"/>
+				<geometry>
+					<mesh filename="package://motoman_sia10d_support/meshes/sia10d/collision/MOTOMAN_AXIS_U.stl" />
+				</geometry>
+				<material name="yellow"/>
+			</collision>
+			<inertial>
+      				<mass value="3.1488649" />
+      				<inertia ixx="0.083840132" ixy="0.0" ixz="0.0" iyy="0.0061641860" iyz="0.0" izz="0.083291837"/>
+				<origin xyz="0.0 -0.015659426 0.13525753" rpy="0.0 0.0 0.0"/>
+    			</inertial>
+		</link>
+
+  		<gazebo reference="${prefix}link_u">
+    			<turnGravityOff>false</turnGravityOff>
+    			<selfCollide>true</selfCollide>
+			<material>Gazebo/Blue</material>
+  		</gazebo>
+
+		<link name="${prefix}link_r">
+			<visual>
+				<origin rpy="0 0 3.1416" xyz="0 0 0"/>
+				<geometry>
+					<mesh filename="package://motoman_sia10d_support/meshes/sia10d/visual/MOTOMAN_AXIS_R.stl"/>
+				</geometry>
+				<material name="silver"/>
+			</visual>
+			<collision>
+				<origin rpy="0 0 3.1416" xyz="0 0 0"/>
+				<geometry>
+					<mesh filename="package://motoman_sia10d_support/meshes/sia10d/collision/MOTOMAN_AXIS_R.stl" />
+				</geometry>
+				<material name="yellow"/>
+			</collision>
+			<inertial>
+      				<mass value="3.0270943" />
+      				<inertia ixx="0.017471059" ixy="0.0" ixz="0.0" iyy="0.017175292" iyz="0.0" izz="0.0049008824"/>
+				<origin xyz="0.0 -0.011271807 -0.0416" rpy="0.0 0.0 0.0"/>
+    			</inertial>
+		</link>
+		
+  		<gazebo reference="${prefix}link_r">
+    			<turnGravityOff>false</turnGravityOff>
+    			<selfCollide>true</selfCollide>
+			<material>Gazebo/White</material>
+  		</gazebo>
+
+		<link name="${prefix}link_b">
+			<visual>
+				<origin rpy="-1.57 0 3.1416" xyz="0 0 0"/>
+				<geometry>
+					<mesh filename="package://motoman_sia10d_support/meshes/sia10d/visual/MOTOMAN_AXIS_B.stl"/>
+				</geometry>
+				<material name="blue"/>
+			</visual>
+			<collision>
+				<origin rpy="-1.57 0 3.1416" xyz="0 0 0"/>
+				<geometry>
+					<mesh filename="package://motoman_sia10d_support/meshes/sia10d/collision/MOTOMAN_AXIS_B.stl" />
+				</geometry>
+				<material name="yellow"/>
+			</collision>
+			<inertial>
+      				<mass value="2.3902999" />
+      				<inertia ixx="0.080" ixy="0.0" ixz="0.0" iyy="0.0038377449" iyz="0.0" izz="0.080"/>
+				<origin xyz="0.0 0.0074364051 0.078721289" rpy="0.0 0.0 0.0"/>
+    			</inertial>
+		</link>
+
+  		<gazebo reference="${prefix}link_b">
+    			<turnGravityOff>false</turnGravityOff>
+    			<selfCollide>true</selfCollide>
+			<material>Gazebo/Blue</material>
+  		</gazebo>
+
+		<link name="${prefix}link_t">
+			<visual>
+				<geometry>
+					<mesh filename="package://motoman_sia10d_support/meshes/sia10d/visual/MOTOMAN_AXIS_T.stl" />
+				</geometry>
+				<material name="silver"/>
+			</visual>
+			<collision>
+				<geometry>
+					<mesh filename="package://motoman_sia10d_support/meshes/sia10d/collision/MOTOMAN_AXIS_T.stl" />
+				</geometry>
+				<material name="yellow"/>
+			</collision>
+			<inertial>
+      				<mass value="0.63670412" />
+      				<inertia ixx="0.00058471221" ixy="0.0" ixz="0.0" iyy="0.0005929671" iyz="0.0" izz="0.001081389"/>
+				<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    			</inertial>
+		</link>
+
+  		<gazebo reference="${prefix}link_t">
+    			<turnGravityOff>false</turnGravityOff>
+    			<selfCollide>true</selfCollide>
+			<material>Gazebo/White</material>
+  		</gazebo>
+
+		<!-- end of link list -->
+		<!-- joint list -->
+	   	<joint name="world-base" type="fixed">
+   		 	<origin xyz="0 0 0" rpy="0 0 0"/>
+   		 	<parent link="world" />
+   		 	<child link="base_link"/>
+  		</joint>
+		<joint name="${prefix}joint_s" type="revolute">
+			<parent link="${prefix}base_link"/>
+			<child link="${prefix}link_s"/>
+			<origin xyz="0 0 0.36" rpy="0 0 0"/>
+			<axis xyz="0 0 1" />
+			<limit lower="-3.1416" upper="3.1416" effort="100" velocity="2.96" />
+		</joint>
+		<joint name="${prefix}joint_l" type="revolute">
+			<parent link="${prefix}link_s"/>
+			<child link="${prefix}link_l"/>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<axis xyz="0 1 0" />
+			<limit lower="-1.91" upper="1.91" effort="100" velocity="2.96" />
+		</joint>
+		<joint name="${prefix}joint_e" type="revolute">
+			<parent link="${prefix}link_l"/>
+			<child link="${prefix}link_e"/>
+			<origin xyz="0 0 0.36" rpy="0 0 0"/>
+			<axis xyz="0 0 1" />
+			<limit lower="-2.96" upper="2.96" effort="100" velocity="2.96" />
+		</joint>
+		<joint name="${prefix}joint_u" type="revolute">
+			<parent link="${prefix}link_e"/>
+			<child link="${prefix}link_u"/>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<axis xyz="0 -1 0" />
+			<limit lower="-2.35" upper="2.35" effort="100" velocity="2.96" />
+		</joint>
+		<joint name="${prefix}joint_r" type="revolute">
+			<parent link="${prefix}link_u"/>
+			<child link="${prefix}link_r"/>
+			<origin xyz="0 0 0.360" rpy="0 0 0"/>
+			<axis xyz="0 0 -1" />
+			<limit lower="-3.1416" upper="3.1416" effort="100" velocity="3.48" />
+		</joint>
+		<joint name="${prefix}joint_b" type="revolute">
+			<parent link="${prefix}link_r"/>
+			<child link="${prefix}link_b"/>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<axis xyz="0 -1 0" />
+			<limit lower="-1.91" upper="1.91" effort="100" velocity="3.48" />
+		</joint>
+		<joint name="${prefix}joint_t" type="revolute">
+			<parent link="${prefix}link_b"/>
+			<child link="${prefix}link_t"/>
+			<origin xyz="0 0 0.155" rpy="0 0 0"/>
+			<axis xyz="0 0 -1" />
+			<limit lower="-3.1416" upper="3.1416" effort="100" velocity="6.97" />
+		</joint>
+		<!-- end of joint list -->
+	</xacro:macro>
+</robot>

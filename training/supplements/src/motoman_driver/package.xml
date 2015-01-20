@@ -1,0 +1,41 @@
+<package>
+  <name>motoman_driver</name>
+  <version>0.3.3</version>
+  <description>The motoman driver package includes nodes for interfacing with a motoman
+     industrial robot controllers.</description>
+  <maintainer email="jeremy.zoss@swri.org">Jeremy Zoss (Southwest Research Institute)</maintainer>
+  <license>BSD</license>
+  <url type="website">http://ros.org/wiki/motoman_driver</url>
+  <author email="jeremy.zoss@swri.org">Jeremy Zoss (Southwest Research Institute)</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>actionlib</build_depend>
+  <build_depend>trajectory_msgs</build_depend>
+  <build_depend>actionlib_msgs</build_depend>
+  <build_depend>control_msgs</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>simple_message</build_depend>
+  <build_depend>urdf</build_depend>
+  <build_depend>industrial_msgs</build_depend>
+  <build_depend>motoman_msgs</build_depend>
+  <build_depend>industrial_robot_client</build_depend>
+  <build_depend>industrial_utils</build_depend>
+  <build_depend>roslint</build_depend>
+  <run_depend>std_msgs</run_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>actionlib</run_depend>
+  <run_depend>trajectory_msgs</run_depend>
+  <run_depend>actionlib_msgs</run_depend>
+  <run_depend>control_msgs</run_depend>
+  <run_depend>sensor_msgs</run_depend>
+  <run_depend>simple_message</run_depend>
+  <run_depend>urdf</run_depend>
+  <run_depend>industrial_msgs</run_depend>
+  <run_depend>motoman_msgs</run_depend>
+  <run_depend>industrial_robot_client</run_depend>
+
+  <export>
+  </export>
+</package>

@@ -1,0 +1,19 @@
+﻿Build started 8/22/2014 10:45:06 AM.
+     1>Project "C:\Users\millete\Documents\GitHub\motoman\motoman_driver\MotoPlus\MpRosAllControllers.vcxproj" on node 2 (Rebuild target(s)).
+     1>Rebuild:
+         mpbuilder.exe -c FS100 -p "C:\Users\millete\Documents\GitHub\motoman\motoman_driver\MotoPlus\\" -n "MotoRosFS100" -o rebuild
+         ------ Now building project: MotoRosFS100------
+         Compiling Controller.c
+         Compiling CtrlGroup.c
+         Compiling MotionServer.c
+         Compiling mpMain.c
+         Compiling SimpleMessage.c
+         Compiling StateServer.c
+         Building MotoRosFS100.out
+         Build Successful!  Check 'FS100\MotoRosFS100' folder for MotoRosFS100.out
+         ------
+     1>Done Building Project "C:\Users\millete\Documents\GitHub\motoman\motoman_driver\MotoPlus\MpRosAllControllers.vcxproj" (Rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:03.15

@@ -1,0 +1,29 @@
+
+<!--
+  Manipulator specific version of the state visualizer.
+
+  Defaults provided for sda10f:
+   - 7 joints
+
+  Usage:
+    robot_state_visualize_sia20d.launch robot_ip:=<value> controller:=<fs100|dx100>
+-->
+<launch>
+	<arg name="robot_ip" />
+
+  <!-- controller: Controller name (fs100 or dx100) -->
+  <arg name="controller" />
+
+	<rosparam command="load" file="$(find motoman_sda10f_support)/config/joint_names_sda10f.yaml" />
+
+	<include file="$(find motoman_driver)/launch/robot_state_$(arg controller).launch">
+		<arg name="robot_ip"   value="$(arg robot_ip)" />
+	</include>
+
+	<node name="robot_state_publisher" pkg="robot_state_publisher" 
+		type="robot_state_publisher" />
+
+	<include file="$(find motoman_sda10f_support)/launch/load_sda10f.launch" />
+
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find industrial_robot_client)/config/robot_state_visualize.rviz" required="true" />
+</launch>

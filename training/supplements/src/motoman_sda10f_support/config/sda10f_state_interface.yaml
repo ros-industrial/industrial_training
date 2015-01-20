@@ -1,0 +1,25 @@
+topics_list:
+ - state:
+    - group:
+       - group_number: 0
+         name: sda10f_r1_controller
+         ns: sda10f
+         joints: ['arm_left_joint_1_s','arm_left_joint_2_l','arm_left_joint_3_e','arm_left_joint_4_u','arm_left_joint_5_r','arm_left_joint_6_b','arm_left_joint_7_t']
+    - group:
+       - group_number: 1
+         name: sda10f_r2_controller
+         ns: sda10f
+         joints: ['arm_right_joint_1_s','arm_right_joint_2_l','arm_right_joint_3_e','arm_right_joint_4_u','arm_right_joint_5_r','arm_right_joint_6_b','arm_right_joint_7_t']
+    - group:
+       - group_number: 2
+         name: sda10f_b1_controller
+         ns: sda10f
+         joints: ['torso_joint_b1']
+    - group:
+       - group_number: 3
+         name: sda10f_b2_controller
+         ns: sda10f
+         joints: ['torso_joint_b2']
+ - status:
+    - name: sda10f_r1_status
+   

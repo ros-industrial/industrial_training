@@ -1,0 +1,194 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+	<xacro:macro name="motoman_sia20d" params="prefix">
+		<!-- link list -->
+		<link name="${prefix}base_link">
+			<visual>
+				<geometry>
+					<mesh filename="package://motoman_sia20d_support/meshes/sia20d/visual/MOTOMAN_BASE.stl" />
+				</geometry>
+				<material name="blue">
+					<color rgba="0 0 1 1"/>
+				</material>
+			</visual>
+			<collision>
+				<geometry>
+					<mesh filename="package://motoman_sia20d_support/meshes/sia20d/collision/MOTOMAN_BASE.stl" />
+				</geometry>
+				<material name="yellow">
+					<color rgba="0 1 1 1"/>
+				</material>
+			</collision>
+		</link>
+		<link name="${prefix}link_s">
+			<visual>
+				<origin rpy="0 0 3.1416" xyz="0 0 0"/>
+				<geometry>
+					<mesh filename="package://motoman_sia20d_support/meshes/sia20d/visual/MOTOMAN_AXIS_S.stl"/>
+				</geometry>
+				<material name="silver">
+					<color rgba="0.8 0.8 0.8 1"/>
+				</material>
+			</visual>
+			<collision>
+				<origin rpy="0 0 3.1416" xyz="0 0 0"/>
+				<geometry>
+					<mesh filename="package://motoman_sia20d_support/meshes/sia20d/collision/MOTOMAN_AXIS_S.stl" />
+				</geometry>
+				<material name="yellow"/>
+			</collision>
+		</link>
+		<link name="${prefix}link_l">
+			<visual>
+				<origin rpy="1.57 3.1416 3.1416" xyz="0 0 0"/>
+				<geometry>
+					<mesh filename="package://motoman_sia20d_support/meshes/sia20d/visual/MOTOMAN_AXIS_L.stl"/>
+				</geometry>
+				<material name="blue"/>
+			</visual>
+			<collision>
+				<origin rpy="1.57 3.1416 3.1416" xyz="0 0 0"/>
+				<geometry>
+					<mesh filename="package://motoman_sia20d_support/meshes/sia20d/collision/MOTOMAN_AXIS_L.stl"/>
+				</geometry>
+				<material name="yellow"/>
+			</collision>
+		</link>
+		<link name="${prefix}link_e">
+			<visual>
+				<origin rpy="0 0 0" xyz="0 0 0"/>
+				<geometry>
+					<mesh filename="package://motoman_sia20d_support/meshes/sia20d/visual/MOTOMAN_AXIS_E.stl"/>
+				</geometry>
+				<material name="silver"/>
+			</visual>
+			<collision>
+				<origin rpy="0 0 0" xyz="0 0 0"/>
+				<geometry>
+					<mesh filename="package://motoman_sia20d_support/meshes/sia20d/collision/MOTOMAN_AXIS_E.stl"/>
+				</geometry>
+				<material name="yellow"/>
+			</collision>
+		</link>
+		<link name="${prefix}link_u">
+			<visual>
+				<origin rpy="1.57 -3.1415 3.1416" xyz="0 0 0"/>
+				<geometry>
+					<mesh filename="package://motoman_sia20d_support/meshes/sia20d/visual/MOTOMAN_AXIS_U.stl"/>
+				</geometry>
+				<material name="blue"/>
+			</visual>
+			<collision>
+				<origin rpy="1.57 -3.1415 3.1416" xyz="0 0 0"/>
+				<geometry>
+					<mesh filename="package://motoman_sia20d_support/meshes/sia20d/collision/MOTOMAN_AXIS_U.stl"/>
+				</geometry>
+				<material name="yellow"/>
+			</collision>
+		</link>
+		<link name="${prefix}link_r">
+			<visual>
+				<origin rpy="0 0 0" xyz="0 0 0"/>
+				<geometry>
+					<mesh filename="package://motoman_sia20d_support/meshes/sia20d/visual/MOTOMAN_AXIS_R.stl"/>
+				</geometry>
+				<material name="silver"/>
+			</visual>
+			<collision>
+				<origin rpy="0 0 0" xyz="0 0 0"/>
+				<geometry>
+					<mesh filename="package://motoman_sia20d_support/meshes/sia20d/collision/MOTOMAN_AXIS_R.stl"/>
+				</geometry>
+				<material name="yellow"/>
+			</collision>
+		</link>
+		<link name="${prefix}link_b">
+			<visual>
+				<origin rpy="-1.57 0 0" xyz="0 0 0"/>
+				<geometry>
+					<mesh filename="package://motoman_sia20d_support/meshes/sia20d/visual/MOTOMAN_AXIS_B.stl"/>
+				</geometry>
+				<material name="blue"/>
+			</visual>
+			<collision>
+				<origin rpy="-1.57 0 0" xyz="0 0 0"/>
+				<geometry>
+					<mesh filename="package://motoman_sia20d_support/meshes/sia20d/collision/MOTOMAN_AXIS_B.stl"/>
+				</geometry>
+				<material name="yellow"/>
+			</collision>
+		</link>
+		<link name="${prefix}link_t">
+			<visual>
+				<geometry>
+					<mesh filename="package://motoman_sia20d_support/meshes/sia20d/visual/MOTOMAN_AXIS_T.stl" />
+				</geometry>
+				<material name="silver"/>
+			</visual>
+			<collision>
+				<geometry>
+					<mesh filename="package://motoman_sia20d_support/meshes/sia20d/collision/MOTOMAN_AXIS_T.stl" />
+				</geometry>
+				<material name="yellow"/>
+			</collision>
+		</link>
+    <link name="${prefix}tool0" />
+		<!-- end of link list -->
+		<!-- joint list -->
+		<joint name="${prefix}joint_s" type="revolute">
+			<parent link="${prefix}base_link"/>
+			<child link="${prefix}link_s"/>
+			<origin xyz="0 0 0.41" rpy="0 0 0"/>
+			<axis xyz="0 0 1" />
+			<limit lower="-3.1416" upper="3.1416" effort="100" velocity="2.26" />
+		</joint>
+		<joint name="${prefix}joint_l" type="revolute">
+			<parent link="${prefix}link_s"/>
+			<child link="${prefix}link_l"/>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<axis xyz="0 1 0" />
+			<limit lower="-1.91" upper="1.91" effort="100" velocity="2.26" />
+		</joint>
+		<joint name="${prefix}joint_e" type="revolute">
+			<parent link="${prefix}link_l"/>
+			<child link="${prefix}link_e"/>
+			<origin xyz="0 0 0.49" rpy="0 0 0"/>
+			<axis xyz="0 0 1" />
+			<limit lower="-2.96" upper="2.96" effort="100" velocity="2.96" />
+		</joint>
+		<joint name="${prefix}joint_u" type="revolute">
+			<parent link="${prefix}link_e"/>
+			<child link="${prefix}link_u"/>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<axis xyz="0 -1 0" />
+			<limit lower="-2.26" upper="2.26" effort="100" velocity="2.96" />
+		</joint>
+		<joint name="${prefix}joint_r" type="revolute">
+			<parent link="${prefix}link_u"/>
+			<child link="${prefix}link_r"/>
+			<origin xyz="0 0 0.420" rpy="0 0 0"/>
+			<axis xyz="0 0 -1" />
+			<limit lower="-3.1416" upper="3.1416" effort="100" velocity="3.48" />
+		</joint>
+		<joint name="${prefix}joint_b" type="revolute">
+			<parent link="${prefix}link_r"/>
+			<child link="${prefix}link_b"/>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<axis xyz="0 -1 0" />
+			<limit lower="-1.91" upper="1.91" effort="100" velocity="3.48" />
+		</joint>
+		<joint name="${prefix}joint_t" type="revolute">
+			<parent link="${prefix}link_b"/>
+			<child link="${prefix}link_t"/>
+			<origin xyz="0 0 0.18" rpy="0 0 0"/>
+			<axis xyz="0 0 -1" />
+			<limit lower="-3.1416" upper="3.1416" effort="100" velocity="6.97" />
+		</joint>
+    <joint name="${prefix}link_t-tool0" type="fixed" >
+      <origin xyz="0 0 0.0" rpy="0 0 -3.1416"/>
+      <parent link="${prefix}link_t" />
+      <child link="${prefix}tool0" />
+    </joint>
+		<!-- end of joint list -->
+	</xacro:macro>
+</robot>

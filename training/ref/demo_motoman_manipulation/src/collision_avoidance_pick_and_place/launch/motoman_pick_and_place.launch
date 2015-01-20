@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- pick and place node -->
+  <node pkg="collision_avoidance_pick_and_place" type="pick_and_place_node" name="pick_and_place_node" output="screen" required="true">
+    <rosparam command="load" file="$(find collision_avoidance_pick_and_place)/config/motoman/pick_and_place_parameters.yaml"/>
+  </node>
+
+  <!--include file="$(find motoman_moveit)/launch/move_group.launch">
+    <arg name="publish_monitored_planning_scene" value="true" />
+  </include>
+
+  <rosparam command="load" file="$(find motoman_moveit)/config/joint_names.yaml"/>
+
+  <include file="$(find motoman_moveit)/launch/default_warehouse_db.launch" /-->
+
+</launch>

@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MpRosAllControllers", "MpRosAllControllers.vcxproj", "{64C31524-A3C4-49D4-AD04-955D44202226}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		DX100|Win32 = DX100|Win32
+		DX200|Win32 = DX200|Win32
+		FS100|Win32 = FS100|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{64C31524-A3C4-49D4-AD04-955D44202226}.DX100|Win32.ActiveCfg = DX100|Win32
+		{64C31524-A3C4-49D4-AD04-955D44202226}.DX100|Win32.Build.0 = DX100|Win32
+		{64C31524-A3C4-49D4-AD04-955D44202226}.DX200|Win32.ActiveCfg = DX200|Win32
+		{64C31524-A3C4-49D4-AD04-955D44202226}.DX200|Win32.Build.0 = DX200|Win32
+		{64C31524-A3C4-49D4-AD04-955D44202226}.FS100|Win32.ActiveCfg = FS100|Win32
+		{64C31524-A3C4-49D4-AD04-955D44202226}.FS100|Win32.Build.0 = FS100|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

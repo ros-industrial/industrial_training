@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<package>
+  <name>robot_io</name>
+  <version>0.0.0</version>
+  <description>
+     The robot_io package
+  </description>
+
+  <maintainer email="jnicho@swri.org">jnicho</maintainer> -->
+  <author email="jnicho@swri.org">jnicho</author>
+
+  <license>BSD</license>
+
+  <url type="website">http://ros.org/wiki/robot_io</url>
+
+  <!-- The *_depend tags are used to specify dependencies -->
+  <!-- Dependencies can be catkin packages or system dependencies -->
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>roscpp</build_depend>
+
+  <!--Grasping messages-->
+  <build_depend>roscpp</build_depend>
+  <build_depend>object_manipulation_msgs</build_depend>
+  <build_depend>message_generation</build_depend>
+  <build_depend>actionlib</build_depend>
+	<build_depend>actionlib_msgs</build_depend>
+	<build_depend>ur_msgs</build_depend>
+
+  <run_depend>roscpp</run_depend>
+  <run_depend>object_manipulation_msgs</run_depend>
+  <run_depend>actionlib</run_depend>
+	<run_depend>actionlib_msgs</run_depend>
+	<run_depend>ur_msgs</run_depend>
+  <run_depend>message_runtime</run_depend>
+
+  <export>
+  </export>
+
+</package>

@@ -1,0 +1,23 @@
+<package>
+  <name>motoman</name>
+  <version>0.3.3</version>
+  <description>The motoman stack constains libraries, configuration files, and ROS nodes for controlling a Motoman robot from ROS-Industrial</description>
+  <maintainer email="sedwards@swri.org">Shaun Edwards</maintainer>
+  <license>BSD</license>
+  <url type="website">http://ros.org/wiki/motoman</url>
+  <author email="sedwards@swri.org">Shaun Edwards</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  
+  <run_depend>motoman_config</run_depend>
+  <run_depend>motoman_driver</run_depend>
+  <run_depend>motoman_mh5_support</run_depend>
+  <run_depend>motoman_sia10d_support</run_depend>
+  <run_depend>motoman_sia20d_moveit_config</run_depend>
+  <run_depend>motoman_sia20d_support</run_depend>
+  <run_depend>motoman_sia5d_support</run_depend>
+
+  <export>
+    <metapackage/>
+  </export>
+</package>

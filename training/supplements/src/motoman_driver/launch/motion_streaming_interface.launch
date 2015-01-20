@@ -1,0 +1,23 @@
+<!-- 
+  Wrapper launch file for the Fanuc specific motion streaming interface node.
+-->
+<launch>
+	<!-- IP of robot (or PC running simulation) -->
+	<arg name="robot_ip" />
+
+	<!-- Load the byte-swapping version of robot_state if required -->
+	<arg name="use_bswap" />
+	
+	<!-- Version of the driver, concerning multi-groups support -->
+	<arg name="version0" />
+
+	<!-- put them on the parameter server -->
+	<param name="robot_ip_address" type="str" value="$(arg robot_ip)" />
+	<param name="version0" type="bool" value="$(arg version0)" />
+
+	<!-- load the correct version of the motion streaming node -->
+	<node if="$(arg use_bswap)" name="motion_streaming_interface"
+		pkg="motoman_driver" type="motion_streaming_interface_bswap" />
+	<node unless="$(arg use_bswap)" name="motion_streaming_interface"
+		pkg="motoman_driver" type="motion_streaming_interface" />
+</launch>

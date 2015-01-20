@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(libartoolkit)
 
+find_package(cmake_modules REQUIRED) # this line added by Ahmed Abdelmawgoud
 find_package(catkin REQUIRED)
 find_package(GLUT REQUIRED)
 find_package(Eigen REQUIRED)

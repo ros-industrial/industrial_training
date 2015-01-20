@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{56b3f26b-d550-436a-8fa8-63d91f7a80a9}</UniqueIdentifier>
+      <Extensions>txt;c;cpp</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{e3377235-0a69-4f6e-b24b-96aefee3a3ff}</UniqueIdentifier>
+      <Extensions>h</Extensions>
+    </Filter>
+    <Filter Include="MotoPlus Libraries">
+      <UniqueIdentifier>{6a88226f-f107-405b-8bee-0120441f5225}</UniqueIdentifier>
+      <Extensions>fsLib;mpLib;dxLib;dnLib;lib</Extensions>
+    </Filter>
+    <Filter Include="Compile Settings">
+      <UniqueIdentifier>{b312e34a-f77e-465f-9a2b-ce6ddcdeee7d}</UniqueIdentifier>
+      <Extensions>mps</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DX100CompilerArguments.mps">
+      <Filter>Compile Settings</Filter>
+    </None>
+    <None Include="DX100LinkerArguments.mps">
+      <Filter>Compile Settings</Filter>
+    </None>
+    <None Include="DX200CompilerArguments.mps">
+      <Filter>Compile Settings</Filter>
+    </None>
+    <None Include="DX200LinkerArguments.mps">
+      <Filter>Compile Settings</Filter>
+    </None>
+    <None Include="FS100CompilerArguments.mps">
+      <Filter>Compile Settings</Filter>
+    </None>
+    <None Include="FS100LinkerArguments.mps">
+      <Filter>Compile Settings</Filter>
+    </None>
+    <None Include="ParameterExtraction_FS100.fsLib">
+      <Filter>MotoPlus Libraries</Filter>
+    </None>
+    <None Include="ParameterExtraction_DX200.dnLib">
+      <Filter>MotoPlus Libraries</Filter>
+    </None>
+    <None Include="ParameterExtraction_DX100.mpLib">
+      <Filter>MotoPlus Libraries</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Controller.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CtrlGroup.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MotionServer.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mpMain.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleMessage.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StateServer.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Controller.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CtrlGroup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MotionServer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ParameterExtraction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleMessage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StateServer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
