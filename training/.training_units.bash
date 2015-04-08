@@ -4,7 +4,8 @@
 # run this code every time the file is sourced (e.g. for each new shell)
 
 # get training directory from this file's path
-TRAINING_DIR=$(dirname "$BASH_SOURCE")
+SCRIPT=$(readlink -f "$BASH_SOURCE")
+TRAINING_DIR=$(dirname "$SCRIPT")
 
 # try to set ROS_PACKAGE_PATH for current training unit
 TRAINING_FILE=$TRAINING_DIR/.training_unit
@@ -16,7 +17,7 @@ fi
 function clear_training_unit {
   rm -f $TRAINING_FILE
   source ~/.bashrc
-}
+} #end clear_training_unit()
 
 function set_training_unit {
 
@@ -30,6 +31,8 @@ fi
 local UNIT=$1    # arg 1 is unitID (e.g. 1.2)
 local SUBDIR=$2  # arg 2 is subdir (e.g. work or ans)
 local UNIT_DIR=$TRAINING_DIR/$SUBDIR/$UNIT
+
+echo "Unit directory : $UNIT_DIR"
 
 # check that directory exists
 if [ ! -d $UNIT_DIR ]; then
@@ -47,10 +50,12 @@ if [ -d $UNIT_DIR/src ]; then
  if [ ! -f $UNIT_DIR/devel/setup.bash ]; then
  
    if [ ! -f $TRAINING_DIR/supplements/devel/setup.bash ]; then
+     
+     echo -e "\e[00;32m  Setting up Supplements catkin workspace ...\e[00m"
      catkin_make -C $TRAINING_DIR/supplements &> /dev/null
    fi
  
-   echo -e "\e[00;32m  Setting up catkin workspace ...\e[00m"
+   echo -e "\e[00;32m  Setting up $UNIT catkin workspace ...\e[00m"
    
    rm -r $UNIT_DIR/build &> /dev/null
    
@@ -74,7 +79,7 @@ source $TRAINING_FILE
 
 cd $UNIT_DIR
 
-}   #end set_training_unit()
+} #end set_training_unit()
 
 function training_unit {
 if [ $# -ne 1 ]; then
