@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(libartoolkit)
 
-find_package(catkin REQUIRED)
+find_package(catkin REQUIRED cmake_modules)
 find_package(GLUT REQUIRED)
 find_package(Eigen REQUIRED)
 include_directories(${EIGEN_INCLUDE_DIRS})
@@ -10,6 +10,7 @@ add_definitions(${EIGEN_DEFINITIONS})
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES AR ARgsub ARgsub_lite ARgsubUtil ARMulti ARvideo
+  DEPENDS Eigen
 )
 
 #add_definitions(-Wall -msse2 -msse3)
