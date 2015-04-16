@@ -1,9 +1,11 @@
 #Add action definition here in the following format:
 #goal definition
-
-#---
+int32 digits
+---
 #result definition
-
-#---
+string pi
+---
 #feedback definition
+int32 iter
+string pi
 
