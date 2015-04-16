@@ -122,7 +122,8 @@ Visualization Manager:
       Marker Topic: /visualize_trajectory_curve
       Name: MarkerArray
       Namespaces:
-        {}
+        axes: false
+        line: true
       Queue Size: 1
       Value: true
     - Class: rviz/Axes
@@ -163,22 +164,22 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 1.59934
+      Distance: 1.62311
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.06
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.199361
-        Y: 0.434089
-        Z: 0.110181
+        X: -0.218529
+        Y: 0.205039
+        Z: 0.0399794
       Name: Current View
       Near Clip Distance: 0.01
-      Pitch: 0.294795
+      Pitch: 0.244795
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 5.64358
+      Yaw: 6.13358
     Saved: ~
 Window Geometry:
   Displays:
@@ -196,5 +197,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1154
-  X: 327
-  Y: 96
+  X: 317
+  Y: 86

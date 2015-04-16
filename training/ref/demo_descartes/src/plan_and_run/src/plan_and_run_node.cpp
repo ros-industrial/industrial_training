@@ -19,11 +19,11 @@ int main(int argc,char** argv)
   // loading parameters
   application.loadParameters();
 
+  // initializing ros components
+  application.initRos();
+
   // initializing descartes
   application.initDescartes();
-
-  // initializing moveit
-  application.initMoveitClient();
 
   // moving to home position
   application.moveHome();

@@ -33,7 +33,14 @@ include_directories(
 
 ## Declare a cpp library
  add_library(${PROJECT_NAME}
-   src/demo_application.cpp
+  src/demo_application.cpp
+  src/tasks/init_ros.cpp
+  src/tasks/init_descartes.cpp
+  src/tasks/move_home.cpp
+  src/tasks/generate_trajectory.cpp
+  src/tasks/plan_path.cpp
+  src/tasks/run_path.cpp
+  src/tasks/load_parameters.cpp  
 )
 target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 
