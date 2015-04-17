@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package>
-  <name>lesson_basic_launch</name>
+  <name>lesson_launch</name>
   <version>0.0.0</version>
-  <description>The lesson_basic_launch package</description>
+  <description>The lesson_launch package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag --> 
   <!-- Example:  -->
@@ -42,16 +42,13 @@
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>roscpp</build_depend>
   <build_depend>control_msgs</build_depend>
-  <build_depend>trajectory_msgs</build_depend>
-  <build_depend>actionlib_msgs</build_depend>
   <build_depend>actionlib</build_depend>
   <build_depend>industrial_utils</build_depend>
   <run_depend>roscpp</run_depend>
   <run_depend>control_msgs</run_depend>
-  <run_depend>trajectory_msgs</run_depend>
-  <run_depend>actionlib_msgs</run_depend>
   <run_depend>actionlib</run_depend>
   <run_depend>industrial_utils</run_depend>
+  <run_depend>abb_irb2400_moveit_config</run_depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>

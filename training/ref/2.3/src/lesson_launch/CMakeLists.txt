@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(lesson_basic_launch)
+project(lesson_launch)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -7,8 +7,6 @@ project(lesson_basic_launch)
 find_package(catkin REQUIRED COMPONENTS 
   roscpp 
   control_msgs
-  trajectory_msgs
-  actionlib_msgs
   actionlib
   industrial_utils
 )
@@ -55,13 +53,11 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-   INCLUDE_DIRS include
+#   INCLUDE_DIRS include
 #  LIBRARIES lesson_industrial_action
    CATKIN_DEPENDS 
      roscpp
      control_msgs
-     trajectory_msgs
-     actionlib_msgs
      actionlib
      industrial_utils
 #  DEPENDS system_lib
@@ -73,9 +69,9 @@ catkin_package(
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
-include_directories(include
-  ${catkin_INCLUDE_DIRS}
-)
+#include_directories(include
+#  ${catkin_INCLUDE_DIRS}
+#)
 
 ## Declare a cpp library
 # add_library(lesson_basic_launch
