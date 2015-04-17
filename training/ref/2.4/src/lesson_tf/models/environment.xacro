@@ -1,24 +1,20 @@
 <?xml version="1.0"?>
 
-<robot xmlns:xacro="http://ros.org/wiki/xacro" name="ses_environment">
-    
-  
-  <include filename="$(find xacro_properties)/properties.xacro" /> <!--contains properties such as "pi" and "deg"-->
-  
-  
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="environment">
+
   <!-- link "world" and connected joints -->
   <link name="world" />
   
   <joint name="world-robot_base" type="fixed" >
     <parent link="world" />
     <child link="base_link" />
-    <origin xyz="0 0 0" rpy="0 ${0*deg} 0" />
+    <origin xyz="0 0 0" rpy="0 0 0" />
   </joint>
   
   <joint name="world-grinder" type="fixed" >
     <parent link="world" />
     <child link="grinder" />
-    <origin xyz="0.523 -0.609 0.6226" rpy="${-90*deg} 0 ${45*deg}" />
+    <origin xyz="0.523 -0.609 0.6226" rpy="${-90*3.14159/180} 0 ${45*3.14159/180}" />
   </joint>
   
 
@@ -26,12 +22,12 @@
   <link name="grinder" >
     <visual>
       <geometry>
-        <mesh filename="package://lesson_tf_terminal/models/grinder_visual.dae" />
+        <mesh filename="package://lesson_tf/models/grinder_visual.dae" />
       </geometry>
     </visual>
     <collision>
       <geometry>
-        <mesh filename="package://lesson_tf_terminal/models/grinder_collision.dae" />
+        <mesh filename="package://lesson_tf/models/grinder_collision.dae" />
       </geometry>
     </collision>
   </link>
