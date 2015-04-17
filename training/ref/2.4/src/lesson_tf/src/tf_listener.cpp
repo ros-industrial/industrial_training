@@ -10,8 +10,7 @@ int main(int argc, char **argv) {
     ros::NodeHandle nh;
     ROS_INFO_STREAM("Started node tf_listener.");
   
-    std::string target_frame;
-    std::string source_frame;
+    std::string target_frame, source_frame;
     tf::TransformListener tf_listener;
     tf::StampedTransform transform;
     ros::Rate rate(1.); //used to throttle execution
@@ -45,4 +44,3 @@ int main(int argc, char **argv) {
     }
     return 0;
 }
-
