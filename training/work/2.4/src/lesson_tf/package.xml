@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package>
-  <name>lesson_tf_terminal</name>
+  <name>lesson_tf</name>
   <version>0.0.0</version>
-  <description>The lesson_tf_terminal package</description>
+  <description>The lesson_tf package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag --> 
   <!-- Example:  -->
