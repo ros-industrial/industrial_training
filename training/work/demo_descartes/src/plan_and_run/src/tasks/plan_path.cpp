@@ -14,7 +14,7 @@ namespace plan_and_run
 
 void DemoApplication::planPath(DescartesTrajectory& input_traj,DescartesTrajectory& output_path)
 {
-  //ROS_ERROR_STREAM("Task '"<<__FUNCTION__ <<"' is incomplete. Exiting"); exit(-1);
+  ROS_ERROR_STREAM("Task '"<<__FUNCTION__ <<"' is incomplete. Exiting"); exit(-1);
 
   // modifying start and end points
   /*  Inspect Code:
@@ -61,8 +61,7 @@ void DemoApplication::planPath(DescartesTrajectory& input_traj,DescartesTrajecto
    * Hint:
    * - The "planner_.planPath(...)" can take the "input_traj" Trajectory as an input argument.
    */
-  //bool succeeded = false /* [ COMPLETE HERE ]*/;
-  bool succeeded = planner_.planPath(input_traj);
+  bool succeeded = false /* [ COMPLETE HERE ]: planner_.??( ?? )*/;
 
   if (succeeded)
   {
@@ -83,8 +82,7 @@ void DemoApplication::planPath(DescartesTrajectory& input_traj,DescartesTrajecto
    * Hint:
    * - The "planner_.getPath(...)" can take the "output_path" variable as an output argument.
    */
-  //succeeded = false /* [ COMPLETE HERE ]*/;
-  succeeded = planner_.getPath(output_path);
+  succeeded = false /* [ COMPLETE HERE ]: planner_.??( ?? ) */;
 
   if(!succeeded || output_path.empty())
   {

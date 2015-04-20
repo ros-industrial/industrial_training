@@ -11,7 +11,7 @@ namespace plan_and_run
 
 void DemoApplication::generateTrajectory(DescartesTrajectory& traj)
 {
-  //ROS_ERROR_STREAM("Task '"<<__FUNCTION__ <<"' is incomplete. Exiting"); exit(-1);
+  ROS_ERROR_STREAM("Task '"<<__FUNCTION__ <<"' is incomplete. Exiting"); exit(-1);
 
   using namespace descartes_core;
   using namespace descartes_trajectory;
@@ -57,11 +57,8 @@ void DemoApplication::generateTrajectory(DescartesTrajectory& traj)
      * - The Free Axis can be selected from the AxialSymmetricPt::FreeAxis::Z_AXIS enumeration constants.
      *
      */
-    //descartes_core::TrajectoryPtPtr pt = descartes_core::TrajectoryPtPtr(/*[ COMPLETE HERE*/);
-
-    descartes_core::TrajectoryPtPtr pt = descartes_core::TrajectoryPtPtr(
-        new descartes_trajectory::AxialSymmetricPt(pose,ORIENTATION_INCREMENT,
-                                                   descartes_trajectory::AxialSymmetricPt::FreeAxis::Z_AXIS) );
+    descartes_core::TrajectoryPtPtr pt = descartes_core::TrajectoryPtPtr(/*[ COMPLETE HERE ]:
+     new descartes_trajectory::AxialSymmetricPt( ?? , ?? , descartes_trajectory::AxialSymmetricPt::FreeAxis::Z_AXIS) */);
 
     // saving points into trajectory
     traj.push_back(pt);
