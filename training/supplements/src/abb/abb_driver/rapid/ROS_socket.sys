@@ -1,0 +1,104 @@
+MODULE ROS_socket(SYSMODULE)
+! Software License Agreement (BSD License)
+!
+! Copyright (c) 2012, Jeremy Zoss, Southwest Research Institute
+! Copyright (c) 2012, Edward Venator, Case Western Reserve University
+! All rights reserved.
+!
+! Redistribution and use in source and binary forms, with or without modification,
+! are permitted provided that the following conditions are met:
+!
+!   Redistributions of source code must retain the above copyright notice, this
+!       list of conditions and the following disclaimer.
+!   Redistributions in binary form must reproduce the above copyright notice, this
+!       list of conditions and the following disclaimer in the documentation
+!       and/or other materials provided with the distribution.
+!   Neither the name of the Case Western Reserve University nor the names of its contributors
+!       may be used to endorse or promote products derived from this software without
+!       specific prior written permission.
+!
+! THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
+! EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+! OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
+! SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+! INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+! TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+! BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+! CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+! WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+PROC ROS_init_socket(VAR socketdev server_socket, num port)
+    IF (SocketGetStatus(server_socket) = SOCKET_CLOSED) SocketCreate server_socket;
+    IF (SocketGetStatus(server_socket) = SOCKET_CREATED) SocketBind server_socket, GetSysInfo(\LanIp), port;
+    IF (SocketGetStatus(server_socket) = SOCKET_BOUND) SocketListen server_socket;
+
+ERROR
+    RAISE;  ! raise errors to calling code
+ENDPROC
+
+PROC ROS_wait_for_client(VAR socketdev server_socket, VAR socketdev client_socket, \num wait_time)
+    VAR string client_ip;
+    VAR num time_val := WAIT_MAX;  ! default to wait-forever
+
+    IF Present(wait_time) time_val := wait_time;
+
+    IF (SocketGetStatus(client_socket) <> SOCKET_CLOSED) SocketClose client_socket;
+    WaitUntil (SocketGetStatus(client_socket) = SOCKET_CLOSED);
+
+    SocketAccept server_socket, client_socket, \ClientAddress:=client_ip, \Time:=time_val;
+    TPWrite "Client at "+client_ip+" connected.";
+
+ERROR
+    RAISE;  ! raise errors to calling code
+ENDPROC
+
+PROC ROS_receive_msg(VAR socketdev client_socket, VAR ROS_msg message, \num wait_time)
+    VAR rawbytes buffer;
+    VAR num time_val := WAIT_MAX;  ! default to wait-forever
+    VAR num bytes_rcvd;
+    VAR num msg_length;
+
+    ClearRawBytes buffer;
+    IF Present(wait_time) time_val := wait_time;
+
+    ! TBD: need to determine whether this handles split/merged messages correctly
+    
+    ! Read prefix INT (total message length)
+    SocketReceive client_socket, \RawData:=buffer, \ReadNoOfBytes:=4, \Time:=time_val;
+    UnpackRawBytes buffer, 1, msg_length, \IntX:=UDINT;
+    
+    ! Read remaining message bytes
+    SocketReceive client_socket, \RawData:=buffer, \ReadNoOfBytes:=msg_length, \NoRecBytes:=bytes_rcvd, \Time:=time_val;
+    IF (bytes_rcvd <> msg_length) THEN
+        ErrWrite \W, "ROS Socket Recv Failed", "Did not receive expected # of bytes.",
+                 \RL2:="Expected: " + ValToStr(msg_length),
+                 \RL3:="Received: " + ValToStr(bytes_rcvd);
+        RETURN;
+    ENDIF
+    
+    ! Unpack message header/data
+    UnpackRawBytes buffer, 1, message.header.msg_type, \IntX:=DINT;
+    UnpackRawBytes buffer, 5, message.header.comm_type, \IntX:=DINT;
+    UnpackRawBytes buffer, 9, message.header.reply_code, \IntX:=DINT;
+    CopyRawBytes   buffer, 13, message.data, 1;
+    
+ERROR
+    RAISE;  ! raise errors to calling code
+ENDPROC
+
+PROC ROS_send_msg(VAR socketdev client_socket, VAR ROS_msg message)
+    VAR rawbytes buffer;
+
+    PackRawBytes 12 + RawBytesLen(message.data), buffer,  1, \IntX := UDINT; ! Packet length (excluding this prefix)
+    PackRawBytes message.header.msg_type,        buffer,  5, \IntX := DINT;  ! Message type
+    PackRawBytes message.header.comm_type,       buffer,  9, \IntX := DINT;  ! Comm type
+    PackRawBytes message.header.reply_code,      buffer, 13, \IntX := DINT;  ! Reply code
+    CopyRawBytes message.data, 1,                buffer, 17;                 ! Message data
+
+    SocketSend client_socket \RawData:=buffer;
+    
+ERROR
+    RAISE;  ! raise errors to calling code
+ENDPROC
+
+ENDMODULE

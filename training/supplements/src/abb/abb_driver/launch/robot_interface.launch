@@ -1,0 +1,38 @@
+<launch>
+
+  <!-- This launch file provides a socket-based connection to ABB robots
+       using the standard ROS Industrial simple_message protocol.
+         ** a new parameter is added to control J23-linkage correction **
+
+       Several nodes are started, to supply both low-level robot communication
+       and higher-level actionlib support:
+         - robot_state : publishes current joint positions and robot state data
+         - motion_download_interface : command robot motion by sending motion points to robot
+         - joint_trajectory_action : actionlib interface to control robot motion
+
+    Usage:
+      robot_interface.launch robot_ip:=<value> [J23_coupled:=false]
+  -->
+
+  <!-- robot_ip: IP-address of the robot's socket-messaging server -->
+  <arg name="robot_ip" />
+  
+  <!-- J23_coupled: set TRUE to apply correction for J2/J3 parallel linkage -->
+  <arg name="J23_coupled" default="false" />
+  
+  <!-- copy the specified arguments to the Parameter Server, for use by nodes below -->
+  <param name="robot_ip_address" type="str" value="$(arg robot_ip)"/>
+  <param name="J23_coupled" type="bool" value="$(arg J23_coupled)"/>
+  
+  <!-- robot_state: publishes joint positions and robot-state data
+                   (from socket connection to robot) -->
+  <node pkg="abb_driver" type="robot_state" name="robot_state"/>
+  
+  <!-- motion_download_interface: sends robot motion commands by DOWNLOADING path to robot
+                                  (using socket connection to robot) -->
+  <node pkg="abb_driver" type="motion_download_interface" name="motion_download_interface"/>
+  
+  <!-- joint_trajectory_action: provides actionlib interface for high-level robot control -->
+  <node pkg="industrial_robot_client" type="joint_trajectory_action" name="joint_trajectory_action"/>
+
+</launch>

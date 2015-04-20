@@ -1,0 +1,32 @@
+# Temp files
+*~
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+
+# ROS specific directories
+build/
+bin/
+lib/
+
+# Other ROS stuff
+CATKIN_IGNORE*
+
+# Eclipse stuff
+.pydevproject
+.project
+.cproject
+
+# ROS MoveIt
+default_warehouse_mongo_db/

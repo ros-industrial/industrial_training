@@ -1,0 +1,41 @@
+<package>
+  <name>abb_irb2400_support</name>
+  <version>1.1.4</version>
+  <description>
+    <p>
+      ROS-Industrial support for the ABB IRB 2400 (and variants).
+    </p>
+    <p>
+      This package contains configuration data, 3D models and launch files
+      for ABB IRB 2400 manipulators. This currently includes the base model.
+    </p>
+    <p>
+      Joint limits and max joint velocities are based on the information in
+      the ABB data sheets.  All URDFs / XACROs are based on the
+      default motion and joint velocity limits, unless noted otherwise (ie:
+      no support for high speed joints, extended / limited motion ranges or
+      other options).
+    </p>
+    <p>
+      Before using any of the configuration files and / or meshes included
+      in this package, be sure to check they are correct for the particular
+      robot model and configuration you intend to use them with.
+    </p>
+  </description>
+  <author email="ds____on@swri.org">Dan Solomon (Southwest Research Institute)</author>
+  <maintainer email="sedwards@swri.org">Shaun Edwards (Southwest Research Institute)</maintainer>
+  <license>Apache2</license>
+
+  <url type="website">http://ros.org/wiki/abb_irb2400_support</url>
+  <url type="bugtracker">https://github.com/ros-industrial/abb/issues</url>
+  <url type="repository">https://github.com/ros-industrial/abb</url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>roslaunch</build_depend>
+
+  <run_depend>abb_driver</run_depend>
+  <run_depend>joint_state_publisher</run_depend>
+  <run_depend>robot_state_publisher</run_depend>
+  <run_depend>rviz</run_depend>
+</package>

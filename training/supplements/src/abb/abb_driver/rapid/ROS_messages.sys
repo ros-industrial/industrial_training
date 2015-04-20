@@ -1,0 +1,185 @@
+MODULE ROS_messages(SYSMODULE)
+! Software License Agreement (BSD License)
+!
+! Copyright (c) 2012, Jeremy Zoss, Southwest Research Institute
+! All rights reserved.
+!
+! Redistribution and use in source and binary forms, with or without modification,
+! are permitted provided that the following conditions are met:
+!
+!   Redistributions of source code must retain the above copyright notice, this
+!       list of conditions and the following disclaimer.
+!   Redistributions in binary form must reproduce the above copyright notice, this
+!       list of conditions and the following disclaimer in the documentation
+!       and/or other materials provided with the distribution.
+!   Neither the name of the Case Western Reserve University nor the names of its contributors
+!       may be used to endorse or promote products derived from this software without
+!       specific prior written permission.
+!
+! THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
+! EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+! OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
+! SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+! INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+! TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+! BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+! CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+! WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+RECORD ROS_msg_header
+    num msg_type;
+    num comm_type;
+    num reply_code;
+ENDRECORD
+
+RECORD ROS_msg
+    ROS_msg_header header;
+    rawbytes data;
+ENDRECORD
+
+RECORD ROS_msg_joint_traj_pt
+    ROS_msg_header header;
+    num sequence_id;
+    robjoint joints;  ! in DEGREES
+    num velocity;
+    num duration;
+ENDRECORD
+
+RECORD ROS_msg_joint_data
+    ROS_msg_header header;
+    num sequence_id;
+    robjoint joints;  ! in DEGREES
+ENDRECORD
+
+! Message Type Codes (from simple_message/simple_message.h)
+CONST num ROS_MSG_TYPE_INVALID       := 0;
+CONST num ROS_MSG_TYPE_JOINT         := 10;  ! joint-position feedback
+CONST num ROS_MSG_TYPE_JOINT_TRAJ_PT := 11;  ! joint-trajectory-point (for path downloading)
+CONST num ROS_COM_TYPE_TOPIC         := 1;
+CONST num ROS_COM_TYPE_SRV_REQ       := 2;
+CONST num ROS_COM_TYPE_SRV_REPLY     := 3;
+CONST num ROS_REPLY_TYPE_INVALID     := 0;
+CONST num ROS_REPLY_TYPE_SUCCESS     := 1;
+CONST num ROS_REPLY_TYPE_FAILURE     := 2;
+
+! "Special" Sequence Codes (from simple_message/joint_traj_pt.h)
+CONST num ROS_TRAJECTORY_START_DOWNLOAD := -1;
+CONST num ROS_TRAJECTORY_END := -3;
+CONST num ROS_TRAJECTORY_STOP := -4;
+
+! Other message constants
+CONST num ROS_MSG_MAX_JOINTS := 10;  ! from joint_data.h
+
+PROC ROS_receive_msg_joint_traj_pt(VAR socketdev client_socket, VAR ROS_msg_joint_traj_pt message, \num wait_time)
+    VAR ROS_msg raw_message;
+    
+    ! Read raw message data
+    IF Present(wait_time) THEN
+        ROS_receive_msg client_socket, raw_message, \wait_time:=wait_time;
+    ELSE
+        ROS_receive_msg client_socket, raw_message;
+    ENDIF
+    
+    ! Integrity Check: Message Type
+    IF (raw_message.header.msg_type <> ROS_MSG_TYPE_JOINT_TRAJ_PT) THEN
+        ErrWrite \W, "ROS Socket Type Mismatch", "Unexpected message type",
+                \RL2:="expected: " + ValToStr(ROS_MSG_TYPE_JOINT_TRAJ_PT),
+                \RL3:="received: " + ValToStr(raw_message.header.msg_type);
+        RAISE ERR_ARGVALERR;  ! TBD: define specific error code
+    ENDIF
+    
+    ! Integrity Check: Data Size
+    IF (RawBytesLen(raw_message.data) < 52) THEN
+        ErrWrite \W, "ROS Socket Missing Data", "Insufficient data for joint_trajectory_pt",
+                \RL2:="expected: 52",
+                \RL3:="received: " + ValToStr(RawBytesLen(raw_message.data));
+        RAISE ERR_OUTOFBND;  ! TBD: define specific error code
+    ENDIF
+    
+    ! Copy Header data
+    message.header := raw_message.header;
+    
+    ! Unpack data fields
+    UnpackRawBytes raw_message.data, 1, message.sequence_id, \IntX:=DINT;
+    UnpackRawBytes raw_message.data, 5, message.joints.rax_1, \Float4;
+    UnpackRawBytes raw_message.data, 9, message.joints.rax_2, \Float4;
+    UnpackRawBytes raw_message.data, 13, message.joints.rax_3, \Float4;
+    UnpackRawBytes raw_message.data, 17, message.joints.rax_4, \Float4;
+    UnpackRawBytes raw_message.data, 21, message.joints.rax_5, \Float4;
+    UnpackRawBytes raw_message.data, 25, message.joints.rax_6, \Float4;
+    ! Skip bytes 29-44.  UNUSED.  Reserved for Joints 7-10.  TBD: copy to extAx?
+    UnpackRawBytes raw_message.data, 29+(ROS_MSG_MAX_JOINTS-6)*4, message.velocity, \Float4;
+    UnpackRawBytes raw_message.data, 33+(ROS_MSG_MAX_JOINTS-6)*4, message.duration, \Float4;
+    
+    ! Convert data from ROS units to ABB units
+    message.joints := rad2deg_robjoint(message.joints);
+    ! TBD: convert velocity
+    
+ERROR
+    RAISE;  ! raise errors to calling code
+ENDPROC
+
+PROC ROS_send_msg_joint_data(VAR socketdev client_socket, ROS_msg_joint_data message)
+    VAR ROS_msg raw_message;
+    VAR robjoint ROS_joints;
+    VAR num i;
+    
+    ! Force message header to the correct values
+    raw_message.header.msg_type := ROS_MSG_TYPE_JOINT;
+    raw_message.header.comm_type := ROS_COM_TYPE_TOPIC;
+    raw_message.header.reply_code := ROS_REPLY_TYPE_INVALID;
+    
+    ! Convert data from ABB units to ROS units
+    ROS_joints := deg2rad_robjoint(message.joints);
+
+    ! Pack data into message
+    PackRawBytes message.sequence_id, raw_message.data,  1, \IntX:=DINT;
+    PackRawBytes ROS_joints.rax_1,    raw_message.data,  5, \Float4;
+    PackRawBytes ROS_joints.rax_2,    raw_message.data,  9, \Float4;
+    PackRawBytes ROS_joints.rax_3,    raw_message.data, 13, \Float4;
+    PackRawBytes ROS_joints.rax_4,    raw_message.data, 17, \Float4;
+    PackRawBytes ROS_joints.rax_5,    raw_message.data, 21, \Float4;
+    PackRawBytes ROS_joints.rax_6,    raw_message.data, 25, \Float4;
+    FOR i FROM 1 TO ROS_MSG_MAX_JOINTS-6 DO   ! Insert placeholders for joints 7-10 (message expects 10 joints)
+        PackRawBytes 0,               raw_message.data, 25+i*4, \Float4;
+    ENDFOR
+
+    ROS_send_msg client_socket, raw_message;
+
+ERROR
+    RAISE;  ! raise errors to calling code
+ENDPROC
+
+LOCAL FUNC num deg2rad(num deg)
+    RETURN deg * pi / 180;
+ENDFUNC
+
+LOCAL FUNC robjoint deg2rad_robjoint(robjoint deg)
+    VAR robjoint rad;
+    rad.rax_1 := deg2rad(deg.rax_1);
+    rad.rax_2 := deg2rad(deg.rax_2);
+    rad.rax_3 := deg2rad(deg.rax_3);
+    rad.rax_4 := deg2rad(deg.rax_4);
+    rad.rax_5 := deg2rad(deg.rax_5);
+    rad.rax_6 := deg2rad(deg.rax_6);
+
+    RETURN rad;
+ENDFUNC
+
+LOCAL FUNC num rad2deg(num rad)
+    RETURN rad * 180 / pi;
+ENDFUNC
+
+LOCAL FUNC robjoint rad2deg_robjoint(robjoint rad)
+    VAR robjoint deg;
+    deg.rax_1 := rad2deg(rad.rax_1);
+    deg.rax_2 := rad2deg(rad.rax_2);
+    deg.rax_3 := rad2deg(rad.rax_3);
+    deg.rax_4 := rad2deg(rad.rax_4);
+    deg.rax_5 := rad2deg(rad.rax_5);
+    deg.rax_6 := rad2deg(rad.rax_6);
+    
+    RETURN deg;
+ENDFUNC
+
+ENDMODULE
