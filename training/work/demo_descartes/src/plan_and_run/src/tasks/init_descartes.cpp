@@ -15,7 +15,7 @@ namespace plan_and_run
 
 void DemoApplication::initDescartes()
 {
-  //ROS_ERROR_STREAM("Task '"<<__FUNCTION__ <<"' is incomplete. Exiting"); exit(-1);
+  ROS_ERROR_STREAM("Task '"<<__FUNCTION__ <<"' is incomplete. Exiting"); exit(-1);
 
   // Instantiating a robot model
   robot_model_ptr_.reset(new ur5_demo_descartes::UR5RobotModel());
@@ -32,15 +32,10 @@ void DemoApplication::initDescartes()
    *    c - world_frame string
    *    d - tip_link string.
    */
-/*  if(robot_model_ptr_->initialize(ROBOT_DESCRIPTION_PARAM,
-                                  "[ COMPLETE HERE ]",
-                                  "[ COMPLETE HERE ]",
-                                  "[ COMPLETE HERE ]"))*/
-
   if(robot_model_ptr_->initialize(ROBOT_DESCRIPTION_PARAM,
-                                  config_.group_name,
-                                  config_.world_frame,
-                                  config_.tip_link))
+                                  "[ COMPLETE HERE ]: ??",
+                                  "[ COMPLETE HERE ]: ??",
+                                  "[ COMPLETE HERE ]: ??"))
   {
     ROS_INFO_STREAM("Descartes Robot Model initialized");
   }
@@ -56,8 +51,7 @@ void DemoApplication::initDescartes()
    * - Pass the robot_model_ptr_ created earlier into the initialize method and save the result
    *    into the "succeeded" variable.
    */
-  //bool succeeded = false  /* [ COMPLETE HERE ]*/;
-  bool succeeded = planner_.initialize(robot_model_ptr_);
+  bool succeeded = false  /* [ COMPLETE HERE ] */;
   if(succeeded)
   {
     ROS_INFO_STREAM("Descartes Dense Planner initialized");
