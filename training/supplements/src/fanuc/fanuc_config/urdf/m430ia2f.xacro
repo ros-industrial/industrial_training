@@ -1,6 +1,0 @@
-<?xml version="1.0" ?>
-
-<robot name="m430ia2f" xmlns:xacro="http://ros.org/wiki/xacro">
-	<include filename="$(find fanuc_config)/urdf/m430ia2f_macro.xacro"/>
-	<xacro:m430ia2f prefix=""/>
-</robot>

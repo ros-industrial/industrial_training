@@ -1,9 +1,0 @@
-<launch>
-    <include file="$(find m10ia_arm_navigation)/launch/m10ia_planning_environment.launch" />
-    <node pkg="arm_kinematics_constraint_aware" type="arm_kinematics_constraint_aware" name="m10ia_m10ia_manipulator_kinematics">
-        <param name="group" type="string" value="m10ia_manipulator" />
-        <param name="m10ia_manipulator/root_name" type="string" value="base_link" />
-        <param name="m10ia_manipulator/tip_name" type="string" value="tool0" />
-        <param name="kinematics_solver" type="string" value="arm_kinematics_constraint_aware/KDLArmKinematicsPlugin" />
-    </node>
-</launch>
