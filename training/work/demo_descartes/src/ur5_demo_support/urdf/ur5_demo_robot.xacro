@@ -34,30 +34,12 @@
 
   <link name="tool">
     <visual>
-      <origin xyz="0 0 ${- tool_tip_length - 0.5*tool_body_length}" rpy="0 0 0"/>
+      <origin xyz="0.0 -0.02 -0.11" rpy="0 0 ${0.5*PI}"/>
       <geometry>
-        <box size="${tool_body_width} ${tool_body_width} ${tool_body_length}"/>
+        <mesh filename="package://ur5_demo_support/meshes/stylus_tool.stl"/>
       </geometry>
       <material name="yellow">
-        <color rgba="1 1 0 1"/>
-      </material>
-    </visual>
-    <visual>
-      <origin xyz="0 ${-0.5*tool_extent_length} ${-tool_tip_length - 0.5*tool_body_length}" rpy="${-0.5*PI} 0 0"/>
-      <geometry>
-        <cylinder radius="${0.5*tool_extent_width}" length="${tool_extent_length}"/>
-      </geometry>
-      <material name="yellow">
-        <color rgba="1 1 0 1"/>
-      </material>
-    </visual>
-    <visual>
-      <origin xyz="0 0 ${-0.5 * tool_tip_length}" rpy="0 0 0"/>
-      <geometry>
-        <cylinder radius="${tool_tip_width}" length="${tool_tip_length}"/>
-      </geometry>
-      <material name="yellow">
-        <color rgba="1 1 0 1"/>
+        <color rgba="0.8 0.8 0.6 1"/>
       </material>
     </visual>
 
@@ -88,6 +70,7 @@
         <color rgba="1 1 0 1"/>
       </material>
     </collision>
+
   </link>
 
 
