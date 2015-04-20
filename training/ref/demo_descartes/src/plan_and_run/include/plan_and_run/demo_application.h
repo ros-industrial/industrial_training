@@ -29,7 +29,7 @@ const double SERVICE_TIMEOUT = 5.0f; // seconds
 const double ORIENTATION_INCREMENT = 0.5f;
 const double EPSILON = 0.0001f;
 const double AXIS_LINE_LENGHT = 0.01;
-const double AXIS_LINE_WIDTH = 0.002;
+const double AXIS_LINE_WIDTH = 0.001;
 const std::string PLANNER_ID = "RRTConnectkConfigDefault";
 const std::string HOME_POSITION_NAME = "home";
 
@@ -60,6 +60,12 @@ struct DemoConfiguration
   int num_lemniscates;            /* Number of curves*/
   std::vector<double> center;     /* Location of the center of all the lemniscate curves */
   std::vector<double> seed_pose;  /* Joint values close to the desired start of the robot path */
+
+  /*
+   * Visualization Members
+   * Used to control the attributes of the visualization artifacts
+   */
+  double min_point_distance;      /* Minimum distance between consecutive trajectory points. */
 };
 
 
