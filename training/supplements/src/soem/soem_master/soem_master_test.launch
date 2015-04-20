@@ -1,3 +1,0 @@
-<launch>
-  <node name="SoemMaster" pkg="ocl" type="deployer-gnulinux" args="-s $(find soem_master)/test.ops --" output="screen"/>
-</launch>

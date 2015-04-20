@@ -1,7 +1,0 @@
-<?xml version="1.0" ?>
-
-<robot name="mh5_mesh" xmlns:xacro="http://ros.org/wiki/xacro">
-	<include filename="$(find motoman_config)/cfg/mh5_mesh_macro.xacro" />
-	<xacro:mh5_mesh prefix=""/>
-</robot>
-

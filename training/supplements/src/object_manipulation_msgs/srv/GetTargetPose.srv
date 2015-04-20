@@ -1,8 +1,0 @@
-# empty request target pose
-string world_frame_id
-string ar_tag_frame_id
-shape_msgs/SolidPrimitive shape
----
-# target pose response
-bool succeeded
-geometry_msgs/Pose target_pose
