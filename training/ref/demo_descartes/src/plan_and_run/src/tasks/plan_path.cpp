@@ -14,6 +14,8 @@ namespace plan_and_run
 
 void DemoApplication::planPath(DescartesTrajectory& input_traj,DescartesTrajectory& output_path)
 {
+  //ROS_ERROR_STREAM("Task '"<<__FUNCTION__ <<"' is incomplete. Exiting"); exit(-1);
+
   // modifying start and end points
   /*  Inspect Code:
    * Goal:
@@ -88,6 +90,8 @@ void DemoApplication::planPath(DescartesTrajectory& input_traj,DescartesTrajecto
   {
     ROS_ERROR_STREAM("Failed to retrieve robot path");
   }
+
+  ROS_INFO_STREAM("Task '"<<__FUNCTION__<<"' completed");
 }
 
 }

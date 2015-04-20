@@ -73,25 +73,35 @@ void DemoApplication::publishPosesMarkers(const EigenSTL::vector_Affine3d& poses
   x_axes.points.reserve(2*poses.size());
   line.points.reserve(poses.size());
   geometry_msgs::Point p_start,p_end;
+  double distance = 0;
+  Eigen::Affine3d prev = poses[0];
   for(unsigned int i = 0; i < poses.size(); i++)
   {
     const Eigen::Affine3d& pose = poses[i];
+    distance = (pose.translation() - prev.translation()).norm();
 
-    Eigen::Affine3d moved_along_x = pose * Eigen::Translation3d(AXIS_LINE_LENGHT,0,0);
     tf::pointEigenToMsg(pose.translation(),p_start);
-    tf::pointEigenToMsg(moved_along_x.translation(),p_end);
-    x_axes.points.push_back(p_start);
-    x_axes.points.push_back(p_end);
 
-    Eigen::Affine3d moved_along_y = pose * Eigen::Translation3d(0,AXIS_LINE_LENGHT,0);
-    tf::pointEigenToMsg(moved_along_y.translation(),p_end);
-    y_axes.points.push_back(p_start);
-    y_axes.points.push_back(p_end);
+    if(distance > config_.min_point_distance)
+    {
+      Eigen::Affine3d moved_along_x = pose * Eigen::Translation3d(AXIS_LINE_LENGHT,0,0);
+      tf::pointEigenToMsg(moved_along_x.translation(),p_end);
+      x_axes.points.push_back(p_start);
+      x_axes.points.push_back(p_end);
 
-    Eigen::Affine3d moved_along_z = pose * Eigen::Translation3d(0,0,AXIS_LINE_LENGHT);
-    tf::pointEigenToMsg(moved_along_z.translation(),p_end);
-    z_axes.points.push_back(p_start);
-    z_axes.points.push_back(p_end);
+      Eigen::Affine3d moved_along_y = pose * Eigen::Translation3d(0,AXIS_LINE_LENGHT,0);
+      tf::pointEigenToMsg(moved_along_y.translation(),p_end);
+      y_axes.points.push_back(p_start);
+      y_axes.points.push_back(p_end);
+
+      Eigen::Affine3d moved_along_z = pose * Eigen::Translation3d(0,0,AXIS_LINE_LENGHT);
+      tf::pointEigenToMsg(moved_along_z.translation(),p_end);
+      z_axes.points.push_back(p_start);
+      z_axes.points.push_back(p_end);
+
+      // saving previous
+      prev = pose;
+    }
 
     line.points.push_back(p_start);
   }

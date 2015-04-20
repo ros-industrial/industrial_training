@@ -56,6 +56,7 @@ void DemoApplication::loadParameters()
       ph.getParam("trajectory/num_lemniscates",config_.num_lemniscates) &&
       ph.getParam("trajectory/center",config_.center) &&
       ph.getParam("trajectory/seed_pose",config_.seed_pose) &&
+      ph.getParam("visualization/min_point_distance",config_.min_point_distance) &&
       nh.getParam("controller_joint_names",config_.joint_names) )
   {
     ROS_INFO_STREAM("Loaded application parameters");
