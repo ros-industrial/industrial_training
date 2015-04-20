@@ -62,7 +62,7 @@ void DemoApplication::runPath(const DescartesTrajectory& path)
    * - The "moveit_run_path_client_.call(srv)" sends a trajectory execution request.
    */
   moveit_msgs::ExecuteKnownTrajectory srv;
-  //srv.request.trajectory ; /* [ COMPLETE HERE ]: = ?? */;
+  srv.request.trajectory ; /* [ COMPLETE HERE ]: = ?? */;
 
   srv.request.wait_for_execution = true;
 
