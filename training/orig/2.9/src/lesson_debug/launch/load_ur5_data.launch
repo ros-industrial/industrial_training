@@ -1,3 +1,0 @@
-<launch>
-  <include file="$(find ur5_description)/launch/load.launch" />
-</launch>
