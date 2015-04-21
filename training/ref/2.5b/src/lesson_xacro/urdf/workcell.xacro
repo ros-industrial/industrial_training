@@ -5,8 +5,8 @@
 
   <!-- Include Robot definition here -->
   <!--   - don't forget joint to connect world_frame to robot's base_link -->
-  <xacro:include filename="$(find abb_common)/urdf/irb_2400_macro.xacro"/>
-  <xacro:irb_2400 prefix=""/>
+  <xacro:include filename="$(find abb_irb2400_support)/urdf/irb2400_macro.xacro"/>
+  <xacro:abb_irb2400 prefix=""/>
   <joint name="world_to_robot" type="fixed">
     <parent link="world"/>
     <child link="base_link"/>
