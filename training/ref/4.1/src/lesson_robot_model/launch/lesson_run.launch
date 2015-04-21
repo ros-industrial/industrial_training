@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<launch>
+
+
+  <!-- Load the URDF, SRDF and other .yaml configuration files on the param server -->
+  <include file="$(find ur5_demo_moveit_config)/launch/planning_context.launch">
+    <arg name="load_robot_description" value="true"/>
+  </include>
+
+  <node name="lesson_robot_model" pkg="lesson_robot_model" type="lesson_robot_model" output="screen" required="true"/>
+
+</launch>
