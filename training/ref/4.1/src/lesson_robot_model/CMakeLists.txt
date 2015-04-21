@@ -3,10 +3,7 @@ project(lesson_robot_model)
 
 find_package(catkin REQUIRED COMPONENTS
   descartes_core
-  descartes_planner
   descartes_moveit
-  moveit_msgs
-  moveit_ros_planning_interface
 )
 
 ## System dependencies are found with CMake's conventions

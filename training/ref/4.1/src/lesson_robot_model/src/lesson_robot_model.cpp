@@ -1,16 +1,18 @@
+/*
+ * lesson_trajectory_points.cpp
+ *
+ *  Created on: Apr 21, 2015
+ *      Author: Jorge Nicho
+ */
+
 #include <ros/ros.h>
-#include <moveit_msgs/ExecuteKnownTrajectory.h>
-#include <moveit/move_group_interface/move_group.h>
-#include <descartes_trajectory/axial_symmetric_pt.h>
-#include <descartes_trajectory/cart_trajectory_pt.h>
 #include <descartes_moveit/moveit_state_adapter.h>
-#include <visualization_msgs/MarkerArray.h>
 #include <eigen_conversions/eigen_msg.h>
 
 
 int main(int argc, char** argv)
 {
-  ros::init(argc,argv,"lesson_descartes_basic");
+  ros::init(argc,argv,"lesson_trajectory_points");
   ros::AsyncSpinner spinner(2);
   spinner.start();
 
