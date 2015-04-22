@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <robot name="ur5_collision_avoidance" xmlns:xacro="http://ros.org/wiki/xacro">
 	<xacro:include filename="$(find robot_config)/urdf/vacuum_gripper_macro.xacro"/>
-  	<xacro:include filename="$(find robot_config)/urdf/ur5_model.urdf.xacro" />	
+  <xacro:include filename="$(find robot_config)/urdf/ur5.urdf.xacro" />
 	<xacro:include filename="$(find robot_config)/urdf/workspace_components.xacro"/>
 	<xacro:include filename="$(find robot_config)/urdf/kinect_sensor_macro.xacro"/>
 
@@ -15,7 +15,7 @@
 	<xacro:property name="arm_prefix" value=""/>
 
 	<!-- instantiating arm and gripper -->	
-	<xacro:ur5_robot prefix="${arm_prefix}"/>
+  <xacro:ur5_robot prefix="" joint_limited="true"/>
 	<xacro:vacuum_gripper_definition prefix="${arm_prefix}" gripper_adjustment="0.01"/>
 
 	<!-- instantiating workcell definitions -->
@@ -48,24 +48,6 @@
 		</collision>
 	</link>
 
-	<link name="wrist_3_padding">
-		<collision>
-			<geometry>
-				<cylinder radius="0.10" length="0.12"/>
-			</geometry>
-			<material name="blue_transparent"/>
-		</collision>
-	</link>
-
-	<!--<link name="attached_object_link">
-		<collision>
-			<geometry>
-				<box size="${attached_object_length} ${attached_object_width} ${attached_object_height}"/>
-			</geometry>
-			<material name="blue_transparent"/>
-		</collision>
-	</link>-->
-
 	<!-- instantiating sensor definitions -->
 
 	<xacro:sensor_definitions prefix="${arm_prefix}" parent_link="ur5_stand" 
@@ -78,23 +60,12 @@
 		<origin xyz="-0.238 0 ${robot_stand_height * 0.5}"/>
 	</joint>
 
-	<joint name="wrist_3_link_to_wrist_3_padding" type="fixed">
-		<parent link="wrist_3_link"/>
-		<child link="wrist_3_padding"/>
-		<origin xyz="0 0.09 0" rpy="1.57 0 0"/>
-	</joint>
-
 	<joint name="world_to_base_padding" type="fixed">
 		<parent link="world_frame"/>
 		<child link="base_padding"/>
 		<origin xyz="-0.238 0 ${robot_stand_height}"/>
 	</joint>
 
-	<!--<joint name="tcp_to_attached_object" type="fixed">
-		<parent link="tcp_frame"/>
-		<child link="attached_object_link"/>
-		<origin xyz="0 0 ${0.5 * attached_object_height}"/>
-	</joint>-->
 
 	<!-- end of arm-workcell link definitions -->
 

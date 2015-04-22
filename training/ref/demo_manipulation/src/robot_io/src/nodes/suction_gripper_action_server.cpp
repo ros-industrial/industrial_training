@@ -34,7 +34,7 @@
 #include <actionlib/server/action_server.h>
 #include <object_manipulation_msgs/GraspHandPostureExecutionAction.h>
 #include <object_manipulation_msgs/GraspHandPostureExecutionGoal.h>
-#include <ur_msgs/SetIOState.h>
+#include <ur_msgs/SetIO.h>
 #include <ur_msgs/IOStates.h>
 using namespace object_manipulation_msgs;
 using namespace actionlib;
@@ -76,7 +76,7 @@ public:
 	    std::string nodeName = ros::this_node::getName();
 
 	    // service client
-	    service_client_ = nh.serviceClient<ur_msgs::SetIOState>(SET_OUTPUT_PIN_SERVICE);
+	    service_client_ = nh.serviceClient<ur_msgs::SetIO>(SET_OUTPUT_PIN_SERVICE);
 	    while(!service_client_.waitForExistence(ros::Duration(5.0f)))
 	    {
 	    	ROS_INFO_STREAM(nodeName<<": Waiting for "<<SET_OUTPUT_PIN_SERVICE<<" to start");
@@ -114,8 +114,8 @@ public:
 	int pin;
 	double state;
 	std::string nodeName = ros::this_node::getName();
-	ur_msgs::SetIOState::Request req;
-	ur_msgs::SetIOState::Response res;
+	ur_msgs::SetIO::Request req;
+	ur_msgs::SetIO::Response res;
 
 	while(ros::ok())
 	{
@@ -129,8 +129,8 @@ public:
 		}
 		else
 		{
-			req.state.pin= pin;
-			req.state.state = state;
+			req.pin= pin;
+			req.state = state;
 
 			if(service_client_.call(req,res))
 			{
@@ -157,8 +157,8 @@ private:
 
     ROS_INFO("%s",(nodeName + ": Received grasping goal").c_str());
 
-    ur_msgs::SetIOState::Request req;
-    ur_msgs::SetIOState::Response res;
+    ur_msgs::SetIO::Request req;
+    ur_msgs::SetIO::Response res;
 
 	switch(gh.getGoal()->goal)
 	{
@@ -167,8 +167,8 @@ private:
 			gh.setAccepted();
 			ROS_INFO_STREAM(nodeName + ": Pre-grasp command accepted");
 
-			req.state.pin= suction_command_pin_;
-			req.state.state = 1.0f;
+			req.pin= suction_command_pin_;
+			req.state = 1.0f;
 
 			if(service_client_.call(req,res))
 			{
@@ -189,8 +189,8 @@ private:
 			gh.setAccepted();
 			ROS_INFO_STREAM(nodeName + ": Grasp command accepted");
 
-			req.state.pin= suction_command_pin_;
-			req.state.state = 1.0f;
+			req.pin= suction_command_pin_;
+			req.state = 1.0f;
 
 			if(service_client_.call(req,res))
 			{
@@ -217,8 +217,8 @@ private:
 			gh.setAccepted();
 			ROS_INFO_STREAM(nodeName + ": Release command accepted");
 
-			req.state.pin= suction_command_pin_;
-			req.state.state = 0.0f;
+			req.pin= suction_command_pin_;
+			req.state = 0.0f;
 
 			if(service_client_.call(req,res))
 			{
@@ -280,7 +280,7 @@ private:
   bool check_sensor_state()
   {
 	  ros::NodeHandle nh("");
-	  ur_msgs::IOState pin_state;
+	  ur_msgs::Digital pin_state;
 	  ur_msgs::IOStatesConstPtr msg =
 			  ros::topic::waitForMessage<ur_msgs::IOStates>(INPUT_PIN_STATES_TOPIC,nh,ros::Duration(2.0f));
 	  if(!msg)
@@ -290,7 +290,7 @@ private:
 	  }
 	  else
 	  {
-		  pin_state = msg->states[suction_state_pin_];
+		  pin_state = msg->digital_out_states[suction_state_pin_];
 		  return (( pin_state.state >  0.0f) ? true : false);
 	  }
 
