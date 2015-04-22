@@ -5,10 +5,17 @@
  *      Author: Jorge Nicho
  */
 
+#ifdef __i386__
+#pragma message("i386 Architecture detected, disabling EIGEN VECTORIZATION")
+#define EIGEN_DONT_VECTORIZE
+#define EIGEN_DISABLE_UNALIGNED_ARRAY_ASSERT
+#else
+#pragma message("64bit Architecture detected, enabling EIGEN VECTORIZATION")
+#endif
+
 #include <ros/ros.h>
 #include <descartes_moveit/moveit_state_adapter.h>
 #include <eigen_conversions/eigen_msg.h>
-
 
 int main(int argc, char** argv)
 {
