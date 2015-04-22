@@ -15,7 +15,7 @@
 
 int main(int argc, char** argv)
 {
-  ros::init(argc,argv,"lesson_robot_model");
+  ros::init(argc,argv,"lesson_trajectory_points");
   ros::AsyncSpinner spinner(2);
   spinner.start();
 
@@ -73,12 +73,12 @@ int main(int argc, char** argv)
 
 
   // Create Cartesian point with rotational freedom about the z axis
-  descartes_core::TrajectoryPtPtr free_z_axis_pt(
-      new descartes_trajectory::AxialSymmetricPt(tool_pose,0.5,descartes_trajectory::AxialSymmetricPt::Z_AXIS));
+  descartes_core::TrajectoryPtPtr free_z_rot_pt(
+      new descartes_trajectory::AxialSymmetricPt(tool_pose,0.5f,descartes_trajectory::AxialSymmetricPt::Z_AXIS));
 
   // Getting all the cartesian poses with discretized rotation about z
   EigenSTL::vector_Affine3d poses;
-  free_z_axis_pt->getCartesianPoses(*robot_model_ptr,poses);
+  free_z_rot_pt->getCartesianPoses(*robot_model_ptr,poses);
   if(!poses.empty())
   {
     ROS_INFO_STREAM("Free z Rotation point has "<<poses.size()<<" poses");
@@ -89,16 +89,45 @@ int main(int argc, char** argv)
     return 1;
   }
 
-  // Getting closest joint pose
-  //joint_pose.clear();
-  if(free_z_axis_pt->getClosestJointPose(joint_pose,*robot_model_ptr,joint_pose))
+
+  // Getting all joint solutions
+  std::vector< std::vector<double> > solutions;
+  free_z_rot_pt->getJointPoses(*robot_model_ptr,solutions);
+  if(!solutions.empty())
   {
-    ROS_INFO_STREAM("Found closest joint pose : ["<<joint_pose[0]<<", "
-                    <<joint_pose[1]<<", "
-                    <<joint_pose[2]<<", "
-                    <<joint_pose[3]<<", "
-                    <<joint_pose[4]<<", "
-                    <<joint_pose[5]<<"] ");
+    ROS_INFO_STREAM("Found "<<solutions.size()<<" joint solutions");
+    for(unsigned int i = 0; i < solutions.size();i++)
+    {
+      const std::vector<double> &sol = solutions[i];
+      ROS_INFO_STREAM("IK solution "<<i<<": ["<<sol[0]<<", "
+                      <<sol[1]<<", "
+                      <<sol[2]<<", "
+                      <<sol[3]<<", "
+                      <<sol[4]<<", "
+                      <<sol[5]<<"] ");
+    }
+  }
+  else
+  {
+    ROS_ERROR_STREAM("Failed to get joint poses from Axial Symmetric point");
+    return 1;
+  }
+
+  // Getting closest joint pose
+  std::vector<double> closest_joint_pose;
+  joint_pose[1] = joint_pose[1] + M_PI/20;
+  joint_pose[2] = joint_pose[2] + M_PI/20;
+  joint_pose[4] = joint_pose[4] + M_PI/20;
+  joint_pose[5] = joint_pose[5] - M_PI/20;
+
+  if(free_z_rot_pt->getClosestJointPose(joint_pose,*robot_model_ptr,closest_joint_pose))
+  {
+    ROS_INFO_STREAM("Found closest joint pose : ["<<closest_joint_pose[0]<<", "
+                    <<closest_joint_pose[1]<<", "
+                    <<closest_joint_pose[2]<<", "
+                    <<closest_joint_pose[3]<<", "
+                    <<closest_joint_pose[4]<<", "
+                    <<closest_joint_pose[5]<<"] ");
   }
   else
   {
