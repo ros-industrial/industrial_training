@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro"
+       name="ur5_demo" >
+
+  <xacro:property name="PI" value="3.14159265359"/>
+  <xacro:property name="flange_radius" value="0.04"/>
+  <xacro:property name="flange_offset" value="0.08"/>
+  <xacro:property name="tool_tip_width" value="0.005"/>
+  <xacro:property name="tool_tip_length" value="0.08"/>
+  <xacro:property name="tool_extent_width" value="0.04"/>
+  <xacro:property name="tool_extent_length" value="0.02"/>
+  <xacro:property name="tool_body_width" value="0.04"/>
+  <xacro:property name="tool_body_length" value="0.06"/>
+  <xacro:property name="tool_length" value="${0.5*tool_body_length + tool_tip_length}"/>
+
+  <!-- common stuff -->
+  <xacro:include filename="$(find ur_description)/urdf/gazebo.urdf.xacro" />
+
+  <!-- ur5 -->
+  <xacro:include filename="$(find ur5_demo_support)/urdf/ur5.urdf.xacro" />
+
+  <!-- arm -->
+  <xacro:ur5_robot prefix="" joint_limited="true"/>
+
+  <link name="world" />
+
+  <joint name="world_joint" type="fixed">
+    <parent link="world" />
+    <child link = "base_link" />
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+  </joint>
+
+  <!-- defining tool -->
+
+  <link name="tool">
+    <visual>
+      <origin xyz="0.0 -0.02 -0.11" rpy="0 0 ${0.5*PI}"/>
+      <geometry>
+        <mesh filename="package://ur5_demo_support/meshes/stylus_tool.stl"/>
+      </geometry>
+      <material name="yellow">
+        <color rgba="0.8 0.8 0.6 1"/>
+      </material>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 ${- tool_tip_length - 0.5*tool_body_length}" rpy="0 0 0"/>
+      <geometry>
+        <box size="${tool_body_width} ${tool_body_width} ${tool_body_length}"/>
+      </geometry>
+      <material name="yellow">
+        <color rgba="1 1 0 1"/>
+      </material>
+    </collision>
+    <collision>
+      <origin xyz="0 ${-0.5*tool_extent_length} ${-tool_tip_length - 0.5*tool_body_length}" rpy="${-0.5*PI} 0 0"/>
+      <geometry>
+        <cylinder radius="${0.5*tool_extent_width}" length="${tool_extent_length}"/>
+      </geometry>
+      <material name="yellow">
+        <color rgba="1 1 0 1"/>
+      </material>
+    </collision>
+    <collision>
+      <origin xyz="0 0 ${-0.5 * tool_tip_length}" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="${tool_tip_width}" length="${tool_tip_length}"/>
+      </geometry>
+      <material name="yellow">
+        <color rgba="1 1 0 1"/>
+      </material>
+    </collision>
+
+  </link>
+
+
+  <!--<joint name="flange_to_tool" type="fixed">
+    <parent link="ee_link"/>
+    <child link="tool"/>
+    <origin xyz="${tool_length} 0 0 " rpy="0 ${0.5*PI} ${0}"/>
+  </joint>-->
+
+  <joint name="flange_to_tool" type="fixed">
+    <parent link="ee_link"/>
+    <child link="tool"/>
+    <origin xyz="${tool_extent_length} 0 ${tool_length}" rpy="0 0 ${-0.5*PI}"/>
+  </joint>
+
+</robot>
