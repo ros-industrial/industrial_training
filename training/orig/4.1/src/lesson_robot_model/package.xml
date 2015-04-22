@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package>
+  <name>lesson_robot_model</name>
+  <version>0.0.0</version>
+  <description>The plan_and_run package</description>
+  <maintainer email="jnicho@swri.org">Jorge Nicho</maintainer>
+  <license>Apache2.0</license>
+  <url type="website">https://github.com/ros-industrial/industrial_training</url>
+  <author email="jnicho@swri.org">Jorge Nicho</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>descartes_core</build_depend>
+  <build_depend>descartes_moveit</build_depend>
+
+  <run_depend>descartes_core</run_depend>
+  <run_depend>descartes_moveit</run_depend>
+
+
+  <export>
+  </export>
+</package>
