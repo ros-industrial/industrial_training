@@ -65,8 +65,8 @@
     <origin xyz="2.0 0 0.0" rpy="0 0 0"/>
   </joint>
 
-  <xacro:include filename="$(find motoman_config)/cfg/sia20d_mesh_macro.xacro"/>
-  <xacro:sia20d_mesh prefix="robot2_"/>
+  <xacro:include filename="$(find ur_description)/urdf/ur5.urdf.xacro"/>
+  <xacro:ur5_robot prefix="robot2_" joint_limited="false"/>
   <joint name="rail_to_robot2" type="prismatic">
     <parent link="rail"/>
     <child link="robot2_base_link"/>
