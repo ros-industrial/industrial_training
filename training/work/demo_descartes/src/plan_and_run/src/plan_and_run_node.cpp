@@ -5,6 +5,14 @@
  *      Author: Jorge Nicho
  */
 
+#ifdef __i386__
+  #pragma message("i386 Architecture detected, disabling EIGEN VECTORIZATION")
+  #define EIGEN_DONT_VECTORIZE
+  #define EIGEN_DISABLE_UNALIGNED_ARRAY_ASSERT
+#else
+  #pragma message("64bit Architecture detected, enabling EIGEN VECTORIZATION")
+#endif
+
 #include <plan_and_run/demo_application.h>
 
 int main(int argc,char** argv)
