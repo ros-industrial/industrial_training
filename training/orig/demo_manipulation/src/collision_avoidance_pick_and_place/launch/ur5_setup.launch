@@ -2,6 +2,7 @@
 <launch>
   <arg name="sim_robot" default="true"/>
 	<arg name="sim_sensor" default="true"/>
+	<arg name="sim_gripper" default="true"/>
   <arg name="robot_ip" unless="$(arg sim_robot)"/>
 
   <!-- moveit components -->
@@ -11,14 +12,14 @@
   </include>
 
   <!-- simulated robot mode nodes-->
-  <group if="$(arg sim_robot)">
+  <group if="$(arg sim_gripper)">
 
     <!-- grasp action service (simulated) -->
     <node pkg="robot_io" type="simulated_grasp_action_server" name="gripper_action_server" output="screen"/>
   </group>
 
   <!-- robot interface (real robot) nodes -->
-  <group unless="$(arg sim_robot)">
+  <group unless="$(arg sim_gripper)">
 
 		<!-- grasp action service for vacuum gripper -->
     <node pkg="robot_io" type="suction_gripper_action_server" name="gripper_action_server" output="screen"/>
