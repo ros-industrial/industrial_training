@@ -1,6 +1,0 @@
-<?xml version='1.0' encoding='ASCII'?>
-<library path="lib/libm16ib20_kinematics_lib">
-  <class name="M16iB20_manipulator_kinematics/IKFastKinematicsPlugin" type="M16iB20_manipulator_kinematics::IKFastKinematicsPlugin" base_class_type="kinematics::KinematicsBase">
-    <description>IKFast61 plugin for closed-form kinematics</description>
-  </class>
-</library>

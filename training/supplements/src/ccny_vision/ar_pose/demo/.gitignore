@@ -1,7 +1,0 @@
-build/
-bin/
-lib/
-*~
-Makefile
-*.bag
-*.tar.gz

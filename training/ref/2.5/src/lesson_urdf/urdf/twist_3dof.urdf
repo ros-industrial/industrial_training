@@ -1,0 +1,73 @@
+<robot name="twist_3dof">
+
+  <link name="base_link"/>
+
+  <link name="link_1">
+    <visual>
+      <geometry>
+        <mesh filename="package://lesson_urdf/meshes/visual/arm_link_twist_1.stl"/>
+      </geometry>
+      <material name="grey">
+        <color rgba="0.7 0.7 0.7 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://lesson_urdf/meshes/collision/arm_link_twist_1.stl"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="link_2">
+    <visual>
+      <geometry>
+        <mesh filename="package://lesson_urdf/meshes/visual/arm_link_twist_2.stl"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+
+    <collision>
+      <geometry>
+        <mesh filename="package://lesson_urdf/meshes/collision/arm_link_twist_2.stl"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="gripper">
+    <visual>
+      <geometry>
+        <mesh filename="package://lesson_urdf/meshes/visual/gripper.stl"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://lesson_urdf/meshes/collision/gripper.stl"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="joint_1" type="revolute">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="link_1"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-1.57" upper="1.57" effort="0" velocity="0.5"/>
+  </joint>
+
+  <joint name="joint_2" type="revolute">
+    <origin xyz="0.5 0 0" rpy="0 0 0"/>
+    <parent link="link_1"/>
+    <child link="link_2"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.57" upper="1.57" effort="0" velocity="0.5"/>
+  </joint>
+
+  <joint name="joint_3" type="revolute">
+    <origin xyz="0.5 0 0" rpy="0 0 0"/>
+    <parent link="link_2"/>
+    <child link="gripper"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-1.57" upper="1.57" effort="0" velocity="0.5"/>
+  </joint>
+</robot>

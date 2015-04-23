@@ -1,0 +1,8 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: abb_irb2400_support
+    relative_path: urdf/irb2400.urdf
+  SRDF:
+    relative_path: config/abb_irb2400.srdf
+  CONFIG:
+    generated_timestamp: 1402076252

@@ -1,7 +1,0 @@
-<launch>
-    <include file="$(find m16ib20_arm_navigation)/launch/m16ib20_planning_environment.launch" />
-    <node pkg="trajectory_filter_server" type="trajectory_filter_server" name="trajectory_filter_server">
-        <rosparam command="load" file="$(find trajectory_filter_server)/config/filters.yaml" />
-        <rosparam command="load" file="$(find m16ib20_arm_navigation)/config/joint_limits.yaml" />
-    </node>
-</launch>

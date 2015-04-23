@@ -1,0 +1,18 @@
+/**
+\mainpage
+\htmlinclude manifest.html
+
+\b descartes_planner provides reference implementations of descartes_core::PathPlannerBase.
+
+<!-- 
+Provide an overview of your package.
+-->
+
+
+\section codeapi Code API
+This package offers the following path planners:
+- descartes_planner::DensePlanner : DensePlanner takes a brute force approach to finding a sequence of joint solutions that defines an "optimum" path through a sequence of input descartes_core::TrajectoryPt's. Optimum is defined as the path with minimal joint changes. It works by expanding all of the valid inverse kinematic solutions for every trajectory point passed in. Edges are added between every possible pair of solutions from contigous user trajectory points. Dijkstra's algorithm is then used to find a path with minimal joint motion through the graph.
+
+- descartes_planner::SparsePlanner : SparsePlanner attempts to optimize the process used by DensePlanner by not expanding every point. Instead a subset of the points are expanded and the planner attempts to use joint interpolation to find a satisfactory solution to the not-expanded points (thereby reducing the number of IK solutions required). 
+
+*/
