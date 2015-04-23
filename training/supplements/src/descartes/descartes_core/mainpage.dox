@@ -1,0 +1,21 @@
+/**
+\mainpage
+\htmlinclude manifest.html
+
+\b descartes_core defines the abstract interfaces for the core descartes concepts of robot models, trajectory points, and path planners.
+
+<!-- 
+Provide an overview of your package.
+-->
+
+
+\section codeapi Code API
+
+The main APIs of are largely captured in the following interface classes:
+- descartes_core::TrajectoryPt : Defines the interface for a descartes trajectory point. Emodies the logic of how to search for valid joint solutions.
+
+- descartes_core::RobotModel : Defines the interface for a descartes robot model. These models embody the kinematics of the robot. They are used to do forward and inverse kinematics and are also responsible for checking the validity of positions and movements.
+
+- descartes_core::PathPlannerBase : Defines the interface to a descartes path planner. Planners are responsible for transforming a sequence of trajectory points into a meaningful sequence of joint positions. 
+
+*/
