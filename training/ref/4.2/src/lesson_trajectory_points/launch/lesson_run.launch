@@ -7,6 +7,6 @@
     <arg name="load_robot_description" value="true"/>
   </include>
 
-  <node name="lesson_trajectory_points" pkg="lesson_trajectory_points" type="lesson_trajectory_points" output="screen" required="true"/>
+  <node name="lesson_trajectory_points" pkg="lesson_trajectory_points" type="lesson_trajectory_points" output="screen"/>
 
 </launch>

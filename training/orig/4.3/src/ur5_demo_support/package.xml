@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package>
+  <name>ur5_demo_support</name>
+  <version>0.0.0</version>
+  <description>The ur5_demo_support package</description>
+  <maintainer email="jnicho@swri.org">Jorge Nicho</maintainer>
+  <license>Apache2.0</license>
+  <url type="website">https://github.com/ros-industrial/industrial_training</url>
+  <author email="jnicho@swri.org">Jorge Nicho</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <export>
+  </export>
+</package>

@@ -80,35 +80,6 @@ int main(int argc, char** argv)
 
   // Planning with the sparse planner
   descartes_planner::SparsePlanner sparse_planner;
-  if(sparse_planner.initialize(robot_model_ptr))
-  {
-    ROS_INFO_STREAM("Sparse Planner initialized");
-  }
-  else
-  {
-    ROS_ERROR_STREAM("Sparse Planner initialization failed");
-    return 1;
-  }
-
-  path.clear();
-  if(sparse_planner.planPath(traj))
-  {
-    if(sparse_planner.getPath(path))
-    {
-      ROS_INFO_STREAM("Sparse planner completed with "<<path.size()<<" points");
-    }
-    else
-    {
-      ROS_ERROR_STREAM("Path planning failed");
-      return 1;
-    }
-
-  }
-  else
-  {
-    ROS_ERROR_STREAM("Path planning failed");
-    return 1;
-  }
 
 
 
