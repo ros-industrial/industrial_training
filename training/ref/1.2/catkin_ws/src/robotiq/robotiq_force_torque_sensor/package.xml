@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package>
+  <name>robotiq_force_torque_sensor</name>
+  <version>1.0.0</version>
+  <description>Package for reading data from a Robotiq Force Torque Sensor</description>
+  <maintainer email="nicolas@robotiq.com">Nicolas Lauzier</maintainer>
+  <author email="jsavoie20@gmail.com">Jonathan Savoie</author>
+  <url type="website">http://ros.org/wiki/robotiq</url>
+
+  <license>BSD</license>
+
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>message_generation</build_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>std_msgs</run_depend>
+  <run_depend>message_runtime</run_depend>
+
+
+  <export>
+
+  </export>
+</package>

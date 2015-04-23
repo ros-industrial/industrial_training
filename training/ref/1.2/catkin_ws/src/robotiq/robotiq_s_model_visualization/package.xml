@@ -1,0 +1,17 @@
+<package>
+  <name>robotiq_s_model_visualization</name>
+  <version>1.0.0</version>
+  <description>robotiq</description>
+  <maintainer email="sedwards@swri.org">Shaun Edwards</maintainer>
+  <license>BSD</license>
+  <url type="website">http://ros.org/wiki/robotiq</url>
+  <author>Nicolas Lauzier (Robotiq inc.)</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>urdf</build_depend>
+  <run_depend>urdf</run_depend>
+
+  <export>
+
+  </export>
+</package>
