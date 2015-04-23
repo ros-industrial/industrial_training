@@ -1,0 +1,23 @@
+<launch>
+  <arg name="ip_str" value="127.0.0.1" />
+
+  <group ns="load_irb2400__">
+    <include file="$(find abb_irb2400_support)/launch/load_irb2400.launch"/>
+  </group>
+
+  <group ns="test_irb2400__">
+    <include file="$(find abb_irb2400_support)/launch/test_irb2400.launch"/>
+  </group>
+
+  <group ns="robot_interface_download_irb2400__">
+    <include file="$(find abb_irb2400_support)/launch/robot_interface_download_irb2400.launch">
+      <arg name="robot_ip" value="$(arg ip_str)" />
+    </include>
+  </group>
+
+  <group ns="robot_state_visualize_irb2400__">
+    <include file="$(find abb_irb2400_support)/launch/robot_state_visualize_irb2400.launch">
+      <arg name="robot_ip" value="$(arg ip_str)" />
+    </include>
+  </group>
+</launch>

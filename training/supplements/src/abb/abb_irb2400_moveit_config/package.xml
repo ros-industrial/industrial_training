@@ -1,0 +1,41 @@
+<package>
+  <name>abb_irb2400_moveit_config</name>
+  <version>1.1.4</version>
+  <description>
+    <p>
+      MoveIt package for the ABB IRB 2400.
+    </p>
+    <p>
+      An automatically generated package with all the configuration and launch
+      files for using the ABB IRB 2400 with the MoveIt Motion Planning
+      Framework.
+    </p>
+  </description>
+  <author email="assistant@moveit.ros.org">MoveIt Setup Assistant</author>
+  <maintainer email="sedwards@swri.org">Shaun Edwards (Southwest Research Institute)</maintainer>
+
+  <license>BSD</license>
+
+  <url type="website">http://ros.org/wiki/abb_irb2400_moveit_config</url>
+  <url type="bugtracker">https://github.com/ros-industrial/abb/issues</url>
+  <url type="repository">https://github.com/ros-industrial/abb</url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <run_depend>moveit_simple_controller_manager</run_depend>
+  <run_depend>moveit_planners_ompl</run_depend>
+  <run_depend>moveit_ros_visualization</run_depend>
+  <run_depend>joint_state_publisher</run_depend>
+  <run_depend>robot_state_publisher</run_depend>
+  <run_depend>moveit_ros_move_group</run_depend>
+
+  <run_depend>xacro</run_depend>
+
+  <run_depend>industrial_robot_simulator</run_depend>
+  <run_depend>abb_irb2400_support</run_depend>
+  <run_depend>abb_irb2400_moveit_plugins</run_depend>
+
+  <export>
+    <architecture_independent />
+  </export>
+</package>

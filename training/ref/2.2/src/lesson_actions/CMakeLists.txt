@@ -39,7 +39,7 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate actions in the 'action' folder
-add_action_files(FILES Fibonacci.action)
+add_action_files(FILES CalcPi.action)
 
 ## Generate added messages and services with any dependencies listed here
 generate_messages(DEPENDENCIES std_msgs actionlib_msgs)
@@ -79,13 +79,13 @@ include_directories(include
 # )
 
 ## Declare a cpp executable
-add_executable(fibonacci_server src/fibonacci_server.cpp)
-target_link_libraries(fibonacci_server ${catkin_LIBRARIES})
-add_dependencies(fibonacci_server ${PROJECT_NAME}_generate_messages_cpp)
+add_executable(calcPi_server src/calcPi_server.cpp)
+target_link_libraries(calcPi_server ${catkin_LIBRARIES})
+add_dependencies(calcPi_server ${PROJECT_NAME}_generate_messages_cpp)
 
-add_executable(fibonacci_client src/fibonacci_client.cpp)
-target_link_libraries(fibonacci_client ${catkin_LIBRARIES})
-add_dependencies(fibonacci_client ${PROJECT_NAME}_generate_messages_cpp)
+add_executable(calcPi_client src/calcPi_client.cpp)
+target_link_libraries(calcPi_client ${catkin_LIBRARIES})
+add_dependencies(calcPi_client ${PROJECT_NAME}_generate_messages_cpp)
 
 #############
 ## Install ##
@@ -102,11 +102,11 @@ add_dependencies(fibonacci_client ${PROJECT_NAME}_generate_messages_cpp)
 # )
 
 ## Mark executables and/or libraries for installation
-install(TARGETS fibonacci_server fibonacci_client
-  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
+# install(TARGETS my_target
+#  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+#  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+#  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+#)
 
 ## Mark cpp header files for installation
 #install(DIRECTORY include/${PROJECT_NAME}/
