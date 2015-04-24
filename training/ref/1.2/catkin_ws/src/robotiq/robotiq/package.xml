@@ -1,0 +1,19 @@
+<package>
+  <name>robotiq</name>
+  <version>1.0.0</version>
+  <description>ROS drivers for Robotiq Adaptive Grippers and Robotiq Force Torque Sensor</description>
+  <maintainer email="sedwards@swri.org">Shaun Edwards</maintainer>
+  <license>BSD</license>
+  <url type="website">http://ros.org/wiki/motoman</url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <run_depend>robotiq_s_model_visualization</run_depend>
+  <run_depend>robotiq_modbus_tcp</run_depend>
+  <run_depend>robotiq_s_model_control</run_depend>
+  <run_depend>robotiq_c_model_control</run_depend>
+  <run_depend>robotiq_force_torque_sensor</run_depend>
+
+  <export>
+    <metapackage/>
+  </export>
+</package>

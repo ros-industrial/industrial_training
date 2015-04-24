@@ -24,6 +24,7 @@ int main(int argc, char* argv[])
         // Create a message, and set the fields appropriately 
         // TODO: Uncomment the next 4 lines
         //lesson_simple_topic::PathPosition msg;
+        //msg.header.stamp = ros::Time::now();
         //msg.angle = angle * 3.141592 / 180.0;
         //msg.x = 100.0 * cos(msg.angle);
         //msg.y = 100.0 * sin(msg.angle);
