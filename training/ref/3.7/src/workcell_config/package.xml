@@ -40,7 +40,7 @@
   <!-- Use test_depend for packages you need only for testing: -->
   <!--   <test_depend>gtest</test_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
-  <run_depend>abb_common</run_depend>
+  <run_depend>abb_irb2400_support</run_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->

@@ -21,11 +21,11 @@ int main(int argc, char **argv)
   group.setPoseTarget(approach);
   group.move();
 
-  Eigen::Affine3d pick = approach.translate(0.05*Eigen::Vector3d::UnitX());
+  Eigen::Affine3d pick = approach.translate(0.2*Eigen::Vector3d::UnitZ());
   group.setPoseTarget(pick);
   group.move();
 
-  Eigen::Affine3d retreat = pick.translate(-0.1*Eigen::Vector3d::UnitX());
+  Eigen::Affine3d retreat = pick.translate(-0.1*Eigen::Vector3d::UnitZ());
   group.setPoseTarget(retreat);
   group.move();
 
