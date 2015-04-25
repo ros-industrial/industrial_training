@@ -11,13 +11,12 @@ int main(int argc, char **argv)
   spinner.start();
 
   std::map<std::string, double> joints;
-  joints["joint_s"] =  0.00;
-  joints["joint_l"] = -0.48;
-  joints["joint_e"] = -0.28;
-  joints["joint_u"] =  1.54;
-  joints["joint_r"] = -0.15;
-  joints["joint_b"] =  1.12;
-  joints["joint_t"] =  0.00;
+  joints["joint_1"] = -0.40;
+  joints["joint_2"] =  0.27;
+  joints["joint_3"] =  0.48;
+  joints["joint_4"] =  0.07;
+  joints["joint_5"] =  0.75;
+  joints["joint_6"] = -0.19;
 
   moveit::planning_interface::MoveGroup group("manipulator");
   group.setJointValueTarget(joints);

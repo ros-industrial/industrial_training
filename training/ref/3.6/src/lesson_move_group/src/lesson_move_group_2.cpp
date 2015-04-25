@@ -10,6 +10,6 @@ int main(int argc, char **argv)
   spinner.start();
 
   moveit::planning_interface::MoveGroup group("manipulator");
-  group.setNamedTarget("straight up");
+  group.setNamedTarget("straight_up");
   group.move();
 }

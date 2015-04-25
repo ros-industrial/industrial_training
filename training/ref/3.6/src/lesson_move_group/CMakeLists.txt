@@ -106,6 +106,7 @@ add_executable(lesson_move_group_1 src/lesson_move_group_1.cpp)
 add_executable(lesson_move_group_2 src/lesson_move_group_2.cpp)
 add_executable(lesson_move_group_3 src/lesson_move_group_3.cpp)
 add_executable(lesson_move_group_4 src/lesson_move_group_4.cpp)
+add_executable(lesson_move_group_5 src/lesson_move_group_5.cpp)
 
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
@@ -116,6 +117,7 @@ add_executable(lesson_move_group_4 src/lesson_move_group_4.cpp)
  target_link_libraries(lesson_move_group_2 ${catkin_LIBRARIES})
  target_link_libraries(lesson_move_group_3 ${catkin_LIBRARIES})
  target_link_libraries(lesson_move_group_4 ${catkin_LIBRARIES})
+ target_link_libraries(lesson_move_group_5 ${catkin_LIBRARIES})
 
 #############
 ## Install ##
