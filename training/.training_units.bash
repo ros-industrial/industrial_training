@@ -14,6 +14,8 @@ if [ -f $TRAINING_FILE ]; then
 fi
 #=======================================================================
 
+export ROSI_TRAINING=1
+
 function clear_training_unit {
   rm -f $TRAINING_FILE
   source ~/.bashrc
