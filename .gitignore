@@ -1,1 +1,5 @@
 *~
+default_warehouse_mongo_db
+.catkin_workspace
+build
+devel

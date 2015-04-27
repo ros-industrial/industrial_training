@@ -12,8 +12,8 @@ int main(int argc, char **argv)
 
   moveit::planning_interface::MoveGroup group("manipulator");
 
-  Eigen::Affine3d pose = Eigen::Translation3d(-0.358, 0.043, 0.865)
-                         * Eigen::Quaterniond(0.690, 0.108, 0.706, -0.112);
+  Eigen::Affine3d pose = Eigen::Translation3d(0.028, 0.793, 0.390)
+                         * Eigen::Quaterniond(-0.014, 0.733, 0.680, -0.010);
   group.setPoseTarget(pose);
   group.move();
 }
