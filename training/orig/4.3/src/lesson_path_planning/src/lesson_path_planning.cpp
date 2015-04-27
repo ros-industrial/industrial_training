@@ -50,6 +50,16 @@ int main(int argc, char** argv)
   traj.reserve(num_points);
   for(unsigned int i = 0; i < num_points; i++)
   {
+    Eigen::Affine3d tool_pose = descartes_core::utils::toFrame(0.2f + d_pos*i,  //x
+                                                               -0.2f + d_pos*i, //y
+                                                               0.1f,            //z
+                                                               0,               //rx
+                                                               M_PI/2,          //ry
+                                                               d_rz * i);       // rz
+
+    /*
+      Create trajectory points
+    */
   
   }
 
