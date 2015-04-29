@@ -1,0 +1,6 @@
+<launch>
+  <include file="$(find urdf_tutorial)/launch/xacrodisplay.launch">
+    <arg name="gui" default="false"/>
+    <arg name="model" value="$(find workcell_config)/urdf/workcell.xacro"/>
+  </include>
+</launch>
