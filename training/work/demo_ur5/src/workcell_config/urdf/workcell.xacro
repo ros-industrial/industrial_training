@@ -46,7 +46,7 @@
   <joint name="world_to_leftWall" type="fixed">
     <parent link="world" />
     <child link="left_wall" />
-    <origin xyz="0.0 -1.0 0.0" rpy="0.0 0.0 0.0" />
+    <origin xyz="0.0 -0.5 0.0" rpy="0.0 0.0 0.0" />
   </joint>
 
   <link name="right_wall">
@@ -61,7 +61,7 @@
   <joint name="world_to_rightWall" type="fixed">
     <parent link="world" />
     <child link="right_wall" />
-    <origin xyz="0.0 1.0 0.0" rpy="0.0 0.0 0.0" />
+    <origin xyz="0.0 0.5 0.0" rpy="0.0 0.0 0.0" />
   </joint>
 
   <link name="back_wall">
@@ -76,7 +76,7 @@
   <joint name="world_to_backWall" type="fixed">
     <parent link="world" />
     <child link="back_wall" />
-    <origin xyz="-0.5 0.0 0.0" rpy="0.0 0.0 0.0" />
+    <origin xyz="-0.3 0.0 0.0" rpy="0.0 0.0 0.0" />
   </joint>
 
 <!--  <link name="ceiling">

@@ -31,9 +31,10 @@
   <!--   - this typically includes: robot_state, motion_interface, and joint_trajectory_action nodes -->
   <!--   - replace these calls with appropriate robot-specific calls or launch files -->
   <group unless="$(arg sim)">
-    <include file="$(find ur_bringup)/launch/ur5_bringup.launch" >
+    <include file="$(find ur_bringup)/launch/ur_common.launch" >
       <arg name="robot_ip" value="$(arg robot_ip)"/>
-      <arg name="limited" value="true"/>
+      <arg name="min_payload"  value="0.0"/>
+      <arg name="max_payload"  value="10.0"/>
     </include>
   </group>
 
