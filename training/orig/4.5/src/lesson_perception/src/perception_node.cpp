@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
   try
   {
     listener.waitForTransform(world_frame, camera_frame,  ros::Time::now(), ros::Duration(6.0));
-    listener.lookupTransform(world_frame, camera_frame,  ros::Time::now(), stransform);
+    listener.lookupTransform(world_frame, camera_frame,  ros::Time(0), stransform);
   }
   catch (tf::TransformException ex)
   {
