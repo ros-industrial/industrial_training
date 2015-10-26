@@ -139,4 +139,42 @@ bool UR5RobotModel::getAllIK(const Eigen::Affine3d &pose, std::vector<std::vecto
   return rtn;
 }
 
+static double jointCost(const std::vector<double>& source, const std::vector<double>& target)
+{
+  ROS_ASSERT(source.size() == target.size());
+  double cost = 0.0;
+  for (size_t i = 0; i < source.size(); ++i)
+  {
+    cost += std::abs(target[i] - source[i]);
+  }
+  return cost;
+} 
+
+bool UR5RobotModel::getIK(const Eigen::Affine3d &pose, const std::vector<double> &seed_state,
+                          std::vector<double> &joint_pose) const
+{
+  // forward to getAllIK
+  std::vector<std::vector<double> > joint_poses;
+  if (!getAllIK(pose, joint_poses))
+  {
+    return false;
+  }
+  // Find closest solution in joint-space
+  // getAllIK assures at least 1 solution is available
+  size_t best_idx = 0;
+  double best_cost = jointCost(seed_state, joint_poses[0]);
+  for (size_t i = 1; i < joint_poses.size(); ++i)
+  {
+    double cost = jointCost(seed_state, joint_poses[i]);
+    if (cost < best_cost)
+    {
+      best_cost = cost;
+      best_idx = i;
+    }
+  }
+  
+  joint_pose = joint_poses[best_idx];
+  return true;
+}
+
 } /* namespace ur5_demo_descartes */

@@ -34,6 +34,9 @@ public:
 
   virtual bool getAllIK(const Eigen::Affine3d &pose, std::vector<std::vector<double> > &joint_poses) const;
 
+  virtual bool getIK(const Eigen::Affine3d &pose, const std::vector<double> &seed_state,
+                     std::vector<double> &joint_pose) const;
+
   descartes_core::Frame world_to_base_;// world to arm base
   descartes_core::Frame tool_to_tip_; // from arm tool to robot tool
 
