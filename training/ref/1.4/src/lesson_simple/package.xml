@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package>
-  <name>lesson_simple_node</name>
+  <name>lesson_simple</name>
   <version>0.0.0</version>
-  <description>The lesson_simple_node package</description>
+  <description>The lesson_simple package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag --> 
   <!-- Example:  -->
@@ -19,7 +19,7 @@
   <!-- Url tags are optional, but mutiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <!-- <url type="website">http://ros.org/wiki/lesson_simple_node</url> -->
+  <!-- <url type="website">http://wiki.ros.org/lesson_simple</url> -->
 
 
   <!-- Author tags are optional, mutiple are allowed, one per tag -->
@@ -46,9 +46,6 @@
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
-    <!-- You can specify that this package is a metapackage here: -->
-    <!-- <metapackage/> -->
-
     <!-- Other tools can request additional information be placed here -->
 
   </export>
