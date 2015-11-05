@@ -60,6 +60,8 @@ int main(int argc, char** argv)
   ROS_INFO("CalcPi server started");
 
   ros::spin();
+  // cleaning up our global now prevents an error on process cleanup
+  as_.reset();
 
   return 0;
 }
