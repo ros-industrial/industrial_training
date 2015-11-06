@@ -7,7 +7,7 @@
 int main(int argc, char* argv[])
 {
     // This must be called before anything else ROS-related 
-    ros::init(argc, argv, "simple_node");
+    ros::init(argc, argv, "lesson_simple_node");
 
     // Create a ROS node handle
     ros::NodeHandle node;
