@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<package>
+  <name>ur_kinematics</name>
+  <version>1.1.6</version>
+  <description>
+     Provides forward and inverse kinematics for Universal Robots designs.
+     See http://hdl.handle.net/1853/50782 for details.
+  </description>
+
+  <author email="kphawkins@gatech.edu">Kelsey Hawkins</author>
+  <maintainer email="aub@ipa.fhg.de">Alexander Bubeck</maintainer>
+  <maintainer email="kphawkins@gatech.edu">Kelsey Hawkins</maintainer>
+  <license>BSD</license>
+  <url type="website">http://wiki.ros.org/ur_kinematics</url>
+  <url type="bugtracker">https://github.com/ros-industrial/universal_robot/issues</url>
+  <url type="repository">https://github.com/ros-industrial/universal_robot</url>
+  
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>moveit_core</build_depend>
+  <build_depend>moveit_ros_planning</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>geometry_msgs</build_depend>
+  <build_depend>pluginlib</build_depend>
+  <build_depend>tf_conversions</build_depend>
+  <build_depend>boost</build_depend>
+
+  <run_depend>moveit_core</run_depend>
+  <run_depend>moveit_ros_planning</run_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>geometry_msgs</run_depend>
+  <run_depend>pluginlib</run_depend>
+  <run_depend>tf_conversions</run_depend>
+  <run_depend>boost</run_depend>
+
+  <export>
+    <moveit_core plugin="${prefix}/ur_moveit_plugins.xml"/>
+  </export>
+</package>

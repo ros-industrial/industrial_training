@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<library path="lib/libdescartes_moveit">
-  <class name="descartes_moveit/MoveitStateAdapter" type="descartes_moveit::MoveitStateAdapter" base_class_type="descartes_core::RobotModel">
-    <description>This is a robot model adapter for descartes</description>
-  </class>
-</library>
