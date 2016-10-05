@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<robot name="universal_robot">
+
+  <link name="base_link" />
+
+  <link name="table">
+    <visual>
+      <geometry>
+        <box size="0.6 .6 .05"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.6 .6 .05"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="base_to_table" type="fixed">
+    <parent link="base_link"/>
+    <child link="table"/>
+  </joint>
+</robot>
