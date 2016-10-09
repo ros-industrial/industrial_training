@@ -9,7 +9,6 @@ find_package(catkin REQUIRED COMPONENTS
   message_generation
   std_msgs
   geometry_msgs
-  tf
 )
 
 ## System dependencies are found with CMake's conventions
