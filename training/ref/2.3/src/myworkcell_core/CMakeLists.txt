@@ -6,7 +6,10 @@ project(myworkcell_core)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
-  fake_ar_publisher
+  message_generation
+  std_msgs
+  geometry_msgs
+  tf
 )
 
 ## System dependencies are found with CMake's conventions
@@ -43,12 +46,16 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
+add_message_files(
+  FILES
+  ARMarker.msg
+)
 
 ## Generate services in the 'srv' folder
-#add_service_files(
-#  FILES
-#  LocalizePart.srv
-#)
+add_service_files(
+  FILES
+  LocalizePart.srv
+)
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -58,6 +65,11 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate added messages and services with any dependencies listed here
+generate_messages(
+  DEPENDENCIES
+  geometry_msgs
+  std_msgs  # Or other packages containing msgs
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -91,7 +103,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES myworkcell_node
-  CATKIN_DEPENDS roscpp fake_ar_publisher
+  CATKIN_DEPENDS roscpp message_runtime
 #  DEPENDS system_lib
 )
 
@@ -118,13 +130,17 @@ include_directories(
 
 ## Declare a C++ executable
 add_executable(vision_node src/vision_node.cpp)
+add_executable(myworkcell_node src/myworkcell_node.cpp)
+add_executable(fake_ar_publisher src/fake_ar_publisher.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-add_dependencies(vision_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies(myworkcell_node_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(vision_node ${catkin_LIBRARIES})
+target_link_libraries(myworkcell_node ${catkin_LIBRARIES})
+target_link_libraries(fake_ar_publisher ${catkin_LIBRARIES})
 
 #############
 ## Install ##

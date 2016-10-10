@@ -6,9 +6,6 @@ project(myworkcell_core)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
-  fake_ar_publisher
-  geometry_msgs
-  message_generation
 )
 
 ## System dependencies are found with CMake's conventions
@@ -45,13 +42,18 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-
+# add_message_files(
+#   FILES
+#   Message1.msg
+#   Message2.msg
+# )
 
 ## Generate services in the 'srv' folder
-add_service_files(
-  FILES
-  LocalizePart.srv
-)
+# add_service_files(
+#   FILES
+#   Service1.srv
+#   Service2.srv
+# )
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -61,11 +63,10 @@ add_service_files(
 # )
 
 ## Generate added messages and services with any dependencies listed here
-generate_messages(
-  DEPENDENCIES
-  geometry_msgs
-  std_msgs  # Or other packages containing msgs
-)
+# generate_messages(
+#   DEPENDENCIES
+#   std_msgs  # Or other packages containing msgs
+# )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -99,7 +100,7 @@ generate_messages(
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES myworkcell_node
-  CATKIN_DEPENDS roscpp fake_ar_publisher message_runtime
+#  CATKIN_DEPENDS roscpp
 #  DEPENDS system_lib
 )
 
@@ -126,18 +127,15 @@ include_directories(
 
 ## Declare a C++ executable
 add_executable(vision_node src/vision_node.cpp)
-add_executable(myworkcell_node src/myworkcell_node.cpp)
-
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-add_dependencies(myworkcell_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(vision_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies(myworkcell_node_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(vision_node ${catkin_LIBRARIES})
-target_link_libraries(myworkcell_node ${catkin_LIBRARIES})
-
+target_link_libraries(vision_node
+  ${catkin_LIBRARIES}
+)
 
 #############
 ## Install ##

@@ -22,7 +22,20 @@ public:
     myworkcell_core::ARMarkerConstPtr p = last_msg_;  
     if (!p) return false;
 
-    res.pose = p->pose.pose;
+    // Use TF to look up transform between request base frame and the camera
+    tf::StampedTransform world_to_cam;
+    listener_.lookupTransform("world", p->header.frame_id, ros::Time(0), world_to_cam);
+
+    // Use the AR pose data to a transform
+    tf::Transform cam_to_target;
+    tf::poseMsgToTF(p->pose.pose, cam_to_target);
+
+    // Compute the transform world -> target
+    tf::Transform world_to_target = world_to_cam * cam_to_target;
+
+    tf::poseTFToMsg(world_to_target, res.pose);
+    ROS_WARN_STREAM("TF: " << res.pose);
+    ROS_ERROR_STREAM("AR: " << *p);
     return true;
   }
 
@@ -31,6 +44,7 @@ public:
     last_msg_ = msg;
   }
 
+  tf::TransformListener listener_;
   ros::Subscriber ar_sub_;
   ros::ServiceServer server_;
   myworkcell_core::ARMarkerConstPtr last_msg_;
