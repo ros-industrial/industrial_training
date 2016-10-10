@@ -1,4 +1,4 @@
-<?xml version="1.0" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <robot name="myworkcell" xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:include filename="$(find ur_description)/urdf/ur5.urdf.xacro"/>
   <xacro:include filename="simple_urdf.xacro"/>
