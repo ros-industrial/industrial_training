@@ -32,6 +32,7 @@ int main(int argc, char** argv)
 {
   ros::init(argc, argv, "myworkcell_node");
   ros::NodeHandle nh;
+  ros::NodeHandle pnh ("~");
   ros::AsyncSpinner async_spinner (1);
 
   // Hello World
@@ -39,7 +40,7 @@ int main(int argc, char** argv)
 
   // Load parameters
   std::string base_frame; // for localizing the part
-  nh.param<std::string>("base_frame", base_frame, "world");
+  pnh.param<std::string>("base_frame", base_frame, "world");
 
   ScanNPlan app (nh);
 
