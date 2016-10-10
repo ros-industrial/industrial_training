@@ -1,8 +1,8 @@
 moveit_setup_assistant_config:
   URDF:
     package: myworkcell_support
-    relative_path: urdf/model.urdf
+    relative_path: urdf/workcell.xacro
   SRDF:
     relative_path: config/myworkcell.srdf
   CONFIG:
-    generated_timestamp: 1469727035
+    generated_timestamp: 1476064814
