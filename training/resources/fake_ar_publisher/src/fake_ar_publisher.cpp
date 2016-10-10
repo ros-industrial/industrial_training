@@ -67,9 +67,9 @@ int main(int argc, char **argv)
 
   // init pose
   pose().orientation.w = 1.0; // facing straight up
-  pnh.param<double>("x_pos", pose().position.x, 0.5);
+  pnh.param<double>("x_pos", pose().position.x, 0.0);
   pnh.param<double>("y_pos", pose().position.y, 0.0);
-  pnh.param<double>("z_pos", pose().position.z, 0.0);
+  pnh.param<double>("z_pos", pose().position.z, 0.5);
   
   pnh.param<std::string>("camera_frame", camera_frame_name(), "camera_frame");
 

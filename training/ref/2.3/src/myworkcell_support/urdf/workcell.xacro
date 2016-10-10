@@ -34,4 +34,13 @@
     <child link="${arm_prefix}base_link"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
+
+  <link name="camera_frame"/>
+
+  <joint name="world_to_camera" type="fixed">
+    <parent link="world"/>
+    <child link="camera_frame"/>
+    <origin xyz="0 0 1.0" rpy="0 1.571 0" />
+  </joint>
+
 </robot>

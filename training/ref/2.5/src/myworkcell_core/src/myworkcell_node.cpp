@@ -2,21 +2,6 @@
 #include <myworkcell_core/LocalizePart.h>
 #include <moveit/move_group_interface/move_group.h>
 
-static geometry_msgs::Pose transformPose(const geometry_msgs::Pose& in)
-{
-  tf::Transform in_world;
-  tf::poseMsgToTF(in, in_world);
-
-  tf::Quaternion flip_z (tf::Vector3(1, 0, 0), M_PI);
-  tf::Transform flip (flip_z);
-
-  in_world = in_world * flip;
-
-  geometry_msgs::Pose msg;
-  tf::poseTFToMsg(in_world, msg);
-  return msg;
-}
-
 class ScanNPlan
 {
 public:
@@ -36,8 +21,6 @@ public:
       return;
     }
     ROS_INFO_STREAM("part localized: " << srv.response);
-
-    srv.response.pose = transformPose(srv.response.pose);
 
     // Plan for robot to move to part    
     group_.setPoseTarget(srv.response.pose);
