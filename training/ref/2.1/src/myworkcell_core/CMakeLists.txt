@@ -7,6 +7,7 @@ project(myworkcell_core)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   message_generation
+  fake_ar_publisher
   std_msgs
   geometry_msgs
 )
@@ -43,12 +44,6 @@ find_package(catkin REQUIRED COMPONENTS
 ##     and list every .msg/.srv/.action file to be processed
 ##   * uncomment the generate_messages entry below
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
-
-## Generate messages in the 'msg' folder
-add_message_files(
-  FILES
-  ARMarker.msg
-)
 
 ## Generate services in the 'srv' folder
 add_service_files(
@@ -102,7 +97,7 @@ generate_messages(
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES myworkcell_node
-  CATKIN_DEPENDS roscpp message_runtime
+  CATKIN_DEPENDS roscpp fake_ar_publisher message_runtime
 #  DEPENDS system_lib
 )
 
@@ -130,16 +125,15 @@ include_directories(
 ## Declare a C++ executable
 add_executable(vision_node src/vision_node.cpp)
 add_executable(myworkcell_node src/myworkcell_node.cpp)
-add_executable(fake_ar_publisher src/fake_ar_publisher.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-# add_dependencies(myworkcell_node_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(myworkcell_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(vision_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(vision_node ${catkin_LIBRARIES})
 target_link_libraries(myworkcell_node ${catkin_LIBRARIES})
-target_link_libraries(fake_ar_publisher ${catkin_LIBRARIES})
 
 #############
 ## Install ##

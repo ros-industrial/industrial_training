@@ -2,16 +2,14 @@
 #include <std_msgs/String.h>
 #include <myworkcell_core/LocalizePart.h>
 #include <tf/transform_listener.h>
-#include <myworkcell_core/ARMarker.h>
-#include <string>
+#include <fake_ar_publisher/ARMarker.h>
 
 class Localizer
 {
 public:
-  Localizer(ros::NodeHandle& nh_in)
+  Localizer(ros::NodeHandle& nh)
   {
-    nh = nh_in;
-    ar_sub_ = nh.subscribe<myworkcell_core::ARMarker>("ar_pose_marker", 1, 
+    ar_sub_ = nh.subscribe<fake_ar_publisher::ARMarker>("ar_pose_marker", 1, 
       &Localizer::visionCallback, this);
 
     server_ = nh.advertiseService("localize_part", &Localizer::localizePart, this);
@@ -21,12 +19,12 @@ public:
                     myworkcell_core::LocalizePart::Response& res)
   {
     // Read last message
-    myworkcell_core::ARMarkerConstPtr p = last_msg_;  
+    fake_ar_publisher::ARMarkerConstPtr p = last_msg_;  
     if (!p) return false;
 
-    // Use TF to look up transform between request base frame and the camera
+     // Use TF to look up transform between request base frame and the camera
     tf::StampedTransform world_to_cam;
-    listener_.lookupTransform(req.base_frame, p->header.frame_id, ros::Time(0), world_to_cam);
+    listener_.lookupTransform("world", p->header.frame_id, ros::Time(0), world_to_cam);
 
     // Use the AR pose data to a transform
     tf::Transform cam_to_target;
@@ -35,22 +33,20 @@ public:
     // Compute the transform world -> target
     tf::Transform world_to_target = world_to_cam * cam_to_target;
 
+    // Place result into the service result 
     tf::poseTFToMsg(world_to_target, res.pose);
-    ROS_WARN_STREAM("TF: " << res.pose);
-    ROS_ERROR_STREAM("AR: " << *p);
     return true;
   }
 
-  void visionCallback(const myworkcell_core::ARMarkerConstPtr& msg)
+  void visionCallback(const fake_ar_publisher::ARMarkerConstPtr& msg)
   {
     last_msg_ = msg;
   }
 
-  tf::TransformListener listener_;
   ros::Subscriber ar_sub_;
   ros::ServiceServer server_;
-  myworkcell_core::ARMarkerConstPtr last_msg_;
-  ros::NodeHandle nh;
+  fake_ar_publisher::ARMarkerConstPtr last_msg_;
+  tf::TransformListener listener_;
 };
 
 int main(int argc, char** argv)
