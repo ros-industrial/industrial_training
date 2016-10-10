@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
-<robot name="table">
+<robot name="workcell">
 
-  <link name="table_base" />
+  <link name="world" />
 
   <link name="table">
     <visual>
@@ -17,7 +17,9 @@
   </link>
 
   <joint name="base_to_table" type="fixed">
-    <parent link="table_base"/>
+    <parent link="world"/>
     <child link="table"/>
+    <origin xyz="0 0 0.5" rpy="0 0 0"/>
   </joint>
+
 </robot>
