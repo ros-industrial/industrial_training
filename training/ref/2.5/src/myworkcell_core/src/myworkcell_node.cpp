@@ -25,19 +25,18 @@ public:
     vision_client_ = nh.serviceClient<myworkcell_core::LocalizePart>("localize_part");
   }
 
-  void start()
+  void start(const std::string& base_frame)
   {
     ROS_INFO("Attempting to localize part");
     // Localize the part
     myworkcell_core::LocalizePart srv;
+    srv.request.base_frame = base_frame;
     if (!vision_client_.call(srv))
     {
       ROS_ERROR("Could not localize part");
       return;
     }
     ROS_INFO_STREAM("part localized: " << srv.response);
-
-    srv.response.pose = transformPose(srv.response.pose);
 
     // Plan for robot to move to part    
     group_.setPoseTarget(srv.response.pose);
@@ -55,17 +54,24 @@ int main(int argc, char** argv)
 {
   ros::init(argc, argv, "myworkcell_node");
   ros::NodeHandle nh;
+  ros::NodeHandle pnh ("~");
   ros::AsyncSpinner async_spinner (1);
 
   // Hello World
   ROS_INFO("Hello, World from a ROS Node");
 
+  std::string base_frame;
+  pnh.param<std::string>("base_frame", base_frame, "world");
+  
+  ROS_INFO_STREAM("Using user base_frame: " << base_frame);
   ScanNPlan app (nh);
 
+  // Give time for vision node to start
+  // Prefer something like service::waitForExist() instead
   ros::Duration(.5).sleep();
 
   async_spinner.start();
-  app.start();
+  app.start(base_frame);
 
   ros::spin();
 }
