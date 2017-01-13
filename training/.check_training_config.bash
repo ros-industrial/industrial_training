@@ -59,13 +59,6 @@ function check_bashrc() {
   print_result $([ -v ROSI_TRAINING ])
 }
 
-function build_supplements() {
-  echo "Building supplements directory... "
-  printf "  - %-30s" "catkin_make:"
-  DIR=$(dirname "${BASH_SOURCE[0]}")
-  print_result $(cd $DIR/supplements && catkin_make 2> /dev/null)
-}
-
 #---------------------------------------
 # run the actual tests
 #---------------------------------------
@@ -74,5 +67,4 @@ check_internet
 check_repo
 check_debs
 check_bashrc
-build_supplements
 
