@@ -4,3 +4,4 @@ default_warehouse_mongo_db
 build/
 devel/
 doc/
+*.workspace.user
