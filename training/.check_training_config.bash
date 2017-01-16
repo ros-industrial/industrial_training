@@ -44,11 +44,13 @@ function check_deb() {
 function check_debs() {
   echo "Checking debian packages... "
   check_deb eclipse-cdt
+  check_deb doxygen
   check_deb meld
   check_deb ros-indigo-desktop-full
   check_deb ros-indigo-industrial-core
   check_deb ros-indigo-moveit-full
   check_deb ros-indigo-universal-robot
+  check_deb ros-indigo-rosdoc-lite
 }
 
 function check_bashrc() {

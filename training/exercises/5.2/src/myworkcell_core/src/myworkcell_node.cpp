@@ -2,7 +2,10 @@
 #include <myworkcell_core/LocalizePart.h>
 #include <myworkcell_core/PlanCartesianPath.h>
 #include <moveit/move_group_interface/move_group.h>
-
+/**
+* @brief The ScanNPlan class is a client of the vision and path plan servers.  The ScanNPLan class takes
+* these services, computes transforms and published commands to the robot.
+*/
 class ScanNPlan
 {
 public:
@@ -16,9 +19,13 @@ public:
 
     nh.param<std::string>("ref_frame_param", ref_frame, "world");
   }
-
+/**
+* @brief transformPose performs simple coordinate transformation of a Pose from the reference frame to the world frame
+* @param in is the Pose of the object with respect to the base frame
+* @return transformed pose with respect to the world frame in geometry_msgs::Pose message format
+*/
 geometry_msgs::Pose transformPose(const geometry_msgs::Pose& in) const
-  {
+{
     tf::Transform in_world;
     tf::poseMsgToTF(in, in_world);
 
@@ -30,10 +37,14 @@ geometry_msgs::Pose transformPose(const geometry_msgs::Pose& in) const
     geometry_msgs::Pose msg;
     tf::poseTFToMsg(in_world, msg);
     return msg;
-  }
-
-  void start()
-  {
+}
+/**
+ * @brief start performs the functionality of the node.  First, start transforms the pose from the reference frame
+ * into the world frame.  Second, start sends the new pose to the planner to generate a trajectory.  Lastly, start
+ * recieves the trajectory and sends it to the robot for execution.
+ */
+void start()
+{
     ROS_INFO("Attempting to localize part");
     // Localize the part
     myworkcell_core::LocalizePart srv;
@@ -69,10 +80,11 @@ geometry_msgs::Pose transformPose(const geometry_msgs::Pose& in) const
     ROS_INFO("Got cart path, executing");
     pub_.publish(cartesian_srv.response.trajectory);
     ROS_INFO("Done");
-  }
+}
 
 private:
   // Planning components
+
   ros::ServiceClient vision_client_;
   ros::ServiceClient cartesian_client_;
   ros::Publisher pub_;
@@ -81,7 +93,13 @@ private:
   ros::NodeHandle nh;
   moveit::planning_interface::MoveGroup group_;
 };
-
+/**
+ * @brief main sets up the node, ScanNPlan class and starts the spinner
+ * @param argc ROS uses this to parse remapping arguments from the command line.
+ * @param argv ROS uses this to parse remapping arguments from the command line.
+ * @TODO add return
+ * @return no return
+ */
 int main(int argc, char** argv)
 {
   ros::init(argc, argv, "myworkcell_node");
@@ -99,4 +117,5 @@ int main(int argc, char** argv)
   app.start();
 
   ros::spin();
+
 }
