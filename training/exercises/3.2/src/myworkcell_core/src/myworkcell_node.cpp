@@ -31,6 +31,7 @@ int main(int argc, char** argv)
 {
   ros::init(argc, argv, "myworkcell_node");
   ros::NodeHandle nh;
+  ros::AsyncSpinner async_spinner (1);
 
   // Hello World
   ROS_INFO("Hello, World from a ROS Node");
@@ -39,6 +40,7 @@ int main(int argc, char** argv)
 
   ros::Duration(.5).sleep();
 
+  async_spinner.start();
   app.start();
 
   ros::spin();

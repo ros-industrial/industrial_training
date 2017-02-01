@@ -91,13 +91,13 @@ else
 fi
 }   #end training_unit()
 
-function training_ref {
+function training_exercises {
 if [ $# -ne 1 ]; then
   echo "Usage: $FUNCNAME UNIT"
 else
-  set_training_unit $1 ref
+  set_training_unit $1 exercises
 fi
-}   #end training_ref()
+}   #end training_exercises()
 
 function training_orig {
 if [ $# -ne 1 ]; then

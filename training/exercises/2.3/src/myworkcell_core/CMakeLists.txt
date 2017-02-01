@@ -10,7 +10,6 @@ find_package(catkin REQUIRED COMPONENTS
   fake_ar_publisher
   std_msgs
   geometry_msgs
-  tf
 )
 
 ## System dependencies are found with CMake's conventions
@@ -98,7 +97,7 @@ generate_messages(
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES myworkcell_node
-  CATKIN_DEPENDS roscpp fake_ar_publisher message_runtime tf
+  CATKIN_DEPENDS roscpp fake_ar_publisher message_runtime
 #  DEPENDS system_lib
 )
 
