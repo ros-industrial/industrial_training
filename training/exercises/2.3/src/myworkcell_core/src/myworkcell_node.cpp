@@ -14,7 +14,7 @@ public:
     ROS_INFO("Attempting to localize part");
     // Localize the part
     myworkcell_core::LocalizePart srv;
-    srv.base_frame = base_frame;
+    srv.request.base_frame = base_frame;
     if (!vision_client_.call(srv))
     {
       ROS_ERROR("Could not localize part");
