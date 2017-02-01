@@ -13,7 +13,6 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   tf
   moveit_ros_planning_interface
-  roslint
 )
 
 add_message_files(
@@ -51,5 +50,3 @@ target_link_libraries(vision_node ${catkin_LIBRARIES})
 target_link_libraries(myworkcell_node ${catkin_LIBRARIES})
 target_link_libraries(fake_ar_publisher ${catkin_LIBRARIES})
 target_link_libraries(descartes_node ${catkin_LIBRARIES})
-
-roslint_cpp()
