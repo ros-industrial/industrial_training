@@ -1,5 +1,5 @@
 #include <ros/ros.h>
-#include "myworkcell_core/PlanCartesianPath.h"
+#include <myworkcell_core/PlanCartesianPath.h>
 
 #include <ur5_demo_descartes/ur5_robot_model.h>
 #include <descartes_planner/dense_planner.h>
