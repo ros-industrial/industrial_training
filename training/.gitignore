@@ -1,7 +1,0 @@
-.training_unit
-catkin_ws/
-devel/
-build/
-logs/
-.catkin_tools/
-*.workspace
