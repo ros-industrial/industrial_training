@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Configured for ros-kinetic
+
 #=======================================================================
 # verify that PC configuration matches requirements for training class
 #=======================================================================
@@ -28,7 +30,7 @@ function check_repo() {
   print_result $(cd $DIR && git status &> /dev/null)
   printf "  - %-30s" "active branch:"
   ACTIVE_BRANCH=$(cd $DIR && git rev-parse --abbrev-ref HEAD)
-  print_result [ $ACTIVE_BRANCH  == "indigo-devel" ]
+  print_result [ $ACTIVE_BRANCH  == "kinetic-devel" ]
   printf "  - %-30s" "repo version:"
   REMOTE_GIT=$(git ls-remote -q http://github.com/ros-industrial/industrial_training.git indigo-devel 2> /dev/null | cut -c1-6)
   LOCAL_GIT=$(cd $DIR && git rev-parse HEAD | cut -c1-6)
@@ -43,22 +45,43 @@ function check_deb() {
 
 function check_debs() {
   echo "Checking debian packages... "
-  check_deb eclipse-cdt
-  check_deb doxygen
   check_deb meld
-  check_deb ros-indigo-desktop-full
-  check_deb ros-indigo-industrial-core
-  check_deb ros-indigo-moveit-full
-  check_deb ros-indigo-universal-robot
-  check_deb ros-indigo-rosdoc-lite
+  check_deb ros-kinetic-desktop-full
+  check_deb ros-kinetic-moveit
 }
 
 function check_bashrc() {
   echo "Checking .bashrc... "
-  printf "  - %-30s" "\$ROS_DISTRO:"
-  print_result $([ $ROS_DISTRO == "indigo" ])
+  printf "  - %-30s" "\$ROS_ROOT:"
+  if [ -z ${ROS_ROOT+x} ]; then
+	print_result $(false)
+  else
+	print_result $([ $ROS_ROOT == "/opt/ros/kinetic/share/ros" ])
+  fi
   printf "  - %-30s" "\$ROSI_TRAINING:"
-  print_result $([ -v ROSI_TRAINING ])
+  if [ -z ${ROSI_TRAINING+x} ]; then
+	print_result $(false)
+  else
+	print_result $([ -v ROSI_TRAINING ])
+  fi
+  
+}
+
+function build_supplements() {
+  echo "Building supplements directory... "
+  printf "  - %-30s" "catkin_make:"
+  DIR=$(dirname "${BASH_SOURCE[0]}")
+  print_result $(cd $DIR/supplements && catkin_make 2> /dev/null)
+}
+
+function check_qt() {
+  echo "Checking IDE... "
+  printf "  - %-30s" "QT 5.7.0:"
+  if [ -x $HOME/Qt5.7.0/Tools/QtCreator/bin/qtcreator ]; then
+	print_result $(true)
+  else 
+	print_result $(false)
+  fi
 }
 
 #---------------------------------------
@@ -69,4 +92,4 @@ check_internet
 check_repo
 check_debs
 check_bashrc
-
+check_qt
