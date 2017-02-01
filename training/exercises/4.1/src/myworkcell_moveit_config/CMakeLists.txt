@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(myworkcell_moveit_config)
-
+add_definitions(-std=c++11)
 find_package(catkin REQUIRED)
 
 catkin_package()
