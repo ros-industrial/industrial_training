@@ -5,3 +5,9 @@ build/
 devel/
 doc/
 *.workspace.user
+.training_unit
+catkin_ws/
+logs/
+.catkin_tools/
+*.workspace
+

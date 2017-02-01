@@ -2,7 +2,7 @@
 #include <myworkcell_core/LocalizePart.h>
 #include <myworkcell_core/PlanCartesianPath.h>
 #include <moveit/move_group_interface/move_group.h>
-#include <myworkcell_core/myworkcell_core.h>>
+#include <myworkcell_core/myworkcell_node.h>>
 /**
 * @brief The ScanNPlan class is a client of the vision and path plan servers.  The ScanNPLan class takes
 * these services, computes transforms and published commands to the robot.
