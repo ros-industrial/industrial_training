@@ -32,7 +32,7 @@ function check_repo() {
   ACTIVE_BRANCH=$(cd $DIR && git rev-parse --abbrev-ref HEAD)
   print_result [ $ACTIVE_BRANCH  == "kinetic-devel" ]
   printf "  - %-30s" "repo version:"
-  REMOTE_GIT=$(git ls-remote -q http://github.com/ros-industrial/industrial_training.git indigo-devel 2> /dev/null | cut -c1-6)
+  REMOTE_GIT=$(git ls-remote -q http://github.com/AustinDeric/industrial_training.git kinetic-devel 2> /dev/null | cut -c1-6)
   LOCAL_GIT=$(cd $DIR && git rev-parse HEAD | cut -c1-6)
   print_result $([ "$REMOTE_GIT" == "$LOCAL_GIT" ])
   [ "$REMOTE_GIT" != "$LOCAL_GIT" ] && printf "      remote: %s   local: %s\n" "$REMOTE_GIT" "$LOCAL_GIT"
