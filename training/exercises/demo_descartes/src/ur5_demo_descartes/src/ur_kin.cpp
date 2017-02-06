@@ -310,7 +310,7 @@ namespace ur_kinematics {
 
 
 #define IKFAST_HAS_LIBRARY
-#include <ur_kinematics/ikfast.h>
+#include <ur5_demo_descartes/ikfast.h>
 using namespace ikfast;
 
 // check if the included ikfast version matches what this file was compiled with

@@ -1,0 +1,18 @@
+/**
+\mainpage
+\htmlinclude manifest.html
+
+\b descartes_trajectory provides reference implementations of descartes_core::TrajectoryPt for common use cases.
+
+<!-- 
+Provide an overview of your package.
+-->
+
+
+\section codeapi Code API
+The reference implementations are:
+- descartes_trajectory::CartTrajectoryPt : A trajectory point representing a 6D cartesian pose, possibly with some tolerances. Points in cartesian space are sampled and then expanded into (possibly many) joint solutions using descartes_core::RobotModel.
+- descartes_trajectory::JointTrajectoryPt : A trajectory point representing the specification of the position of all active joints on the robot, optionally with tolerances. 
+- descartes_trajectory::AxialSymmetricPt : A specialization of descartes_trajectory::CartTrajectoryPt where all tolerances are zero except for a given rotation axis which is allowed to rotate freely. A user may specify a nominal pose for the end-effector and an axis (X_AXIS, Y_AXIS, or Z_AXIS) representing the axis of the nominal pose about which to search for solutions.
+
+*/
