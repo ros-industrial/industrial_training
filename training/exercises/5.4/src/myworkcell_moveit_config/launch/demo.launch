@@ -8,6 +8,8 @@
   <!-- By default, we are not in debug mode -->
   <arg name="debug" default="false" />
 
+  <arg name="rviz" default="true"/>
+
   <!-- Load the URDF, SRDF and other .yaml configuration files on the param server -->
   <include file="$(find myworkcell_moveit_config)/launch/planning_context.launch">
     <arg name="load_robot_description" value="true"/>
@@ -34,7 +36,7 @@
   </include>
 
   <!-- Run Rviz and load the default config to see the state of the move_group node -->
-  <include file="$(find myworkcell_moveit_config)/launch/moveit_rviz.launch">
+  <include if="$(arg rviz)" file="$(find myworkcell_moveit_config)/launch/moveit_rviz.launch">
     <arg name="config" value="true"/>
     <arg name="debug" value="$(arg debug)"/>
   </include>

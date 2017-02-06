@@ -4,14 +4,14 @@ stomp/manipulator_rail:
     num_timesteps: 60
     num_iterations: 40
     num_iterations_after_valid: 0    
-    num_rollouts: 20
-    max_rollouts: 20 
+    num_rollouts: 30
+    max_rollouts: 30 
     initialization_method: 1 #[1 : LINEAR_INTERPOLATION, 2 : CUBIC_POLYNOMIAL, 3 : MININUM_CONTROL_COST
     control_cost_weight: 0.0
   task:
     noise_generator:
       - class: stomp_moveit/NormalDistributionSampling
-        stddev: [0.1, 1.0, 1.0, 0.4, 0.4, 0.1, 0.1]
+        stddev: [0.05, 0.8, 1.0, 0.8, 0.4, 0.4, 0.4]
     cost_functions:
       - class: stomp_moveit/CollisionCheck
         collision_penalty: 1.0

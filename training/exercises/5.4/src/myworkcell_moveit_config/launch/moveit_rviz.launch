@@ -4,7 +4,7 @@
   <arg unless="$(arg debug)" name="launch_prefix" value="" />
   <arg     if="$(arg debug)" name="launch_prefix" value="gdb --ex run --args" />
 
-  <arg name="config" default="false" />
+  <arg name="config" default="true" />
   <arg unless="$(arg config)" name="command_args" value="" />
   <arg     if="$(arg config)" name="command_args" value="-d $(find myworkcell_moveit_config)/launch/moveit.rviz" />
   
