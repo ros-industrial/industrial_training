@@ -1,0 +1,4 @@
+- git: {local-name: descartes, uri: 'https://github.com/ros-industrial-consortium/descartes.git',
+    version: kinetic-devel}
+
+
