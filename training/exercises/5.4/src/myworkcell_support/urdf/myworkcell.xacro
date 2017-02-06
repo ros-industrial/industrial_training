@@ -1,0 +1,144 @@
+<?xml version="1.0" ?>
+<robot name="myworkcell" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:include filename="$(find ur_description)/urdf/ur5.urdf.xacro"/>
+
+  <!-- property list -->
+  <xacro:property name="arm_prefix" value=""/>
+  <xacro:property name="rail_cross_section" value="0.1"/>
+  <xacro:property name="workcell_width" value="5.0"/>
+  <xacro:property name="workcell_length" value="8.0"/>
+  <xacro:property name="workcell_height" value="3.0"/>
+  <xacro:property name="workcell_thickness" value="0.1"/>
+  <xacro:property name="workcell_z" value="-0.1"/>
+  <xacro:property name="cylinder_height" value="1.0"/>
+  <xacro:property name="cylinder_radius" value="0.06"/>
+
+  <!-- xacro definitions -->
+  <xacro:macro name="create_cylinder" params="link_name radius height">
+    <link name="${link_name}">
+      <visual>
+        <origin xyz="0 0 0"/>
+        <geometry>
+          <cylinder radius="${radius}" length="${height}"/>
+        </geometry>
+       <material name="cyan">
+         <color rgba="0 1.0 1.0 1.0"/>
+       </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0"/>
+        <geometry>
+          <cylinder radius="${radius}" length="${height}"/>
+        </geometry>
+       <material name="cyan">
+         <color rgba="0 1.0 1.0 1.0"/>
+       </material>
+      </collision>
+    </link>
+  </xacro:macro>
+
+  <!-- world link -->
+  <link name="world"/>
+
+  <!-- workcell objects -->
+
+  <material name="workcell_material">
+   <color rgba="0.8 0.8 0.8 1.0"/>
+  </material>
+
+  <link name="workcell_floor">
+    <visual><!-- bottom -->
+      <material name="workcell_material"/>
+      <origin xyz="0 0 0"/>
+      <geometry>
+        <box size="${workcell_length} ${workcell_width} ${workcell_thickness}"/>
+      </geometry>
+    </visual>
+    <collision><!-- bottom -->
+      <material name="workcell_material"/>
+      <origin xyz="0 0 0"/>
+      <geometry>
+        <box size="${workcell_length} ${workcell_width} ${workcell_thickness}"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- instantiating arm  --> 
+  <xacro:ur5_robot prefix="${arm_prefix}" joint_limited="true"/>
+
+
+  <!-- instantiating obstacles -->
+  <xacro:create_cylinder link_name="obstacle_cylinder1" radius="${cylinder_radius}" height="${cylinder_height}"/>
+  <xacro:create_cylinder link_name="obstacle_cylinder2" radius="${cylinder_radius}" height="${cylinder_height}"/>
+  <xacro:create_cylinder link_name="obstacle_cylinder3" radius="${cylinder_radius}" height="${cylinder_height}"/>
+  <xacro:create_cylinder link_name="obstacle_cylinder4" radius="${cylinder_radius}" height="${cylinder_height}"/>
+
+  <link name="rail">
+    <visual>
+      <origin xyz="0 0 0"/>
+      <geometry>
+        <box size="4 ${rail_cross_section} ${rail_cross_section}"/>
+      </geometry>
+      <material name="yellow">
+       <color rgba="1.0 1.0 0 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0"/>
+      <geometry>
+        <box size="4 0.1 0.1"/>
+      </geometry>
+      <material name="yellow">
+       <color rgba="1.0 1.0 0 1.0"/>
+      </material>
+    </collision>   
+  </link>
+
+  <!-- joint definitions -->
+  <joint name="world_to_floor" type="fixed">
+    <parent link="world"/>
+    <child link="workcell_floor"/>
+    <origin xyz="0 0 -${workcell_thickness}"/>
+  </joint>
+
+  <joint name="world_to_rails" type="fixed">
+    <parent link="world" />
+    <child link="rail" />
+    <origin xyz="0 0 ${rail_cross_section*0.5}"/>
+  </joint>
+
+  <joint name="world_to_cylinder1" type="fixed">
+    <parent link="world" />
+    <child link="obstacle_cylinder1" />
+    <origin xyz="0.2 0.4 ${0.5*cylinder_height}"/>
+  </joint>
+
+  <joint name="world_to_cylinder2" type="fixed">
+    <parent link="world" />
+    <child link="obstacle_cylinder2" />
+    <origin xyz="-0.2 -0.15 ${0.5*cylinder_height}"/>
+  </joint>
+
+  <joint name="world_to_cylinder3" type="fixed">
+    <parent link="world" />
+    <child link="obstacle_cylinder3" />
+    <origin xyz="-0.6 0.0 ${0.5*cylinder_height + 0.2}" rpy="1.57 0 0"/>
+  </joint>
+
+  <joint name="world_to_cylinder4" type="fixed">
+    <parent link="world" />
+    <child link="obstacle_cylinder4" />
+    <origin xyz="0.8 0.2 ${0.5*cylinder_height}"/>
+  </joint>
+
+  <joint name="rail_to_base" type="prismatic">
+    <parent link="rail" />
+    <child link="${arm_prefix}base_link" />
+    <origin xyz="0 0 ${0.5*rail_cross_section}" rpy="0 0 1.57"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.8" upper="1.8" effort="1" velocity="1"/>
+  </joint>
+  
+
+</robot>

@@ -1,0 +1,10 @@
+<launch>
+    <arg name="model" value="$(find myworkcell_support)/urdf/myworkcell.xacro"/>
+    <param name="robot_description" command="$(find xacro)/xacro.py $(arg model)" />
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+    <param name="use_gui" value="true" />
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" >        
+    </node>
+    <node name="rviz" pkg="rviz" type="rviz" args="--display-config $(find myworkcell_support)/rviz/myworkcell.rviz" />
+
+</launch>
