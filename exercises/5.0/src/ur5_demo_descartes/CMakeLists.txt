@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(ur5_demo_descartes)
-
+add_compile_options(-std=c++11)
 ## Find catkin macros and libraries
 find_package(catkin REQUIRED descartes_core descartes_moveit pluginlib moveit_core roscpp tf_conversions ur_kinematics)
 

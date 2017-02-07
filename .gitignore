@@ -10,4 +10,8 @@ catkin_ws/
 logs/
 .catkin_tools/
 *.workspace
+descartes/
+fake_ar_publisher/
+industrial_core/
+universal_robot/
 
