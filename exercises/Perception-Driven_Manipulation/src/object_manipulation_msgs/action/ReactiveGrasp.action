@@ -1,0 +1,45 @@
+# an action for reactive grasping
+# a reactive grasp starts from the current pose of the gripper and ends
+# at a desired grasp pose, presumably using the touch sensors along the way
+
+# the name of the arm being used
+string arm_name
+
+# the object to be grasped
+manipulation_msgs/GraspableObject target
+
+# the desired grasp pose for the hand
+geometry_msgs/PoseStamped final_grasp_pose
+
+# the joint trajectory to use for the approach (if available)
+# this trajectory is expected to start at the current pose of the gripper
+# and end at the desired grasp pose
+trajectory_msgs/JointTrajectory trajectory
+
+# the name of the support surface in the collision environment, if any
+string collision_support_surface_name
+
+# The internal posture of the hand for the pre-grasp
+# only positions are used
+sensor_msgs/JointState pre_grasp_posture
+
+# The internal posture of the hand for the grasp
+# positions and efforts are used
+sensor_msgs/JointState grasp_posture
+
+# The max contact force to use while grasping (<=0 to disable)
+float32 max_contact_force
+
+---
+
+# the result of the reactive grasp attempt
+
+ManipulationResult manipulation_result
+
+---
+
+# which phase the grasp is in
+
+ManipulationPhase manipulation_phase
+
+
