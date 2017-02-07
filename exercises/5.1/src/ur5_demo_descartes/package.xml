@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<package>
+  <name>ur5_demo_descartes</name>
+  <version>0.0.0</version>
+  <description>The ur5_demo_descartes package</description>
+
+  <maintainer email="jnicho@swri.org">Jorge Nicho</maintainer>
+  <license>Apache2.0</license>
+  <url type="website">https://github.com/ros-industrial/industrial_training</url>
+  <author email="jnicho@swri.org">Jorge Nicho</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>descartes_core</build_depend>
+  <build_depend>descartes_moveit</build_depend>
+  <build_depend>pluginlib</build_depend>
+  <build_depend>moveit_core</build_depend>
+  <build_depend>liblapack-dev</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>tf_conversions</build_depend>
+  <build_depend>ur_kinematics</build_depend>
+
+  <run_depend>descartes_core</run_depend>
+  <run_depend>descartes_moveit</run_depend>
+  <run_depend>pluginlib</run_depend>
+  <run_depend>moveit_core</run_depend>
+  <run_depend>liblapack-dev</run_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>tf_conversions</run_depend>
+  <run_depend>ur_kinematics</run_depend>
+
+  <export>
+    <descartes_core plugin="${prefix}/ur5_demo_descartes_plugins.xml"/>
+  </export>
+</package>

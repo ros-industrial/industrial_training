@@ -1,1 +1,2 @@
 - git: {local-name: universal_robot, uri: 'https://github.com/ros-industrial/universal_robot.git', version: kinetic-devel}
+- git: {local-name: fake_ar_publisher, uri: 'https://github.com/geoffreychiou/fake_ar_publisher.git', version: master}
