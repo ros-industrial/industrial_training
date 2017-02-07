@@ -74,14 +74,6 @@ function check_bashrc() {
   fi  
 }
 
-function check_source_pkgs() {
-  echo "Checking built ROS packages... "
-  printf "  - %-30s" "industrial_core:"
-  print_result $(type -p $HOME/ros_libs/devel/lib/industrial_robot_client/joint_trajectory_action 2> /dev/null)
-  printf "  - %-30s" "universal_robot:"
-  print_result $(type -p $HOME/ros_libs/devel/lib/libur10_moveit_plugin.so 2> /dev/null)
-}
-
 function check_qt() {
   echo "Checking IDE... "
   printf "  - %-30s" "QT 5.7.0:"
@@ -99,6 +91,5 @@ function check_qt() {
 check_internet
 check_repo
 check_debs
-check_source_pkgs
 check_bashrc
 check_qt
