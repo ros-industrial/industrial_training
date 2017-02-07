@@ -1,0 +1,4 @@
+src/ar_track_alvar
+src/ar_track_alvar_msgs
+src/household_objects_database_msgs
+src/manipulation_msgs
