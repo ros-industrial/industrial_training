@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package>
+  <name>myworkcell_support</name>
+  <version>0.0.0</version>
+  <description>The myworkcell_support package</description>
+  <maintainer email="jrgnichodevel@gmail.com">Jorge Nicho</maintainer>
+  <license>Apache2</license>
+  <author email="jrgnichodevel@gmail.com">Jorge Nicho</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>roscpp</build_depend>
+  <run_depend>roscpp</run_depend>
+
+
+  <!-- The export tag contains other, unspecified, tags -->
+  <export>
+  </export>
+</package>
