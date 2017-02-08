@@ -18,7 +18,7 @@ void DemoApplication::moveHome()
   //ROS_ERROR_STREAM("Task '"<<__FUNCTION__ <<"' is incomplete. Exiting"); exit(-1);
 
   // creating move group interface for planning simple moves
-  move_group_interface::MoveGroup move_group(config_.group_name);
+  moveit::planning_interface::MoveGroup move_group(config_.group_name);
   move_group.setPlannerId(PLANNER_ID);
 
   // setting home position as target

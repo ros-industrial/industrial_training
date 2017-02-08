@@ -4,7 +4,7 @@
 
   <!-- Flag indicating whether MoveIt! is allowed to load/unload  or switch controllers -->
   <arg name="moveit_manage_controllers" default="true"/>
-  <param name="moveit_manage_controllers" value="$(arg moveit_manage_controllers)"/>
+  <param name="moveit_manage_controllers" value="$(arg moveit_manage_controllers)" />
 
   <!-- When determining the expected duration of a trajectory, this multiplicative factor is applied to get the allowed duration of execution -->
   <param name="allowed_execution_duration_scaling" value="1.2"/> <!-- default 1.2 -->
