@@ -20,7 +20,7 @@ void DemoApplication::runPath(const DescartesTrajectory& path)
   //ROS_ERROR_STREAM("Task '"<<__FUNCTION__ <<"' is incomplete. Exiting"); exit(-1);
 
   // creating move group to move the arm in free space
-  move_group_interface::MoveGroup move_group(config_.group_name);
+  moveit::planning_interface::MoveGroup move_group(config_.group_name);
   move_group.setPlannerId(PLANNER_ID);
 
   // creating goal joint pose to start of the path
