@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(plan_and_run)
-
+add_definitions(-std=c++11)
 ## Find catkin macros and libraries
 find_package(catkin REQUIRED COMPONENTS
   descartes_core
