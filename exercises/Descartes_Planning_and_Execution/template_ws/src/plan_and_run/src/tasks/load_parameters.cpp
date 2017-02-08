@@ -16,7 +16,7 @@ namespace plan_and_run
 
 void DemoApplication::loadParameters()
 {
-  //ROS_ERROR_STREAM("Task '"<<__FUNCTION__ <<"' is incomplete. Exiting"); exit(-1);
+  ROS_ERROR_STREAM("Task '"<<__FUNCTION__ <<"' is incomplete. Exiting"); exit(-1);
 
 
 
@@ -26,8 +26,7 @@ void DemoApplication::loadParameters()
    * Hint:
    * - Replace the string in ph below with "~" to make it a private node.
    */
-  //ros::NodeHandle ph("[ COMPLETE HERE ]");
-  ros::NodeHandle ph("~");
+  ros::NodeHandle ph("[ COMPLETE HERE ]");
 
   // creating handle with public scope
   ros::NodeHandle nh;
@@ -41,13 +40,11 @@ void DemoApplication::loadParameters()
    */
   if(ph.getParam("group_name",config_.group_name) &&
 
-      //ph.getParam("[ COMPLETE HERE ]",config_.base_link) &&
-      ph.getParam("tip_link",config_.tip_link) &&
+      ph.getParam("[ COMPLETE HERE ]",config_.tip_link) &&
 
       ph.getParam("base_link",config_.base_link) &&
 
-      //ph.getParam("[ COMPLETE HERE ]",config_.base_link) &&
-      ph.getParam("world_frame",config_.world_frame) &&
+      ph.getParam("[ COMPLETE HERE ]",config_.world_frame) &&
 
       ph.getParam("trajectory/time_delay",config_.time_delay) &&
       ph.getParam("trajectory/foci_distance",config_.foci_distance) &&

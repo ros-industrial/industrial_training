@@ -12,7 +12,7 @@ namespace plan_and_run
 
 void DemoApplication::initRos()
 {
-  //ROS_ERROR_STREAM("Task '"<<__FUNCTION__ <<"' is incomplete. Exiting"); exit(-1);
+  ROS_ERROR_STREAM("Task '"<<__FUNCTION__ <<"' is incomplete. Exiting"); exit(-1);
 
   // creating publisher for trajectory visualization
   marker_publisher_  = nh_.advertise<visualization_msgs::MarkerArray>(VISUALIZE_TRAJECTORY_TOPIC,1,true);
@@ -25,8 +25,7 @@ void DemoApplication::initRos()
    * - Enter the service type moveit_msgs::ExecuteKnownTrajectory in between the "< >" arrow brackets of
    *   the "nh_.serviceClient" function call.
    */
-  //moveit_run_path_client_;/* = nh_.serviceClient< [ COMPLETE HERE ] >(EXECUTE_TRAJECTORY_SERVICE,true); */
-  moveit_run_path_client_ = nh_.serviceClient<moveit_msgs::ExecuteKnownTrajectory>(EXECUTE_TRAJECTORY_SERVICE,true);
+  moveit_run_path_client_;/* = nh_.serviceClient< [ COMPLETE HERE ] >(EXECUTE_TRAJECTORY_SERVICE,true); */
 
   // Establishing connection to server
   if(moveit_run_path_client_.waitForExistence(ros::Duration(SERVICE_TIMEOUT)))
