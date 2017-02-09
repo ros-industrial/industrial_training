@@ -9,8 +9,6 @@
   <xacro:include filename="$(find ur_description)/urdf/ur10.transmission.xacro" />
   <xacro:include filename="$(find ur_description)/urdf/ur10.gazebo.xacro" />
 
-  <property name="pi" value="3.14159265" />
-
   <!-- Inertia parameters -->
   <property name="base_mass" value="4.0" />  <!-- This mass might be incorrect -->
   <property name="shoulder_mass" value="7.778" />

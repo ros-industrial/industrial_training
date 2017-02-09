@@ -5,6 +5,7 @@
 	"#1" : Use first device found
 	"2@3" : Use device on USB bus 2, address 3
 	"2@0" : Use first device found on USB bus 2
+        use command "lsusb" to list us bus and devices
 	-->
 	<arg name="sensor_usb_bus" default="002"/>
 	<arg name="sensor_usb_device" default="000"/>
