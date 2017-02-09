@@ -1,21 +1,15 @@
 <?xml version="1.0" ?>
 <launch>
     <node pkg="rviz" type="rviz" name="rviz" args="-d $(find sensor_config)/rviz/sensor_config.rviz"/>
-    <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find robot_config)/urdf/ur5_workspace.xacro'"/>
+    <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find robot_config)/urdf/ur5.urdf.xacro'"/>
 
     <!-- publish the robot state (tf transforms) -->
      <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
 
     <!-- sensor setup -->
     <include file="$(find sensor_config)/launch/ur5_sensor_setup.launch"/>
-	
-    <!-- ar tag detection node -->
-    <arg name="marker_size" default="4.4" />
-    <arg name="max_new_marker_error" default="0.08" />
-    <arg name="max_track_error" default="0.2" />
-    <arg name="cam_image_topic" default="/kinect/depth_registered/points" />
-    <arg name="cam_info_topic" default="/kinect/rgb/camera_info" />
-    <arg name="output_frame" default="ar_tag" />
-    <node name="ar_track_alvar" pkg="ar_track_alvar" type="individualMarkers" respawn="false" output="screen" args="$(arg marker_size) $(arg max_new_marker_error) $(arg max_track_error) $(arg cam_image_topic) $(arg cam_info_topic) $(arg output_frame)" />
+
+    <!-- ar_track node setup -->
+    <include file="$(find sensor_config)/launch/ar_tracker_config.launch"/>
 
 </launch>

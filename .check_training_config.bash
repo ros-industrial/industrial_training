@@ -27,9 +27,8 @@ function fix_repo_version(){
   printf "      remote: %s   local: %s\n" "$REMOTE_GIT" "$LOCAL_GIT"
   cd $HOME/industrial_training
   git fetch -q https://github.com/ros-industrial/industrial_training.git
-  git checkout -q -f origin/kinetic-devel
-  git checkout -q -b kinetic-devel-origin
-  REMOTE_GIT=$(git ls-remote -q https://github.com/ros-industrial/industrial_training.git kinetic-devel 2> /dev/null | cut -c1-6)
+  git checkout -q -f origin/kinetic
+  REMOTE_GIT=$(git ls-remote -q https://github.com/ros-industrial/industrial_training.git kinetic 2> /dev/null | cut -c1-6)
   LOCAL_GIT=$(cd $DIR &&  git rev-parse HEAD | cut -c1-6)
   printf "      remote: %s   local: %s\n" "$REMOTE_GIT" "$LOCAL_GIT"
   printf "  - %-30s" "re-check repo version:"
@@ -43,9 +42,9 @@ function check_repo() {
   print_result $(cd $DIR && git status &> /dev/null)
   printf "  - %-30s" "active branch:"
   ACTIVE_BRANCH=$(cd $DIR && git rev-parse --abbrev-ref HEAD)
-  print_result [ $ACTIVE_BRANCH  == "kinetic-devel" ]
+  print_result [ $ACTIVE_BRANCH  == "kinetic" ]
   printf "  - %-30s" "repo version:"
-  REMOTE_GIT=$(git ls-remote -q https://github.com/ros-industrial/industrial_training.git kinetic-devel 2> /dev/null | cut -c1-6)
+  REMOTE_GIT=$(git ls-remote -q https://github.com/ros-industrial/industrial_training.git kinetic 2> /dev/null | cut -c1-6)
   LOCAL_GIT=$(cd $DIR && git rev-parse HEAD | cut -c1-6)
   print_result $([ "$REMOTE_GIT" == "$LOCAL_GIT" ])
   [ "$REMOTE_GIT" != "$LOCAL_GIT" ] && fix_repo_version
@@ -62,6 +61,16 @@ function check_debs() {
   check_deb meld
   check_deb ros-kinetic-desktop-full
   check_deb ros-kinetic-moveit
+  check_deb python-catkin-tools
+  check_deb qt57creator-plugin-ros
+  check_deb ros-kinetic-openni-launch
+  check_deb ros-kinetic-openni-camera
+  check_deb ros-kinetic-openni2-launch
+  check_deb ros-kinetic-openni2-launch
+  check_deb build-essential
+  check_deb libfontconfig1
+  check_deb mesa-common-dev
+  check_deb libglu1-mesa-dev
 }
 
 function check_bashrc() {
@@ -74,16 +83,6 @@ function check_bashrc() {
   fi  
 }
 
-function check_qt() {
-  echo "Checking IDE... "
-  printf "  - %-30s" "QT 5.7.0:"
-  if [ -x $HOME/Qt5.7.0/Tools/QtCreator/bin/qtcreator ]; then
-	print_result $(true)
-  else 
-	print_result $(false)
-  fi
-}
-
 #---------------------------------------
 # run the actual tests
 #---------------------------------------
@@ -92,4 +91,3 @@ check_internet
 check_repo
 check_debs
 check_bashrc
-check_qt
