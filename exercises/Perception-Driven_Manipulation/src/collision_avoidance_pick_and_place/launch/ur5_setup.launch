@@ -20,6 +20,7 @@
     <!-- robot interface (real robot) nodes -->
     <group unless="$(arg sim_gripper)">
         <!-- grasp action service for vacuum gripper -->
+        <remap from="set_io_state" to="set_io"/>
         <node pkg="robot_io" type="suction_gripper_action_server" name="gripper_action_server" output="screen"/>
         <param name="suction_on_output_channel" value="0"/>
         <param name="suction_check_output_channel" value="1"/>

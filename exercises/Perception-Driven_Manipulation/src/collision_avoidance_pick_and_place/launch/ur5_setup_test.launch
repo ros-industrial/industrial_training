@@ -13,7 +13,7 @@
   <node pkg="robot_io" type="simulated_grasp_action_server" name="gripper_action_server" output="screen"/>
 
   <!-- static frame publisher for simulation -->
-  <node pkg="tf" type="static_transform_publisher" name="world_to_tag" args="-0.8 0.2 0.17 0.785 0 0 world_frame ar_tag 100"/>
+  <node pkg="tf" type="static_transform_publisher" name="world_to_tag" args="-0.8 0.2 0.17 0.785 0 0 world_frame ar_marker_0 100"/>
 
   <!-- detection node (simulation with bag data) -->
 

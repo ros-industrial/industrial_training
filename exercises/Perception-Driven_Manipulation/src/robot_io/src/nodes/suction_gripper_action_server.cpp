@@ -159,6 +159,7 @@ private:
 
     ur_msgs::SetIO::Request req;
     ur_msgs::SetIO::Response res;
+    req.fun = req.FUN_SET_DIGITAL_OUT;
 
 	switch(gh.getGoal()->goal)
 	{

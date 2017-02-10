@@ -50,8 +50,8 @@
 
 	<!-- instantiating sensor definitions -->
 
-	<xacro:sensor_definitions prefix="${arm_prefix}" parent_link="ur5_stand" 
-		x_val="-0.981" y_val="0.190" z_val="1.015" pitch="1.145" yaw="0.035" roll="0.019" /> 
+        <xacro:sensor_definitions prefix="${arm_prefix}" parent_link="world_frame"
+                x_val="-1.0414" y_val="0" z_val="1.18745" pitch="1.57" yaw="0" roll="0" />
 	<!-- end of sensor definitions -->
 
 	<joint name="world_to_stand" type="fixed">
