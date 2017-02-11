@@ -102,7 +102,9 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES myworkcell_core
-  CATKIN_DEPENDS roscpp fake_ar_publisher
+ CATKIN_DEPENDS
+   roscpp
+   fake_ar_publisher
 #  DEPENDS system_lib
 )
 
@@ -132,7 +134,7 @@ add_executable(vision_node src/vision_node.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-# add_dependencies(myworkcell_core_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(vision_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(vision_node ${catkin_LIBRARIES})

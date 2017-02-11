@@ -40,10 +40,10 @@
   <!-- Use test_depend for packages you need only for testing: -->
   <!--   <test_depend>gtest</test_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
-  <build_depend>fake_ar_publisher</build_depend>
-  <run_depend>fake_ar_publisher</run_depend>
   <build_depend>roscpp</build_depend>
   <run_depend>roscpp</run_depend>
+  <build_depend>fake_ar_publisher</build_depend>
+  <run_depend>fake_ar_publisher</run_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->
