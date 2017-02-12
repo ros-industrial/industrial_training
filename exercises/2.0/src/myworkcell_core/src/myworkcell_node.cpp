@@ -27,18 +27,15 @@ private:
   ros::ServiceClient vision_client_;
 };
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
   ros::init(argc, argv, "myworkcell_node");
   ros::NodeHandle nh;
 
-  // Hello World
-  ROS_INFO("Hello, World from a ROS Node");
+  ROS_INFO("ScanNPlan node has been initialized");
 
-  ScanNPlan app (nh);
-
-  ros::Duration(.5).sleep();
-
+  ScanNPlan app(nh);
+  ros::Duration(.5).sleep();  // wait for the class to initialize
   app.start();
 
   ros::spin();
