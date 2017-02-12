@@ -5,3 +5,4 @@ src/manipulation_msgs
 *.autosaves
 src/industrial_calibration/
 src/ceres-solver/
+*.workspace.*

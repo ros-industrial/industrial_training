@@ -1,0 +1,10 @@
+uint32 request_type
+uint32 bit_index
+bool output_bit_state
+
+uint32 COUNT=8
+uint32 SUCTION1_ON=1
+uint32 SUCTION2_ON=2
+uint32 COLLISION=0
+---
+bool[] output_bit_array # final output array sent

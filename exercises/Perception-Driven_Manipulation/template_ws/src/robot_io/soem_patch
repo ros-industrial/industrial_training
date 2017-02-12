@@ -1,0 +1,23 @@
+diff --git a/soem_master/soem_master_component.cpp b/soem_master/soem_master_component.cpp
+index e166ad0..dc6b460 100644
+--- a/soem_master/soem_master_component.cpp
++++ b/soem_master/soem_master_component.cpp
+@@ -79,6 +79,8 @@ bool SoemMasterComponent::configureHook()
+             // wait for all slaves to reach PRE_OP state
+             ec_statecheck(0, EC_STATE_PRE_OP, EC_TIMEOUTSTATE);
+ 
++	    ec_config(FALSE, &m_IOmap); 
++ 
+             for (int i = 1; i <= ec_slavecount; i++)
+             {
+                 SoemDriver
+@@ -89,6 +91,8 @@ bool SoemMasterComponent::configureHook()
+                     m_drivers.push_back(driver);
+                     log(Info) << "Created driver for " << ec_slave[i].name
+                             << ", with address " << ec_slave[i].configadr
++                            << ", output bits " << ec_slave[i].Obits
++                            << ", input bits " << ec_slave[i].Ibits
+                             << endlog();
+                     //Adding driver's services to master component
+                     this->provides()->addService(driver->provides());
+
