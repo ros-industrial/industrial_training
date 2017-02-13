@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<launch>
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find sensor_config)/rviz/sensor_config.rviz"/>
+    <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find robot_config)/urdf/ur5.urdf.xacro'"/>
+
+    <!-- publish the robot state (tf transforms) -->
+     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+    <!-- sensor setup -->
+    <include file="$(find sensor_config)/launch/ur5_sensor_setup.launch"/>
+
+    <!-- ar_track node setup -->
+    <include file="$(find sensor_config)/launch/ar_tracker_config.launch"/>
+
+</launch>

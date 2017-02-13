@@ -1,7 +1,0 @@
-<?xml version="1.0" ?>
-<launch>
-    <node pkg="robot_io" type="suction_gripper_action_server" name="gripper_action_server" output="screen"/>
-    <param name="suction_on_output_channel" value="2"/>
-    <param name="suction_check_output_channel" value="1"/>
-    <param name="use_sensor_feedback" value="false"/>
-</launch>
