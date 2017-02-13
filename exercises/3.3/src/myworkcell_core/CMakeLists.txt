@@ -70,7 +70,6 @@ add_service_files(
 generate_messages(
   DEPENDENCIES
   geometry_msgs
-  std_msgs  # Or other packages containing msgs
 )
 
 ################################################
@@ -105,7 +104,12 @@ generate_messages(
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES myworkcell_core
-  CATKIN_DEPENDS roscpp fake_ar_publisher message_runtime tf
+ CATKIN_DEPENDS
+   roscpp
+   fake_ar_publisher
+   message_runtime
+   geometry_msgs
+   tf
 #  DEPENDS system_lib
 )
 
@@ -136,8 +140,8 @@ add_executable(myworkcell_node src/myworkcell_node.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-add_dependencies(myworkcell_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(vision_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(myworkcell_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(vision_node ${catkin_LIBRARIES})
