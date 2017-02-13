@@ -6,7 +6,6 @@ project(myworkcell_support)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   myworkcell_core
-  roscpp
 )
 
 ## System dependencies are found with CMake's conventions
@@ -101,7 +100,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES myworkcell_support
-#  CATKIN_DEPENDS myworkcell_core roscpp
+#  CATKIN_DEPENDS myworkcell_core
 #  DEPENDS system_lib
 )
 

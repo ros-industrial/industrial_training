@@ -7,7 +7,7 @@
   <!-- One maintainer tag required, multiple allowed, one person per tag --> 
   <!-- Example:  -->
   <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
-  <maintainer email="jon@todo.todo">jon</maintainer>
+  <maintainer email="ros-industrial@todo.todo">ros-industrial</maintainer>
 
 
   <!-- One license tag required, multiple allowed, one license per tag -->
@@ -32,15 +32,17 @@
   <!-- Dependencies can be catkin packages or system dependencies -->
   <!-- Examples: -->
   <!-- Use build_depend for packages you need at compile time: -->
+  <!--   <build_depend>message_generation</build_depend> -->
   <!-- Use buildtool_depend for build tool packages: -->
-    <!-- <buildtool_depend>catkin</buildtool_depend> -->
+  <!--   <buildtool_depend>catkin</buildtool_depend> -->
   <!-- Use run_depend for packages you need at runtime: -->
+  <!--   <run_depend>message_runtime</run_depend> -->
   <!-- Use test_depend for packages you need only for testing: -->
   <!--   <test_depend>gtest</test_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
-
   <build_depend>roscpp</build_depend>
   <run_depend>roscpp</run_depend>
+
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>

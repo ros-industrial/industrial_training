@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(myworkcell_core)
 add_definitions(-std=c++11)
+
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
@@ -43,12 +44,18 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
+# add_message_files(
+#   FILES
+#   Message1.msg
+#   Message2.msg
+# )
 
 ## Generate services in the 'srv' folder
-#add_service_files(
-#  FILES
-#  LocalizePart.srv
-#)
+# add_service_files(
+#   FILES
+#   Service1.srv
+#   Service2.srv
+# )
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -58,6 +65,10 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate added messages and services with any dependencies listed here
+# generate_messages(
+#   DEPENDENCIES
+#   std_msgs  # Or other packages containing msgs
+# )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -90,8 +101,10 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES myworkcell_node
-  CATKIN_DEPENDS roscpp fake_ar_publisher
+#  LIBRARIES myworkcell_core
+ CATKIN_DEPENDS
+   roscpp
+   fake_ar_publisher
 #  DEPENDS system_lib
 )
 
@@ -107,14 +120,14 @@ include_directories(
 )
 
 ## Declare a C++ library
-# add_library(myworkcell_node
-#   src/${PROJECT_NAME}/myworkcell_node.cpp
+# add_library(myworkcell_core
+#   src/${PROJECT_NAME}/myworkcell_core.cpp
 # )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
-# add_dependencies(myworkcell_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies(myworkcell_core ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
 add_executable(vision_node src/vision_node.cpp)
@@ -141,7 +154,7 @@ target_link_libraries(vision_node ${catkin_LIBRARIES})
 # )
 
 ## Mark executables and/or libraries for installation
-# install(TARGETS myworkcell_node myworkcell_node_node
+# install(TARGETS myworkcell_core myworkcell_core_node
 #   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -166,7 +179,7 @@ target_link_libraries(vision_node ${catkin_LIBRARIES})
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_myworkcell_node.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_myworkcell_core.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
