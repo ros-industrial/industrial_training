@@ -26,7 +26,7 @@ function check_internet() {
 function fix_repo_version(){
   printf "      remote: %s   local: %s\n" "$REMOTE_GIT" "$LOCAL_GIT"
   cd $HOME/industrial_training
-  git fetch -q https://github.com/ros-industrial/industrial_training.git
+  git pull -q -f https://github.com/ros-industrial/industrial_training.git
   git checkout -q -f origin/kinetic
   REMOTE_GIT=$(git ls-remote -q https://github.com/ros-industrial/industrial_training.git kinetic 2> /dev/null | cut -c1-6)
   LOCAL_GIT=$(cd $DIR &&  git rev-parse HEAD | cut -c1-6)
