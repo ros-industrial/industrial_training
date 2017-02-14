@@ -1,4 +1,6 @@
 #include <ros/ros.h>
+#include <actionlib/client/simple_action_client.h>
+#include <control_msgs/FollowJointTrajectoryAction.h>
 #include <myworkcell_core/LocalizePart.h>
 #include <myworkcell_core/PlanCartesianPath.h>
 #include <moveit/move_group_interface/move_group.h>
@@ -7,12 +9,12 @@ class ScanNPlan
 {
 public:
   ScanNPlan(ros::NodeHandle& nh_in) : group_("manipulator")
+  , ac_("joint_trajectory_action", true)
   {
     group_.setPlannerId("RRTConnectkConfigDefault");
     nh = nh_in;
     vision_client_ = nh.serviceClient<myworkcell_core::LocalizePart>("localize_part");
     cartesian_client_ = nh.serviceClient<myworkcell_core::PlanCartesianPath>("plan_path");
-    pub_ = nh.advertise<trajectory_msgs::JointTrajectory>("/joint_path_command", 1);
 
     nh.param<std::string>("ref_frame_param", ref_frame, "world");
   }
@@ -67,7 +69,10 @@ geometry_msgs::Pose transformPose(const geometry_msgs::Pose& in) const
 
     //     Execute path
     ROS_INFO("Got cart path, executing");
-    pub_.publish(cartesian_srv.response.trajectory);
+    control_msgs::FollowJointTrajectoryGoal goal;
+    goal.trajectory = cartesian_srv.response.trajectory;
+    ac_.sendGoal(goal);
+    ac_.waitForResult();
     ROS_INFO("Done");
   }
 
@@ -75,7 +80,7 @@ private:
   // Planning components
   ros::ServiceClient vision_client_;
   ros::ServiceClient cartesian_client_;
-  ros::Publisher pub_;
+  actionlib::SimpleActionClient<control_msgs::FollowJointTrajectoryAction> ac_;
 
   std::string ref_frame;
   ros::NodeHandle nh;
