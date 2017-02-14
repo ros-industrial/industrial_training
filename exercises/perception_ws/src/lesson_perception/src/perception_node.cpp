@@ -67,7 +67,9 @@ int main(int argc, char *argv[])
     ROS_ERROR("%s",ex.what());
   }
   sensor_msgs::PointCloud2 transformed_cloud;
-  pcl_ros::transformPointCloud(world_frame, *recent_cloud, transformed_cloud, listener);
+  sensor_msgs::PointCloud2::ConstPtr recent_cloud =
+               ros::topic::waitForMessage<sensor_msgs::PointCloud2>(topic, nh);
+  pcl_ros::transformPointCloud(world_frame, stransform, *recent_cloud, transformed_cloud);
 
   /*
    * CONVERT POINTCLOUD ROS->PCL
