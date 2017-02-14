@@ -1,24 +1,25 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" ?>
 <robot name="myworkcell" xmlns:xacro="http://ros.org/wiki/xacro">
-  <xacro:include filename="$(find ur_description)/urdf/ur5.urdf.xacro"/>
-  <!-- property list -->
-  <xacro:property name="arm_prefix" value=""/>
+  <xacro:include filename="$(find ur_description)/urdf/ur5.urdf.xacro" />
 
-  <!-- Root joint -->
-  <link name="world" />
+  <link name="world"/>
 
   <link name="table">
     <visual>
       <geometry>
-        <box size="0.6 .6 .05"/>
+        <box size="0.6 0.6 0.05"/>
       </geometry>
     </visual>
     <collision>
       <geometry>
-        <box size="0.6 .6 .05"/>
+        <box size="0.6 0.6 0.05"/>
       </geometry>
     </collision>
   </link>
+
+  <link name="camera_frame"/>
+
+  <xacro:ur5_robot prefix="" joint_limited="true"/>
 
   <joint name="world_to_table" type="fixed">
     <parent link="world"/>
@@ -26,20 +27,15 @@
     <origin xyz="0 0 0.5" rpy="0 0 0"/>
   </joint>
 
-  <!-- instantiating arm  --> 
-  <xacro:ur5_robot prefix="${arm_prefix}" joint_limited="true"/>
-  
-  <joint name="table_to_arm" type="fixed">
-    <parent link="table"/>
-    <child link="${arm_prefix}base_link"/>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-  </joint>
-  
-  <link name="camera_frame"/>
-
   <joint name="world_to_camera" type="fixed">
     <parent link="world"/>
     <child link="camera_frame"/>
-    <origin xyz="0 0 1.0" rpy="0 1.571 0" />
+    <origin xyz="0 0 1.0" rpy="0 1.571 0"/>
+  </joint>
+
+  <joint name="table_to_robot" type="fixed">
+    <parent link="table"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
 </robot>

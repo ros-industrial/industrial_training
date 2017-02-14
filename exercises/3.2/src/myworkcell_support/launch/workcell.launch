@@ -4,8 +4,4 @@
   <node name="myworkcell_node" pkg="myworkcell_core" type="myworkcell_node" output="screen">
     <param name="base_frame" value="world"/>
   </node>
-
-  <include file="$(find myworkcell_support)/launch/urdf.launch">
-    <arg name="gui" value="false"/>
-  </include>
 </launch>
