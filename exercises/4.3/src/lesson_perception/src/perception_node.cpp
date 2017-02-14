@@ -90,8 +90,6 @@ int main(int argc, char *argv[])
    */
   std::string topic = nh.resolveName(cloud_topic);
   ROS_INFO_STREAM("Cloud service called; waiting for a PointCloud2 on topic "<< topic);
-  sensor_msgs::PointCloud2::ConstPtr recent_cloud =
-               ros::topic::waitForMessage<sensor_msgs::PointCloud2>(topic, nh);
 
   /*
    * TRANSFORM POINTCLOUD FROM CAMERA FRAME TO WORLD FRAME
@@ -108,7 +106,9 @@ int main(int argc, char *argv[])
     ROS_ERROR("%s",ex.what());
   }
   sensor_msgs::PointCloud2 transformed_cloud;
-  pcl_ros::transformPointCloud(world_frame, *recent_cloud, transformed_cloud, listener);
+  sensor_msgs::PointCloud2::ConstPtr recent_cloud =
+               ros::topic::waitForMessage<sensor_msgs::PointCloud2>(topic, nh);
+  pcl_ros::transformPointCloud(world_frame, stransform, *recent_cloud, transformed_cloud);
 
   /*
    * CONVERT POINTCLOUD ROS->PCL
@@ -165,8 +165,8 @@ int main(int argc, char *argv[])
   pcl::PointCloud<pcl::PointXYZ> xyz_filtered_cloud;
   pcl::CropBox<pcl::PointXYZ> crop;
   crop.setInputCloud(cloud_voxel_filtered);
-  Eigen::Vector4f min_point = Eigen::Vector4f(x_filter_min, y_filter_min, z_filter_min, 0); 
-  Eigen::Vector4f max_point = Eigen::Vector4f(x_filter_max, y_filter_max, z_filter_max, 0); 
+  Eigen::Vector4f min_point = Eigen::Vector4f(x_filter_min, y_filter_min, z_filter_min, 0);
+  Eigen::Vector4f max_point = Eigen::Vector4f(x_filter_max, y_filter_max, z_filter_max, 0);
   crop.setMin(min_point);
   crop.setMax(max_point);
   crop.filter(xyz_filtered_cloud);
@@ -344,7 +344,7 @@ int main(int argc, char *argv[])
   Eigen::Affine3d eigen3d;
   tf::transformTFToEigen(part_transform,eigen3d);
   pcl::transformPointCloud(*pick_surface_cloud_ptr,*pick_surface_cloud_ptr,Eigen::Affine3f(eigen3d));
-  
+
   prism.setInputPlanarHull( pick_surface_cloud_ptr);
   prism.setHeightLimits(-10,10);
   prism.segment(*pt_inliers);
