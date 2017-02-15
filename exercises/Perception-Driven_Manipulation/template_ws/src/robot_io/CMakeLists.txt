@@ -6,7 +6,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp 
   object_manipulation_msgs
   actionlib
-	ur_msgs
+  ur_msgs
   message_generation  
 )
 

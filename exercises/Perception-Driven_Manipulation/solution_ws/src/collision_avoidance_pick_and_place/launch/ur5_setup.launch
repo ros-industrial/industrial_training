@@ -44,7 +44,7 @@
     <group if="$(arg sim_sensor)">
 
         <!-- static ar_tag frame publisher for simulation -->
-        <node pkg="tf" type="static_transform_publisher" name="world_to_tag" args="-0.8 0.2 0.17 0.785 0 0 world_frame ar_tag 100"/>
+        <node pkg="tf" type="static_transform_publisher" name="world_to_tag" args="-0.8 0.2 0.17 0.785 0 0 world_frame ar_marker_192 100"/>
 
         <!-- detection node -->
         <include file="$(find collision_avoidance_pick_and_place)/launch/ur5_target_recognition.launch"/>

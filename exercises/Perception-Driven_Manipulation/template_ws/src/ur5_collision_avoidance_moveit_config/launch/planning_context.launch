@@ -4,7 +4,7 @@
 
   <!-- Load universal robotic description format (URDF) -->
   <!--<param if="$(arg load_robot_description)" name="robot_description" textfile="$(find robot_config)/urdf/ur5_collision_avoidance.urdf"/>-->
-  <param if="$(arg load_robot_description)" name="robot_description" command="$(find xacro)/xacro.py '$(find robot_config)/urdf/ur5_collision_avoidance.xacro'"/>
+  <param if="$(arg load_robot_description)" name="robot_description" command="$(find xacro)/xacro --inorder '$(find robot_config)/urdf/ur5_collision_avoidance.xacro'"/>
 
   <!-- The semantic description that corresponds to the URDF -->
   <param name="robot_description_semantic" textfile="$(find ur5_collision_avoidance_moveit_config)/config/ur5_collision_avoidance.srdf" />
