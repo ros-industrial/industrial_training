@@ -59,16 +59,16 @@ int main(int argc, char *argv[])
   tf::StampedTransform stransform;
   try
   {
-    listener.waitForTransform(world_frame, camera_frame,  ros::Time::now(), ros::Duration(6.0));
-    listener.lookupTransform(world_frame, camera_frame,  ros::Time(0), stransform);
+    listener.waitForTransform(world_frame, recent_cloud->header.frame_id,  ros::Time::now(), ros::Duration(6.0));
+    listener.lookupTransform(world_frame, recent_cloud->header.frame_id,  ros::Time(0), stransform);
   }
   catch (tf::TransformException ex)
   {
     ROS_ERROR("%s",ex.what());
   }
   sensor_msgs::PointCloud2 transformed_cloud;
-  sensor_msgs::PointCloud2::ConstPtr recent_cloud =
-               ros::topic::waitForMessage<sensor_msgs::PointCloud2>(topic, nh);
+//  sensor_msgs::PointCloud2::ConstPtr recent_cloud =
+//               ros::topic::waitForMessage<sensor_msgs::PointCloud2>(topic, nh);
   pcl_ros::transformPointCloud(world_frame, stransform, *recent_cloud, transformed_cloud);
 
   /*
