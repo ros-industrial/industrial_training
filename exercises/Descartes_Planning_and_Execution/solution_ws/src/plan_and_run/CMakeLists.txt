@@ -6,6 +6,7 @@ find_package(catkin REQUIRED COMPONENTS
   descartes_core
   descartes_planner
   descartes_moveit
+  descartes_utilities
   moveit_msgs
   moveit_ros_planning_interface
   ur5_demo_descartes

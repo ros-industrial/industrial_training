@@ -6,6 +6,8 @@
  */
 
 #include <plan_and_run/demo_application.h>
+#include <descartes_utilities/ros_conversions.h>
+
 
 namespace plan_and_run
 {
@@ -115,6 +117,19 @@ void DemoApplication::publishPosesMarkers(const EigenSTL::vector_Affine3d& poses
 
 }
 
+void swap_segments(EigenSTL::vector_Affine3d& poses, unsigned npoints, unsigned idx1, unsigned idx2)
+{
+  auto n = npoints / 2;
+  std::swap_ranges(poses.begin() + n * idx1, poses.begin() + n * (idx1 + 1),
+                   poses.begin() + n * idx2);
+}
+
+void insert_segment(EigenSTL::vector_Affine3d& poses, const EigenSTL::vector_Affine3d& orig, unsigned npoints, unsigned idx)
+{
+  auto n = npoints / 2;
+  poses.insert(poses.end(), orig.begin() + n * idx, orig.begin() + n * (idx + 1));
+}
+
 bool DemoApplication::createLemniscateCurve(double foci_distance, double sphere_radius,
                                   int num_points, int num_lemniscates,const Eigen::Vector3d& sphere_center,
                                   EigenSTL::vector_Affine3d& poses)
@@ -161,6 +176,8 @@ bool DemoApplication::createLemniscateCurve(double foci_distance, double sphere_
      omega[i] = i*d_omega;
   }
 
+  // std::swap(omega[1], omega[2]);
+
   Eigen::Affine3d pose;
   double x,y,z,r,phi;
 
@@ -195,48 +212,56 @@ bool DemoApplication::createLemniscateCurve(double foci_distance, double sphere_
 
       poses.push_back(pose);
     }
+    std::reverse(poses.end() - npoints / 2, poses.end());
+  }
+
+  // Hacky optimization for purposes of smoother demo
+  if (nlemns == 4) 
+  {
+    EigenSTL::vector_Affine3d other;
+    insert_segment(other, poses, npoints, 0);
+    insert_segment(other, poses, npoints, 1);
+    insert_segment(other, poses, npoints, 5);
+    insert_segment(other, poses, npoints, 4);
+    insert_segment(other, poses, npoints, 7);
+    insert_segment(other, poses, npoints, 6);
+    insert_segment(other, poses, npoints, 2);
+    insert_segment(other, poses, npoints, 3);
+    poses = other;
   }
 
   return true;
 }
 
+void addVel(trajectory_msgs::JointTrajectory& traj)
+{
+  if (traj.points.size() < 3) return;
+
+  auto n_joints = traj.points.front().positions.size();
+
+  for (auto i = 0; i < n_joints; ++i)
+  {
+    for (auto j = 1; j < traj.points.size() - 1; j++)
+    {
+      // For each point in a given joint
+      double delta_theta = -traj.points[j - 1].positions[i] + traj.points[j + 1].positions[i];
+      double delta_time = -traj.points[j - 1].time_from_start.toSec() + traj.points[j + 1].time_from_start.toSec();
+      double v = delta_theta / delta_time;
+      traj.points[j].velocities[i] = v;
+    } 
+  }
+}
+
 void DemoApplication::fromDescartesToMoveitTrajectory(const DescartesTrajectory& in_traj,
                                                       trajectory_msgs::JointTrajectory& out_traj)
 {
-  // Fill out information about our trajectory
+//  // Fill out information about our trajectory
   out_traj.header.stamp = ros::Time::now();
   out_traj.header.frame_id = config_.world_frame;
   out_traj.joint_names = config_.joint_names;
 
-  // For keeping track of time-so-far in the trajectory
-  double time_offset = 0.0;
-
-  // Loop through the trajectory
-  for (unsigned int i = 0; i < in_traj.size(); i++)
-  {
-    // Find nominal joint solution at this point
-    std::vector<double> joints;
-
-    // getting joint position at current point
-    const descartes_core::TrajectoryPtPtr& joint_point = in_traj[i];
-    joint_point->getNominalJointPose(std::vector<double>(), *robot_model_ptr_, joints);
-
-    // Fill out a ROS trajectory point
-    trajectory_msgs::JointTrajectoryPoint pt;
-    pt.positions = joints;
-    // velocity, acceleration, and effort are given dummy values
-    // we'll let the controller figure them out
-    pt.velocities.resize(joints.size(), 0.0);
-    pt.accelerations.resize(joints.size(), 0.0);
-    pt.effort.resize(joints.size(), 0.0);
-    // set the time into the trajectory
-    pt.time_from_start = ros::Duration(time_offset);
-    // increment time
-    time_offset += config_.time_delay;
-
-    out_traj.points.push_back(pt);
-  }
-
+  descartes_utilities::toRosJointPoints(*robot_model_ptr_, in_traj, 0.4, out_traj.points);
+  addVel(out_traj);
 }
 
 } /* namespace plan_and_run */
