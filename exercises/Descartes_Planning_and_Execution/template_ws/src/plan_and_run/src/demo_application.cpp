@@ -115,6 +115,19 @@ void DemoApplication::publishPosesMarkers(const EigenSTL::vector_Affine3d& poses
 
 }
 
+void swap_segments(EigenSTL::vector_Affine3d& poses, unsigned npoints, unsigned idx1, unsigned idx2)
+{
+  auto n = npoints / 2;
+  std::swap_ranges(poses.begin() + n * idx1, poses.begin() + n * (idx1 + 1),
+                   poses.begin() + n * idx2);
+}
+
+void insert_segment(EigenSTL::vector_Affine3d& poses, const EigenSTL::vector_Affine3d& orig, unsigned npoints, unsigned idx)
+{
+  auto n = npoints / 2;
+  poses.insert(poses.end(), orig.begin() + n * idx, orig.begin() + n * (idx + 1));
+}
+
 bool DemoApplication::createLemniscateCurve(double foci_distance, double sphere_radius,
                                   int num_points, int num_lemniscates,const Eigen::Vector3d& sphere_center,
                                   EigenSTL::vector_Affine3d& poses)
@@ -161,6 +174,8 @@ bool DemoApplication::createLemniscateCurve(double foci_distance, double sphere_
      omega[i] = i*d_omega;
   }
 
+  // std::swap(omega[1], omega[2]);
+
   Eigen::Affine3d pose;
   double x,y,z,r,phi;
 
@@ -195,9 +210,44 @@ bool DemoApplication::createLemniscateCurve(double foci_distance, double sphere_
 
       poses.push_back(pose);
     }
+    std::reverse(poses.end() - npoints / 2, poses.end());
+  }
+
+  // Hacky optimization for purposes of smoother demo
+  if (nlemns == 4) 
+  {
+    EigenSTL::vector_Affine3d other;
+    insert_segment(other, poses, npoints, 0);
+    insert_segment(other, poses, npoints, 1);
+    insert_segment(other, poses, npoints, 5);
+    insert_segment(other, poses, npoints, 4);
+    insert_segment(other, poses, npoints, 7);
+    insert_segment(other, poses, npoints, 6);
+    insert_segment(other, poses, npoints, 2);
+    insert_segment(other, poses, npoints, 3);
+    poses = other;
   }
 
   return true;
+}
+
+void addVel(trajectory_msgs::JointTrajectory& traj)
+{
+  if (traj.points.size() < 3) return;
+
+  auto n_joints = traj.points.front().positions.size();
+
+  for (auto i = 0; i < n_joints; ++i)
+  {
+    for (auto j = 1; j < traj.points.size() - 1; j++)
+    {
+      // For each point in a given joint
+      double delta_theta = -traj.points[j - 1].positions[i] + traj.points[j + 1].positions[i];
+      double delta_time = -traj.points[j - 1].time_from_start.toSec() + traj.points[j + 1].time_from_start.toSec();
+      double v = delta_theta / delta_time;
+      traj.points[j].velocities[i] = v;
+    } 
+  }
 }
 
 void DemoApplication::fromDescartesToMoveitTrajectory(const DescartesTrajectory& in_traj,
@@ -236,7 +286,7 @@ void DemoApplication::fromDescartesToMoveitTrajectory(const DescartesTrajectory&
 
     out_traj.points.push_back(pt);
   }
-
+  addVel(out_traj);
 }
 
 } /* namespace plan_and_run */
