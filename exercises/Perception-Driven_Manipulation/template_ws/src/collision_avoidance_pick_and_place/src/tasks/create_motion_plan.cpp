@@ -15,7 +15,7 @@ namespace collision_avoidance_pick_and_place
 {
 
 bool PickAndPlace::create_motion_plan(const geometry_msgs::Pose &pose_target,
-		const moveit_msgs::RobotState &start_robot_state,move_group_interface::MoveGroup::Plan &plan)
+    const moveit_msgs::RobotState &start_robot_state,moveit::planning_interface::MoveGroup::Plan &plan)
 {
 	// constructing motion plan goal constraints
 	std::vector<double> position_tolerances(3,0.01f);

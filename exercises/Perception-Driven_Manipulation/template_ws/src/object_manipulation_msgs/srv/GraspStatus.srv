@@ -1,0 +1,13 @@
+# asks if a grasp is currently active
+# used to query if the object is still detected as present in the hand
+# (using joint angles, forces sensors or any other proprioceptive methods)
+
+# the name of the arm being used is not in here, as this will be sent to a specific action server
+# for each arm
+
+# the grasp that we are checking 
+manipulation_msgs/Grasp grasp
+
+---
+
+bool is_hand_occupied

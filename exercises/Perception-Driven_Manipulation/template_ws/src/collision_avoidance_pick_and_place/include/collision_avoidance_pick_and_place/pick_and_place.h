@@ -19,7 +19,7 @@
 // =============================== aliases ===============================
 typedef actionlib::SimpleActionClient<object_manipulation_msgs::GraspHandPostureExecutionAction> GraspActionClient;
 typedef boost::shared_ptr<GraspActionClient> GraspActionClientPtr;
-typedef boost::shared_ptr<move_group_interface::MoveGroup> MoveGroupPtr;
+typedef boost::shared_ptr<moveit::planning_interface::MoveGroup> MoveGroupPtr;
 typedef boost::shared_ptr<tf::TransformListener> TransformListenerPtr;
 
 namespace collision_avoidance_pick_and_place
@@ -65,7 +65,7 @@ namespace collision_avoidance_pick_and_place
 
 
 		bool create_motion_plan(const geometry_msgs::Pose &pose_target,
-				const moveit_msgs::RobotState &start_robot_state,move_group_interface::MoveGroup::Plan &plan);
+        const moveit_msgs::RobotState &start_robot_state,moveit::planning_interface::MoveGroup::Plan &plan);
 
 		void show_box(bool show=true)
 		{
