@@ -67,7 +67,7 @@ void collision_avoidance_pick_and_place::PickAndPlace::pickup_box(std::vector<ge
 	   * - Look in the "create_motion_plan()" method to observe how an
 	   * 	entire moveit motion plan is created.
 	   */
-	    move_group_interface::MoveGroup::Plan plan;
+      moveit::planning_interface::MoveGroup::Plan plan;
 	    success = create_motion_plan(pick_poses[i],robot_state,plan) && move_group_ptr->execute(plan);
 
 	    // verifying move completion
