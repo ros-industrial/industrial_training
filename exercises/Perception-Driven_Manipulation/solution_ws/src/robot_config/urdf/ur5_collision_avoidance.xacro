@@ -28,7 +28,6 @@
                     <geometry>
                             <cylinder radius="0.0735" length="${robot_stand_height}"/>
                     </geometry>
-                    <material name="orange_transparent"/>
             </visual>
             <collision>
                     <geometry>
@@ -36,6 +35,21 @@
                     </geometry>
                     <material name="blue_transparent"/>
             </collision>
+    </link>
+
+    <link name="${arm_prefix}tool_interface_plate">
+        <visual>
+                <geometry>
+                        <box size="0.09525 0.09525 0.0127"/>
+                </geometry>
+                <material name="orange_transparent"/>
+        </visual>
+        <collision>
+                <geometry>
+                        <box size="0.09525 0.09525 0.0127"/>
+                </geometry>
+                <material name="blue_transparent"/>
+        </collision>
     </link>
 
 
@@ -51,7 +65,7 @@
     <!-- instantiating sensor definitions -->
 
     <xacro:sensor_definitions prefix="${arm_prefix}" parent_link="world_frame"
-            x_val="-1.0732" y_val="-0.0397" z_val="1.2174" pitch="1.57" yaw="0" roll="0" />
+            x_val="-0.9208" y_val="-0.011125" z_val="1.21" pitch="1.57" yaw="0" roll="0" />
     <!-- end of sensor definitions -->
 
     <joint name="world_to_stand" type="fixed">
@@ -79,10 +93,17 @@
     <!-- end of arm workcell joint definitions-->
 
     <!-- arm-gripper coupling joint definitions -->
+    <joint name="${arm_prefix}to_interface_plate" type="fixed">
+            <parent link="${arm_prefix}ee_link"/>
+            <child link="${arm_prefix}tool_interface_plate"/>
+            <origin xyz="0.00635 0 0" rpy="0 1.57  0"/> <!-- 0 1.57 0 -->
+    </joint>
+
+    <!-- arm-gripper coupling joint definitions -->
     <joint name="${arm_prefix}to_gripper" type="fixed">
             <parent link="${arm_prefix}ee_link"/>
             <child link="${arm_prefix}gripper_frame"/>
-            <origin xyz="0 0 0" rpy="-1.57 0 -1.57"/> <!-- 0 1.57 0 -->
+            <origin xyz="0.02 0 0" rpy="-1.57 0 -1.57"/> <!-- 0 1.57 0 -->
     </joint>
     <!-- end of arm-gripper coupling joint definitions -->
 </robot>

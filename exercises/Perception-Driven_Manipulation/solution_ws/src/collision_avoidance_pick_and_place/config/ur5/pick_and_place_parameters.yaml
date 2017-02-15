@@ -1,5 +1,5 @@
 world_frame_id: world_frame
-ar_frame_id: ar_marker_0
+ar_frame_id: ar_marker_192
 arm_group_name: manipulator
 tcp_link_name: tcp_frame
 attached_object_link: attached_object_link
