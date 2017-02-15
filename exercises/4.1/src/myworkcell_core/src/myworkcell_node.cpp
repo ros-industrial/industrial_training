@@ -1,46 +1,28 @@
 #include <ros/ros.h>
+#include <myworkcell_core/LocalizePart.h>
+#include <tf/tf.h>
+#include <moveit/move_group_interface/move_group_interface.h>
 #include <actionlib/client/simple_action_client.h>
 #include <control_msgs/FollowJointTrajectoryAction.h>
-#include <myworkcell_core/LocalizePart.h>
 #include <myworkcell_core/PlanCartesianPath.h>
-#include <moveit/move_group_interface/move_group.h>
 
 class ScanNPlan
 {
 public:
-  ScanNPlan(ros::NodeHandle& nh_in) : group_("manipulator")
-  , ac_("joint_trajectory_action", true)
+  ScanNPlan(ros::NodeHandle& nh) : ac_("joint_trajectory_action", true)
   {
-    group_.setPlannerId("RRTConnectkConfigDefault");
-    nh = nh_in;
     vision_client_ = nh.serviceClient<myworkcell_core::LocalizePart>("localize_part");
     cartesian_client_ = nh.serviceClient<myworkcell_core::PlanCartesianPath>("plan_path");
-
-    nh.param<std::string>("ref_frame_param", ref_frame, "world");
   }
 
-geometry_msgs::Pose transformPose(const geometry_msgs::Pose& in) const
-  {
-    tf::Transform in_world;
-    tf::poseMsgToTF(in, in_world);
-
-    tf::Quaternion flip_z (tf::Vector3(1, 0, 0), M_PI);
-    tf::Transform flip (flip_z);
-
-    in_world = in_world * flip;
-
-    geometry_msgs::Pose msg;
-    tf::poseTFToMsg(in_world, msg);
-    return msg;
-  }
-
-  void start()
+  void start(const std::string& base_frame)
   {
     ROS_INFO("Attempting to localize part");
+
     // Localize the part
     myworkcell_core::LocalizePart srv;
-    if (nh.getParam("ref_frame_param", ref_frame));
-    srv.request.base_frame = ref_frame;
+    srv.request.base_frame = base_frame;
+    ROS_INFO_STREAM("Requesting pose in base frame: " << base_frame);
 
     if (!vision_client_.call(srv))
     {
@@ -49,25 +31,23 @@ geometry_msgs::Pose transformPose(const geometry_msgs::Pose& in) const
     }
     ROS_INFO_STREAM("part localized: " << srv.response);
 
+    geometry_msgs::Pose move_target = flipPose(srv.response.pose);
 
-    srv.response.pose = transformPose(srv.response.pose);
+    // Plan for robot to move to part
+    moveit::planning_interface::MoveGroupInterface move_group("manipulator");
+    move_group.setPoseTarget(move_target);
+    move_group.move();
 
-    // Plan for robot to move to part    
-    group_.setPoseTarget(srv.response.pose);
-    group_.move();
-    ROS_INFO("Done moving, planning cart path");
-
-    // Now let's plan a motion to 
     // Plan cartesian path
     myworkcell_core::PlanCartesianPath cartesian_srv;
-    cartesian_srv.request.pose = srv.response.pose;
+    cartesian_srv.request.pose = move_target;
     if (!cartesian_client_.call(cartesian_srv))
     {
       ROS_ERROR("Could not plan for path");
       return;
     }
 
-    //     Execute path
+    // Execute descartes-planned path directly (bypassing MoveIt)
     ROS_INFO("Got cart path, executing");
     control_msgs::FollowJointTrajectoryGoal goal;
     goal.trajectory = cartesian_srv.response.trajectory;
@@ -76,32 +56,41 @@ geometry_msgs::Pose transformPose(const geometry_msgs::Pose& in) const
     ROS_INFO("Done");
   }
 
+  geometry_msgs::Pose flipPose(const geometry_msgs::Pose& in) const
+  {
+    tf::Transform in_tf;
+    tf::poseMsgToTF(in, in_tf);
+    tf::Quaternion flip_rot(tf::Vector3(1, 0, 0), 0); //M_PI);
+    tf::Transform flipped = in_tf * tf::Transform(flip_rot);
+    geometry_msgs::Pose out;
+    tf::poseTFToMsg(flipped, out);
+    return out;
+  }
+
 private:
   // Planning components
   ros::ServiceClient vision_client_;
   ros::ServiceClient cartesian_client_;
   actionlib::SimpleActionClient<control_msgs::FollowJointTrajectoryAction> ac_;
-
-  std::string ref_frame;
-  ros::NodeHandle nh;
-  moveit::planning_interface::MoveGroup group_;
 };
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
   ros::init(argc, argv, "myworkcell_node");
   ros::NodeHandle nh;
+  ros::NodeHandle private_node_handle("~");
   ros::AsyncSpinner async_spinner (1);
 
-  // Hello World
-  ROS_INFO("Hello, World from a ROS Node");
+  ROS_INFO("ScanNPlan node has been initialized");
 
-  ScanNPlan app (nh);
+  std::string base_frame;
+  private_node_handle.param<std::string>("base_frame", base_frame, "world"); // parameter name, string object reference, default value
 
-  ros::Duration(.5).sleep();
+  ScanNPlan app(nh);
+  ros::Duration(.5).sleep();  // wait for the class to initialize
 
   async_spinner.start();
-  app.start();
+  app.start(base_frame);
 
-  ros::spin();
+  ros::waitForShutdown();
 }

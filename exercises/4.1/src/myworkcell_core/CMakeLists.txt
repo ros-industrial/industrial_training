@@ -7,16 +7,16 @@ add_definitions(-std=c++11)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
-  ur5_demo_descartes
-  descartes_trajectory
-  descartes_moveit
-  descartes_planner
-  descartes_utilities
-  message_generation
-  std_msgs
+  fake_ar_publisher
   geometry_msgs
+  message_generation
   tf
   moveit_ros_planning_interface
+  ur5_demo_descartes
+  descartes_trajectory
+  descartes_planner
+  descartes_utilities
+  trajectory_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -53,10 +53,11 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-add_message_files(
-  FILES
-  ARMarker.msg
-)
+# add_message_files(
+#   FILES
+#   Message1.msg
+#   Message2.msg
+# )
 
 ## Generate services in the 'srv' folder
 add_service_files(
@@ -76,7 +77,6 @@ add_service_files(
 generate_messages(
   DEPENDENCIES
   geometry_msgs
-  std_msgs  # Or other packages containing msgs
   trajectory_msgs
 )
 
@@ -112,7 +112,18 @@ generate_messages(
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES myworkcell_core
-  CATKIN_DEPENDS roscpp message_runtime
+ CATKIN_DEPENDS
+   roscpp
+   fake_ar_publisher
+   message_runtime
+   geometry_msgs
+   tf
+   moveit_ros_planning_interface
+   ur5_demo_descartes
+   descartes_trajectory
+   descartes_planner
+   descartes_utilities
+   trajectory_msgs
 #  DEPENDS system_lib
 )
 
@@ -140,20 +151,18 @@ include_directories(
 ## Declare a C++ executable
 add_executable(vision_node src/vision_node.cpp)
 add_executable(myworkcell_node src/myworkcell_node.cpp)
-add_executable(fake_ar_publisher src/fake_ar_publisher.cpp)
 add_executable(descartes_node src/descartes_node.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
+add_dependencies(vision_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(myworkcell_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(descartes_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(fake_ar_publisher ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(vision_node ${catkin_LIBRARIES})
 target_link_libraries(myworkcell_node ${catkin_LIBRARIES})
-target_link_libraries(fake_ar_publisher ${catkin_LIBRARIES})
 target_link_libraries(descartes_node ${catkin_LIBRARIES})
-
 
 #############
 ## Install ##
