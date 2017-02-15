@@ -51,7 +51,7 @@
     <!-- instantiating sensor definitions -->
 
     <xacro:sensor_definitions prefix="${arm_prefix}" parent_link="world_frame"
-            x_val="-1.0414" y_val="0" z_val="1.18745" pitch="1.57" yaw="0" roll="0" />
+            x_val="-1.0732" y_val="-0.0397" z_val="1.2174" pitch="1.57" yaw="0" roll="0" />
     <!-- end of sensor definitions -->
 
     <joint name="world_to_stand" type="fixed">
