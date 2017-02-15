@@ -6,6 +6,8 @@
  */
 
 #include <plan_and_run/demo_application.h>
+#include <descartes_utilities/ros_conversions.h>
+
 
 namespace plan_and_run
 {
@@ -253,39 +255,12 @@ void addVel(trajectory_msgs::JointTrajectory& traj)
 void DemoApplication::fromDescartesToMoveitTrajectory(const DescartesTrajectory& in_traj,
                                                       trajectory_msgs::JointTrajectory& out_traj)
 {
-  // Fill out information about our trajectory
+//  // Fill out information about our trajectory
   out_traj.header.stamp = ros::Time::now();
   out_traj.header.frame_id = config_.world_frame;
   out_traj.joint_names = config_.joint_names;
 
-  // For keeping track of time-so-far in the trajectory
-  double time_offset = 0.0;
-
-  // Loop through the trajectory
-  for (unsigned int i = 0; i < in_traj.size(); i++)
-  {
-    // Find nominal joint solution at this point
-    std::vector<double> joints;
-
-    // getting joint position at current point
-    const descartes_core::TrajectoryPtPtr& joint_point = in_traj[i];
-    joint_point->getNominalJointPose(std::vector<double>(), *robot_model_ptr_, joints);
-
-    // Fill out a ROS trajectory point
-    trajectory_msgs::JointTrajectoryPoint pt;
-    pt.positions = joints;
-    // velocity, acceleration, and effort are given dummy values
-    // we'll let the controller figure them out
-    pt.velocities.resize(joints.size(), 0.0);
-    pt.accelerations.resize(joints.size(), 0.0);
-    pt.effort.resize(joints.size(), 0.0);
-    // set the time into the trajectory
-    pt.time_from_start = ros::Duration(time_offset);
-    // increment time
-    time_offset += config_.time_delay;
-
-    out_traj.points.push_back(pt);
-  }
+  descartes_utilities::toRosJointPoints(*robot_model_ptr_, in_traj, 0.4, out_traj.points);
   addVel(out_traj);
 }
 
