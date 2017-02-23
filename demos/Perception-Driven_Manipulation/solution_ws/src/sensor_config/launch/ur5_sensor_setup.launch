@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<launch>
+	<!-- device_id can have the following formats:
+	"B00367707227042B": Use device with given serial number
+	"#1" : Use first device found
+	"2@3" : Use device on USB bus 2, address 3
+	"2@0" : Use first device found on USB bus 2
+        use command "lsusb" to list us bus and devices
+	-->
+	<arg name="sensor_usb_bus" default="002"/>
+	<arg name="sensor_usb_device" default="000"/>
+	<arg name="arm_prefix" default=""/>
+	<arg name="camera_name" default="camera"/>
+        <arg name="device_id" default="#1" />
+	<arg name="publish_tf" default="false" />
+
+        <include file="$(find openni2_launch)/launch/openni2.launch">
+		<arg name="publish_tf" default="false" />
+		<arg name="camera" default="kinect" />
+			<!--arg name="launch_prefix" default="" /-->
+		<arg name="rgb_frame_id" default="kinect_rgb_optical_frame"/>
+		<arg name="depth_frame_id" default="kinect_ir_optical_frame"/>
+		<!--arg name="depth_frame_id" default="kinect_depth_optical_frame"/-->
+		<arg name="rgb_camera_info_url" default="file://$(find sensor_config)/config/kinect_with_mount_rgb.yaml"/>
+		<arg name="depth_camera_info_url" default="file://$(find sensor_config)/config/kinect_with_mount_ir.yaml" />
+		<arg name="device_id" default="$(arg device_id)" />
+	</include>	
+
+</launch>

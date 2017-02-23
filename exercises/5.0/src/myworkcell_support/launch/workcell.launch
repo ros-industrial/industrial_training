@@ -1,11 +1,7 @@
 <launch>
-  <param name="robot_description" textfile="$(find myworkcell_support)/urdf/model.urdf" />
-  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
-  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" >
-    <param name="use_gui" value="false" />
+  <node name="fake_ar_publisher" pkg="fake_ar_publisher" type="fake_ar_publisher_node" output="screen"/>
+  <node name="vision_node" pkg="myworkcell_core" type="vision_node" output="screen"/>
+  <node name="myworkcell_node" pkg="myworkcell_core" type="myworkcell_node" output="screen">
+    <param name="base_frame" value="world"/>
   </node>
-
-  <node name="vision_node" pkg="myworkcell_core" type="vision_node" />
-  <node name="myworkcell_core" pkg="myworkcell_core" type="myworkcell_node" />
-  <node name="fake_ar_publisher" pkg="myworkcell_core" type="fake_ar_publisher" />
 </launch>

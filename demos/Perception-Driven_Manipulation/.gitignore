@@ -1,0 +1,6 @@
+ar_track_alvar/
+ar_track_alvar_msgs/
+household_objects_database_msgs/
+manipulation_msgs/
+*.autosaves
+*.workspace.*

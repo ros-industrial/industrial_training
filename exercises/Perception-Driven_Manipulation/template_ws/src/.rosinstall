@@ -1,6 +1,0 @@
-- git: {local-name: ar_track_alvar, uri: 'https://github.com/sniekum/ar_track_alvar.git', version: kinetic-devel}
-- git: {local-name: ar_track_alvar_msgs, uri: 'https://github.com/sniekum/ar_track_alvar_msgs.git', version: indigo-devel}
-- git: {local-name: household_objects_database_msgs, uri: 'https://github.com/ros-interactive-manipulation/household_objects_database_msgs.git', version: hydro-devel}
-- git: {local-name: manipulation_msgs, uri: 'https://github.com/ros-interactive-manipulation/manipulation_msgs.git', version: hydro-devel}
-- git: {local-name: universal_robot, uri: 'https://github.com/ros-industrial/universal_robot.git', version: kinetic-devel}
-- git: {local-name: industrial_core, uri: 'https://github.com/ros-industrial/industrial_core.git', version: kinetic-devel}

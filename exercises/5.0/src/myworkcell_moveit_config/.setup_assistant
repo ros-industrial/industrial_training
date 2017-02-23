@@ -1,8 +1,10 @@
 moveit_setup_assistant_config:
   URDF:
     package: myworkcell_support
-    relative_path: urdf/model.urdf
+    relative_path: urdf/workcell.xacro
   SRDF:
     relative_path: config/myworkcell.srdf
   CONFIG:
-    generated_timestamp: 1470318146
+    author_name: ROS Industrial
+    author_email: ros-i@rosindustrial.org
+    generated_timestamp: 1486965514
