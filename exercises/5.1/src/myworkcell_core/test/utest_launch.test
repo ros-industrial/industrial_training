@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<launch>
+  <node name="fake_ar_publisher" pkg="fake_ar_publisher" type="fake_ar_publisher_node" />
+  <test test-name="myworkscell_test_node" pkg="myworkcell_core" type="myworkcell_core_utest"/>
+</launch>

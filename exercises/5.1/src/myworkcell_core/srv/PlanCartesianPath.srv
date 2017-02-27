@@ -1,5 +1,7 @@
-# req
+# request
 geometry_msgs/Pose pose
+
 ---
-# reply
+
+# response
 trajectory_msgs/JointTrajectory trajectory

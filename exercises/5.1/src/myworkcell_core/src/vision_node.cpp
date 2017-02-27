@@ -1,65 +1,67 @@
+/**
+**  Simple ROS Node
+**/
 #include <ros/ros.h>
-#include <std_msgs/String.h>
+#include <fake_ar_publisher/ARMarker.h>
 #include <myworkcell_core/LocalizePart.h>
 #include <tf/transform_listener.h>
-#include <myworkcell_core/ARMarker.h>
-#include <string>
 
 class Localizer
 {
 public:
-  Localizer(ros::NodeHandle& nh_in)
-  {
-    nh = nh_in;
-    ar_sub_ = nh.subscribe<myworkcell_core::ARMarker>("ar_pose_marker", 1, 
-      &Localizer::visionCallback, this);
+    Localizer(ros::NodeHandle& nh)
+    {
+        ar_sub_ = nh.subscribe<fake_ar_publisher::ARMarker>("ar_pose_marker", 1,
+        &Localizer::visionCallback, this);
 
-    server_ = nh.advertiseService("localize_part", &Localizer::localizePart, this);
-  }
+        server_ = nh.advertiseService("localize_part", &Localizer::localizePart, this);
+    }
 
-  bool localizePart(myworkcell_core::LocalizePart::Request& req,
-                    myworkcell_core::LocalizePart::Response& res)
-  {
-    // Read last message
-    myworkcell_core::ARMarkerConstPtr p = last_msg_;  
-    if (!p) return false;
+    void visionCallback(const fake_ar_publisher::ARMarkerConstPtr& msg)
+    {
+        last_msg_ = msg;
+        //ROS_INFO_STREAM(last_msg_->pose.pose);
+    }
 
-    // Use TF to look up transform between request base frame and the camera
-    tf::StampedTransform world_to_cam;
-    listener_.lookupTransform(req.base_frame, p->header.frame_id, ros::Time(0), world_to_cam);
+    bool localizePart(myworkcell_core::LocalizePart::Request& req,
+                      myworkcell_core::LocalizePart::Response& res)
+    {
+      // Read last message
+      fake_ar_publisher::ARMarkerConstPtr p = last_msg_;
+      if (!p) return false;
 
-    // Use the AR pose data to a transform
-    tf::Transform cam_to_target;
-    tf::poseMsgToTF(p->pose.pose, cam_to_target);
+      tf::Transform cam_to_target;
+      tf::poseMsgToTF(p->pose.pose, cam_to_target);
 
-    // Compute the transform world -> target
-    tf::Transform world_to_target = world_to_cam * cam_to_target;
+      tf::StampedTransform req_to_cam;
+      listener_.lookupTransform(req.base_frame, p->header.frame_id, ros::Time(0), req_to_cam);
 
-    tf::poseTFToMsg(world_to_target, res.pose);
-    ROS_WARN_STREAM("TF: " << res.pose);
-    ROS_ERROR_STREAM("AR: " << *p);
-    return true;
-  }
+      tf::Transform req_to_target;
+      req_to_target = req_to_cam * cam_to_target;
 
-  void visionCallback(const myworkcell_core::ARMarkerConstPtr& msg)
-  {
-    last_msg_ = msg;
-  }
+      tf::poseTFToMsg(req_to_target, res.pose);
+      return true;
+    }
 
-  tf::TransformListener listener_;
-  ros::Subscriber ar_sub_;
-  ros::ServiceServer server_;
-  myworkcell_core::ARMarkerConstPtr last_msg_;
-  ros::NodeHandle nh;
+    ros::Subscriber ar_sub_;
+    fake_ar_publisher::ARMarkerConstPtr last_msg_;
+    ros::ServiceServer server_;
+    tf::TransformListener listener_;
 };
 
-int main(int argc, char** argv)
+int main(int argc, char* argv[])
 {
-  ros::init(argc, argv, "vision_node");
+    // This must be called before anything else ROS-related
+    ros::init(argc, argv, "vision_node");
 
-  ros::NodeHandle nh;
-  Localizer localizer (nh);
+    // Create a ROS node handle
+    ros::NodeHandle nh;
 
-  ROS_INFO("Vision node starting");
-  ros::spin();
+    // The Localizer class provides this node's ROS interfaces
+    Localizer localizer(nh);
+
+    ROS_INFO("Vision node starting");
+
+    // Don't exit the program.
+    ros::spin();
 }

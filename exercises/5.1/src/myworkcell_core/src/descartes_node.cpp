@@ -57,7 +57,7 @@ public:
     // Define the relevant "frames"
     const std::string robot_description = "robot_description";
     const std::string group_name = "manipulator";
-    const std::string world_frame = "base_link"; // Frame in which tool poses are expressed
+    const std::string world_frame = "world"; // Frame in which tool poses are expressed
     const std::string tcp_frame = "tool0";
 
     // Using the desired frames, let's initialize Descartes
@@ -83,8 +83,8 @@ public:
     // Step 1: Generate path poses
     EigenSTL::vector_Affine3d tool_poses = makeToolPoses();
     
-    // Step 2: Translate that path by the input reference pose and conver to "Descartes points"
-    std::vector<descartes_core::TrajectoryPtPtr> path = makeDescartesTrajectorty(req.pose, tool_poses);
+    // Step 2: Translate that path by the input reference pose and convert to "Descartes points"
+    std::vector<descartes_core::TrajectoryPtPtr> path = makeDescartesTrajectory(req.pose, tool_poses);
 
     // Step 3: Tell Descartes to start at the "current" robot position
     std::vector<double> start_joints = getCurrentJointState("joint_states");
@@ -103,7 +103,7 @@ public:
       return false;
     }
 
-    // Step 5: Conver the output trajectory into a ROS-formatted message
+    // Step 5: Convert the output trajectory into a ROS-formatted message
     res.trajectory.header.stamp = ros::Time::now();
     res.trajectory.header.frame_id = "world";
     res.trajectory.joint_names = getJointNames();
@@ -130,21 +130,23 @@ public:
     // so you have to do your own "discretization".
     // NOTE that the makeLine function will create a sequence of points inclusive
     // of the start and exclusive of finish point, i.e. line = [start, stop)
+    
+    // Create cartesian path from line-segments
     auto segment1 = makeLine(top_left, bot_left, step_size);
     auto segment2 = makeLine(bot_left, bot_right, step_size);
     auto segment3 = makeLine(bot_right, top_right, step_size);
     auto segment4 = makeLine(top_right, top_left, step_size);
-    
+
     path.insert(path.end(), segment1.begin(), segment1.end());
     path.insert(path.end(), segment2.begin(), segment2.end());
     path.insert(path.end(), segment3.begin(), segment3.end());
     path.insert(path.end(), segment4.begin(), segment4.end());
-    
+
     return path;
   }
 
   std::vector<descartes_core::TrajectoryPtPtr>
-  makeDescartesTrajectorty(const geometry_msgs::Pose& reference,
+  makeDescartesTrajectory(const geometry_msgs::Pose& reference,
                            const EigenSTL::vector_Affine3d& path)
   {
     std::vector<descartes_core::TrajectoryPtPtr> descartes_path; // return value
@@ -154,7 +156,8 @@ public:
 
     for (auto& point : path)
     {
-      auto pt = makeTolerancedCartesianPoint(ref * point);
+      // Create a Descartes "cartesian" point with some kind of constraints
+      descartes_core::TrajectoryPtPtr pt = makeTolerancedCartesianPoint(ref * point);
       descartes_path.push_back(pt);
     }
     return descartes_path;
