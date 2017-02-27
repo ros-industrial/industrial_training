@@ -67,6 +67,8 @@ public:
       return false;
     }
 
+    model_->setCheckCollisions(true);
+
     if (!planner_.initialize(model_))
     {
       ROS_WARN("Descartes Planner failed to initialize");
