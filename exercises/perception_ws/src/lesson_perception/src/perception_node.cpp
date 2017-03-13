@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
   /*
    * SETUP PUBLISHERS
    */
-  ros::Publisher object_pub, cluster_pub, pose_pub;
+  ros::Publisher object_pub, cluster_pub, pose_pub, scene_wo_box;
   object_pub = nh.advertise<sensor_msgs::PointCloud2>("object_cluster", 1);
   cluster_pub = nh.advertise<sensor_msgs::PointCloud2>("primary_cluster", 1);
 
