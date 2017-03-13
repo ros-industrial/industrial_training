@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
   z_filter_max=1.0;
   plane_max_iter=50;
   plane_dist_thresh=0.05;
-  cluster_tol=0.02;
+  cluster_tol=0.01;
   cluster_min_size=100;
   cluster_max_size=50000; 
 
