@@ -37,9 +37,27 @@ int main(int argc, char *argv[])
    * SET UP PARAMETERS (COULD BE INPUT FROM LAUNCH FILE/TERMINAL)
    */
   std::string cloud_topic, world_frame, camera_frame;
+  double voxel_leaf_size;
+  double x_filter_min, x_filter_max, y_filter_min, y_filter_max, z_filter_min, z_filter_max;
+  double plane_max_iter, plane_dist_thresh;
+  double cluster_tol;
+  int cluster_min_size, cluster_max_size;
+
   world_frame="world_frame";
   camera_frame="kinect_link";
-  cloud_topic="kinect/depth_registered/points";
+  cloud_topic="camera/depth_registered/points";
+  voxel_leaf_size=0.001f;
+  x_filter_min=-2.5;
+  x_filter_max=2.5;
+  y_filter_min=-2.5;
+  y_filter_max=2.5;
+  z_filter_min=-2.5;
+  z_filter_max=1.0;
+  plane_max_iter=50;
+  plane_dist_thresh=0.05;
+  cluster_tol=0.02;
+  cluster_min_size=100;
+  cluster_max_size=50000; 
 
   /*
    * SETUP PUBLISHERS
