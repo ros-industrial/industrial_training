@@ -15,7 +15,7 @@
       z_filter_max: 2.5 <!-- m -->
       plane_max_iterations: 100
       plane_distance_threshold: 0.03
-      cluster_tolerance: 0.02
+      cluster_tolerance: 0.01
       cluster_min_size: 250
       cluster_max_size: 500000
     </rosparam>
