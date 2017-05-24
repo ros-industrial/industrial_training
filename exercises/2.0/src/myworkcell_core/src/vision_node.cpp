@@ -34,7 +34,7 @@ public:
     }
  
     	ros::Subscriber ar_sub_;
-	ros::ServiceServer server_;
+      ros::ServiceServer server_;
     	fake_ar_publisher::ARMarkerConstPtr last_msg_;
 };
 
