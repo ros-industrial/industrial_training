@@ -88,7 +88,9 @@ int main(int argc, char *argv[])
   /* ========================================
    * Fill Code: PASSTHROUGH FILTER(S)
    * ========================================*/
-  //filter in x
+  //filter in x7
+
+
 
   //filter in y
 
@@ -98,7 +100,9 @@ int main(int argc, char *argv[])
    * Fill Code: CROPBOX (OPTIONAL)
    * ========================================*/
 
-  /* ========================================
+  /* =====================7
+
+===================
    * Fill Code: PLANE SEGEMENTATION
    * ========================================*/
  
