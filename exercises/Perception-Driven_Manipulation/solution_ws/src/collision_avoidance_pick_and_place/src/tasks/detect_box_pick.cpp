@@ -6,9 +6,6 @@
         * this transform is published by the kinect AR-tag perception node
     - Save the pose into 'box_pose'.
 
-  Hints:
-    - lookupTransform can also look "in the past".  Use Time=0 to get the most-recent transform.
-    - tf::poseTFToMsg allows converting transforms into Pose messages
 */
 geometry_msgs::Pose collision_avoidance_pick_and_place::PickAndPlace::detect_box_pick()
 {
