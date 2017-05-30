@@ -108,8 +108,7 @@ catkin_package(
 )
 
 ###########
-## Build ##[master] killing on exit
-
+## Build ##
 ###########
 
 ## Specify additional locations of header files

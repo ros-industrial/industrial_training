@@ -5,7 +5,6 @@
     - Find the box's position in the world frame using the transform listener.
         * this transform is published by the kinect AR-tag perception node
     - Save the pose into 'box_pose'.
-
 */
 geometry_msgs::Pose collision_avoidance_pick_and_place::PickAndPlace::detect_box_pick()
 {
