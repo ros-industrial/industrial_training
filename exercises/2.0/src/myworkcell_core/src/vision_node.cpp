@@ -23,7 +23,7 @@ public:
     }
 
     bool localizePart(myworkcell_core::LocalizePart::Request& req,
-                      myworkcell_core::LocalizePart::Response& res)
+                   myworkcell_core::LocalizePart::Response& res)
     {
       // Read last message
       fake_ar_publisher::ARMarkerConstPtr p = last_msg_;
@@ -32,10 +32,10 @@ public:
       res.pose = p->pose.pose;
       return true;
     }
-
-    ros::Subscriber ar_sub_;
-    fake_ar_publisher::ARMarkerConstPtr last_msg_;
-    ros::ServiceServer server_;
+ 
+    	ros::Subscriber ar_sub_;
+      ros::ServiceServer server_;
+    	fake_ar_publisher::ARMarkerConstPtr last_msg_;
 };
 
 int main(int argc, char* argv[])
