@@ -8,15 +8,21 @@
 #include <pcl_conversions/pcl_conversions.h> //hydro
 #include "pcl_ros/transforms.h"
 
-//#include <pcl/filters/voxel_grid.h>
-//#include <pcl/filters/passthrough.h>
-//#include <pcl/sample_consensus/method_types.h>
-//#include <pcl/sample_consensus/model_types.h>
-//#include <pcl/segmentation/sac_segmentation.h>
-//#include <pcl/filters/extract_indices.h>
-//#include <pcl/segmentation/extract_clusters.h>
-//#include <pcl/kdtree/kdtree_flann.h>
-//#include <pcl/filters/statistical_outlier_removal.h>
+// #include <pcl/filters/voxel_grid.h>
+// #include <pcl/filters/passthrough.h>
+// #include <pcl/sample_consensus/method_types.h>
+// #include <pcl/sample_consensus/model_types.h>
+// #include <pcl/segmentation/sac_segmentation.h>
+// #include <pcl/filters/extract_indices.h>
+// #include <pcl/segmentation/extract_clusters.h>
+// #include <pcl/kdtree/kdtree_flann.h>
+
+// #include <visualization_msgs/Marker.h>
+// #include <pcl/filters/crop_box.h>
+// #include <pcl/filters/statistical_outlier_removal.h>
+// #include <tf_conversions/tf_eigen.h>
+// #include <pcl/segmentation/extract_polygonal_prism_data.h>
+// #include <pcl/surface/convex_hull.h>
 
 int main(int argc, char *argv[])
 {
@@ -31,14 +37,32 @@ int main(int argc, char *argv[])
    * SET UP PARAMETERS (COULD BE INPUT FROM LAUNCH FILE/TERMINAL)
    */
   std::string cloud_topic, world_frame, camera_frame;
+  double voxel_leaf_size;
+  double x_filter_min, x_filter_max, y_filter_min, y_filter_max, z_filter_min, z_filter_max;
+  double plane_max_iter, plane_dist_thresh;
+  double cluster_tol;
+  int cluster_min_size, cluster_max_size;
+
   world_frame="world_frame";
   camera_frame="kinect_link";
-  cloud_topic="kinect/depth_registered/points";
+  cloud_topic="camera/depth_registered/points";
+  voxel_leaf_size=0.001f;
+  x_filter_min=-2.5;
+  x_filter_max=2.5;
+  y_filter_min=-2.5;
+  y_filter_max=2.5;
+  z_filter_min=-2.5;
+  z_filter_max=1.0;
+  plane_max_iter=50;
+  plane_dist_thresh=0.05;
+  cluster_tol=0.01;
+  cluster_min_size=100;
+  cluster_max_size=50000; 
 
   /*
    * SETUP PUBLISHERS
    */
-  ros::Publisher object_pub, cluster_pub, pose_pub;
+  ros::Publisher object_pub, cluster_pub, pose_pub, scene_wo_box;
   object_pub = nh.advertise<sensor_msgs::PointCloud2>("object_cluster", 1);
   cluster_pub = nh.advertise<sensor_msgs::PointCloud2>("primary_cluster", 1);
 
