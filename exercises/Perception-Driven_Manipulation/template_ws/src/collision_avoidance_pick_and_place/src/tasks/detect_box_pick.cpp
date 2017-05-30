@@ -5,7 +5,6 @@
     - Find the box's position in the world frame using the transform listener.
         * this transform is published by the kinect AR-tag perception node
     - Save the pose into 'box_pose'.
-
 */
 geometry_msgs::Pose collision_avoidance_pick_and_place::PickAndPlace::detect_box_pick()
 {
@@ -28,7 +27,6 @@ geometry_msgs::Pose collision_avoidance_pick_and_place::PickAndPlace::detect_box
   tf::poseTFToMsg(cfg.BOX_PLACE_TF,place_pose);
   srv.request.remove_at_poses.push_back(place_pose);
 
-  //
   /* Fill Code:
    * Goal:
    * - Call target recognition service and save results.
@@ -37,8 +35,7 @@ geometry_msgs::Pose collision_avoidance_pick_and_place::PickAndPlace::detect_box
    * 	detected pose "srv.response.target_pose".
    * - Assign the target_pose in the response to the box_pose variable in
    * 	order to save the results.
-   * 	*/
-
+   */
   geometry_msgs::Pose box_pose;
   if(/* ========  ENTER CODE HERE ======== (replace "true")*/ true)
   {

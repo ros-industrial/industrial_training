@@ -37,7 +37,6 @@ void DemoApplication::loadParameters()
    * Goal:
    * - Read missing parameters 'tip_link' and 'world_frame' from ros parameter server
    */
-
   if(ph.getParam("group_name",config_.group_name) &&
 
       //ph.getParam("[ COMPLETE HERE ]",config_.base_link) &&

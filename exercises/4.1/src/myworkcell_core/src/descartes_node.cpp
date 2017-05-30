@@ -9,7 +9,6 @@
 #include <descartes_utilities/ros_conversions.h>
 #include <eigen_conversions/eigen_msg.h>
 
-
 std::vector<double> getCurrentJointState(const std::string& topic)
 {
   sensor_msgs::JointStateConstPtr state = ros::topic::waitForMessage<sensor_msgs::JointState>(topic, ros::Duration(0.0));
