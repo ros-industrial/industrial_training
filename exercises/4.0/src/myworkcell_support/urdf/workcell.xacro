@@ -2,7 +2,6 @@
 <robot name="myworkcell" xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:include filename="$(find ur_description)/urdf/ur5.urdf.xacro" />
 
-<xacro:ur5_robot prefix="" joint_limited="true"/>
   <link name="world"/>
 
   <link name="table">
@@ -19,6 +18,8 @@
   </link>
 
   <link name="camera_frame"/>
+
+  <xacro:ur5_robot prefix="" joint_limited="true"/>
 
   <joint name="world_to_table" type="fixed">
     <parent link="world"/>

@@ -19,7 +19,6 @@ find_package(catkin REQUIRED COMPONENTS
   descartes_planner
   descartes_utilities
   trajectory_msgs
-
 )
 
 ## System dependencies are found with CMake's conventions
