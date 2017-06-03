@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# Configured for ros-kinetic
+TARGET_BRANCH=kinetic  # industrial_training git branch
+ROS_RELEASE=kinetic    # ROS release version
 
 #=======================================================================
 # verify that PC configuration matches requirements for training class
@@ -23,18 +24,6 @@ function check_internet() {
  
 } #end check_internet()
 
-function fix_repo_version(){
-  printf "      remote: %s   local: %s\n" "$REMOTE_GIT" "$LOCAL_GIT"
-  cd $HOME/industrial_training
-  git pull -q -f https://github.com/ros-industrial/industrial_training.git
-  git checkout -q -f origin/kinetic
-  REMOTE_GIT=$(git ls-remote -q https://github.com/ros-industrial/industrial_training.git kinetic 2> /dev/null | cut -c1-6)
-  LOCAL_GIT=$(cd $DIR &&  git rev-parse HEAD | cut -c1-6)
-  printf "      remote: %s   local: %s\n" "$REMOTE_GIT" "$LOCAL_GIT"
-  printf "  - %-30s" "re-check repo version:"
-  print_result $([ "$REMOTE_GIT" == "$LOCAL_GIT" ])
-}
-
 function check_repo() {
   echo "Checking git repo status... "
   DIR=$(dirname "${BASH_SOURCE[0]}")
@@ -42,12 +31,29 @@ function check_repo() {
   print_result $(cd $DIR && git status &> /dev/null)
   printf "  - %-30s" "active branch:"
   ACTIVE_BRANCH=$(cd $DIR && git rev-parse --abbrev-ref HEAD)
-  print_result [ $ACTIVE_BRANCH  == "kinetic" ]
+  print_result $([ "$ACTIVE_BRANCH" == "$TARGET_BRANCH" ])
+
+  # attempt to checkout correct branch, if needed
+  if [ "$ACTIVE_BRANCH" != "$TARGET_BRANCH" ]; then
+    printf "      %-28s" "attempting to fix branch:"
+    print_result $(cd $DIR && git checkout -q $TARGET_BRANCH)
+  fi
+
   printf "  - %-30s" "repo version:"
-  REMOTE_GIT=$(git ls-remote -q https://github.com/ros-industrial/industrial_training.git kinetic 2> /dev/null | cut -c1-6)
+  REMOTE_URL=https://github.com/ros-industrial/industrial_training.git
+  REMOTE_GIT=$(git ls-remote -q $REMOTE_URL $TARGET_BRANCH 2> /dev/null | cut -c1-6)
   LOCAL_GIT=$(cd $DIR && git rev-parse HEAD | cut -c1-6)
   print_result $([ "$REMOTE_GIT" == "$LOCAL_GIT" ])
-  [ "$REMOTE_GIT" != "$LOCAL_GIT" ] && fix_repo_version
+
+  # attempt to update repo, if needed
+  if [ "$REMOTE_GIT" != "$LOCAL_GIT" ]; then
+    printf "      %-28s" "attempting to update repo:"
+    print_result $(cd $DIR && git pull -q $REMOTE_URL)
+    printf "      %-28s" "re-check repo version:"
+    LOCAL_GIT=$(cd $DIR && git rev-parse HEAD | cut -c1-6)
+    print_result $([ "$REMOTE_GIT" == "$LOCAL_GIT" ])
+    [ "$REMOTE_GIT" != "$LOCAL_GIT" ] && printf "      remote: %s   local: %s\n" "$REMOTE_GIT" "$LOCAL_GIT"
+  fi
 
 } #end check_repo()
 
@@ -59,14 +65,15 @@ function check_deb() {
 function check_debs() {
   echo "Checking debian packages... "
   check_deb meld
-  check_deb ros-kinetic-desktop-full
-  check_deb ros-kinetic-moveit
+  check_deb ros-$ROS_RELEASE-desktop-full
+  check_deb ros-$ROS_RELEASE-moveit
+  check_deb ros-$ROS_RELEASE-industrial-core
   check_deb python-catkin-tools
   check_deb qt57creator-plugin-ros
-  check_deb ros-kinetic-openni-launch
-  check_deb ros-kinetic-openni-camera
-  check_deb ros-kinetic-openni2-launch
-  check_deb ros-kinetic-openni2-launch
+  check_deb ros-$ROS_RELEASE-openni-launch
+  check_deb ros-$ROS_RELEASE-openni-camera
+  check_deb ros-$ROS_RELEASE-openni2-launch
+  check_deb ros-$ROS_RELEASE-openni2-launch
   check_deb build-essential
   check_deb libfontconfig1
   check_deb mesa-common-dev
@@ -79,7 +86,7 @@ function check_bashrc() {
   if [ -z ${ROS_ROOT+x} ]; then
 	print_result $(false)
   else
-	print_result $([ $ROS_ROOT == "/opt/ros/kinetic/share/ros" ])
+	print_result $([ $ROS_ROOT == "/opt/ros/$ROS_RELEASE/share/ros" ])
   fi  
 }
 
