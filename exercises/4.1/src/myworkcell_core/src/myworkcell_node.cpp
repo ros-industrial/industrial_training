@@ -21,6 +21,7 @@ public:
 
     // Localize the part
     myworkcell_core::LocalizePart srv;
+
     srv.request.base_frame = base_frame;
     ROS_INFO_STREAM("Requesting pose in base frame: " << base_frame);
 
@@ -76,7 +77,9 @@ int main(int argc, char **argv)
   private_node_handle.param<std::string>("base_frame", base_frame, "world"); // parameter name, string object reference, default value
 
   ScanNPlan app(nh);
-  ros::Duration(.5).sleep();  // wait for the class to initialize
+
+  //sleep(3); //for debug purposes
+  ros::Duration(.5).sleep(); //wait for the class to initialize
 
   async_spinner.start();
   app.start(base_frame);
