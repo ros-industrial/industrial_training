@@ -5,8 +5,6 @@
 #include <fake_ar_publisher/ARMarker.h>
 #include <myworkcell_core/LocalizePart.h>
 #include <tf/transform_listener.h>
-#include <moveit/move_group_interface/move_group.h>
-
 
 
 class Localizer
@@ -66,7 +64,12 @@ int main(int argc, char* argv[])
 
     ROS_INFO("Vision node starting");
 
-    // Don't exit the program.
-    ros::spin();
+        // The Localizer class provides this node's ROS interfaces
+    	Localizer localizer(nh);
+
+    	//ROS_INFO("Vision node starting");
+
+       	// Don't exit the program.
+       	ros::spin();
 }
 
