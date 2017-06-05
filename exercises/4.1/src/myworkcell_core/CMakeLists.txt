@@ -79,6 +79,7 @@ add_service_files(
 generate_messages(
   DEPENDENCIES
   geometry_msgs
+  moveit_msgs
   trajectory_msgs
 )
 
@@ -156,6 +157,7 @@ include_directories(
 add_executable(vision_node src/vision_node.cpp)
 add_executable(myworkcell_node src/myworkcell_node.cpp)
 add_executable(descartes_node src/descartes_node.cpp)
+
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
