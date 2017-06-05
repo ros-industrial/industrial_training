@@ -6,6 +6,9 @@
         * this transform is published by the kinect AR-tag perception node
     - Save the pose into 'box_pose'.
 
+  Hints:
+    - lookupTransform can also look "in the past".  Use Time=0 to get the most-recent transform.
+    - tf::poseTFToMsg allows converting transforms into Pose messages
 */
 geometry_msgs::Pose collision_avoidance_pick_and_place::PickAndPlace::detect_box_pick()
 {
@@ -28,17 +31,17 @@ geometry_msgs::Pose collision_avoidance_pick_and_place::PickAndPlace::detect_box
   tf::poseTFToMsg(cfg.BOX_PLACE_TF,place_pose);
   srv.request.remove_at_poses.push_back(place_pose);
 
-  //
   /* Fill Code:
    * Goal:
    * - Call target recognition service and save results.
    * Hint:
-   * - Use the service response member to access the
-   * 	detected pose "srv.response.target_pose".
-   * - Assign the target_pose in the response to the box_pose variable in
+   * - The member "target_recognition_client" can use its "call" method to
+   * 	make a ros service request.
+   * - Use the service response member "srv.response.target_pose" to access the
+   * 	detected pose.
+   * - Assign the "target_pose" in the response to the "box_pose" variable in
    * 	order to save the results.
    * 	*/
-
   geometry_msgs::Pose box_pose;
   if(/* ========  ENTER CODE HERE ======== (replace "true")*/ true)
   {
