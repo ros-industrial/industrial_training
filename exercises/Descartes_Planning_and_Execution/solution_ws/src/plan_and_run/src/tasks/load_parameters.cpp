@@ -36,8 +36,9 @@ void DemoApplication::loadParameters()
   /*  Fill Code:
    * Goal:
    * - Read missing parameters 'tip_link' and 'world_frame' from ros parameter server
+   * Hint:
+   * - Replace the string in ph below with "~" to make it a private node.
    */
-
   if(ph.getParam("group_name",config_.group_name) &&
 
       //ph.getParam("[ COMPLETE HERE ]",config_.base_link) &&
