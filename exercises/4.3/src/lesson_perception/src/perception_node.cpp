@@ -20,10 +20,8 @@
 #include <visualization_msgs/Marker.h>
 #include <pcl/filters/crop_box.h>
 #include <pcl/filters/statistical_outlier_removal.h>
-
-//polygonal segmentation
-#include <pcl/segmentation/extract_polygonal_prism_data.h>
 #include <tf_conversions/tf_eigen.h>
+#include <pcl/segmentation/extract_polygonal_prism_data.h>
 #include <pcl/surface/convex_hull.h>
 
 int main(int argc, char *argv[])
@@ -86,39 +84,38 @@ int main(int argc, char *argv[])
 
  while (ros::ok())
  {
-   /*
-    * LISTEN FOR POINTCLOUD
-    */
-   std::string topic = nh.resolveName(cloud_topic);
-   ROS_INFO_STREAM("Cloud service called; waiting for a PointCloud2 on topic "<< topic);
-   sensor_msgs::PointCloud2::ConstPtr recent_cloud =
-                ros::topic::waitForMessage<sensor_msgs::PointCloud2>(topic, nh);
+  /*
+   * LISTEN FOR POINTCLOUD
+   */
+  std::string topic = nh.resolveName(cloud_topic);
+  ROS_INFO_STREAM("Cloud service called; waiting for a PointCloud2 on topic "<< topic);
+  sensor_msgs::PointCloud2::ConstPtr recent_cloud =
+               ros::topic::waitForMessage<sensor_msgs::PointCloud2>(topic, nh);
 
-   /*
-    * TRANSFORM POINTCLOUD FROM CAMERA FRAME TO WORLD FRAME
-    */
-   tf::TransformListener listener;
-   tf::StampedTransform stransform;
-   try
-   {
-     listener.waitForTransform(world_frame, recent_cloud->header.frame_id,  ros::Time::now(), ros::Duration(6.0));
-     listener.lookupTransform(world_frame, recent_cloud->header.frame_id,  ros::Time(0), stransform);
-   }
-   catch (tf::TransformException ex)
-   {
-     ROS_ERROR("%s",ex.what());
-   }
-   sensor_msgs::PointCloud2 transformed_cloud;
- //  sensor_msgs::PointCloud2::ConstPtr recent_cloud =
- //               ros::topic::waitForMessage<sensor_msgs::PointCloud2>(topic, nh);
-   pcl_ros::transformPointCloud(world_frame, stransform, *recent_cloud, transformed_cloud);
+  /*
+   * TRANSFORM POINTCLOUD FROM CAMERA FRAME TO WORLD FRAME
+   */
+  tf::TransformListener listener;
+  tf::StampedTransform stransform;
+  try
+  {
+    listener.waitForTransform(world_frame, recent_cloud->header.frame_id,  ros::Time::now(), ros::Duration(6.0));
+    listener.lookupTransform(world_frame, recent_cloud->header.frame_id,  ros::Time(0), stransform);
+  }
+  catch (tf::TransformException ex)
+  {
+    ROS_ERROR("%s",ex.what());
+  }
+  sensor_msgs::PointCloud2 transformed_cloud;
+//  sensor_msgs::PointCloud2::ConstPtr recent_cloud =
+//               ros::topic::waitForMessage<sensor_msgs::PointCloud2>(topic, nh);
+  pcl_ros::transformPointCloud(world_frame, stransform, *recent_cloud, transformed_cloud);
 
-   /*
-    * CONVERT POINTCLOUD ROS->PCL
-    */
-   pcl::PointCloud<pcl::PointXYZ> cloud;
-   pcl::fromROSMsg (transformed_cloud, cloud);
-
+  /*
+   * CONVERT POINTCLOUD ROS->PCL
+   */
+  pcl::PointCloud<pcl::PointXYZ> cloud;
+  pcl::fromROSMsg (transformed_cloud, cloud);
 
   //MAKE TIMERS FOR PROCESS (OPTIONAL)
   ros::Time start_init = ros::Time::now();
@@ -135,22 +132,20 @@ int main(int argc, char *argv[])
   voxel_filter.setInputCloud (cloud_ptr);
   voxel_filter.setLeafSize (float(voxel_leaf_size), float(voxel_leaf_size), float(voxel_leaf_size));
   voxel_filter.filter (*cloud_voxel_filtered);
-
-  ROS_INFO_STREAM("Original cloud  had " << cloud_voxel_filtered->size() << " points");
-  //ROS_INFO_STREAM("Downsampled cloud  with " << cloud_voxel_filtered->size() << " points");
+  ROS_INFO_STREAM("Downsampled cloud  with " << cloud_voxel_filtered->size() << " points");
 
   /* ========================================
    * Fill Code: PASSTHROUGH FILTER(S)
-   * ======================*/
- //step 1- filter in x
+   * ========================================*/
+  //filter in x
   pcl::PointCloud<pcl::PointXYZ> xf_cloud, yf_cloud, zf_cloud;
   pcl::PassThrough<pcl::PointXYZ> pass_x;
   pass_x.setInputCloud(cloud_voxel_filtered);
   pass_x.setFilterFieldName("x");
-  pass_x.setFilterLimits(x_filter_min,x_filter_max);
+  pass_x.setFilterLimits(x_filter_min, x_filter_max);
   pass_x.filter(xf_cloud);
 
- //pass to filter in y
+  //filter in y
   pcl::PointCloud<pcl::PointXYZ>::Ptr xf_cloud_ptr(new pcl::PointCloud<pcl::PointXYZ>(xf_cloud));
   pcl::PassThrough<pcl::PointXYZ> pass_y;
   pass_y.setInputCloud(xf_cloud_ptr);
@@ -158,7 +153,7 @@ int main(int argc, char *argv[])
   pass_y.setFilterLimits(y_filter_min, y_filter_max);
   pass_y.filter(yf_cloud);
 
-  //pass to filter in z
+  //filter in z
   pcl::PointCloud<pcl::PointXYZ>::Ptr yf_cloud_ptr(new pcl::PointCloud<pcl::PointXYZ>(yf_cloud));
   pcl::PassThrough<pcl::PointXYZ> pass_z;
   pass_z.setInputCloud(yf_cloud_ptr);
@@ -167,7 +162,7 @@ int main(int argc, char *argv[])
   pass_z.filter(zf_cloud);
 
   /* ========================================
-  * Fill Code: CROPBOX (OPTIONAL)
+   * Fill Code: CROPBOX (OPTIONAL)
    * Instead of three passthrough filters, the cropbox filter can be used
    * The user should choose one or the other method
    * ========================================*/
@@ -183,7 +178,9 @@ int main(int argc, char *argv[])
   /* ========================================
    * Fill Code: PLANE SEGEMENTATION
    * ========================================*/
-  pcl::PointCloud<pcl::PointXYZ>::Ptr cropped_cloud(new pcl::PointCloud<pcl::PointXYZ>(zf_cloud)); //this passes in either passthrough or crop filtered cloud.
+  pcl::PointCloud<pcl::PointXYZ>::Ptr cropped_cloud(new pcl::PointCloud<pcl::PointXYZ>(zf_cloud));
+  //If using CropBox, comment line 177 and uncomment line 179
+  //pcl::PointCloud<pcl::PointXYZ>::Ptr cropped_cloud(new pcl::PointCloud<pcl::PointXYZ>(xyz_filtered_cloud));
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_f (new pcl::PointCloud<pcl::PointXYZ>);
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered (new pcl::PointCloud<pcl::PointXYZ>);
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_plane (new pcl::PointCloud<pcl::PointXYZ> ());
@@ -244,6 +241,7 @@ int main(int argc, char *argv[])
 
   std::vector<sensor_msgs::PointCloud2::Ptr> pc2_clusters;
   std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr > clusters;
+  //int j = 0;
   for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin (); it != cluster_indices.end (); ++it)
   {
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_cluster (new pcl::PointCloud<pcl::PointXYZ>);
@@ -297,76 +295,76 @@ int main(int argc, char *argv[])
   /* ========================================
   * BROADCAST TRANSFORM (OPTIONAL)
   * ========================================*/
-    static tf::TransformBroadcaster br;
-    tf::Transform part_transform;
-    //Here in the tf::Vector3(x,y,z) x,y, and z should be calculated based on the pointcloud filtering results
-    part_transform.setOrigin( tf::Vector3(sor_cloud_filtered->at(1).x, sor_cloud_filtered->at(1).y, sor_cloud_filtered->at(1).z) );
-    tf::Quaternion q;
-    q.setRPY(0, 0, 0);
-    part_transform.setRotation(q);
-    br.sendTransform(tf::StampedTransform(part_transform, ros::Time::now(), world_frame, "part"));
+  static tf::TransformBroadcaster br;
+  tf::Transform part_transform;
+  //Here in the tf::Vector3(x,y,z) x,y, and z should be calculated based on the pointcloud filtering results
+  part_transform.setOrigin( tf::Vector3(sor_cloud_filtered->at(1).x, sor_cloud_filtered->at(1).y, sor_cloud_filtered->at(1).z) );
+  tf::Quaternion q;
+  q.setRPY(0, 0, 0);
+  part_transform.setRotation(q);
+  br.sendTransform(tf::StampedTransform(part_transform, ros::Time::now(), world_frame, "part"));
+
 
   /* ========================================
    * Fill Code: POLYGONAL SEGMENTATION (OPTIONAL)
    * ========================================*/
-    pcl::PointCloud<pcl::PointXYZ>::Ptr sensor_cloud_ptr (new pcl::PointCloud<pcl::PointXYZ>(cloud));
-    pcl::PointCloud<pcl::PointXYZ>::Ptr prism_filtered_cloud (new pcl::PointCloud<pcl::PointXYZ>);
-    pcl::PointCloud<pcl::PointXYZ>::Ptr pick_surface_cloud_ptr(new pcl::PointCloud<pcl::PointXYZ>);
+  pcl::PointCloud<pcl::PointXYZ>::Ptr sensor_cloud_ptr (new pcl::PointCloud<pcl::PointXYZ>(cloud));
+  pcl::PointCloud<pcl::PointXYZ>::Ptr prism_filtered_cloud (new pcl::PointCloud<pcl::PointXYZ>);
+  pcl::PointCloud<pcl::PointXYZ>::Ptr pick_surface_cloud_ptr(new pcl::PointCloud<pcl::PointXYZ>);
 
-    pcl::ExtractPolygonalPrismData<pcl::PointXYZ> prism;
-    pcl::ExtractIndices<pcl::PointXYZ> extract_ind;
-    pcl::PointIndices::Ptr pt_inliers (new pcl::PointIndices());
+  pcl::ExtractPolygonalPrismData<pcl::PointXYZ> prism;
+  pcl::ExtractIndices<pcl::PointXYZ> extract_ind;
+  pcl::PointIndices::Ptr pt_inliers (new pcl::PointIndices());
 
-    prism.setInputCloud(sensor_cloud_ptr);
+  prism.setInputCloud(sensor_cloud_ptr);
 
-    // create prism surface
-    double box_length=0.25;
-    double box_width=0.25;
-    pick_surface_cloud_ptr->width = 5;
-    pick_surface_cloud_ptr->height = 1;
-    pick_surface_cloud_ptr->points.resize(5);
+  // create prism surface
+  double box_length=0.25;
+  double box_width=0.25;
+  pick_surface_cloud_ptr->width = 5;
+  pick_surface_cloud_ptr->height = 1;
+  pick_surface_cloud_ptr->points.resize(5);
 
-    pick_surface_cloud_ptr->points[0].x = 0.5f*box_length;
-    pick_surface_cloud_ptr->points[0].y = 0.5f*box_width;
-    pick_surface_cloud_ptr->points[0].z = 0;
+  pick_surface_cloud_ptr->points[0].x = 0.5f*box_length;
+  pick_surface_cloud_ptr->points[0].y = 0.5f*box_width;
+  pick_surface_cloud_ptr->points[0].z = 0;
 
-    pick_surface_cloud_ptr->points[1].x = -0.5f*box_length;
-    pick_surface_cloud_ptr->points[1].y = 0.5f*box_width;
-    pick_surface_cloud_ptr->points[1].z = 0;
+  pick_surface_cloud_ptr->points[1].x = -0.5f*box_length;
+  pick_surface_cloud_ptr->points[1].y = 0.5f*box_width;
+  pick_surface_cloud_ptr->points[1].z = 0;
 
-    pick_surface_cloud_ptr->points[2].x = -0.5f*box_length;
-    pick_surface_cloud_ptr->points[2].y = -0.5f*box_width;
-    pick_surface_cloud_ptr->points[2].z = 0;
+  pick_surface_cloud_ptr->points[2].x = -0.5f*box_length;
+  pick_surface_cloud_ptr->points[2].y = -0.5f*box_width;
+  pick_surface_cloud_ptr->points[2].z = 0;
 
-    pick_surface_cloud_ptr->points[3].x = 0.5f*box_length;
-    pick_surface_cloud_ptr->points[3].y = -0.5f*box_width;
-    pick_surface_cloud_ptr->points[3].z = 0;
+  pick_surface_cloud_ptr->points[3].x = 0.5f*box_length;
+  pick_surface_cloud_ptr->points[3].y = -0.5f*box_width;
+  pick_surface_cloud_ptr->points[3].z = 0;
 
-    pick_surface_cloud_ptr->points[4].x = 0.5f*box_length;
-    pick_surface_cloud_ptr->points[4].y = 0.5f*box_width;
-    pick_surface_cloud_ptr->points[4].z = 0;
+  pick_surface_cloud_ptr->points[4].x = 0.5f*box_length;
+  pick_surface_cloud_ptr->points[4].y = 0.5f*box_width;
+  pick_surface_cloud_ptr->points[4].z = 0;
 
-    Eigen::Affine3d eigen3d;
-    tf::transformTFToEigen(part_transform,eigen3d);
-    pcl::transformPointCloud(*pick_surface_cloud_ptr,*pick_surface_cloud_ptr,Eigen::Affine3f(eigen3d));
+  Eigen::Affine3d eigen3d;
+  tf::transformTFToEigen(part_transform,eigen3d);
+  pcl::transformPointCloud(*pick_surface_cloud_ptr,*pick_surface_cloud_ptr,Eigen::Affine3f(eigen3d));
 
-    prism.setInputPlanarHull( pick_surface_cloud_ptr);
-    prism.setHeightLimits(-10,10);
-    prism.segment(*pt_inliers);
+  prism.setInputPlanarHull( pick_surface_cloud_ptr);
+  prism.setHeightLimits(-10,10);
+  prism.segment(*pt_inliers);
 
-    //extracting remaining points
-    extract_ind.setInputCloud(sensor_cloud_ptr);
-    extract_ind.setIndices(pt_inliers);
-    extract_ind.setNegative(true);
-    extract_ind.filter(*prism_filtered_cloud);;
+  // extracting remaining points
+  extract_ind.setInputCloud(sensor_cloud_ptr);
+  extract_ind.setIndices(pt_inliers);
+  extract_ind.setNegative(true);
+  extract_ind.filter(*prism_filtered_cloud);
 
-    //convert and publish the cloud without box
-    sensor_msgs::PointCloud2::Ptr scene_minus_box_cloud (new sensor_msgs::PointCloud2);
-    pcl::toROSMsg(*prism_filtered_cloud, *scene_minus_box_cloud); //into ros, from
-    scene_minus_box_cloud->header.frame_id=world_frame;
-    scene_minus_box_cloud->header.stamp=ros::Time::now();
-    scene_wo_box.publish(scene_minus_box_cloud);
-
+  //convert and publish
+  sensor_msgs::PointCloud2::Ptr scene_minus_box_cloud (new sensor_msgs::PointCloud2);
+  pcl::toROSMsg(*prism_filtered_cloud, *scene_minus_box_cloud);
+  scene_minus_box_cloud->header.frame_id=world_frame;
+  scene_minus_box_cloud->header.stamp=ros::Time::now();
+  scene_wo_box.publish(scene_minus_box_cloud);
 
   }
   return 0;

@@ -43,8 +43,7 @@ int main(int argc, char **argv)
   private_node_handle.param<std::string>("base_frame", base_frame, "world"); // parameter name, string object reference, default value
 
   ScanNPlan app(nh);
-
-  ros::Duration(.5).sleep(); //wait for the class to initialize
+  ros::Duration(.5).sleep();  // wait for the class to initialize
   app.start(base_frame);
 
   ros::spin();

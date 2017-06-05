@@ -27,14 +27,24 @@ public:
     }
     ROS_INFO_STREAM("part localized: " << srv.response);
 
+    geometry_msgs::Pose move_target = flipPose(srv.response.pose);
 
     // Plan for robot to move to part
     moveit::planning_interface::MoveGroupInterface move_group("manipulator");
-    geometry_msgs::Pose move_target = srv.response.pose;
     move_group.setPoseTarget(move_target);
     move_group.move();
   }
 
+  geometry_msgs::Pose flipPose(const geometry_msgs::Pose& in) const
+  {
+    tf::Transform in_tf;
+    tf::poseMsgToTF(in, in_tf);
+    tf::Quaternion flip_rot(tf::Vector3(1, 0, 0), M_PI);
+    tf::Transform flipped = in_tf * tf::Transform(flip_rot);
+    geometry_msgs::Pose out;
+    tf::poseTFToMsg(flipped, out);
+    return out;
+  }
 
 private:
   // Planning components
@@ -51,12 +61,10 @@ int main(int argc, char **argv)
 
   std::string base_frame;
   private_node_handle.param<std::string>("base_frame", base_frame, "world"); // parameter name, string object reference, default value
-  ros::AsyncSpinner async_spinner(1);
+
   ScanNPlan app(nh);
-  sleep(3); //alows for debugging
-  ros::Duration(6).sleep(); //wait for the class to initialize
-  async_spinner.start();
+  ros::Duration(.5).sleep();  // wait for the class to initialize
   app.start(base_frame);
 
-  ros::waitForShutdown();
+  ros::spin();
 }
