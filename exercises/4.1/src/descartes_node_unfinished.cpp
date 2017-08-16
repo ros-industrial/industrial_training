@@ -159,7 +159,7 @@ public:
   {
     using namespace descartes_core;
     using namespace descartes_trajectory;
-    return TrajectoryPtPtr( /* TODO: Specific point constructor here */ );
+    return TrajectoryPtPtr( new AxialSymmetricPt(pose, M_PI/2.0, AxialSymmetricPt::Z_AXIS) );
   }
 
   // HELPER
