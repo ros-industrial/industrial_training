@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<library path="lib/libur10_demo_descartes">
+<class name="ur10_demo_descartes/UR10RobotModel" type="ur10_demo_descartes::UR10RobotModel" base_class_type="descartes_core::RobotModel">
+<description>This is a Descartes robot model adapter for of the universal UR5 arm.</description>
+</class>
+</library>

@@ -1,0 +1,6 @@
+<launch>
+  <include file="$(find myworkcell_moveit_config)/launch/myworkcell_planning_execution.launch"/>
+  <node name="fake_ar_publisher" pkg="fake_ar_publisher" type="fake_ar_publisher_node" />
+  <node name="vision_node" type="vision_node" pkg="myworkcell_core" output="screen"/>
+  <node name="descartes_node" type="descartes_node" pkg="myworkcell_core" output="screen"/>
+</launch>
