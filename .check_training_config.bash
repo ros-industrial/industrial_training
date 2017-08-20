@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TARGET_BRANCH=kinetic  # industrial_training git branch
+TARGET_BRANCH=kinetic-devel  # industrial_training git branch
 ROS_RELEASE=kinetic    # ROS release version
 
 #=======================================================================
