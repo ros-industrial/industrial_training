@@ -78,6 +78,7 @@ function check_debs() {
   check_deb libfontconfig1
   check_deb mesa-common-dev
   check_deb libglu1-mesa-dev
+  check_deb pcl-tools
 }
 
 function check_bashrc() {
