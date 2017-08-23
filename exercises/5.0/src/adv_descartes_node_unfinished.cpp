@@ -1,6 +1,10 @@
 #include <ros/ros.h>
+#include <ros/package.h>
 #include "myworkcell_core/PlanCartesianPath.h"
 
+#include <tf/tf.h>
+#include <tf_conversions/tf_eigen.h>
+#include <tf/transform_listener.h>
 #include <ur5_demo_descartes/ur5_robot_model.h>
 #include <descartes_planner/dense_planner.h>
 #include <descartes_planner/sparse_planner.h>
@@ -8,6 +12,8 @@
 #include <descartes_trajectory/joint_trajectory_pt.h>
 #include <descartes_utilities/ros_conversions.h>
 #include <eigen_conversions/eigen_msg.h>
+#include <fstream>
+#include <string>
 
 std::vector<double> getCurrentJointState(const std::string& topic)
 {
@@ -19,7 +25,7 @@ std::vector<double> getCurrentJointState(const std::string& topic)
 EigenSTL::vector_Affine3d makeLine(const Eigen::Vector3d& start, const Eigen::Vector3d& stop, double ds)
 {
   EigenSTL::vector_Affine3d line;
-  
+
   const Eigen::Vector3d travel = stop - start;
   const int steps = std::floor(travel.norm() / ds);
 
@@ -46,19 +52,21 @@ public:
       throw std::runtime_error("There was an issue initializing Descartes");
 
     // init services
-    server_ = nh.advertiseService("plan_path", &CartesianPlanner::planPath, this);
+    server_ = nh.advertiseService("adv_plan_path", &CartesianPlanner::planPath, this);
+
+    vis_pub_ = nh.advertise<visualization_msgs::MarkerArray>("puzzle_path", 0);
   }
 
   bool initDescartes()
   {
     // Create a robot model
     model_ = boost::make_shared<ur5_demo_descartes::UR5RobotModel>();
-    
+
     // Define the relevant "frames"
     const std::string robot_description = "robot_description";
-    const std::string group_name = "manipulator";
+    const std::string group_name = "puzzle";
     const std::string world_frame = "world"; // Frame in which tool poses are expressed
-    const std::string tcp_frame = "tool0";
+    const std::string tcp_frame = "part";
 
     // Using the desired frames, let's initialize Descartes
     if (!model_->initialize(robot_description, group_name, world_frame, tcp_frame))
@@ -66,12 +74,14 @@ public:
       ROS_WARN("Descartes RobotModel failed to initialize");
       return false;
     }
+    model_->setCheckCollisions(true);
 
     if (!planner_.initialize(model_))
     {
       ROS_WARN("Descartes Planner failed to initialize");
       return false;
     }
+
     return true;
   }
 
@@ -81,10 +91,11 @@ public:
     ROS_INFO("Recieved cartesian planning request");
 
     // Step 1: Generate path poses
-    EigenSTL::vector_Affine3d tool_poses = makeToolPoses();
-    
+    EigenSTL::vector_Affine3d tool_poses = makePuzzleToolPoses();//makeToolPoses();
+    visualizePuzzlePath(tool_poses);
+
     // Step 2: Translate that path by the input reference pose and convert to "Descartes points"
-    std::vector<descartes_core::TrajectoryPtPtr> path = makeDescartesTrajectory(req.pose, tool_poses);
+    std::vector<descartes_core::TrajectoryPtPtr> path = makeDescartesTrajectory(tool_poses);
 
     // Step 3: Tell Descartes to start at the "current" robot position
     std::vector<double> start_joints = getCurrentJointState("joint_states");
@@ -111,51 +122,121 @@ public:
     return true;
   }
 
-  EigenSTL::vector_Affine3d makeToolPoses()
+  EigenSTL::vector_Affine3d makePuzzleToolPoses()
   {
     EigenSTL::vector_Affine3d path;
+    std::ifstream indata;
 
-    // We assume that our path is centered at (0, 0, 0), so let's define the
-    // corners of the AR marker
-    const double side_length = 0.25; // All units are in meters (M)
-    const double half_side = side_length / 2.0;
-    const double step_size = 0.02;
+    // TODO
+    std::string filename = // Need to get the path to the puzzle_bent.csv using ros::package
 
-    Eigen::Vector3d top_left (half_side, half_side, 0);
-    Eigen::Vector3d bot_left (-half_side, half_side, 0);
+    indata.open(filename);
 
-    // Descartes requires you to guide it in how dense the points should be,
-    // so you have to do your own "discretization".
-    // NOTE that the makeLine function will create a sequence of points inclusive
-    // of the start and exclusive of finish point, i.e. line = [start, stop)
-    
-    // TODO: Add the rest of the cartesian path
-    auto segment1 = makeLine(top_left, bot_left, step_size);
+    std::string line;
+    int lnum = 0;
+    while (std::getline(indata, line))
+    {
+        ++lnum;
+        if (lnum < 3)
+          continue;
 
-    path.insert(path.end(), segment1.begin(), segment1.end());
+        std::stringstream lineStream(line);
+        std::string  cell;
+        Eigen::VectorXd xyzijk(6);
+        int i = -2;
+        while (std::getline(lineStream, cell, ','))
+        {
+          ++i;
+          if (i == -1)
+            continue;
+
+          xyzijk(i) = std::stod(cell);
+        }
+
+        Eigen::Vector3d pos = xyzijk.head<3>();
+        pos = pos / 1000.0;
+        Eigen::Vector3d norm = xyzijk.tail<3>();
+        norm.normalize();
+
+        Eigen::Vector3d temp_x = (-1 * pos).normalized();
+        Eigen::Vector3d y_axis = (norm.cross(temp_x)).normalized();
+        Eigen::Vector3d x_axis = (y_axis.cross(norm)).normalized();
+        Eigen::Affine3d pose;
+        pose.matrix().col(0).head<3>() = x_axis;
+        pose.matrix().col(1).head<3>() = y_axis;
+        pose.matrix().col(2).head<3>() = norm;
+        pose.matrix().col(3).head<3>() = pos;
+
+        path.push_back(pose);
+    }
+    indata.close();
 
     return path;
   }
 
+  bool visualizePuzzlePath(EigenSTL::vector_Affine3d path)
+  {
+    int cnt = 0;
+    visualization_msgs::MarkerArray marker_array;
+    for (auto &point : path)
+    {
+      Eigen::Vector3d pos = point.matrix().col(3).head<3>();
+      Eigen::Vector3d dir = point.matrix().col(2).head<3>();
+
+      visualization_msgs::Marker marker;
+      marker.header.frame_id = "part";
+      marker.header.stamp = ros::Time();
+      marker.header.seq = cnt;
+      marker.ns = "markers";
+      marker.id = cnt;
+      marker.type = visualization_msgs::Marker::ARROW;
+      marker.action = visualization_msgs::Marker::ADD;
+      marker.lifetime = ros::Duration(0);
+      marker.frame_locked = true;
+      marker.scale.x = 0.0002;
+      marker.scale.y = 0.0002;
+      marker.scale.z = 0.0002;
+      marker.color.a = 1.0;
+      marker.color.r = 0.0;
+      marker.color.g = 1.0;
+      marker.color.b = 0.0;
+      geometry_msgs::Point pnt1, pnt2;
+      tf::pointEigenToMsg(pos, pnt1);
+      tf::pointEigenToMsg(pos + (0.005*dir), pnt2);
+      marker.points.push_back(pnt1);
+      marker.points.push_back(pnt2);
+      marker_array.markers.push_back(marker);
+      ++cnt;
+    }
+    vis_pub_.publish(marker_array);
+  }
+
   std::vector<descartes_core::TrajectoryPtPtr>
-  makeDescartesTrajectory(const geometry_msgs::Pose& reference,
-                           const EigenSTL::vector_Affine3d& path)
+  makeDescartesTrajectory(const EigenSTL::vector_Affine3d& path)
   {
     using namespace descartes_core;
     using namespace descartes_trajectory;
 
     std::vector<descartes_core::TrajectoryPtPtr> descartes_path; // return value
 
-    Eigen::Affine3d ref;
-    tf::poseMsgToEigen(reference, ref);
+    // need to get the transform between grinder_frame and base_link;
+    tf::StampedTransform grinder_frame;
+    Eigen::Affine3d gf;
+    // TODO: Use the listener_ to lookup the transform between world and grinder_frame. Then
+    // convert it to an Eigen::Affine3d object gf.
 
-    // TODO: setup world object base and point
-
-    // TODO: setup tool base
+    Frame wobj_base(gf);
+    Frame tool_base = Frame::Identity();
+    TolerancedFrame wobj_pt = Frame::Identity();
 
     for (auto& point : path)
     {
-      // TODO: make a Descartes "cartesian" point with some kind of constraints
+      auto p = point;
+      TolerancedFrame tool_pt(p);
+      // TODO: Set the z tolerance for the point +/- PI
+
+      boost::shared_ptr<CartTrajectoryPt> pt(new CartTrajectoryPt(wobj_base, wobj_pt, tool_base, tool_pt, 0, M_PI/20.0));
+      descartes_path.push_back(pt);
     }
     return descartes_path;
   }
@@ -173,13 +254,15 @@ public:
   descartes_planner::DensePlanner planner_;
   ros::ServiceServer server_;
   ros::NodeHandle nh_;
+  tf::TransformListener listener_;
+  ros::Publisher vis_pub_;
 };
 
 
 
 int main(int argc, char** argv)
 {
-  ros::init(argc, argv, "descartes_node");
+  ros::init(argc, argv, "adv_descartes_node");
 
   ros::NodeHandle nh;
   CartesianPlanner planner (nh);
