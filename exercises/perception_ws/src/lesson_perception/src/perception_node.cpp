@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
    * SET UP PARAMETERS (COULD BE INPUT FROM LAUNCH FILE/TERMINAL)
    */
   std::string cloud_topic, world_frame, camera_frame;
-  world_frame="world_frame";
+  world_frame="kinect_link";
   camera_frame="kinect_link";
   cloud_topic="kinect/depth_registered/points";
 
