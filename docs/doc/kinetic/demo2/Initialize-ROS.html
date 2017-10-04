@@ -1,0 +1,762 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Initialize ROS &mdash; Industrial Training Kinetic documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/override.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="Industrial Training Kinetic documentation" href="../../../index.html"/>
+        <link rel="next" title="Initialize Descartes" href="Initialize-Descartes.html"/>
+        <link rel="prev" title="Load Parameters" href="Load-Parameters.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+
+        
+          <a href="../../../index.html" class="icon icon-home">
+        
+
+          ROS-Industrial<br/>Training Material
+
+        
+        </a>
+
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+        
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../setup/PC-Setup---ROS-Kinetic.html">PC Setup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../setup/PC-Setup---ROS-Kinetic.html#virtual-machine-configuration-recommended">Virtual Machine Configuration (<strong>Recommended</strong>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../setup/PC-Setup---ROS-Kinetic.html#limitations-of-virtual-box">Limitations of Virtual Box</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../setup/PC-Setup---ROS-Kinetic.html#common-vm-issues">Common VM Issues</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/PC-Setup---ROS-Kinetic.html#pc-configuration-not-recommended">PC Configuration (<strong>NOT Recommended</strong>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/PC-Setup---ROS-Kinetic.html#configuration-check">Configuration Check</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-096-introduction-to-c-january-iap-2011/assignments/">MIT Introduction to C++</a></li>
+<li class="toctree-l1"><a class="reference external" href="http://mindview.net/Books/TICPP/ThinkingInCPP2e.html">Bruce Eckel Thinking in C++</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../prerequisites/Navigating-the-Ubuntu-GUI.html">Exercise 0.1 - Intro to Ubuntu GUI</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../prerequisites/Navigating-the-Ubuntu-GUI.html#task-0-presentation-slides">Task 0: Presentation Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../prerequisites/Navigating-the-Ubuntu-GUI.html#task-1-familiarize-yourself-with-the-ubuntu-desktop">Task 1: Familiarize Yourself with the Ubuntu Desktop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../prerequisites/Navigating-the-Ubuntu-GUI.html#task-2-open-and-inspect-an-application">Task 2: Open and Inspect an Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../prerequisites/Navigating-the-Ubuntu-GUI.html#task-3-start-an-application-pin-it-to-the-launcher-bar">Task 3: Start an Application &amp; Pin it to the Launcher Bar</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../prerequisites/Exploring-the-Linux-File-System.html">Exercise 0.2 - The Linux File System</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../prerequisites/Exploring-the-Linux-File-System.html#using-the-file-browser-to-navigate">Using the File Browser to Navigate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../prerequisites/Exploring-the-Linux-File-System.html#making-changes">Making Changes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../prerequisites/Exploring-the-Linux-File-System.html#copying-moving-and-removing-files">Copying, Moving, and Removing Files</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html">Exercise 0.3 - Using the Terminal</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#starting-the-terminal">Starting the Terminal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#navigating-directories-and-listing-files">Navigating Directories and Listing Files</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#prepare-your-environment">Prepare your environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#ls-command">ls Command</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#pwd-and-cd-commands"><code class="docutils literal"><span class="pre">pwd</span></code> and <code class="docutils literal"><span class="pre">cd</span></code> Commands</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#altering-files">Altering Files</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#mv-command">mv Command</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#cp-command">cp Command</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#rm-command">rm Command</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#mkdir-command">mkdir Command</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#job-management">Job management</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-jobs">Stopping Jobs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-out-of-control-jobs">Stopping &quot;Out of Control&quot; Jobs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#showing-process-and-memory-usage">Showing Process and Memory usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#editing-text-and-other-gui-commands">Editing Text (and Other GUI Commands)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#running-commands-as-root">Running Commands as Root</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../session1/ROS-Setup.html">Exercise 1.0 - ROS Setup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session1/ROS-Setup.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/ROS-Setup.html#reference-example">Reference Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/ROS-Setup.html#further-information-and-resources">Further Information and Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/ROS-Setup.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/ROS-Setup.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../session1/ROS-Setup.html#setup-bashrc">Setup ~/.bashrc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session1/ROS-Setup.html#starting-roscore">Starting roscore</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../session1/Create-Catkin-Workspace.html">Exercise 1.1 - Create a Workspace</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Create-Catkin-Workspace.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Create-Catkin-Workspace.html#reference-example">Reference Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Create-Catkin-Workspace.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Create-Catkin-Workspace.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../session1/Create-Catkin-Workspace.html#create-a-catkin-workspace">Create a Catkin Workspace</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../session1/Installing-Existing-Packages.html">Exercise 1.2 - Installing Packages</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Installing-Existing-Packages.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Installing-Existing-Packages.html#reference-example">Reference Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Installing-Existing-Packages.html#further-information-and-resources">Further Information and Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Installing-Existing-Packages.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Installing-Existing-Packages.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../session1/Installing-Existing-Packages.html#install-package-from-apt-repository">Install Package from apt Repository</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session1/Installing-Existing-Packages.html#download-and-build-a-package-from-source">Download and Build a Package from Source</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html">Exercise 1.3 - Packages and Nodes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#reference-example">Reference Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#further-information-and-resources">Further Information and Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#create-a-package">Create a Package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise">STOP!  We'll go through a few more lecture slides before continuing this exercise.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#create-a-node">Create a Node</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#run-a-node">Run a Node</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#challenge">Challenge</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../session1/Topics-and-Messages.html">Exercise 1.4 - Topics and Messages</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Topics-and-Messages.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Topics-and-Messages.html#reference-example">Reference Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Topics-and-Messages.html#further-information-and-resources">Further Information and Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Topics-and-Messages.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Topics-and-Messages.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../session1/Topics-and-Messages.html#add-the-fake-ar-publisher-package-as-a-dependency">Add the fake_ar_publisher Package as a Dependency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session1/Topics-and-Messages.html#run-a-publisher-node">Run a Publisher Node</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Topics-and-Messages.html#create-a-subscriber-node">Create a Subscriber Node</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../session2/Services.html">Exercise 2.0 - Services</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session2/Services.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session2/Services.html#reference-example">Reference Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session2/Services.html#further-information-and-resources">Further Information and Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session2/Services.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session2/Services.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../session2/Services.html#create-service-definition">Create Service Definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session2/Services.html#service-server">Service Server</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session2/Services.html#service-client">Service Client</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session2/Services.html#use-new-service">Use New Service</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../session2/Actions.html">Exercise 2.1 - Actions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session2/Actions.html#ros-tutorials-for-c-action-client-server-usage">ROS Tutorials for C++ Action Client/Server usage</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../session2/Launch-Files.html">Exercise 2.2 - Launch Files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session2/Launch-Files.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session2/Launch-Files.html#reference-example">Reference Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session2/Launch-Files.html#further-information-and-resources">Further Information and Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session2/Launch-Files.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session2/Launch-Files.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../session2/Parameters.html">Exercise 2.3 - Parameters</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session2/Parameters.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session2/Parameters.html#reference-example">Reference Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session2/Parameters.html#further-information-and-resource">Further Information and Resource</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session2/Parameters.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session2/Parameters.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../session3/Intro-to-URDF.html">Exercise 3.0 - Intro to URDF</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Intro-to-URDF.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Intro-to-URDF.html#reference-example">Reference Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Intro-to-URDF.html#further-information-and-resources">Further Information and Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Intro-to-URDF.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Intro-to-URDF.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../session3/Workcell-XACRO.html">Exercise 3.1 - Workcell XACRO</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Workcell-XACRO.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Workcell-XACRO.html#reference-example">Reference Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Workcell-XACRO.html#further-information-and-resources">Further Information and Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Workcell-XACRO.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Workcell-XACRO.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../session3/Coordinate-Transforms-using-TF.html">Exercise 3.2 - Transforms using TF</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Coordinate-Transforms-using-TF.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Coordinate-Transforms-using-TF.html#reference-example">Reference Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Coordinate-Transforms-using-TF.html#further-information-and-resources">Further Information and Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Coordinate-Transforms-using-TF.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Coordinate-Transforms-using-TF.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../session3/Build-a-Moveit!-Package.html">Exercise 3.3 - Build a MoveIt! Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Build-a-Moveit!-Package.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Build-a-Moveit!-Package.html#reference-example">Reference Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Build-a-Moveit!-Package.html#further-information-and-resources">Further Information and Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Build-a-Moveit!-Package.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Build-a-Moveit!-Package.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Build-a-Moveit!-Package.html#using-moveit-with-physical-hardware">Using MoveIt! with Physical Hardware</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../session3/Motion-Planning-RVIZ.html">Exercise 3.4 - Motion Planning using RViz</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Motion-Planning-RVIZ.html#launch-the-planning-environment">Launch the Planning Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Motion-Planning-RVIZ.html#plugin-display-options">Plugin Display Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Motion-Planning-RVIZ.html#basic-motion">Basic Motion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Motion-Planning-RVIZ.html#beyond-the-basics">Beyond the Basics</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../session4/Motion-Planning-CPP.html">Exercise 4.0 - Motion Planning using C++</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session4/Motion-Planning-CPP.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session4/Motion-Planning-CPP.html#reference-example">Reference Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session4/Motion-Planning-CPP.html#further-information-and-resources">3. Further Information and Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session4/Motion-Planning-CPP.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session4/Motion-Planning-CPP.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../session4/Descartes-Path-Planning.html">Exercise 4.1 - Intro to Descartes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session4/Descartes-Path-Planning.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session4/Descartes-Path-Planning.html#reference-example">Reference Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session4/Descartes-Path-Planning.html#further-information-and-resources">Further Information and Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session4/Descartes-Path-Planning.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session4/Descartes-Path-Planning.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../session4/Descartes-Path-Planning.html#setup-workspace">Setup workspace</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session4/Descartes-Path-Planning.html#complete-descartes-node">Complete Descartes Node</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session4/Descartes-Path-Planning.html#update-workcell-node">Update Workcell Node</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session4/Descartes-Path-Planning.html#test-full-application">Test Full Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session4/Descartes-Path-Planning.html#hints-and-help">Hints and Help</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../session4/Introduction-to-Perception.html">Exercise 4.2 - Intro to Perception</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session4/Introduction-to-Perception.html#kinect-sensor-example">Kinect Sensor Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session4/Introduction-to-Perception.html#launch-point-cloud-generating-nodes">Launch Point Cloud Generating Nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session4/Introduction-to-Perception.html#execute-rviz">Execute rviz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session4/Introduction-to-Perception.html#dd-a-point-cloud">dd a Point Cloud</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../session4/Introduction-to-Perception.html#hint">Hint:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../session4/Introduction-to-Perception.html#experiment-with-pcl">Experiment with PCL</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../session4/Introduction-to-Perception.html#extracting-the-table-surface-from-point-cloud-using-the-pcl-sac-segmentation-plane">Extracting the table surface from point cloud using the pcl_sac_segmentation_plane.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session4/Introduction-to-Perception.html#extracting-the-largest-cluster-on-the-table-from-point-cloud-using-the-pcl-sac-segmentation-plane">Extracting the largest cluster on the table from point cloud using the pcl_sac_segmentation_plane.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session4/Introduction-to-Perception.html#down-sample-the-point-cloud-using-the-pcl-voxel-grid">Down sample the point cloud using the pcl_voxel_grid.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session4/Introduction-to-Perception.html#remove-outliers-from-the-cloud-using-the-pcl-outlier-removal">Remove outliers from the cloud using the pcl_outlier_removal.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session4/Introduction-to-Perception.html#compute-the-normals-for-each-point-in-the-point-cloud-using-the-pcl-normal-estimation">Compute the normals for each point in the point cloud using the pcl_normal_estimation.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session4/Introduction-to-Perception.html#mesh-a-point-cloud-using-the-marching-cubes-reconstruction">Mesh a point cloud using the marching cubes reconstruction.</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../demo1/Introduction.html">Demo 1.0 - Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Introduction.html#goal">Goal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Introduction.html#objectives">Objectives</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../demo1/Inspect-the-package.html">Demo 1.1 - Inspect the &quot;pick_and_place_exercise&quot; Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Inspect-the-package.html#acquire-the-workspace">Acquire the Workspace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Inspect-the-package.html#setup-dependencies">Setup dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Inspect-the-package.html#locate-and-navigate-into-the-package">Locate and navigate into the package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Inspect-the-package.html#look-into-each-file-in-the-launch-directory">Look into each file in the launch directory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Inspect-the-package.html#look-into-the-config-directory">Look into the config directory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Inspect-the-package.html#look-into-the-src-directory">Look into the src directory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../demo1/Package-Setup.html">Demo 1.2 - Package Setup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Package-Setup.html#build-package-dependencies">Build Package Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Package-Setup.html#import-package-into-qt">Import Package into QT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Package-Setup.html#open-the-main-thread-source-file">Open the Main Thread Source File</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../demo1/Bring-up-ROS-system-in-simulation-mode.html">Demo 1.3 - Start in Simulation Mode</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Bring-up-ROS-system-in-simulation-mode.html#run-setup-launch-file-in-simulation-mode-simulated-robot-and-sensor">Run setup launch file in simulation mode (simulated robot and sensor)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Bring-up-ROS-system-in-simulation-mode.html#setup-for-real-sensor-and-simulated-robot">Setup for real sensor and simulated robot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Bring-up-ROS-system-in-simulation-mode.html#setup-for-real-robot-and-simulated-sensor-data">Setup for real robot and simulated sensor data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Bring-up-ROS-system-in-simulation-mode.html#setup-for-real-robot-and-real-sensor">Setup for real robot and real sensor</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../demo1/Initialization-and-global-variables.html">Demo 1.4 - Initialization and Global Variables</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Initialization-and-global-variables.html#application-variables">Application Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Initialization-and-global-variables.html#node-initialization">Node Initialization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../demo1/Move-arm-to-wait-position.html">Demo 1.5 - Move Arm to Wait Position</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Move-arm-to-wait-position.html#locate-function">Locate Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Move-arm-to-wait-position.html#complete-code">Complete Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Move-arm-to-wait-position.html#build-code-and-run">Build Code and Run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Move-arm-to-wait-position.html#api-references">API References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../demo1/Open-gripper.html">Demo 1.6 - Open Gripper</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Open-gripper.html#locate-function">Locate Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Open-gripper.html#complete-code">Complete Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Open-gripper.html#build-code-and-run">Build Code and Run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Open-gripper.html#api-references">API References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../demo1/Detect-box-pick-point.html">Demo 1.7 - Detect Box Pick Point</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Detect-box-pick-point.html#locate-function">Locate Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Detect-box-pick-point.html#complete-code">Complete Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Detect-box-pick-point.html#build-code-and-run">Build Code and Run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Detect-box-pick-point.html#api-references">API References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../demo1/Create-pick-moves.html">Demo 1.8 - Create Pick Moves</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Create-pick-moves.html#locate-function">Locate Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Create-pick-moves.html#complete-code">Complete Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Create-pick-moves.html#build-code-and-run">Build Code and Run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Create-pick-moves.html#api-references">API References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../demo1/Pick-up-box.html">Demo 1.9 - Pick Up Box</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Pick-up-box.html#locate-function">Locate Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Pick-up-box.html#complete-code">Complete Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Pick-up-box.html#build-code-and-run">Build Code and Run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Pick-up-box.html#api-references">API References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../demo1/Create-place-moves.html">Demo 1.10 - Create Place Moves</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Create-place-moves.html#locate-function">Locate Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Create-place-moves.html#complete-code">Complete Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Create-place-moves.html#build-code-and-run">Build Code and Run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Create-place-moves.html#api-references">API References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../demo1/Place-box.html">Demo 1.11 - Place Box</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Place-box.html#locate-function">Locate Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Place-box.html#complete-code">Complete Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Place-box.html#build-code-and-run">Build Code and Run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Place-box.html#api-references">API References</a></li>
+</ul>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Introduction.html">Demo 2.0 - Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Introduction.html#goal">Goal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Introduction.html#objectives">Objectives</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Application-Structure.html">Demo 2.1 - Application Structure</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Application-Structure.html#acquire-the-workspace">Acquire the Workspace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Application-Structure.html#list-all-the-packages-in-the-application">List All the Packages in the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Application-Structure.html#the-plan-and-run-package">The <code class="docutils literal"><span class="pre">plan_and_run</span></code> package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Application-Structure.html#main-application-source-file">Main Application Source File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Application-Structure.html#the-demoapplication-class">The DemoApplication Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Application-Structure.html#application-launch-file">Application Launch File</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="General-Instructions.html">Demo 2.2 - General Instructions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="General-Instructions.html#main-objective">Main Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="General-Instructions.html#complete-exercises">Complete Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="General-Instructions.html#run-demo-in-simulation-mode">Run Demo in Simulation Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="General-Instructions.html#run-demo-on-the-real-robot">Run Demo on the Real Robot</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Load-Parameters.html">Demo 2.3 - Load Parameters</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Load-Parameters.html#locate-exercise-source-file">Locate Exercise Source File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Load-Parameters.html#complete-code">Complete Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Load-Parameters.html#build-code-and-run">Build Code and Run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Load-Parameters.html#api-references">API References</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Demo 2.4 - Initialize ROS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#locate-exercise-source-file">Locate Exercise Source File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#complete-code">Complete Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#build-code-and-run">Build Code and Run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#api-references">API References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Initialize-Descartes.html">Demo 2.5 - Initialize Descartes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Initialize-Descartes.html#locate-exercise-source-file">Locate Exercise Source File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Initialize-Descartes.html#complete-code">Complete Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Initialize-Descartes.html#build-code-and-run">Build Code and Run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Initialize-Descartes.html#api-references">API References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Move-Home.html">Demo 2.6 - Move Home</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Move-Home.html#locate-exercise-source-file">Locate Exercise Source File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Move-Home.html#complete-code">Complete Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Move-Home.html#build-code-and-run">Build Code and Run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Move-Home.html#api-references">API References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Generate-a-Semi-Constrained-Trajectory.html">Demo 2.7 - Generate a Semi-Constrained Trajectory</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Generate-a-Semi-Constrained-Trajectory.html#locate-exercise-source-file">Locate exercise source file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Generate-a-Semi-Constrained-Trajectory.html#complete-code">Complete Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Generate-a-Semi-Constrained-Trajectory.html#build-code-and-run">Build Code and Run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Generate-a-Semi-Constrained-Trajectory.html#api-references">API References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Plan-a-robot-path.html">Demo 2.8 - Plan a Robot Path</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Plan-a-robot-path.html#locate-exercise-source-file">Locate Exercise Source File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Plan-a-robot-path.html#complete-code">Complete Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Plan-a-robot-path.html#build-code-and-run">Build Code and Run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Plan-a-robot-path.html#api-references">API References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Run-a-robot-path.html">Demo 2.9 - Run a Robot Path</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Run-a-robot-path.html#locate-exercise-source-file">Locate Exercise Source File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Run-a-robot-path.html#complete-code">Complete Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Run-a-robot-path.html#build-code-and-run">Build Code and Run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Run-a-robot-path.html#api-references">API References</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../session5/Advanced-Descartes-Path-Planning.html">Exercise 5.0 - Advanced Descartes Path Planning</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session5/Advanced-Descartes-Path-Planning.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session5/Advanced-Descartes-Path-Planning.html#reference-example">Reference Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session5/Advanced-Descartes-Path-Planning.html#further-information-and-resources">Further Information and Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session5/Advanced-Descartes-Path-Planning.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session5/Advanced-Descartes-Path-Planning.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../session5/Advanced-Descartes-Path-Planning.html#setup-workspace">Setup workspace</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session5/Advanced-Descartes-Path-Planning.html#update-your-workcell-xacro-file">Update your workcell.xacro file.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session5/Advanced-Descartes-Path-Planning.html#add-new-move-group-to-your-moveit-config-package">Add new move group to your moveit_config package.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session5/Advanced-Descartes-Path-Planning.html#complete-advanced-descartes-node">Complete Advanced Descartes Node</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session5/Advanced-Descartes-Path-Planning.html#update-the-setup-launch-file">Update the setup.launch file.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session5/Advanced-Descartes-Path-Planning.html#test-full-application">Test Full Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session5/Advanced-Descartes-Path-Planning.html#solutions">Solutions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../session5/Building-a-Perception-Pipeline.html">Exercise 5.1 - Building a Perception Pipeline</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session5/Building-a-Perception-Pipeline.html#prepare-new-workspace">Prepare New Workspace:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session5/Building-a-Perception-Pipeline.html#intro-review-existing-code">Intro (Review Existing Code)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session5/Building-a-Perception-Pipeline.html#primary-task-filling-in-the-blanks">Primary Task: Filling in the blanks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../session5/Building-a-Perception-Pipeline.html#implement-voxel-filter">Implement Voxel Filter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../session5/Building-a-Perception-Pipeline.html#viewing-results">Viewing Results</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../session5/Building-a-Perception-Pipeline.html#implement-pass-through-filters">Implement Pass-through Filters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session5/Building-a-Perception-Pipeline.html#plane-segmentation">Plane Segmentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session5/Building-a-Perception-Pipeline.html#euclidean-cluster-extraction-optional-but-recommended">Euclidean Cluster Extraction (optional, but recommended)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session5/Building-a-Perception-Pipeline.html#other-filters-options-optional">Other Filters/Options (optional)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../session5/Building-a-Perception-Pipeline.html#create-a-cropbox-filter">Create a CropBox Filter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../session5/Building-a-Perception-Pipeline.html#create-a-statistical-outlier-removal">Create a Statistical Outlier Removal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../session5/Building-a-Perception-Pipeline.html#create-a-broadcast-transform">Create a Broadcast Transform</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../session5/Building-a-Perception-Pipeline.html#create-a-polygonal-segmentation">Create a Polygonal Segmentation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../session5/Building-a-Perception-Pipeline.html#write-a-launch-file">Write a launch file</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../session5/Introduction-to-STOMP.html">Exercise 5.2 - Introduction to STOMP</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session5/Introduction-to-STOMP.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session5/Introduction-to-STOMP.html#information-and-resources">Information and Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session5/Introduction-to-STOMP.html#objectives">Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session5/Introduction-to-STOMP.html#setup">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session5/Introduction-to-STOMP.html#add-stomp">Add STOMP</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../session5/Introduction-to-STOMP.html#run-moveit-with-stomp">Run MoveIt! with STOMP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session5/Introduction-to-STOMP.html#explore-stomp">Explore STOMP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session5/Introduction-to-STOMP.html#configure-stomp">Configure STOMP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session5/Introduction-to-STOMP.html#more-info-on-the-stomp-parameters">More info on the STOMP parameters</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../session6/Documentation-Generation.html">Exercise 6.0 - Documentation Generation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session6/Documentation-Generation.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session6/Documentation-Generation.html#information-and-resources">Information and Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session6/Documentation-Generation.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session6/Documentation-Generation.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../session6/Documentation-Generation.html#annotate-the-source-code">Annotate the Source Code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session6/Documentation-Generation.html#generate-documentation">Generate documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session6/Documentation-Generation.html#view-the-documentation">View the Documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../session6/Unit-Testing.html">Exercise 6.1 - Unit Testion</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session6/Unit-Testing.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session6/Unit-Testing.html#information-and-resources">Information and Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session6/Unit-Testing.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session6/Unit-Testing.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../session6/Unit-Testing.html#create-the-unit-test-frame-work">Create the unit test frame work</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session6/Unit-Testing.html#write-the-unit-tests">Write the unit tests</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../session6/Using-rqt-tools-for-analysis.html">Exercise 6.2 - Using rqt tools for Analysis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session6/Using-rqt-tools-for-analysis.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session6/Using-rqt-tools-for-analysis.html#information-and-resources">Information and Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session6/Using-rqt-tools-for-analysis.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session6/Using-rqt-tools-for-analysis.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../session6/Using-rqt-tools-for-analysis.html#rqt-graph-view-node-interaction"><code class="docutils literal"><span class="pre">rqt_graph</span></code>: view node interaction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session6/Using-rqt-tools-for-analysis.html#rqt-console-view-messages"><code class="docutils literal"><span class="pre">rqt_console</span></code>: view messages:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session6/Using-rqt-tools-for-analysis.html#rqt-plot-view-data-plots"><code class="docutils literal"><span class="pre">rqt_plot</span></code>: view data plots</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../session6/Style-Guide-and-ros_lint.html">Exercise 6.3 - ROS Style Guide and ros_lint</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session6/Style-Guide-and-ros_lint.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session6/Style-Guide-and-ros_lint.html#information-and-resources">Information and Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session6/Style-Guide-and-ros_lint.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session6/Style-Guide-and-ros_lint.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../session6/Style-Guide-and-ros_lint.html#configure-package">Configure Package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session6/Style-Guide-and-ros_lint.html#run-roslint">Run roslint</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../session6/Docker-AWS.html">Exercise 6.4 - Introduction to ROS with Docker and Amazon Web Services (AWS)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session6/Docker-AWS.html#demo-1-run-front-end-on-in-gazebo-host-and-back-end-in-docker">Demo #1 - Run front-end on in gazebo host and back-end in docker</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../session6/Docker-AWS.html#setup-workspace">Setup workspace</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../session6/Docker-AWS.html#front-end-run-on-host-and-only-contains-gui">Front-end (run on host and only contains gui)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../session6/Docker-AWS.html#back-end-run-in-container">Back-end (run in container)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../session6/Docker-AWS.html#running-the-demo">Running the Demo</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../session6/Docker-AWS.html#run-the-front-end">Run the front-end</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../session6/Docker-AWS.html#run-the-backend">Run the backend</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../session6/Docker-AWS.html#demo-2-run-front-end-on-a-web-server-and-back-end-in-docker">Demo #2 - Run front-end on a web-server and back-end in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session6/Docker-AWS.html#demo-3-robot-web-tools">Demo #3 Robot Web Tools</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">Industrial Training</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+
+        <div class="header-override">
+          <a href="http://rosindustrial.org">
+            <img src="../../../_static/logo.jpg"/>
+          </a>
+          <p>
+            <a href="http://rosindustrial.org">ROS-Industrial Website</a>|<a href="http://rosindustrial.org/news">Blog</a>
+          </p>
+        </div>
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li class="wy-breadcrumbs-aside">
+      
+        
+          <a href="https://github.com/ros-industrial/industrial_training/blob/kinetic-devel/doc/kinetic/demo2/Initialize-ROS['.rst', '.md']" class="fa fa-github"> Edit on GitHub</a>
+        
+      
+    </li>
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+    <li>Initialize ROS</li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             <div class="admonition note"> 
+               <p class="first admonition-title">The code used in this tutorial is available!</p>
+               <p class="last">Code can be found at <a href = "https://github.com/ros-industrial/industrial_training">industrial_training repository</a> in doc folder. Use kinetic-devel branch.</p>
+             </div> 
+            
+  <div class="section" id="initialize-ros">
+<span id="initialize-ros"></span><h1>Initialize ROS<a class="headerlink" href="#initialize-ros" title="Permalink to this headline">¶</a></h1>
+<blockquote>
+<div>In this exercise, we'll initialize the ros components that our application needs in order to communicate to MoveIt! and other parts of the system.</div></blockquote>
+<div class="section" id="locate-exercise-source-file">
+<span id="locate-exercise-source-file"></span><h2>Locate Exercise Source File<a class="headerlink" href="#locate-exercise-source-file" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Go to the main application source file located in '''plan_and_run/src/plan_and_run_node.cpp'''.</li>
+<li>In the main program , locate the function call to '''application.initRos()'''.</li>
+<li>Go to the source file for that function located in the '''plan_and_run/src/tasks/init_ros.cpp'''. Alternatively, in Eclipse you can click in any part of the function and press &quot;F3&quot; to bring up that file.</li>
+<li>Comment out the first line containing the <code class="docutils literal"><span class="pre">//ROS_ERROR_STREAM(&quot;Task</span> <span class="pre">'&quot;&lt;&lt;__FUNCTION__</span> <span class="pre">&lt;&lt;&quot;'</span> <span class="pre">is</span> <span class="pre">incomplete.</span> <span class="pre">Exiting&quot;);</span> <span class="pre">exit(-1);</span></code> entry so that the function doesn't quit immediately.</li>
+</ul>
+</div>
+<div class="section" id="complete-code">
+<span id="complete-code"></span><h2>Complete Code<a class="headerlink" href="#complete-code" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Observe how the ros Publisher '''marker_publisher_''' variable is initialized.  The node uses it to publish a ''visualization_msgs::!MarkerArray'' message for visualizing the trajectory in RViz.</li>
+<li>Initialize the '''moveit_run_path_client_''' service client using the ros node handle's '''ros::!NodeHandle::serviceClient()''' templated method.</li>
+<li>Find comment block that starts with <code class="docutils literal"><span class="pre">/*</span> <span class="pre">Fill</span> <span class="pre">Code:</span></code> and complete as described.</li>
+<li>Replace every instance of <code class="docutils literal"><span class="pre">[</span> <span class="pre">COMPLETE</span> <span class="pre">HERE</span> <span class="pre">]</span></code> accordingly.</li>
+</ul>
+</div>
+<div class="section" id="build-code-and-run">
+<span id="build-code-and-run"></span><h2>Build Code and Run<a class="headerlink" href="#build-code-and-run" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">cd</span></code> into your catkin workspace and run <code class="docutils literal"><span class="pre">catkin</span> <span class="pre">build</span></code></li>
+<li>Then run the application launch file:</li>
+</ul>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">roslaunch</span> <span class="n">plan_and_run</span> <span class="n">demo_run</span><span class="o">.</span><span class="n">launch</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="api-references">
+<span id="api-references"></span><h2>API References<a class="headerlink" href="#api-references" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="http://docs.ros.org/api/visualization_msgs/html/msg/MarkerArray.html">visualization_msgs::MarkerArray</a></p>
+<p><a class="reference external" href="http://docs.ros.org/indigo/api/roscpp/html/classros_1_1NodeHandle.html#aa3376eeca609c4985255cecfaadcbcc5">NodeHandle::serviceClient()</a></p>
+</div>
+</div>
+
+
+            
+            <div class="admonition note">
+              <p class="first admonition-title">Open Source Feedback</p>
+              <p class="last">See something that needs improvement? Please open a pull request on this <a href="https://github.com/ros-industrial/industrial_training/blob/kinetic-devel/doc/kinetic/demo2/Initialize-ROS['.rst', '.md']" class="fa fa-github"> GitHub page</a></p>
+            </div>
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Initialize-Descartes.html" class="btn btn-neutral float-right" title="Initialize Descartes" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Load-Parameters.html" class="btn btn-neutral" title="Load Parameters" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'Kinetic',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

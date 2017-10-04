@@ -1,0 +1,1559 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Building a Perception Pipeline &mdash; Industrial Training Kinetic documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/override.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="Industrial Training Kinetic documentation" href="../../../index.html"/>
+        <link rel="next" title="Introduction to STOMP" href="Introduction-to-STOMP.html"/>
+        <link rel="prev" title="Advanced Descartes Path Planning" href="Advanced-Descartes-Path-Planning.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+
+        
+          <a href="../../../index.html" class="icon icon-home">
+        
+
+          ROS-Industrial<br/>Training Material
+
+        
+        </a>
+
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+        
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../setup/PC-Setup---ROS-Kinetic.html">PC Setup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../setup/PC-Setup---ROS-Kinetic.html#virtual-machine-configuration-recommended">Virtual Machine Configuration (<strong>Recommended</strong>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../setup/PC-Setup---ROS-Kinetic.html#limitations-of-virtual-box">Limitations of Virtual Box</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../setup/PC-Setup---ROS-Kinetic.html#common-vm-issues">Common VM Issues</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/PC-Setup---ROS-Kinetic.html#pc-configuration-not-recommended">PC Configuration (<strong>NOT Recommended</strong>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../setup/PC-Setup---ROS-Kinetic.html#configuration-check">Configuration Check</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-096-introduction-to-c-january-iap-2011/assignments/">MIT Introduction to C++</a></li>
+<li class="toctree-l1"><a class="reference external" href="http://mindview.net/Books/TICPP/ThinkingInCPP2e.html">Bruce Eckel Thinking in C++</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../prerequisites/Navigating-the-Ubuntu-GUI.html">Exercise 0.1 - Intro to Ubuntu GUI</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../prerequisites/Navigating-the-Ubuntu-GUI.html#task-0-presentation-slides">Task 0: Presentation Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../prerequisites/Navigating-the-Ubuntu-GUI.html#task-1-familiarize-yourself-with-the-ubuntu-desktop">Task 1: Familiarize Yourself with the Ubuntu Desktop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../prerequisites/Navigating-the-Ubuntu-GUI.html#task-2-open-and-inspect-an-application">Task 2: Open and Inspect an Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../prerequisites/Navigating-the-Ubuntu-GUI.html#task-3-start-an-application-pin-it-to-the-launcher-bar">Task 3: Start an Application &amp; Pin it to the Launcher Bar</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../prerequisites/Exploring-the-Linux-File-System.html">Exercise 0.2 - The Linux File System</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../prerequisites/Exploring-the-Linux-File-System.html#using-the-file-browser-to-navigate">Using the File Browser to Navigate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../prerequisites/Exploring-the-Linux-File-System.html#making-changes">Making Changes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../prerequisites/Exploring-the-Linux-File-System.html#copying-moving-and-removing-files">Copying, Moving, and Removing Files</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html">Exercise 0.3 - Using the Terminal</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#starting-the-terminal">Starting the Terminal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#navigating-directories-and-listing-files">Navigating Directories and Listing Files</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#prepare-your-environment">Prepare your environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#ls-command">ls Command</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#pwd-and-cd-commands"><code class="docutils literal"><span class="pre">pwd</span></code> and <code class="docutils literal"><span class="pre">cd</span></code> Commands</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#altering-files">Altering Files</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#mv-command">mv Command</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#cp-command">cp Command</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#rm-command">rm Command</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#mkdir-command">mkdir Command</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#job-management">Job management</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-jobs">Stopping Jobs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-out-of-control-jobs">Stopping &quot;Out of Control&quot; Jobs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#showing-process-and-memory-usage">Showing Process and Memory usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#editing-text-and-other-gui-commands">Editing Text (and Other GUI Commands)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#running-commands-as-root">Running Commands as Root</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../session1/ROS-Setup.html">Exercise 1.0 - ROS Setup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session1/ROS-Setup.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/ROS-Setup.html#reference-example">Reference Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/ROS-Setup.html#further-information-and-resources">Further Information and Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/ROS-Setup.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/ROS-Setup.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../session1/ROS-Setup.html#setup-bashrc">Setup ~/.bashrc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session1/ROS-Setup.html#starting-roscore">Starting roscore</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../session1/Create-Catkin-Workspace.html">Exercise 1.1 - Create a Workspace</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Create-Catkin-Workspace.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Create-Catkin-Workspace.html#reference-example">Reference Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Create-Catkin-Workspace.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Create-Catkin-Workspace.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../session1/Create-Catkin-Workspace.html#create-a-catkin-workspace">Create a Catkin Workspace</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../session1/Installing-Existing-Packages.html">Exercise 1.2 - Installing Packages</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Installing-Existing-Packages.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Installing-Existing-Packages.html#reference-example">Reference Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Installing-Existing-Packages.html#further-information-and-resources">Further Information and Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Installing-Existing-Packages.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Installing-Existing-Packages.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../session1/Installing-Existing-Packages.html#install-package-from-apt-repository">Install Package from apt Repository</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session1/Installing-Existing-Packages.html#download-and-build-a-package-from-source">Download and Build a Package from Source</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html">Exercise 1.3 - Packages and Nodes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#reference-example">Reference Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#further-information-and-resources">Further Information and Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#create-a-package">Create a Package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise">STOP!  We'll go through a few more lecture slides before continuing this exercise.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#create-a-node">Create a Node</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#run-a-node">Run a Node</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#challenge">Challenge</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../session1/Topics-and-Messages.html">Exercise 1.4 - Topics and Messages</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Topics-and-Messages.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Topics-and-Messages.html#reference-example">Reference Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Topics-and-Messages.html#further-information-and-resources">Further Information and Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Topics-and-Messages.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Topics-and-Messages.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../session1/Topics-and-Messages.html#add-the-fake-ar-publisher-package-as-a-dependency">Add the fake_ar_publisher Package as a Dependency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session1/Topics-and-Messages.html#run-a-publisher-node">Run a Publisher Node</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../session1/Topics-and-Messages.html#create-a-subscriber-node">Create a Subscriber Node</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../session2/Services.html">Exercise 2.0 - Services</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session2/Services.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session2/Services.html#reference-example">Reference Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session2/Services.html#further-information-and-resources">Further Information and Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session2/Services.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session2/Services.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../session2/Services.html#create-service-definition">Create Service Definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session2/Services.html#service-server">Service Server</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session2/Services.html#service-client">Service Client</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session2/Services.html#use-new-service">Use New Service</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../session2/Actions.html">Exercise 2.1 - Actions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session2/Actions.html#ros-tutorials-for-c-action-client-server-usage">ROS Tutorials for C++ Action Client/Server usage</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../session2/Launch-Files.html">Exercise 2.2 - Launch Files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session2/Launch-Files.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session2/Launch-Files.html#reference-example">Reference Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session2/Launch-Files.html#further-information-and-resources">Further Information and Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session2/Launch-Files.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session2/Launch-Files.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../session2/Parameters.html">Exercise 2.3 - Parameters</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session2/Parameters.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session2/Parameters.html#reference-example">Reference Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session2/Parameters.html#further-information-and-resource">Further Information and Resource</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session2/Parameters.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session2/Parameters.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../session3/Intro-to-URDF.html">Exercise 3.0 - Intro to URDF</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Intro-to-URDF.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Intro-to-URDF.html#reference-example">Reference Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Intro-to-URDF.html#further-information-and-resources">Further Information and Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Intro-to-URDF.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Intro-to-URDF.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../session3/Workcell-XACRO.html">Exercise 3.1 - Workcell XACRO</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Workcell-XACRO.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Workcell-XACRO.html#reference-example">Reference Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Workcell-XACRO.html#further-information-and-resources">Further Information and Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Workcell-XACRO.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Workcell-XACRO.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../session3/Coordinate-Transforms-using-TF.html">Exercise 3.2 - Transforms using TF</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Coordinate-Transforms-using-TF.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Coordinate-Transforms-using-TF.html#reference-example">Reference Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Coordinate-Transforms-using-TF.html#further-information-and-resources">Further Information and Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Coordinate-Transforms-using-TF.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Coordinate-Transforms-using-TF.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../session3/Build-a-Moveit!-Package.html">Exercise 3.3 - Build a MoveIt! Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Build-a-Moveit!-Package.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Build-a-Moveit!-Package.html#reference-example">Reference Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Build-a-Moveit!-Package.html#further-information-and-resources">Further Information and Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Build-a-Moveit!-Package.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Build-a-Moveit!-Package.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Build-a-Moveit!-Package.html#using-moveit-with-physical-hardware">Using MoveIt! with Physical Hardware</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../session3/Motion-Planning-RVIZ.html">Exercise 3.4 - Motion Planning using RViz</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Motion-Planning-RVIZ.html#launch-the-planning-environment">Launch the Planning Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Motion-Planning-RVIZ.html#plugin-display-options">Plugin Display Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Motion-Planning-RVIZ.html#basic-motion">Basic Motion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session3/Motion-Planning-RVIZ.html#beyond-the-basics">Beyond the Basics</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../session4/Motion-Planning-CPP.html">Exercise 4.0 - Motion Planning using C++</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session4/Motion-Planning-CPP.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session4/Motion-Planning-CPP.html#reference-example">Reference Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session4/Motion-Planning-CPP.html#further-information-and-resources">3. Further Information and Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session4/Motion-Planning-CPP.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session4/Motion-Planning-CPP.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../session4/Descartes-Path-Planning.html">Exercise 4.1 - Intro to Descartes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session4/Descartes-Path-Planning.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session4/Descartes-Path-Planning.html#reference-example">Reference Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session4/Descartes-Path-Planning.html#further-information-and-resources">Further Information and Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session4/Descartes-Path-Planning.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session4/Descartes-Path-Planning.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../session4/Descartes-Path-Planning.html#setup-workspace">Setup workspace</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session4/Descartes-Path-Planning.html#complete-descartes-node">Complete Descartes Node</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session4/Descartes-Path-Planning.html#update-workcell-node">Update Workcell Node</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session4/Descartes-Path-Planning.html#test-full-application">Test Full Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session4/Descartes-Path-Planning.html#hints-and-help">Hints and Help</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../session4/Introduction-to-Perception.html">Exercise 4.2 - Intro to Perception</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session4/Introduction-to-Perception.html#kinect-sensor-example">Kinect Sensor Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session4/Introduction-to-Perception.html#launch-point-cloud-generating-nodes">Launch Point Cloud Generating Nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session4/Introduction-to-Perception.html#execute-rviz">Execute rviz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session4/Introduction-to-Perception.html#dd-a-point-cloud">dd a Point Cloud</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../session4/Introduction-to-Perception.html#hint">Hint:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../session4/Introduction-to-Perception.html#experiment-with-pcl">Experiment with PCL</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../session4/Introduction-to-Perception.html#extracting-the-table-surface-from-point-cloud-using-the-pcl-sac-segmentation-plane">Extracting the table surface from point cloud using the pcl_sac_segmentation_plane.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session4/Introduction-to-Perception.html#extracting-the-largest-cluster-on-the-table-from-point-cloud-using-the-pcl-sac-segmentation-plane">Extracting the largest cluster on the table from point cloud using the pcl_sac_segmentation_plane.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session4/Introduction-to-Perception.html#down-sample-the-point-cloud-using-the-pcl-voxel-grid">Down sample the point cloud using the pcl_voxel_grid.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session4/Introduction-to-Perception.html#remove-outliers-from-the-cloud-using-the-pcl-outlier-removal">Remove outliers from the cloud using the pcl_outlier_removal.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session4/Introduction-to-Perception.html#compute-the-normals-for-each-point-in-the-point-cloud-using-the-pcl-normal-estimation">Compute the normals for each point in the point cloud using the pcl_normal_estimation.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session4/Introduction-to-Perception.html#mesh-a-point-cloud-using-the-marching-cubes-reconstruction">Mesh a point cloud using the marching cubes reconstruction.</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../demo1/Introduction.html">Demo 1.0 - Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Introduction.html#goal">Goal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Introduction.html#objectives">Objectives</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../demo1/Inspect-the-package.html">Demo 1.1 - Inspect the &quot;pick_and_place_exercise&quot; Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Inspect-the-package.html#acquire-the-workspace">Acquire the Workspace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Inspect-the-package.html#setup-dependencies">Setup dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Inspect-the-package.html#locate-and-navigate-into-the-package">Locate and navigate into the package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Inspect-the-package.html#look-into-each-file-in-the-launch-directory">Look into each file in the launch directory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Inspect-the-package.html#look-into-the-config-directory">Look into the config directory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Inspect-the-package.html#look-into-the-src-directory">Look into the src directory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../demo1/Package-Setup.html">Demo 1.2 - Package Setup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Package-Setup.html#build-package-dependencies">Build Package Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Package-Setup.html#import-package-into-qt">Import Package into QT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Package-Setup.html#open-the-main-thread-source-file">Open the Main Thread Source File</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../demo1/Bring-up-ROS-system-in-simulation-mode.html">Demo 1.3 - Start in Simulation Mode</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Bring-up-ROS-system-in-simulation-mode.html#run-setup-launch-file-in-simulation-mode-simulated-robot-and-sensor">Run setup launch file in simulation mode (simulated robot and sensor)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Bring-up-ROS-system-in-simulation-mode.html#setup-for-real-sensor-and-simulated-robot">Setup for real sensor and simulated robot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Bring-up-ROS-system-in-simulation-mode.html#setup-for-real-robot-and-simulated-sensor-data">Setup for real robot and simulated sensor data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Bring-up-ROS-system-in-simulation-mode.html#setup-for-real-robot-and-real-sensor">Setup for real robot and real sensor</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../demo1/Initialization-and-global-variables.html">Demo 1.4 - Initialization and Global Variables</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Initialization-and-global-variables.html#application-variables">Application Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Initialization-and-global-variables.html#node-initialization">Node Initialization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../demo1/Move-arm-to-wait-position.html">Demo 1.5 - Move Arm to Wait Position</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Move-arm-to-wait-position.html#locate-function">Locate Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Move-arm-to-wait-position.html#complete-code">Complete Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Move-arm-to-wait-position.html#build-code-and-run">Build Code and Run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Move-arm-to-wait-position.html#api-references">API References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../demo1/Open-gripper.html">Demo 1.6 - Open Gripper</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Open-gripper.html#locate-function">Locate Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Open-gripper.html#complete-code">Complete Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Open-gripper.html#build-code-and-run">Build Code and Run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Open-gripper.html#api-references">API References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../demo1/Detect-box-pick-point.html">Demo 1.7 - Detect Box Pick Point</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Detect-box-pick-point.html#locate-function">Locate Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Detect-box-pick-point.html#complete-code">Complete Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Detect-box-pick-point.html#build-code-and-run">Build Code and Run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Detect-box-pick-point.html#api-references">API References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../demo1/Create-pick-moves.html">Demo 1.8 - Create Pick Moves</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Create-pick-moves.html#locate-function">Locate Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Create-pick-moves.html#complete-code">Complete Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Create-pick-moves.html#build-code-and-run">Build Code and Run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Create-pick-moves.html#api-references">API References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../demo1/Pick-up-box.html">Demo 1.9 - Pick Up Box</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Pick-up-box.html#locate-function">Locate Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Pick-up-box.html#complete-code">Complete Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Pick-up-box.html#build-code-and-run">Build Code and Run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Pick-up-box.html#api-references">API References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../demo1/Create-place-moves.html">Demo 1.10 - Create Place Moves</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Create-place-moves.html#locate-function">Locate Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Create-place-moves.html#complete-code">Complete Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Create-place-moves.html#build-code-and-run">Build Code and Run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Create-place-moves.html#api-references">API References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../demo1/Place-box.html">Demo 1.11 - Place Box</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Place-box.html#locate-function">Locate Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Place-box.html#complete-code">Complete Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Place-box.html#build-code-and-run">Build Code and Run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo1/Place-box.html#api-references">API References</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../demo2/Introduction.html">Demo 2.0 - Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/Introduction.html#goal">Goal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/Introduction.html#objectives">Objectives</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../demo2/Application-Structure.html">Demo 2.1 - Application Structure</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/Application-Structure.html#acquire-the-workspace">Acquire the Workspace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/Application-Structure.html#list-all-the-packages-in-the-application">List All the Packages in the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/Application-Structure.html#the-plan-and-run-package">The <code class="docutils literal"><span class="pre">plan_and_run</span></code> package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/Application-Structure.html#main-application-source-file">Main Application Source File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/Application-Structure.html#the-demoapplication-class">The DemoApplication Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/Application-Structure.html#application-launch-file">Application Launch File</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../demo2/General-Instructions.html">Demo 2.2 - General Instructions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/General-Instructions.html#main-objective">Main Objective</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/General-Instructions.html#complete-exercises">Complete Exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/General-Instructions.html#run-demo-in-simulation-mode">Run Demo in Simulation Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/General-Instructions.html#run-demo-on-the-real-robot">Run Demo on the Real Robot</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../demo2/Load-Parameters.html">Demo 2.3 - Load Parameters</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/Load-Parameters.html#locate-exercise-source-file">Locate Exercise Source File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/Load-Parameters.html#complete-code">Complete Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/Load-Parameters.html#build-code-and-run">Build Code and Run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/Load-Parameters.html#api-references">API References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../demo2/Initialize-ROS.html">Demo 2.4 - Initialize ROS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/Initialize-ROS.html#locate-exercise-source-file">Locate Exercise Source File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/Initialize-ROS.html#complete-code">Complete Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/Initialize-ROS.html#build-code-and-run">Build Code and Run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/Initialize-ROS.html#api-references">API References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../demo2/Initialize-Descartes.html">Demo 2.5 - Initialize Descartes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/Initialize-Descartes.html#locate-exercise-source-file">Locate Exercise Source File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/Initialize-Descartes.html#complete-code">Complete Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/Initialize-Descartes.html#build-code-and-run">Build Code and Run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/Initialize-Descartes.html#api-references">API References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../demo2/Move-Home.html">Demo 2.6 - Move Home</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/Move-Home.html#locate-exercise-source-file">Locate Exercise Source File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/Move-Home.html#complete-code">Complete Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/Move-Home.html#build-code-and-run">Build Code and Run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/Move-Home.html#api-references">API References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../demo2/Generate-a-Semi-Constrained-Trajectory.html">Demo 2.7 - Generate a Semi-Constrained Trajectory</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/Generate-a-Semi-Constrained-Trajectory.html#locate-exercise-source-file">Locate exercise source file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/Generate-a-Semi-Constrained-Trajectory.html#complete-code">Complete Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/Generate-a-Semi-Constrained-Trajectory.html#build-code-and-run">Build Code and Run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/Generate-a-Semi-Constrained-Trajectory.html#api-references">API References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../demo2/Plan-a-robot-path.html">Demo 2.8 - Plan a Robot Path</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/Plan-a-robot-path.html#locate-exercise-source-file">Locate Exercise Source File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/Plan-a-robot-path.html#complete-code">Complete Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/Plan-a-robot-path.html#build-code-and-run">Build Code and Run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/Plan-a-robot-path.html#api-references">API References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../demo2/Run-a-robot-path.html">Demo 2.9 - Run a Robot Path</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/Run-a-robot-path.html#locate-exercise-source-file">Locate Exercise Source File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/Run-a-robot-path.html#complete-code">Complete Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/Run-a-robot-path.html#build-code-and-run">Build Code and Run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../demo2/Run-a-robot-path.html#api-references">API References</a></li>
+</ul>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Advanced-Descartes-Path-Planning.html">Exercise 5.0 - Advanced Descartes Path Planning</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Advanced-Descartes-Path-Planning.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Advanced-Descartes-Path-Planning.html#reference-example">Reference Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Advanced-Descartes-Path-Planning.html#further-information-and-resources">Further Information and Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Advanced-Descartes-Path-Planning.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Advanced-Descartes-Path-Planning.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Advanced-Descartes-Path-Planning.html#setup-workspace">Setup workspace</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Advanced-Descartes-Path-Planning.html#update-your-workcell-xacro-file">Update your workcell.xacro file.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Advanced-Descartes-Path-Planning.html#add-new-move-group-to-your-moveit-config-package">Add new move group to your moveit_config package.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Advanced-Descartes-Path-Planning.html#complete-advanced-descartes-node">Complete Advanced Descartes Node</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Advanced-Descartes-Path-Planning.html#update-the-setup-launch-file">Update the setup.launch file.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Advanced-Descartes-Path-Planning.html#test-full-application">Test Full Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Advanced-Descartes-Path-Planning.html#solutions">Solutions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Exercise 5.1 - Building a Perception Pipeline</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#prepare-new-workspace">Prepare New Workspace:</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#intro-review-existing-code">Intro (Review Existing Code)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#primary-task-filling-in-the-blanks">Primary Task: Filling in the blanks</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#implement-voxel-filter">Implement Voxel Filter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#viewing-results">Viewing Results</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#implement-pass-through-filters">Implement Pass-through Filters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#plane-segmentation">Plane Segmentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#euclidean-cluster-extraction-optional-but-recommended">Euclidean Cluster Extraction (optional, but recommended)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#other-filters-options-optional">Other Filters/Options (optional)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#create-a-cropbox-filter">Create a CropBox Filter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#create-a-statistical-outlier-removal">Create a Statistical Outlier Removal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#create-a-broadcast-transform">Create a Broadcast Transform</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#create-a-polygonal-segmentation">Create a Polygonal Segmentation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#write-a-launch-file">Write a launch file</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Introduction-to-STOMP.html">Exercise 5.2 - Introduction to STOMP</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Introduction-to-STOMP.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Introduction-to-STOMP.html#information-and-resources">Information and Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Introduction-to-STOMP.html#objectives">Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Introduction-to-STOMP.html#setup">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Introduction-to-STOMP.html#add-stomp">Add STOMP</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Introduction-to-STOMP.html#run-moveit-with-stomp">Run MoveIt! with STOMP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Introduction-to-STOMP.html#explore-stomp">Explore STOMP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Introduction-to-STOMP.html#configure-stomp">Configure STOMP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Introduction-to-STOMP.html#more-info-on-the-stomp-parameters">More info on the STOMP parameters</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../session6/Documentation-Generation.html">Exercise 6.0 - Documentation Generation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session6/Documentation-Generation.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session6/Documentation-Generation.html#information-and-resources">Information and Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session6/Documentation-Generation.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session6/Documentation-Generation.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../session6/Documentation-Generation.html#annotate-the-source-code">Annotate the Source Code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session6/Documentation-Generation.html#generate-documentation">Generate documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session6/Documentation-Generation.html#view-the-documentation">View the Documentation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../session6/Unit-Testing.html">Exercise 6.1 - Unit Testion</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session6/Unit-Testing.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session6/Unit-Testing.html#information-and-resources">Information and Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session6/Unit-Testing.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session6/Unit-Testing.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../session6/Unit-Testing.html#create-the-unit-test-frame-work">Create the unit test frame work</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session6/Unit-Testing.html#write-the-unit-tests">Write the unit tests</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../session6/Using-rqt-tools-for-analysis.html">Exercise 6.2 - Using rqt tools for Analysis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session6/Using-rqt-tools-for-analysis.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session6/Using-rqt-tools-for-analysis.html#information-and-resources">Information and Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session6/Using-rqt-tools-for-analysis.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session6/Using-rqt-tools-for-analysis.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../session6/Using-rqt-tools-for-analysis.html#rqt-graph-view-node-interaction"><code class="docutils literal"><span class="pre">rqt_graph</span></code>: view node interaction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session6/Using-rqt-tools-for-analysis.html#rqt-console-view-messages"><code class="docutils literal"><span class="pre">rqt_console</span></code>: view messages:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session6/Using-rqt-tools-for-analysis.html#rqt-plot-view-data-plots"><code class="docutils literal"><span class="pre">rqt_plot</span></code>: view data plots</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../session6/Style-Guide-and-ros_lint.html">Exercise 6.3 - ROS Style Guide and ros_lint</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session6/Style-Guide-and-ros_lint.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session6/Style-Guide-and-ros_lint.html#information-and-resources">Information and Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session6/Style-Guide-and-ros_lint.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session6/Style-Guide-and-ros_lint.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../session6/Style-Guide-and-ros_lint.html#configure-package">Configure Package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session6/Style-Guide-and-ros_lint.html#run-roslint">Run roslint</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../session6/Docker-AWS.html">Exercise 6.4 - Introduction to ROS with Docker and Amazon Web Services (AWS)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../session6/Docker-AWS.html#demo-1-run-front-end-on-in-gazebo-host-and-back-end-in-docker">Demo #1 - Run front-end on in gazebo host and back-end in docker</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../session6/Docker-AWS.html#setup-workspace">Setup workspace</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../session6/Docker-AWS.html#front-end-run-on-host-and-only-contains-gui">Front-end (run on host and only contains gui)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../session6/Docker-AWS.html#back-end-run-in-container">Back-end (run in container)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../session6/Docker-AWS.html#running-the-demo">Running the Demo</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../session6/Docker-AWS.html#run-the-front-end">Run the front-end</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../session6/Docker-AWS.html#run-the-backend">Run the backend</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../session6/Docker-AWS.html#demo-2-run-front-end-on-a-web-server-and-back-end-in-docker">Demo #2 - Run front-end on a web-server and back-end in docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../session6/Docker-AWS.html#demo-3-robot-web-tools">Demo #3 Robot Web Tools</a></li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">Industrial Training</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+
+        <div class="header-override">
+          <a href="http://rosindustrial.org">
+            <img src="../../../_static/logo.jpg"/>
+          </a>
+          <p>
+            <a href="http://rosindustrial.org">ROS-Industrial Website</a>|<a href="http://rosindustrial.org/news">Blog</a>
+          </p>
+        </div>
+
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li class="wy-breadcrumbs-aside">
+      
+        
+          <a href="https://github.com/ros-industrial/industrial_training/blob/kinetic-devel/doc/kinetic/session5/Building-a-Perception-Pipeline['.rst', '.md']" class="fa fa-github"> Edit on GitHub</a>
+        
+      
+    </li>
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+    <li>Building a Perception Pipeline</li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             <div class="admonition note"> 
+               <p class="first admonition-title">The code used in this tutorial is available!</p>
+               <p class="last">Code can be found at <a href = "https://github.com/ros-industrial/industrial_training">industrial_training repository</a> in doc folder. Use kinetic-devel branch.</p>
+             </div> 
+            
+  <div class="section" id="building-a-perception-pipeline">
+<span id="building-a-perception-pipeline"></span><h1>Building a Perception Pipeline<a class="headerlink" href="#building-a-perception-pipeline" title="Permalink to this headline">¶</a></h1>
+<blockquote>
+<div>In this exercise, we will fill in the appropriate pieces of code to build a perception pipeline. The end goal will be to broadcast a transform with the pose information of the object of interest.</div></blockquote>
+<div class="section" id="prepare-new-workspace">
+<span id="prepare-new-workspace"></span><h2>Prepare New Workspace:<a class="headerlink" href="#prepare-new-workspace" title="Permalink to this headline">¶</a></h2>
+<p>We will create a new catkin workspace, since this exercise does not overlap with the previous PlanNScan exercises.</p>
+<ol>
+<li><p class="first">Copy the template workspace layout and files:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>cp -r ~/industrial_training/exercises/perception_ws ~
+<span class="nb">cd</span> ~/perception_ws/
+</pre></div>
+</div>
+</li>
+<li><p class="first">Download the <a class="reference external" href="resources/table.pcd">PointCloud file</a> and place the file in your home directory (~).</p>
+</li>
+<li><p class="first">Disable automatic sourcing of your previous catkin workspace:</p>
+<ol class="simple">
+<li><code class="docutils literal"><span class="pre">gedit</span> <span class="pre">~/.bashrc</span></code></li>
+<li>comment out (<code class="docutils literal"><span class="pre">#</span></code>) the last line, sourcing your <code class="docutils literal"><span class="pre">~/catkin_ws/devel/setup.bash</span></code>
+<em>Note: that this means you'll need to manually source the setup file from your new catkin workspace in each new terminal window.</em></li>
+<li>Build and source this new workspace.
+<code class="docutils literal"><span class="pre">source</span> <span class="pre">~/perception_ws/devel/setup.bash</span></code></li>
+</ol>
+</li>
+<li><p class="first">Import the new workspace into your QTCreator IDE:</p>
+<ul class="simple">
+<li>In QTCreator: File -&gt; New Project -&gt; Import -&gt; Import ROS Workspace -&gt; ~/perception_ws</li>
+</ul>
+</li>
+</ol>
+</div>
+<div class="section" id="intro-review-existing-code">
+<span id="intro-review-existing-code"></span><h2>Intro (Review Existing Code)<a class="headerlink" href="#intro-review-existing-code" title="Permalink to this headline">¶</a></h2>
+<p>Most of the infrastructure for a ros node has already been completed for you; the focus of this exercise is the perception algorithms/pipleline. The <code class="docutils literal"><span class="pre">CMakelists.txt</span></code> and <code class="docutils literal"><span class="pre">package.xml</span></code> are complete and an executable has been provided. You could run the executable as is, but you would get errors. At this time we will explore the source code that has been provided - browse the provided <code class="docutils literal"><span class="pre">perception_node.cpp</span></code> file. The following are highlights of what is included.</p>
+<ol class="simple">
+<li>Headers:<ul>
+<li>You will have to uncomment the PCL related headers as you go</li>
+</ul>
+</li>
+<li>int main():<ul>
+<li>The <code class="docutils literal"><span class="pre">main</span></code> function has been provided along with a while loop within the main function</li>
+</ul>
+</li>
+<li>ROS initialization:<ul>
+<li>Both <code class="docutils literal"><span class="pre">ros::init</span></code> and <code class="docutils literal"><span class="pre">ros::NodeHandle</span></code> have been called/initialized. Additionally there is a private nodehandle to use if you need to get parameters from a launch file within the node's namespace.</li>
+</ul>
+</li>
+<li>Set up parameters:<ul>
+<li>Currently there are three string parameters included in the example: the world frame, the camera frame and the topic being published by the camera. It would be easy to write up a few <code class="docutils literal"><span class="pre">nh.getParam</span></code> lines which would read these parameters in from a launch file. If you have the time, you should set this up because there will be many parameters for the pcl methods that would be better adjusted via a launch file than hardcoded.</li>
+</ul>
+</li>
+<li>Set up publishers:<ul>
+<li>Two publishers have been set up to publish ros messages for point clouds. It is often useful to visualize your results when working with image or point cloud processing.</li>
+</ul>
+</li>
+<li>Listen for PointCloud2 (within while loop):<ul>
+<li>Typically one would listen for a ros message using the ros subscribe method with a callback function, as done <a class="reference external" href="http://wiki.ros.org/pcl/Tutorials">here</a>. However it is often useful to do this outside of a callback function, so we show an example of listening for a message using <code class="docutils literal"><span class="pre">ros::topic::waitForMessage</span></code>.</li>
+</ul>
+</li>
+<li>Transform PointCloud2 (within while loop):<ul>
+<li>While we could work in the camera frame, things are more understandable/useful if we are looking at the points of a point cloud in an xyz space that makes more sense with our environment. In this case we are transforming the points from the camera frame to a world frame.</li>
+</ul>
+</li>
+<li>Convert PointCloud2 (ROS to PCL) (within while loop)</li>
+<li>Convert PointCloud2 (PCL to ROS) and publish (within while loop):<ul>
+<li>This step is not necessary, but visualizing point cloud processing results is often useful, so conversion back into a ROS type and creating the ROS message for publishing is done for you.</li>
+</ul>
+</li>
+</ol>
+<p>So it seems that a lot has been done! Should be easy to finish up... All you need to do is fill in the middle section.</p>
+</div>
+<div class="section" id="primary-task-filling-in-the-blanks">
+<span id="primary-task-filling-in-the-blanks"></span><h2>Primary Task: Filling in the blanks<a class="headerlink" href="#primary-task-filling-in-the-blanks" title="Permalink to this headline">¶</a></h2>
+<p>The task of filling in the middle section containing the perception algorithms is an iterative process, so each step has been broken up into its own sub-task.</p>
+<div class="section" id="implement-voxel-filter">
+<span id="implement-voxel-filter"></span><h3>Implement Voxel Filter<a class="headerlink" href="#implement-voxel-filter" title="Permalink to this headline">¶</a></h3>
+<ol>
+<li><p class="first">Change code:</p>
+<p>The first step in most point cloud processing pipelines is the voxel filter. This filter not only helps to downsample your points, but also eliminates any NAN values so that any further filtering or processing is done on real values. See <a class="reference external" href="http://pointclouds.org/documentation/tutorials/voxel_grid.php#voxelgrid">PCL Voxel Filter Tutorial</a> for hints, otherwise you can copy the below code snippet.</p>
+<p>Within <code class="docutils literal"><span class="pre">perception_node.cpp</span></code>, find section</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="cm">/* ========================================</span>
+<span class="cm"> * Fill Code: VOXEL GRID</span>
+<span class="cm"> * ========================================*/</span>
+</pre></div>
+</div>
+<p>Copy and paste the following beneath that banner.</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">cloud_ptr</span> <span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="p">(</span><span class="n">cloud</span><span class="p">));</span>
+<span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">cloud_voxel_filtered</span> <span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="p">());</span>
+<span class="n">pcl</span><span class="o">::</span><span class="n">VoxelGrid</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="n">voxel_filter</span><span class="p">;</span>
+<span class="n">voxel_filter</span><span class="p">.</span><span class="n">setInputCloud</span> <span class="p">(</span><span class="n">cloud_ptr</span><span class="p">);</span>
+<span class="n">voxel_filter</span><span class="p">.</span><span class="n">setLeafSize</span> <span class="p">(</span><span class="kt">float</span><span class="p">(</span><span class="mf">0.002</span><span class="p">),</span> <span class="kt">float</span><span class="p">(</span><span class="mf">0.002</span><span class="p">),</span> <span class="kt">float</span><span class="p">(</span><span class="mf">0.002</span><span class="p">));</span>
+<span class="n">voxel_filter</span><span class="p">.</span><span class="n">filter</span> <span class="p">(</span><span class="o">*</span><span class="n">cloud_voxel_filtered</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Update Publisher Within <code class="docutils literal"><span class="pre">perception_node.cpp</span></code>, find section</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="cm">/* ========================================</span>
+<span class="cm"> * CONVERT POINTCLOUD PCL-&gt;ROS</span>
+<span class="cm"> * PUBLISH CLOUD</span>
+<span class="cm"> * Fill Code: UPDATE AS NECESSARY</span>
+<span class="cm"> * ========================================*/</span>
+</pre></div>
+</div>
+<p>Uncomment <code class="docutils literal"><span class="pre">pcl::toROSMsg</span></code>, and replace <code class="docutils literal"><span class="pre">*cloud_ptr</span></code> with <code class="docutils literal"><span class="pre">*cloud_voxel_filtered</span></code></p>
+<ul class="simple">
+<li><em>After each new update, we'll be swapping out which point-cloud is published for rviz viewing</em></li>
+<li><strong>Note:</strong> If you have the time/patience, I would suggest creating a ros publisher for each type of filter. It is often useful to view the results of multiple filters at once in Rviz and just toggle different clouds.</li>
+</ul>
+</li>
+<li><p class="first">Compile</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>catkin build
+</pre></div>
+</div>
+</li>
+</ol>
+<div class="section" id="viewing-results">
+<span id="viewing-results"></span><h4>Viewing Results<a class="headerlink" href="#viewing-results" title="Permalink to this headline">¶</a></h4>
+<ol>
+<li><p class="first">Run the (currently small) perception pipeline. Note: In rviz change the global frame to <strong>kinect_link</strong>.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">cd</span> ~
+roscore
+rosrun pcl_ros pcd_to_pointcloud table.pcd <span class="m">0</span>.1 _frame_id:<span class="o">=</span>kinect_link cloud_pcd:<span class="o">=</span>kinect/depth_registered/points
+rosrun rviz rviz
+rosrun lesson_perception perception_node 
+</pre></div>
+</div>
+</li>
+<li><p class="first">View results</p>
+<p>Within Rviz, add a <em>PointCloud2</em> Display subscribed to the topic &quot;object_cluster&quot;. What you see will be the results of the voxel filter overlaid on the original point cloud (assuming you have completed exercise 4.2 and saved a new default config or saved a config for that exercise).
+[[resources/cloud_voxel_filtered.png]]</p>
+</li>
+<li><p class="first">When you are done viewing the results, try changing the voxel filter size from 0.002 to 0.100 and view the results again.  Reset the filter to 0.002 when done.</p>
+<ul>
+<li><p class="first">To see the results of this change, use Ctrl+C to kill the perception node, re-build, and re-run the perception node.</p>
+<p><em>Note: You do not need to stop any of the other nodes (rviz, ros, etc).</em></p>
+</li>
+</ul>
+</li>
+<li><p class="first">When you are satisfied with the voxel filter, use Ctrl+C to stop the perception node.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="section" id="implement-pass-through-filters">
+<span id="implement-pass-through-filters"></span><h3>Implement Pass-through Filters<a class="headerlink" href="#implement-pass-through-filters" title="Permalink to this headline">¶</a></h3>
+<ol>
+<li><p class="first">Change code:</p>
+<p>The next set of useful filtering to get the region of interest, is a series of pass-through filters. These filters crop your point cloud down to a volume of space (if you use x y and z filter). At this point you should apply a series of pass-through filters, one for each the x, y, and z directions. See <a class="reference external" href="http://pointclouds.org/documentation/tutorials/passthrough.php#passthrough">PCL Pass-Through Filter Tutorial</a> for hints, or use code below.</p>
+<p>Within perception_node.cpp, find section</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="cm">/* ========================================</span>
+<span class="cm"> * Fill Code: PASSTHROUGH FILTER(S)</span>
+<span class="cm"> * ========================================*/</span>
+</pre></div>
+</div>
+<p>Copy and paste the following beneath that banner.</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="n">xf_cloud</span><span class="p">,</span> <span class="n">yf_cloud</span><span class="p">,</span> <span class="n">zf_cloud</span><span class="p">;</span>
+<span class="n">pcl</span><span class="o">::</span><span class="n">PassThrough</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="n">pass_x</span><span class="p">;</span>
+<span class="n">pass_x</span><span class="p">.</span><span class="n">setInputCloud</span><span class="p">(</span><span class="n">cloud_voxel_filtered</span><span class="p">);</span>
+<span class="n">pass_x</span><span class="p">.</span><span class="n">setFilterFieldName</span><span class="p">(</span><span class="s">&quot;x&quot;</span><span class="p">);</span>
+<span class="n">pass_x</span><span class="p">.</span><span class="n">setFilterLimits</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">);</span>
+<span class="n">pass_x</span><span class="p">.</span><span class="n">filter</span><span class="p">(</span><span class="n">xf_cloud</span><span class="p">);</span>
+
+<span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">xf_cloud_ptr</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">(</span><span class="n">xf_cloud</span><span class="p">));</span>
+<span class="n">pcl</span><span class="o">::</span><span class="n">PassThrough</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="n">pass_y</span><span class="p">;</span>
+<span class="n">pass_y</span><span class="p">.</span><span class="n">setInputCloud</span><span class="p">(</span><span class="n">xf_cloud_ptr</span><span class="p">);</span>
+<span class="n">pass_y</span><span class="p">.</span><span class="n">setFilterFieldName</span><span class="p">(</span><span class="s">&quot;y&quot;</span><span class="p">);</span>
+<span class="n">pass_y</span><span class="p">.</span><span class="n">setFilterLimits</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">);</span>
+<span class="n">pass_y</span><span class="p">.</span><span class="n">filter</span><span class="p">(</span><span class="n">yf_cloud</span><span class="p">);</span>
+
+<span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">yf_cloud_ptr</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">(</span><span class="n">yf_cloud</span><span class="p">));</span>
+<span class="n">pcl</span><span class="o">::</span><span class="n">PassThrough</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="n">pass_z</span><span class="p">;</span>
+<span class="n">pass_z</span><span class="p">.</span><span class="n">setInputCloud</span><span class="p">(</span><span class="n">yf_cloud_ptr</span><span class="p">);</span>
+<span class="n">pass_z</span><span class="p">.</span><span class="n">setFilterFieldName</span><span class="p">(</span><span class="s">&quot;z&quot;</span><span class="p">);</span>
+<span class="n">pass_z</span><span class="p">.</span><span class="n">setFilterLimits</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">);</span>
+<span class="n">pass_z</span><span class="p">.</span><span class="n">filter</span><span class="p">(</span><span class="n">zf_cloud</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Find the <code class="docutils literal"><span class="pre">pcl::toROSMsg</span></code> call where the <code class="docutils literal"><span class="pre">pc2_cloud</span></code> is populated.  This is the point cloud that is published to RViz display.  Replace the current cloud (<code class="docutils literal"><span class="pre">*cloud_voxel_filter</span></code>) with the final Passthrough Filter result (<code class="docutils literal"><span class="pre">zf_cloud</span></code>).</p>
+</li>
+<li><p class="first">Compile and run</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">catkin</span> <span class="n">build</span>
+<span class="n">rosrun</span> <span class="n">lesson_perception</span> <span class="n">perception_node</span> 
+</pre></div>
+</div>
+</li>
+<li><p class="first">View results</p>
+<p>Within Rviz, compare PointCloud2 displays based on the <code class="docutils literal"><span class="pre">/kinect/depth_registered/points</span></code> (original camera data) and <code class="docutils literal"><span class="pre">object_cluster</span></code> (latest processing step) topics.  Part of the original point cloud has been &quot;clipped&quot; out of the latest processing result.</p>
+<p>[[resources/zf_cloud.png]]</p>
+<p>Try modifying the X/Y/Z FilterLimits (e.g. +/- 0.5), re-build, and re-run.  Observe the effects in rviz.  When complete, reset the limite to +/- 1.0.</p>
+</li>
+<li><p class="first">When you are satisfied with the pass-through filter results, press Ctrl+C to kill the node. There is no need to close or kill the other terminals/nodes.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="plane-segmentation">
+<span id="plane-segmentation"></span><h3>Plane Segmentation<a class="headerlink" href="#plane-segmentation" title="Permalink to this headline">¶</a></h3>
+<ol>
+<li><p class="first">Change code</p>
+<p>This method is one of the most useful for any application where the object is on a flat surface. In order to isolate the objects on a table, you perform a plane fit to the points, which finds the points which comprise the table, and then subtract those points so that you are left with only points corresponding to the object(s) above the table. This is the most complicated PCL method we will be using and it is actually a combination of two: the RANSAC segmentation model, and the extract indices tool. An in depth example can be found on the <a class="reference external" href="http://pointclouds.org/documentation/tutorials/planar_segmentation.php#planar-segmentation">PCL Plane Model Segmentation Tutorial</a>; otherwise you can copy the below code snippet.</p>
+<p>Within perception_node.cpp, find section</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="cm">/* ========================================</span>
+<span class="cm"> * Fill Code: PLANE SEGEMENTATION</span>
+<span class="cm"> * ========================================*/</span>
+</pre></div>
+</div>
+<p>Copy and paste the following beneath that banner.</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">cropped_cloud</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">(</span><span class="n">zf_cloud</span><span class="p">));</span>
+<span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">cloud_f</span> <span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">);</span>
+<span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">cloud_filtered</span> <span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">);</span>
+<span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">cloud_plane</span> <span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="p">());</span>
+<span class="c1">// Create the segmentation object for the planar model and set all the parameters</span>
+<span class="n">pcl</span><span class="o">::</span><span class="n">SACSegmentation</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="n">seg</span><span class="p">;</span>
+<span class="n">pcl</span><span class="o">::</span><span class="n">PointIndices</span><span class="o">::</span><span class="n">Ptr</span> <span class="n">inliers</span> <span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointIndices</span><span class="p">);</span>
+<span class="n">pcl</span><span class="o">::</span><span class="n">ModelCoefficients</span><span class="o">::</span><span class="n">Ptr</span> <span class="n">coefficients</span> <span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">ModelCoefficients</span><span class="p">);</span>
+<span class="n">seg</span><span class="p">.</span><span class="n">setOptimizeCoefficients</span> <span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+<span class="n">seg</span><span class="p">.</span><span class="n">setModelType</span> <span class="p">(</span><span class="n">pcl</span><span class="o">::</span><span class="n">SACMODEL_PLANE</span><span class="p">);</span>
+<span class="n">seg</span><span class="p">.</span><span class="n">setMethodType</span> <span class="p">(</span><span class="n">pcl</span><span class="o">::</span><span class="n">SAC_RANSAC</span><span class="p">);</span>
+<span class="n">seg</span><span class="p">.</span><span class="n">setMaxIterations</span> <span class="p">(</span><span class="mi">200</span><span class="p">);</span>
+<span class="n">seg</span><span class="p">.</span><span class="n">setDistanceThreshold</span> <span class="p">(</span><span class="mf">0.004</span><span class="p">);</span>
+<span class="c1">// Segment the largest planar component from the cropped cloud</span>
+<span class="n">seg</span><span class="p">.</span><span class="n">setInputCloud</span> <span class="p">(</span><span class="n">cropped_cloud</span><span class="p">);</span>
+<span class="n">seg</span><span class="p">.</span><span class="n">segment</span> <span class="p">(</span><span class="o">*</span><span class="n">inliers</span><span class="p">,</span> <span class="o">*</span><span class="n">coefficients</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">inliers</span><span class="o">-&gt;</span><span class="n">indices</span><span class="p">.</span><span class="n">size</span> <span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">ROS_WARN_STREAM</span> <span class="p">(</span><span class="s">&quot;Could not estimate a planar model for the given dataset.&quot;</span><span class="p">)</span> <span class="p">;</span>
+  <span class="c1">//break;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Once you have the inliers (points which fit the plane model), then you can extract the indices within the pointcloud data structure of the points which make up the plane.</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="c1">// Extract the planar inliers from the input cloud</span>
+<span class="n">pcl</span><span class="o">::</span><span class="n">ExtractIndices</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="n">extract</span><span class="p">;</span>
+<span class="n">extract</span><span class="p">.</span><span class="n">setInputCloud</span> <span class="p">(</span><span class="n">cropped_cloud</span><span class="p">);</span>
+<span class="n">extract</span><span class="p">.</span><span class="n">setIndices</span><span class="p">(</span><span class="n">inliers</span><span class="p">);</span>
+<span class="n">extract</span><span class="p">.</span><span class="n">setNegative</span> <span class="p">(</span><span class="nb">false</span><span class="p">);</span>
+
+<span class="c1">// Get the points associated with the planar surface</span>
+<span class="n">extract</span><span class="p">.</span><span class="n">filter</span> <span class="p">(</span><span class="o">*</span><span class="n">cloud_plane</span><span class="p">);</span>
+<span class="n">ROS_INFO_STREAM</span><span class="p">(</span><span class="s">&quot;PointCloud representing the planar component: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cloud_plane</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">.</span><span class="n">size</span> <span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; data points.&quot;</span> <span class="p">);</span>
+</pre></div>
+</div>
+<p>Then of course you can subtract or filter out these points from the cloud to get only points above the plane.</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="c1">// Remove the planar inliers, extract the rest</span>
+<span class="n">extract</span><span class="p">.</span><span class="n">setNegative</span> <span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+<span class="n">extract</span><span class="p">.</span><span class="n">filter</span> <span class="p">(</span><span class="o">*</span><span class="n">cloud_f</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Find the <code class="docutils literal"><span class="pre">pcl::toROSMsg</span></code> call where the <code class="docutils literal"><span class="pre">pc2_cloud</span></code> is populated.  This is the point cloud that is published to RViz display.  Replace the current cloud (<code class="docutils literal"><span class="pre">zf_cloud</span></code>) with the plane-fit outliers result (<code class="docutils literal"><span class="pre">*cloud_f</span></code>).</p>
+</li>
+<li><p class="first">Compile and run, as in previous steps.</p>
+</li>
+<li><p class="first">Evaluate Results</p>
+<p>Within Rviz, compare PointCloud2 displays based on the <code class="docutils literal"><span class="pre">/kinect/depth_registered/points</span></code> (original camera data) and <code class="docutils literal"><span class="pre">object_cluster</span></code> (latest processing step) topics.  Only points lying above the table plane remain in the latest processing result.</p>
+<p>[[resources/cloud_f.png]]</p>
+</li>
+<li><p class="first">When you are done viewing the results you can go back and change the&quot;setMaxIterations&quot; and &quot;setDistanceThreshold&quot; values to control how tightly the plane-fit classifies data as inliers/outliers, and view the results again.  Try using values of <code class="docutils literal"><span class="pre">MaxIterations=100</span></code> and <code class="docutils literal"><span class="pre">DistanceThreshold=0.010</span></code></p>
+</li>
+<li><p class="first">When you are satisfied with the plane segmentation results, use Ctrl+C to kill the node. There is no need to close or kill the other terminals/nodes.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="euclidean-cluster-extraction-optional-but-recommended">
+<span id="euclidean-cluster-extraction-optional-but-recommended"></span><h3>Euclidean Cluster Extraction (optional, but recommended)<a class="headerlink" href="#euclidean-cluster-extraction-optional-but-recommended" title="Permalink to this headline">¶</a></h3>
+<ol>
+<li><p class="first">Change code</p>
+<p>This method is useful for any application where there are multiple objects. This is also a complicated PCL method. An in depth example can be found on the <a class="reference external" href="http://pointclouds.org/documentation/tutorials/cluster_extraction.php#cluster-extraction">PCL Euclidean Cluster Extration Tutorial</a>.</p>
+<p>Within perception_node.cpp, find section</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="cm">/* ========================================</span>
+<span class="cm"> * Fill Code: EUCLIDEAN CLUSTER EXTRACTION (OPTIONAL/RECOMMENDED)</span>
+<span class="cm"> * ========================================*/</span>
+</pre></div>
+</div>
+<p>Follow along with the PCL tutorial, insert code in this section.</p>
+<p>Copy and paste the following beneath the banner.</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="c1">// Creating the KdTree object for the search method of the extraction</span>
+<span class="n">pcl</span><span class="o">::</span><span class="n">search</span><span class="o">::</span><span class="n">KdTree</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">tree</span> <span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">search</span><span class="o">::</span><span class="n">KdTree</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">);</span>
+<span class="o">*</span><span class="n">cloud_filtered</span> <span class="o">=</span> <span class="o">*</span><span class="n">cloud_f</span><span class="p">;</span>
+<span class="n">tree</span><span class="o">-&gt;</span><span class="n">setInputCloud</span> <span class="p">(</span><span class="n">cloud_filtered</span><span class="p">);</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointIndices</span><span class="o">&gt;</span> <span class="n">cluster_indices</span><span class="p">;</span>
+<span class="n">pcl</span><span class="o">::</span><span class="n">EuclideanClusterExtraction</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="n">ec</span><span class="p">;</span>
+<span class="n">ec</span><span class="p">.</span><span class="n">setClusterTolerance</span> <span class="p">(</span><span class="mf">0.01</span><span class="p">);</span> <span class="c1">// 2cm</span>
+<span class="n">ec</span><span class="p">.</span><span class="n">setMinClusterSize</span> <span class="p">(</span><span class="mi">300</span><span class="p">);</span>
+<span class="n">ec</span><span class="p">.</span><span class="n">setMaxClusterSize</span> <span class="p">(</span><span class="mi">10000</span><span class="p">);</span>
+<span class="n">ec</span><span class="p">.</span><span class="n">setSearchMethod</span> <span class="p">(</span><span class="n">tree</span><span class="p">);</span>
+<span class="n">ec</span><span class="p">.</span><span class="n">setInputCloud</span> <span class="p">(</span><span class="n">cloud_filtered</span><span class="p">);</span>
+<span class="n">ec</span><span class="p">.</span><span class="n">extract</span> <span class="p">(</span><span class="n">cluster_indices</span><span class="p">);</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">sensor_msgs</span><span class="o">::</span><span class="n">PointCloud2</span><span class="o">::</span><span class="n">Ptr</span><span class="o">&gt;</span> <span class="n">pc2_clusters</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="o">&gt;</span> <span class="n">clusters</span><span class="p">;</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointIndices</span><span class="o">&gt;::</span><span class="n">const_iterator</span> <span class="n">it</span> <span class="o">=</span> <span class="n">cluster_indices</span><span class="p">.</span><span class="n">begin</span> <span class="p">();</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">cluster_indices</span><span class="p">.</span><span class="n">end</span> <span class="p">();</span> <span class="o">++</span><span class="n">it</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">cloud_cluster</span> <span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">);</span>
+  <span class="k">for</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;::</span><span class="n">const_iterator</span> <span class="n">pit</span> <span class="o">=</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">indices</span><span class="p">.</span><span class="n">begin</span> <span class="p">();</span> <span class="n">pit</span> <span class="o">!=</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">indices</span><span class="p">.</span><span class="n">end</span> <span class="p">();</span> <span class="n">pit</span><span class="o">++</span><span class="p">)</span>
+    <span class="n">cloud_cluster</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">cloud_filtered</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="o">*</span><span class="n">pit</span><span class="p">]);</span>
+  <span class="n">cloud_cluster</span><span class="o">-&gt;</span><span class="n">width</span> <span class="o">=</span> <span class="n">cloud_cluster</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">.</span><span class="n">size</span> <span class="p">();</span>
+  <span class="n">cloud_cluster</span><span class="o">-&gt;</span><span class="n">height</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="n">cloud_cluster</span><span class="o">-&gt;</span><span class="n">is_dense</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Cluster has &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cloud_cluster</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; points.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+  <span class="n">clusters</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">cloud_cluster</span><span class="p">);</span>
+  <span class="n">sensor_msgs</span><span class="o">::</span><span class="n">PointCloud2</span><span class="o">::</span><span class="n">Ptr</span> <span class="n">tempROSMsg</span><span class="p">(</span><span class="k">new</span> <span class="n">sensor_msgs</span><span class="o">::</span><span class="n">PointCloud2</span><span class="p">);</span>
+  <span class="n">pcl</span><span class="o">::</span><span class="n">toROSMsg</span><span class="p">(</span><span class="o">*</span><span class="n">cloud_cluster</span><span class="p">,</span> <span class="o">*</span><span class="n">tempROSMsg</span><span class="p">);</span>
+  <span class="n">pc2_clusters</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">tempROSMsg</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Find the <code class="docutils literal"><span class="pre">pcl::toROSMsg</span></code> call where the <code class="docutils literal"><span class="pre">pc2_cloud</span></code> is populated.  This is the point cloud that is published to RViz display.  Replace the current cloud (<code class="docutils literal"><span class="pre">*cloud_f</span></code>) with the largest cluster (<code class="docutils literal"><span class="pre">*(clusters.at(0))</span></code>).</p>
+</li>
+<li><p class="first">Compile and run, as in previous steps.</p>
+</li>
+<li><p class="first">View results in rviz.  Experiment with <code class="docutils literal"><span class="pre">setClusterTolerance</span></code>, <code class="docutils literal"><span class="pre">setMinClusterSize</span></code>, and <code class="docutils literal"><span class="pre">setMaxClusterSize</span></code> parameters, observing their effects in rviz.
+[[resources/clusters_at0.png]]</p>
+</li>
+<li><p class="first">When you are satisfied with the cluster extraction results, use Ctrl+C to kill the node. There is no need to close or kill the other terminals/nodes.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="other-filters-options-optional">
+<span id="other-filters-options-optional"></span><h3>Other Filters/Options (optional)<a class="headerlink" href="#other-filters-options-optional" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="create-a-cropbox-filter">
+<span id="create-a-cropbox-filter"></span><h4>Create a CropBox Filter<a class="headerlink" href="#create-a-cropbox-filter" title="Permalink to this headline">¶</a></h4>
+<ol>
+<li><p class="first">Change code</p>
+<p>This method is similar to the pass-through filter from Sub-Task 2, but instead of using three pass-through filters in series, you can use one CropBox filter. Documentation on the CropBox filter and necessary header file can be found <a class="reference external" href="http://docs.pointclouds.org/trunk/classpcl_1_1_crop_box.html">here</a>.</p>
+<p>Within perception_node.cpp, find section</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="cm">/* ========================================</span>
+<span class="cm"> * Fill Code: CROPBOX (OPTIONAL)</span>
+<span class="cm"> * Instead of three passthrough filters, the cropbox filter can be used</span>
+<span class="cm"> * The user should choose one or the other method</span>
+<span class="cm"> * ========================================*/</span>
+</pre></div>
+</div>
+<p>This CropBox filter should replace your passthrough filters, you may delete or comment the passthrough filters. There is not PCL tutorial to guide you, only the PCL documentation at the link above. The general setup will be the same (set the output, declare instance of filter, set input, set parameters, and filter).</p>
+<p>Set the output cloud:</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="n">xyz_filtered_cloud</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Declare instance of filter:</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">pcl</span><span class="o">::</span><span class="n">CropBox</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="n">crop</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Set input:</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">crop</span><span class="p">.</span><span class="n">setInputCloud</span><span class="p">(</span><span class="n">cloud_voxel_filtered</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Set parameters - looking at documentation, CropBox takes an Eigen Vector4f as inputs for max and min values:</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">Eigen</span><span class="o">::</span><span class="n">Vector4f</span> <span class="n">min_point</span> <span class="o">=</span> <span class="n">Eigen</span><span class="o">::</span><span class="n">Vector4f</span><span class="p">(</span><span class="n">x_filter_min</span><span class="p">,</span> <span class="n">y_filter_min</span><span class="p">,</span> <span class="n">z_filter_min</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="n">Eigen</span><span class="o">::</span><span class="n">Vector4f</span> <span class="n">max_point</span> <span class="o">=</span> <span class="n">Eigen</span><span class="o">::</span><span class="n">Vector4f</span><span class="p">(</span><span class="n">x_filter_max</span><span class="p">,</span> <span class="n">y_filter_max</span><span class="p">,</span> <span class="n">z_filter_max</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="n">crop</span><span class="p">.</span><span class="n">setMin</span><span class="p">(</span><span class="n">min_point</span><span class="p">);</span>
+<span class="n">crop</span><span class="p">.</span><span class="n">setMax</span><span class="p">(</span><span class="n">max_point</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Filter:</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">crop</span><span class="p">.</span><span class="n">filter</span><span class="p">(</span><span class="n">xyz_filtered_cloud</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>If you delete or comment the passthrough filters and have already written the plane segmentation code, then make sure you update the name of the cloud you are passing into the plane segmentation. Replace zf_cloud with xyz_filtered_cloud:</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">cropped_cloud</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">(</span><span class="n">xyz_filtered_cloud</span><span class="p">));</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Update Publisher within perception_node.cpp, find section</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="cm">/* ========================================</span>
+<span class="cm"> * CONVERT POINTCLOUD PCL-&gt;ROS</span>
+<span class="cm"> * PUBLISH CLOUD</span>
+<span class="cm"> * Fill Code: UPDATE AS NECESSARY</span>
+<span class="cm"> * ========================================*/</span>
+</pre></div>
+</div>
+<p>Change the &quot;toROSMsg&quot; line to convert from your newly processed cloud into a ROS sensor_msgs::PointCloud2.</p>
+<p>Change:</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">sensor_msgs</span><span class="o">::</span><span class="n">PointCloud2</span><span class="o">::</span><span class="n">Ptr</span> <span class="n">pc2_cloud</span> <span class="p">(</span><span class="k">new</span> <span class="n">sensor_msgs</span><span class="o">::</span><span class="n">PointCloud2</span><span class="p">);</span>
+<span class="n">pcl</span><span class="o">::</span><span class="n">toROSMsg</span><span class="p">(</span><span class="n">zf_cloud</span><span class="p">,</span> <span class="o">*</span><span class="n">pc2_cloud</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>to:</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">sensor_msgs</span><span class="o">::</span><span class="n">PointCloud2</span><span class="o">::</span><span class="n">Ptr</span> <span class="n">pc2_cloud</span> <span class="p">(</span><span class="k">new</span> <span class="n">sensor_msgs</span><span class="o">::</span><span class="n">PointCloud2</span><span class="p">);</span>
+<span class="n">pcl</span><span class="o">::</span><span class="n">toROSMsg</span><span class="p">(</span><span class="n">xyz_filtered_cloud</span><span class="p">,</span> <span class="o">*</span><span class="n">pc2_cloud</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Compile</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">catkin</span> <span class="n">build</span>
+</pre></div>
+</div>
+<p><strong>Note:</strong> If you have the time/patience, I would suggest creating a ros publisher for each type of filter. It is often useful to view the results of multiple filters at once in Rviz and just toggle different clouds.</p>
+</li>
+</ol>
+<div class="section" id="viewing-result">
+<span id="viewing-result"></span><h5>Viewing Result<a class="headerlink" href="#viewing-result" title="Permalink to this headline">¶</a></h5>
+<ol>
+<li><p class="first">Open multiple terminals</p>
+<p>Either open three more tabs within your terminal <em>CTRL-SHIFT-T</em> or open three more windows <em>CTRL-SHIFT-N</em>. These terminals will run a roscore, the pcl_ros, and Rviz. Below, Terminal 1 corresponds to the terminal you have been working out of.</p>
+<p>In terminal 4:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>roscore
+</pre></div>
+</div>
+<p>In terminal 3:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">cd</span> ~
+rosrun pcl_ros pcd_to_pointcloud table.pcd <span class="m">0</span>.1 _frame_id:<span class="o">=</span>kinect_link cloud_pcd:<span class="o">=</span>kinect/depth_registered/points
+</pre></div>
+</div>
+<p>In terminal 2:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>rosrun rviz rviz
+</pre></div>
+</div>
+<p>In terminal 1:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>rosrun lesson_perception perception_node 
+</pre></div>
+</div>
+</li>
+<li><p class="first">View results</p>
+<p>Within Rviz, add a <em>PointCloud2</em> and subscribe to the topic &quot;object_cluster&quot;. What you see will be the results of the voxel filter overlaid on the original point cloud.</p>
+<p>The following image of the CropBox filter in use will closely resemble the Plane Segmentation filter image.</p>
+<p>[[resources/xyz_filtered_cloud.png]]</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="section" id="create-a-statistical-outlier-removal">
+<span id="create-a-statistical-outlier-removal"></span><h4>Create a Statistical Outlier Removal<a class="headerlink" href="#create-a-statistical-outlier-removal" title="Permalink to this headline">¶</a></h4>
+<ol>
+<li><p class="first">Change code</p>
+<p>This method does not necessarily add complexity or information to our end result, but it is often useful. A tutorial can be found <a class="reference external" href="http://pointclouds.org/documentation/tutorials/statistical_outlier.php#statistical-outlier-removal">here</a>.</p>
+<p>Within perception_node.cpp, find section</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="cm">/* ========================================</span>
+<span class="cm"> * Fill Code: STATISTICAL OUTLIER REMOVAL (OPTIONAL)</span>
+<span class="cm"> * ========================================*/</span>
+</pre></div>
+</div>
+<p>The general setup will be the same (set the output, declare instance of filter, set input, set parameters, and filter).</p>
+<p>Set the output cloud:</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">cluster_cloud_ptr</span><span class="o">=</span> <span class="n">clusters</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">sor_cloud_filtered</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Declare instance of filter:</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">pcl</span><span class="o">::</span><span class="n">StatisticalOutlierRemoval</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="n">sor</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Set input:</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">sor</span><span class="p">.</span><span class="n">setInputCloud</span> <span class="p">(</span><span class="n">cluster_cloud_ptr</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Set parameters - looking at documentation, CropBox takes an Eigen Vector4f as inputs for max and min values:</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">sor</span><span class="p">.</span><span class="n">setMeanK</span> <span class="p">(</span><span class="mi">50</span><span class="p">);</span>
+<span class="n">sor</span><span class="p">.</span><span class="n">setStddevMulThresh</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Filter:</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">sor</span><span class="p">.</span><span class="n">filter</span> <span class="p">(</span><span class="o">*</span><span class="n">sor_cloud_filtered</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Update Publisher within perception_node.cpp, find section</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="cm">/* ========================================</span>
+<span class="cm"> * CONVERT POINTCLOUD PCL-&gt;ROS</span>
+<span class="cm"> * PUBLISH CLOUD</span>
+<span class="cm"> * Fill Code: UPDATE AS NECESSARY</span>
+<span class="cm"> * ========================================*/</span>
+</pre></div>
+</div>
+<p>Change the &quot;toROSMsg&quot; line to convert from your newly processed cloud into a ROS sensor_msgs::PointCloud2.</p>
+<p>Change:</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">sensor_msgs</span><span class="o">::</span><span class="n">PointCloud2</span><span class="o">::</span><span class="n">Ptr</span> <span class="n">pc2_cloud</span> <span class="p">(</span><span class="k">new</span> <span class="n">sensor_msgs</span><span class="o">::</span><span class="n">PointCloud2</span><span class="p">);</span>
+<span class="n">pcl</span><span class="o">::</span><span class="n">toROSMsg</span><span class="p">(</span><span class="o">*</span><span class="n">cloud_f</span><span class="p">,</span> <span class="o">*</span><span class="n">pc2_cloud</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>to:</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">sensor_msgs</span><span class="o">::</span><span class="n">PointCloud2</span><span class="o">::</span><span class="n">Ptr</span> <span class="n">pc2_cloud</span> <span class="p">(</span><span class="k">new</span> <span class="n">sensor_msgs</span><span class="o">::</span><span class="n">PointCloud2</span><span class="p">);</span>
+<span class="n">pcl</span><span class="o">::</span><span class="n">toROSMsg</span><span class="p">(</span><span class="o">*</span><span class="n">sor_cloud_filtered</span><span class="p">,</span> <span class="o">*</span><span class="n">pc2_cloud</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Compile</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">catkin</span> <span class="n">build</span>
+</pre></div>
+</div>
+<p><strong>Note:</strong> If you have the time/patience, I would suggest creating a ros publisher for each type of filter. It is often useful to view the results of multiple filters at once in Rviz and just toggle different clouds.</p>
+</li>
+</ol>
+<div class="section" id="viewing-result">
+<span id="id1"></span><h5>Viewing Result<a class="headerlink" href="#viewing-result" title="Permalink to this headline">¶</a></h5>
+<ol>
+<li><p class="first">Open multiple terminals</p>
+<p>Either open three more tabs within your terminal <em>CTRL-SHIFT-T</em> or open three more windows <em>CTRL-SHIFT-N</em>. These terminals will run a roscore, the pcl_ros, and Rviz. Below, Terminal 1 corresponds to the terminal you have been working out of.</p>
+<p>In terminal 4:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>roscore
+</pre></div>
+</div>
+<p>In terminal 3:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">cd</span> ~
+rosrun pcl_ros pcd_to_pointcloud table.pcd <span class="m">0</span>.1 _frame_id:<span class="o">=</span>kinect_link cloud_pcd:<span class="o">=</span>kinect/depth_registered/points
+</pre></div>
+</div>
+<p>In terminal 2:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>rosrun rviz rviz
+</pre></div>
+</div>
+<p>In terminal 1:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>rosrun lesson_perception perception_node 
+</pre></div>
+</div>
+</li>
+<li><p class="first">View results</p>
+<p>Within Rviz, add a <em>PointCloud2</em> and subscribe to the topic &quot;object_cluster&quot;. What you see will be the results of the voxel filter overlaid on the original point cloud.
+[[resources/sor_cloud_filtered.png]]</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="section" id="create-a-broadcast-transform">
+<span id="create-a-broadcast-transform"></span><h4>Create a Broadcast Transform<a class="headerlink" href="#create-a-broadcast-transform" title="Permalink to this headline">¶</a></h4>
+<p>While this is not a filter method, it is directly related to the final project (the capstone project during the training class), so if you have the time, you should implement this to get a better understanding of how the demo works.</p>
+<ol>
+<li><p class="first">Change/Insert code</p>
+<p>Transforms are used to convey relations between two frames of reference or coordinate systems. In our demo, the AR tag detection software pipeline broadcasts a transform based on the position and orientation of the AR tag. A separate node then listens for that transform in order to identify the position/orientation of the box for grasping.</p>
+<p>Within perception_node.cpp, find section</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="cm">/* ========================================</span>
+<span class="cm"> * BROADCAST TRANSFORM (OPTIONAL)</span>
+<span class="cm"> * ========================================*/</span>
+</pre></div>
+</div>
+<p>Follow along with the <a class="reference external" href="http://wiki.ros.org/tf/Tutorials/Writing%20a%20tf%20broadcaster%20%28C%2B%2B%29">ROS tutorial</a>. The important modifications to make are within the setting of the position and orientation information (setOrigin( tf::Vector3(msg-&gt;x, msg-&gt;y, 0.0) ), and setRotation(q) ). Create a transform:</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="n">tf</span><span class="o">::</span><span class="n">TransformBroadcaster</span> <span class="n">br</span><span class="p">;</span>
+<span class="n">tf</span><span class="o">::</span><span class="n">Transform</span> <span class="n">part_transform</span><span class="p">;</span>
+<span class="c1">//Here in the tf::Vector3(x,y,z) x,y, and z should be calculated based on the pointcloud filtering results</span>
+<span class="n">part_transform</span><span class="p">.</span><span class="n">setOrigin</span><span class="p">(</span> <span class="n">tf</span><span class="o">::</span><span class="n">Vector3</span><span class="p">(</span><span class="n">sor_cloud_filtered</span><span class="o">-&gt;</span><span class="n">at</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="n">x</span><span class="p">,</span> <span class="n">sor_cloud_filtered</span><span class="o">-&gt;</span><span class="n">at</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="n">y</span><span class="p">,</span> <span class="n">sor_cloud_filtered</span><span class="o">-&gt;</span><span class="n">at</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="n">z</span><span class="p">)</span> <span class="p">);</span>
+<span class="n">tf</span><span class="o">::</span><span class="n">Quaternion</span> <span class="n">q</span><span class="p">;</span>
+<span class="n">q</span><span class="p">.</span><span class="n">setRPY</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="n">part_transform</span><span class="p">.</span><span class="n">setRotation</span><span class="p">(</span><span class="n">q</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Remember that when you set the origin or set the rpy, this is where you should use the results from all the filters you've applied. At this point the origin is set arbitrarily to the first point within. Broadcast that transform:</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">br</span><span class="p">.</span><span class="n">sendTransform</span><span class="p">(</span><span class="n">tf</span><span class="o">::</span><span class="n">StampedTransform</span><span class="p">(</span><span class="n">part_transform</span><span class="p">,</span> <span class="n">ros</span><span class="o">::</span><span class="n">Time</span><span class="o">::</span><span class="n">now</span><span class="p">(),</span> <span class="n">world_frame</span><span class="p">,</span> <span class="s">&quot;part&quot;</span><span class="p">));</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Compile</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">catkin</span> <span class="n">build</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<div class="section" id="viewing-result">
+<span id="id2"></span><h5>Viewing Result<a class="headerlink" href="#viewing-result" title="Permalink to this headline">¶</a></h5>
+<ol>
+<li><p class="first">Open multiple terminals</p>
+<p>Either open three more tabs within your terminal <em>CTRL-SHIFT-T</em> or open three more windows <em>CTRL-SHIFT-N</em>. These terminals will run a roscore, the pcl_ros, and Rviz. Below, Terminal 1 corresponds to the terminal you have been working out of.</p>
+<p>In terminal 4:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>roscore
+</pre></div>
+</div>
+<p>In terminal 3:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">cd</span> ~
+rosrun pcl_ros pcd_to_pointcloud table.pcd <span class="m">0</span>.1 _frame_id:<span class="o">=</span>kinect_link cloud_pcd:<span class="o">=</span>kinect/depth_registered/points
+</pre></div>
+</div>
+<p>In terminal 2:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>rosrun rviz rviz
+</pre></div>
+</div>
+<p>In terminal 1:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>rosrun lesson_perception perception_node 
+</pre></div>
+</div>
+</li>
+<li><p class="first">View results</p>
+<p>Within Rviz, add a <em>PointCloud2</em> and subscribe to the topic &quot;object_cluster&quot;. What you see will be the results of the voxel filter overlaid on the original point cloud. There is no difference in the point cloud from the last image given in the statistical outlier removal.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="section" id="create-a-polygonal-segmentation">
+<span id="create-a-polygonal-segmentation"></span><h4>Create a Polygonal Segmentation<a class="headerlink" href="#create-a-polygonal-segmentation" title="Permalink to this headline">¶</a></h4>
+<p>This method was included primarily to have something that ties in directly to the demo that you will be programming in session 5. This demo uses AR tag perception, but also collision avoidance. The collision avoidance uses a pointcloud to actively determine where the obstacles are. However, becuase the part itself is within the scene, we must subtract the points that comprise the part in order to remove these points from becoming a collision object (which will then make a grasp impossible due to the object colliding with itself).</p>
+<ol>
+<li><p class="first">Change code</p>
+<p>This method is similar to the plane segmentation from Sub-Task 3, but instead of segmenting out a plane, you can segment and remove a prism. Documentation on the PCL Polygonal Segmentation can be found <a class="reference external" href="http://docs.pointclouds.org/1.7.0/classpcl_1_1_convex_hull.html">here</a> and <a class="reference external" href="http://docs.pointclouds.org/trunk/classpcl_1_1_extract_polygonal_prism_data.html">here</a>. The goal in using this filter for this demo is to remove the points that correspond to the object of interest (because the collision/path planning requires it). So this particular filter is applied to the entire point cloud, but only after we know the position/orientation of the box.</p>
+<p>Within perception_node.cpp, add <code class="docutils literal"><span class="pre">#include</span> <span class="pre">&lt;tf_conversions/tf_eigen.h&gt;</span></code> and find section</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="cm">/* ========================================</span>
+<span class="cm"> * Fill Code: POLYGONAL SEGMENTATION (OPTIONAL)</span>
+<span class="cm"> * ========================================*/</span>
+</pre></div>
+</div>
+<p>Set the input cloud:</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">sensor_cloud_ptr</span> <span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">(</span><span class="n">cloud</span><span class="p">));</span>
+<span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">prism_filtered_cloud</span> <span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">);</span>
+<span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">pick_surface_cloud_ptr</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Declare instance of filter:</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">pcl</span><span class="o">::</span><span class="n">ExtractPolygonalPrismData</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="n">prism</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Set extraction indices:</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">pcl</span><span class="o">::</span><span class="n">ExtractIndices</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="n">extract_ind</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Set input and output:</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">prism</span><span class="p">.</span><span class="n">setInputCloud</span><span class="p">(</span><span class="n">sensor_cloud_ptr</span><span class="p">);</span>
+<span class="n">pcl</span><span class="o">::</span><span class="n">PointIndices</span><span class="o">::</span><span class="n">Ptr</span> <span class="n">pt_inliers</span> <span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointIndices</span><span class="p">());</span>
+</pre></div>
+</div>
+<p>Set parameters - looking at documentation, ExtractPolygonalPrismData takes a polygon pointcloud as input */</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="c1">// create prism surface</span>
+<span class="kt">double</span> <span class="n">box_length</span><span class="o">=</span><span class="mf">0.25</span><span class="p">;</span>
+<span class="kt">double</span> <span class="n">box_width</span><span class="o">=</span><span class="mf">0.25</span><span class="p">;</span>
+<span class="n">pick_surface_cloud_ptr</span><span class="o">-&gt;</span><span class="n">width</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="n">pick_surface_cloud_ptr</span><span class="o">-&gt;</span><span class="n">height</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="n">pick_surface_cloud_ptr</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+
+<span class="n">pick_surface_cloud_ptr</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">x</span> <span class="o">=</span> <span class="mf">0.5f</span><span class="o">*</span><span class="n">box_length</span><span class="p">;</span>
+<span class="n">pick_surface_cloud_ptr</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">y</span> <span class="o">=</span> <span class="mf">0.5f</span><span class="o">*</span><span class="n">box_width</span><span class="p">;</span>
+<span class="n">pick_surface_cloud_ptr</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">z</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="n">pick_surface_cloud_ptr</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">x</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5f</span><span class="o">*</span><span class="n">box_length</span><span class="p">;</span>
+<span class="n">pick_surface_cloud_ptr</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">y</span> <span class="o">=</span> <span class="mf">0.5f</span><span class="o">*</span><span class="n">box_width</span><span class="p">;</span>
+<span class="n">pick_surface_cloud_ptr</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="n">z</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="n">pick_surface_cloud_ptr</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="n">x</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5f</span><span class="o">*</span><span class="n">box_length</span><span class="p">;</span>
+<span class="n">pick_surface_cloud_ptr</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5f</span><span class="o">*</span><span class="n">box_width</span><span class="p">;</span>
+<span class="n">pick_surface_cloud_ptr</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="n">z</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="n">pick_surface_cloud_ptr</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="mi">3</span><span class="p">].</span><span class="n">x</span> <span class="o">=</span> <span class="mf">0.5f</span><span class="o">*</span><span class="n">box_length</span><span class="p">;</span>
+<span class="n">pick_surface_cloud_ptr</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="mi">3</span><span class="p">].</span><span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5f</span><span class="o">*</span><span class="n">box_width</span><span class="p">;</span>
+<span class="n">pick_surface_cloud_ptr</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="mi">3</span><span class="p">].</span><span class="n">z</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="n">pick_surface_cloud_ptr</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="mi">4</span><span class="p">].</span><span class="n">x</span> <span class="o">=</span> <span class="mf">0.5f</span><span class="o">*</span><span class="n">box_length</span><span class="p">;</span>
+<span class="n">pick_surface_cloud_ptr</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="mi">4</span><span class="p">].</span><span class="n">y</span> <span class="o">=</span> <span class="mf">0.5f</span><span class="o">*</span><span class="n">box_width</span><span class="p">;</span>
+<span class="n">pick_surface_cloud_ptr</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="mi">4</span><span class="p">].</span><span class="n">z</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="n">Eigen</span><span class="o">::</span><span class="n">Affine3d</span> <span class="n">eigen3d</span><span class="p">;</span>
+<span class="n">tf</span><span class="o">::</span><span class="n">transformTFToEigen</span><span class="p">(</span><span class="n">part_transform</span><span class="p">,</span><span class="n">eigen3d</span><span class="p">);</span>
+<span class="n">pcl</span><span class="o">::</span><span class="n">transformPointCloud</span><span class="p">(</span><span class="o">*</span><span class="n">pick_surface_cloud_ptr</span><span class="p">,</span><span class="o">*</span><span class="n">pick_surface_cloud_ptr</span><span class="p">,</span><span class="n">Eigen</span><span class="o">::</span><span class="n">Affine3f</span><span class="p">(</span><span class="n">eigen3d</span><span class="p">));</span>
+
+<span class="n">prism</span><span class="p">.</span><span class="n">setInputPlanarHull</span><span class="p">(</span> <span class="n">pick_surface_cloud_ptr</span><span class="p">);</span>
+<span class="n">prism</span><span class="p">.</span><span class="n">setHeightLimits</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Segment:</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">prism</span><span class="p">.</span><span class="n">segment</span><span class="p">(</span><span class="o">*</span><span class="n">pt_inliers</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Remember that after you use the segmentation algorithme that you either want to include or exclude the segmented points using an index extraction.</p>
+<p>Set input:</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">extract_ind</span><span class="p">.</span><span class="n">setInputCloud</span><span class="p">(</span><span class="n">sensor_cloud_ptr</span><span class="p">);</span>
+<span class="n">extract_ind</span><span class="p">.</span><span class="n">setIndices</span><span class="p">(</span><span class="n">pt_inliers</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Set parameters - looking at documentation, ExtractPolygonalPrismData takes a polygon pointcloud as input:</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">extract_ind</span><span class="p">.</span><span class="n">setNegative</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Filter:</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">extract_ind</span><span class="p">.</span><span class="n">filter</span><span class="p">(</span><span class="o">*</span><span class="n">prism_filtered_cloud</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Update Publisher within perception_node.cpp, find section</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="cm">/* ========================================</span>
+<span class="cm"> * CONVERT POINTCLOUD PCL-&gt;ROS</span>
+<span class="cm"> * PUBLISH CLOUD</span>
+<span class="cm"> * Fill Code: UPDATE AS NECESSARY</span>
+<span class="cm"> * ========================================*/</span>
+</pre></div>
+</div>
+<p>Change the &quot;toROSMsg&quot; line to convert from your newly processed cloud into a ROS sensor_msgs::PointCloud2. Hint: If following the PCL tutorial, you will have a vector of sensor_msgs::PointCloud2; you can just publish the first one.
+Change:</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">sensor_msgs</span><span class="o">::</span><span class="n">PointCloud2</span><span class="o">::</span><span class="n">Ptr</span> <span class="n">pc2_cloud</span> <span class="p">(</span><span class="k">new</span> <span class="n">sensor_msgs</span><span class="o">::</span><span class="n">PointCloud2</span><span class="p">);</span>
+<span class="n">pcl</span><span class="o">::</span><span class="n">toROSMsg</span><span class="p">(</span><span class="o">*</span><span class="n">sor_cloud_filtered</span><span class="p">,</span> <span class="o">*</span><span class="n">pc2_cloud</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>to:</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">sensor_msgs</span><span class="o">::</span><span class="n">PointCloud2</span><span class="o">::</span><span class="n">Ptr</span> <span class="n">pc2_cloud</span> <span class="p">(</span><span class="k">new</span> <span class="n">sensor_msgs</span><span class="o">::</span><span class="n">PointCloud2</span><span class="p">);</span>
+<span class="n">pcl</span><span class="o">::</span><span class="n">toROSMsg</span><span class="p">(</span><span class="o">*</span><span class="n">prism_filtered_cloud</span><span class="p">,</span> <span class="o">*</span><span class="n">pc2_cloud</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Note:</strong> <em>If you did not create your own publisher</em> to use for the Polygonal Segmentation filter, it will be necessary to move <code class="docutils literal"><span class="pre">CONVERT</span> <span class="pre">POINTCLOUD</span> <span class="pre">PCL-&gt;ROS</span></code> below <code class="docutils literal"><span class="pre">extract_ind.filter(*prism_filtered_cloud);</span></code>.</p>
+</li>
+<li><p class="first">Compile</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">catkin</span> <span class="n">build</span>
+</pre></div>
+</div>
+<p><strong>Note:</strong> If you have the time/patience, I would suggest creating a ros publisher for each type of filter. It is often useful to view the results of multiple filters at once in Rviz and just toggle different clouds.</p>
+</li>
+</ol>
+<div class="section" id="viewing-result">
+<span id="id3"></span><h5>Viewing Result<a class="headerlink" href="#viewing-result" title="Permalink to this headline">¶</a></h5>
+<ol>
+<li><p class="first">Open multiple terminals</p>
+<p>Either open three more tabs within your terminal <em>CTRL-SHIFT-T</em> or open three more windows <em>CTRL-SHIFT-N</em>. These terminals will run a roscore, the pcl_ros, and Rviz. Below, Terminal 1 corresponds to the terminal you have been working out of.</p>
+<p>In terminal 4:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>roscore
+</pre></div>
+</div>
+<p>In terminal 3:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">cd</span> ~
+rosrun pcl_ros pcd_to_pointcloud table.pcd <span class="m">0</span>.1 _frame_id:<span class="o">=</span>kinect_link cloud_pcd:<span class="o">=</span>kinect/depth_registered/points
+</pre></div>
+</div>
+<p>In terminal 2:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>rosrun rviz rviz
+</pre></div>
+</div>
+<p>In terminal 1:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>rosrun lesson_perception perception_node 
+</pre></div>
+</div>
+</li>
+<li><p class="first">View results</p>
+<p>Within Rviz, add a <em>PointCloud2</em> and subscribe to the topic &quot;object_cluster&quot;. What you see will be the results of the voxel filter overlaid on the original point cloud.</p>
+<p>[[resources/prism_filtered_cloud.png]]</p>
+<p>Notice the pointer is pointing to empty area of the table. That is the goal of using the filter this way.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="section" id="write-a-launch-file">
+<span id="write-a-launch-file"></span><h4>Write a launch file<a class="headerlink" href="#write-a-launch-file" title="Permalink to this headline">¶</a></h4>
+<p>While this is not a filter method, it is useful when using PCL or other perception methods because of the number of parameters used in the different methods.</p>
+<ol>
+<li><p class="first">Change/Insert code</p>
+<p>If you are really awesome and read the Task 1 write-up thoroughly, you will note that it was suggested that you put your parameters in one place.</p>
+<p>Within perception_node.cpp, find section</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm"> * SET UP PARAMETERS (COULD TO BE INPUT FROM LAUNCH FILE/TERMINAL)</span>
+<span class="cm"> */</span>
+</pre></div>
+</div>
+<p>Ideally, as the given parameter examples showed, you would <em>declare</em> a parameter of a certain type (std::string frame;), then assign a value for that parameter (frame=&quot;some_name&quot;;).  Below is an example of some of the parameters you could have set.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">world_frame</span><span class="o">=</span><span class="s2">&quot;camera_depth_optical_frame&quot;</span><span class="p">;</span>
+<span class="n">camera_frame</span><span class="o">=</span><span class="s2">&quot;kinect_link&quot;</span><span class="p">;</span>
+<span class="n">cloud_topic</span><span class="o">=</span><span class="s2">&quot;camera/depth_registered/points&quot;</span><span class="p">;</span>
+<span class="n">voxel_leaf_size</span><span class="o">=</span><span class="mf">0.001</span><span class="n">f</span><span class="p">;</span>
+<span class="n">x_filter_min</span><span class="o">=-</span><span class="mf">2.5</span><span class="p">;</span>
+<span class="n">x_filter_max</span><span class="o">=</span><span class="mf">2.5</span><span class="p">;</span>
+<span class="n">y_filter_min</span><span class="o">=-</span><span class="mf">2.5</span><span class="p">;</span>
+<span class="n">y_filter_max</span><span class="o">=</span><span class="mf">2.5</span><span class="p">;</span>
+<span class="n">z_filter_min</span><span class="o">=-</span><span class="mf">2.5</span><span class="p">;</span>
+<span class="n">z_filter_max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">;</span>
+<span class="n">plane_max_iter</span><span class="o">=</span><span class="mi">50</span><span class="p">;</span>
+<span class="n">plane_dist_thresh</span><span class="o">=</span><span class="mf">0.05</span><span class="p">;</span>
+<span class="n">cluster_tol</span><span class="o">=</span><span class="mf">0.01</span><span class="p">;</span>
+<span class="n">cluster_min_size</span><span class="o">=</span><span class="mi">100</span><span class="p">;</span>
+<span class="n">cluster_max_size</span><span class="o">=</span><span class="mi">50000</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>If you took this step, you will be in great shape to convert what you have into something that can be input from a launch file, or yaml file. You will want to use the &quot;getParam&quot; method as described in this <a class="reference external" href="http://wiki.ros.org/roscpp_tutorials/Tutorials/Parameters">tutorial</a>. Get params from ros parameter server/launch file:</p>
+<div class="highlight-c++"><div class="highlight"><pre><span></span><span class="n">priv_nh_</span><span class="p">.</span><span class="n">getParam</span><span class="p">(</span><span class="s">&quot;cloud_topic&quot;</span><span class="p">,</span> <span class="n">cloud_topic</span><span class="p">);</span>
+<span class="n">priv_nh_</span><span class="p">.</span><span class="n">getParam</span><span class="p">(</span><span class="s">&quot;world_frame&quot;</span><span class="p">,</span> <span class="n">world_frame</span><span class="p">);</span>
+<span class="n">priv_nh_</span><span class="p">.</span><span class="n">getParam</span><span class="p">(</span><span class="s">&quot;camera_frame&quot;</span><span class="p">,</span> <span class="n">camera_frame</span><span class="p">);</span>
+<span class="n">priv_nh_</span><span class="p">.</span><span class="n">getParam</span><span class="p">(</span><span class="s">&quot;voxel_leaf_size&quot;</span><span class="p">,</span> <span class="n">voxel_leaf_size</span><span class="p">);</span>
+<span class="n">priv_nh_</span><span class="p">.</span><span class="n">getParam</span><span class="p">(</span><span class="s">&quot;x_filter_min&quot;</span><span class="p">,</span> <span class="n">x_filter_min</span><span class="p">);</span>
+<span class="n">priv_nh_</span><span class="p">.</span><span class="n">getParam</span><span class="p">(</span><span class="s">&quot;x_filter_max&quot;</span><span class="p">,</span> <span class="n">x_filter_max</span><span class="p">);</span>
+<span class="n">priv_nh_</span><span class="p">.</span><span class="n">getParam</span><span class="p">(</span><span class="s">&quot;y_filter_min&quot;</span><span class="p">,</span> <span class="n">y_filter_min</span><span class="p">);</span>
+<span class="n">priv_nh_</span><span class="p">.</span><span class="n">getParam</span><span class="p">(</span><span class="s">&quot;y_filter_max&quot;</span><span class="p">,</span> <span class="n">y_filter_max</span><span class="p">);</span>
+<span class="n">priv_nh_</span><span class="p">.</span><span class="n">getParam</span><span class="p">(</span><span class="s">&quot;z_filter_min&quot;</span><span class="p">,</span> <span class="n">z_filter_min</span><span class="p">);</span>
+<span class="n">priv_nh_</span><span class="p">.</span><span class="n">getParam</span><span class="p">(</span><span class="s">&quot;z_filter_max&quot;</span><span class="p">,</span> <span class="n">z_filter_max</span><span class="p">);</span>
+<span class="n">priv_nh_</span><span class="p">.</span><span class="n">getParamCached</span><span class="p">(</span><span class="s">&quot;plane_max_iterations&quot;</span><span class="p">,</span> <span class="n">plane_max_iter</span><span class="p">);</span>
+<span class="n">priv_nh_</span><span class="p">.</span><span class="n">getParamCached</span><span class="p">(</span><span class="s">&quot;plane_distance_threshold&quot;</span><span class="p">,</span> <span class="n">plane_dist_thresh</span><span class="p">);</span>
+<span class="n">priv_nh_</span><span class="p">.</span><span class="n">getParam</span><span class="p">(</span><span class="s">&quot;cluster_tolerance&quot;</span><span class="p">,</span> <span class="n">cluster_tol</span><span class="p">);</span>
+<span class="n">priv_nh_</span><span class="p">.</span><span class="n">getParam</span><span class="p">(</span><span class="s">&quot;cluster_min_size&quot;</span><span class="p">,</span> <span class="n">cluster_min_size</span><span class="p">);</span>
+<span class="n">priv_nh_</span><span class="p">.</span><span class="n">getParam</span><span class="p">(</span><span class="s">&quot;cluster_max_size&quot;</span><span class="p">,</span> <span class="n">cluster_max_size</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Once you've done this, you can either delete or comment out your hard-coded values, but leave the declaration of those variables!</p>
+</li>
+<li><p class="first">Compile</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">catkin</span> <span class="n">build</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Write launch file.</p>
+<p>Using gedit or some other text editor, make a new file (processing_node.launch) and put the following in it.</p>
+<div class="highlight-xml"><div class="highlight"><pre><span></span><span class="nt">&lt;launch&gt;</span>
+  <span class="nt">&lt;node</span> <span class="na">name=</span><span class="s">&quot;processing_node&quot;</span> <span class="na">pkg=</span><span class="s">&quot;lesson_perception&quot;</span> <span class="na">type=</span><span class="s">&quot;perception_node&quot;</span> <span class="na">output=</span><span class="s">&quot;screen&quot;</span><span class="nt">&gt;</span>  
+    <span class="nt">&lt;rosparam&gt;</span>
+      cloud_topic: &quot;kinect/depth_registered/points&quot;
+      world_frame: &quot;world_frame&quot;
+      camera_frame: &quot;kinect_link&quot;
+      voxel_leaf_size: 0.001 <span class="c">&lt;!-- mm --&gt;</span>
+      x_filter_min: -2.5 <span class="c">&lt;!-- m --&gt;</span>
+      x_filter_max: 2.5 <span class="c">&lt;!-- m --&gt;</span>
+      y_filter_min: -2.5 <span class="c">&lt;!-- m --&gt;</span>
+      y_filter_max: 2.5 <span class="c">&lt;!-- m --&gt;</span>
+      z_filter_min: -2.5 <span class="c">&lt;!-- m --&gt;</span>
+      z_filter_max: 2.5 <span class="c">&lt;!-- m --&gt;</span>
+      plane_max_iterations: 100
+      plane_distance_threshold: 0.03
+      cluster_tolerance: 0.01
+      cluster_min_size: 250
+      cluster_max_size: 500000
+    <span class="nt">&lt;/rosparam&gt;</span>
+  <span class="nt">&lt;/node&gt;</span>
+<span class="nt">&lt;/launch&gt;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<div class="section" id="viewing-results">
+<span id="id4"></span><h5>Viewing Results<a class="headerlink" href="#viewing-results" title="Permalink to this headline">¶</a></h5>
+<ol>
+<li><p class="first">Open multiple terminals</p>
+<p>Either open three more tabs within your terminal <em>CTRL-SHIFT-T</em> or open three more windows <em>CTRL-SHIFT-N</em>. These terminals will run a roscore, the pcl_ros, and Rviz. Below, Terminal 1 corresponds to the terminal you have been working out of.</p>
+<p>In terminal 4:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>roscore
+</pre></div>
+</div>
+<p>In terminal 3:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">cd</span> ~
+rosrun pcl_ros pcd_to_pointcloud table.pcd <span class="m">0</span>.1 _frame_id:<span class="o">=</span>kinect_link cloud_pcd:<span class="o">=</span>kinect/depth_registered/points
+</pre></div>
+</div>
+<p>In terminal 2:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>rosrun rviz rviz -d <span class="sb">`</span>rospack find lesson_perception<span class="sb">`</span>/launch/lesson_perception.rviz
+</pre></div>
+</div>
+<p>In terminal 1:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>roslaunch lesson_perception processing_node.launch
+</pre></div>
+</div>
+<p>When you are satisfied with the results, go to each terminal and <em>CTRL-C</em>.</p>
+<p>We're all done! So it's best to make sure everything is wrapped up and closed.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+            
+            <div class="admonition note">
+              <p class="first admonition-title">Open Source Feedback</p>
+              <p class="last">See something that needs improvement? Please open a pull request on this <a href="https://github.com/ros-industrial/industrial_training/blob/kinetic-devel/doc/kinetic/session5/Building-a-Perception-Pipeline['.rst', '.md']" class="fa fa-github"> GitHub page</a></p>
+            </div>
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Introduction-to-STOMP.html" class="btn btn-neutral float-right" title="Introduction to STOMP" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Advanced-Descartes-Path-Planning.html" class="btn btn-neutral" title="Advanced Descartes Path Planning" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'Kinetic',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
