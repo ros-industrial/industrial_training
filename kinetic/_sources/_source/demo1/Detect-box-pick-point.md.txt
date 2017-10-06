@@ -1,9 +1,9 @@
 # Detect Box Pick Point
->The coordinate frame of the box's pick can be requested from a ros service that detects it by processing the sensor data. In this exercise, we will learn how to use a service client to call that ros service for the box pick pose. 
+>The coordinate frame of the box's pick can be requested from a ros service that detects it by processing the sensor data. In this exercise, we will learn how to use a service client to call that ros service for the box pick pose.
 
 ## Locate Function
 
-  * In the main program , locate the function call to '''application.detect_box_pick()'''. 
+  * In the main program , locate the function call to '''application.detect_box_pick()'''.
   * Go to the source file of that function by clicking in any part of the function and pressing "F3".
   * Remove the fist line containing the following '''ROS_ERROR_STREAM ...''' so that the program runs.
 
@@ -11,10 +11,10 @@
 ## Complete Code
 
 
-  * Find every line that begins with the comment "''Fill Code: ''" and read the description.  Then, replace every instance of the comment  "''ENTER CODE HERE''"  
+  * Find every line that begins with the comment "''Fill Code: ''" and read the description.  Then, replace every instance of the comment  "''ENTER CODE HERE''"
  with the appropriate line of code
 ```
-/* Fill Code: 
+/* Fill Code:
      .
      .
      .

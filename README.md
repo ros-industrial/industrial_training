@@ -8,5 +8,5 @@ This branch is an orphan used to store GitHub pages for the repository website.
  - Checkout the **master** branch
  - Build Documentation (Note: Change **kinetic** to the latest version)
    - Navigate to the repository.
-   - `sphinx-versioning build -b -B kinetic -r kinetic gh_pages .
+   - `sphinx-versioning build -b -B kinetic -r kinetic gh_pages .`
  - Push changes

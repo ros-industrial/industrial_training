@@ -3,17 +3,17 @@
 
 ## Locate Function
 
-  * In the main program , locate the function call to '''application.set_gripper()'''. 
+  * In the main program , locate the function call to '''application.set_gripper()'''.
   * Go to the source file of that function by clicking in any part of the function and pressing "F3".
   * Remove the fist line containing the following '''ROS_ERROR_STREAM ...''' so that the program runs.
 
 
 ## Complete Code
 
-  * Find every line that begins with the comment "''Fill Code: ''" and read the description.  Then, replace every instance of the comment  "''ENTER CODE HERE''"  
+  * Find every line that begins with the comment "''Fill Code: ''" and read the description.  Then, replace every instance of the comment  "''ENTER CODE HERE''"
  with the appropriate line of code.
 ```
-/* Fill Code: 
+/* Fill Code:
      .
      .
      .
@@ -21,14 +21,14 @@
 /* ========  ENTER CODE HERE ======== */
 ```
 
- * The 'grasp_goal' goal property can take on three possible values: 
+ * The 'grasp_goal' goal property can take on three possible values:
 ```
     grasp_goal.goal = object_manipulation_msgs::GraspHandPostureExecutionGoal::GRASP;
     grasp_goal.goal = object_manipulation_msgs::GraspHandPostureExecutionGoal::RELEASE;
     grasp_goal.goal = object_manipulation_msgs::GraspHandPostureExecutionGoal::PRE_GRASP;
 ```
 
-  * Once the grasp flag has been set you can send the goal through the grasp action client 
+  * Once the grasp flag has been set you can send the goal through the grasp action client
 
 
 ## Build Code and Run
@@ -47,7 +47,7 @@ catkin build collision_avoidance_pick_and_place
 ```
 roslaunch collision_avoidance_pick_and_place ur5_pick_and_place.launch
 ```
-  
+
   * If the task succeeds you will see something like the following in the terminal (below). The robot will not move, only gripper I/O is triggered:
 ```
 [ INFO] [1400553290.464877904]: Move wait Succeeded

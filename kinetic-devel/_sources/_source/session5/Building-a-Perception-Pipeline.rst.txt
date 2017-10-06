@@ -1,6 +1,6 @@
 Building a Perception Pipeline
 ==============================
-> In this exercise, we will fill in the appropriate pieces of code to build a perception pipeline. The end goal will be to broadcast a transform with the pose information of the object of interest.
+In this exercise, we will fill in the appropriate pieces of code to build a perception pipeline. The end goal will be to broadcast a transform with the pose information of the object of interest.
 
 Prepare New Workspace:
 ----------------------

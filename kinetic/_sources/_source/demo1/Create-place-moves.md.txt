@@ -3,16 +3,16 @@
 
 ## Locate Function
 
-  * In the main program , locate the function call to '''application.create_place_moves()'''. 
+  * In the main program , locate the function call to '''application.create_place_moves()'''.
   * Go to the source file of that function by clicking in any part of the function and pressing "F3".
   * Remove the fist line containing the following '''ROS_ERROR_STREAM ...''' so that the program runs.
 
 ## Complete Code
 
-  * Find every line that begins with the comment "''Fill Code: ''" and read the description.  Then, replace every instance of the comment  "''ENTER CODE HERE''"  
+  * Find every line that begins with the comment "''Fill Code: ''" and read the description.  Then, replace every instance of the comment  "''ENTER CODE HERE''"
  with the appropriate line of code
 ```
-/* Fill Code: 
+/* Fill Code:
      .
      .
      .
@@ -24,8 +24,8 @@
 
  * The '''create_manipulation_poses()''' uses the values of the approach and retreat distances in order to create the corresponding poses at the desired target.
 
- * Since moveit plans the robot path for the arm's wrist, then it is necessary to convert all the place poses to the wrist coordinate frame. 
- 
+ * Since moveit plans the robot path for the arm's wrist, then it is necessary to convert all the place poses to the wrist coordinate frame.
+
  * The [[lookupTransform|http://mirror.umd.edu/roswiki/doc/hydro/api/tf/html/c++/classtf_1_1Transformer.html#ac01a9f8709a828c427f1a5faa0ced42b]] method can provide the pose of a target relative to another pose.
 
 ## Build Code and Run
