@@ -135,6 +135,7 @@ Viewing Results
 
       cd ~
       roscore
+      rosrun tf2_ros static_transform_publisher 0 0 0 0 0 0 world_frame kinect_link
       rosrun pcl_ros pcd_to_pointcloud table.pcd 0.1 _frame_id:=kinect_link cloud_pcd:=kinect/depth_registered/points
       rosrun rviz rviz
       rosrun lesson_perception perception_node
