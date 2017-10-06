@@ -16,3 +16,20 @@
   text-align: right;
   margin-bottom: -25px;
 }
+
+.btn {
+  opacity: 0.20;
+  background-color: #027de7;
+  color: #ffffff;
+  white-space: nowrap;
+  padding: 2px 2px;
+  position: relative;
+  float: right;
+  transition:opacity 0.3s ease-in-out;
+  -webkit-transition:opacity 0.3s ease-in-out;-o-transition:opacity 0.3s ease-in-out;
+}
+.btn:hover {
+  background-color: #027de7;
+  color: #ffffff;
+  opacity:1;
+}
