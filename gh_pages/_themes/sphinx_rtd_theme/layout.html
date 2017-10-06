@@ -80,6 +80,8 @@
 </head>
 
 <body class="wy-body-for-nav" role="document">
+  {# Keep clipboard in body #}
+  <script src="{{ pathto('_static/js/clipboard.min.js', 1) }}"></script>
 
   <div class="wy-grid-for-nav">
 
@@ -165,6 +167,29 @@
     </section>
 
   </div>
+  <script>
+  var pre = document.getElementsByTagName('pre');
+  for (var i = 0; i < pre.length; i++) {
+    var button = document.createElement('button');
+    button.className = 'btn fa fa-copy';
+    pre[i].before(button);
+  }
+
+  var clipboard = new Clipboard('.btn', {
+    target: function(trigger) {return trigger.nextElementSibling;}
+  });
+
+  function showSuccess(elem){elem.setAttribute('class','btn fa fa-check');}
+  function sleep (time) {
+    return new Promise((resolve) => setTimeout(resolve, time));
+  }
+  clipboard.on('success',function(e){
+    showSuccess(e.trigger);
+    sleep(350).then(() => {e.clearSelection();
+      e.trigger.setAttribute('class','btn fa fa-copy');})
+  });
+  </script>
+
   {% include "versions.html" %}
 
   {% if not embedded %}
