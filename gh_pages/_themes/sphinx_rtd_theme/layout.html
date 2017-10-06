@@ -147,10 +147,11 @@
           {% include "breadcrumbs.html" %}
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-             <div class="admonition note"> 
+             <div class="admonition note">
                <p class="first admonition-title">The code used in this tutorial is available!</p>
                <p class="last">Code can be found at <a href = "https://github.com/ros-industrial/industrial_training">industrial_training repository</a> in gh_pages folder. Use {{ github_version }} branch.</p>
-             </div> 
+             </div>
+
             {% block body %}{% endblock %}
             {% if display_github %}
             <div class="admonition note">
@@ -171,22 +172,22 @@
   var pre = document.getElementsByTagName('pre');
   for (var i = 0; i < pre.length; i++) {
     var button = document.createElement('button');
-    button.className = 'btn fa fa-copy';
+    button.className = 'btn-copyboard fa fa-copy btn';
     pre[i].before(button);
   }
 
-  var clipboard = new Clipboard('.btn', {
+  var clipboard = new Clipboard('.btn-copyboard', {
     target: function(trigger) {return trigger.nextElementSibling;}
   });
 
-  function showSuccess(elem){elem.setAttribute('class','btn fa fa-check');}
+  function showSuccess(elem){elem.setAttribute('class','btn-copyboard fa fa-check btn');}
   function sleep (time) {
     return new Promise((resolve) => setTimeout(resolve, time));
   }
   clipboard.on('success',function(e){
     showSuccess(e.trigger);
     sleep(350).then(() => {e.clearSelection();
-      e.trigger.setAttribute('class','btn fa fa-copy');})
+      e.trigger.setAttribute('class','btn-copyboard fa fa-copy btn');})
   });
   </script>
 
