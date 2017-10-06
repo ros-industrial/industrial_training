@@ -3,17 +3,17 @@
 
 ## Locate Function
 
-  * In the main program, locate the function call to '''application.pickup_box()'''. 
+  * In the main program, locate the function call to '''application.pickup_box()'''.
   * Go to the source file of that function by clicking in any part of the function and pressing "F3".
   * Remove the fist line containing the following '''ROS_ERROR_STREAM ...''' so that the program runs.
 
 
 ## Complete Code
 
-  * Find every line that begins with the comment "''Fill Code: ''" and read the description.  Then, replace every instance of the comment  "''ENTER CODE HERE''"  
+  * Find every line that begins with the comment "''Fill Code: ''" and read the description.  Then, replace every instance of the comment  "''ENTER CODE HERE''"
  with the appropriate line of code
 ```
-/* Fill Code: 
+/* Fill Code:
      .
      .
      .

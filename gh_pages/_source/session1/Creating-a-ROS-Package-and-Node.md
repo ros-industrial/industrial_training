@@ -52,11 +52,10 @@ Your goal is to create your first ROS node:
 
    _If you forget to add a dependency when creating a package, you can add additional dependencies in the _package.xml_ file._
 
----
+
 
 ### STOP!  We'll go through a few more lecture slides before continuing this exercise.
 
----
 
 ### Create a Node
 1. In the package folder, edit the _CMakeLists.txt_ file using _gedit_. Browse through the example rules, and add an executable(_add_executable_), node named vision_node, source file named vision_node.cpp. Also within the _CMakeLists.txt_, make sure your new vision_node gets linked ('target_link_libraries') to the catkin libraries.

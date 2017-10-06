@@ -26,10 +26,17 @@
   position: relative;
   float: right;
   transition:opacity 0.3s ease-in-out;
-  -webkit-transition:opacity 0.3s ease-in-out;-o-transition:opacity 0.3s ease-in-out;
+  -webkit-transition:opacity 0.3s ease-in-out;
+  -o-transition:opacity 0.3s ease-in-out;
 }
+
 .btn:hover {
   background-color: #027de7;
   color: #ffffff;
   opacity:1;
+}
+
+.btn:hover::after, .btn:focus, .btn:active {
+  background-color: #027de7;
+  color: #ffffff;
 }
