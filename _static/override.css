@@ -17,7 +17,7 @@
   margin-bottom: -25px;
 }
 
-.btn {
+.btn-copyboard {
   opacity: 0.20;
   background-color: #027de7;
   color: #ffffff;
@@ -30,13 +30,13 @@
   -o-transition:opacity 0.3s ease-in-out;
 }
 
-.btn:hover {
+.btn-copyboard:hover {
   background-color: #027de7;
   color: #ffffff;
   opacity:1;
 }
 
-.btn:hover::after, .btn:focus, .btn:active {
+.btn-copyboard:hover::after, .btn-copyboard:focus, .btn-copyboard:active {
   background-color: #027de7;
   color: #ffffff;
 }
