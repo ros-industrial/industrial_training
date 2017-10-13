@@ -19,7 +19,7 @@
 
 .btn-copyboard {
   opacity: 0.20;
-  background-color: #027de7;
+  background-color: #00adef;
   color: #ffffff;
   white-space: nowrap;
   padding: 2px 2px;
@@ -31,12 +31,12 @@
 }
 
 .btn-copyboard:hover {
-  background-color: #027de7;
+  background-color: #00adef;
   color: #ffffff;
   opacity:1;
 }
 
 .btn-copyboard:hover::after, .btn-copyboard:focus, .btn-copyboard:active {
-  background-color: #027de7;
+  background-color: #00adef;
   color: #ffffff;
 }

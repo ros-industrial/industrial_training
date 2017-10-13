@@ -61,7 +61,7 @@
           <a href="../../index.html" class="icon icon-home">
         
 
-          ROS-Industrial<br/>Training Material
+          ROS-Industrial Training Material<br/>kinetic
 
         
         </a>
@@ -802,6 +802,7 @@
 <li><p class="first">Run the (currently small) perception pipeline. Note: In rviz change the global frame to <strong>kinect_link</strong>.</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">cd</span> ~
 roscore
+rosrun tf2_ros static_transform_publisher <span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span> world_frame kinect_link
 rosrun pcl_ros pcd_to_pointcloud table.pcd <span class="m">0</span>.1 _frame_id:<span class="o">=</span>kinect_link cloud_pcd:<span class="o">=</span>kinect/depth_registered/points
 rosrun rviz rviz
 rosrun lesson_perception perception_node
@@ -1577,6 +1578,12 @@ rosrun pcl_ros pcd_to_pointcloud table.pcd <span class="m">0</span>.1 _frame_id:
 
   <hr/>
 
+  <div class="footer-override">
+    <a href="http://rosindustrial.org/ric">
+      <img src="../../_static/footer.jpg"/>
+    </a>
+  </div>
+
   <div role="contentinfo">
     <p>
     </p>
@@ -1623,8 +1630,8 @@ rosrun pcl_ros pcd_to_pointcloud table.pcd <span class="m">0</span>.1 _frame_id:
     <div class="rst-other-versions">
         <dl>
             <dt>Branches</dt>
-            <dd><a href="Building-a-Perception-Pipeline.html">kinetic</a></dd>
             <dd><a href="../../../kinetic-devel/_source/session5/Building-a-Perception-Pipeline.html">kinetic-devel</a></dd>
+            <dd><a href="Building-a-Perception-Pipeline.html">kinetic</a></dd>
         </dl>
     </div>
 </div>
@@ -1638,7 +1645,8 @@ rosrun pcl_ros pcd_to_pointcloud table.pcd <span class="m">0</span>.1 _frame_id:
             VERSION:'',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="../../_static/jquery.js"></script>
