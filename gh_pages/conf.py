@@ -107,6 +107,7 @@ html_theme_path = ['_themes',]
 html_static_path = ['_static']
 
 html_context = {
+    "wiki_title": "ROS-Industrial Training Material",
     "display_github": True,
     "github_user": "ros-industrial",
     "github_repo": "industrial_training",
