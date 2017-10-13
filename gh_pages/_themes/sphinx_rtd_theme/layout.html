@@ -96,7 +96,7 @@
           <a href="{{ pathto(master_doc) }}" class="icon icon-home">
         {% endif %}
 
-          ROS-Industrial<br/>Training Material
+          {{ wiki_title }}<br/>{{ github_version }}
 
         {% if logo %}
           {# Not strictly valid HTML, but it's the only way to display/scale it properly, without weird scripting or heaps of work #}
@@ -201,7 +201,8 @@
             VERSION:'{{ release|e }}',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'{{ '' if no_search_suffix else file_suffix }}',
-            HAS_SOURCE:  {{ has_source|lower }}
+            HAS_SOURCE:  {{ has_source|lower }},
+            SOURCELINK_SUFFIX: '{{ sourcelink_suffix }}'
         };
     </script>
     {%- for scriptfile in script_files %}
