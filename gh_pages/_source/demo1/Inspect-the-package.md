@@ -10,6 +10,7 @@ cp -r ~/industrial_training/exercises/Perception-Driven_Manipulation/template_ws
 ```
 cd ~/perception_driven_ws/src/
 wstool update
+rosdep install --from-paths . --ignore-src -y
 ```
 ## Locate and navigate into the package
 ```
