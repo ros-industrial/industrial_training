@@ -74,8 +74,7 @@ Your goal is to create your first ROS subscriber:
 3. add dependencies into your package's `package.xml`:
 
    ```xml
-   <build_depend>fake_ar_publisher</build_depend>
-   <run_depend>fake_ar_publisher</run_depend>
+   <depend>fake_ar_publisher</depend>
    ```
 
 4. `cd` into your catkin workspace
