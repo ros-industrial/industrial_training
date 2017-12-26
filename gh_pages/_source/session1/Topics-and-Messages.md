@@ -157,6 +157,9 @@ Your goal is to create your first ROS subscriber:
      Localizer localizer(nh);
 
      ROS_INFO("Vision node starting");
+     
+     // Don't exit the program.
+     ros::spin();
    }
    ```
  
