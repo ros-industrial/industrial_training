@@ -9,7 +9,7 @@ Steps to creating a workspace: [Creating a Catkin Workspace](http://wiki.ros.org
 
 _Note: Many current examples on ros.org use the older-style `catkin_init_workspace` commands.  These are similar, but not directly interchangeable with the `catkin_tools` commands used in this course._
 
-##Further Information and Resources
+## Further Information and Resources
 Using a Catkin Workspace: [Using a Workspace](http://wiki.ros.org/catkin/Tutorials/using_a_workspace)
 
 ## Scan-N-Plan Application: Problem Statement
