@@ -91,9 +91,9 @@ Your goal is to create a more intricate system of nodes:
      
       ``` xml
       <build_depend>message_generation</build_depend>
-      <run_depend>message_runtime</run_depend>
+      <exec_depend>message_runtime</exec_depend>
       <build_depend>geometry_msgs</build_depend>
-      <run_depend>geometry_msgs</run_depend>
+      <exec_depend>geometry_msgs</exec_depend>
       ```
 
 6. Edit the package's `CMakeLists.txt` to add rules to generate the new service files:
