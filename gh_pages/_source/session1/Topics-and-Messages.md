@@ -75,7 +75,8 @@ Your goal is to create your first ROS subscriber:
 
    ```xml
    <build_depend>fake_ar_publisher</build_depend>
-   <run_depend>fake_ar_publisher</run_depend>
+   <!-- <run_depend>fake_ar_publisher</run_depend> -->
+   <exec_depend>fake_ar_publisher</exec_depend>
    ```
 
 4. `cd` into your catkin workspace
