@@ -124,7 +124,7 @@ Your goal is to create your first ROS subscriber:
    #include <fake_ar_publisher/ARMarker.h>
    ```
 
-2. Add the code that will be run when a message is received from the topic (the callback). 
+3. Add the code that will be run when a message is received from the topic (the callback). 
 
    ``` c++
    class Localizer
@@ -147,7 +147,7 @@ Your goal is to create your first ROS subscriber:
    };
    ```
 
-3. Add the code that will connect the callback to the topic (within `main()`)
+4. Add the code that will connect the callback to the topic (within `main()`)
 
    ``` c++
    int main(int argc, char** argv)
@@ -160,7 +160,7 @@ Your goal is to create your first ROS subscriber:
    }
    ```
    
-3* Move the spin function to the bottom of 'main()'
+5. Move the spin function to the bottom of 'main()'
    ```
    int main(int argc, char** argv)
    {
@@ -170,20 +170,20 @@ Your goal is to create your first ROS subscriber:
      ros::spin();
    }
    ```
-4. Run `catkin build`, then `rosrun myworkcell_core vision_node`.
+6. Run `catkin build`, then `rosrun myworkcell_core vision_node`.
 
-5. You should see the positions display from the publisher.
+7. You should see the positions display from the publisher.
 
-6. Press Ctrl+C on the publisher node.  The subscriber will stop displaying information.
+8. Press Ctrl+C on the publisher node.  The subscriber will stop displaying information.
 
-7. Start the publisher node again. The subscriber will continue to print messages as the new program runs.
+9. Start the publisher node again. The subscriber will continue to print messages as the new program runs.
 
    * This is a key capability of ROS, to be able to restart individual nodes without affecting the overall system.
 
-8. In a new terminal, type `rqt_graph`. You should see a window similar to the one below:
+10. In a new terminal, type `rqt_graph`. You should see a window similar to the one below:
 
-9. The rectangles in the the window show the topics currently available on the system.
+11. The rectangles in the the window show the topics currently available on the system.
 
-10. The ovals are ROS nodes.  Arrows leaving the node indicate the topics the node publishes, and arrows entering the node indicate the topics the node subscribes to.
+12. The ovals are ROS nodes.  Arrows leaving the node indicate the topics the node publishes, and arrows entering the node indicate the topics the node subscribes to.
 
 <p align="center"><img src=http://aeswiki.datasys.swri.edu/rositraining/Exercises/1.6?action=AttachFile&do=get&target=1.png /></p>
