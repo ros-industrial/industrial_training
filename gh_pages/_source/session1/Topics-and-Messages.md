@@ -6,15 +6,15 @@ The first type of ROS communication that we will explore is a one-way communicat
 
 ## Reference Example
 
-[Create a Subscriber](http://www.ros.org/wiki/ROS/Tutorials/WritingPublisherSubscriber%28c%2B%2B%29)
+[Create a Subscriber](http://wiki.ros.org/ROS/Tutorials/WritingPublisherSubscriber%28c%2B%2B%29)
 
 ## Further Information and Resources
 
-[Understanding Topics](http://www.ros.org/wiki/ROS/Tutorials/UnderstandingTopics)
+[Understanding Topics](http://wiki.ros.org/ROS/Tutorials/UnderstandingTopics)
 
-[Examining Publisher & Subscriber](http://www.ros.org/wiki/ROS/Tutorials/ExaminingPublisherSubscriber)
+[Examining Publisher & Subscriber](http://wiki.ros.org/ROS/Tutorials/ExaminingPublisherSubscriber)
 
-[Creating Messages and Services](http://www.ros.org/wiki/ROS/Tutorials/CreatingMsgAndSrv)
+[Creating Messages and Services](http://wiki.ros.org/ROS/Tutorials/CreatingMsgAndSrv)
 
 ## Scan-N-Plan Application: Problem Statement
 We now have a base ROS node and we want to build on this node. Now we want to create a subscriber within our node.

@@ -5,12 +5,12 @@
 The basis of ROS communication is that multiple executables called nodes are running in an environment and communicating with each other in various ways. These nodes exist within a structure called a package. In this module we will create a node inside a newly created package.
 
 ## Reference Example
-[Create a Package](http://www.ros.org/wiki/ROS/Tutorials/CreatingPackage) 
+[Create a Package](http://wiki.ros.org/ROS/Tutorials/CreatingPackage) 
 
 ## Further Information and Resources
-[Building Packages](http://www.ros.org/wiki/ROS/Tutorials/BuildingPackages)
+[Building Packages](http://wiki.ros.org/ROS/Tutorials/BuildingPackages)
 
-[Understanding Nodes](http://www.ros.org/wiki/ROS/Tutorials/UnderstandingNodes)
+[Understanding Nodes](http://wiki.ros.org/ROS/Tutorials/UnderstandingNodes)
 
 ## Scan-N-Plan Application: Problem Statement
 We've installed ROS, created a workspace, and even built a few times. Now we want to create our own package and our own node to do what we want to do.
