@@ -4,6 +4,6 @@
 ***
 
 ## ROS Tutorials for C++ Action Client/Server usage
- * [SimpleActionServer](http://www.ros.org/wiki/actionlib_tutorials/Tutorials/SimpleActionServer%28ExecuteCallbackMethod%29)
+ * [SimpleActionServer](http://wiki.ros.org/actionlib_tutorials/Tutorials/SimpleActionServer%28ExecuteCallbackMethod%29)
 
- * [SimpleActionClient](http://www.ros.org/wiki/actionlib_tutorials/Tutorials/SimpleActionClient)
+ * [SimpleActionClient](http://wiki.ros.org/actionlib_tutorials/Tutorials/SimpleActionClient)

@@ -6,10 +6,10 @@
 In order to start programming in ROS, you should know how to install ROS on a new machine as well and check that the installation worked properly. This module will walk you through a few simple checks of your installed ROS system. Assuming you are working from the VM, you can skip any installation instructions as ROS is already installed.
 
 ## Reference Example
-[Configuring ROS](http://www.ros.org/wiki/ROS/Tutorials/InstallingandConfiguringROSEnvironment)
+[Configuring ROS](http://wiki.ros.org/ROS/Tutorials/InstallingandConfiguringROSEnvironment)
 
 ## Further Information and Resources
-[Installation Instructions](http://www.ros.org/wiki/kinetic/Installation/Ubuntu)
+[Installation Instructions](http://wiki.ros.org/kinetic/Installation/Ubuntu)
 
 [Navigating ROS](http://wiki.ros.org/ROS/Tutorials/NavigatingTheFilesystem)
 

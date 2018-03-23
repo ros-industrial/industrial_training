@@ -7,14 +7,14 @@ By this point in these tutorials (or your career), you've probably typed the wor
 The ROS ecosystem has an analogous system for configuring entire groups of nodes. It's a fancy key-value storage program that gets brought up as part of `roscore`. It's best used to pass configuration parameters to nodes individually (e.g. to identify which camera a node should subscribe to), but it can be used for much more complicated items.
 
 ## Reference Example
-[Understanding Parameters](http://www.ros.org/wiki/ROS/Tutorials/UnderstandingServicesParams#Using_rosparam)
+[Understanding Parameters](http://wiki.ros.org/ROS/Tutorials/UnderstandingServicesParams#Using_rosparam)
 
 ## Further Information and Resource
-[Roscpp tutorial](http://www.ros.org/wiki/roscpp_tutorials/Tutorials/Parameters)
+[Roscpp tutorial](http://wiki.ros.org/roscpp_tutorials/Tutorials/Parameters)
 
-[Private Parameters](http://www.ros.org/wiki/roscpp_tutorials/Tutorials/AccessingPrivateNamesWithNodeHandle)
+[Private Parameters](http://wiki.ros.org/roscpp_tutorials/Tutorials/AccessingPrivateNamesWithNodeHandle)
 
-[Parameter Server](http://www.ros.org/wiki/Parameter%20Server)
+[Parameter Server](http://wiki.ros.org/Parameter%20Server)
 
 
 ## Scan-N-Plan Application: Problem Statement
@@ -41,7 +41,7 @@ So far we haven't used the request field, `base_frame`, for anything. In this ex
 
 1. Open up `myworkcell_node.cpp` for editing.
 
-2. Add a new `ros::NodeHandle` object to the `main` function, and make it private through its parameters. For more guidance, see the [ros wiki](http://www.ros.org/wiki/roscpp_tutorials/Tutorials/AccessingPrivateNamesWithNodeHandle) on this subject.
+2. Add a new `ros::NodeHandle` object to the `main` function, and make it private through its parameters. For more guidance, see the [ros wiki](http://wiki.ros.org/roscpp_tutorials/Tutorials/AccessingPrivateNamesWithNodeHandle) on this subject.
 
    ``` c++
    ros::NodeHandle private_node_handle ("~");
