@@ -71,5 +71,7 @@ You may also choose to launch `myworkcell_core` node with the others or keep it 
 6. Notice that none of the usual messages were printed to the console window.  Launch files will suppress console output below the **ERROR** severity level by default. To restore normal text output, add an extra tag to each of the nodes in your launch files:
 
    ``` xml
-   <node output="screen"/>
+   <node name="fake_ar_publisher" pkg="fake_ar_publisher" type="fake_ar_publisher_node" output="screen"/>
+   <node name="vision_node" pkg="myworkcell_core" type="vision_node" output="screen" />
+
    ```
