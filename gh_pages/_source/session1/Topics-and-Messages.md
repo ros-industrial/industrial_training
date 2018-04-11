@@ -159,7 +159,17 @@ Your goal is to create your first ROS subscriber:
      ... // Note: don't forget to leave ros::spin(); in place.
    }
    ```
- 
+   
+3* Move the spin function to the bottom of 'main()'
+   ```
+   int main(int argc, char** argv)
+   {
+     ...
+     
+     // Don't exit the program.
+     ros::spin();
+   }
+   ```
 4. Run `catkin build`, then `rosrun myworkcell_core vision_node`.
 
 5. You should see the positions display from the publisher.

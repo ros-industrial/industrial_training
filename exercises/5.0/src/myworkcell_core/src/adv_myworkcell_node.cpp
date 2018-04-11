@@ -41,6 +41,7 @@ public:
     // Plan cartesian path
     myworkcell_core::PlanCartesianPath cartesian_srv;
     cartesian_srv.request.pose = move_target;
+    ROS_INFO("Planning Cartesian path ...");
     if (!cartesian_client_.call(cartesian_srv))
     {
       ROS_ERROR("Could not plan for path");
@@ -48,7 +49,7 @@ public:
     }
 
     // Execute descartes-planned path directly (bypassing MoveIt)
-    ROS_INFO("Got cart path, executing");
+    ROS_INFO("Got Cartesian path, executing");
     control_msgs::FollowJointTrajectoryGoal goal;
     goal.trajectory = cartesian_srv.response.trajectory;
     ac_.sendGoal(goal);
@@ -78,10 +79,10 @@ int main(int argc, char **argv)
   ScanNPlan app(nh);
   ros::Duration(.5).sleep();  // wait for the class to initialize
 
-  async_spinner.start();
-  app.start(base_frame);
+  async_spinner.start();  
 
   ROS_INFO("ScanNPlan node has been initialized");
+  app.start(base_frame);
 
-  ros::waitForShutdown();
+  return 0;
 }
