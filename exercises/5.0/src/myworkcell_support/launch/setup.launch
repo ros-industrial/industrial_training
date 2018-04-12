@@ -1,8 +1,23 @@
 <launch>
+	<arg name="sim_robot" default="true"/>
+	<arg name="robot_ip" if="$(arg sim_robot)"/>
+
   <arg name="adv" default="0" />
-  <include file="$(find myworkcell_moveit_config)/launch/myworkcell_planning_execution.launch"/>
+  <include file="$(find myworkcell_moveit_config)/launch/myworkcell_planning_execution.launch">
+		<arg name="sim" value="$(arg sim_robot)"/>
+		<arg name="robot_ip" value="$(arg robot_ip)" unless="$(arg sim_robot)"  />
+	</include>
   <node name="fake_ar_publisher" pkg="fake_ar_publisher" type="fake_ar_publisher_node" />
   <node name="vision_node" type="vision_node" pkg="myworkcell_core" output="screen"/>
   <node name="descartes_node" type="descartes_node" pkg="myworkcell_core" output="screen" unless="$(arg adv)"/>
   <node name="adv_descartes_node" type="adv_descartes_node" pkg="myworkcell_core" output="screen" if="$(arg adv)"/>
+
+  <!-- Run Rviz and load the default config to see the state of the move_group node -->
+  <include file="$(find myworkcell_moveit_config)/launch/moveit_rviz.launch">
+    <arg name="config" value="true"/>
+    <arg name="debug" value="false"/>
+  </include>
+
+
+	
 </launch>
