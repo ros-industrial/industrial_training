@@ -1,17 +1,41 @@
 # Inspect the "pick_and_place_exercise" Package
 >In this exercise, we will get familiar with all the files that you'll be interacting with throughout these exercises. 
 
-## Acquire the Workspace
+## Acquire and initialize the Workspace
 ```
 cp -r ~/industrial_training/exercises/Perception-Driven_Manipulation/template_ws ~/perception_driven_ws
+cd ~/perception_driven_ws
+source /opt/ros/kinetic/setup.bash
+catkin init
 ```
 
-## Setup dependencies
+## Download source dependencies
+>Use the [wstool](http://wiki.ros.org/wstool) command to download the repositories listed in the **src/.rosinstall** file
 ```
 cd ~/perception_driven_ws/src/
 wstool update
+```
+
+## Download debian dependencies
+>Make sure you have installed and configured the [rosdep tool](http://wiki.ros.org/rosdep).
+>Then, run the following command from the **src** directory of your workspace.
+```
 rosdep install --from-paths . --ignore-src -y
 ```
+
+## Build your workspace
+```
+catkin build
+```
+>If the build fails then revisit the previous two steps to make sure all the dependencies were downloaded.
+
+
+## Source the workspace
+> Run the following command from your workspace parent directory
+```
+source devel/setup.bash
+```
+
 ## Locate and navigate into the package
 ```
 cd ~/perception_driven_ws/src/collision_avoidance_pick_and_place/

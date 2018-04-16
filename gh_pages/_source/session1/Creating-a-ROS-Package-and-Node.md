@@ -1,4 +1,4 @@
-# Creating Pacackages and Nodes
+# Creating Packages and Nodes
 >In this exercise, we will create our own ROS package and node.
 
 ## Motivation
