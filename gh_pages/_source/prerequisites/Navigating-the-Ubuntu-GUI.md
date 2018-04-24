@@ -2,7 +2,7 @@
 > In this exercise, we will familiarize ourselves with the graphical user interface (GUI) of the Ubuntu operating system.
 
 ## Task 0: Presentation Slides
-Don't forget about the [presentation slides](../raw/kinetic/slides/ROS-I%20Basic%20Developers%20Training%20-%20Session%200.pdf) that accompany this Lesson!
+Don't forget about the [presentation slides](../../_downloads/slides/ROS-I%20Basic%20Developers%20Training%20-%20Session%200.pdf) that accompany this Lesson!
 
 ## Task 1: Familiarize Yourself with the Ubuntu Desktop
 At the log-in screen, click in the password input box, enter `rosindustrial` for the password, and hit enter. The screen should look like the image below when you log in: 
