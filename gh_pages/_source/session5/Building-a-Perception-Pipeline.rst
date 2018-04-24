@@ -6,16 +6,6 @@ Prepare New Workspace:
 ----------------------
 We will create a new catkin workspace, since this exercise does not overlap with the previous PlanNScan exercises.
 
-#. Copy the template workspace layout and files:
-
-   .. code-block:: bash
-
-      cp -r ~/industrial_training/exercises/perception_ws ~
-      cd ~/perception_ws/
-
-
-#. Download the :download:`PointCloud file </_downloads/table.pcd>` and place the file in your home directory (~).
-
 #. Disable automatic sourcing of your previous catkin workspace:
 
    #. ``gedit ~/.bashrc``
@@ -25,11 +15,36 @@ We will create a new catkin workspace, since this exercise does not overlap with
 
       .. Note:: This means you'll need to manually source the setup file from your new catkin workspace in each new terminal window.
 
-   #. Build and source this new workspace
+	#. Close gedit and source ROS into your environment
 
-      .. code-block:: bash
+    .. code-block:: bash
 
-         source ~/perception_ws/devel/setup.bash
+			source /opt/ros/kinetic/setup.bash
+
+#. Copy the template workspace layout and files:
+
+   .. code-block:: bash
+
+      cp -r ~/industrial_training/exercises/perception_ws ~
+      cd ~/perception_ws/
+
+ #. Initialize and Build this new workspace
+
+    .. code-block:: bash
+
+			catkin init
+			catkin build
+
+ #. Source the workspace
+
+    .. code-block:: bash
+
+      source ~/perception_ws/devel/setup.bash
+
+#. Download the :download:`PointCloud file </_downloads/table.pcd>` and place the file in your home directory (~).
+
+
+
 
 #. Import the new workspace into your QTCreator IDE:
 
@@ -194,6 +209,8 @@ Implement Pass-through Filters
       pass_z.setFilterFieldName("z");
       pass_z.setFilterLimits(-1.0, 1.0);
       pass_z.filter(zf_cloud);
+
+   *You can change the filter limit values to see different results.*
 
 #. Find the ``pcl::toROSMsg`` call where the ``pc2_cloud`` is populated.  This is the point cloud that is published to RViz display.  Replace the current cloud (``*cloud_voxel_filter``) with the final Passthrough Filter result (``zf_cloud``).
 

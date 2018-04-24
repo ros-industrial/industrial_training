@@ -93,48 +93,30 @@ Session 4 - Descartes and Perception
    Exercise 4.1 - Intro to Descartes <_source/session4/Descartes-Path-Planning.md>
    Exercise 4.2 - Intro to Perception <_source/session4/Introduction-to-Perception.md>
 
-Application Demo - Perception-Driven Manipulation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. toctree::
-   :maxdepth: 1
-
-   Demo 1.0 - Introduction <_source/demo1/Introduction.md>
-   Demo 1.1 - Inspect the "pick_and_place_exercise" Package <_source/demo1/Inspect-the-package.md>
-   Demo 1.2 - Package Setup <_source/demo1/Package-Setup.md>
-   Demo 1.3 - Start in Simulation Mode <_source/demo1/Bring-up-ROS-system-in-simulation-mode.md>
-   Demo 1.4 - Initialization and Global Variables <_source/demo1/Initialization-and-global-variables.md>
-   Demo 1.5 - Move Arm to Wait Position <_source/demo1/Move-arm-to-wait-position.md>
-   Demo 1.6 - Open Gripper <_source/demo1/Open-gripper.md>
-   Demo 1.7 - Detect Box Pick Point <_source/demo1/Detect-box-pick-point.md>
-   Demo 1.8 - Create Pick Moves <_source/demo1/Create-pick-moves.md>
-   Demo 1.9 - Pick Up Box <_source/demo1/Pick-up-box.md>
-   Demo 1.10 - Create Place Moves <_source/demo1/Create-place-moves.md>
-   Demo 1.11 - Place Box <_source/demo1/Place-box.md>
-
-Application Demo - Descartes Planning and Execution
+Application Demo 1 - Perception-Driven Manipulation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. toctree::
    :maxdepth: 1
 
-   Demo 2.0 - Introduction <_source/demo2/Introduction.md>
-   Demo 2.1 - Application Structure <_source/demo2/Application-Structure.md>
-   Demo 2.2 - General Instructions <_source/demo2/General-Instructions.md>
-   Demo 2.3 - Load Parameters <_source/demo2/Load-Parameters.md>
-   Demo 2.4 - Initialize ROS <_source/demo2/Initialize-ROS.md>
-   Demo 2.5 - Initialize Descartes <_source/demo2/Initialize-Descartes.md>
-   Demo 2.6 - Move Home <_source/demo2/Move-Home.md>
-   Demo 2.7 - Generate a Semi-Constrained Trajectory <_source/demo2/Generate-a-Semi-Constrained-Trajectory.md>
-   Demo 2.8 - Plan a Robot Path <_source/demo2/Plan-a-robot-path.md>
-   Demo 2.9 - Run a Robot Path <_source/demo2/Run-a-robot-path.md>
+	 Demo 1 - Perception-Driven Manipulation <_source/demo1/index.rst>
+
+
+Application Demo 2 - Descartes Planning and Execution
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. toctree::
+   :maxdepth: 1
+
+   Demo 2 - Descartes Planning and Execution <_source/demo2/index.rst>
+
 
 Advanced Topics
 ---------------
 
 Session 5 - Path Planning and Building a Perception Pipeline
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-:download:`Slides <_downloads/slides/ROS-I Advacned Developers Training - Session 5.pdf>`
+:download:`Slides <_downloads/slides/ROS-I Advanced Developers Training - Session 5.pdf>`
 
 .. toctree::
    :maxdepth: 1
@@ -145,13 +127,13 @@ Session 5 - Path Planning and Building a Perception Pipeline
 
 Session 6 - Documentation, Unit Tests, ROS Utilities and Debugging ROS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-:download:`Slides <_downloads/slides/ROS-I Advacned Developers Training - Session 5.pdf>`
+:download:`Slides <_downloads/slides/ROS-I Advanced Developers Training - Session 5.pdf>`
 
 .. toctree::
    :maxdepth: 1
 
    Exercise 6.0 - Documentation Generation <_source/session6/Documentation-Generation.md>
-   Exercise 6.1 - Unit Testion <_source/session6/Unit-Testing.md>
+   Exercise 6.1 - Unit Testing <_source/session6/Unit-Testing.md>
    Exercise 6.2 - Using rqt tools for Analysis <_source/session6/Using-rqt-tools-for-analysis.md>
    Exercise 6.3 - ROS Style Guide and ros_lint <_source/session6/Style-Guide-and-ros_lint.md>
    Exercise 6.4 - Introduction to ROS with Docker and Amazon Web Services (AWS) <_source/session6/Docker-AWS.md>
