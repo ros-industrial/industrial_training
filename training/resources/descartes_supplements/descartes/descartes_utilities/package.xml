@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package>
+  <name>descartes_utilities</name>
+  <version>0.0.1</version>
+  <description>
+    This package contains helper routines for working with the Descartes motion planning library
+    that ease practical use, but do fit cleanly into the core library. This includes conversions
+    to ROS trajectories, and similar operations.
+  </description>
+
+  <maintainer email="Jmeyer@swri.org">Jonathan Meyer</maintainer>
+
+  <license>Apache 2.0</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  
+  <build_depend>descartes_core</build_depend>
+  <build_depend>descartes_trajectory</build_depend>
+  <build_depend>trajectory_msgs</build_depend>
+  
+  <run_depend>descartes_core</run_depend>
+  <run_depend>descartes_trajectory</run_depend>
+  <run_depend>trajectory_msgs</run_depend>
+
+</package>

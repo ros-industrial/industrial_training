@@ -1,0 +1,23 @@
+<package>
+  <name>descartes</name>
+  <version>0.0.0</version>
+  <description>Descartes is a ROS-Industrial project for performing path-planning on under-defined Cartesian trajectories. More details regarding motivation can be found in <a class="https" href="https://github.com/ros-industrial/rep/blob/master/rep-I0003.rst">rep-I0003.rst</a>.</description>
+
+  <maintainer email="sedwards@swri.org">Shaun Edwards</maintainer>
+  <maintainer email="jorge.nicho@swri.org">Jorge Nicho</maintainer>
+  <maintainer email="jonathan.meyer@swri.org">Jonathan Meyer</maintainer>
+  <license>Apache2.0</license>
+  <url type="website">http://wiki.ros.org/descartes_moveit</url>
+  <author email="ratneshmadaan@gmail.com">Ratnesh Madaan</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <run_depend>descartes_core</run_depend>
+  <run_depend>descartes_moveit</run_depend>
+  <run_depend>descartes_planner</run_depend>
+  <run_depend>descartes_trajectory</run_depend>
+  <run_depend>descartes_utilities</run_depend>
+
+  <export>
+    <metapackage/>
+  </export>
+</package>

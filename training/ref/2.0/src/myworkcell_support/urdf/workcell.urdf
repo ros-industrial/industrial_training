@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<robot name="workcell">
+
+  <link name="world" />
+
+  <!-- Define a table for the robot to eventually sit on -->
+  <link name="table">
+    <visual>
+      <geometry>
+        <box size="0.6 .6 .05"/>
+      </geometry>
+    </visual>
+    <!-- Note this has "visual" and "collision"  -->
+    <collision>
+      <geometry>
+        <box size="0.6 .6 .05"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="world_to_table" type="fixed">
+    <parent link="world"/>
+    <child link="table"/>
+    <origin xyz="0 0 0.5" rpy="0 0 0"/>
+  </joint>
+
+  <link name="camera_frame"/>
+
+  <joint name="world_to_camera" type="fixed">
+    <parent link="world"/>
+    <child link="camera_frame"/>
+    <origin xyz="0 0 1.0" rpy="0 1.571 0" />
+  </joint>
+
+</robot>
