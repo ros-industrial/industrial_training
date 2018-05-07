@@ -6,15 +6,15 @@ The first type of ROS communication that we will explore is a one-way communicat
 
 ## Reference Example
 
-[Create a Subscriber](http://www.ros.org/wiki/ROS/Tutorials/WritingPublisherSubscriber%28c%2B%2B%29)
+[Create a Subscriber](http://wiki.ros.org/ROS/Tutorials/WritingPublisherSubscriber%28c%2B%2B%29)
 
 ## Further Information and Resources
 
-[Understanding Topics](http://www.ros.org/wiki/ROS/Tutorials/UnderstandingTopics)
+[Understanding Topics](http://wiki.ros.org/ROS/Tutorials/UnderstandingTopics)
 
-[Examining Publisher & Subscriber](http://www.ros.org/wiki/ROS/Tutorials/ExaminingPublisherSubscriber)
+[Examining Publisher & Subscriber](http://wiki.ros.org/ROS/Tutorials/ExaminingPublisherSubscriber)
 
-[Creating Messages and Services](http://www.ros.org/wiki/ROS/Tutorials/CreatingMsgAndSrv)
+[Creating Messages and Services](http://wiki.ros.org/ROS/Tutorials/CreatingMsgAndSrv)
 
 ## Scan-N-Plan Application: Problem Statement
 We now have a base ROS node and we want to build on this node. Now we want to create a subscriber within our node.
@@ -74,8 +74,7 @@ Your goal is to create your first ROS subscriber:
 3. add dependencies into your package's `package.xml`:
 
    ```xml
-   <build_depend>fake_ar_publisher</build_depend>
-   <run_depend>fake_ar_publisher</run_depend>
+   <depend>fake_ar_publisher</depend>
    ```
 
 4. `cd` into your catkin workspace
@@ -157,9 +156,20 @@ Your goal is to create your first ROS subscriber:
      Localizer localizer(nh);
 
      ROS_INFO("Vision node starting");
+     ... // Note: don't forget to leave ros::spin(); in place.
    }
    ```
- 
+   
+3* Move the spin function to the bottom of 'main()'
+   ```
+   int main(int argc, char** argv)
+   {
+     ...
+     
+     // Don't exit the program.
+     ros::spin();
+   }
+   ```
 4. Run `catkin build`, then `rosrun myworkcell_core vision_node`.
 
 5. You should see the positions display from the publisher.

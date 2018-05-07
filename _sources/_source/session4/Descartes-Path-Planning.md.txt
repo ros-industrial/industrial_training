@@ -61,7 +61,7 @@ Left to you are the details of:
     * `descartes_planner`
     * `descartes_utilities`
 
- 1. Create rules in the `workcell_core` package's `CMakeLists.txt` to build a new node called `descartes_node`.  As in previous exercises, add these lines near similar lines in the template file (not as a block as shown below).
+ 1. Create rules in the `myworkcell_core` package's `CMakeLists.txt` to build a new node called `descartes_node`.  As in previous exercises, add these lines near similar lines in the template file (not as a block as shown below).
      
     ```cmake
     add_executable(descartes_node src/descartes_node.cpp)
@@ -73,7 +73,7 @@ Left to you are the details of:
 
 We will create a Service interface to execute the Descartes planning algorithm.
 
- 1. Define a new service named `PlanCartesianPath.srv` in the `workcell_core` package's `srv/` directory.  This service takes the central target position and computes a joint trajectory to trace the target edges.
+ 1. Define a new service named `PlanCartesianPath.srv` in the `myworkcell_core` package's `srv/` directory.  This service takes the central target position and computes a joint trajectory to trace the target edges.
 
     ```
     # request
@@ -87,7 +87,7 @@ We will create a Service interface to execute the Descartes planning algorithm.
 
  1. Add the newly-created service file to the `add_service_file()` rule in the package's `CMakeLists.txt`.
      
- 1. Since our new service references a message type from another package, we'll need to add that other package (`trajectory_msgs`) as a dependency in the `workcell_core` `CMakeLists.txt` (3 lines) and `package.xml` (2 lines) files.  
+ 1. Since our new service references a message type from another package, we'll need to add that other package (`trajectory_msgs`) as a dependency in the `myworkcell_core` `CMakeLists.txt` (3 lines) and `package.xml` (2 lines) files.  
 
  1. Review `descartes_node.cpp` to understand the code structure.  In particular, the `planPath` method outlines the main sequence of steps.
 
