@@ -1,16 +1,40 @@
 # Application Structure
 >In this exercise, we'll take a look at all the packages and files that will be used during the completion of these exercises.
 
-## Acquire the Workspace
+## Acquire and initialize the Workspace
 
 ```
 cd ~/industrial_training/exercises/Descartes_Planning_and_Execution
 cp -r template_ws ~/descartes_ws
-cd ~/descartes_ws/src
-catkin_init_workspace
-cd ..
-rosinstall src
+cd ~/descartes_ws
+source /opt/ros/kinetic/setup.bash
+catkin init
+```
+
+## Download source dependencies
+>Use the [wstool](http://wiki.ros.org/wstool) command to download the repositories listed in the **src/.rosinstall** file
+```
+cd ~/descartes_ws/src/
+wstool update
+```
+
+## Download debian dependencies
+>Make sure you have installed and configured the [rosdep tool](http://wiki.ros.org/rosdep).
+>Then, run the following command from the **src** directory of your workspace.
+```
+rosdep install --from-paths . --ignore-src -y
+```
+
+## Build your workspace
+```
 catkin build
+```
+>If the build fails then revisit the previous two steps to make sure all the dependencies were downloaded.
+
+
+## Source the workspace
+> Run the following command from your workspace parent directory
+```
 source devel/setup.bash
 ```
 
