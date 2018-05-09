@@ -7,10 +7,10 @@ When complicated multi-node ros systems are running it can be important to under
 ## Information and Resources
 [Using a catkin workspace](http://wiki.ros.org/catkin/Tutorials/using_a_workspace)
 
-## Scan-N-Plan Application: Problem Statement
-The Scan-N-Plan application is complete.  We would like to further inspect the descartes path planner's relation in our ROS application, the path planner's logic and the resulting plan.
+## Problem Statement
+The Scan-N-Plan application is complete.  We would like to further inspect the application using the various ROS rqt tools.
 
-## Scan-N-Plan Application: Guidance
+## Guidance
 ### `rqt_graph`: view node interaction
 In complex applications, it may be helpful to get a visual representation of the ROS node interactions.
 1. Launch the Scan-N-Plan workcell:

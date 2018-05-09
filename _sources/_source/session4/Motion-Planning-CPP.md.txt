@@ -27,13 +27,14 @@ In this exercise, your goal is to modify the `myworkcell_core` node to:
 
 
     1. In the `ScanNPlan` class's `start` method below the `if (!vision_client_.call(srv))` statement , use the response from the `LocalizePart` service to create a new `move_target` variable:
-       ```c++
+
+       ``` c++
        geometry_msgs::Pose move_target = srv.response.pose;
        ```
 
  1. Use the `MoveGroupInterface` to plan/execute a move to the `move_target` position:
 
-    1. The `MoveGroupInterface` is part of the `moveit_ros_planning_interface` package, so you’ll need to add this as a dependency to your `myworkcell_core` package. Modify your package's `CMakeLists.txt` (2 lines) and `package.xml` (2 lines) as in previous exercises.
+    1. In order to use the `MoveGroupInterface` class it is necessary to add the `moveit_ros_planning_interface` package as a dependency of your `myworkcell_core` package. Add the `moveit_ros_planning_interface` dependency by modifying your package's `CMakeLists.txt` (2 lines) and `package.xml` (2 lines) as in previous exercises.
 
     1. Add the appropriate "include" reference to allow use of the `MoveGroupInterface`:
       
