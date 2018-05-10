@@ -4,7 +4,7 @@
 ## Kinect Sensor Example
 >This task will step you through the process of connecting to and displaying kinect data.
 
-Download the [table.pcd point cloud file](https://github.com/ros-industrial/industrial_training/blob/kinetic-devel/gh_pages/_downloads/table.pcd?raw=true) and place it in your home directory (~).
+Download the [table.pcd point cloud file](https://github.com/ros-industrial/industrial_training/blob/kinetic/gh_pages/_downloads/table.pcd?raw=true) and place it in your home directory (~).
 
 ## Launch Point Cloud Generating Nodes
 If you are using a virtual machine, or otherwise don't have access to hardware, you will have to play the data using the point cloud file and pcl_ros package.
