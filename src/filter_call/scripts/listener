@@ -1,0 +1,133 @@
+#!/usr/bin/env python
+
+import rospy
+import roslib
+import lesson_perception.srv
+from sensor_msgs.msg import PointCloud2
+
+if __name__ == '__main__':
+    try:
+        # INITILIZE NODE, SET UNIQUE NUMBER TO DIFFERENTIATE ANY OTHER 'filter_coud'
+        rospy.init_node('filter_cloud', anonymous=True)
+        rospy.wait_for_service('filter_cloud')
+
+
+        # =======================
+        # FILL CODE: VOXEL FILTER
+        # =======================
+        srvp = rospy.ServiceProxy('filter_cloud', lesson_perception.srv.FilterCloud)
+        req = lesson_perception.srv.FilterCloudRequest()
+        req.pcdfilename = rospy.get_param('~pcdfilename', '')
+        req.operation = 0
+        # FROM THE SERVICE, ASSIGN POINTS
+        req.input_cloud = PointCloud2()
+
+        # ERROR HANDLING
+        if '.pcdfilename' == '':
+            print('no file found')
+            raise Exception('no file found')
+
+        # PACKAGE THE FILTERED POINTCLOUD2 TO BE PUBLISHED
+        res_voxel = srvp(req)
+        print('response received')
+        if res_voxel.success == False:
+            res_voxel.success = True
+            raise Exception('execution not valid')
+
+        # PUBLISH VOXEL FILTERED POINTCLOUD2
+        pub = rospy.Publisher('/perception_voxelGrid', PointCloud2, queue_size=10, latch=True)
+        pub.publish(res_voxel.output_cloud)
+        print("published: voxel grid filter response")
+        rate = rospy.Rate(10)
+
+
+        # =======================
+        # FILL CODE: PASSTHROUGH FILTER
+        # =======================
+        srvp = rospy.ServiceProxy('filter_cloud', lesson_perception.srv.FilterCloud)
+        req = lesson_perception.srv.FilterCloudRequest()
+        req.pcdfilename = '' #rospy.get_param('~pcdfilename', '')
+        req.operation = 1
+        # FROM THE SERVICE, ASSIGN POINTS
+        req.input_cloud = res_voxel.output_cloud
+
+        # ERROR HANDLING
+        if '.pcdfilename' == '':
+            print('no file found')
+            raise Exception('no file found')
+
+        # PACKAGE THE FILTERED POINTCLOUD2 TO BE PUBLISHED
+        res_pass = srvp(req)
+        print('response received')
+        if res_pass.success == False:
+            res_pass.success = True
+            raise Exception('execution not valid')
+
+        # PUBLISH PASSTHROUGH FILTERED POINTCLOUD2
+        pub = rospy.Publisher('/perception_passThrough', PointCloud2, queue_size=10, latch=True)
+        pub.publish(res_pass.output_cloud)
+        print("published: pass through filter response")
+        rate = rospy.Rate(10)
+
+
+        # =======================
+        # FILL CODE: PLANE SEGMENTATION
+        # =======================
+        srvp = rospy.ServiceProxy('filter_cloud', lesson_perception.srv.FilterCloud)
+        req = lesson_perception.srv.FilterCloudRequest()
+        req.pcdfilename = '' #rospy.get_param('~pcdfilename', '')
+        req.operation = 2
+        # FROM THE SERVICE, ASSIGN POINTS
+        req.input_cloud = res_pass.output_cloud
+
+        # ERROR HANDLING
+        if '.pcdfilename' == '':
+            print('no file found')
+            raise Exception('no file found')
+
+        # PACKAGE THE FILTERED POINTCLOUD2 TO BE PUBLISHED
+        res_seg = srvp(req)
+        print('response received')
+        if res_seg.success == False:
+            res_seg.success = True
+            raise Exception('execution not valid')
+
+        # PUBLISH PLANESEGMENTATION FILTERED POINTCLOUD2
+        pub = rospy.Publisher('/perception_planeSegmentation', PointCloud2, queue_size=10, latch=True)
+        pub.publish(res_seg.output_cloud)
+        print("published: plane segmentation filter response")
+        rate = rospy.Rate(10)
+
+        # =======================
+        # FILL CODE: CLUSTER EXTRACTION
+        # =======================
+        srvp = rospy.ServiceProxy('filter_cloud', lesson_perception.srv.FilterCloud)
+        req = lesson_perception.srv.FilterCloudRequest()
+        req.pcdfilename = '' #rospy.get_param('~pcdfilename', '')
+        req.operation = 3
+        # FROM THE SERVICE, ASSIGN POINTS
+        req.input_cloud = res_seg.output_cloud
+
+        # ERROR HANDLING
+        if '.pcdfilename' == '':
+            print('no file found')
+            raise Exception('no file found')
+
+        # PACKAGE THE FILTERED POINTCLOUD2 TO BE PUBLISHED
+        res_cluster = srvp(req)
+        print('response received')
+        if res_cluster.success == False:
+            res_cluster.success = True
+            raise Exception('execution not valid')
+
+        # PUBLISH CLUSTEREXTRACTION FILTERED POINTCLOUD2
+        pub = rospy.Publisher('/perception_clusterExtraction', PointCloud2, queue_size=10, latch=True)
+        pub.publish(res_cluster.output_cloud)
+        print("published: cluster extraction filter response")
+        rate = rospy.Rate(10)
+
+        rospy.spin()
+
+    except rospy.ROSInterruptException:
+      print("Service call failed: %s")
+      pass
