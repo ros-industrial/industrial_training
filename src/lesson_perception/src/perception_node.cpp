@@ -6,8 +6,6 @@
 #include <sensor_msgs/PointCloud2.h> //hydro
 #include <lesson_perception/FilterCloud.h>
 #include <lesson_perception/PyCloud.h>
-#include <geometry_msgs/TransformStamped.h>
-#include <tf2_ros/static_transform_broadcaster.h>
 
 // PCL specific includes
 #include <pcl_conversions/pcl_conversions.h> //hydro
@@ -37,8 +35,6 @@ double clustMax_;
 double clustMin_;
 
 ros::NodeHandlePtr nh_;
-std::string static_link_name;
-
 
 /* ========================================
  * Fill Code: VOXEL GRID
@@ -123,17 +119,8 @@ pcl::PointCloud<pcl::PointXYZ>::Ptr planeSegmentation(const pcl::PointCloud<pcl:
   // Remove the planar inliers, extract the rest
   extract.setNegative (true);
   extract.filter (*cloud_f);
-  if (cloud_f->points.size () == 0)
-  {
-    ROS_WARN_STREAM ("Could not estimate a planar model for the given dataset.") ;
-
-    //break;
-  }
-  else
-  {
-    ROS_INFO_STREAM("PointCloud representing the planar component: " << cloud_f->points.size () << " data points." );
-  }
   return cloud_f;
+
 }
 
   /* ========================================
@@ -142,22 +129,18 @@ pcl::PointCloud<pcl::PointXYZ>::Ptr planeSegmentation(const pcl::PointCloud<pcl:
 std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr>
 clusterExtraction(const pcl::PointCloud<pcl::PointXYZ>::ConstPtr &input_cloud)
 {
-  ROS_INFO_STREAM("cluster input size: " << input_cloud->size());
   // Creating the KdTree object for the search method of the extraction
   pcl::search::KdTree<pcl::PointXYZ>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZ>);
-  //pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered(new pcl::PointCloud<pcl::PointXYZ>());
   tree->setInputCloud (input_cloud);
 
   std::vector<pcl::PointIndices> cluster_indices;
   pcl::EuclideanClusterExtraction<pcl::PointXYZ> ec;
-  ec.setClusterTolerance (0.01); // 2cm
+  ec.setClusterTolerance (0.02); // 2cm
   ec.setMinClusterSize (25);
   ec.setMaxClusterSize (10000);
   ec.setSearchMethod (tree);
   ec.setInputCloud (input_cloud);
   ec.extract (cluster_indices);
-
-  ROS_INFO_STREAM("cluster size: " << cluster_indices.size());
 
   std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> clusters;
   for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin (); it != cluster_indices.end (); ++it)
@@ -200,12 +183,10 @@ bool filterCallback(lesson_perception::FilterCloud::Request& request,
       response.success = false;
       return false;
     }
-    //response.output_cloud.header=request.input_cloud.header;
   }
   else
   {
     pcl::io::loadPCDFile(request.pcdfilename, *cloud);
-    //response.output_cloud.header.frame_id="kinect_link";
   }
 
   switch (request.operation)
@@ -214,32 +195,27 @@ bool filterCallback(lesson_perception::FilterCloud::Request& request,
     case lesson_perception::FilterCloud::Request::VOXELGRID :
     {
       filtered_cloud = voxelGrid(cloud, 0.01);
-      ROS_ERROR("clusterExtraction_voxelgrid");
       break;
     }
 
     case lesson_perception::FilterCloud::Request::PASSTHROUGH :
     {
       filtered_cloud = passThrough(cloud);
-      ROS_ERROR("clusterExtraction_passThrough");
       break;
     }
     case lesson_perception::FilterCloud::Request::PLANESEGMENTATION :
     {
       filtered_cloud = planeSegmentation(cloud);
-      ROS_ERROR("clusterExtraction_planeSegmentation");
       break;
     }
     case lesson_perception::FilterCloud::Request::CLUSTEREXTRACTION :
     {
       std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> temp =clusterExtraction(cloud);
-      ROS_INFO_STREAM("clusterextraction size: "<<temp[0]->points.size());
       if (temp.size()>0)
       {
         filtered_cloud = temp[0];
       }
       //filtered_cloud = clusterExtraction(cloud)[0];
-      ROS_ERROR("clusterExtraction_clusterExtraction");
       break;
     }
     default :
@@ -256,9 +232,6 @@ bool filterCallback(lesson_perception::FilterCloud::Request& request,
   pcl::toROSMsg(*filtered_cloud, response.output_cloud);
   response.output_cloud.header=request.input_cloud.header;
   response.output_cloud.header.frame_id="kinect_link";
-//  ros::Publisher pub;
-//  pub = nh_->advertise<sensor_msgs::PointCloud2>(request.topic, 10, true);
-//  pub.publish(response.output_cloud);
   response.success = true;
   return true;
 }
@@ -293,29 +266,6 @@ int main(int argc, char *argv[])
   priv_nh_.param<double>("clustTol", clustTol_, 0.01f);
   priv_nh_.param<double>("clustMax", clustMax_, 10000.0);
   priv_nh_.param<double>("clustMin", clustMin_, 300.0f);
-
-//  if (argc != 8)
-//  {
-//    ROS_ERROR("Invalid number of parameters\nusage: perception_node child_frame_name x y z roll pitch yaw");
-//  }
-//  static_link_name = argv[1];
-//  static tf2_ros::StaticTransformBroadcaster static_broadcaster;
-//  geometry_msgs::TransformStamped static_transformStamped;
-
-//  static_transformStamped.header.stamp = ros::Time::now();
-//  static_transformStamped.header.frame_id = "world_frame";
-//  static_transformStamped.child_frame_id = static_link_name;
-//  static_transformStamped.transform.translation.x = atof(argv[2]);
-//  static_transformStamped.transform.translation.y = atof(argv[3]);
-//  static_transformStamped.transform.translation.z = atof(argv[4]);
-//  tf2::Quaternion quat;
-//  quat.setRPY(atof(argv[5]), atof(argv[6]), atof(argv[7]));
-//  static_transformStamped.transform.rotation.x = quat.x();
-//  static_transformStamped.transform.rotation.y = quat.y();
-//  static_transformStamped.transform.rotation.z = quat.z();
-//  static_transformStamped.transform.rotation.w = quat.w();
-//  static_broadcaster.sendTransform(static_transformStamped);
-//  ROS_INFO("Spinning until killed publishing %s to world", static_link_name.c_str());
 
   nh_.reset(new ros::NodeHandle());
   ros::ServiceServer server = nh_->advertiseService("filter_cloud", &filterCallback);

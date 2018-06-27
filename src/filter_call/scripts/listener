@@ -46,7 +46,7 @@ if __name__ == '__main__':
         # =======================
         srvp = rospy.ServiceProxy('filter_cloud', lesson_perception.srv.FilterCloud)
         req = lesson_perception.srv.FilterCloudRequest()
-        req.pcdfilename = '' #rospy.get_param('~pcdfilename', '')
+        req.pcdfilename = ''
         req.operation = 1
         # FROM THE SERVICE, ASSIGN POINTS
         req.input_cloud = res_voxel.output_cloud
@@ -75,7 +75,7 @@ if __name__ == '__main__':
         # =======================
         srvp = rospy.ServiceProxy('filter_cloud', lesson_perception.srv.FilterCloud)
         req = lesson_perception.srv.FilterCloudRequest()
-        req.pcdfilename = '' #rospy.get_param('~pcdfilename', '')
+        req.pcdfilename = ''
         req.operation = 2
         # FROM THE SERVICE, ASSIGN POINTS
         req.input_cloud = res_pass.output_cloud
@@ -103,7 +103,7 @@ if __name__ == '__main__':
         # =======================
         srvp = rospy.ServiceProxy('filter_cloud', lesson_perception.srv.FilterCloud)
         req = lesson_perception.srv.FilterCloudRequest()
-        req.pcdfilename = '' #rospy.get_param('~pcdfilename', '')
+        req.pcdfilename = ''
         req.operation = 3
         # FROM THE SERVICE, ASSIGN POINTS
         req.input_cloud = res_seg.output_cloud
