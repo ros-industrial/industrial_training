@@ -1,0 +1,4 @@
+<launch>
+  <node name="perception_node" pkg="lesson_perception" type="perception_node_node" />
+  <node name="listener" pkg="filter_call" type="listener_node" />
+</launch>
