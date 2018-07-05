@@ -31,6 +31,7 @@ public:
     // Plan for robot to move to part
     moveit::planning_interface::MoveGroupInterface move_group("manipulator");
     geometry_msgs::Pose move_target = srv.response.pose;
+    move_group.setPoseReferenceFrame(base_frame);
     move_group.setPoseTarget(move_target);
     move_group.move();
   }
