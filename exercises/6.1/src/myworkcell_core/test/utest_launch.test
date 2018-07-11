@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<launch>
+    <node pkg="fake_ar_publisher" type="fake_ar_publisher_node" name="fake_ar_publisher"/>
+    <test test-name="unit_test_node" pkg="myworkcell_core" type="utest_node"/>
+
+    <test name="publishtest" test-name="publishtest" pkg="rostest" type="publishtest">
+        <rosparam>
+          topics:
+            - name: "/ar_pose_marker"
+              timeout: 10
+              negative: False
+            - name: "/ar_pose_visual"
+              timeout: 10
+              negative: False
+        </rosparam>
+    </test>
+</launch>

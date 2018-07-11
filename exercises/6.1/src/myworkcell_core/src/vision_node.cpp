@@ -2,7 +2,7 @@
 #include <std_msgs/String.h>
 #include <myworkcell_core/LocalizePart.h>
 #include <tf/transform_listener.h>
-#include <myworkcell_core/ARMarker.h>
+#include <fake_ar_publisher/ARMarker.h>
 #include <string>
 
 class Localizer
@@ -11,7 +11,7 @@ public:
   Localizer(ros::NodeHandle& nh_in)
   {
     nh = nh_in;
-    ar_sub_ = nh.subscribe<myworkcell_core::ARMarker>("ar_pose_marker", 1, 
+    ar_sub_ = nh.subscribe<fake_ar_publisher::ARMarker>("ar_pose_marker", 1,
       &Localizer::visionCallback, this);
 
     server_ = nh.advertiseService("localize_part", &Localizer::localizePart, this);
@@ -21,7 +21,7 @@ public:
                     myworkcell_core::LocalizePart::Response& res)
   {
     // Read last message
-    myworkcell_core::ARMarkerConstPtr p = last_msg_;  
+    fake_ar_publisher::ARMarkerConstPtr p = last_msg_;
     if (!p) return false;
 
     // Use TF to look up transform between request base frame and the camera
@@ -41,7 +41,7 @@ public:
     return true;
   }
 
-  void visionCallback(const myworkcell_core::ARMarkerConstPtr& msg)
+  void visionCallback(const fake_ar_publisher::ARMarkerConstPtr& msg)
   {
     last_msg_ = msg;
   }
@@ -49,7 +49,7 @@ public:
   tf::TransformListener listener_;
   ros::Subscriber ar_sub_;
   ros::ServiceServer server_;
-  myworkcell_core::ARMarkerConstPtr last_msg_;
+  fake_ar_publisher::ARMarkerConstPtr last_msg_;
   ros::NodeHandle nh;
 };
 
