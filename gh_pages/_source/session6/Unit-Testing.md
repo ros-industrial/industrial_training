@@ -85,6 +85,7 @@ We have completed and and documented our Scan-N-Plan program.  We need to create
 	``` xml
 	<?xml version="1.0"?>
 	<launch>
+        <node pkg="fake_ar_publisher" type="fake_ar_publisher_node" name="fake_ar_publisher"/>
 		<test test-name="unit_test_node" pkg="myworkcell_core" type="utest_node"/>
 	</launch>
 	```
@@ -109,8 +110,36 @@ We have completed and and documented our Scan-N-Plan program.  We need to create
 	```
 	This means our framework is functional and now we can add usefull unit tests.
 
-### Write the unit tests
- 1. Since we will be testing the messages we get from the fake_ar_publisher package, include the relevant header file:
+### Add stock publisher tests
+1. The rostest package provides several tools for inspecting basic topic characteristics ([hztest](http://wiki.ros.org/rostest/Nodes#hztest), [paramtest](http://wiki.ros.org/rostest/Nodes#paramtest), [publishtest](http://wiki.ros.org/rostest/Nodes#publishtest).  We'll add some basic tests to verify that the `fake_ar_publisher` node is outputting the expected topics.
+ 
+2. Add the test description to the `utest_launch.test` file:
+ 
+    ``` xml
+    <test name="publishtest" test-name="publishtest" pkg="rostest" type="publishtest">
+        <rosparam>
+          topics:
+            - name: "/ar_pose_marker"
+              timeout: 10
+              negative: False
+            - name: "/ar_pose_visual"
+              timeout: 10
+              negative: False
+        </rosparam>
+    </test>
+    ```
+    
+3. Run the test:
+    ```
+    rostest myworkcell_core utest_launch.test
+    ```
+
+You should see:  
+
+	Summary: 2 tests, 0 errors, 0 failures
+
+### Write specific unit tests
+ 1. Since we will be testing the messages we get from the fake_ar_publisher package, include the relevant header file (in `utest.cpp`):
 	``` c++
 	#include <fake_ar_publisher/ARMarker.h>
 	```
@@ -120,19 +149,34 @@ We have completed and and documented our Scan-N-Plan program.  We need to create
 	fake_ar_publisher::ARMarkerConstPtr test_msg_;
 	```
 
- 3. Write a unit test to check the reference frame of the ar_pose_marker:
+ 3. Add a subscriber callback to copy incoming messages to the global variable:
+    ``` c++
+    void testCallback(const fake_ar_publisher::ARMarkerConstPtr &msg)
+    {
+      test_msg_ = msg;
+    }
+    ```
+ 
+ 4. Write a unit test to check the reference frame of the ar_pose_marker:
 	``` c++
-
-	```
- 4. Run the test:
+    TEST(TestSuite, myworkcell_core_fake_ar_pub_ref_frame){
+        ros::NodeHandle nh;
+        ros::Subscriber sub = nh.subscribe("/ar_pose_marker", 1, &testCallback);
+    
+        EXPECT_NE(ros::topic::waitForMessage<fake_ar_publisher::ARMarker>("/ar_pose_marker", ros::Duration(10)), nullptr);
+        EXPECT_EQ(1, sub.getNumPublishers());
+        EXPECT_EQ(test_msg_->header.frame_id, "camera_frame");
+    }
+    	```
+ 5. Run the test:
 	```
 	catkin build
 	rostest myworkcell_core utest_launch.test
 	```
- 5. view the results of the test:
+ 6. view the results of the test:
 	```
 	catkin_test_results build/myworkcell_core
 	```
 You should see:  
 
-	Summary: 2 tests, 0 errors, 0 failures
+	Summary: 3 tests, 0 errors, 0 failures
