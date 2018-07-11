@@ -5,7 +5,7 @@
 In a terminal type:
 ```
 cd ~/perception_driven_ws
-catkin build --cmake-args -G 'CodeBlocks - Unix Makefiles'
+catkin build
 source devel/setup.bash
 ```
 ## Import Package into QT
