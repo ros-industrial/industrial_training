@@ -40,7 +40,7 @@ We will create a new catkin workspace, since this exercise does not overlap with
 
 # Intro (Review Existing Code)
 
-Most of the infrastructure for a ros node has already been completed for you; the focus of this exercise is the perception algorithms/pipleline. The <code>CMakelists.txt</code> and <code>package.xml</code> are complete and a source file has been provided. You could build the source as is, but you would get errors. At this time we will explore the source code that has been provided - browse the provided <code>perception_node.cpp</code> file. This tutorial has been modified from training <a href="Exercise 5.1 Building a Perception Pipeline" target="http://ros-industrial.github.io/industrial_training/_source/session5/Building-a-Perception-Pipeline.html">Exercise 5.1 Building a Perception Pipeline</a> and as such the C++ code has already been set up.  If something does not make sense, revisit that exercise.  Open up the preception_node.cpp file and look over the filtering functions.
+Most of the infrastructure for a ros node has already been completed for you; the focus of this exercise is the perception algorithms/pipleline. The <code>CMakelists.txt</code> and <code>package.xml</code> are complete and a source file has been provided. You could build the source as is, but you would get errors. At this time we will explore the source code that has been provided - browse the provided <code>py_perception_node.cpp</code> file. This tutorial has been modified from training <a href="Exercise 5.1 Building a Perception Pipeline" target="http://ros-industrial.github.io/industrial_training/_source/session5/Building-a-Perception-Pipeline.html">Exercise 5.1 Building a Perception Pipeline</a> and as such the C++ code has already been set up.  If something does not make sense, revisit that exercise.  Open up the preception_node.cpp file and look over the filtering functions.
 
 # Create a Python Package
 
@@ -103,7 +103,7 @@ As iterated before, we are creating a ROS C++ node to filter the point cloud whe
 
 # <big>Implement a Voxel Filter</big>
 
-1.	In *perception_node.cpp*, uncomment the boolean function called <code>filterCallBack</code> (just above <code>main</code>) which performs in the service. This will be the service used by the python client to run subsequent filtering operations.
+1.	In *py_perception_node.cpp*, uncomment the boolean function called <code>filterCallBack</code> (just above <code>main</code>) which performs in the service. This will be the service used by the python client to run subsequent filtering operations.
 
 
         bool filterCallback(lesson_perception::FilterCloud::Request& request,
@@ -247,9 +247,9 @@ As iterated before, we are creating a ROS C++ node to filter the point cloud whe
 
 2. Source a new terminal and run the C++ filter service node
 
-        rosrun lesson_perception perception_node
+        rosrun lesson_perception py_perception_node
 
-3. Source a new terminal and run the python service caller node
+3. Source a new terminal and run the python service caller node. Note your file path may be different.
 
         rosrun filter_call filter_call.py _pcdfilename:="/home/ros-industrial/catkin_ws/table.pcd"
 
@@ -265,7 +265,7 @@ As iterated before, we are creating a ROS C++ node to filter the point cloud whe
 
 # Implement Pass-Through Filters
 
-1. In *perception_node.cpp* in the <code>lesson_perception</code> package, within <code>main</code>, uncomment these two lines.
+1. In *py_perception_node.cpp* in the <code>lesson_perception</code> package, within <code>main</code>, uncomment these two lines as well as their intilizations on lines 28 and 29.
 
 
         priv_nh_.param<double>("passThrough_max", passThrough_max_, 1.0f);
@@ -342,7 +342,7 @@ As iterated before, we are creating a ROS C++ node to filter the point cloud whe
 This method is one of the most useful for any application where the object is on a flat surface. In order to isolate the objects on a table, you perform a plane fit to the points, which finds the points which comprise the table, and then subtract those points so that you are left with only points corresponding to the object(s) above the table. This is the most complicated PCL method we will be using and it is actually a combination of two: the RANSAC segmentation model, and the extract indices tool. An in depth example can be found on the <a href="PCL Plane Model Segmentation Tutorial" target="http://pointclouds.org/documentation/tutorials/planar_segmentation.php#planar-segmentation">PCL Plane Model Segmentation Tutorial</a>; otherwise you can copy the below code snippet.
 
 
-1. In perception_node.cpp, in <code>main</code>, uncomment
+1. In py_perception_node.cpp, in <code>main</code>, uncomment the code below as well as their respective intilization parameters.
 
         priv_nh_.param<double>("maxIterations", maxIterations_, 200.0f);
         priv_nh_.param<double>("distThreshold", distThreshold_, 0.01f);
@@ -424,7 +424,7 @@ This method is one of the most useful for any application where the object is on
 This method is useful for any application where there are multiple objects. This is also a complicated PCL method. An in depth example can be found on the <a href="PCL Euclidean Cluster Extration Tutorial" target="http://pointclouds.org/documentation/tutorials/cluster_extraction.php#cluster-extraction">PCL Euclidean Cluster Extration Tutorial</a>.
 
 
-1. In perception_node.cpp <code>main</code> uncomment
+1. In py_perception_node.cpp <code>main</code> uncomment the following plus their intilization parameters.
 
 
         priv_nh_.param<double>("clustTol", clustTol_, 0.01f);
@@ -512,4 +512,4 @@ This method is useful for any application where there are multiple objects. This
 
 The student is encouraged to convert <a href="Exercise 5.1" target="http://ros-industrial.github.io/industrial_training/_source/session5/Building-a-Perception-Pipeline.html">Exercise 5.1</a> into callable functions and further refine the filtering operations.
 
-Furthermore, for simplicity, the python code was repeated for each filtering instance. The student is encouraged to create a loop to handle the publishing instead of repeating large chunks of code.  The student can also leverage the full functionality of the parameter handeling instead of just using defaults, can set those from python.  There are several more filtering operations not outlined here, if the student wants practice creating those function calls.
+Furthermore, for simplicity, the python code was repeated for each filtering instance. The student is encouraged to create a loop to handle the publishing instead of repeating large chunks of code.  The student can also leverage the full functionality of the parameter handling instead of just using defaults, can set those from python.  There are several more filtering operations not outlined here, if the student wants practice creating those function calls.
