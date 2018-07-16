@@ -5,7 +5,6 @@
 #include <tf/transform_broadcaster.h>
 #include <sensor_msgs/PointCloud2.h> //hydro
 #include <lesson_perception/FilterCloud.h>
-#include <lesson_perception/PyCloud.h>
 
 // PCL specific includes
 #include <pcl_conversions/pcl_conversions.h> //hydro
@@ -205,9 +204,9 @@ clusterExtraction(const pcl::PointCloud<pcl::PointXYZ>::ConstPtr &input_cloud)
 
 //   }
 
-/*
- * SETUP RESPONSE
- */
+///*
+// * SETUP RESPONSE
+// */
 //  pcl::toROSMsg(*filtered_cloud, response.output_cloud);
 //  response.output_cloud.header=request.input_cloud.header;
 //  response.output_cloud.header.frame_id="kinect_link";

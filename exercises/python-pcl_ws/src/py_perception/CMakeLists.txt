@@ -60,7 +60,6 @@ find_package(catkin REQUIRED COMPONENTS
  add_service_files(
    FILES
    FilterCloud.srv
-   PyCloud.srv
  )
 
 ## Generate actions in the 'action' folder
@@ -162,7 +161,6 @@ include_directories(
 # Mark other files for installation (e.g. launch and bag files, etc.)
  install(FILES
    FilterCloud.srv
-   PyCloud.srv
    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
  )
 
