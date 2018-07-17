@@ -51,7 +51,8 @@ In this exercise, your goal is to modify the `myworkcell_core` node to:
     1. Set the desired cartesian target position using the `move_group` object’s `setPoseTarget` function. Call the object's `move()` function to plan and execute a move to the target position.
 
        ```c++
-       // Plan for robot to move to part     
+       // Plan for robot to move to part
+       move_group.setPoseReferenceFrame(base_frame);
        move_group.setPoseTarget(move_target); 
        move_group.move();
        ```

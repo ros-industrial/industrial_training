@@ -38,7 +38,7 @@ Your goal is to describe a workcell that features:
    </robot>
    ```
 
-1. Add the required links. See the [irb2400_macro.xacro](https://github.com/ros-industrial/abb/blob/indigo-devel/abb_irb2400_support/urdf/irb2400_macro.xacro#L56-L71) example from an ABB2400.
+1. Add the required links. See the [irb2400_macro.xacro](https://github.com/ros-industrial/abb/blob/84825661073a18e33b68bb01b5bf371edd2efd49/abb_irb2400_support/urdf/irb2400_macro.xacro#L54-L69) example from an ABB2400.
 
    1. Add the `world` frame as a "virtual link" (no geometry).
 
@@ -80,7 +80,7 @@ Your goal is to describe a workcell that features:
 
       <joint name="world_to_camera" type="fixed">
         <parent link="world"/>
-        <child link="camera_frame"/> 
+        <child link="camera_frame"/>
         <origin xyz="-0.25 -0.5 1.25" rpy="0 3.14159 0"/>
       </joint>
       ```

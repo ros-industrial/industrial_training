@@ -41,7 +41,7 @@ In this exercise, you will generate a MoveIt package for the UR5 workcell you bu
        type = 'fixed'
        ```
 
-    1. Add a planning group called `manipulator` that names the kinematic chain between `base_link` and `tool0`.
+    1. Add a planning group called `manipulator` that names the kinematic chain between `base_link` and `tool0`. Note: Follow [ROS naming guidelines/requirements](http://wiki.ros.org/ROS/Patterns/Conventions) and don't use any whitespace, anywhere. 
 
        a. Set the kinematics solver to `KDLKinematicsPlugin`
 

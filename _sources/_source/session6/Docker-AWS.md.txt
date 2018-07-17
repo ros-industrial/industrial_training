@@ -1,6 +1,6 @@
 # Docker AWS
 
-## Demo #1 - Run front-end on in gazebo host and back-end in docker
+## Demo #1 - Run front-end Gazebo host and back-end in Docker
 ### Setup workspace
 #### Front-end (run on host and only contains gui)
 in terminal 1 
@@ -35,6 +35,7 @@ roslaunch fetch_gazebo playground.launch
 There are multiple ways to perform this:
  - run /bin/bash in the fetch container and manually run the demo node.
  - run the demo node directly in the container, which is the method we will perform
+ 
 Run the back end in terminal 2:
 ```
 docker run --network=host rosindustrial/fetch:indigo roslaunch fetch_gazebo_demo demo.launch

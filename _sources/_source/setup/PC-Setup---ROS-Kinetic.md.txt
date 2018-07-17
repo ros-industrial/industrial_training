@@ -11,7 +11,7 @@ The VM method is the most convenient method of utilizing the training materials:
  1. Get the latest changes (Open Terminal). 
     ```
     cd ~/industrial_training
-    git checkout kinetic-devel
+    git checkout kinetic
     git pull
     ./.check_training_config.bash
     ```
@@ -29,7 +29,7 @@ is provided to run in Ubuntu Linux 16.04 (Xenial Xerus) LTS. This script install
 
 After this step (or if you already have a working ROS environment), clone the training material repository into your home directory:
 
-`git clone -b kinetic-devel https://github.com/ros-industrial/industrial_training.git ~/industrial_training`
+`git clone -b kinetic https://github.com/ros-industrial/industrial_training.git ~/industrial_training`
 
 ## Configuration Check
 The following is a quick check to ensure that the appropriate packages have been installed and the the `industrial_training` git repository is current.  Enter the following into the terminal:
