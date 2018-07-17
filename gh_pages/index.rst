@@ -134,7 +134,7 @@ Session 6 - Documentation, Unit Tests, ROS Utilities and Debugging ROS
    :maxdepth: 1
 
    Exercise 6.0 - Documentation Generation <_source/session6/Documentation-Generation.md>
-   Exercise 6.1 - Unit Testing <_source/session6/Unit-Testing.md>
+   Exercise 6.1 - Unit Testing <_source/session6/Unit-Testing.rst>
    Exercise 6.2 - Using rqt tools for Analysis <_source/session6/Using-rqt-tools-for-analysis.md>
    Exercise 6.3 - ROS Style Guide and ros_lint <_source/session6/Style-Guide-and-ros_lint.md>
    Exercise 6.4 - Introduction to ROS with Docker and Amazon Web Services (AWS) <_source/session6/Docker-AWS.md>
