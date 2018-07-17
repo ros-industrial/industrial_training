@@ -124,6 +124,7 @@ Session 5 - Path Planning and Building a Perception Pipeline
    Exercise 5.0 - Advanced Descartes Path Planning <_source/session5/Advanced-Descartes-Path-Planning.md>
    Exercise 5.1 - Building a Perception Pipeline <_source/session5/Building-a-Perception-Pipeline.md>
    Exercise 5.2 - Introduction to STOMP <_source/session5/Introduction-to-STOMP.md>
+   Exercise 5.3 - Simple PCL Interface for Python <_source/session5/Simple-PCL-Interface-for-Python.rst>
 
 Session 6 - Documentation, Unit Tests, ROS Utilities and Debugging ROS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
