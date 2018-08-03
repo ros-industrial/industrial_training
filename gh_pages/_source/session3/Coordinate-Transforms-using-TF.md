@@ -24,7 +24,8 @@ Specifically, edit the service callback inside the vision_node to transform the 
 
  1. Specify `tf` as a dependency of your core package.
 
-    * Edit `package.xml` (2 lines) and `CMakeLists.txt` (2 lines) as in previous exercises
+    * Edit `package.xml` (2 lines) and `CMakeLists.txt` (2 lines) as in previous exercises. 
+    Note: In the source files, the 'package.xml' shows the edit to be '<run_depend>tf</run_depend>'. This may cause a long string of erros when running 'catkin build'. Fix this by doing '<exec_depend>tf</exec_depend>'instead.
 
  1. Add a `tf::TransformListener` object to the vision node (as a class member variable). 
 
