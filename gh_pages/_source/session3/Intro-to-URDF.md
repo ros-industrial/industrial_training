@@ -90,5 +90,8 @@ Your goal is to describe a workcell that features:
       ```
       roslaunch urdf_tutorial display.launch model:=<RELATIVE_PATH_TO_URDF>
       ```
-
+   Note: remove <> from RELATIVE_PATH_TO URDF when inserting your filepath to the workcell.urdf file. Here is an example:
+   ```
+   roslaunch urdf_tutorial display.launch model:=/home/jason/catkin_ws/src/myworkcell_support/urdf/workcell.urdf
+   ```
   _If nothing shows up in Rviz, you may need to change the base frame in RVIZ (left panel at top) to the name of one of the links in your model._
