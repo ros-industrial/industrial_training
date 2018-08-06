@@ -106,6 +106,13 @@ Application Demo 2 - Descartes Planning and Execution
 
    Demo 2 - Descartes Planning and Execution <_source/demo2/index.rst>
 
+Application Demo 3 - Optimization Based Path Planning
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. toctree::
+   :maxdepth: 1
+   
+   Demo 3 - Optimization Based Path Planning <_source/demo3/index.rst>
 
 Advanced Topics
 ---------------
