@@ -1,0 +1,70 @@
+<?xml version="1.0" ?>
+<robot name="environment" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:macro name="workcell" params="parent_link *location">
+
+  <material name="light_gray">
+    <color rgba="0.7 0.7 0.7 1"/>
+  </material>
+  <material name="red">
+    <color rgba="1.0 0.1 0.1 1"/>
+  </material>
+
+  <link name="workcell_base">
+    <visual>
+      <geometry>
+        <mesh filename="package://demo3_support/meshes/workcell.STL"/>
+      </geometry>
+      <material name="light_gray"/>
+    </visual>
+    <collision name="workcell_table">
+      <geometry>
+        <box size="0.8 1.25 0.77153"/>
+      </geometry>
+      <origin xyz="0.0 0.3 -0.385765"/>
+    </collision>
+    <collision name="workcell_columnSW">
+      <geometry>
+        <box size="0.1 0.1 1.25"/>
+      </geometry>
+      <origin xyz="-.3302 -.2794 0.6"/>
+    </collision>
+    <collision name="workcell_columnsSE">
+      <geometry>
+        <box size="0.1 0.1 1.25"/>
+      </geometry>
+      <origin xyz=".3302 -.2794 0.6"/>
+    </collision>
+    <collision name="workcell_columnNW">
+      <geometry>
+        <box size="0.1 0.1 1.25"/>
+      </geometry>
+      <origin xyz="-.3302 0.8382 0.6"/>colors
+    </collision>
+    <collision name="workcell_columnNE">
+      <geometry>
+        <box size="0.1 0.1 1.25"/>
+      </geometry>
+      <origin xyz=".3302 0.8382 0.6"/>
+    </collision>
+    <collision name="workcell_top">
+      <geometry>
+        <box size="0.95 1.4 0.2"/>
+      </geometry>
+      <origin xyz="0.0 0.3 1.2"/>
+    </collision>
+  </link>
+
+  <joint name="workcell_joint" type ="fixed">
+    <xacro:insert_block name="location" />
+    <parent link="${parent_link}"/>
+    <child link="workcell_base"/>
+  </joint>
+</xacro:macro>
+
+
+</xacro:macro>
+
+
+
+</robot>
