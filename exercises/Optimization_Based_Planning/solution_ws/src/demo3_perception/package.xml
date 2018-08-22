@@ -7,7 +7,7 @@
   <!-- One maintainer tag required, multiple allowed, one person per tag --> 
   <!-- Example:  -->
   <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
-  <maintainer email="cgomez@swri.org">cgomez</maintainer>
+  <maintainer email="matthew.powelson@swri.org">Matthew Powelson</maintainer>
 
 
   <!-- One license tag required, multiple allowed, one license per tag -->
@@ -48,6 +48,7 @@
   <build_depend>pcl_ros</build_depend>
   <build_depend>visualization_msgs</build_depend>
   <build_depend>tf_conversions</build_depend>
+  <build_depend>message_generation</build_depend>
   
   <run_depend>roscpp</run_depend>
   <run_depend>sensor_msgs</run_depend>
@@ -57,6 +58,7 @@
   <run_depend>pcl_ros</run_depend>
   <run_depend>visualization_msgs</run_depend>
   <run_depend>tf_conversions</run_depend>
+  <run_depend>message_runtime</run_depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>

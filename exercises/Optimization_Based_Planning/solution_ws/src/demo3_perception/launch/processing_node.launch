@@ -1,5 +1,7 @@
 <?xml version="1.0" ?>
 <launch>
+  <arg name="cloud_debug" default="false"/>
+  <param name="cloud_debug" value="$(arg cloud_debug)"/>
 
   <node name="processing_node" pkg="demo3_perception" type="perception_node" output="screen">
     <rosparam>
