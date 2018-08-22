@@ -9,6 +9,7 @@
 #include <tf_conversions/tf_eigen.h>
 
 #include <test_bed_core/trajopt_pick_and_place_constructor.h>
+#include <demo3_perception/GetTargetPose.h>
 
 int main(int argc, char** argv)
 {
@@ -27,6 +28,7 @@ int main(int argc, char** argv)
   nh.param<std::string>("pick_frame", pick_frame, "part");
 
   tf::TransformListener listener;
+  ros::ServiceClient find_pick_client = nh.serviceClient<demo3_perception::GetTargetPose>("find_pick");
 
   /////////////
   /// SETUP ///
@@ -85,7 +87,7 @@ int main(int argc, char** argv)
 
   tesseract::AttachedBodyInfo attached_body;
   Eigen::Affine3d object_pose = Eigen::Affine3d::Identity();
-  object_pose.translation() += Eigen::Vector3d(box_x, box_y, box_side/2.0);
+  object_pose.translation() += Eigen::Vector3d(box_x, box_y, box_side / 2.0);
   attached_body.object_name = "box";
   attached_body.parent_link_name = box_parent_link;
   attached_body.transform = object_pose;
@@ -101,12 +103,17 @@ int main(int argc, char** argv)
   /// PICK ///
   ////////////
 
-  tf::StampedTransform stamped_tf;
-  listener.waitForTransform(world_frame, pick_frame, ros::Time(0.0), ros::Duration(30.0));
-  listener.lookupTransform(world_frame, pick_frame, ros::Time(0.0), stamped_tf);
-
   Eigen::Affine3d world_to_box;
-  tf::transformTFToEigen(stamped_tf, world_to_box);
+  demo3_perception::GetTargetPose srv;
+  ROS_INFO("Calling Service to find pick location");
+  if (find_pick_client.call(srv))
+  {
+    tf::poseMsgToEigen(srv.response.target_pose, world_to_box);
+  }
+  else
+  {
+    ROS_ERROR("Failed to find pick location");
+  }
 
   ROS_ERROR("Press enter to continue");
   std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -153,13 +160,15 @@ int main(int argc, char** argv)
   env->detachBody("box");
 
   attached_body.parent_link_name = end_effector;
-  attached_body.transform.translation() = Eigen::Vector3d(translation_err.x(), translation_err.y(), box_side/2.0);
-  attached_body.touch_links = {"panda_link7", end_effector}; // allow the box to contact the end effector
+  attached_body.transform.translation() = Eigen::Vector3d(translation_err.x(), translation_err.y(), box_side / 2.0);
+  attached_body.touch_links = { "panda_link7", end_effector };  // allow the box to contact the end effector
 
   env->attachBody(attached_body);
 
   // Set the current state to the last state of the trajectory
-  env->setState(env->getJointNames(), planning_response.trajectory.block(steps_per_phase * 2 - 1, 0, 1, env->getJointNames().size()).transpose());
+  env->setState(
+      env->getJointNames(),
+      planning_response.trajectory.block(steps_per_phase * 2 - 1, 0, 1, env->getJointNames().size()).transpose());
 
   // create some arbitrary pose checkpoints and goals
   Eigen::Affine3d retreat_pose = approach_pose;
@@ -170,7 +179,8 @@ int main(int argc, char** argv)
   final_pose.translation() += box_move;
 
   // generate and solve the problem
-  trajopt::TrajOptProbPtr place_prob = prob_constructor.generatePlaceProblem(retreat_pose, approach_pose, final_pose, steps_per_phase);
+  trajopt::TrajOptProbPtr place_prob =
+      prob_constructor.generatePlaceProblem(retreat_pose, approach_pose, final_pose, steps_per_phase);
   planner.solve(place_prob, planning_response);
 
   // plot the trajectory in Rviz
@@ -181,5 +191,4 @@ int main(int argc, char** argv)
   // TODO execute place trajectory
 
   ros::spin();
-
 }

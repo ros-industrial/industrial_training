@@ -16,6 +16,7 @@ find_package(catkin REQUIRED COMPONENTS
   gl_depth_sim
   tf_conversions
   tesseract_planning
+  demo3_perception
 )
 
 include_directories(include)
