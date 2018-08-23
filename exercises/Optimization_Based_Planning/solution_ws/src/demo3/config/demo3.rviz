@@ -6,9 +6,6 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
-        - /TF1
-        - /TF1/Frames1
-        - /TesseractTrajectory1
       Splitter Ratio: 0.5
     Tree Height: 895
   - Class: rviz/Selection
@@ -78,7 +75,7 @@ Visualization Manager:
           Value: false
         panda_link8:
           Value: false
-        part:
+        shelf_1:
           Value: true
         workcell_base:
           Value: false
@@ -86,12 +83,12 @@ Visualization Manager:
           Value: true
       Marker Scale: 1
       Name: TF
-      Show Arrows: true
+      Show Arrows: false
       Show Axes: true
       Show Names: false
       Tree:
         world:
-          part:
+          shelf_1:
             {}
           workcell_base:
             base_link:
@@ -234,6 +231,11 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
+        shelf_1:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         workcell_base:
           Alpha: 1
           Show Axes: false
@@ -277,25 +279,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 3.3844471
+      Distance: 2.58317471
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.00906190462
-        Y: 0.316035092
-        Z: 0.998258591
+        X: -0.110884875
+        Y: 0.469379783
+        Z: 1.09462988
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.0500000007
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.28039813
+      Pitch: 0.405398101
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 0.195391014
+      Yaw: 0.482205451
     Saved: ~
 Window Geometry:
   Displays:

@@ -14,11 +14,9 @@
     <xacro:workcell parent_link="world" >
         <origin xyz="0.0 0.0 0.77153" rpy="0 0 0"/>
     </xacro:workcell >
-
-    <xacro:include filename="$(find demo3_support)/urdf/environment.xacro"/>
-    <xacro:cube parent_link="workcell_base" >
-        <origin xyz="0.15 0.4 0.1" rpy="0 0 0"/>
-    </xacro:cube >
+    <xacro:shelf id="1" parent_link="world" >
+         <origin rpy="0 0 4.7124" xyz="-0.85 0.8 0.12"/>
+    </xacro:shelf >
 
     <!-- Create joints -->
     <joint name="workcell_base_to_base" type="fixed">
