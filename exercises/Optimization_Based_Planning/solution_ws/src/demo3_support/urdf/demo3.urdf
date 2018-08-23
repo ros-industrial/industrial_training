@@ -279,7 +279,7 @@
     </collision>
   </link>
   <joint name="shelf_1_joint" type="fixed">
-    <origin rpy="0 0 4.7124" xyz="-0.85 0.8 0.12"/>
+    <origin rpy="0 0 4.7124" xyz="-0.85 0.8 0.11"/>
     <parent link="world"/>
     <child link="shelf_1"/>
   </joint>
