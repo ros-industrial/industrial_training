@@ -64,12 +64,13 @@ function check_deb() {
 
 function check_debs() {
   echo "Checking debian packages... "
+  check_deb git
   check_deb meld
-  check_deb ros-$ROS_RELEASE-desktop-full
+  check_deb ros-$ROS_RELEASE-desktop
+  check_deb ros-$ROS_RELEASE-perception
   check_deb ros-$ROS_RELEASE-moveit
   check_deb ros-$ROS_RELEASE-industrial-core
   check_deb python-catkin-tools
-  check_deb qt57creator-plugin-ros
   check_deb ros-$ROS_RELEASE-openni-launch
   check_deb ros-$ROS_RELEASE-openni-camera
   check_deb ros-$ROS_RELEASE-openni2-launch
@@ -91,6 +92,13 @@ function check_bashrc() {
   fi  
 }
 
+function check_qtc() {
+  echo "Checking for QTCreator w/ ROS plugin... "
+  printf "  - %-30s" "qtcreator-ros:"
+  print_result $( which qtcreator-ros )
+}
+
+
 #---------------------------------------
 # run the actual tests
 #---------------------------------------
@@ -98,4 +106,5 @@ function check_bashrc() {
 check_internet
 check_repo
 check_debs
+check_qtc
 check_bashrc
