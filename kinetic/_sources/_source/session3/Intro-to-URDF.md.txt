@@ -25,11 +25,11 @@ We have the software skeleton of our Scan-N-Plan application, so let’s take th
 Your goal is to describe a workcell that features:
 1. An origin frame called `world`
 1. A separate frame with “table” geometry (a flat rectangular prism)
-1. A frame (geometry optional) called `camera_frame` that is oriented such that its Z axis is aligned with the X axis of `world`
+1. A frame (geometry optional) called `camera_frame` that is oriented such that its Z axis is flipped relative to the Z axis of `world`
 
 ## Scan-N-Plan Application: Guidance
 
-1. It’s customary to put describing files that aren’t code into their own “support” package. URDFs typically go into their own subfolder ''urdf/''. See the [abb_irb2400_support](https://github.com/ros-industrial/abb/tree/indigo-devel/abb_irb2400_support) package. Add a `urdf` sub-folder to your application support package.
+1. It’s customary to put describing files that aren’t code into their own “support” package. URDFs typically go into their own subfolder ''urdf/''. See the [abb_irb2400_support](https://github.com/ros-industrial/abb/tree/kinetic/abb_irb2400_support) package. Add a `urdf` sub-folder to your application support package.
 1. Create a new `workcell.urdf` file inside the `myworkcell_support/urdf/` folder and insert the following XML skeleton:
 
    ``` xml
@@ -38,7 +38,7 @@ Your goal is to describe a workcell that features:
    </robot>
    ```
 
-1. Add the required links. See the [irb2400_macro.xacro](https://github.com/ros-industrial/abb/blob/84825661073a18e33b68bb01b5bf371edd2efd49/abb_irb2400_support/urdf/irb2400_macro.xacro#L54-L69) example from an ABB2400.
+1. Add the required links. See the [irb2400_macro.xacro](https://github.com/ros-industrial/abb/blob/84825661073a18e33b68bb01b5bf371edd2efd49/abb_irb2400_support/urdf/irb2400_macro.xacro#L54-L69) example from an ABB2400.  Remember that all URDF tags must be placed **between** the `<robot> ... </robot>` tags.
 
    1. Add the `world` frame as a "virtual link" (no geometry).
 

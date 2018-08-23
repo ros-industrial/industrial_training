@@ -117,13 +117,13 @@ Your goal is to create your first ROS subscriber:
 ## Create a Subscriber Node
 1. Edit the `vision_node.cpp` file.
 
-2. Include the message type as a header
+1. Include the message type as a header
 
    ``` c++
    #include <fake_ar_publisher/ARMarker.h>
    ```
 
-2. Add the code that will be run when a message is received from the topic (the callback). 
+1. Add the code that will be run when a message is received from the topic (the callback). 
 
    ``` c++
    class Localizer
@@ -146,7 +146,7 @@ Your goal is to create your first ROS subscriber:
    };
    ```
 
-3. Add the code that will connect the callback to the topic (within `main()`)
+1. Add the code that will connect the callback to the topic (within `main()`)
 
    ``` c++
    int main(int argc, char** argv)
@@ -156,34 +156,29 @@ Your goal is to create your first ROS subscriber:
      Localizer localizer(nh);
 
      ROS_INFO("Vision node starting");
-     ... // Note: don't forget to leave ros::spin(); in place.
-   }
-   ```
-   
-3* Move the spin function to the bottom of 'main()'
-   ```
-   int main(int argc, char** argv)
-   {
      ...
-     
-     // Don't exit the program.
-     ros::spin();
    }
    ```
-4. Run `catkin build`, then `rosrun myworkcell_core vision_node`.
+ 
+   * You can replace or leave the "Hello World" print... your choice!
+   * These new lines must go below the `NodeHandle` declaration, so `nh` is actually defined.
+   * Make sure to retain the `ros::spin()` call.  It will typically be the last line in your `main` routine.  Code after `ros::spin()` won't run until the node is shutting down.
 
-5. You should see the positions display from the publisher.
+1. Run `catkin build`, then `rosrun myworkcell_core vision_node`.
 
-6. Press Ctrl+C on the publisher node.  The subscriber will stop displaying information.
+1. You should see the positions display from the publisher.
 
-7. Start the publisher node again. The subscriber will continue to print messages as the new program runs.
+1. Press Ctrl+C on the publisher node.  The subscriber will stop displaying information.
+
+1. Start the publisher node again. The subscriber will continue to print messages as the new program runs.
 
    * This is a key capability of ROS, to be able to restart individual nodes without affecting the overall system.
 
-8. In a new terminal, type `rqt_graph`. You should see a window similar to the one below:
-
-9. The rectangles in the the window show the topics currently available on the system.
-
-10. The ovals are ROS nodes.  Arrows leaving the node indicate the topics the node publishes, and arrows entering the node indicate the topics the node subscribes to.
+1. In a new terminal, type `rqt_graph`. You should see a window similar to the one below:
 
 <p align="center"><img src=http://aeswiki.datasys.swri.edu/rositraining/Exercises/1.6?action=AttachFile&do=get&target=1.png /></p>
+
+   * The rectangles in the the window show the topics currently available on the system.
+   * The ovals are ROS nodes.
+   * Arrows leaving the node indicate the topics the node publishes, and arrows entering the node indicate the topics the node subscribes to.
+

@@ -3,7 +3,7 @@
 
 ## Application Variables
 
-  In QT, open
+  In QTCreator, open
 ```
 [Source directory]/collision_avoidance_pick_and_place/include/collision_avoidance_pick_and_place/pick_and_place_utilities.h
 ```
@@ -31,8 +31,8 @@ The c++ class 'pick_and_place_config' defines public global variables used in va
     APPROACH_DISTANCE = 0.05f;
 ```
 
-  In the main program ('''pick_and_place_node.cpp'''), the global '''application''' object provides access to the program variables through its '''cfg''' member.  For instance, in order to use the 
-  "WORLD_FRAME_ID" global variable we would do the following:
+  In the main program (`pick_and_place_node.cpp`), the global `application` object provides access to the program variables through its `cfg` member.  For instance, in order to use the 
+  `WORLD_FRAME_ID` global variable we would do the following:
 
 ```
 ROS_INFO_STREAM("world frame: " << application.cfg.WORLD_FRAME_ID)
@@ -40,7 +40,7 @@ ROS_INFO_STREAM("world frame: " << application.cfg.WORLD_FRAME_ID)
 
 ## Node Initialization
 
-  In the '''pick_and_place_node.cpp''' file,  the following block of code in the "main" function initializes the '''!PickAndPlace''' application class and its main ros and MoveIt! components.
+  In the `pick_and_place_node.cpp` file,  the following block of code in the "main" function initializes the `PickAndPlace` application class and its main ros and MoveIt! components.
 
 ```
 int main(int argc,char** argv)

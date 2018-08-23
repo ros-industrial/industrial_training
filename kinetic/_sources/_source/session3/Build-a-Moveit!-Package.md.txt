@@ -17,8 +17,6 @@ In this exercise, you will generate a MoveIt package for the UR5 workcell you bu
 
  1. A moveit configuration with one group ("manipulator"), that consists of the kinematic chain between the UR5’s `base_link` and `tool0`.
 
- 1. Fun playing with the motion planning tools.
-
 ## Scan-N-Plan Application: Guidance
 
  1. Start the MoveIt! Setup Assistant (don't forget auto-complete with tab):
@@ -31,7 +29,7 @@ In this exercise, you will generate a MoveIt package for the UR5 workcell you bu
 
  1. Work your way through the tabs on the left from the top down.
 
-    1. Generate a self-(myworkcell_moveit_config/config/joint_names.yaml):collision matrix.
+    1. Generate a self-collision matrix.
     1. Add a fixed virtual base joint. e.g.
 
        ```
@@ -53,15 +51,19 @@ In this exercise, you will generate a MoveIt package for the UR5 workcell you bu
 
        _Yes, it's required, but doesn't have to be valid_
 
-    1. Create a package and name it `myworkcell_moveit_config`.
+    1. Generate a new package and name it `myworkcell_moveit_config`.
+       * make sure to create the package inside your `catkin_ws/src` directory
+
+    1. The current MoveIt! Settup Assistant has a [bug](https://github.com/ros-planning/moveit/issues/955) that causes some minor errors and abnormal behaviors.  To fix these errors:
+       1. Edit the `myworkcell_core_moveit_config/config/ompl_planning.yaml` file.
+       1. Append the text string `kConfigDefault` to each planner name
+          * e.g. `SBL:` -> `SBLkConfigDefault`, etc.
 
  The outcome of these steps will be a new package that contains a large number of launch and configuration files. At this point, it's possible to do motion planning, but not to execute the plan on any robot.  To try out your new configuration:
 
-    ```
     catkin build
     source ~/catkin_ws/devel/setup.bash
     roslaunch myworkcell_moveit_config demo.launch
-    ```
 
 > Don't worry about learning how to use RViz to move the robot; that's what we'll cover in the next session!
 

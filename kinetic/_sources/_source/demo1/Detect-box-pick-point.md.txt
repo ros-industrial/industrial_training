@@ -3,15 +3,14 @@
 
 ## Locate Function
 
-  * In the main program , locate the function call to '''application.detect_box_pick()'''.
-  * Go to the source file of that function by clicking in any part of the function and pressing "F3".
-  * Remove the fist line containing the following '''ROS_ERROR_STREAM ...''' so that the program runs.
+  * In the main program, locate the function call to `application.detect_box_pick()`.
+  * Go to the source file of that function by clicking in any part of the function and pressing "F2".
+  * Remove the first line containing the following `ROS_ERROR_STREAM ...` so that the program runs.
 
 
 ## Complete Code
 
-
-  * Find every line that begins with the comment "''Fill Code: ''" and read the description.  Then, replace every instance of the comment  "''ENTER CODE HERE''"
+  * Find every line that begins with the comment `Fill Code: ` and read the description.  Then, replace every instance of the comment  `ENTER CODE HERE`
  with the appropriate line of code
 ```
 /* Fill Code:
@@ -22,18 +21,16 @@
 /* ========  ENTER CODE HERE ======== */
 ```
 
-  * The '''target_recognition_client''' object in your programs can use the '''call()''' method to send a request to a ros service.
+  * The `target_recognition_client` object in your programs can use the `call()` method to send a request to a ros service.
 
-  * The ros service that receives the call will process the sensor data and return the pose for the box pick in the service structure member '''srv.response.target_pose'''.
+  * The ros service that receives the call will process the sensor data and return the pose for the box pick in the service structure member `srv.response.target_pose`.
 
 ## Build Code and Run
 
-  * Compile the pick and place node in QT
-```
-Project -> Build Project
-```
+  * Compile the pick and place node:
+     * in QTCreator: `Build -> Build Project`
 
-  * Alternatively, in a terminal cd into the '''demo_manipulation''' directory and do the following
+     * Alternatively, in a terminal:
 ```
 catkin build --pkg collision_avoidance_pick_and_place
 ```
@@ -52,4 +49,4 @@ roslaunch collision_avoidance_pick_and_place ur5_pick_and_place.launch
 
 ## API References
 
-[call()](http://docs.ros.org/hydro/api/roscpp/html/classros_1_1ServiceClient.html#a8a0c9be49046998a830df625babd396f)
+[call()](http://docs.ros.org/kinetic/api/roscpp/html/classros_1_1ServiceClient.html#a8a0c9be49046998a830df625babd396f)

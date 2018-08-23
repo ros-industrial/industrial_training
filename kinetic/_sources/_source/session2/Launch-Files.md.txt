@@ -59,6 +59,7 @@ You may also choose to launch `myworkcell_core` node with the others or keep it 
    <node name="fake_ar_publisher" pkg="fake_ar_publisher" type="fake_ar_publisher_node" />
    <node name="vision_node" pkg="myworkcell_core" type="vision_node" />
    ```
+   * _Remember: All launch-file content must be **between** the `<launch> ... </launch>` tag pair._
  
 5. Test the launch file:
 
@@ -68,7 +69,7 @@ You may also choose to launch `myworkcell_core` node with the others or keep it 
 
    _Note: roscore and both nodes were automatically started.  Press _Ctrl+C_ to close all nodes started by the launch file. If no nodes are left running, roscore is also stopped._
 
-6. Notice that none of the usual messages were printed to the console window.  Launch files will suppress console output below the **ERROR** severity level by default. To restore normal text output, add an extra tag to each of the nodes in your launch files:
+6. Notice that none of the usual messages were printed to the console window.  Launch files will suppress console output below the **ERROR** severity level by default. To restore normal text output, add the `output="screen"` attribute to each of the nodes in your launch files:
 
    ``` xml
    <node name="fake_ar_publisher" pkg="fake_ar_publisher" type="fake_ar_publisher_node" output="screen"/>

@@ -3,14 +3,14 @@
 
 ## Locate Function
 
-  * In the main program , locate the function call to '''application.set_gripper()'''.
-  * Go to the source file of that function by clicking in any part of the function and pressing "F3".
-  * Remove the fist line containing the following '''ROS_ERROR_STREAM ...''' so that the program runs.
+  * In the main program, locate the function call to `application.set_gripper()`.
+  * Go to the source file of that function by clicking in any part of the function and pressing "F2".
+  * Remove the fist line containing the following `ROS_ERROR_STREAM ...` so that the program runs.
 
 
 ## Complete Code
 
-  * Find every line that begins with the comment "''Fill Code: ''" and read the description.  Then, replace every instance of the comment  "''ENTER CODE HERE''"
+  * Find every line that begins with the comment `Fill Code: ` and read the description.  Then, replace every instance of the comment  `ENTER CODE HERE`
  with the appropriate line of code.
 ```
 /* Fill Code:
@@ -21,7 +21,7 @@
 /* ========  ENTER CODE HERE ======== */
 ```
 
- * The 'grasp_goal' goal property can take on three possible values:
+ * The `grasp_goal.goal` property can take on three possible values:
 ```
     grasp_goal.goal = object_manipulation_msgs::GraspHandPostureExecutionGoal::GRASP;
     grasp_goal.goal = object_manipulation_msgs::GraspHandPostureExecutionGoal::RELEASE;
@@ -33,12 +33,10 @@
 
 ## Build Code and Run
 
-  * Compile the pick and place node in QT
-```
-Project -> Build Project
-```
+  * Compile the pick and place node:
+     * in QTCreator: `Build -> Build Project`
 
-  * Alternatively, in a terminal cd into the '''demo_manipulation''' directory and do the following
+     * Alternatively, in a terminal:
 ```
 catkin build collision_avoidance_pick_and_place
 ```
@@ -57,4 +55,4 @@ roslaunch collision_avoidance_pick_and_place ur5_pick_and_place.launch
 
 ## API References
 
-[sendGoal()](http://ros.org/doc/hydro/api/actionlib/html/classactionlib_1_1SimpleActionClient.html)
+[sendGoal()](http://docs.ros.org/kinetic/api/actionlib/html/classactionlib_1_1SimpleActionClient.html#ae6a2e6904495e7c20c59e96af0d86801)

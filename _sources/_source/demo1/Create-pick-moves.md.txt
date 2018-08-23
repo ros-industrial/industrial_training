@@ -3,13 +3,13 @@
 
 ## Locate Function
 
-  * In the main program , locate the function call to '''application.create_pick_moves()'''.
-  * Go to the source file of that function by clicking in any part of the function and pressing "F3".
-  * Remove the fist line containing the following '''ROS_ERROR_STREAM ...''' so that the program runs.
+  * In the main program , locate the function call to `application.create_pick_moves()`.
+  * Go to the source file of that function by clicking in any part of the function and pressing "F2".
+  * Remove the fist line containing the following `ROS_ERROR_STREAM ...` so that the program runs.
 
 ## Complete Code
 
-  * Find every line that begins with the comment "''Fill Code: ''" and read the description.  Then, replace every instance of the comment  "''ENTER CODE HERE''"
+  * Find every line that begins with the comment `Fill Code: ` and read the description.  Then, replace every instance of the comment  `ENTER CODE HERE`
  with the appropriate line of code
  ```
 /* Fill Code:
@@ -20,20 +20,18 @@
 /* ========  ENTER CODE HERE ======== */
 ```
 
- * The '''create_manipulation_poses()''' uses the values of the approach and retreat distances in order to create the corresponding poses at the desired target.
+ * The `create_manipulation_poses()` uses the values of the approach and retreat distances in order to create the corresponding poses at the desired target.
 
  * Since moveit plans the robot path for the arm's wrist, then it is necessary to convert all the pick poses to the wrist coordinate frame.
 
- * The [[lookupTransform|http://mirror.umd.edu/roswiki/doc/hydro/api/tf/html/c++/classtf_1_1Transformer.html#ac01a9f8709a828c427f1a5faa0ced42b]] method can provide the pose of a target relative to another pose.
+ * The [lookupTransform](http://docs.ros.org/kinetic/api/tf/html/c++/classtf_1_1Transformer.html#a14536fe915c0c702534409c15714aa2f) method can provide the pose of a target relative to another pose.
 
 ## Build Code and Run
 
-  * Compile the pick and place node  in Eclipse
-```
-Project -> Build Project
-```
+  * Compile the pick and place node
+      * In QtCreator, use : `Build -> Build Project`
 
-  * Alternatively, in a terminal cd into the '''demo_manipulation''' directory and do the following
+      * Alternatively, in a terminal:
 ```
 catkin build --cmake-args -G 'CodeBlocks - Unix Makefiles' --pkg collision_avoidance_pick_and_place
 source ./devel/setup.bash
@@ -48,8 +46,8 @@ roslaunch collision_avoidance_pick_and_place ur5_pick_and_place.launch
 [ INFO] [1400555434.918332145]: Move wait Succeeded
 [ INFO] [1400555435.172714267]: Gripper opened
 [ INFO] [1400555435.424279410]: target recognition succeeded
-[ INFO] [1400555435.424848964]: tcp position at pick: 0x7fffde492790
-[ INFO] [1400555435.424912520]: tcp z direction at pick: 0x7fffde492950
+[ INFO] [1400555435.424848964]: tcp position at pick: [-0.8, 0.2, 0.17]
+[ INFO] [1400555435.424912520]: tcp z direction at pick: [8.65611e-17, -8.66301e-17, -1]
 [ INFO] [1400555435.424993675]: wrist position at pick: x: -0.81555
 y: 0.215563
 z: 0.3
@@ -61,6 +59,6 @@ z: 0.3
 
 ## API References
 
-[lookupTransform](http://mirror.umd.edu/roswiki/doc/hydro/api/tf/html/c++/classtf_1_1Transformer.html#ac01a9f8709a828c427f1a5faa0ced42b)
+[lookupTransform](http://docs.ros.org/kinetic/api/tf/html/c++/classtf_1_1Transformer.html#a14536fe915c0c702534409c15714aa2f)
 
 [TF Transforms and other useful data types](http://wiki.ros.org/tf/Overview/Data%20Types)
