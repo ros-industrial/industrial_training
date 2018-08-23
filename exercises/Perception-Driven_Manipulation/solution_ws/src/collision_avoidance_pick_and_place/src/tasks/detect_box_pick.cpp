@@ -27,7 +27,6 @@ geometry_msgs::Pose collision_avoidance_pick_and_place::PickAndPlace::detect_box
   tf::poseTFToMsg(cfg.BOX_PLACE_TF,place_pose);
   srv.request.remove_at_poses.push_back(place_pose);
 
-  //
   /* Fill Code:
    * Goal:
    * - Call target recognition service and save results.
@@ -36,38 +35,38 @@ geometry_msgs::Pose collision_avoidance_pick_and_place::PickAndPlace::detect_box
    * 	detected pose "srv.response.target_pose".
    * - Assign the target_pose in the response to the box_pose variable in
    * 	order to save the results.
-   * 	*/
+   */
   geometry_msgs::Pose box_pose;
   if(target_recognition_client.call(srv))
   {
-	  if(srv.response.succeeded)
-	  {
-		  box_pose = srv.response.target_pose;
-		  ROS_INFO_STREAM("target recognition succeeded");
-	  }
-	  else
-	  {
-		  ROS_ERROR_STREAM("target recognition failed");
-		  exit(0);
+    if(srv.response.succeeded)
+    {
+      box_pose = srv.response.target_pose;
+      ROS_INFO_STREAM("target recognition succeeded");
+    }
+    else
+    {
+      ROS_ERROR_STREAM("target recognition failed");
+      exit(0);
 
-	  }
+    }
   }
   else
   {
-	  ROS_ERROR_STREAM("Service call for target recognition failed with response '"<<
-			  (srv.response.succeeded ?"SUCCESS":"FAILURE")
-					  <<"', exiting");
-	  exit(0);
+    ROS_ERROR_STREAM("Service call for target recognition failed with response '"<<
+                    (srv.response.succeeded ?"SUCCESS":"FAILURE")
+                    <<"', exiting");
+    exit(0);
   }
 
   // updating box marker for visualization in rviz
-	visualization_msgs::Marker marker = cfg.MARKER_MESSAGE;
-	cfg.MARKER_MESSAGE.header.frame_id = cfg.WORLD_FRAME_ID;
-	cfg.MARKER_MESSAGE.pose = box_pose;
-	cfg.MARKER_MESSAGE.pose.position.z = box_pose.position.z - 0.5f*cfg.BOX_SIZE.z();
+  visualization_msgs::Marker marker = cfg.MARKER_MESSAGE;
+  cfg.MARKER_MESSAGE.header.frame_id = cfg.WORLD_FRAME_ID;
+  cfg.MARKER_MESSAGE.pose = box_pose;
+  cfg.MARKER_MESSAGE.pose.position.z = box_pose.position.z - 0.5f*cfg.BOX_SIZE.z();
 
-	show_box(true);
+  show_box(true);
 
-	return box_pose;
+  return box_pose;
 }
 

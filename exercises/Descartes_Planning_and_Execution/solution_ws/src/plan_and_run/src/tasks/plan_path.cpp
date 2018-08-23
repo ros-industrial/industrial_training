@@ -61,7 +61,6 @@ void DemoApplication::planPath(DescartesTrajectory& input_traj,DescartesTrajecto
    * Hint:
    * - The "planner_.planPath(...)" can take the "input_traj" Trajectory as an input argument.
    */
-  //bool succeeded = false /* [ COMPLETE HERE ]*/;
   bool succeeded = planner_.planPath(input_traj);
 
   if (succeeded)
@@ -83,7 +82,6 @@ void DemoApplication::planPath(DescartesTrajectory& input_traj,DescartesTrajecto
    * Hint:
    * - The "planner_.getPath(...)" can take the "output_path" variable as an output argument.
    */
-  //succeeded = false /* [ COMPLETE HERE ]*/;
   succeeded = planner_.getPath(output_path);
 
   if(!succeeded || output_path.empty())

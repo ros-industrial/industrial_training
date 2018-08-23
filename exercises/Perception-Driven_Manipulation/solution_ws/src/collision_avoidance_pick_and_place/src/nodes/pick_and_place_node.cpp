@@ -46,7 +46,7 @@ int main(int argc,char** argv)
 
   // moveit interface
   application.move_group_ptr = MoveGroupPtr(
-                  new moveit::planning_interface::MoveGroup(application.cfg.ARM_GROUP_NAME));
+      new moveit::planning_interface::MoveGroupInterface(application.cfg.ARM_GROUP_NAME));
   application.move_group_ptr->setPlannerId("RRTConnectkConfigDefault");
 
   // motion plan client

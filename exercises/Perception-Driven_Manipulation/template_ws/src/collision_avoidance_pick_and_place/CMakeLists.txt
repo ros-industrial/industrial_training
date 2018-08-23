@@ -17,7 +17,7 @@ find_package(catkin REQUIRED COMPONENTS
   pcl_ros
   pcl_msgs
   tf_conversions
-	message_generation
+  message_generation
 )
 
 include_directories(include

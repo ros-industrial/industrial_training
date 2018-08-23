@@ -1,6 +1,6 @@
 image_width: 640
 image_height: 480
-camera_name: depth_PS1080_PrimeSense
+camera_name: depth
 camera_matrix:
   rows: 3
   cols: 3

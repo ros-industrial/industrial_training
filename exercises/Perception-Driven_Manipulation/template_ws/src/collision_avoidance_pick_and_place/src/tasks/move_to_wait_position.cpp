@@ -1,5 +1,7 @@
 #include <collision_avoidance_pick_and_place/pick_and_place.h>
 
+using moveit::planning_interface::MoveItErrorCode;
+
 /* MOVING ARM TO WAIT POSITION
   Goal:
     - Use the "move_group" interface to move the robot to the "wait" target.
@@ -15,13 +17,13 @@ void collision_avoidance_pick_and_place::PickAndPlace::move_to_wait_position()
   ROS_ERROR_STREAM("move_to_wait_position is not implemented yet.  Aborting."); exit(1);
 
   // task variables
-  bool success; // saves the move result
+  MoveItErrorCode error; // saves the move result
 
   /* Fill Code:
    * Goal:
    * - Set robot wait target
    * Hints:
-   * - Use the "setNamedTarget" method in the "move_group" object.
+   * - Use the "setNamedTarget" method in the "move_group_ptr" object.
    * - Look in the "cfg.WAIT_POSE_NAME" object for the name of the target.
    */
   /* ========  ENTER CODE HERE ======== */
@@ -33,11 +35,11 @@ void collision_avoidance_pick_and_place::PickAndPlace::move_to_wait_position()
    * Goal:
    * - Move the robot
    * Hints:
-   * - Use the "move" method in the "move_group" object and save the result
-   *  in the "success" variable
+   * - Use the "move" method in the "move_group_ptr" object and save the result
+   *  in the "error" variable
    */
   /* ========  ENTER CODE HERE ======== */
-  if(success)
+  if(error == MoveItErrorCode::SUCCESS)
   {
     ROS_INFO_STREAM("Move " << cfg.WAIT_POSE_NAME<< " Succeeded");
   }

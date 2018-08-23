@@ -3,14 +3,14 @@
 
 ## Locate Function
 
-  * In the main program, locate the function call to '''application.pickup_box()'''.
-  * Go to the source file of that function by clicking in any part of the function and pressing "F3".
-  * Remove the fist line containing the following '''ROS_ERROR_STREAM ...''' so that the program runs.
+  * In the main program, locate the function call to `application.pickup_box()`.
+  * Go to the source file of that function by clicking in any part of the function and pressing "F2".
+  * Remove the first line containing the following `ROS_ERROR_STREAM ...` so that the program runs.
 
 
 ## Complete Code
 
-  * Find every line that begins with the comment "''Fill Code: ''" and read the description.  Then, replace every instance of the comment  "''ENTER CODE HERE''"
+  * Find every line that begins with the comment `Fill Code: ` and read the description.  Then, replace every instance of the comment  `ENTER CODE HERE`
  with the appropriate line of code
 ```
 /* Fill Code:
@@ -21,20 +21,18 @@
 /* ========  ENTER CODE HERE ======== */
 ```
 
- * Inspect the '''set_attached_object''' method to understand how to manipulate a '''robot_state''' object which will then be used to construct a motion plan.
+ * Inspect the `set_attached_object` method to understand how to manipulate a `robot_state` object which will then be used to construct a motion plan.
 
- * Inspect the '''create_motion_plan''' method to see how an entire motion plan request is defined and sent.
+ * Inspect the `create_motion_plan` method to see how an entire motion plan request is defined and sent.
 
- * The [[execute()|http://docs.ros.org/hydro/api/moveit_ros_planning_interface/html/classmoveit_1_1planning__interface_1_1MoveGroup.html#a82f1bb33058893e8a16fa49af24d689f]] method sends a motion plan to the robot.
+ * The [execute()](http://docs.ros.org/kinetic/api/moveit_ros_planning_interface/html/classmoveit_1_1planning__interface_1_1MoveGroupInterface.html#add236df4ab9ba7b7011ec53f8aa9c026) method sends a motion plan to the robot.
 
 ## Build Code and Run
 
-  * Compile the pick and place node  in Eclipse
-```
-Project -> Build Project
-```
+  * Compile the pick and place node:
+     * in QTCreator: `Build -> Build Project`
 
-  * Alternatively, in a terminal cd into the '''demo_manipulation''' directory and do the following
+     * Alternatively, in a terminal:
 ```
 catkin build --cmake-args -G 'CodeBlocks - Unix Makefiles' --pkg collision_avoidance_pick_and_place
 ```
@@ -52,4 +50,4 @@ roslaunch collision_avoidance_pick_and_place ur5_pick_and_place.launch
 
 ## API References
 
-[Useful '''MoveGroup'''](http://docs.ros.org/hydro/api/moveit_ros_planning_interface/html/classmoveit_1_1planning__interface_1_1MoveGroup.html)
+[MoveGroupInterface class](http://docs.ros.org/kinetic/api/moveit_ros_planning_interface/html/classmoveit_1_1planning__interface_1_1MoveGroupInterface.html)

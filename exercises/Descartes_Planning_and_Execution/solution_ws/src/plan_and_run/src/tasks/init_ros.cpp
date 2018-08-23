@@ -19,23 +19,24 @@ void DemoApplication::initRos()
 
   /*  Fill Code:
    * Goal:
-   * - Create a "moveit_msgs::ExecuteKnownTrajectory" client and assign it to the "moveit_run_path_client_"
+   * - Create a "moveit_msgs::ExecuteTrajectoryAction" client and assign it to the "moveit_run_path_client_ptr_"
    *    application variable.
+   * - Uncomment the action client initialization code.
    * Hint:
-   * - Enter the service type moveit_msgs::ExecuteKnownTrajectory in between the "< >" arrow brackets of
-   *   the "nh_.serviceClient" function call.
+   * - Enter the action type moveit_msgs::ExecuteTrajectoryAction in between the "< >" arrow brackets of
+   *   the client type definition, replacing the placeholder type.
    */
-  //moveit_run_path_client_;/* = nh_.serviceClient< [ COMPLETE HERE ] >(EXECUTE_TRAJECTORY_SERVICE,true); */
-  moveit_run_path_client_ = nh_.serviceClient<moveit_msgs::ExecuteKnownTrajectory>(EXECUTE_TRAJECTORY_SERVICE,true);
+  typedef actionlib::SimpleActionClient<moveit_msgs::ExecuteTrajectoryAction> client_type;
+  moveit_run_path_client_ptr_ = std::make_shared<client_type>(EXECUTE_TRAJECTORY_ACTION,true);
 
   // Establishing connection to server
-  if(moveit_run_path_client_.waitForExistence(ros::Duration(SERVICE_TIMEOUT)))
+  if(moveit_run_path_client_ptr_->waitForServer(ros::Duration(SERVER_TIMEOUT)))
   {
-    ROS_INFO_STREAM("Connected to '"<<moveit_run_path_client_.getService()<<"' service");
+    ROS_INFO_STREAM("Connected to '"<<EXECUTE_TRAJECTORY_ACTION<<"' action");
   }
   else
   {
-    ROS_ERROR_STREAM("Failed to connect to '"<< moveit_run_path_client_.getService()<<"' service");
+    ROS_ERROR_STREAM("Failed to connect to '"<<EXECUTE_TRAJECTORY_ACTION<<"' action");
     exit(-1);
   }
 

@@ -20,7 +20,7 @@ void DemoApplication::runPath(const DescartesTrajectory& path)
   //ROS_ERROR_STREAM("Task '"<<__FUNCTION__ <<"' is incomplete. Exiting"); exit(-1);
 
   // creating move group to move the arm in free space
-  moveit::planning_interface::MoveGroup move_group(config_.group_name);
+  moveit::planning_interface::MoveGroupInterface move_group(config_.group_name);
   move_group.setPlannerId(PLANNER_ID);
 
   // creating goal joint pose to start of the path
@@ -29,14 +29,13 @@ void DemoApplication::runPath(const DescartesTrajectory& path)
    * - Retrieve the first point in the path.
    * - Save the joint values of the first point into "start_pose".
    * Hint:
-   * - The first argument to "first_point_ptr->getNominalJointPose(...)" is a "std::vector<double>" variable
+   * - The first argument to "getNominalJointPose()" is a "seed" joint pose, used to find a nearby IK solution
+   * - The last argument to "getNominalJointPose()" is a "std::vector<double>" variable
    *    where the joint values are to be stored.
    */
   std::vector<double> seed_pose(robot_model_ptr_->getDOF());
   std::vector<double> start_pose;
 
-  //descartes_core::TrajectoryPtPtr first_point_ptr /* [ COMPLETE HERE ]: =  path[??]*/;
-  /*[ COMPLETE HERE ]: first_point_ptr->getNominalJointPose(??,*robot_model_ptr_,start_pose); */
   descartes_core::TrajectoryPtPtr first_point_ptr = path[0];
   first_point_ptr->getNominalJointPose(seed_pose,*robot_model_ptr_,start_pose);
 
@@ -57,26 +56,23 @@ void DemoApplication::runPath(const DescartesTrajectory& path)
   // sending robot path to server for execution
   /*  Fill Code:
    * Goal:
-   * - Complete the service request by placing the "moveit_msgs::RobotTrajectory" trajectory in the request object
-   * - Use the service client to send the trajectory for execution.
+   * - Complete the action goal by placing the "moveit_msgs::RobotTrajectory" trajectory in the goal object
+   * - Use the action client to send the trajectory for execution.
    * Hint:
-   * - The "srv.request.trajectory" can be assigned the Moveit trajectory.
-   * - The "moveit_run_path_client_.call(srv)" sends a trajectory execution request.
+   * - The "goal.trajectory" can be assigned the Moveit trajectory.
+   * - The "moveit_run_path_client_ptr_->sendGoalAndWait(goal)" sends a trajectory execution request.
    */
-  moveit_msgs::ExecuteKnownTrajectory srv;
-  //srv.request.trajectory ; /* [ COMPLETE HERE ]: = ?? */;
-  srv.request.trajectory = moveit_traj;
-  srv.request.wait_for_execution = true;
+  moveit_msgs::ExecuteTrajectoryGoal goal;
+  goal.trajectory = moveit_traj;
 
   ROS_INFO_STREAM("Robot path sent for execution");
-  //if(false /* [ COMPLETE HERE ]: moveit_run_path_client_.??( ?? ) */)
-  if(moveit_run_path_client_.call(srv))
+  if(moveit_run_path_client_ptr_->sendGoalAndWait(goal) == actionlib::SimpleClientGoalState::SUCCEEDED)
   {
     ROS_INFO_STREAM("Robot path execution completed");
   }
   else
   {
-    ROS_ERROR_STREAM("Failed to run robot path with error "<<srv.response.error_code.val);
+    ROS_ERROR_STREAM("Failed to run robot path with error "<<*moveit_run_path_client_ptr_->getResult());
     exit(-1);
   }
 

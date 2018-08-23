@@ -9,7 +9,7 @@
 */
 
 void collision_avoidance_pick_and_place::PickAndPlace::place_box(std::vector<geometry_msgs::Pose>& place_poses,
-		const geometry_msgs::Pose& box_pose)
+        const geometry_msgs::Pose& box_pose)
 {
   ROS_ERROR_STREAM("place_box is not implemented yet.  Aborting."); exit(1);
 
@@ -31,23 +31,23 @@ void collision_avoidance_pick_and_place::PickAndPlace::place_box(std::vector<geo
   // move the robot to each wrist place pose
   for(unsigned int i = 0; i < place_poses.size(); i++)
   {
-  	moveit_msgs::RobotState robot_state;
-  	if(i==0 || i == 1)
-  	{
+    moveit_msgs::RobotState robot_state;
+    if(i==0 || i == 1)
+    {
       // attaching box
       set_attached_object(true,box_pose,robot_state);
       show_box(true);
 
-  	}
-  	else
-  	{
+    }
+    else
+    {
       // detaching box
       set_attached_object(false,geometry_msgs::Pose(),robot_state);
       show_box(false);
-  	}
+    }
 
-  	// create motion plan
-    moveit::planning_interface::MoveGroup::Plan plan;
+    // create motion plan
+    moveit::planning_interface::MoveGroupInterface::Plan plan;
     success = create_motion_plan(place_poses[i],robot_state,plan) && move_group_ptr->execute(plan);
 
     if(success)
@@ -64,15 +64,15 @@ void collision_avoidance_pick_and_place::PickAndPlace::place_box(std::vector<geo
 
     if(i == 1)
     {
-	/* Fill Code:
-	 * Goal:
-	 * - Turn off gripper suction after the release pose is reached.
-	 * Hints:
-	 * - Call the "set_gripper" function to turn on suction.
-	 * - The input to the set_gripper method takes a "true" or "false"
-	 * 	  boolean argument.
-	 */
-	 /* ========  ENTER CODE HERE ======== */
+      /* Fill Code:
+       * Goal:
+       * - Turn off gripper suction after the release pose is reached.
+       * Hints:
+       * - Call the "set_gripper" function to turn on suction.
+       * - The input to the set_gripper method takes a "true" or "false"
+       *       boolean argument.
+       */
+      /* ========  ENTER CODE HERE ======== */
 
     }
 

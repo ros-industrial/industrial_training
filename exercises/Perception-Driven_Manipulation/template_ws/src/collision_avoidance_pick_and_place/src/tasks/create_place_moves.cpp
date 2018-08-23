@@ -40,7 +40,7 @@ std::vector<geometry_msgs::Pose> collision_avoidance_pick_and_place::PickAndPlac
    * - Reorient the tool so that the tcp points towards the box.
    * Hints:
    * - Use the "setRotation" to set the orientation of "world_to_tcp_tf".
-   * - The quaternion value "tf::Quaternion(M_PI, 0, M_PI/2.0f)" will point
+   * - The quaternion value "tf::Quaternion(0.707, 0.707, 0, 0)" will point
    * 	the tcp's direction towards the box.
    */
   /* ========  ENTER CODE HERE ======== */
@@ -79,7 +79,7 @@ std::vector<geometry_msgs::Pose> collision_avoidance_pick_and_place::PickAndPlac
   /* ========  ENTER CODE HERE ======== */
 
   // printing results
-  ROS_INFO_STREAM("tcp position at place: " << world_to_tcp_tf.getOrigin());
+  ROS_INFO_STREAM("tcp position at place: " << "[" << world_to_tcp_tf.getOrigin().getX() << ", " << world_to_tcp_tf.getOrigin().getY() << ", " << world_to_tcp_tf.getOrigin().getZ() << "]");
   ROS_INFO_STREAM("wrist position at place: "<<wrist_place_poses[1].position);
 
   return wrist_place_poses;

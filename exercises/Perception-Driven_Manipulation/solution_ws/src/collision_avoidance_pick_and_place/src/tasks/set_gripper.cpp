@@ -2,10 +2,10 @@
 
 /*    SET GRIPPER
   Goal:
-	  - Turn the vacuum gripper on or off.
+    - Turn the vacuum gripper on or off.
   Hints:
-  	  - Use the grasp action client to send an grasp request to the grasp server.
-  	  - Confirm that the gripper was successfully opened or closed and exit on error
+    - Use the grasp action client to send an grasp request to the grasp server.
+    - Confirm that the gripper was successfully opened or closed and exit on error
 */
 void collision_avoidance_pick_and_place::PickAndPlace::set_gripper(bool do_grasp)
 {
@@ -25,8 +25,8 @@ void collision_avoidance_pick_and_place::PickAndPlace::set_gripper(bool do_grasp
    * Goal:
    * - Send the grasp goal to the server.
    * Hints:
-   * - Use the 'sendGoal' method of the grasp client "grasp_action_client_ptr"
-   * to make a call the server.
+   * - Use the "sendGoal" method of the grasp client "grasp_action_client_ptr"
+   * to make a call to the server.
    */
   grasp_action_client_ptr->sendGoal(grasp_goal);
 

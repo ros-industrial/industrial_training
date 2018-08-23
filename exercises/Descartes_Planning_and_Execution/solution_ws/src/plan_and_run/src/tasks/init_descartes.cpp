@@ -32,11 +32,6 @@ void DemoApplication::initDescartes()
    *    c - world_frame string
    *    d - tip_link string.
    */
-/*  if(robot_model_ptr_->initialize(ROBOT_DESCRIPTION_PARAM,
-                                  "[ COMPLETE HERE ]",
-                                  "[ COMPLETE HERE ]",
-                                  "[ COMPLETE HERE ]"))*/
-
   if(robot_model_ptr_->initialize(ROBOT_DESCRIPTION_PARAM,
                                   config_.group_name,
                                   config_.world_frame,
@@ -56,7 +51,6 @@ void DemoApplication::initDescartes()
    * - Pass the robot_model_ptr_ created earlier into the initialize method and save the result
    *    into the "succeeded" variable.
    */
-  //bool succeeded = false  /* [ COMPLETE HERE ]*/;
   bool succeeded = planner_.initialize(robot_model_ptr_);
   if(succeeded)
   {

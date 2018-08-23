@@ -9,8 +9,9 @@
 #define DEMO_DESCARTES_PLAN_AND_RUN_INCLUDE_PLAN_AND_RUN_DEMO_APPLICATION_H_
 
 #include <ros/ros.h>
-#include <moveit_msgs/ExecuteKnownTrajectory.h>
-#include <moveit/move_group_interface/move_group.h>
+#include <actionlib/client/simple_action_client.h>
+#include <moveit_msgs/ExecuteTrajectoryAction.h>
+#include <moveit/move_group_interface/move_group_interface.h>
 #include <descartes_trajectory/axial_symmetric_pt.h>
 #include <descartes_trajectory/cart_trajectory_pt.h>
 #include <descartes_planner/dense_planner.h>
@@ -23,9 +24,9 @@ namespace plan_and_run
 {
 
 const std::string ROBOT_DESCRIPTION_PARAM = "robot_description";
-const std::string EXECUTE_TRAJECTORY_SERVICE = "execute_kinematic_path";
+const std::string EXECUTE_TRAJECTORY_ACTION = "execute_trajectory";
 const std::string VISUALIZE_TRAJECTORY_TOPIC = "visualize_trajectory_curve";
-const double SERVICE_TIMEOUT = 5.0f; // seconds
+const double SERVER_TIMEOUT = 5.0f; // seconds
 const double ORIENTATION_INCREMENT = 0.5f;
 const double EPSILON = 0.0001f;
 const double AXIS_LINE_LENGHT = 0.01;
@@ -130,7 +131,7 @@ protected:
    */
   ros::NodeHandle nh_;                        /* Object used for creating and managing ros application resources*/
   ros::Publisher marker_publisher_;           /* Publishes visualization message to Rviz */
-  ros::ServiceClient moveit_run_path_client_; /* Sends a robot trajectory to moveit for execution */
+  std::shared_ptr<actionlib::SimpleActionClient<moveit_msgs::ExecuteTrajectoryAction>>   moveit_run_path_client_ptr_; /* Sends a robot trajectory to moveit for execution */
 
 
 

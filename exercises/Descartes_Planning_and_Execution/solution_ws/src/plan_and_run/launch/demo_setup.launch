@@ -21,6 +21,8 @@
 
   <!-- If needed, broadcast static tf for robot root -->
       
+  <!-- Given the published joint states, publish tf for the robot links -->
+
   <!-- Run the main MoveIt executable without trajectory execution (we do not have controllers configured by default) -->
   <include file="$(find ur5_demo_moveit_config)/launch/move_group.launch">
     <arg name="allow_trajectory_execution" value="true"/>  
@@ -41,7 +43,7 @@
   <!--   - this typically includes: robot_state, motion_interface, and joint_trajectory_action nodes -->
   <!--   - replace these calls with appropriate robot-specific calls or launch files -->
   <group unless="$(arg sim)">
-	  <remap from="/follow_joint_trajectory/status" to="/joint_trajectory_action/status" />
+    <remap from="/follow_joint_trajectory/status" to="/joint_trajectory_action/status" />
     <remap from="/follow_joint_trajectory/feedback" to="/joint_trajectory_action/feedback" />
     <remap from="/follow_joint_trajectory/result" to="/joint_trajectory_action/result" />
     <remap from="/follow_joint_trajectory/goal" to="/joint_trajectory_action/goal" />
@@ -54,10 +56,10 @@
       <arg name="max_payload" value="$(arg max_payload)" />
     </include>  
     
-	  <!-- TF Buffer Server -->
-	  <node pkg="tf2_ros" type="buffer_server" name="tf2_buffer_server" output="screen">
-		  <param name="buffer_size" value="120.0"/>
-	  </node>
+    <!-- TF Buffer Server -->
+    <node pkg="tf2_ros" type="buffer_server" name="tf2_buffer_server" output="screen">
+      <param name="buffer_size" value="120.0"/>
+    </node>
   </group>
 
   <!-- run the robot simulator and action interface nodes -->

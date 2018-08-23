@@ -117,12 +117,12 @@ public:
 
     // We assume that our path is centered at (0, 0, 0), so let's define the
     // corners of the AR marker
-    const double side_length = 0.25; // All units are in meters (M)
+    const double side_length = 0.08; // All units are in meters (M)
     const double half_side = side_length / 2.0;
     const double step_size = 0.02;
 
-    Eigen::Vector3d top_left (half_side, half_side, 0);
-    Eigen::Vector3d bot_left (-half_side, half_side, 0);
+    Eigen::Vector3d top_left (-half_side, half_side, 0);
+    Eigen::Vector3d bot_left (-half_side, -half_side, 0);
 
     // Descartes requires you to guide it in how dense the points should be,
     // so you have to do your own "discretization".
@@ -159,7 +159,7 @@ public:
   {
     using namespace descartes_core;
     using namespace descartes_trajectory;
-    return TrajectoryPtPtr( new AxialSymmetricPt(pose, M_PI/2.0, AxialSymmetricPt::Z_AXIS) );
+    return TrajectoryPtPtr( /* TODO: Specific point constructor here */ );
   }
 
   // HELPER

@@ -5,8 +5,8 @@
 
   * Go to the main application source file located in `plan_and_run/src/plan_and_run_node.cpp`.
   * In the main program, locate the function call to `application.loadParameters()`. 
-  * Go to the source file for that function located in the `plan_and_run/src/tasks/load_parameters.cpp`. Alternatively, in Eclipse you can click in any part of the function and press "F3" to bring up that file.
-  * Comment out the first line containing the `//ROS_ERROR_STREAM("Task '"<<__FUNCTION__ <<"' is incomplete. Exiting"); exit(-1);` entry so that the function doesn't quit immediately.
+  * Go to the source file for that function located in the `plan_and_run/src/tasks/load_parameters.cpp`. Alternatively, in Eclipse you can click in any part of the function and press "F2" to bring up that file.
+  * Comment out the first line containing the `ROS_ERROR_STREAM ...` entry so that the function doesn't quit immediately.
 
 ## Complete Code
 
@@ -29,6 +29,6 @@ roslaunch plan_and_run demo_run.launch
 
 ## API References
 
-[ros::NodeHandle](http://docs.ros.org/indigo/api/roscpp/html/classros_1_1NodeHandle.html)
+[ros::NodeHandle](http://docs.ros.org/kinetic/api/roscpp/html/classros_1_1NodeHandle.html)
 
-[NodeHandle::getParam()](http://docs.ros.org/indigo/api/roscpp/html/classros_1_1NodeHandle.html#afaaf745b7483da9a621b07db0700f866)
+[NodeHandle::getParam()](http://docs.ros.org/kinetic/api/roscpp/html/classros_1_1NodeHandle.html#a8b5db588e675cf3e360da65bae6a55e4)

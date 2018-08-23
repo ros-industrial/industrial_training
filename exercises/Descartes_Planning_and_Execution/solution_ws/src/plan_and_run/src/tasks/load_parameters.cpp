@@ -26,7 +26,6 @@ void DemoApplication::loadParameters()
    * Hint:
    * - Replace the string in ph below with "~" to make it a private node.
    */
-  //ros::NodeHandle ph("[ COMPLETE HERE ]");
   ros::NodeHandle ph("~");
 
   // creating handle with public scope
@@ -39,12 +38,10 @@ void DemoApplication::loadParameters()
    */
   if(ph.getParam("group_name",config_.group_name) &&
 
-      //ph.getParam("[ COMPLETE HERE ]",config_.base_link) &&
       ph.getParam("tip_link",config_.tip_link) &&
 
       ph.getParam("base_link",config_.base_link) &&
 
-      //ph.getParam("[ COMPLETE HERE ]",config_.base_link) &&
       ph.getParam("world_frame",config_.world_frame) &&
 
       ph.getParam("trajectory/time_delay",config_.time_delay) &&

@@ -35,6 +35,7 @@ int main(int argc, char **argv)
   ROS_INFO("ScanNPlan node has been initialized");
 
   ScanNPlan app(nh);
+
   ros::Duration(.5).sleep();  // wait for the class to initialize
   app.start();
 

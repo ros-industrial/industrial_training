@@ -24,17 +24,25 @@ include_directories(include
   ${catkin_INCLUDE_DIRS}
 )
 
+#######################################
+## Declare ROS messages and services ##
+#######################################
+## Generate services in the 'srv' folder
 add_service_files(
    FILES
    GetTargetPose.srv
 )
 
+## Generate added messages and services with any dependencies listed here
 generate_messages(
 	DEPENDENCIES   
 		std_msgs
 		shape_msgs
 		pcl_msgs)
 
+###################################
+## catkin specific configuration ##
+###################################
 catkin_package(
 	CATKIN_DEPENDS
 		roscpp
@@ -54,6 +62,10 @@ catkin_package(
 		tf_conversions
 		message_runtime
 )
+
+###########
+## Build ##
+###########
 
 add_executable(target_recognition_service src/services/target_recognition_service.cpp)
 add_dependencies(target_recognition_service ${PROJECT_NAME}_generate_messages_cpp)

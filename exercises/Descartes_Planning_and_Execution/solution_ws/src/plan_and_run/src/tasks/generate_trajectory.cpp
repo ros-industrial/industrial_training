@@ -57,11 +57,8 @@ void DemoApplication::generateTrajectory(DescartesTrajectory& traj)
      * - The Free Axis can be selected from the AxialSymmetricPt::FreeAxis::Z_AXIS enumeration constants.
      *
      */
-    //descartes_core::TrajectoryPtPtr pt = descartes_core::TrajectoryPtPtr(/*[ COMPLETE HERE*/);
-
     descartes_core::TrajectoryPtPtr pt = descartes_core::TrajectoryPtPtr(
-        new descartes_trajectory::AxialSymmetricPt(pose,ORIENTATION_INCREMENT,
-                                                   descartes_trajectory::AxialSymmetricPt::FreeAxis::Z_AXIS) );
+     new descartes_trajectory::AxialSymmetricPt( pose, ORIENTATION_INCREMENT, descartes_trajectory::AxialSymmetricPt::FreeAxis::Z_AXIS) );
 
     // saving points into trajectory
     traj.push_back(pt);

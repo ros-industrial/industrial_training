@@ -6,6 +6,7 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
+        - /TF1/Frames1
         - /TF1/Tree1
         - /PointCloud21
         - /Marker1
@@ -33,7 +34,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: PointCloud2
+    SyncSource: ""
 Visualization Manager:
   Class: ""
   Displays:
@@ -56,140 +57,25 @@ Visualization Manager:
       Reference Frame: <Fixed Frame>
       Value: true
     - Class: rviz/TF
-      Enabled: true
+      Enabled: false
       Frame Timeout: 15
       Frames:
         All Enabled: false
-        ar_marker_144:
-          Value: false
-        ar_marker_192:
-          Value: true
-        ar_marker_2:
-          Value: false
-        back_wall2:
-          Value: false
-        base_link:
-          Value: false
-        base_padding:
-          Value: false
-        cover_part1:
-          Value: false
-        cover_part2:
-          Value: false
-        ee_link:
-          Value: false
-        forearm_link:
-          Value: false
-        front_wall2:
-          Value: false
-        gripper_body:
-          Value: false
-        gripper_frame:
-          Value: false
-        kinect_frame:
-          Value: false
-        kinect_ir_link:
-          Value: false
-        kinect_ir_optical_frame:
-          Value: false
-        kinect_keepout:
-          Value: false
-        kinect_link:
-          Value: false
-        kinect_rgb_link:
-          Value: false
-        kinect_rgb_optical_frame:
-          Value: false
-        left_wall2:
-          Value: false
-        right_wall2:
-          Value: false
-        roof2:
-          Value: false
-        shoulder_link:
-          Value: false
-        table_base2:
-          Value: false
-        tcp_frame:
-          Value: false
-        tool_interface_plate:
-          Value: false
-        upper_arm_link:
-          Value: false
-        ur5_stand:
-          Value: false
-        world_frame:
-          Value: false
-        wrist_1_link:
-          Value: false
-        wrist_2_link:
-          Value: false
-        wrist_3_link:
-          Value: false
       Marker Scale: 0.5
       Name: TF
       Show Arrows: false
       Show Axes: true
       Show Names: true
       Tree:
-        world_frame:
-          back_wall2:
-            {}
-          base_padding:
-            {}
-          cover_part1:
-            {}
-          cover_part2:
-            {}
-          front_wall2:
-            {}
-          kinect_keepout:
-            {}
-          kinect_link:
-            kinect_frame:
-              kinect_ir_link:
-                kinect_ir_optical_frame:
-                  {}
-                kinect_rgb_link:
-                  kinect_rgb_optical_frame:
-                    ar_marker_144:
-                      {}
-                    ar_marker_192:
-                      {}
-                    ar_marker_2:
-                      {}
-          left_wall2:
-            {}
-          right_wall2:
-            {}
-          roof2:
-            {}
-          table_base2:
-            {}
-          ur5_stand:
-            base_link:
-              shoulder_link:
-                upper_arm_link:
-                  forearm_link:
-                    wrist_1_link:
-                      wrist_2_link:
-                        wrist_3_link:
-                          ee_link:
-                            gripper_frame:
-                              gripper_body:
-                                {}
-                              tcp_frame:
-                                {}
-                            tool_interface_plate:
-                              {}
+        {}
       Update Interval: 0
-      Value: true
+      Value: false
     - Alpha: 1
       Class: rviz/RobotModel
       Collision Enabled: false
       Enabled: true
       Links:
-        All Links Enabled: true
+        All Links Enabled: false
         Expand Joint Details: false
         Expand Link Details: false
         Expand Tree: false
@@ -223,7 +109,6 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
         forearm_link:
           Alpha: 1
           Show Axes: false
@@ -279,12 +164,12 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         right_wall2:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         roof2:
           Alpha: 1
           Show Axes: false
@@ -304,12 +189,7 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
-        tool_interface_plate:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
+          Value: false
         upper_arm_link:
           Alpha: 1
           Show Axes: false
@@ -339,6 +219,11 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
+        wrist_3_padding:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
       Name: RobotModel
       Robot Description: robot_description
       TF Prefix: ""
@@ -357,7 +242,7 @@ Visualization Manager:
       Color: 255; 255; 255
       Color Transformer: RGB8
       Decay Time: 0
-      Enabled: true
+      Enabled: false
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Max Intensity: 4096
@@ -371,16 +256,15 @@ Visualization Manager:
       Size (m): 0.00999999978
       Style: Points
       Topic: /kinect/depth_registered/points
-      Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
-      Value: true
+      Value: false
     - Class: rviz/Marker
       Enabled: true
       Marker Topic: /pick_and_place_marker
       Name: Marker
       Namespaces:
-        "": true
+        {}
       Queue Size: 1
       Value: true
     - Alpha: 1
@@ -409,13 +293,11 @@ Visualization Manager:
       Size (m): 0.00999999978
       Style: Points
       Topic: /filtered_cloud
-      Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
       Value: false
     - Class: moveit_rviz_plugin/PlanningScene
       Enabled: true
-      Move Group Namespace: ""
       Name: PlanningScene
       Planning Scene Topic: /move_group/monitored_planning_scene
       Robot Description: robot_description
@@ -463,7 +345,6 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
-            Value: true
           forearm_link:
             Alpha: 1
             Show Axes: false
@@ -545,11 +426,6 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
-          tool_interface_plate:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
           upper_arm_link:
             Alpha: 1
             Show Axes: false
@@ -575,6 +451,11 @@ Visualization Manager:
             Show Trail: false
             Value: true
           wrist_3_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          wrist_3_padding:
             Alpha: 1
             Show Axes: false
             Show Trail: false

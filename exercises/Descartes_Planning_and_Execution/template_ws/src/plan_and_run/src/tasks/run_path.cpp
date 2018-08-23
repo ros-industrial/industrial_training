@@ -20,7 +20,7 @@ void DemoApplication::runPath(const DescartesTrajectory& path)
   ROS_ERROR_STREAM("Task '"<<__FUNCTION__ <<"' is incomplete. Exiting"); exit(-1);
 
   // creating move group to move the arm in free space
-  moveit::planning_interface::MoveGroup move_group(config_.group_name);
+  moveit::planning_interface::MoveGroupInterface move_group(config_.group_name);
   move_group.setPlannerId(PLANNER_ID);
 
   // creating goal joint pose to start of the path
@@ -29,14 +29,15 @@ void DemoApplication::runPath(const DescartesTrajectory& path)
    * - Retrieve the first point in the path.
    * - Save the joint values of the first point into "start_pose".
    * Hint:
-   * - The first argument to "first_point_ptr->getNominalJointPose(...)" is a "std::vector<double>" variable
+   * - The first argument to "getNominalJointPose()" is a "seed" joint pose, used to find a nearby IK solution
+   * - The last argument to "getNominalJointPose()" is a "std::vector<double>" variable
    *    where the joint values are to be stored.
    */
   std::vector<double> seed_pose(robot_model_ptr_->getDOF());
   std::vector<double> start_pose;
 
   descartes_core::TrajectoryPtPtr first_point_ptr /* [ COMPLETE HERE ]: =  path[??]*/;
-  /*[ COMPLETE HERE ]: first_point_ptr->getNominalJointPose(??,*robot_model_ptr_,start_pose); */
+  /*[ COMPLETE HERE ]: first_point_ptr->getNominalJointPose(??,*robot_model_ptr_,??); */
 
   // moving arm to joint goal
   move_group.setJointValueTarget(start_pose);

@@ -6,7 +6,7 @@
     - Verify that the arm reached the target.
 
   Hints:
-    - Call the "move_group_interface::MoveGroup::move()" method to move the arm.
+    - Call the "move_group_interface::MoveGroupInterface::move()" method to move the arm.
     - The "result.val" is an integer flag which indicates either success or an error condition.
 */
 
@@ -18,7 +18,7 @@ void DemoApplication::moveHome()
   //ROS_ERROR_STREAM("Task '"<<__FUNCTION__ <<"' is incomplete. Exiting"); exit(-1);
 
   // creating move group interface for planning simple moves
-  moveit::planning_interface::MoveGroup move_group(config_.group_name);
+  moveit::planning_interface::MoveGroupInterface move_group(config_.group_name);
   move_group.setPlannerId(PLANNER_ID);
 
   // setting home position as target
@@ -37,9 +37,7 @@ void DemoApplication::moveHome()
    * - The "result.val" and "result.SUCCESS" flags can be used to verify that the move was completed
    * -
    */
-  //moveit_msgs::MoveItErrorCodes result /* [ COMPLETE HERE ]: = move_group.??() ;*/;
-  //if(false /* [ COMPLETE HERE ]: result.?? != result.?? */)
-  moveit_msgs::MoveItErrorCodes result  = move_group.move();
+  moveit_msgs::MoveItErrorCodes result = move_group.move();
   if(result.val != result.SUCCESS)
   {
     ROS_ERROR_STREAM("Failed to move to "<<HOME_POSITION_NAME<<" position");

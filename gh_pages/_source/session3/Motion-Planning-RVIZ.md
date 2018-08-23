@@ -23,9 +23,13 @@
 
     * _Planning Request -> Query Goal State_
 
- 2. For now, enable display of the _Show Robot Visual_ and _Query Goal State_, leaving _Show Robot Collision_ and _Query Start State_ disabled
+ 1. For now, enable display of the _Show Robot Visual_ and _Query Goal State_, leaving _Show Robot Collision_ and _Query Start State_ disabled
 
     <p align="center"><img src=http://aeswiki.datasys.swri.edu/rositraining/indigo/Exercises/3.5?action=AttachFile&do=get&target=Displays.png /></p>
+
+ 1. Select the `Panel -> Motion Planning - Trajectory Slider` menu option to display a trajectory-preview slider.
+ 
+    * _this slider allows for detailed review of the last planned trajectory_
 
 ## Basic Motion
 
@@ -49,7 +53,6 @@
 
     * _try using the interactive marker to manually move the robot to a desired position_
     * _try using a named pose (e.g. "straight up")_
-    * _try enabling Displays -> Motion Planning -> Planned Path -> Show Trail_
 
     <p align="center"><img src=http://aeswiki.datasys.swri.edu/rositraining/indigo/Exercises/3.5?action=AttachFile&do=get&target=MotionQueries.png /></p>
 
@@ -86,8 +89,8 @@
       * Try different planning algorithms in this, more complex, planning task
 
     * Try adding a new obstacle to the scene:
-      * Download the [I-Beam.dae](https://raw.githubusercontent.com/ros-industrial/industrial_training/indigo/training/orig/3.5/src/I-Beam.dae) model to your VM
-      * Under the Scene Objects tab, add the file you just created
+      * Under the Scene Objects tab, add the `I-Beam.dae` CAD model
+         * This file is located in the _industrial_training_ repo: `~/industrial_training/exercises/3.4/I-Beam.dae`
       * Move the I-Beam into an interesting position, using the manipulation handles
       * Press Publish Scene, to push the updated position to MoveIt
       * Try to plan around the obstacle

@@ -31,7 +31,7 @@ Your goal is to create your first ROS node:
    cd ~/catkin_ws/src
    ```
 
-2. Use the ROS command to create a package called _myworkcell_core_ with a dependency on _roscpp_
+1. Use the ROS command to create a package called _myworkcell_core_ with a dependency on _roscpp_
 
    ```
    catkin create pkg myworkcell_core --catkin-deps roscpp
@@ -43,7 +43,7 @@ Your goal is to create your first ROS node:
    * _The first argument is the name of the new ROS package._
    * _Use `--catkin-deps` to specify packages which the newly created package depends on._
 
-3. There will now be a folder named _myworkcell_core_. Change into that folder and edit the _package.xml_ file. Edit the file and change the description, author, etc., as desired.
+1. There will now be a folder named _myworkcell_core_. Change into that folder and edit the _package.xml_ file. Edit the file and change the description, author, etc., as desired.
 
    ```
    cd myworkcell_core
@@ -114,7 +114,6 @@ Your goal is to create your first ROS node:
    }
    ```
 
-
 1. Create a ROS node handle.
 
    ``` c++
@@ -181,7 +180,7 @@ Your goal is to create your first ROS node:
    * It will print the message to the terminal output, and send it to the _/rosout_ topic for other nodes to monitor.
    * There are 5 levels of logging: _DEBUG, INFO, WARNING, ERROR, & FATAL._
    * To use a different logging level, replace INFO in _ROS_INFO_ or _ROS_INFO_STREAM_ with the appropriate level.
-   * To use printf-style logging, use _ROS_INFO_.
+   * Use _ROS_INFO_ for printf-style logging, and _ROS_INFO_STREAM_ for cout-style logging.
 
 1. Build your program (node), by running `catkin build` in a terminal window
 
