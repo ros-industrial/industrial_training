@@ -173,7 +173,7 @@ int main(int argc, char** argv)
   // create some arbitrary pose checkpoints and goals
   Eigen::Affine3d retreat_pose = approach_pose;
 
-  Eigen::Vector3d box_move(-0.3, 0.0, 0.0);
+  Eigen::Vector3d box_move(-0.7, -0.2, 0.0);
   approach_pose.translation() += box_move;
 
   final_pose.translation() += box_move;

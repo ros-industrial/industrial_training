@@ -15,7 +15,7 @@
         <origin xyz="0.0 0.0 0.77153" rpy="0 0 0"/>
     </xacro:workcell >
     <xacro:shelf id="1" parent_link="world" >
-         <origin rpy="0 0 4.7124" xyz="-0.85 0.8 0.12"/>
+         <origin rpy="0 0 4.7124" xyz="-0.85 0.8 0.11"/>
     </xacro:shelf >
 
     <!-- Create joints -->
