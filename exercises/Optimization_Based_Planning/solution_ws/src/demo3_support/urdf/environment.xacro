@@ -63,6 +63,68 @@
 </xacro:macro>
 
 
+
+<!-- Shelf -->
+<xacro:macro name="shelf" params="id parent_link *location">
+  <link name="shelf_${id}">
+  <visual>
+    <geometry>
+      <mesh filename="package://demo3_support/meshes/shelf.STL"/>
+    </geometry>
+    <material name="light_gray"/>
+  </visual>
+
+    <collision name="shelf_${id}_back">
+      <geometry>
+        <box size="0.9144 0.05 1.8288"/>
+      </geometry>
+      <origin xyz="0.4572 0.0 0.9144"/>
+    </collision>
+    <collision name="shelf_${id}_sideL">
+      <geometry>
+        <box size="0.05 0.5096 1.8288"/>
+      </geometry>
+      <origin xyz="0.025 0.22 0.9144"/>
+    </collision>
+    <collision name="shelf_${id}_sideR">
+      <geometry>
+        <box size="0.05 0.5096 1.8288"/>
+      </geometry>
+      <origin xyz=".945 0.22 0.9144"/>
+    </collision>
+    <collision name="shelf_${id}_shelf1">
+      <geometry>
+        <box size="0.9144 0.5096 0.05"/>
+      </geometry>
+      <origin xyz=".4572 0.22 0.025"/>
+    </collision>
+    <collision name="shelf_${id}_shelf2">
+      <geometry>
+        <box size="0.9144 0.5096 0.05"/>
+      </geometry>
+      <origin xyz=".4572 0.22 0.6346"/>
+    </collision>
+    <collision name="shelf_${id}_shelf3">
+      <geometry>
+        <box size="0.9144 0.5096 0.05"/>
+      </geometry>
+      <origin xyz=".4572 0.22 1.2442"/>
+    </collision>
+    <collision name="shelf_${id}_shelf4">
+       <geometry>
+         <box size="0.9144 0.5096 0.05"/>
+       </geometry>
+       <origin xyz=".4572 0.22 1.8038"/>
+    </collision>
+  </link>
+
+
+  <joint name="shelf_${id}_joint" type ="fixed">
+    <xacro:insert_block name="location" />
+    <parent link="${parent_link}"/>
+    <child link="shelf_${id}"/>
+  </joint>
+
 </xacro:macro>
 
 
