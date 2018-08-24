@@ -30,7 +30,7 @@ public:
   /**
    * @brief Adds a cost to the optimization of the joint velocities
    * @param pci - The trajopt problem construction info to which the cost is added
-   * @param coeff - Currently unused
+   * @param coeff -
    */
   void addJointVelCost(trajopt::ProblemConstructionInfo& pci, double coeff);
 
