@@ -19,9 +19,18 @@ TrajoptPickAndPlaceConstructor::TrajoptPickAndPlaceConstructor(tesseract::BasicE
 void TrajoptPickAndPlaceConstructor::addInitialJointPosConstraint(trajopt::ProblemConstructionInfo& pci)
 {
   std::shared_ptr<JointConstraintInfo> start_constraint = std::shared_ptr<JointConstraintInfo>(new JointConstraintInfo);
-  start_constraint->term_type = TT_CNT;
-  start_constraint->timestep = 0;
-  start_constraint->name = "start_pos_constraint";
+
+  /* Fill Code:
+       . Define the term type (This is a constraint)
+       . Define the time step
+       . Define the constraint name
+
+  */
+  /* ========  ENTER CODE HERE ======== */
+
+
+
+
   Eigen::VectorXd start_joint_pos = env_->getCurrentJointValues();
   start_constraint->vals = std::vector<double>(start_joint_pos.data(), start_joint_pos.data() + start_joint_pos.rows());
   pci.cnt_infos.push_back(start_constraint);
@@ -30,16 +39,25 @@ void TrajoptPickAndPlaceConstructor::addInitialJointPosConstraint(trajopt::Probl
 void TrajoptPickAndPlaceConstructor::addJointVelCost(trajopt::ProblemConstructionInfo& pci, double coeff)
 {
   std::vector<std::string> joint_names = kin_->getJointNames();
+  // Loop over all of the joints
   for (std::size_t i = 0; i < joint_names.size(); i++)
   {
     std::shared_ptr<JointVelTermInfo> jv(new JointVelTermInfo);
-    jv->coeffs = std::vector<double>(1, 5.0);
-    jv->name = joint_names[i] + "_vel";
-    jv->term_type = TT_COST;
-    jv->first_step = 0;
-    jv->last_step = pci.basic_info.n_steps - 1;
-    jv->joint_name = joint_names[i];
-    jv->penalty_type = sco::SQUARED;
+    jv->coeffs = std::vector<double>(1, coeff);
+    /* Fill Code:
+         . Define the term time (This is a cost)
+         . Define the first time step
+         . Define the last time step
+         . Define the joint name
+         . Define the penalty type as sco::squared
+    */
+    /* ========  ENTER CODE HERE ======== */
+
+
+
+
+
+
     pci.cost_infos.push_back(jv);
   }
 }
@@ -51,12 +69,22 @@ void TrajoptPickAndPlaceConstructor::addCollisionCost(trajopt::ProblemConstructi
                                                       int last_step)
 {
   std::shared_ptr<CollisionCostInfo> collision(new CollisionCostInfo);
-  collision->name = "collision";
-  collision->term_type = TT_COST;
-  collision->continuous = false;
-  collision->first_step = first_step;
-  collision->last_step = last_step;
-  collision->gap = 1;
+  /* Fill Code:
+       . Define the cost name
+       . Define the term type (This is a cost)
+       . Define this cost as not continuous
+       . Define the first time step
+       . Define the last time step
+       . Set the cost gap to be 1
+       . Define the penalty type as sco::squared
+  */
+  /* ========  ENTER CODE HERE ======== */
+
+
+
+
+
+
   collision->info = createSafetyMarginDataVector(last_step - first_step + 1, dist_pen, coeff);
 
   pci.cost_infos.push_back(collision);
@@ -77,25 +105,42 @@ void TrajoptPickAndPlaceConstructor::addLinearMotion(trajopt::ProblemConstructio
   double angle_delta = aa_rotation_diff.angle() / (num_steps - 1);
   Vector3d delta_axis = aa_rotation_diff.axis();
 
-  // Constraints for linear pick motion
+  // Create a series of pose constraints for linear pick motion
   for (int i = 0; i < num_steps; i++)
   {
-    std::shared_ptr<StaticPoseCostInfo> pose_constraint = std::shared_ptr<StaticPoseCostInfo>(new StaticPoseCostInfo);
-    pose_constraint->term_type = TT_CNT;
-    pose_constraint->link = ee_link_;
-    pose_constraint->timestep = i + first_time_step;
-    pose_constraint->xyz = start_pose.translation() + xyz_delta * i;
+    /* Fill Code:
+         . Create a new shared_ptr<StaticPoseCostInfo>
+         . Define the term type (This is a constraint)
+         . Set the link constrained as the end effector (see class members)
+         . Set the correct time step for this pose
+         . Set the pose xyz translation
+    */
+    /* ========  ENTER CODE HERE ======== */
+
+
+
+
+
 
     Quaterniond rotation_delta(cos(0.5 * angle_delta * i),
                                delta_axis.x() * sin(0.5 * angle_delta * i),
                                delta_axis.y() * sin(0.5 * angle_delta * i),
                                delta_axis.z() * sin(0.5 * angle_delta * i));
     Quaterniond rotation = rotation_delta * approach_rotation;
-    pose_constraint->wxyz = Vector4d(rotation.w(), rotation.x(), rotation.y(), rotation.z());
-    pose_constraint->pos_coeffs = Vector3d(10.0, 10.0, 10.0);
-    pose_constraint->rot_coeffs = Vector3d(10.0, 10.0, 10.0);
-    pose_constraint->name = "pose_" + std::to_string(i + first_time_step);
-    pci.cnt_infos.push_back(pose_constraint);
+
+    /* Fill Code:
+         . Set the pose rotation
+         . Set pos_coeffs to all 10s
+         . Set rot_coeffs to all 10s
+         . Define the pose name as pose_[timestep]
+         . pushback the constraint to cnt_infos
+    */
+    /* ========  ENTER CODE HERE ======== */
+
+
+
+
+
   }
 }
 
@@ -106,10 +151,16 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePickProblem(Affine3d& app
   // create new problem
   trajopt::ProblemConstructionInfo pci(env_);
 
-  // Add basic info
-  pci.basic_info.n_steps = steps_per_phase * 2;
-  pci.basic_info.start_fixed = false;
-  pci.basic_info.manip = manipulator_;
+  /* Fill Code:
+   * Define the basic info
+       . Set the pci number of steps
+       . Set the start_fixed to false
+       . Set the manipulator name (see class members)
+  */
+  /* ========  ENTER CODE HERE ======== */
+
+
+
 
   // Add kinematics
   pci.kin = kin_;
@@ -117,11 +168,17 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePickProblem(Affine3d& app
   pci.init_info.type = InitInfo::STATIONARY;
   pci.init_info.data = env_->getCurrentJointValues(pci.kin->getName());
 
-  this->addJointVelCost(pci, 5.0);
+  /* Fill Code: Define motion
+       . Add joint velocity contraint (this->addJointVelCost(pci, 5.0))
+       . Add initial joint pose constraint
+       . Add linear motion contraints from approach_pose to final_pose
+  */
+  /* ========  ENTER CODE HERE ======== */
 
-  this->addInitialJointPosConstraint(pci);
 
-  this->addLinearMotion(pci, approach_pose, final_pose, steps_per_phase, steps_per_phase);
+
+
+
 
   this->addCollisionCost(pci, 0.025, 20, 0, steps_per_phase);
 
@@ -137,10 +194,16 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePlaceProblem(Affine3d& re
   // create new problem
   trajopt::ProblemConstructionInfo pci(env_);
 
-  // Add basic info
-  pci.basic_info.n_steps = steps_per_phase * 3;
-  pci.basic_info.start_fixed = false;
-  pci.basic_info.manip = manipulator_;
+  /* Fill Code: Define the basic info
+       . Set the pci number of steps
+       . Set the start_fixed to false
+       . Set the manipulator name (see class members)
+  */
+  /* ========  ENTER CODE HERE ======== */
+
+
+
+
 
   // Add kinematics
   pci.kin = kin_;
@@ -159,12 +222,19 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePlaceProblem(Affine3d& re
                       ee_link_,
                       *env_->getState());
 
-  this->addLinearMotion(pci, start_pose, retreat_pose, steps_per_phase, 0);
+  /* Fill Code: Define motion
+       . Add linear motion from start_pose to retreat_pose
+       . Add linear motion from approach_pose to final_pose
+       . Add collision cost
+       . Construct the problem and store as result
+  */
+  /* ========  ENTER CODE HERE ======== */
 
-  this->addLinearMotion(pci, approach_pose, final_pose, steps_per_phase, steps_per_phase * 2);
 
-  this->addCollisionCost(pci, 0.025, 20, steps_per_phase, steps_per_phase * 2 - 1);
 
-  TrajOptProbPtr result = ConstructProblem(pci);
+
+
+
+
   return result;
 }
