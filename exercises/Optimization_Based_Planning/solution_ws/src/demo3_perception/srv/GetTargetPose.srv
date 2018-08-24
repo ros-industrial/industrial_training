@@ -1,6 +1,6 @@
-# empty request target pose
+# Request - empty
 ---
-# target pose response
+# Response - service returns a bool and a geometry_msgs/Pose
 bool succeeded
 geometry_msgs/Pose target_pose
 

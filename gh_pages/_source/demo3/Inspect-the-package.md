@@ -36,45 +36,32 @@ catkin build
 source devel/setup.bash
 ```
 
-## Locate and navigate into the package
-```
-cd ~/perception_driven_ws/src/collision_avoidance_pick_and_place/
-```
+## Explore your workspace
+Your workspace contains 6 packages
 
-## Look into each file in the launch directory
-```
-ur5_setup.launch     : Brings up the entire ROS system (MoveIt!, rviz, perception, ROS-I drivers, robot I/O peripherals)
-ur5_pick_and_place.launch   : Runs your pick and place node.
-```
+* ***demo3*** - This is the main pick and place package. It contains the main pick and place node and the launch file to bring up the system.
+* ***demo3_perception*** - This package contains the perception pipeline. We will develop a PCL algorithm to use a 3d camera to detect a pick object and pass it's location to the pick and place node. 
+* ***demo3_support*** - This package contains the support files for the system. This is where files such as the robot model are stored.
+* ***gl_depth_sim*** - This package simulates a 3d camera by using OpenGL to convert a mesh and a camera pose into a point cloud. It was installed from github by wstool.
+* ***tesseract*** - This package runs the planning environment. It contains tools for robot path planning, collision checking, and visualization. It was installed from github by wstool.
+* ***trajopt*** - This package contains the trajopt motion planner. We will use this to path plan - optimizing for avoiding collisions, following a set of desired waypoints, and meeting physical robot constraints.
 
-## Look into the config directory
-
-```
-ur5/
- - pick_and_place_parameters.yaml    : List of parameters read by the pick and place node.
- - rviz_config.rviz   : Rviz configuration file for display properties.
- - target_recognition_parameters.yaml    : Parameters used by the target recognition service for detecting the box from the sensor data.
- - test_cloud_obstacle_descriptions.yaml    : Parameters used to generate simulated sensor data (simulated sensor mode only)
- - collision_obstacles.txt   : Description of each obstacle blob added to the simulated sensor data (simulated sensor mode only)
-```
 
 ## Look into the src directory
 
-```
-nodes:
- - pick_and_place_node.cpp : Main application thread. Contains all necessary headers and function calls.
+### Nodes:
 
-tasks: Source files with incomplete function definitions.  You will fill with code where needed in order to complete the exercise.
- - create_motion_plan.cpp
- - create_pick_moves.cpp 
- - create_place_moves.cpp
- - detect_box_pick.cpp
- - pickup_box.cpp
- - place_box.cpp
- - move_to_wait_position.cpp
- - set_attached_object.cpp
- - set_gripper.cpp
+* **test_bed_core_node.cpp** : Main application thread. Contains all necessary headers and function calls to perform a scripted pick and place operation.
 
-utilities:  
- - pick_and_place_utilities.cpp : Contains support functions that will help you complete the exercise.
-```
+* **sensor_simulator_3d.cpp** : Simulates data from a 3d camera sensor. Only used in simulation.
+
+### Utilities
+* **trajopt_pick_and_place_constructor.cpp** : Contains source code for trajopt pick and place helper functions. This is where the majority of the trajopt implementation will be.
+
+##
+
+
+
+
+
+

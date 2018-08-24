@@ -8,6 +8,6 @@
  * Learn how to setup a TrajOpt path planning problem
  * Learn how to use costs and constraints in TrajOpt
  * Learn how to move the arm to a joint or Cartesian position.
- * Leverage perception capabilities including AR tag recognition and PCL
+ * Leverage perception capabilities using PCL
  * Plan collision-free paths for a pick and place task
  * Control robot peripherals such as a gripper
