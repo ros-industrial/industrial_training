@@ -106,7 +106,7 @@ public:
     pcl::PointCloud<pcl::PointXYZ> cloud;
     pcl::fromROSMsg(transformed_cloud, cloud);
 
-    // MAKE TIMERS FOR PROCESS (OPTIONAL)
+    // MAKE TIMERS FOR PROCESS
     ros::Time start_init = ros::Time::now();
 
     /* ========================================
@@ -118,9 +118,9 @@ public:
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_voxel_filtered(new pcl::PointCloud<pcl::PointXYZ>());
     // create an instance of the pcl VoxelGrid
     pcl::VoxelGrid<pcl::PointXYZ> voxel_filter;
-    voxel_filter.setInputCloud(cloud_ptr);
-    voxel_filter.setLeafSize(float(voxel_leaf_size), float(voxel_leaf_size), float(voxel_leaf_size));
-    voxel_filter.filter(*cloud_voxel_filtered);
+    //ENTER CODE HERE: Set input cloud
+    //ENTER CODE HERE: Set Leaf Size
+    //ENTER CODE HERE: Filter the cloud
 
     ROS_INFO_STREAM("Original cloud  had " << cloud_voxel_filtered->size() << " points");
     ROS_INFO_STREAM("Downsampled cloud  with " << cloud_voxel_filtered->size() << " points");
@@ -137,34 +137,34 @@ public:
     pass_x.filter(xf_cloud);
 
     // pass to filter in y
-    pcl::PointCloud<pcl::PointXYZ>::Ptr xf_cloud_ptr(new pcl::PointCloud<pcl::PointXYZ>(xf_cloud));
-    pcl::PassThrough<pcl::PointXYZ> pass_y;
-    pass_y.setInputCloud(xf_cloud_ptr);
-    pass_y.setFilterFieldName("y");
-    pass_y.setFilterLimits(y_filter_min, y_filter_max);
-    pass_y.filter(yf_cloud);
+    //ENTER CODE HERE
+    //ENTER CODE HERE
+    //ENTER CODE HERE
+    //ENTER CODE HERE
+    //ENTER CODE HERE
+    //ENTER CODE HERE
 
     // pass to filter in z
-    pcl::PointCloud<pcl::PointXYZ>::Ptr yf_cloud_ptr(new pcl::PointCloud<pcl::PointXYZ>(yf_cloud));
-    pcl::PassThrough<pcl::PointXYZ> pass_z;
-    pass_z.setInputCloud(yf_cloud_ptr);
-    pass_z.setFilterFieldName("z");
-    pass_z.setFilterLimits(z_filter_min, z_filter_max);
-    pass_z.filter(zf_cloud);
+    //ENTER CODE HERE
+    //ENTER CODE HERE
+    //ENTER CODE HERE
+    //ENTER CODE HERE
+    //ENTER CODE HERE
+    //ENTER CODE HERE
 
     /* ========================================
      * Fill Code: CROPBOX (OPTIONAL)
      * Instead of three passthrough filters, the cropbox filter can be used
      * The user should choose one or the other method
      * ========================================*/
-    pcl::PointCloud<pcl::PointXYZ> xyz_filtered_cloud;
-    pcl::CropBox<pcl::PointXYZ> crop;
-    crop.setInputCloud(cloud_voxel_filtered);
-    Eigen::Vector4f min_point = Eigen::Vector4f(x_filter_min, y_filter_min, z_filter_min, 0);
-    Eigen::Vector4f max_point = Eigen::Vector4f(x_filter_max, y_filter_max, z_filter_max, 0);
-    crop.setMin(min_point);
-    crop.setMax(max_point);
-    crop.filter(xyz_filtered_cloud);
+
+
+
+
+
+
+
+
 
     // Publish cropped cloud
     if(debug_)
@@ -192,10 +192,10 @@ public:
     seg.setOptimizeCoefficients(true);
     seg.setModelType(pcl::SACMODEL_PLANE);
     seg.setMethodType(pcl::SAC_RANSAC);
-    seg.setMaxIterations(plane_max_iter);
-    seg.setDistanceThreshold(plane_dist_thresh);
+    //ENTER CODE HERE: Set max iterations
+    //ENTER CODE HERE: Set distance threshold
     // Segment the largest planar component from the cropped cloud
-    seg.setInputCloud(cropped_cloud);
+    //ENTER CODE HERE: Set input cloud
     seg.segment(*inliers, *coefficients);
     if (inliers->indices.size() == 0)
     {
@@ -227,11 +227,10 @@ public:
 
     std::vector<pcl::PointIndices> cluster_indices;
     pcl::EuclideanClusterExtraction<pcl::PointXYZ> ec;
-    ec.setClusterTolerance(cluster_tol);  // 2cm
-    ec.setMinClusterSize(cluster_min_size);
-    ec.setMaxClusterSize(cluster_max_size);
-    ec.setSearchMethod(tree);
-    ec.setInputCloud(cloud_filtered);
+    //ENTER CODE HERE: Set cluster tolerance
+    //ENTER CODE HERE: Set minimum cluster size
+    //ENTER CODE HERE: Set maximum cluster size
+    //ENTER CODE HERE: Set search method to tree
     ec.extract(cluster_indices);
 
     std::vector<sensor_msgs::PointCloud2::Ptr> pc2_clusters;
@@ -263,10 +262,11 @@ public:
     pcl::PointCloud<pcl::PointXYZ>::Ptr cluster_cloud_ptr = clusters.at(0);
     pcl::PointCloud<pcl::PointXYZ>::Ptr sor_cloud_filtered(new pcl::PointCloud<pcl::PointXYZ>);
     pcl::StatisticalOutlierRemoval<pcl::PointXYZ> sor;
-    sor.setInputCloud(cluster_cloud_ptr);
-    sor.setMeanK(50);
-    sor.setStddevMulThresh(1.0);
-    sor.filter(*sor_cloud_filtered);
+    //ENTER CODE HERE: Set input cloud
+    //ENTER CODE HERE: Set meanK
+    //ENTER CODE HERE: set StddevMulThresh
+    //ENTER CODE HERE: filter
+
 
     // Publish object as point cloud
     if(debug_)
@@ -289,13 +289,13 @@ public:
     pcl::ModelCoefficients::Ptr coefficients2(new pcl::ModelCoefficients);
     Eigen::Vector3f axis = Eigen::Vector3f(0.0, 0.0, 1.0);
 
-    segTop.setOptimizeCoefficients(true);
-    segTop.setModelType(pcl::SACMODEL_PERPENDICULAR_PLANE);
-    segTop.setMethodType(pcl::SAC_RANSAC);
-    segTop.setAxis(axis);
-    segTop.setEpsAngle(30.0f * (M_PI / 180.0f));
-    segTop.setMaxIterations(plane_max_iter);
-    segTop.setDistanceThreshold(plane_dist_thresh);
+    //ENTER CODE HERE: SetOptimizeCoefficients
+    //ENTER CODE HERE: SetModelType (May need to be different from above)
+    //ENTER CODE HERE: Set method type
+    //ENTER CODE HERE: Set perpendicular axis
+    //ENTER CODE HERE: Set epsAngle
+    //ENTER CODE HERE: Set Max iter
+    //ENTER CODE HERE: set distance threshold
     // Segment the largest planar component perpendicular to the world z axis from the cropped cloud
     segTop.setInputCloud(cluster_cloud_ptr);
     segTop.segment(*inliers2, *coefficients2);
@@ -336,25 +336,25 @@ public:
 
 
     /* ========================================
-     * BROADCAST PART TRANSFORM
+     * Fill Code: BROADCAST PART TRANSFORM
      * ========================================*/
     Eigen::Vector4f origin;
     // Compute centroid of the top of the pick plane
-    pcl::compute3DCentroid(*cloud_planeTop, origin);
+    //ENTER CODE HERE: Compute the centroid and store in origin
     geometry_msgs::Pose part_pose;
 
-    part_pose.position.x = origin[0];
-    part_pose.position.y = origin[1];
-    part_pose.position.z = origin[2];
-    part_pose.orientation.x = 0;
-    part_pose.orientation.y = 0;
-    part_pose.orientation.z = 0;
-    part_pose.orientation.w = 1;
+    //ENTER CODE HERE: Set x
+    //ENTER CODE HERE: Set y
+    //ENTER CODE HERE: Set z
+    //ENTER CODE HERE: Set rot x
+    //ENTER CODE HERE: Set rot y
+    //ENTER CODE HERE: Set rot z
+    //ENTER CODE HERE: Set rot w
 
     // Store the returned values of the service as defined in the .srv file
     res.target_pose = part_pose;
 
-    // TODO - Add flag to return false if failed
+
     res.succeeded = true;
     ROS_INFO("Perception service returning");
 
