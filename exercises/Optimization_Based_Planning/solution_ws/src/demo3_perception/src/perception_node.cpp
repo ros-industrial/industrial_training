@@ -26,7 +26,9 @@
 #include <tf_conversions/tf_eigen.h>
 #include <pcl/surface/convex_hull.h>
 
+// Needed to return a Pose message
 #include <geometry_msgs/Pose.h>
+// Needed for ROS Service
 #include <demo3_perception/GetTargetPose.h>
 
 
@@ -351,6 +353,8 @@ public:
 
     // Store the returned values of the service as defined in the .srv file
     res.target_pose = part_pose;
+
+    // TODO - Add flag to return false if failed
     res.succeeded = true;
     ROS_INFO("Perception service returning");
 

@@ -1,42 +1,8 @@
 # Initialization and Global Variables
 >In this exercise, we will take a first look at the main application "pick_and_place_node.cpp", its public variables, and how to properly initialize it as a ros node.
 
-## Application Variables
 
-  In QT, open
-```
-[Source directory]/collision_avoidance_pick_and_place/include/collision_avoidance_pick_and_place/pick_and_place_utilities.h
-```
-The c++ class 'pick_and_place_config' defines public global variables used in various parts of the program. 
-  These variables 
-
-```
-    ARM_GROUP_NAME  = "manipulator";
-    TCP_LINK_NAME   = "tcp_frame";
-    MARKER_TOPIC = "pick_and_place_marker";
-    PLANNING_SCENE_TOPIC = "planning_scene";
-    TARGET_RECOGNITION_SERVICE = "target_recognition";
-    MOTION_PLAN_SERVICE = "plan_kinematic_path";
-    WRIST_LINK_NAME = "ee_link";
-    ATTACHED_OBJECT_LINK_NAME = "attached_object_link";
-    WORLD_FRAME_ID  = "world_frame";
-    HOME_POSE_NAME  = "home";
-    WAIT_POSE_NAME  = "wait";
-    AR_TAG_FRAME_ID    = "ar_frame";
-    GRASP_ACTION_NAME = "grasp_execution_action";
-    BOX_SIZE        = tf::Vector3(0.1f, 0.1f, 0.1f);
-    BOX_PLACE_TF    = tf::Transform(tf::Quaternion::getIdentity(), tf::Vector3(-0.8f,-0.2f,BOX_SIZE.getZ()));
-    TOUCH_LINKS = std::vector<std::string>();
-    RETREAT_DISTANCE  = 0.05f;
-    APPROACH_DISTANCE = 0.05f;
-```
-
-  In the main program ('''pick_and_place_node.cpp'''), the global '''application''' object provides access to the program variables through its '''cfg''' member.  For instance, in order to use the 
-  "WORLD_FRAME_ID" global variable we would do the following:
-
-```
-ROS_INFO_STREAM("world frame: " << application.cfg.WORLD_FRAME_ID)
-```
+##TODO - Update this page
 
 ## Node Initialization
 

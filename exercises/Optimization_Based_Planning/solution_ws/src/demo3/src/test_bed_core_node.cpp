@@ -106,6 +106,7 @@ int main(int argc, char** argv)
   Eigen::Affine3d world_to_box;
   demo3_perception::GetTargetPose srv;
   ROS_INFO("Calling Service to find pick location");
+  // This calls the perception service
   if (find_pick_client.call(srv))
   {
     tf::poseMsgToEigen(srv.response.target_pose, world_to_box);
@@ -173,7 +174,7 @@ int main(int argc, char** argv)
   // create some arbitrary pose checkpoints and goals
   Eigen::Affine3d retreat_pose = approach_pose;
 
-  Eigen::Vector3d box_move(-0.7, -0.2, 0.0);
+  Eigen::Vector3d box_move(-0.7, -0.1, 0.0);
   approach_pose.translation() += box_move;
 
   final_pose.translation() += box_move;
