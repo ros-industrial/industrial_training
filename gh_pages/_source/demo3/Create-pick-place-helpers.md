@@ -23,8 +23,7 @@ In order to simplify the scripting of the pick and place operation, helper funct
 
   * Open trajopt_pick_and_place_constructor.cpp
   * Find every line that begins with the comment "''Fill Code: ''" and read the description.  Then, replace every instance of the comment  "''ENTER CODE HERE''"
- with the appropriate line of code
-
+ with the appropriate section of code
 ```
 /* Fill Code:
      .
@@ -34,7 +33,11 @@ In order to simplify the scripting of the pick and place operation, helper funct
 /* ========  ENTER CODE HERE ======== */
 ```
 
+ * The '''create_manipulation_poses()''' uses the values of the approach and retreat distances in order to create the corresponding poses at the desired target.
 
+ * Since moveit plans the robot path for the arm's wrist, then it is necessary to convert all the pick poses to the wrist coordinate frame.
+
+ * The [[lookupTransform|http://mirror.umd.edu/roswiki/doc/hydro/api/tf/html/c++/classtf_1_1Transformer.html#ac01a9f8709a828c427f1a5faa0ced42b]] method can provide the pose of a target relative to another pose.
 
 ## Build Code and Run
 

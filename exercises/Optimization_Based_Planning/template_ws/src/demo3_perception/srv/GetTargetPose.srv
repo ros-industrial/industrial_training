@@ -1,6 +1,2 @@
-# Request - empty
----
-# Response - service returns a bool and a geometry_msgs/Pose
-bool succeeded
-geometry_msgs/Pose target_pose
+# Add service definition here
 

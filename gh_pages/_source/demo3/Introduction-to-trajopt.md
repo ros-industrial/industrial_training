@@ -5,7 +5,12 @@ TODO
 
 ## Forming Trajopt Problem
 
-TODO
+
+TT_COST = Cost
+
+TT_CNT = Constraint
+
+
 ## Trajopt Solver
 
 TODO
