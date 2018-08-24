@@ -4,7 +4,7 @@
 ## Build Package Dependencies
 In a terminal type:
 ```
-cd ~/perception_driven_ws
+cd ~/optimized_planning_ws
 catkin build --cmake-args -G 'CodeBlocks - Unix Makefiles'
 source devel/setup.bash
 ```
@@ -15,4 +15,4 @@ File -> New -> Import ROS Project ->
 ```
 
 ## Open the Main Thread Source File
-  In the project tab, navigate into the `[Source directory]/collision_avoidance_pick_and_place/src/nodes` directory and open the `pick_and_place_node.cpp` file
+  In the project tab, navigate into the `[Source directory]/demo3/src/` directory and open the `test_bed_core_node.cpp` file

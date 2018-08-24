@@ -20,6 +20,45 @@ public:
                                  std::string ee_link,
                                  std::string pick_object,
                                  Eigen::Affine3d tcp = Eigen::Affine3d::Identity());
+
+  /**
+   * @brief Constrains initial joint positiions
+   * @param pci - The trajopt problem construction info to which the cost is added
+   */
+  void addInitialJointPosConstraint(trajopt::ProblemConstructionInfo& pci);
+
+  /**
+   * @brief Adds a cost to the optimization of the joint velocities
+   * @param pci - The trajopt problem construction info to which the cost is added
+   * @param coeff - Currently unused
+   */
+  void addJointVelCost(trajopt::ProblemConstructionInfo& pci, double coeff);
+
+  /**
+   * @brief Adds a collision cost to a subset of the time steps in a trajopt problem construction info
+   * @param pci - The trajopt problem construction info to which the cost is added
+   * @param dist_pen
+   * @param coeff
+   * @param first_step - First step to which the collision cost is added
+   * @param last_step
+   */
+  void
+  addCollisionCost(trajopt::ProblemConstructionInfo& pci, double dist_pen, double coeff, int first_step, int last_step);
+
+  /**
+   * @brief Adds a linear move to the problem construction info
+   * @param pci - The trajopt problem construction info to which the move is added
+   * @param start_pose - The starting pose of the linear move
+   * @param end_pose - The end pose of the linear move
+   * @param num_steps -  Number of steps for the move.
+   * @param first_time_step - Time step at which the move is added
+   */
+  void addLinearMotion(trajopt::ProblemConstructionInfo& pci,
+                       Eigen::Affine3d start_pose,
+                       Eigen::Affine3d end_pose,
+                       int num_steps,
+                       int first_time_step);
+
   /**
    * @brief Generates a trajopt problem for a "pick" move
    * Consists of 2 phases - a free space move to approach_pose and a linear move to final_pose
@@ -46,41 +85,4 @@ public:
                                                Eigen::Affine3d& approach_pose,
                                                Eigen::Affine3d& final_pose,
                                                int steps_per_phase);
-  /**
-   * @brief Adds a linear move to the problem construction info
-   * @param pci - The trajopt problem construction info to which the move is added
-   * @param start_pose - The starting pose of the linear move
-   * @param end_pose - The end pose of the linear move
-   * @param num_steps -  Number of steps for the move.
-   * @param first_time_step - Time step at which the move is added
-   */
-  void addLinearMotion(trajopt::ProblemConstructionInfo& pci,
-                       Eigen::Affine3d start_pose,
-                       Eigen::Affine3d end_pose,
-                       int num_steps,
-                       int first_time_step);
-
-  /**
-   * @brief addInitialJointPosConstraint
-   * @param pci - The trajopt problem construction info to which the cost is added
-   */
-  void addInitialJointPosConstraint(trajopt::ProblemConstructionInfo& pci);
-
-  /**
-   * @brief addJointVelCost
-   * @param pci - The trajopt problem construction info to which the cost is added
-   * @param coeff - Currently unused
-   */
-  void addJointVelCost(trajopt::ProblemConstructionInfo& pci, double coeff);
-
-  /**
-   * @brief Adds a collision cost to a subset of the time steps in a trajopt problem construction info
-   * @param pci - The trajopt problem construction info to which the cost is added
-   * @param dist_pen
-   * @param coeff
-   * @param first_step - First step to which the collision cost is added
-   * @param last_step
-   */
-  void
-  addCollisionCost(trajopt::ProblemConstructionInfo& pci, double dist_pen, double coeff, int first_step, int last_step);
 };

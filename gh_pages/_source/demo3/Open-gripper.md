@@ -1,3 +1,4 @@
+# TODO Update this for hardware
 # Open Gripper
 >In this exercise, the objective is to use a "grasp action client" to send a grasp goal that will open the gripper.
 

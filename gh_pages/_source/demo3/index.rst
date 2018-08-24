@@ -9,6 +9,10 @@ Application Demo 3 - Optimization Based Planning
    Demo 3.2 - Package Setup <Package-Setup.md>
    Demo 3.3 - Start in Simulation Mode <Bring-up-ROS-system-in-simulation-mode.md>
    Demo 3.4 - Initialization and Global Variables <Initialization-and-global-variables.md>
+   Demo 3.5 - Detect Box Pick Point <Detect-box-pick-point.md>
+   Demo 3.6 - Introduction to Trajopt <Introduction-to-trajopt.md>
+   Demo 3.7 - Create Pick and Place Helpers <Create-pick-place-helpers.md>
+   
    Demo 3.5 - Move Arm to Wait Position <Move-arm-to-wait-position.md>
    Demo 3.6 - Open Gripper <Open-gripper.md>
    Demo 3.7 - Detect Box Pick Point <Detect-box-pick-point.md>
