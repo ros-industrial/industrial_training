@@ -24,7 +24,7 @@ Specifically, edit the service callback inside the vision_node to transform the 
 
  1. Specify `tf` as a dependency of your core package.
 
-    * Edit `package.xml` (2 lines) and `CMakeLists.txt` (2 lines) as in previous exercises
+    * Edit `package.xml` (1 line) and `CMakeLists.txt` (2 lines) as in previous exercises
 
  1. Add a `tf::TransformListener` object to the vision node (as a class member variable). 
 

@@ -37,10 +37,6 @@ Linux Fundamentals
    Exercise 0.2 - The Linux File System <_source/prerequisites/Exploring-the-Linux-File-System.md>
    Exercise 0.3 - Using the Terminal <_source/prerequisites/The-Linux-Terminal.md>
 
-Introduction
-------------
-:download:`Slides <_downloads/slides/ROS-I Developers Training - Introduction.pdf>`
-
 Basic Topics
 ------------
 

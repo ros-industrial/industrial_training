@@ -42,7 +42,6 @@ Left to you are the details of:
     git clone -b kinetic-devel https://github.com/ros-industrial-consortium/descartes.git
     ```
 
-
  1. Copy over the `ur5_demo_descartes` package into your workspace src/ directory.
 
     ```bash
@@ -55,7 +54,7 @@ Left to you are the details of:
     cp ~/industrial_training/exercises/4.1/src/descartes_node_unfinished.cpp myworkcell_core/src/descartes_node.cpp
     ```
 
- 1. Add dependencies for the following packages in the `CMakeLists.txt` & `package.xml` files.  As in previous exercises, there are typically 2 lines to add to each file for each dependency package.
+ 1. Add dependencies for the following packages in the `CMakeLists.txt` & `package.xml` files, as in previous exercises.
     * `ur5_demo_descartes`
     * `descartes_trajectory`
     * `descartes_planner`
@@ -87,7 +86,7 @@ We will create a Service interface to execute the Descartes planning algorithm.
 
  1. Add the newly-created service file to the `add_service_file()` rule in the package's `CMakeLists.txt`.
      
- 1. Since our new service references a message type from another package, we'll need to add that other package (`trajectory_msgs`) as a dependency in the `myworkcell_core` `CMakeLists.txt` (3 lines) and `package.xml` (2 lines) files.  
+ 1. Since our new service references a message type from another package, we'll need to add that other package (`trajectory_msgs`) as a dependency in the `myworkcell_core` `CMakeLists.txt` (3 lines) and `package.xml` (1 line) files.  
 
  1. Review `descartes_node.cpp` to understand the code structure.  In particular, the `planPath` method outlines the main sequence of steps.
 
@@ -99,6 +98,8 @@ We will create a Service interface to execute the Descartes planning algorithm.
        * See [here](http://docs.ros.org/indigo/api/descartes_trajectory/html/classdescartes__trajectory_1_1AxialSymmetricPt.html) for more documentation on this point type
        * Allow the point to be symmetric about the Z-axis (`AxialSymmetricPt::Z_AXIS`), with an increment of 90 degrees (PI/2 radians)
 
+ 1. Build the project, to make sure there are no errors in the new `descartes_node`
+ 
 ### Update Workcell Node
 
 With the Descartes node completed, we now want to invoke its logic by adding a new `ServiceClient` to the primary workcell node. The result of this service is a joint trajectory that we must then execute on the robot. This can be accomplished in many ways; here we will call the `JointTrajectoryAction` directly.
@@ -152,6 +153,8 @@ With the Descartes node completed, we now want to invoke its logic by adding a n
     ROS_INFO("Done");
     ```
 
+ 1. Build the project, to make sure there are no errors in the new `descartes_node`
+
 ### Test Full Application
 
  1. Create a new `setup.launch` file (in `workcell_support` package) that brings up everything except your workcell_node:
@@ -175,33 +178,8 @@ With the Descartes node completed, we now want to invoke its logic by adding a n
 ### Hints and Help
 
 Hints:
- * The path we define in makeToolPoses() is relative to some known reference point on the part you are working with. So a tool pose of (0, 0, 0) would be exactly at the reference point, and not at the origin of the world coordinate system.
- * In makeDescartesTrajectorty(...) we need to convert the relative tool poses into world coordinates using the “ref” pose.
- * In makeTolerancedCartesianPoint(...) consider the following documentation for specific implementations of common joint trajectory points:
+ * The path we define in `makeToolPoses()` is relative to some known reference point on the part you are working with. So a tool pose of (0, 0, 0) would be exactly at the reference point, and not at the origin of the world coordinate system.
+ * In `makeDescartesTrajectorty(...)` we need to convert the relative tool poses into world coordinates using the “ref” pose.
+ * In `makeTolerancedCartesianPoint(...)` consider the following documentation for specific implementations of common joint trajectory points:
    * <http://docs.ros.org/indigo/api/descartes_trajectory/html/>
-
-Solutions:
- * Add the rest of the Cartesian path
-       
-   ```c++
-   Eigen::Vector3d bot_right (-half_side, -half_side, 0);
-   Eigen::Vector3d top_right (half_side, -half_side, 0);
-   ```
-
-   ```c++
-   auto segment2 = makeLine(bot_left, bot_right, step_size);
-   auto segment3 = makeLine(bot_right, top_right, step_size);
-   auto segment4 = makeLine(top_right, top_left, step_size);
-   ```
-
-   ```c++
-   path.insert(path.end(), segment2.begin(), segment2.end());
-   path.insert(path.end(), segment3.begin(), segment3.end());
-   path.insert(path.end(), segment4.begin(), segment4.end());
-   ```
-
- * Make a Descartes "Cartesian" point with some kind of constraints,
-
-   ```c++
-   descartes_core::TrajectoryPtPtr pt = makeTolerancedCartesianPoint(ref * point);
-   ```
+ * For additional help, review the completed reference code at `~/industrial_training/exercises/4.1/src`

@@ -8,8 +8,8 @@ cd ~/perception_driven_ws
 catkin build --cmake-args -G 'CodeBlocks - Unix Makefiles'
 source devel/setup.bash
 ```
-## Import Package into QT
-In QT do the following:
+## Import Package into QTCreator
+In QTCreator do the following:
 ```
 File -> New -> Import ROS Project -> 
 ```

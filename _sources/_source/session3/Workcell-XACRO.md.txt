@@ -29,9 +29,7 @@ Specifically, you will need to:
 
  1. Bring in the `ur_description` package into your ROS environment. You have a few options:
 
-    1. You can install the debian packages: `sudo apt install ros-kinetic-universal-robot`
-
-        _This has not yet been released, but will work later..._
+    1. You can install the debian packages: `sudo apt install ros-kinetic-ur-description ros-kinetic-ur-kinematics`
 
     1. You can clone it from [GitHub](https://github.com/ros-industrial/universal_robot) to your catkin workspace:
 
@@ -44,7 +42,7 @@ Specifically, you will need to:
 
     >It’s not uncommon for description packages to put each “module”, “part”, or “assembly” into its own file. In many cases, a package will also define extra files that define a complete cell with the given part so that we can easily visually inspect the result. The UR package defines such a file for the UR5 ([ur5_robot.urdf.xacro](https://github.com/ros-industrial/universal_robot/blob/indigo-devel/ur_description/urdf/ur5_robot.urdf.xacro)): It’s a great example for this module.
 
- 3. Locate the xacro file that implements the UR5 macro and include it in your newly renamed `workcell.xacro` file.  Add this include line near the top of your `workcell.xacro` file, beneath the `<robot>` tag:
+ 1. Locate the xacro file that implements the UR5 macro and include it in your newly renamed `workcell.xacro` file.  Add this include line near the top of your `workcell.xacro` file, beneath the `<robot>` tag:
 
     ``` xml
     <xacro:include filename="$(find ur_description)/urdf/ur5.urdf.xacro" />
@@ -52,7 +50,7 @@ Specifically, you will need to:
 
     >If you explore the UR5 definition file, or just about any other file that defines a Xacro macro, you’ll find a lot of uses of `${prefix}` in element names. Xacro evaluates anything inside a “${}” at run-time. It can do basic math, and it can look up variables that come to it via properties (ala-global variables) or macro parameters. Most macros will take a “prefix” parameter to allow a user to create multiple instances of said macro. It’s the mechanism by which we can make the eventual URDF element names unique, otherwise we’d get duplicate link names and URDF would complain.
 
- 4. Including the `ur5.urdf.xacro` file does not actually create a UR5 robot in our URDF model.  It defines a macro, but we still need to call the macro to create the robot links and joints.  _Note the use of the `prefix` tag, as discussed above._
+ 1. Including the `ur5.urdf.xacro` file does not actually create a UR5 robot in our URDF model.  It defines a macro, but we still need to call the macro to create the robot links and joints.  _Note the use of the `prefix` tag, as discussed above._
 
     ``` xml
     <xacro:ur5_robot prefix="" joint_limited="true"/>
@@ -60,7 +58,7 @@ Specifically, you will need to:
 
     >Macros in Xacro are just fancy wrappers around copy-paste. You make a macro and it gets turned into a chunk of links and joints. You still have to connect the rest of your world to that macro’s results. This means you have to look at the macro and see what the base link is and what the end link is. Hopefully your macro follows a standard, like the ROS-Industrial one, that says that base links are named “base_link” and the last link is called “tool0”.
 
- 5. Connect the UR5 `base_link` to your existing static geometry with a fixed link.
+ 1. Connect the UR5 `base_link` to your existing static geometry with a fixed link.
 
     ``` xml
     <joint name="table_to_robot" type="fixed">
@@ -70,7 +68,7 @@ Specifically, you will need to:
     </joint>
     ```
 
- 6. Create a new `urdf.launch` file (in the `myworkcell_support` package) to load the URDF model and (optionally) display it in rviz:
+ 1. Create a new `urdf.launch` file (in the `myworkcell_support` package) to load the URDF model and (optionally) display it in rviz:
 
     ``` xml
     <launch>
@@ -84,7 +82,7 @@ Specifically, you will need to:
     </launch>
     ```
 
- 6. Check the updated URDF in RViz, using the launch file you just created:
+ 1. Check the updated URDF in RViz, using the launch file you just created:
 
     `roslaunch myworkcell_support urdf.launch`
 

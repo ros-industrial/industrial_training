@@ -27,21 +27,32 @@ We have a good installation of ROS, and we need to take the first step to settin
    cd catkin_ws
    ```
 
-2. Initialize the catkin workspace
+1. Initialize the catkin workspace
 
    ```
    catkin init
    ```
+   * _Look for the statement "Workspace configuration appears valid", showing that your catkin workspace was created successfully.  If you forgot to create the `src` directory, or did not run `catkin init` from the workspace root (both common mistakes), you'll get an error message like "WARNING: Source space does not yet exist"._
 
-3. Build the workspace. This command may be issued anywhere under the workspace root-directory (i.e. `catkin_ws`).
+1. Build the workspace. This command may be issued anywhere under the workspace root-directory (i.e. `catkin_ws`).
 
    ```
    catkin build
+   ls
    ```
 
-   * _The `catkin_ws` directory now contains additional directories (build, devel, logs) which can be deleted at any time. Re-run `catkin build` to re-create them._
+   * _See that the `catkin_ws` directory now contains additional directories (build, devel, logs)._
+   
+1. These new directories can be safely deleted at any time (either manually, or using `catkin clean`).  Note that catkin never changes any files in the `src` directory.  Re-run `catkin build` to re-create the build/devel/logs directories.
 
-4. Make the workspace visible to ROS. Source the setup file in the devel directory.
+   ```
+   catkin clean
+   ls
+   catkin build
+   ls
+   ```
+
+1. Make the workspace visible to ROS. Source the setup file in the devel directory.
 
    ```
    source devel/setup.bash

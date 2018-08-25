@@ -52,6 +52,7 @@ So far we haven't used the request field, `base_frame`, for anything. In this ex
    ``` c++
    private_node_handle.param<std::string>("base_frame", base_frame, "world"); // parameter name, string object reference, default value
    ```
+   * _`base_frame` parameter should be read after the `private_node_handle` is declared, but before `app.start()` is called_
 
 4. Add a parameter to your `myworkcell_node` "start" function that accepts the base_frame argument, and assign the value from the parameter into the service request. Make sure to update the `app.start` call in your `main()` routine to pass through the `base_frame` value you read from the parameter server:
 
@@ -71,6 +72,7 @@ So far we haven't used the request field, `base_frame`, for anything. In this ex
      ...
    }
    ```
+   * _`srv.request` should be set **before** passing it into the service call (`vision_client.call(srv)`)_
 
 5. Now we'll add `myworkcell_node` to the existing `workcell.launch` file, so we can set the `base_frame` parameter from a launch file.  We'd like the `vision_node` to return the position of the target relative to the world frame, for motion-planning purposes.  Even though that's the default value, we'll specify it in the launch-file anyway:
 

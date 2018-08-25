@@ -10,7 +10,7 @@ catkin init
 ```
 
 ## Download source dependencies
->Use the [wstool](http://wiki.ros.org/wstool) command to download the repositories listed in the **src/.rosinstall** file
+>Use the [wstool](http://wiki.ros.org/wstool) command to download the repositories listed in the `src/.rosinstall` file
 ```
 cd ~/perception_driven_ws/src/
 wstool update
@@ -18,14 +18,14 @@ wstool update
 
 ## Download debian dependencies
 >Make sure you have installed and configured the [rosdep tool](http://wiki.ros.org/rosdep).
->Then, run the following command from the **src** directory of your workspace.
+>Then, run the following command from the `src` directory of your workspace.
 ```
 rosdep install --from-paths . --ignore-src -y
 ```
 
 ## Build your workspace
 ```
-catkin build
+catkin build --cmake-args -G 'CodeBlocks - Unix Makefiles'
 ```
 >If the build fails then revisit the previous two steps to make sure all the dependencies were downloaded.
 

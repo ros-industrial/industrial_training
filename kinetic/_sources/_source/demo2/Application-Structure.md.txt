@@ -12,7 +12,7 @@ catkin init
 ```
 
 ## Download source dependencies
->Use the [wstool](http://wiki.ros.org/wstool) command to download the repositories listed in the **src/.rosinstall** file
+>Use the [wstool](http://wiki.ros.org/wstool) command to download the repositories listed in the `src/.rosinstall` file
 ```
 cd ~/descartes_ws/src/
 wstool update
@@ -20,16 +20,16 @@ wstool update
 
 ## Download debian dependencies
 >Make sure you have installed and configured the [rosdep tool](http://wiki.ros.org/rosdep).
->Then, run the following command from the **src** directory of your workspace.
+>Then, run the following command from the `src` directory of your workspace.
 ```
 rosdep install --from-paths . --ignore-src -y
 ```
 
 ## Build your workspace
 ```
-catkin build
+catkin build --cmake-args -G 'CodeBlocks - Unix Makefiles'
 ```
->If the build fails then revisit the previous two steps to make sure all the dependencies were downloaded.
+>If the build fails, then revisit the previous two steps to make sure all the dependencies were downloaded.
 
 
 ## Source the workspace
@@ -123,9 +123,9 @@ int main(int argc,char** argv)
 
 ``` c++
 const std::string ROBOT_DESCRIPTION_PARAM = "robot_description";
-const std::string EXECUTE_TRAJECTORY_SERVICE = "execute_kinematic_path";
+const std::string EXECUTE_TRAJECTORY_ACTION = "execute_trajectory";
 const std::string VISUALIZE_TRAJECTORY_TOPIC = "visualize_trajectory_curve";
-const double SERVICE_TIMEOUT = 5.0f; // seconds
+const double SERVER_TIMEOUT = 5.0f; // seconds
 const double ORIENTATION_INCREMENT = 0.5f;
 const double EPSILON = 0.0001f;
 const double AXIS_LINE_LENGHT = 0.01;
@@ -230,7 +230,7 @@ protected:
    */
   ros::NodeHandle nh_;                        /* Object used for creating and managing ros application resources*/
   ros::Publisher marker_publisher_;           /* Publishes visualization message to Rviz */
-  ros::ServiceClient moveit_run_path_client_; /* Sends a robot trajectory to moveit for execution */
+  std::shared_ptr<actionlib::SimpleActionClient<moveit_msgs::ExecuteTrajectoryAction>>   moveit_run_path_client_ptr_; /* Sends a robot trajectory to moveit for execution */
 
 
 
