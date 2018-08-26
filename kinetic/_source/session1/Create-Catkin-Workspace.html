@@ -30,6 +30,8 @@
   
     <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
   
+    <link rel="stylesheet" href="../../_static/banner.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
@@ -128,7 +130,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#job-management">Job management</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-jobs">Stopping Jobs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-out-of-control-jobs">Stopping “Out of Control” Jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-out-of-control-jobs">Stopping &quot;Out of Control&quot; Jobs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#showing-process-and-memory-usage">Showing Process and Memory usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#editing-text-and-other-gui-commands">Editing Text (and Other GUI Commands)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#running-commands-as-root">Running Commands as Root</a></li>
@@ -178,7 +180,7 @@
 <li class="toctree-l2"><a class="reference internal" href="Creating-a-ROS-Package-and-Node.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Creating-a-ROS-Package-and-Node.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="Creating-a-ROS-Package-and-Node.html#create-a-package">Create a Package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Creating-a-ROS-Package-and-Node.html#stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise">STOP!  We’ll go through a few more lecture slides before continuing this exercise.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Creating-a-ROS-Package-and-Node.html#stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise">STOP!  We'll go through a few more lecture slides before continuing this exercise.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Creating-a-ROS-Package-and-Node.html#create-a-node">Create a Node</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Creating-a-ROS-Package-and-Node.html#run-a-node">Run a Node</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Creating-a-ROS-Package-and-Node.html#challenge">Challenge</a></li>
@@ -687,7 +689,13 @@
              </div>
 
             
-  <div class="section" id="create-catkin-workspace">
+  
+
+
+
+
+
+<div class="section" id="create-catkin-workspace">
 <span id="create-catkin-workspace"></span><h1>Create Catkin Workspace<a class="headerlink" href="#create-catkin-workspace" title="Permalink to this headline">¶</a></h1>
 <blockquote>
 <div>In this exercise, we will create a ROS catkin workspace.</div></blockquote>
@@ -713,7 +721,7 @@
 <div class="section" id="create-a-catkin-workspace">
 <span id="create-a-catkin-workspace"></span><h3>Create a Catkin Workspace<a class="headerlink" href="#create-a-catkin-workspace" title="Permalink to this headline">¶</a></h3>
 <ol>
-<li><p class="first">Create the root workspace directory (we’ll use <code class="docutils literal"><span class="pre">catkin_ws</span></code>)</p>
+<li><p class="first">Create the root workspace directory (we'll use <code class="docutils literal"><span class="pre">catkin_ws</span></code>)</p>
 <div class="highlight-default"><div class="highlight"><pre><span class="n">cd</span> <span class="o">~/</span>
 <span class="n">mkdir</span> <span class="o">--</span><span class="n">parents</span> <span class="n">catkin_ws</span><span class="o">/</span><span class="n">src</span>
 <span class="n">cd</span> <span class="n">catkin_ws</span>
@@ -725,7 +733,7 @@
 </pre></div>
 </div>
 <ul class="simple">
-<li><em>Look for the statement “Workspace configuration appears valid”, showing that your catkin workspace was created successfully.  If you forgot to create the <code class="docutils literal"><span class="pre">src</span></code> directory, or did not run <code class="docutils literal"><span class="pre">catkin</span> <span class="pre">init</span></code> from the workspace root (both common mistakes), you’ll get an error message like “WARNING: Source space does not yet exist”.</em></li>
+<li><em>Look for the statement &quot;Workspace configuration appears valid&quot;, showing that your catkin workspace was created successfully.  If you forgot to create the <code class="docutils literal"><span class="pre">src</span></code> directory, or did not run <code class="docutils literal"><span class="pre">catkin</span> <span class="pre">init</span></code> from the workspace root (both common mistakes), you'll get an error message like &quot;WARNING: Source space does not yet exist&quot;.</em></li>
 </ul>
 </li>
 <li><p class="first">Build the workspace. This command may be issued anywhere under the workspace root-directory (i.e. <code class="docutils literal"><span class="pre">catkin_ws</span></code>).</p>

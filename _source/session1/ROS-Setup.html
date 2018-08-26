@@ -30,6 +30,8 @@
   
     <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
   
+    <link rel="stylesheet" href="../../_static/banner.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
@@ -128,7 +130,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#job-management">Job management</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-jobs">Stopping Jobs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-out-of-control-jobs">Stopping “Out of Control” Jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-out-of-control-jobs">Stopping &quot;Out of Control&quot; Jobs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#showing-process-and-memory-usage">Showing Process and Memory usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#editing-text-and-other-gui-commands">Editing Text (and Other GUI Commands)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#running-commands-as-root">Running Commands as Root</a></li>
@@ -178,7 +180,7 @@
 <li class="toctree-l2"><a class="reference internal" href="Creating-a-ROS-Package-and-Node.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Creating-a-ROS-Package-and-Node.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="Creating-a-ROS-Package-and-Node.html#create-a-package">Create a Package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Creating-a-ROS-Package-and-Node.html#stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise">STOP!  We’ll go through a few more lecture slides before continuing this exercise.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Creating-a-ROS-Package-and-Node.html#stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise">STOP!  We'll go through a few more lecture slides before continuing this exercise.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Creating-a-ROS-Package-and-Node.html#create-a-node">Create a Node</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Creating-a-ROS-Package-and-Node.html#run-a-node">Run a Node</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Creating-a-ROS-Package-and-Node.html#challenge">Challenge</a></li>
@@ -687,7 +689,13 @@
              </div>
 
             
-  <div class="section" id="ros-setup">
+  
+
+
+
+
+
+<div class="section" id="ros-setup">
 <span id="ros-setup"></span><h1>ROS-Setup<a class="headerlink" href="#ros-setup" title="Permalink to this headline">¶</a></h1>
 <blockquote>
 <div>In this exercise, we will setup ROS to be used from the terminal, and start roscore</div></blockquote>
@@ -707,7 +715,7 @@
 </div>
 <div class="section" id="scan-n-plan-application-problem-statement">
 <span id="scan-n-plan-application-problem-statement"></span><h2>Scan-N-Plan Application: Problem Statement<a class="headerlink" href="#scan-n-plan-application-problem-statement" title="Permalink to this headline">¶</a></h2>
-<p>We believe we have a good installation of ROS but let’s test it to make sure.</p>
+<p>We believe we have a good installation of ROS but let's test it to make sure.</p>
 </div>
 <div class="section" id="scan-n-plan-application-guidance">
 <span id="scan-n-plan-application-guidance"></span><h2>Scan-N-Plan Application: Guidance<a class="headerlink" href="#scan-n-plan-application-guidance" title="Permalink to this headline">¶</a></h2>
@@ -719,12 +727,12 @@
 </pre></div>
 </div>
 </li>
-<li><p class="first">If they are not then you might need to ‘source’ some setup.*sh files.</p>
+<li><p class="first">If they are not then you might need to 'source' some setup.*sh files.</p>
 <div class="highlight-default"><div class="highlight"><pre><span class="n">source</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">ros</span><span class="o">/</span><span class="n">kinetic</span><span class="o">/</span><span class="n">setup</span><span class="o">.</span><span class="n">bash</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">In a “bare” ROS install, you will need to run this command on every new shell you open to have access to the ROS commands.  One of the setup steps in a <em>typical</em> ROS install is to add that command to the end of your <code class="docutils literal"><span class="pre">~/.bashrc</span></code> file, which is run automatically in every new terminal window.  Check that your <code class="docutils literal"><span class="pre">.bashrc</span></code> file has already been configured to source the ROS-kinetic <code class="docutils literal"><span class="pre">setup.bash</span></code> script:</p>
+<li><p class="first">In a &quot;bare&quot; ROS install, you will need to run this command on every new shell you open to have access to the ROS commands.  One of the setup steps in a <em>typical</em> ROS install is to add that command to the end of your <code class="docutils literal"><span class="pre">~/.bashrc</span></code> file, which is run automatically in every new terminal window.  Check that your <code class="docutils literal"><span class="pre">.bashrc</span></code> file has already been configured to source the ROS-kinetic <code class="docutils literal"><span class="pre">setup.bash</span></code> script:</p>
 <div class="highlight-default"><div class="highlight"><pre><span class="n">tail</span> <span class="o">~/.</span><span class="n">bashrc</span>
 </pre></div>
 </div>

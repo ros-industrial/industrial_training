@@ -30,6 +30,8 @@
   
     <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
   
+    <link rel="stylesheet" href="../../_static/banner.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
@@ -128,7 +130,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#job-management">Job management</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-jobs">Stopping Jobs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-out-of-control-jobs">Stopping “Out of Control” Jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-out-of-control-jobs">Stopping &quot;Out of Control&quot; Jobs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#showing-process-and-memory-usage">Showing Process and Memory usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#editing-text-and-other-gui-commands">Editing Text (and Other GUI Commands)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#running-commands-as-root">Running Commands as Root</a></li>
@@ -178,7 +180,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#create-a-package">Create a Package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise">STOP!  We’ll go through a few more lecture slides before continuing this exercise.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise">STOP!  We'll go through a few more lecture slides before continuing this exercise.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#create-a-node">Create a Node</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#run-a-node">Run a Node</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#challenge">Challenge</a></li>
@@ -687,7 +689,13 @@
              </div>
 
             
-  <div class="section" id="creating-packages-and-nodes">
+  
+
+
+
+
+
+<div class="section" id="creating-packages-and-nodes">
 <span id="creating-packages-and-nodes"></span><h1>Creating Packages and Nodes<a class="headerlink" href="#creating-packages-and-nodes" title="Permalink to this headline">¶</a></h1>
 <blockquote>
 <div>In this exercise, we will create our own ROS package and node.</div></blockquote>
@@ -706,7 +714,7 @@
 </div>
 <div class="section" id="scan-n-plan-application-problem-statement">
 <span id="scan-n-plan-application-problem-statement"></span><h2>Scan-N-Plan Application: Problem Statement<a class="headerlink" href="#scan-n-plan-application-problem-statement" title="Permalink to this headline">¶</a></h2>
-<p>We’ve installed ROS, created a workspace, and even built a few times. Now we want to create our own package and our own node to do what we want to do.</p>
+<p>We've installed ROS, created a workspace, and even built a few times. Now we want to create our own package and our own node to do what we want to do.</p>
 <p>Your goal is to create your first ROS node:</p>
 <ol class="simple">
 <li>First you need to create a package inside your catkin workspace.</li>
@@ -745,12 +753,12 @@
 </ol>
 </div>
 <div class="section" id="stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise">
-<span id="stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise"></span><h3>STOP!  We’ll go through a few more lecture slides before continuing this exercise.<a class="headerlink" href="#stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise" title="Permalink to this headline">¶</a></h3>
+<span id="stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise"></span><h3>STOP!  We'll go through a few more lecture slides before continuing this exercise.<a class="headerlink" href="#stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise" title="Permalink to this headline">¶</a></h3>
 </div>
 <div class="section" id="create-a-node">
 <span id="create-a-node"></span><h3>Create a Node<a class="headerlink" href="#create-a-node" title="Permalink to this headline">¶</a></h3>
 <ol>
-<li><p class="first">In the package folder, edit the <em>CMakeLists.txt</em> file using <em>gedit</em>. Browse through the example rules, and add an executable(<em>add_executable</em>), node named vision_node, source file named vision_node.cpp. Also within the <em>CMakeLists.txt</em>, make sure your new vision_node gets linked (‘target_link_libraries’) to the catkin libraries.</p>
+<li><p class="first">In the package folder, edit the <em>CMakeLists.txt</em> file using <em>gedit</em>. Browse through the example rules, and add an executable(<em>add_executable</em>), node named vision_node, source file named vision_node.cpp. Also within the <em>CMakeLists.txt</em>, make sure your new vision_node gets linked ('target_link_libraries') to the catkin libraries.</p>
 <div class="highlight-cmake"><div class="highlight"><pre><span class="nb">add_compile_options</span><span class="p">(</span><span class="s">-std=c++11</span><span class="p">)</span>
 <span class="nb">add_executable</span><span class="p">(</span><span class="s">vision_node</span> <span class="s">src/vision_node.cpp</span><span class="p">)</span>
 <span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">vision_node</span> <span class="o">${</span><span class="nv">catkin_LIBRARIES</span><span class="o">}</span><span class="p">)</span>
@@ -762,7 +770,7 @@
 <li>Uncomment and edit existing template examples for <code class="docutils literal"><span class="pre">add_executable</span></code> and <code class="docutils literal"><span class="pre">target_link_libraries</span></code> near the bottom</li>
 <li>This helps make sure these rules are defined in the correct order, and makes it easy to remember the proper syntax.</li>
 </ul>
-<p><em>Note: You’re also allowed to spread most of the CMakeLists rules across multiple lines, as shown in the <code class="docutils literal"><span class="pre">target_link_libraries</span></code> template code</em></p>
+<p><em>Note: You're also allowed to spread most of the CMakeLists rules across multiple lines, as shown in the <code class="docutils literal"><span class="pre">target_link_libraries</span></code> template code</em></p>
 </li>
 <li><p class="first">In the package folder, create the file <em>src/vision_node.cpp</em> (using <em>gedit</em>).</p>
 </li>
@@ -818,7 +826,7 @@
 </pre></div>
 </div>
 </li>
-<li><p class="first">Print a “Hello World” message using ROS print tools.</p>
+<li><p class="first">Print a &quot;Hello World&quot; message using ROS print tools.</p>
 <div class="highlight-c++"><div class="highlight"><pre><span class="cm">/**</span>
 <span class="cm">**  Simple ROS Node</span>
 <span class="cm">**/</span>
@@ -870,7 +878,7 @@
 <ul class="simple">
 <li><em>Remember that you must run <code class="docutils literal"><span class="pre">catkin</span> <span class="pre">build</span></code> from within your <code class="docutils literal"><span class="pre">catkin_ws</span></code> (or any subdirectory)</em></li>
 <li>This will build all of the programs, libraries, etc. in <em>myworkcell_core</em></li>
-<li>In this case, it’s just a single ROS node <em>vision_node</em></li>
+<li>In this case, it's just a single ROS node <em>vision_node</em></li>
 </ul>
 </li>
 </ol>
@@ -890,7 +898,7 @@
 </li>
 <li><p class="first">This will automatically export the results of the build into your new terminal session.</p>
 </li>
-<li><p class="first">If you’re reusing an existing terminal, you’ll need to manually source the setup files (since we added a new node):</p>
+<li><p class="first">If you're reusing an existing terminal, you'll need to manually source the setup files (since we added a new node):</p>
 <div class="highlight-default"><div class="highlight"><pre><span class="n">source</span> <span class="o">~/</span><span class="n">catkin_ws</span><span class="o">/</span><span class="n">devel</span><span class="o">/</span><span class="n">setup</span><span class="o">.</span><span class="n">bash</span>
 </pre></div>
 </div>

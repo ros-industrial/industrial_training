@@ -30,6 +30,8 @@
   
     <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
   
+    <link rel="stylesheet" href="../../_static/banner.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
@@ -128,7 +130,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#job-management">Job management</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-jobs">Stopping Jobs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-out-of-control-jobs">Stopping “Out of Control” Jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-out-of-control-jobs">Stopping &quot;Out of Control&quot; Jobs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#showing-process-and-memory-usage">Showing Process and Memory usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#editing-text-and-other-gui-commands">Editing Text (and Other GUI Commands)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#running-commands-as-root">Running Commands as Root</a></li>
@@ -178,7 +180,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#create-a-package">Create a Package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise">STOP!  We’ll go through a few more lecture slides before continuing this exercise.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise">STOP!  We'll go through a few more lecture slides before continuing this exercise.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#create-a-node">Create a Node</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#run-a-node">Run a Node</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#challenge">Challenge</a></li>
@@ -687,14 +689,20 @@
              </div>
 
             
-  <div class="section" id="parameters">
+  
+
+
+
+
+
+<div class="section" id="parameters">
 <span id="parameters"></span><h1>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h1>
 <blockquote>
 <div>In this exercise, we will look at ROS Parameters for configuring nodes||</div></blockquote>
 <div class="section" id="motivation">
 <span id="motivation"></span><h2>Motivation<a class="headerlink" href="#motivation" title="Permalink to this headline">¶</a></h2>
-<p>By this point in these tutorials (or your career), you’ve probably typed the words <code class="docutils literal"><span class="pre">int</span> <span class="pre">main(int</span> <span class="pre">argc,</span> <span class="pre">char**</span> <span class="pre">argv)</span></code> more times than you can count. The arguments to <code class="docutils literal"><span class="pre">main</span></code> are the means by which a system outside scope and understanding of your program can configure your program to do a particular task. These are <em>command line parameters</em>.</p>
-<p>The ROS ecosystem has an analogous system for configuring entire groups of nodes. It’s a fancy key-value storage program that gets brought up as part of <code class="docutils literal"><span class="pre">roscore</span></code>. It’s best used to pass configuration parameters to nodes individually (e.g. to identify which camera a node should subscribe to), but it can be used for much more complicated items.</p>
+<p>By this point in these tutorials (or your career), you've probably typed the words <code class="docutils literal"><span class="pre">int</span> <span class="pre">main(int</span> <span class="pre">argc,</span> <span class="pre">char**</span> <span class="pre">argv)</span></code> more times than you can count. The arguments to <code class="docutils literal"><span class="pre">main</span></code> are the means by which a system outside scope and understanding of your program can configure your program to do a particular task. These are <em>command line parameters</em>.</p>
+<p>The ROS ecosystem has an analogous system for configuring entire groups of nodes. It's a fancy key-value storage program that gets brought up as part of <code class="docutils literal"><span class="pre">roscore</span></code>. It's best used to pass configuration parameters to nodes individually (e.g. to identify which camera a node should subscribe to), but it can be used for much more complicated items.</p>
 </div>
 <div class="section" id="reference-example">
 <span id="reference-example"></span><h2>Reference Example<a class="headerlink" href="#reference-example" title="Permalink to this headline">¶</a></h2>
@@ -716,7 +724,7 @@
 <span class="n">geometry_msgs</span><span class="o">/</span><span class="n">Pose</span> <span class="n">pose</span>
 </pre></div>
 </div>
-<p>So far we haven’t used the request field, <code class="docutils literal"><span class="pre">base_frame</span></code>, for anything. In this exercise we’ll use ROS parameters to set this field. You will need to:</p>
+<p>So far we haven't used the request field, <code class="docutils literal"><span class="pre">base_frame</span></code>, for anything. In this exercise we'll use ROS parameters to set this field. You will need to:</p>
 <ol class="simple">
 <li>Add a private node handle to the main method of the <code class="docutils literal"><span class="pre">myworkcell_node</span></code> in addition to the normal one.</li>
 <li>Use the private node handle to load the parameter <code class="docutils literal"><span class="pre">base_frame</span></code> and store it in a local string object.<ul>
@@ -737,7 +745,7 @@
 </pre></div>
 </div>
 </li>
-<li><p class="first">Create a temporary string object, <code class="docutils literal"><span class="pre">std::string</span> <span class="pre">base_frame;</span></code>, and then use the private node handle’s <a class="reference external" href="http://docs.ros.org/indigo/api/roscpp/html/classros_1_1NodeHandle.html">API</a> to load the parameter <code class="docutils literal"><span class="pre">&quot;base_frame&quot;</span></code>.</p>
+<li><p class="first">Create a temporary string object, <code class="docutils literal"><span class="pre">std::string</span> <span class="pre">base_frame;</span></code>, and then use the private node handle's <a class="reference external" href="http://docs.ros.org/indigo/api/roscpp/html/classros_1_1NodeHandle.html">API</a> to load the parameter <code class="docutils literal"><span class="pre">&quot;base_frame&quot;</span></code>.</p>
 <div class="highlight-c++"><div class="highlight"><pre><span class="n">private_node_handle</span><span class="p">.</span><span class="n">param</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;base_frame&quot;</span><span class="p">,</span> <span class="n">base_frame</span><span class="p">,</span> <span class="s">&quot;world&quot;</span><span class="p">);</span> <span class="c1">// parameter name, string object reference, default value</span>
 </pre></div>
 </div>
@@ -745,7 +753,7 @@
 <li><em><code class="docutils literal"><span class="pre">base_frame</span></code> parameter should be read after the <code class="docutils literal"><span class="pre">private_node_handle</span></code> is declared, but before <code class="docutils literal"><span class="pre">app.start()</span></code> is called</em></li>
 </ul>
 </li>
-<li><p class="first">Add a parameter to your <code class="docutils literal"><span class="pre">myworkcell_node</span></code> “start” function that accepts the base_frame argument, and assign the value from the parameter into the service request. Make sure to update the <code class="docutils literal"><span class="pre">app.start</span></code> call in your <code class="docutils literal"><span class="pre">main()</span></code> routine to pass through the <code class="docutils literal"><span class="pre">base_frame</span></code> value you read from the parameter server:</p>
+<li><p class="first">Add a parameter to your <code class="docutils literal"><span class="pre">myworkcell_node</span></code> &quot;start&quot; function that accepts the base_frame argument, and assign the value from the parameter into the service request. Make sure to update the <code class="docutils literal"><span class="pre">app.start</span></code> call in your <code class="docutils literal"><span class="pre">main()</span></code> routine to pass through the <code class="docutils literal"><span class="pre">base_frame</span></code> value you read from the parameter server:</p>
 <div class="highlight-c++"><div class="highlight"><pre><span class="kt">void</span> <span class="nf">start</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">base_frame</span><span class="p">)</span>
 <span class="p">{</span>
   <span class="p">...</span>
@@ -766,7 +774,7 @@
 <li><em><code class="docutils literal"><span class="pre">srv.request</span></code> should be set <strong>before</strong> passing it into the service call (<code class="docutils literal"><span class="pre">vision_client.call(srv)</span></code>)</em></li>
 </ul>
 </li>
-<li><p class="first">Now we’ll add <code class="docutils literal"><span class="pre">myworkcell_node</span></code> to the existing <code class="docutils literal"><span class="pre">workcell.launch</span></code> file, so we can set the <code class="docutils literal"><span class="pre">base_frame</span></code> parameter from a launch file.  We’d like the <code class="docutils literal"><span class="pre">vision_node</span></code> to return the position of the target relative to the world frame, for motion-planning purposes.  Even though that’s the default value, we’ll specify it in the launch-file anyway:</p>
+<li><p class="first">Now we'll add <code class="docutils literal"><span class="pre">myworkcell_node</span></code> to the existing <code class="docutils literal"><span class="pre">workcell.launch</span></code> file, so we can set the <code class="docutils literal"><span class="pre">base_frame</span></code> parameter from a launch file.  We'd like the <code class="docutils literal"><span class="pre">vision_node</span></code> to return the position of the target relative to the world frame, for motion-planning purposes.  Even though that's the default value, we'll specify it in the launch-file anyway:</p>
 <div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;node</span> <span class="na">name=</span><span class="s">&quot;myworkcell_node&quot;</span> <span class="na">pkg=</span><span class="s">&quot;myworkcell_core&quot;</span> <span class="na">type=</span><span class="s">&quot;myworkcell_node&quot;</span> <span class="na">output=</span><span class="s">&quot;screen&quot;</span><span class="nt">&gt;</span>
   <span class="nt">&lt;param</span> <span class="na">name=</span><span class="s">&quot;base_frame&quot;</span> <span class="na">value=</span><span class="s">&quot;world&quot;</span><span class="nt">/&gt;</span>
 <span class="nt">&lt;/node&gt;</span>
@@ -780,12 +788,12 @@
 </div>
 <ul class="simple">
 <li>Press <em>Ctrl+C</em> to kill the running nodes</li>
-<li>Edit the launch file to change the base_frame parameter value (e.g. to “test2”)</li>
-<li>Re-launch workcell.launch, and observe that the “request frame” has changed<ul>
-<li>The response frame doesn’t change, because we haven’t updated vision_node (yet) to handle the request frame.  Vision_node always returns the same frame (for now).</li>
+<li>Edit the launch file to change the base_frame parameter value (e.g. to &quot;test2&quot;)</li>
+<li>Re-launch workcell.launch, and observe that the &quot;request frame&quot; has changed<ul>
+<li>The response frame doesn't change, because we haven't updated vision_node (yet) to handle the request frame.  Vision_node always returns the same frame (for now).</li>
 </ul>
 </li>
-<li>Set the base_frame back to “world”</li>
+<li>Set the base_frame back to &quot;world&quot;</li>
 </ul>
 </li>
 </ol>

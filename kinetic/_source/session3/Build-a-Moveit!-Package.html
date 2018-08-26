@@ -30,6 +30,8 @@
   
     <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
   
+    <link rel="stylesheet" href="../../_static/banner.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
@@ -128,7 +130,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#job-management">Job management</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-jobs">Stopping Jobs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-out-of-control-jobs">Stopping “Out of Control” Jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-out-of-control-jobs">Stopping &quot;Out of Control&quot; Jobs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#showing-process-and-memory-usage">Showing Process and Memory usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#editing-text-and-other-gui-commands">Editing Text (and Other GUI Commands)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#running-commands-as-root">Running Commands as Root</a></li>
@@ -178,7 +180,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#create-a-package">Create a Package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise">STOP!  We’ll go through a few more lecture slides before continuing this exercise.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise">STOP!  We'll go through a few more lecture slides before continuing this exercise.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#create-a-node">Create a Node</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#run-a-node">Run a Node</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#challenge">Challenge</a></li>
@@ -687,7 +689,13 @@
              </div>
 
             
-  <div class="section" id="build-a-moveit-package">
+  
+
+
+
+
+
+<div class="section" id="build-a-moveit-package">
 <span id="build-a-moveit-package"></span><h1>Build a MoveIt! Package<a class="headerlink" href="#build-a-moveit-package" title="Permalink to this headline">¶</a></h1>
 <blockquote>
 <div>In this exercise, we will create a MoveIt! package for an industrial robot. This package creates the configuration and launch files required to use a robot with the MoveIt! Motion-Control nodes. In general, the MoveIt! package does not contain any C++ code.</div></blockquote>
@@ -708,18 +716,18 @@
 <p>In this exercise, you will generate a MoveIt package for the UR5 workcell you built in a previous step. This process will mostly involve running the MoveIt! Setup Assistant. At the end of the exercise you should have the following:</p>
 <ol class="simple">
 <li>A new package called <code class="docutils literal"><span class="pre">myworkcell_moveit_config</span></code></li>
-<li>A moveit configuration with one group (“manipulator”), that consists of the kinematic chain between the UR5’s <code class="docutils literal"><span class="pre">base_link</span></code> and <code class="docutils literal"><span class="pre">tool0</span></code>.</li>
+<li>A moveit configuration with one group (&quot;manipulator&quot;), that consists of the kinematic chain between the UR5’s <code class="docutils literal"><span class="pre">base_link</span></code> and <code class="docutils literal"><span class="pre">tool0</span></code>.</li>
 </ol>
 </div>
 <div class="section" id="scan-n-plan-application-guidance">
 <span id="scan-n-plan-application-guidance"></span><h2>Scan-N-Plan Application: Guidance<a class="headerlink" href="#scan-n-plan-application-guidance" title="Permalink to this headline">¶</a></h2>
 <ol>
-<li><p class="first">Start the MoveIt! Setup Assistant (don’t forget auto-complete with tab):</p>
+<li><p class="first">Start the MoveIt! Setup Assistant (don't forget auto-complete with tab):</p>
 <div class="highlight-default"><div class="highlight"><pre><span class="n">roslaunch</span> <span class="n">moveit_setup_assistant</span> <span class="n">setup_assistant</span><span class="o">.</span><span class="n">launch</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Select “Create New MoveIt Configuration Package”, select the <code class="docutils literal"><span class="pre">workcell.xacro</span></code> you created previously, then “Load File”.</p>
+<li><p class="first">Select &quot;Create New MoveIt Configuration Package&quot;, select the <code class="docutils literal"><span class="pre">workcell.xacro</span></code> you created previously, then &quot;Load File&quot;.</p>
 </li>
 <li><p class="first">Work your way through the tabs on the left from the top down.</p>
 <ol>
@@ -733,15 +741,15 @@
 </pre></div>
 </div>
 </li>
-<li><p class="first">Add a planning group called <code class="docutils literal"><span class="pre">manipulator</span></code> that names the kinematic chain between <code class="docutils literal"><span class="pre">base_link</span></code> and <code class="docutils literal"><span class="pre">tool0</span></code>. Note: Follow <a class="reference external" href="http://wiki.ros.org/ROS/Patterns/Conventions">ROS naming guidelines/requirements</a> and don’t use any whitespace, anywhere.</p>
+<li><p class="first">Add a planning group called <code class="docutils literal"><span class="pre">manipulator</span></code> that names the kinematic chain between <code class="docutils literal"><span class="pre">base_link</span></code> and <code class="docutils literal"><span class="pre">tool0</span></code>. Note: Follow <a class="reference external" href="http://wiki.ros.org/ROS/Patterns/Conventions">ROS naming guidelines/requirements</a> and don't use any whitespace, anywhere.</p>
 <p>a. Set the kinematics solver to <code class="docutils literal"><span class="pre">KDLKinematicsPlugin</span></code></p>
 </li>
-<li><p class="first">Create a few named positions (e.g. “home”, “allZeros”, etc.) to test with motion-planning.</p>
+<li><p class="first">Create a few named positions (e.g. &quot;home&quot;, &quot;allZeros&quot;, etc.) to test with motion-planning.</p>
 </li>
-<li><p class="first">Don’t worry about adding end effectors/grippers or passive joints for this exercise.</p>
+<li><p class="first">Don't worry about adding end effectors/grippers or passive joints for this exercise.</p>
 </li>
 <li><p class="first">Enter author / maintainer info.</p>
-<p><em>Yes, it’s required, but doesn’t have to be valid</em></p>
+<p><em>Yes, it's required, but doesn't have to be valid</em></p>
 </li>
 <li><p class="first">Generate a new package and name it <code class="docutils literal"><span class="pre">myworkcell_moveit_config</span></code>.</p>
 <ul class="simple">
@@ -760,24 +768,24 @@
 </ol>
 </li>
 </ol>
-<p>The outcome of these steps will be a new package that contains a large number of launch and configuration files. At this point, it’s possible to do motion planning, but not to execute the plan on any robot.  To try out your new configuration:</p>
+<p>The outcome of these steps will be a new package that contains a large number of launch and configuration files. At this point, it's possible to do motion planning, but not to execute the plan on any robot.  To try out your new configuration:</p>
 <div class="highlight-default"><div class="highlight"><pre><span class="n">catkin</span> <span class="n">build</span>
 <span class="n">source</span> <span class="o">~/</span><span class="n">catkin_ws</span><span class="o">/</span><span class="n">devel</span><span class="o">/</span><span class="n">setup</span><span class="o">.</span><span class="n">bash</span>
 <span class="n">roslaunch</span> <span class="n">myworkcell_moveit_config</span> <span class="n">demo</span><span class="o">.</span><span class="n">launch</span>
 </pre></div>
 </div>
 <blockquote>
-<div>Don’t worry about learning how to use RViz to move the robot; that’s what we’ll cover in the next session!</div></blockquote>
+<div>Don't worry about learning how to use RViz to move the robot; that's what we'll cover in the next session!</div></blockquote>
 </div>
 <div class="section" id="using-moveit-with-physical-hardware">
 <span id="using-moveit-with-physical-hardware"></span><h2>Using MoveIt! with Physical Hardware<a class="headerlink" href="#using-moveit-with-physical-hardware" title="Permalink to this headline">¶</a></h2>
-<p>MoveIt!’s setup assistant generates a suite of files that, upon launch:</p>
+<p>MoveIt!'s setup assistant generates a suite of files that, upon launch:</p>
 <ul class="simple">
 <li>Loads your workspace description to the parameter server.</li>
 <li>Starts a node <code class="docutils literal"><span class="pre">move_group</span></code> that offers a suite of ROS services &amp; actions for doing kinematics, motion planning, and more.</li>
 <li>An internal simulator that publishes the last planned path on a loop for other tools (like RViz) to visualize.</li>
 </ul>
-<p>Essentially, MoveIt can publish a ROS message that defines a trajectory (joint positions over time), but it doesn’t know how to pass that trajectory to your hardware.</p>
+<p>Essentially, MoveIt can publish a ROS message that defines a trajectory (joint positions over time), but it doesn't know how to pass that trajectory to your hardware.</p>
 <p>To do this, we need to define a few extra files.</p>
 <ol>
 <li><p class="first">Create a <code class="docutils literal"><span class="pre">controllers.yaml</span></code> file (<code class="docutils literal"><span class="pre">myworkcell_moveit_config/config/controllers.yaml</span></code>) with the following contents:</p>
@@ -855,7 +863,7 @@
 </pre></div>
 </div>
 </li>
-<li><p class="first">Now let’s test the new launch files we created:</p>
+<li><p class="first">Now let's test the new launch files we created:</p>
 <div class="highlight-default"><div class="highlight"><pre><span class="n">roslaunch</span> <span class="n">myworkcell_moveit_config</span> <span class="n">myworkcell_planning_execution</span><span class="o">.</span><span class="n">launch</span>
 </pre></div>
 </div>

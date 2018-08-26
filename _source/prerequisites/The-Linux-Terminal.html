@@ -30,6 +30,8 @@
   
     <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
   
+    <link rel="stylesheet" href="../../_static/banner.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
@@ -128,7 +130,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="#job-management">Job management</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#stopping-jobs">Stopping Jobs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#stopping-out-of-control-jobs">Stopping “Out of Control” Jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#stopping-out-of-control-jobs">Stopping &quot;Out of Control&quot; Jobs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#showing-process-and-memory-usage">Showing Process and Memory usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#editing-text-and-other-gui-commands">Editing Text (and Other GUI Commands)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#running-commands-as-root">Running Commands as Root</a></li>
@@ -178,7 +180,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#create-a-package">Create a Package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise">STOP!  We’ll go through a few more lecture slides before continuing this exercise.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise">STOP!  We'll go through a few more lecture slides before continuing this exercise.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#create-a-node">Create a Node</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#run-a-node">Run a Node</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#challenge">Challenge</a></li>
@@ -687,7 +689,13 @@
              </div>
 
             
-  <p>/# The Linux Terminal</p>
+  
+
+
+
+
+
+<p>/# The Linux Terminal</p>
 <blockquote>
 <div>In this exercise, we will familiarize ourselves with the Linux terminal.</div></blockquote>
 <div class="section" id="starting-the-terminal">
@@ -697,15 +705,15 @@
 <p align="center"><img src="http://aeswiki.datasys.swri.edu/rositraining/Exercises/1.1.3?action=AttachFile&do=get&target=1.png"/></p></li>
 <li><p class="first">Create a second terminal window, either by:</p>
 <ul class="simple">
-<li>Right-clicking on the terminal and selecting the “Open Terminal” or</li>
-<li>Selecting “Open Terminal” from the “File” menu</li>
+<li>Right-clicking on the terminal and selecting the &quot;Open Terminal&quot; or</li>
+<li>Selecting &quot;Open Terminal&quot; from the &quot;File&quot; menu</li>
 </ul>
 </li>
-<li><p class="first">Create a second terminal within the same window by pressing “Ctrl+Shift+T” while the terminal window is selected.</p>
+<li><p class="first">Create a second terminal within the same window by pressing &quot;Ctrl+Shift+T&quot; while the terminal window is selected.</p>
 </li>
 <li><p class="first">Close the 2nd terminal tab, either by:</p>
 <ul class="simple">
-<li>clicking the small ‘x’ in the terminal tab (not the main terminal window)</li>
+<li>clicking the small 'x' in the terminal tab (not the main terminal window)</li>
 <li>typing <code class="docutils literal"><span class="pre">exit</span></code> and hitting enter.</li>
 </ul>
 </li>
@@ -719,7 +727,7 @@
 <li>~ is the directory in which the terminal is currently in. (More on this later).</li>
 </ol>
 </li>
-<li><p class="first">Close the terminal window by typing <code class="docutils literal"><span class="pre">exit</span></code> or clicking on the red ‘x’ in the window’s titlebar.</p>
+<li><p class="first">Close the terminal window by typing <code class="docutils literal"><span class="pre">exit</span></code> or clicking on the red 'x' in the window's titlebar.</p>
 </li>
 </ol>
 </div>
@@ -730,10 +738,10 @@
 <ol class="simple">
 <li>Open your home folder in the file browser.</li>
 <li>Double-click on the <code class="docutils literal"><span class="pre">ex0.3</span></code> folder we created in the previous step.<ul>
-<li><em>We’ll use this to illustrate various file operations in the terminal.</em></li>
+<li><em>We'll use this to illustrate various file operations in the terminal.</em></li>
 </ul>
 </li>
-<li>Right click in the main file-browser window and select “Open in Terminal” to create a terminal window at that location.</li>
+<li>Right click in the main file-browser window and select &quot;Open in Terminal&quot; to create a terminal window at that location.</li>
 <li>In the terminal window, type the following command to create some sample files that we can study later:<ul>
 <li><code class="docutils literal"><span class="pre">cp</span> <span class="pre">-a</span> <span class="pre">~/industrial_training/exercises/0.3/.</span> <span class="pre">.</span></code></li>
 </ul>
@@ -744,9 +752,9 @@
 <span id="ls-command"></span><h2>ls Command<a class="headerlink" href="#ls-command" title="Permalink to this headline">¶</a></h2>
 <ol class="simple">
 <li>Enter <code class="docutils literal"><span class="pre">ls</span></code> into the terminal.<ul>
-<li>You should see <code class="docutils literal"><span class="pre">test.txt</span></code>, and <code class="docutils literal"><span class="pre">new</span></code> listed. (If you don’t see ‘new’, go back and complete the <a class="reference external" href="Exploring-the-Linux-File-System.md">previous exercise</a>).</li>
+<li>You should see <code class="docutils literal"><span class="pre">test.txt</span></code>, and <code class="docutils literal"><span class="pre">new</span></code> listed. (If you don't see 'new', go back and complete the <a class="reference external" href="Exploring-the-Linux-File-System.md">previous exercise</a>).</li>
 <li>Directories, like <code class="docutils literal"><span class="pre">new</span></code>, are colored in blue.</li>
-<li>The file <code class="docutils literal"><span class="pre">sample_job</span></code> is in green; this indicates it has its “execute” bit set, which means it can be executed as a command.</li>
+<li>The file <code class="docutils literal"><span class="pre">sample_job</span></code> is in green; this indicates it has its &quot;execute&quot; bit set, which means it can be executed as a command.</li>
 </ul>
 </li>
 <li>Type <code class="docutils literal"><span class="pre">ls</span> <span class="pre">*.txt</span></code>.  Only the file <code class="docutils literal"><span class="pre">test.txt</span></code> will be displayed.</li>
@@ -757,7 +765,7 @@
 <li>The next 9 characters are the permissions bits for the file</li>
 <li>The third and fourth fields are the owning user and group, respectively.</li>
 <li>The second-to-last field is the time the file was last modified.</li>
-<li>If the file is a symbolic link, the link’s target file is listed after the link’s file name.</li>
+<li>If the file is a symbolic link, the link's target file is listed after the link's file name.</li>
 </ul>
 </li>
 <li>Enter <code class="docutils literal"><span class="pre">ls</span> <span class="pre">-a</span></code> in the terminal.<ul>
@@ -765,7 +773,7 @@
 </ul>
 </li>
 <li>Enter <code class="docutils literal"><span class="pre">ls</span> <span class="pre">-a</span> <span class="pre">-l</span></code> (or <code class="docutils literal"><span class="pre">ls</span> <span class="pre">-al</span></code>) in the command.<ul>
-<li>You’ll now see that the file <code class="docutils literal"><span class="pre">hidden_link.txt</span></code> points to <code class="docutils literal"><span class="pre">.hidden_text_file.txt</span></code>.</li>
+<li>You'll now see that the file <code class="docutils literal"><span class="pre">hidden_link.txt</span></code> points to <code class="docutils literal"><span class="pre">.hidden_text_file.txt</span></code>.</li>
 </ul>
 </li>
 </ol>
@@ -792,8 +800,8 @@
 </li>
 <li>Enter <code class="docutils literal"><span class="pre">cd</span> <span class="pre">~/ex0.3</span></code> to return to our working directory.<ul>
 <li>Linux uses the <code class="docutils literal"><span class="pre">~</span></code> character as a shorthand representation for your home directory.</li>
-<li>It’s a convenient way to reference files and paths in command-line commands.</li>
-<li>You’ll be typing it a lot in this class… remember it!</li>
+<li>It's a convenient way to reference files and paths in command-line commands.</li>
+<li>You'll be typing it a lot in this class... remember it!</li>
 </ul>
 </li>
 </ol>
@@ -888,7 +896,7 @@
 </ol>
 </div>
 <div class="section" id="stopping-out-of-control-jobs">
-<span id="stopping-out-of-control-jobs"></span><h2>Stopping “Out of Control” Jobs<a class="headerlink" href="#stopping-out-of-control-jobs" title="Permalink to this headline">¶</a></h2>
+<span id="stopping-out-of-control-jobs"></span><h2>Stopping &quot;Out of Control&quot; Jobs<a class="headerlink" href="#stopping-out-of-control-jobs" title="Permalink to this headline">¶</a></h2>
 <ol class="simple">
 <li>Open a new terminal window.</li>
 <li>Type <code class="docutils literal"><span class="pre">ps</span> <span class="pre">ax</span></code>.</li>
@@ -900,7 +908,7 @@
 <li>Type <code class="docutils literal"><span class="pre">ps</span> <span class="pre">ax</span> <span class="pre">|</span> <span class="pre">grep</span> <span class="pre">sample</span></code>.<ul>
 <li>You will notice that only a few lines are returned.</li>
 <li>This is useful if you want to find a particular process</li>
-<li><em>Note: this is an advanced technique called “piping”, where the output of one program is passed into the input of the next.  This is beyond the scope of this class, but is useful to learn if you intend to use the terminal extensively.</em></li>
+<li><em>Note: this is an advanced technique called &quot;piping&quot;, where the output of one program is passed into the input of the next.  This is beyond the scope of this class, but is useful to learn if you intend to use the terminal extensively.</em></li>
 </ul>
 </li>
 <li>Type <code class="docutils literal"><span class="pre">kill</span> <span class="pre">&lt;id&gt;</span></code>, where <code class="docutils literal"><span class="pre">&lt;id&gt;</span></code> is the job number you found with the <code class="docutils literal"><span class="pre">ps</span> <span class="pre">ax</span></code>.</li>
@@ -947,10 +955,10 @@
 <li>The terminal will not come back with a prompt until the window is closed.</li>
 </ul>
 </li>
-<li>There are two ways around this limitation.  Try both…</li>
+<li>There are two ways around this limitation.  Try both...</li>
 <li><strong>Starting the program and immediately returning a prompt:</strong><ol>
 <li>Type <code class="docutils literal"><span class="pre">gedit</span> <span class="pre">test.txt</span> <span class="pre">&amp;</span></code>.<ul>
-<li>The <code class="docutils literal"><span class="pre">&amp;</span></code> character tells the terminal to run this command in “the background”, meaning the prompt will return immediately.</li>
+<li>The <code class="docutils literal"><span class="pre">&amp;</span></code> character tells the terminal to run this command in &quot;the background&quot;, meaning the prompt will return immediately.</li>
 </ul>
 </li>
 <li>Close the window, then type <code class="docutils literal"><span class="pre">ls</span></code>.<ul>
@@ -989,7 +997,7 @@
 <ol class="simple">
 <li>In a terminal, type <code class="docutils literal"><span class="pre">ls</span> <span class="pre">-a</span> <span class="pre">/root</span></code>.<ul>
 <li>The terminal will indicate that you cannot read the folder <code class="docutils literal"><span class="pre">/root</span></code>.</li>
-<li>Many times you will need to run a command that cannot be done as an ordinary user, and must be done as the “super user”</li>
+<li>Many times you will need to run a command that cannot be done as an ordinary user, and must be done as the &quot;super user&quot;</li>
 </ul>
 </li>
 <li>To run the previous command as root, add <code class="docutils literal"><span class="pre">sudo</span></code> to the beginning of the command.<ul>
@@ -999,7 +1007,7 @@
 </ul>
 </li>
 </ol>
-<p><em><strong>Warning</strong>: <code class="docutils literal"><span class="pre">sudo</span></code> is a powerful tool which doesn’t provide any sanity checks on what you ask it to do, so be <strong>VERY</strong> careful in using it.</em></p>
+<p><em><strong>Warning</strong>: <code class="docutils literal"><span class="pre">sudo</span></code> is a powerful tool which doesn't provide any sanity checks on what you ask it to do, so be <strong>VERY</strong> careful in using it.</em></p>
 </div>
 </div>
 

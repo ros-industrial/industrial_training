@@ -30,6 +30,8 @@
   
     <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
   
+    <link rel="stylesheet" href="../../_static/banner.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
@@ -128,7 +130,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#job-management">Job management</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-jobs">Stopping Jobs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-out-of-control-jobs">Stopping “Out of Control” Jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-out-of-control-jobs">Stopping &quot;Out of Control&quot; Jobs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#showing-process-and-memory-usage">Showing Process and Memory usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#editing-text-and-other-gui-commands">Editing Text (and Other GUI Commands)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#running-commands-as-root">Running Commands as Root</a></li>
@@ -178,7 +180,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#create-a-package">Create a Package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise">STOP!  We’ll go through a few more lecture slides before continuing this exercise.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise">STOP!  We'll go through a few more lecture slides before continuing this exercise.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#create-a-node">Create a Node</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#run-a-node">Run a Node</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#challenge">Challenge</a></li>
@@ -687,7 +689,13 @@
              </div>
 
             
-  <div class="section" id="coordinate-tranforms-using-tf">
+  
+
+
+
+
+
+<div class="section" id="coordinate-tranforms-using-tf">
 <span id="coordinate-tranforms-using-tf"></span><h1>Coordinate Tranforms using TF<a class="headerlink" href="#coordinate-tranforms-using-tf" title="Permalink to this headline">¶</a></h1>
 <blockquote>
 <div>In this exercise, we will explore the terminal and C++ commands used with TF, the transform library.</div></blockquote>
@@ -728,7 +736,7 @@ TF is a fundamental tool that allows for the lookup the transformation between a
 </pre></div>
 </div>
 </li>
-<li><p class="first">Add code to the existing <code class="docutils literal"><span class="pre">localizePart</span></code> method to convert the reported target pose from its reference frame (“camera_frame”) to the service-request frame:</p>
+<li><p class="first">Add code to the existing <code class="docutils literal"><span class="pre">localizePart</span></code> method to convert the reported target pose from its reference frame (&quot;camera_frame&quot;) to the service-request frame:</p>
 <ol>
 <li><p class="first">For better or worse, ROS uses lots of different math libraries. You’ll need to transform the over-the-wire format of <code class="docutils literal"><span class="pre">geometry_msgs::Pose</span></code> into a <code class="docutils literal"><span class="pre">tf::Transform</span> <span class="pre">object</span></code>:</p>
 <div class="highlight-c++"><div class="highlight"><pre><span class="n">tf</span><span class="o">::</span><span class="n">Transform</span> <span class="n">cam_to_target</span><span class="p">;</span>
@@ -736,7 +744,7 @@ TF is a fundamental tool that allows for the lookup the transformation between a
 </pre></div>
 </div>
 </li>
-<li><p class="first">Use the listener object to lookup the latest transform between the <code class="docutils literal"><span class="pre">request.base_frame</span></code> and the reference frame from the <code class="docutils literal"><span class="pre">ARMarker</span></code> message (which should be “camera_frame”):</p>
+<li><p class="first">Use the listener object to lookup the latest transform between the <code class="docutils literal"><span class="pre">request.base_frame</span></code> and the reference frame from the <code class="docutils literal"><span class="pre">ARMarker</span></code> message (which should be &quot;camera_frame&quot;):</p>
 <div class="highlight-c++"><div class="highlight"><pre><span class="n">tf</span><span class="o">::</span><span class="n">StampedTransform</span> <span class="n">req_to_cam</span><span class="p">;</span>
 <span class="n">listener_</span><span class="p">.</span><span class="n">lookupTransform</span><span class="p">(</span><span class="n">req</span><span class="p">.</span><span class="n">base_frame</span><span class="p">,</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">header</span><span class="p">.</span><span class="n">frame_id</span><span class="p">,</span> <span class="n">ros</span><span class="o">::</span><span class="n">Time</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">req_to_cam</span><span class="p">);</span>
 </pre></div>
@@ -762,7 +770,7 @@ TF is a fundamental tool that allows for the lookup the transformation between a
 </pre></div>
 </div>
 </li>
-<li><p class="first">Change the “base_frame” parameter in <code class="docutils literal"><span class="pre">workcell.launch</span></code> (e.g. to “table”), relaunch the <code class="docutils literal"><span class="pre">workcell.launch</span></code> file, and note the different pose result.  Change the “base_frame” parameter back to “world” when you’re done.</p>
+<li><p class="first">Change the &quot;base_frame&quot; parameter in <code class="docutils literal"><span class="pre">workcell.launch</span></code> (e.g. to &quot;table&quot;), relaunch the <code class="docutils literal"><span class="pre">workcell.launch</span></code> file, and note the different pose result.  Change the &quot;base_frame&quot; parameter back to &quot;world&quot; when you're done.</p>
 </li>
 </ol>
 </div>

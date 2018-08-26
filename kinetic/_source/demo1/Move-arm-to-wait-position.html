@@ -30,6 +30,8 @@
   
     <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
   
+    <link rel="stylesheet" href="../../_static/banner.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
@@ -129,7 +131,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#job-management">Job management</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-jobs">Stopping Jobs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-out-of-control-jobs">Stopping “Out of Control” Jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-out-of-control-jobs">Stopping &quot;Out of Control&quot; Jobs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#showing-process-and-memory-usage">Showing Process and Memory usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#editing-text-and-other-gui-commands">Editing Text (and Other GUI Commands)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#running-commands-as-root">Running Commands as Root</a></li>
@@ -179,7 +181,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#create-a-package">Create a Package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise">STOP!  We’ll go through a few more lecture slides before continuing this exercise.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise">STOP!  We'll go through a few more lecture slides before continuing this exercise.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#create-a-node">Create a Node</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#run-a-node">Run a Node</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#challenge">Challenge</a></li>
@@ -690,7 +692,13 @@
              </div>
 
             
-  <div class="section" id="move-arm-to-wait-position">
+  
+
+
+
+
+
+<div class="section" id="move-arm-to-wait-position">
 <span id="move-arm-to-wait-position"></span><h1>Move Arm to Wait Position<a class="headerlink" href="#move-arm-to-wait-position" title="Permalink to this headline">¶</a></h1>
 <blockquote>
 <div>The <code class="docutils literal"><span class="pre">MoveGroup</span></code> class in MoveIt! allows us to move the robot in various ways.  With <code class="docutils literal"><span class="pre">MoveGroup</span></code> it is possible to move to a desired joint position, cartesian goal or a predefined pose created with the Setup Assistant.  In this exercise, we will move the robot to a predefined joint pose.</div></blockquote>
@@ -698,7 +706,7 @@
 <span id="locate-function"></span><h2>Locate Function<a class="headerlink" href="#locate-function" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>In the main program , locate the method call to <code class="docutils literal"><span class="pre">application.move_to_wait_position()</span></code>.</li>
-<li>Go to the source file of that function by clicking in any part of the function and pressing “F2”.</li>
+<li>Go to the source file of that function by clicking in any part of the function and pressing &quot;F2&quot;.</li>
 <li>Alternatively, browse to the file in <code class="docutils literal"><span class="pre">[Source</span> <span class="pre">directory]/src/tasks/move_to_wait_position.cpp</span></code>.</li>
 <li>Remove the fist line containing the following <code class="docutils literal"><span class="pre">ROS_ERROR_STREAM</span> <span class="pre">...</span></code> so that the program runs.</li>
 </ul>
@@ -718,7 +726,7 @@ with the appropriate line of code</li>
 </pre></div>
 </div>
 <ul class="simple">
-<li>The name of the predefined “wait” pose was saved in the global variable <code class="docutils literal"><span class="pre">cfg.WAIT_POSE_NAME</span></code> during initialization.</li>
+<li>The name of the predefined &quot;wait&quot; pose was saved in the global variable <code class="docutils literal"><span class="pre">cfg.WAIT_POSE_NAME</span></code> during initialization.</li>
 </ul>
 </div>
 <div class="section" id="build-code-and-run">

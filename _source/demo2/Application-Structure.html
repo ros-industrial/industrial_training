@@ -30,6 +30,8 @@
   
     <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
   
+    <link rel="stylesheet" href="../../_static/banner.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
@@ -129,7 +131,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#job-management">Job management</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-jobs">Stopping Jobs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-out-of-control-jobs">Stopping “Out of Control” Jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-out-of-control-jobs">Stopping &quot;Out of Control&quot; Jobs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#showing-process-and-memory-usage">Showing Process and Memory usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#editing-text-and-other-gui-commands">Editing Text (and Other GUI Commands)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#running-commands-as-root">Running Commands as Root</a></li>
@@ -179,7 +181,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#create-a-package">Create a Package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise">STOP!  We’ll go through a few more lecture slides before continuing this exercise.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise">STOP!  We'll go through a few more lecture slides before continuing this exercise.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#create-a-node">Create a Node</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#run-a-node">Run a Node</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#challenge">Challenge</a></li>
@@ -690,10 +692,16 @@
              </div>
 
             
-  <div class="section" id="application-structure">
+  
+
+
+
+
+
+<div class="section" id="application-structure">
 <span id="application-structure"></span><h1>Application Structure<a class="headerlink" href="#application-structure" title="Permalink to this headline">¶</a></h1>
 <blockquote>
-<div>In this exercise, we’ll take a look at all the packages and files that will be used during the completion of these exercises.</div></blockquote>
+<div>In this exercise, we'll take a look at all the packages and files that will be used during the completion of these exercises.</div></blockquote>
 <div class="section" id="acquire-and-initialize-the-workspace">
 <span id="acquire-and-initialize-the-workspace"></span><h2>Acquire and initialize the Workspace<a class="headerlink" href="#acquire-and-initialize-the-workspace" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default"><div class="highlight"><pre><span class="n">cd</span> <span class="o">~/</span><span class="n">industrial_training</span><span class="o">/</span><span class="n">exercises</span><span class="o">/</span><span class="n">Descartes_Planning_and_Execution</span>
@@ -745,7 +753,7 @@ Then, run the following command from the <code class="docutils literal"><span cl
 </pre></div>
 </div>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">plan_and_run</span></code> :           Contains the source code for the <code class="docutils literal"><span class="pre">plan_and_run</span></code> application.  You’ll be completing the exercises by editing source files in this package</li>
+<li><code class="docutils literal"><span class="pre">plan_and_run</span></code> :           Contains the source code for the <code class="docutils literal"><span class="pre">plan_and_run</span></code> application.  You'll be completing the exercises by editing source files in this package</li>
 <li><code class="docutils literal"><span class="pre">ur5_demo_moveit_config</span></code> : Contains support files for planning and execution robot motions with Moveit.  This package was generated with the Moveit Setup Assistant</li>
 <li><code class="docutils literal"><span class="pre">ur5_demo_support</span></code> :       Provides the robot definition as a URDF file.  This URDF is loaded at run time by our <code class="docutils literal"><span class="pre">plan_and_run</span></code> application.</li>
 <li><code class="docutils literal"><span class="pre">ur5_demo_descartes</span></code> :     Provides a custom Descartes Robot Model for the UR5 arm.  It uses a Inverse-Kinematics closed form solution; which is significantly faster than the numerical approach used by the <strong>MoveitStateAdapter</strong>.</li>
@@ -760,8 +768,8 @@ Then, run the following command from the <code class="docutils literal"><span cl
 <ul class="simple">
 <li><code class="docutils literal"><span class="pre">src</span></code> :     Application source files.</li>
 <li><code class="docutils literal"><span class="pre">src/demo_application.cpp</span></code> : A class source file that contains the application implementation code.</li>
-<li><code class="docutils literal"><span class="pre">src/plan_and_run.cpp</span></code>     : The application main access point. It invokes all the tasks in the application and wraps them inside the “<code class="docutils literal"><span class="pre">main</span></code>” routine.</li>
-<li><code class="docutils literal"><span class="pre">src/tasks</span></code>                : A directory that contains all of the source files that you’ll be editing or completing as you make progress through the exercises.</li>
+<li><code class="docutils literal"><span class="pre">src/plan_and_run.cpp</span></code>     : The application main access point. It invokes all the tasks in the application and wraps them inside the &quot;<code class="docutils literal"><span class="pre">main</span></code>&quot; routine.</li>
+<li><code class="docutils literal"><span class="pre">src/tasks</span></code>                : A directory that contains all of the source files that you'll be editing or completing as you make progress through the exercises.</li>
 <li><code class="docutils literal"><span class="pre">include</span></code> : Header files</li>
 <li><code class="docutils literal"><span class="pre">include/plan_and_run/demo_application.h</span></code> : Defines the application skeleton and provides a number of global variables for passing data at various points in the exercises.</li>
 <li><code class="docutils literal"><span class="pre">launch</span></code>: Launch files needed to run the application</li>
@@ -772,7 +780,7 @@ Then, run the following command from the <code class="docutils literal"><span cl
 </div>
 <div class="section" id="main-application-source-file">
 <span id="main-application-source-file"></span><h2>Main Application Source File<a class="headerlink" href="#main-application-source-file" title="Permalink to this headline">¶</a></h2>
-<p>In the “<code class="docutils literal"><span class="pre">plan_and_run/src/plan_and_run_node.cpp</span></code>” you’ll find the following code:</p>
+<p>In the &quot;<code class="docutils literal"><span class="pre">plan_and_run/src/plan_and_run_node.cpp</span></code>&quot; you'll find the following code:</p>
 <div class="highlight-c++"><div class="highlight"><pre><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span><span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span>
 <span class="p">{</span>
   <span class="n">ros</span><span class="o">::</span><span class="n">init</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span><span class="n">argv</span><span class="p">,</span><span class="s">&quot;plan_and_run&quot;</span><span class="p">);</span>
@@ -813,11 +821,11 @@ Then, run the following command from the <code class="docutils literal"><span cl
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>In short, this program will run through each exercise by calling the corresponding function from the <code class="docutils literal"><span class="pre">application</span></code> object.  For instance, in order to initialize Descartes the program calls <code class="docutils literal"><span class="pre">application.iniDescartes()</span></code>.  Thus each exercise consists of editing the source file where that exercise is implemented, so for <code class="docutils literal"><span class="pre">application.initDescartes()</span></code> you’ll be editing the <code class="docutils literal"><span class="pre">plan_and_run/src/tasks/init_descartes.src</span></code> source file.</p>
+<p>In short, this program will run through each exercise by calling the corresponding function from the <code class="docutils literal"><span class="pre">application</span></code> object.  For instance, in order to initialize Descartes the program calls <code class="docutils literal"><span class="pre">application.iniDescartes()</span></code>.  Thus each exercise consists of editing the source file where that exercise is implemented, so for <code class="docutils literal"><span class="pre">application.initDescartes()</span></code> you'll be editing the <code class="docutils literal"><span class="pre">plan_and_run/src/tasks/init_descartes.src</span></code> source file.</p>
 </div>
 <div class="section" id="the-demoapplication-class">
 <span id="the-demoapplication-class"></span><h2>The DemoApplication Class<a class="headerlink" href="#the-demoapplication-class" title="Permalink to this headline">¶</a></h2>
-<p>In the header file “<code class="docutils literal"><span class="pre">plan_and_run/include/plan_and_run/demo_application.h</span></code>” you’ll find the definition for the application’s main class along with several support constructs. Some of the important components to take notice of are as follows:</p>
+<p>In the header file &quot;<code class="docutils literal"><span class="pre">plan_and_run/include/plan_and_run/demo_application.h</span></code>&quot; you'll find the definition for the application's main class along with several support constructs. Some of the important components to take notice of are as follows:</p>
 <ul class="simple">
 <li>Program Variables: Contain hard coded values that are used at various points in the application.</li>
 </ul>
@@ -945,7 +953,7 @@ Then, run the following command from the <code class="docutils literal"><span cl
 </div>
 <div class="section" id="application-launch-file">
 <span id="application-launch-file"></span><h2>Application Launch File<a class="headerlink" href="#application-launch-file" title="Permalink to this headline">¶</a></h2>
-<p>This file starts our application as a ROS node and loads up the necessary parameters into the ROS parameter server. Observe how this is done by opening the “<code class="docutils literal"><span class="pre">plan_and_run/launch/demo_run.launch</span></code>” file:</p>
+<p>This file starts our application as a ROS node and loads up the necessary parameters into the ROS parameter server. Observe how this is done by opening the &quot;<code class="docutils literal"><span class="pre">plan_and_run/launch/demo_run.launch</span></code>&quot; file:</p>
 <div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;launch&gt;</span>
   <span class="nt">&lt;node</span> <span class="na">name=</span><span class="s">&quot;plan_and_run_node&quot;</span> <span class="na">type=</span><span class="s">&quot;plan_and_run_node&quot;</span> <span class="na">pkg=</span><span class="s">&quot;plan_and_run&quot;</span> <span class="na">output=</span><span class="s">&quot;screen&quot;</span><span class="nt">&gt;</span>
     <span class="nt">&lt;param</span> <span class="na">name=</span><span class="s">&quot;group_name&quot;</span> <span class="na">value=</span><span class="s">&quot;manipulator&quot;</span><span class="nt">/&gt;</span>
@@ -966,12 +974,12 @@ Then, run the following command from the <code class="docutils literal"><span cl
 </div>
 <ul class="simple">
 <li>Some of the important parameters are explained as follows:</li>
-<li>group_name: A namespace that points to the list of links in the robot that are included in the arm’s kinematic chain (base to end-of-tooling links).  This list is defined in the <code class="docutils literal"><span class="pre">ur5_demo_moveit_config</span></code> package.</li>
+<li>group_name: A namespace that points to the list of links in the robot that are included in the arm's kinematic chain (base to end-of-tooling links).  This list is defined in the <code class="docutils literal"><span class="pre">ur5_demo_moveit_config</span></code> package.</li>
 <li>tip_link: Name of the last link in the kinematic chain, usually the tool link.</li>
 <li>base_link: Name for the base link of the robot.</li>
 <li>world_frame: The absolute coordinate frame of reference for all the objects defined in the planning environment.</li>
-<li>The parameters under the “<code class="docutils literal"><span class="pre">trajectory</span></code>” namespace are used to generate the trajectory that is feed into the Descartes planner.</li>
-<li>trajectory/seed_pose: This is of particular importance because it is used to indicate preferred start and end joint configurations of the robot when planning the path.  If a ‘’seed_pose’’ wasn’t specified then planning would take longer since multiple start and end joint configurations would have to be taken into account, leading to multiple path solutions that result from combining several start and end poses.</li>
+<li>The parameters under the &quot;<code class="docutils literal"><span class="pre">trajectory</span></code>&quot; namespace are used to generate the trajectory that is feed into the Descartes planner.</li>
+<li>trajectory/seed_pose: This is of particular importance because it is used to indicate preferred start and end joint configurations of the robot when planning the path.  If a ''seed_pose'' wasn't specified then planning would take longer since multiple start and end joint configurations would have to be taken into account, leading to multiple path solutions that result from combining several start and end poses.</li>
 </ul>
 </div>
 </div>

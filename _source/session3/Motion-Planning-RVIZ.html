@@ -30,6 +30,8 @@
   
     <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
   
+    <link rel="stylesheet" href="../../_static/banner.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
@@ -128,7 +130,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#job-management">Job management</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-jobs">Stopping Jobs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-out-of-control-jobs">Stopping “Out of Control” Jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-out-of-control-jobs">Stopping &quot;Out of Control&quot; Jobs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#showing-process-and-memory-usage">Showing Process and Memory usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#editing-text-and-other-gui-commands">Editing Text (and Other GUI Commands)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#running-commands-as-root">Running Commands as Root</a></li>
@@ -178,7 +180,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#create-a-package">Create a Package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise">STOP!  We’ll go through a few more lecture slides before continuing this exercise.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise">STOP!  We'll go through a few more lecture slides before continuing this exercise.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#create-a-node">Create a Node</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#run-a-node">Run a Node</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#challenge">Challenge</a></li>
@@ -687,7 +689,13 @@
              </div>
 
             
-  <div class="section" id="motion-planning-using-rviz">
+  
+
+
+
+
+
+<div class="section" id="motion-planning-using-rviz">
 <span id="motion-planning-using-rviz"></span><h1>Motion Planning using RViz<a class="headerlink" href="#motion-planning-using-rviz" title="Permalink to this headline">¶</a></h1>
 <blockquote>
 <div>In this exercise, we will (finally) learn how to use the MoveIt! RViz plugin to plan and execute motion on a simulated robot. We will explore the different options and constraints associated with both MoveIt! and the RViz plugin.</div></blockquote>
@@ -742,13 +750,13 @@
 </li>
 <li><p class="first">Click <em>Execute</em> to run the motion on the Industrial Robot Simulator</p>
 <ul class="simple">
-<li><em>observe that the multi-colored scene robot display updates to show that the robot has “moved” to the goal position</em></li>
+<li><em>observe that the multi-colored scene robot display updates to show that the robot has &quot;moved&quot; to the goal position</em></li>
 </ul>
 </li>
 <li><p class="first">Repeat steps 2-5 a few more times</p>
 <ul class="simple">
 <li><em>try using the interactive marker to manually move the robot to a desired position</em></li>
-<li><em>try using a named pose (e.g. “straight up”)</em></li>
+<li><em>try using a named pose (e.g. &quot;straight up&quot;)</em></li>
 </ul>
 <p align="center"><img src=http://aeswiki.datasys.swri.edu/rositraining/indigo/Exercises/3.5?action=AttachFile&do=get&target=MotionQueries.png /></p></li>
 </ol>
@@ -757,7 +765,7 @@
 <span id="beyond-the-basics"></span><h2>Beyond the Basics<a class="headerlink" href="#beyond-the-basics" title="Permalink to this headline">¶</a></h2>
 <ol class="simple">
 <li>Experiment with different Planning Algorithms<ul>
-<li><em>select Context tab, choose a Planning Algorithm (drop-down box next to “OMPL”)</em></li>
+<li><em>select Context tab, choose a Planning Algorithm (drop-down box next to &quot;OMPL&quot;)</em></li>
 <li><em>the RRTkConfigDefault algorithm is often much faster</em></li>
 </ul>
 </li>
@@ -770,7 +778,7 @@
 </ul>
 </li>
 <li>Try to plan a path through the obstacle<ul>
-<li>It may help to have “Collision-Aware IK” disabled when moving the Goal State</li>
+<li>It may help to have &quot;Collision-Aware IK&quot; disabled when moving the Goal State</li>
 <li>If the robot fails to plan, check the error log and try repeating the plan request</li>
 <li>Because the default planners are sampling-based, they may produce different results on each execution</li>
 <li>You can also try increasing the planning time to allow a successful plan to be created</li>

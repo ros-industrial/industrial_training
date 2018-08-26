@@ -30,6 +30,8 @@
   
     <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
   
+    <link rel="stylesheet" href="../../_static/banner.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
@@ -129,7 +131,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#job-management">Job management</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-jobs">Stopping Jobs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-out-of-control-jobs">Stopping “Out of Control” Jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-out-of-control-jobs">Stopping &quot;Out of Control&quot; Jobs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#showing-process-and-memory-usage">Showing Process and Memory usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#editing-text-and-other-gui-commands">Editing Text (and Other GUI Commands)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#running-commands-as-root">Running Commands as Root</a></li>
@@ -179,7 +181,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#create-a-package">Create a Package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise">STOP!  We’ll go through a few more lecture slides before continuing this exercise.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise">STOP!  We'll go through a few more lecture slides before continuing this exercise.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#create-a-node">Create a Node</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#run-a-node">Run a Node</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#challenge">Challenge</a></li>
@@ -690,18 +692,24 @@
              </div>
 
             
-  <div class="section" id="general-instructions">
+  
+
+
+
+
+
+<div class="section" id="general-instructions">
 <span id="general-instructions"></span><h1>General Instructions<a class="headerlink" href="#general-instructions" title="Permalink to this headline">¶</a></h1>
 <blockquote>
-<div>In this exercise, we’ll demonstrate how to run the demo as you make progress through the exercises.  Also, it will be shown how to run the system in simulation mode and on the real robot.</div></blockquote>
+<div>In this exercise, we'll demonstrate how to run the demo as you make progress through the exercises.  Also, it will be shown how to run the system in simulation mode and on the real robot.</div></blockquote>
 <div class="section" id="main-objective">
 <span id="main-objective"></span><h2>Main Objective<a class="headerlink" href="#main-objective" title="Permalink to this headline">¶</a></h2>
-<p>In general, you’ll be implementing a <code class="docutils literal"><span class="pre">plan_and_run</span></code> node incrementally.  This means that in each exercise you’ll be adding individual pieces that are needed to complete the full application demo. Thus, when an exercise is completed run the demo in simulation mode in order to verify your results.  Only when all of the exercises are finished should you run it on the real robot.</p>
+<p>In general, you'll be implementing a <code class="docutils literal"><span class="pre">plan_and_run</span></code> node incrementally.  This means that in each exercise you'll be adding individual pieces that are needed to complete the full application demo. Thus, when an exercise is completed run the demo in simulation mode in order to verify your results.  Only when all of the exercises are finished should you run it on the real robot.</p>
 </div>
 <div class="section" id="complete-exercises">
 <span id="complete-exercises"></span><h2>Complete Exercises<a class="headerlink" href="#complete-exercises" title="Permalink to this headline">¶</a></h2>
 <ol class="simple">
-<li>To complete an exercise, open the corresponding source file under the <code class="docutils literal"><span class="pre">src/plan_and_run/src/tasks/</span></code> directory.  For instance, in Exercise 1 you’ll open <code class="docutils literal"><span class="pre">load_parameters.cpp</span></code>.</li>
+<li>To complete an exercise, open the corresponding source file under the <code class="docutils literal"><span class="pre">src/plan_and_run/src/tasks/</span></code> directory.  For instance, in Exercise 1 you'll open <code class="docutils literal"><span class="pre">load_parameters.cpp</span></code>.</li>
 <li>Take a minute to read the header comments for specific instructions for how to complete this particular exercise.  For instance, the <code class="docutils literal"><span class="pre">load_parameters.cpp</span></code>  file contains the following instructions and hints:</li>
 </ol>
 <div class="highlight-c++"><div class="highlight"><pre><span class="cm">/* LOAD PARAMETERS</span>
@@ -715,7 +723,7 @@
 </pre></div>
 </div>
 <ol class="simple">
-<li>Don’t forget to comment out the line:</li>
+<li>Don't forget to comment out the line:</li>
 </ol>
 <div class="highlight-c++"><div class="highlight"><pre><span class="n">ROS_ERROR_STREAM</span><span class="p">(</span><span class="s">&quot;Task &#39;&quot;</span><span class="o">&lt;&lt;</span><span class="n">__FUNCTION__</span> <span class="o">&lt;&lt;</span><span class="s">&quot;&#39; is incomplete. Exiting&quot;</span><span class="p">);</span> <span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
 </pre></div>
@@ -755,7 +763,7 @@
 </pre></div>
 </div>
 <ul class="simple">
-<li>When the virtual robot is ready , Rviz should be up and running with a UR5 arm in the home position and you’ll see the following messages in the terminal:</li>
+<li>When the virtual robot is ready , Rviz should be up and running with a UR5 arm in the home position and you'll see the following messages in the terminal:</li>
 </ul>
 <div class="highlight-default"><div class="highlight"><pre>      .
       .
@@ -797,7 +805,7 @@ All is well! Everyone is happy! You can start planning now!
 <span id="run-demo-on-the-real-robot"></span><h2>Run Demo on the Real Robot<a class="headerlink" href="#run-demo-on-the-real-robot" title="Permalink to this headline">¶</a></h2>
 <p><strong>Notes</strong></p>
 <ul class="simple">
-<li>Make sure that you can <code class="docutils literal"><span class="pre">ping</span></code> the robot and that there aren’t any obstacles near it.</li>
+<li>Make sure that you can <code class="docutils literal"><span class="pre">ping</span></code> the robot and that there aren't any obstacles near it.</li>
 </ul>
 <ol class="simple">
 <li>In a terminal, run the setup launch file as follows:</li>
@@ -807,7 +815,7 @@ All is well! Everyone is happy! You can start planning now!
 </div>
 <p><strong>Notes:</strong></p>
 <ul class="simple">
-<li>Enter the robot’s actual IP address into the <code class="docutils literal"><span class="pre">robot_ip</span></code> argument.  The robot model in Rviz should be in about the same position as the real robot.</li>
+<li>Enter the robot's actual IP address into the <code class="docutils literal"><span class="pre">robot_ip</span></code> argument.  The robot model in Rviz should be in about the same position as the real robot.</li>
 </ul>
 <ol class="simple">
 <li>In a separate terminal, run the application launch file:</li>

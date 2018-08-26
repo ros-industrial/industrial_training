@@ -30,6 +30,8 @@
   
     <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
   
+    <link rel="stylesheet" href="../../_static/banner.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
@@ -129,7 +131,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#job-management">Job management</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-jobs">Stopping Jobs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-out-of-control-jobs">Stopping “Out of Control” Jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-out-of-control-jobs">Stopping &quot;Out of Control&quot; Jobs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#showing-process-and-memory-usage">Showing Process and Memory usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#editing-text-and-other-gui-commands">Editing Text (and Other GUI Commands)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#running-commands-as-root">Running Commands as Root</a></li>
@@ -179,7 +181,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#create-a-package">Create a Package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise">STOP!  We’ll go through a few more lecture slides before continuing this exercise.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise">STOP!  We'll go through a few more lecture slides before continuing this exercise.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#create-a-node">Create a Node</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#run-a-node">Run a Node</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#challenge">Challenge</a></li>
@@ -690,17 +692,23 @@
              </div>
 
             
-  <div class="section" id="load-parameters">
+  
+
+
+
+
+
+<div class="section" id="load-parameters">
 <span id="load-parameters"></span><h1>Load Parameters<a class="headerlink" href="#load-parameters" title="Permalink to this headline">¶</a></h1>
 <blockquote>
-<div>In this exercise, we’ll load some ROS parameters to initialize important variables within our program.</div></blockquote>
+<div>In this exercise, we'll load some ROS parameters to initialize important variables within our program.</div></blockquote>
 <div class="section" id="locate-exercise-source-file">
 <span id="locate-exercise-source-file"></span><h2>Locate Exercise Source File<a class="headerlink" href="#locate-exercise-source-file" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>Go to the main application source file located in <code class="docutils literal"><span class="pre">plan_and_run/src/plan_and_run_node.cpp</span></code>.</li>
 <li>In the main program, locate the function call to <code class="docutils literal"><span class="pre">application.loadParameters()</span></code>.</li>
-<li>Go to the source file for that function located in the <code class="docutils literal"><span class="pre">plan_and_run/src/tasks/load_parameters.cpp</span></code>. Alternatively, in Eclipse you can click in any part of the function and press “F2” to bring up that file.</li>
-<li>Comment out the first line containing the <code class="docutils literal"><span class="pre">ROS_ERROR_STREAM</span> <span class="pre">...</span></code> entry so that the function doesn’t quit immediately.</li>
+<li>Go to the source file for that function located in the <code class="docutils literal"><span class="pre">plan_and_run/src/tasks/load_parameters.cpp</span></code>. Alternatively, in Eclipse you can click in any part of the function and press &quot;F2&quot; to bring up that file.</li>
+<li>Comment out the first line containing the <code class="docutils literal"><span class="pre">ROS_ERROR_STREAM</span> <span class="pre">...</span></code> entry so that the function doesn't quit immediately.</li>
 </ul>
 </div>
 <div class="section" id="complete-code">

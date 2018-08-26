@@ -30,6 +30,8 @@
   
     <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
   
+    <link rel="stylesheet" href="../../_static/banner.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
@@ -128,7 +130,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="The-Linux-Terminal.html#job-management">Job management</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="The-Linux-Terminal.html#stopping-jobs">Stopping Jobs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="The-Linux-Terminal.html#stopping-out-of-control-jobs">Stopping “Out of Control” Jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="The-Linux-Terminal.html#stopping-out-of-control-jobs">Stopping &quot;Out of Control&quot; Jobs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="The-Linux-Terminal.html#showing-process-and-memory-usage">Showing Process and Memory usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="The-Linux-Terminal.html#editing-text-and-other-gui-commands">Editing Text (and Other GUI Commands)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="The-Linux-Terminal.html#running-commands-as-root">Running Commands as Root</a></li>
@@ -178,7 +180,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#create-a-package">Create a Package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise">STOP!  We’ll go through a few more lecture slides before continuing this exercise.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise">STOP!  We'll go through a few more lecture slides before continuing this exercise.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#create-a-node">Create a Node</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#run-a-node">Run a Node</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#challenge">Challenge</a></li>
@@ -687,7 +689,13 @@
              </div>
 
             
-  <div class="section" id="exploring-the-linux-file-system">
+  
+
+
+
+
+
+<div class="section" id="exploring-the-linux-file-system">
 <span id="exploring-the-linux-file-system"></span><h1>Exploring the Linux File System<a class="headerlink" href="#exploring-the-linux-file-system" title="Permalink to this headline">¶</a></h1>
 <blockquote>
 <div>In this exercise, we will look at how to navigate and move files in the Linux file system using the Ubuntu GUI, and learn some of the basics of Linux file attributes.</div></blockquote>
@@ -698,14 +706,14 @@
 </ol>
 <p><img alt="" src="http://aeswiki.datasys.swri.edu/rositraining/Exercises/1.1.2?action=AttachFile&amp;do=get&amp;target=1.png" /></p>
 <ol class="simple">
-<li>The icons at the top constitute the “location bar” of the file browser. While the location bar is very useful for navigating in the GUI, it hides the exact location of the window. You can show the location by pressing <em>Ctrl+L</em>. You should see the location bar turn into something like the image below:</li>
+<li>The icons at the top constitute the &quot;location bar&quot; of the file browser. While the location bar is very useful for navigating in the GUI, it hides the exact location of the window. You can show the location by pressing <em>Ctrl+L</em>. You should see the location bar turn into something like the image below:</li>
 </ol>
 <p><img alt="" src="http://aeswiki.datasys.swri.edu/rositraining/Exercises/1.1.2?action=AttachFile&amp;do=get&amp;target=2.png" /></p>
 <ol class="simple">
-<li>The folder browser opens up in the user’s home folder by default. This folder is typically <em>/home/<username></em>, which in the ROS-Industrial training computer is <em>/home/ros-industrial</em>. This folder is the only one which the user has full access to. This is by design for security’s sake.</li>
-<li>By default, the file browser doesn’t show hidden files (files which begin with a . character) or “backup” files (which end with a ~ character). To show these files, click on the “View” menu, and select “Show Hidden Files” (or press Ctrl+H). This will show all of the hidden files.  Uncheck the option to re-hide those files.</li>
+<li>The folder browser opens up in the user's home folder by default. This folder is typically <em>/home/<username></em>, which in the ROS-Industrial training computer is <em>/home/ros-industrial</em>. This folder is the only one which the user has full access to. This is by design for security's sake.</li>
+<li>By default, the file browser doesn't show hidden files (files which begin with a . character) or &quot;backup&quot; files (which end with a ~ character). To show these files, click on the &quot;View&quot; menu, and select &quot;Show Hidden Files&quot; (or press Ctrl+H). This will show all of the hidden files.  Uncheck the option to re-hide those files.</li>
 <li>Two hidden directories are <em>never</em> shown: The . folder, which is a special folder that represents the current folder, and .., which represents the folder which contains the current folder. These will become important in the <a class="reference external" href="The-Linux-Terminal.md">next exercise</a>.</li>
-<li>On the left hand side of the window are some quick links to removable devices, other hard drives, bookmarks, etc. Click on the “Computer” shortcut link. This will take you to the “root” of the file system, the / folder. All of the files on the computer are in sub-folders under this folder.</li>
+<li>On the left hand side of the window are some quick links to removable devices, other hard drives, bookmarks, etc. Click on the &quot;Computer&quot; shortcut link. This will take you to the &quot;root&quot; of the file system, the / folder. All of the files on the computer are in sub-folders under this folder.</li>
 <li>Double click on the <em>opt</em> folder, then the <em>ros</em> folder. This is where all of the ROS software resides. Each version is stored in its own folder; we should see a kinetic folder there. Double-click on that folder. The <em>setup.bash</em> file will be used in the <a class="reference external" href="The-Linux-Terminal.md">terminal exercise</a> to configure the terminal for ROS. The programs, data, etc. are in the <em>bin</em> and <em>share</em> folders. You generally do not need to modify any of these files directly, but it is good to know where they reside.</li>
 </ol>
 </div>
@@ -716,15 +724,15 @@
 <ol class="simple">
 <li>Create a directory and file<ol>
 <li>Make a directory  <em>&lt;Home&gt;/ex0.3</em>. We will be working within this folder.<ul>
-<li>Inside the file browser, click on the “Home” shortcut in the left sidebar.</li>
-<li>Right click in the file browser’s main panel and select “New Folder”.</li>
-<li>Name the folder “ex0.3” and press “return”.</li>
+<li>Inside the file browser, click on the &quot;Home&quot; shortcut in the left sidebar.</li>
+<li>Right click in the file browser's main panel and select &quot;New Folder&quot;.</li>
+<li>Name the folder &quot;ex0.3&quot; and press &quot;return&quot;.</li>
 </ul>
 </li>
 <li>Make a file <em>test.txt</em> inside the newly-created <em>ex0.3</em> folder.<ul>
 <li>Double-click on the <em>ex0.3</em> folder.  Note how the File Browser header changes to show the current folder.</li>
-<li>Right click in the file browser’s main panel and select “New Document”, then “Empty Document”.</li>
-<li>Name the file “test.txt” and press “return”.</li>
+<li>Right click in the file browser's main panel and select &quot;New Document&quot;, then &quot;Empty Document&quot;.</li>
+<li>Name the file &quot;test.txt&quot; and press &quot;return&quot;.</li>
 </ul>
 </li>
 </ol>
@@ -732,18 +740,18 @@
 <li>Copying Files<ol>
 <li>Copy the file using one of the following methods:<ul>
 <li>Click and hold on the <em>test.txt</em> file, hold down on the control key, drag somewhere else on the folder, and release.</li>
-<li>Click on the file, go to the “Copy” from the “Edit” menu, and then “Paste” from the “Edit” menu.<BR>
+<li>Click on the file, go to the &quot;Copy&quot; from the &quot;Edit&quot; menu, and then &quot;Paste&quot; from the &quot;Edit&quot; menu.<BR>
 <em>Remember: to see the Menu, hover your mouse above the bar at the top of the screen</em></li>
 </ul>
 </li>
 <li>Rename the copied file to <em>copy.txt</em> using one of the following methods:<ul>
-<li>Right-click on the copied file, select “Rename…” and enter <em>copy.txt</em>.</li>
+<li>Right-click on the copied file, select &quot;Rename...&quot; and enter <em>copy.txt</em>.</li>
 <li>Click on the file, press the F2 key, and enter <em>copy.txt</em>.</li>
 </ul>
 </li>
 <li>Create a folder <em>new</em> using one of the following methods:<ul>
-<li>Right-click on an open area of the file browser window, select “New Folder”, and naming it <em>new</em></li>
-<li>Select “New Folder” from the “File” menu, and naming it <em>new</em></li>
+<li>Right-click on an open area of the file browser window, select &quot;New Folder&quot;, and naming it <em>new</em></li>
+<li>Select &quot;New Folder&quot; from the &quot;File&quot; menu, and naming it <em>new</em></li>
 </ul>
 </li>
 <li>Move the file <em>copy.txt</em> into the <em>new</em> folder by dragging the file into the <em>new</em> folder.</li>

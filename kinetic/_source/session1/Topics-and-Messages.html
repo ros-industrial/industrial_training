@@ -30,6 +30,8 @@
   
     <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
   
+    <link rel="stylesheet" href="../../_static/banner.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
@@ -128,7 +130,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#job-management">Job management</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-jobs">Stopping Jobs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-out-of-control-jobs">Stopping “Out of Control” Jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-out-of-control-jobs">Stopping &quot;Out of Control&quot; Jobs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#showing-process-and-memory-usage">Showing Process and Memory usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#editing-text-and-other-gui-commands">Editing Text (and Other GUI Commands)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#running-commands-as-root">Running Commands as Root</a></li>
@@ -178,7 +180,7 @@
 <li class="toctree-l2"><a class="reference internal" href="Creating-a-ROS-Package-and-Node.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Creating-a-ROS-Package-and-Node.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="Creating-a-ROS-Package-and-Node.html#create-a-package">Create a Package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Creating-a-ROS-Package-and-Node.html#stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise">STOP!  We’ll go through a few more lecture slides before continuing this exercise.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Creating-a-ROS-Package-and-Node.html#stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise">STOP!  We'll go through a few more lecture slides before continuing this exercise.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Creating-a-ROS-Package-and-Node.html#create-a-node">Create a Node</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Creating-a-ROS-Package-and-Node.html#run-a-node">Run a Node</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Creating-a-ROS-Package-and-Node.html#challenge">Challenge</a></li>
@@ -687,7 +689,13 @@
              </div>
 
             
-  <div class="section" id="topics-and-messages">
+  
+
+
+
+
+
+<div class="section" id="topics-and-messages">
 <span id="topics-and-messages"></span><h1>Topics and Messages<a class="headerlink" href="#topics-and-messages" title="Permalink to this headline">¶</a></h1>
 <blockquote>
 <div>In this exercise, we will explore the concept of ROS messages and topics.</div></blockquote>
@@ -725,7 +733,7 @@
 </pre></div>
 </div>
 </li>
-<li><p class="first">Edit your package’s <code class="docutils literal"><span class="pre">CMakeLists.txt</span></code> file (<code class="docutils literal"><span class="pre">~/catkin_ws/src/myworkcell_core/CMakeLists.txt</span></code>).  Make the following changes in the matching sections of the existing template file, by uncommenting and/or editing existing rules.</p>
+<li><p class="first">Edit your package's <code class="docutils literal"><span class="pre">CMakeLists.txt</span></code> file (<code class="docutils literal"><span class="pre">~/catkin_ws/src/myworkcell_core/CMakeLists.txt</span></code>).  Make the following changes in the matching sections of the existing template file, by uncommenting and/or editing existing rules.</p>
 <ol>
 <li><p class="first">Tell cmake to find the fake_ar_publisher package:</p>
 <div class="highlight-cmake"><div class="highlight"><pre><span class="c">## Find catkin macros and libraries</span>
@@ -762,7 +770,7 @@
 </li>
 </ol>
 </li>
-<li><p class="first">add dependencies into your package’s <code class="docutils literal"><span class="pre">package.xml</span></code>:</p>
+<li><p class="first">add dependencies into your package's <code class="docutils literal"><span class="pre">package.xml</span></code>:</p>
 <div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;depend&gt;</span>fake_ar_publisher<span class="nt">&lt;/depend&gt;</span>
 </pre></div>
 </div>
@@ -792,7 +800,7 @@
 <li>In another terminal, enter <code class="docutils literal"><span class="pre">rostopic</span> <span class="pre">list</span></code>.  You should see <code class="docutils literal"><span class="pre">/ar_pose_marker</span></code> among the topics listed. Entering <code class="docutils literal"><span class="pre">rostopic</span> <span class="pre">type</span> <span class="pre">/ar_pose_marker</span></code> will return the type of the message.</li>
 <li>Enter <code class="docutils literal"><span class="pre">rostopic</span> <span class="pre">echo</span> <span class="pre">/ar_pose_marker</span></code>. The terminal will show the fields for each message as they come in, separated by a <code class="docutils literal"><span class="pre">---</span></code> line.  Press Ctrl+C to exit.</li>
 <li>Enter <code class="docutils literal"><span class="pre">rqt_plot</span></code>.<ol>
-<li>Once the window opens, type <code class="docutils literal"><span class="pre">/ar_pose_marker/pose/pose/position/x</span></code> in the “Topic:” field and click the “+” button. You should see the X value be plotted.</li>
+<li>Once the window opens, type <code class="docutils literal"><span class="pre">/ar_pose_marker/pose/pose/position/x</span></code> in the &quot;Topic:&quot; field and click the &quot;+&quot; button. You should see the X value be plotted.</li>
 <li>Type <code class="docutils literal"><span class="pre">/ar_pose_marker/pose/pose/position/y</span></code> in the topic field, and click on the add button.  You will now see both the x and y values being graphed.</li>
 <li>Close the window</li>
 </ol>
@@ -846,9 +854,9 @@
 </pre></div>
 </div>
 <ul class="simple">
-<li>You can replace or leave the “Hello World” print… your choice!</li>
+<li>You can replace or leave the &quot;Hello World&quot; print... your choice!</li>
 <li>These new lines must go below the <code class="docutils literal"><span class="pre">NodeHandle</span></code> declaration, so <code class="docutils literal"><span class="pre">nh</span></code> is actually defined.</li>
-<li>Make sure to retain the <code class="docutils literal"><span class="pre">ros::spin()</span></code> call.  It will typically be the last line in your <code class="docutils literal"><span class="pre">main</span></code> routine.  Code after <code class="docutils literal"><span class="pre">ros::spin()</span></code> won’t run until the node is shutting down.</li>
+<li>Make sure to retain the <code class="docutils literal"><span class="pre">ros::spin()</span></code> call.  It will typically be the last line in your <code class="docutils literal"><span class="pre">main</span></code> routine.  Code after <code class="docutils literal"><span class="pre">ros::spin()</span></code> won't run until the node is shutting down.</li>
 </ul>
 </li>
 <li><p class="first">Run <code class="docutils literal"><span class="pre">catkin</span> <span class="pre">build</span></code>, then <code class="docutils literal"><span class="pre">rosrun</span> <span class="pre">myworkcell_core</span> <span class="pre">vision_node</span></code>.</p>

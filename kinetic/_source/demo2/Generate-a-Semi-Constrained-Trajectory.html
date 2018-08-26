@@ -30,6 +30,8 @@
   
     <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
   
+    <link rel="stylesheet" href="../../_static/banner.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
@@ -129,7 +131,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#job-management">Job management</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-jobs">Stopping Jobs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-out-of-control-jobs">Stopping “Out of Control” Jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-out-of-control-jobs">Stopping &quot;Out of Control&quot; Jobs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#showing-process-and-memory-usage">Showing Process and Memory usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#editing-text-and-other-gui-commands">Editing Text (and Other GUI Commands)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#running-commands-as-root">Running Commands as Root</a></li>
@@ -179,7 +181,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#create-a-package">Create a Package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise">STOP!  We’ll go through a few more lecture slides before continuing this exercise.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise">STOP!  We'll go through a few more lecture slides before continuing this exercise.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#create-a-node">Create a Node</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#run-a-node">Run a Node</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#challenge">Challenge</a></li>
@@ -690,26 +692,32 @@
              </div>
 
             
-  <div class="section" id="generate-a-semi-constrained-trajectory">
+  
+
+
+
+
+
+<div class="section" id="generate-a-semi-constrained-trajectory">
 <span id="generate-a-semi-constrained-trajectory"></span><h1>Generate a Semi-Constrained Trajectory<a class="headerlink" href="#generate-a-semi-constrained-trajectory" title="Permalink to this headline">¶</a></h1>
 <blockquote>
-<div>In this exercise, we’ll be creating a Descartes trajectory from an array of cartesian poses.  Each point will have rotational freedom about the z axis of the tool.</div></blockquote>
+<div>In this exercise, we'll be creating a Descartes trajectory from an array of cartesian poses.  Each point will have rotational freedom about the z axis of the tool.</div></blockquote>
 <div class="section" id="locate-exercise-source-file">
 <span id="locate-exercise-source-file"></span><h2>Locate exercise source file<a class="headerlink" href="#locate-exercise-source-file" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>Go to the main application source file located in <code class="docutils literal"><span class="pre">plan_and_run/src/plan_and_run_node.cpp</span></code>.</li>
 <li>In the main program, locate the function call to <code class="docutils literal"><span class="pre">application.generateTrajectory()</span></code>.</li>
 <li>Go to the source file for that function located in the <code class="docutils literal"><span class="pre">plan_and_run/src/tasks/generate_trajectory.cpp</span></code>.<ul>
-<li>Alternatively, in QTCreator, click on any part of the function and press “F2” to bring up that file.</li>
+<li>Alternatively, in QTCreator, click on any part of the function and press &quot;F2&quot; to bring up that file.</li>
 </ul>
 </li>
-<li>Comment out the first line containing the <code class="docutils literal"><span class="pre">ROS_ERROR_STREAM(</span> <span class="pre">...</span></code> entry so that the function doesn’t quit immediately.</li>
+<li>Comment out the first line containing the <code class="docutils literal"><span class="pre">ROS_ERROR_STREAM(</span> <span class="pre">...</span></code> entry so that the function doesn't quit immediately.</li>
 </ul>
 </div>
 <div class="section" id="complete-code">
 <span id="complete-code"></span><h2>Complete Code<a class="headerlink" href="#complete-code" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Observe how the ‘createLemniscate()’ is invoked in order to generate all the poses of the tool for the trajectory.  The poses from it are then used to create the Descartes Trajectory.</li>
+<li>Observe how the 'createLemniscate()' is invoked in order to generate all the poses of the tool for the trajectory.  The poses from it are then used to create the Descartes Trajectory.</li>
 <li>Use the <a class="reference external" href="http://docs.ros.org/indigo/api/descartes_trajectory/html/classdescartes__trajectory_1_1AxialSymmetricPt.html#a552cfabcd4891ea01886fa1b258de7f1">AxialSymmetric</a> constructor to specify a point with rotational freedom about the z-axis.</li>
 <li>The <a class="reference external" href="http://docs.ros.org/indigo/api/descartes_trajectory/html/classdescartes__trajectory_1_1AxialSymmetricPt.html#a65bf672235bde219db6667892efebbc2">AxialSymmetricPt::FreeAxis::Z_AXIS</a> enumeration constant allows you to specify the <strong>Z</strong> as the free rotational axis</li>
 <li>Find comment block that starts with <code class="docutils literal"><span class="pre">/*</span> <span class="pre">Fill</span> <span class="pre">Code:</span></code> and complete as described .</li>

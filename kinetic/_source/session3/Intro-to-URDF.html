@@ -30,6 +30,8 @@
   
     <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
   
+    <link rel="stylesheet" href="../../_static/banner.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
@@ -128,7 +130,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#job-management">Job management</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-jobs">Stopping Jobs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-out-of-control-jobs">Stopping “Out of Control” Jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-out-of-control-jobs">Stopping &quot;Out of Control&quot; Jobs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#showing-process-and-memory-usage">Showing Process and Memory usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#editing-text-and-other-gui-commands">Editing Text (and Other GUI Commands)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#running-commands-as-root">Running Commands as Root</a></li>
@@ -178,7 +180,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#create-a-package">Create a Package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise">STOP!  We’ll go through a few more lecture slides before continuing this exercise.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise">STOP!  We'll go through a few more lecture slides before continuing this exercise.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#create-a-node">Create a Node</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#run-a-node">Run a Node</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#challenge">Challenge</a></li>
@@ -687,7 +689,13 @@
              </div>
 
             
-  <div class="section" id="introduction-to-urdf">
+  
+
+
+
+
+
+<div class="section" id="introduction-to-urdf">
 <span id="introduction-to-urdf"></span><h1>Introduction to URDF<a class="headerlink" href="#introduction-to-urdf" title="Permalink to this headline">¶</a></h1>
 <blockquote>
 <div>In this exercise, we will explore how to describe a robot in the URDF format.</div></blockquote>
@@ -725,7 +733,7 @@ Your goal is to describe a workcell that features:</li>
 <div class="section" id="scan-n-plan-application-guidance">
 <span id="scan-n-plan-application-guidance"></span><h2>Scan-N-Plan Application: Guidance<a class="headerlink" href="#scan-n-plan-application-guidance" title="Permalink to this headline">¶</a></h2>
 <ol>
-<li><p class="first">It’s customary to put describing files that aren’t code into their own “support” package. URDFs typically go into their own subfolder ‘’urdf/’‘. See the <a class="reference external" href="https://github.com/ros-industrial/abb/tree/kinetic/abb_irb2400_support">abb_irb2400_support</a> package. Add a <code class="docutils literal"><span class="pre">urdf</span></code> sub-folder to your application support package.</p>
+<li><p class="first">It’s customary to put describing files that aren’t code into their own “support” package. URDFs typically go into their own subfolder ''urdf/''. See the <a class="reference external" href="https://github.com/ros-industrial/abb/tree/kinetic/abb_irb2400_support">abb_irb2400_support</a> package. Add a <code class="docutils literal"><span class="pre">urdf</span></code> sub-folder to your application support package.</p>
 </li>
 <li><p class="first">Create a new <code class="docutils literal"><span class="pre">workcell.urdf</span></code> file inside the <code class="docutils literal"><span class="pre">myworkcell_support/urdf/</span></code> folder and insert the following XML skeleton:</p>
 <div class="highlight-xml"><div class="highlight"><pre><span class="cp">&lt;?xml version=&quot;1.0&quot; ?&gt;</span>
@@ -736,7 +744,7 @@ Your goal is to describe a workcell that features:</li>
 </li>
 <li><p class="first">Add the required links. See the <a class="reference external" href="https://github.com/ros-industrial/abb/blob/84825661073a18e33b68bb01b5bf371edd2efd49/abb_irb2400_support/urdf/irb2400_macro.xacro#L54-L69">irb2400_macro.xacro</a> example from an ABB2400.  Remember that all URDF tags must be placed <strong>between</strong> the <code class="docutils literal"><span class="pre">&lt;robot&gt;</span> <span class="pre">...</span> <span class="pre">&lt;/robot&gt;</span></code> tags.</p>
 <ol>
-<li><p class="first">Add the <code class="docutils literal"><span class="pre">world</span></code> frame as a “virtual link” (no geometry).</p>
+<li><p class="first">Add the <code class="docutils literal"><span class="pre">world</span></code> frame as a &quot;virtual link&quot; (no geometry).</p>
 <div class="highlight-default"><div class="highlight"><pre><span class="o">&lt;</span><span class="n">link</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;world&quot;</span><span class="o">/&gt;</span>
 </pre></div>
 </div>

@@ -30,6 +30,8 @@
   
     <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
   
+    <link rel="stylesheet" href="../../_static/banner.css" type="text/css" />
+  
 
   
         <link rel="index" title="Index"
@@ -128,7 +130,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#job-management">Job management</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-jobs">Stopping Jobs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-out-of-control-jobs">Stopping “Out of Control” Jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#stopping-out-of-control-jobs">Stopping &quot;Out of Control&quot; Jobs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#showing-process-and-memory-usage">Showing Process and Memory usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#editing-text-and-other-gui-commands">Editing Text (and Other GUI Commands)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../prerequisites/The-Linux-Terminal.html#running-commands-as-root">Running Commands as Root</a></li>
@@ -178,7 +180,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#scan-n-plan-application-problem-statement">Scan-N-Plan Application: Problem Statement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#create-a-package">Create a Package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise">STOP!  We’ll go through a few more lecture slides before continuing this exercise.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#stop-we-ll-go-through-a-few-more-lecture-slides-before-continuing-this-exercise">STOP!  We'll go through a few more lecture slides before continuing this exercise.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#create-a-node">Create a Node</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#run-a-node">Run a Node</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../session1/Creating-a-ROS-Package-and-Node.html#challenge">Challenge</a></li>
@@ -687,13 +689,19 @@
              </div>
 
             
-  <div class="section" id="introduction-to-perception">
+  
+
+
+
+
+
+<div class="section" id="introduction-to-perception">
 <span id="introduction-to-perception"></span><h1>Introduction to Perception<a class="headerlink" href="#introduction-to-perception" title="Permalink to this headline">¶</a></h1>
 <blockquote>
 <div>In this exercise, we will experiment with data generated from the Asus Xtion Pro (or Microsoft Kinect) sensor in order to become more familiar with processing 3D data. We will view its data stream and visualize the data in various ways under Rviz.</div></blockquote>
 <div class="section" id="point-cloud-data-file">
 <span id="point-cloud-data-file"></span><h2>Point Cloud Data File<a class="headerlink" href="#point-cloud-data-file" title="Permalink to this headline">¶</a></h2>
-<p>The start of most perception processing is ROS message data from a sensor.  In this exercise, we’ll be using 3D <a class="reference external" href="http://docs.ros.org/api/sensor_msgs/html/msg/PointCloud2.html">point cloud</a> data from a common Kinect-style sensor.</p>
+<p>The start of most perception processing is ROS message data from a sensor.  In this exercise, we'll be using 3D <a class="reference external" href="http://docs.ros.org/api/sensor_msgs/html/msg/PointCloud2.html">point cloud</a> data from a common Kinect-style sensor.</p>
 <ol>
 <li><p class="first">First, publish the point cloud data as a ROS message to allow display in rviz.</p>
 <ol>
@@ -740,7 +748,7 @@
 </div>
 <div class="section" id="experiment-with-pcl">
 <span id="experiment-with-pcl"></span><h2>Experiment with PCL<a class="headerlink" href="#experiment-with-pcl" title="Permalink to this headline">¶</a></h2>
-<p>Next, we will experiment with various command line tool provided by PCL for processing point cloud data. There are over 140 command line tools available, but only a few will be used as part of this exercise. The intent is to get you familiar with the capabilities of PCL without writing any code, but these command line tools are a great place to start when writing your own.  Although command line tools are helpful for testing various processing methods, most applications typically use the C++ libraries directly for “real” processing pipelines.  The ROS-I Advanced training course explores these C++ PCL methods in more detail.</p>
+<p>Next, we will experiment with various command line tool provided by PCL for processing point cloud data. There are over 140 command line tools available, but only a few will be used as part of this exercise. The intent is to get you familiar with the capabilities of PCL without writing any code, but these command line tools are a great place to start when writing your own.  Although command line tools are helpful for testing various processing methods, most applications typically use the C++ libraries directly for &quot;real&quot; processing pipelines.  The ROS-I Advanced training course explores these C++ PCL methods in more detail.</p>
 <p>Each of the PCL commands below generates a new point cloud file (<code class="docutils literal"><span class="pre">.pcd</span></code>) with the result of the PCL processing command.  Use either the <code class="docutils literal"><span class="pre">pcl_viewer</span></code> to view the results directly or the <code class="docutils literal"><span class="pre">pcd_to_pointcloud</span></code> command to publish the point cloud data as a ROS message for display in rviz.  Feel free to stop the <code class="docutils literal"><span class="pre">pcd_to_pointcloud</span></code> command after reviewing the results in rviz.</p>
 <div class="section" id="downsample-the-point-cloud-using-the-pcl-voxel-grid">
 <span id="downsample-the-point-cloud-using-the-pcl-voxel-grid"></span><h3>Downsample the point cloud using the pcl_voxel_grid.<a class="headerlink" href="#downsample-the-point-cloud-using-the-pcl-voxel-grid" title="Permalink to this headline">¶</a></h3>
@@ -818,7 +826,7 @@
 </div>
 <div class="section" id="mesh-a-point-cloud-using-the-marching-cubes-reconstruction">
 <span id="mesh-a-point-cloud-using-the-marching-cubes-reconstruction"></span><h3>Mesh a point cloud using the marching cubes reconstruction.<a class="headerlink" href="#mesh-a-point-cloud-using-the-marching-cubes-reconstruction" title="Permalink to this headline">¶</a></h3>
-<p>Point cloud data is often unstructured, but sometimes processing algorithms need to operate on a more structured surface mesh.  This example uses the “marching cubes” algorithm to construct a surface mesh that approximates the point cloud data.</p>
+<p>Point cloud data is often unstructured, but sometimes processing algorithms need to operate on a more structured surface mesh.  This example uses the &quot;marching cubes&quot; algorithm to construct a surface mesh that approximates the point cloud data.</p>
 <div class="highlight-default"><div class="highlight"><pre><span class="n">pcl_marching_cubes_reconstruction</span> <span class="n">table_normals</span><span class="o">.</span><span class="n">pcd</span> <span class="n">table_mesh</span><span class="o">.</span><span class="n">vtk</span> <span class="o">-</span><span class="n">grid_res</span> <span class="mi">20</span>
 <span class="n">pcl_viewer</span> <span class="n">table_mesh</span><span class="o">.</span><span class="n">vtk</span>
 </pre></div>
