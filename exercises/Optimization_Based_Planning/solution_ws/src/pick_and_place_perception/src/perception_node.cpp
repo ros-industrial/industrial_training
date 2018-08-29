@@ -115,7 +115,7 @@ public:
     // input cloud must be a pointer, so we make a new cloud_ptr from the cloud object
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_ptr(new pcl::PointCloud<pcl::PointXYZ>(cloud));
     // output cloud - set up as pointer to ease transition into further processing
-    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_voxel_filtered(new pcl::PointCloud<pcl::PointXYZ>());
+    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_voxel_filtered(new pcl::PointCloud<pcl::PointXYZ>(cloud));
     // create an instance of the pcl VoxelGrid
     pcl::VoxelGrid<pcl::PointXYZ> voxel_filter;
     voxel_filter.setInputCloud(cloud_ptr);
@@ -129,7 +129,9 @@ public:
      * Fill Code: PASSTHROUGH FILTER(S)
      * ======================*/
     // step 1- filter in x
-    pcl::PointCloud<pcl::PointXYZ> xf_cloud, yf_cloud, zf_cloud;
+    pcl::PointCloud<pcl::PointXYZ> xf_cloud = cloud;
+    pcl::PointCloud<pcl::PointXYZ> yf_cloud = cloud;
+    pcl::PointCloud<pcl::PointXYZ> zf_cloud = cloud;
     pcl::PassThrough<pcl::PointXYZ> pass_x;
     pass_x.setInputCloud(cloud_voxel_filtered);
     pass_x.setFilterFieldName("x");
@@ -166,6 +168,7 @@ public:
     crop.setMax(max_point);
     crop.filter(xyz_filtered_cloud);
 
+    ROS_INFO_STREAM("Cropped point cloud: " << zf_cloud.points.size() << " data points.");
     // Publish cropped cloud
     if(debug_)
     {
@@ -197,12 +200,8 @@ public:
     // Segment the largest planar component from the cropped cloud
     seg.setInputCloud(cropped_cloud);
     seg.segment(*inliers, *coefficients);
-    if (inliers->indices.size() == 0)
+    if (inliers->indices.size() > 0)
     {
-      ROS_WARN_STREAM("Could not estimate a planar model for the given dataset.");
-      // break;
-    }
-
     // Extract the planar inliers from the input cloud
     pcl::ExtractIndices<pcl::PointXYZ> extract;
     extract.setInputCloud(cropped_cloud);
@@ -216,7 +215,12 @@ public:
     // Remove the planar inliers, extract the rest
     extract.setNegative(true);
     extract.filter(*cloud_f);
-
+    }
+    else
+    {
+     ROS_WARN_STREAM("Could not estimate a planar model for the given dataset. Proceeding with full point cloud.");
+     *cloud_f = *cropped_cloud;
+    }
     /* ========================================
      * Fill Code: EUCLIDEAN CLUSTER EXTRACTION
      * ========================================*/
@@ -250,13 +254,20 @@ public:
       pcl::toROSMsg(*cloud_cluster, *tempROSMsg);
       pc2_clusters.push_back(tempROSMsg);
     }
-    pc2_clusters.at(0)->header.frame_id = world_frame;
-    pc2_clusters.at(0)->header.stamp = ros::Time::now();
-    if(debug_)
+    if(pc2_clusters.size() > 0)
     {
-      cluster_pub_.publish(pc2_clusters.at(0));
+        pc2_clusters.at(0)->header.frame_id = world_frame;
+        pc2_clusters.at(0)->header.stamp = ros::Time::now();
+        if(debug_)
+        {
+            cluster_pub_.publish(pc2_clusters.at(0));
+        }
     }
-
+    else
+    {
+        ROS_WARN_STREAM("Clustering failed. Proceeding with full point cloud.");
+       clusters.push_back(cloud_filtered);
+    }
     /* ========================================
      * Fill Code: STATISTICAL OUTLIER REMOVAL (OPTIONAL)
      * ========================================*/
@@ -299,22 +310,24 @@ public:
     // Segment the largest planar component perpendicular to the world z axis from the cropped cloud
     segTop.setInputCloud(cluster_cloud_ptr);
     segTop.segment(*inliers2, *coefficients2);
-    if (inliers2->indices.size() == 0)
+    if (inliers2->indices.size() > 0)
     {
-      ROS_WARN_STREAM("Could not estimate a planar model for the given dataset.");
-      // break;
+        // Extract the planar inliers from the input cloud
+        pcl::ExtractIndices<pcl::PointXYZ> extractTop;
+        extractTop.setInputCloud(cluster_cloud_ptr);
+        extractTop.setIndices(inliers2);
+        extractTop.setNegative(false);
+
+        // Get the points associated with the planar surface
+        extractTop.filter(*cloud_planeTop);
+        ROS_INFO_STREAM("PointCloud representing the top planar component: " << cloud_planeTop->points.size() << " data points.");
+
     }
-
-    // Extract the planar inliers from the input cloud
-    pcl::ExtractIndices<pcl::PointXYZ> extractTop;
-    extractTop.setInputCloud(cluster_cloud_ptr);
-    extractTop.setIndices(inliers2);
-    extractTop.setNegative(false);
-
-    // Get the points associated with the planar surface
-    extractTop.filter(*cloud_planeTop);
-    ROS_INFO_STREAM("PointCloud representing the planar component: " << cloud_planeTop->points.size() << " data points.");
-
+    else
+    {
+        ROS_WARN_STREAM("Could not estimate a planar model for the given dataset. Proceeding with full point cloud.");
+        *cloud_planeTop = *cluster_cloud_ptr;
+    }
     // OPTIONAL TIMERS
     ros::Time finish_process = ros::Time::now();
     ros::Duration total_process = finish_process - start_init;

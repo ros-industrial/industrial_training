@@ -5,14 +5,13 @@ Application Demo 3 - Optimization Based Planning
    :maxdepth: 2
 
    Demo 3.0 - Introduction <Introduction.md>
-   Demo 3.1 - Inspect the "pick_and_place_exercise" Package <Inspect-the-package.md>
+   Demo 3.1 - Inspect the "pick_and_place" Package <Inspect-the-package.md>
    Demo 3.2 - Package Setup <Package-Setup.md>
    Demo 3.3 - Start in Simulation Mode <Bring-up-ROS-system-in-simulation-mode.md>
-   Demo 3.4 - Initialization and Global Variables <Initialization-and-global-variables.md>
-   Demo 3.5 - Detect Box Pick Point <Detect-box-pick-point.md>
-   Demo 3.6 - Introduction to Trajopt <Introduction-to-trajopt.md>
+   Demo 3.4 - Detect Box Pick Point <Detect-box-pick-point.md>
+   Demo 3.5 - Introduction to Trajopt <Introduction-to-trajopt.md>
+   Demo 3.6 - Trajopt Costs and Constraints<Costs-and-Constraints.md>
    Demo 3.7 - Create Pick and Place Helpers <Create-pick-place-helpers.md>
-
    Demo 3.8 - Open Gripper <Open-gripper.md>
 
 

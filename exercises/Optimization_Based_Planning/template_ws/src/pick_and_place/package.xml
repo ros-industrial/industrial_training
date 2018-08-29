@@ -55,6 +55,7 @@
   <depend>gl_depth_sim</depend>
   <depend>tf_conversions</depend>
   <depend>tesseract_planning</depend>
+  <depend>pick_and_place_perception</depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->
