@@ -1,11 +1,11 @@
 # Detect Box Pick Point
-> The first step in a pick and place operation is that the pick location must be found. To do that, we will leverage a 3D camera sensor and the Point Cloud Library (PCL).
+The first step in a pick and place operation is that the pick location must be found. To do that, we will leverage a 3D camera sensor and the Point Cloud Library (PCL).
 
->The coordinate frame of the box's pick can be requested from a ros service that detects it by processing the sensor data. In this exercise, we will learn to write a ROS service and apply the neccessary filters to locate the pick location.
+The coordinate frame of the box's pick can be requested from a ros service that detects it by processing the sensor data. In this exercise, we will learn to write a ROS service and apply the neccessary filters to locate the pick location.
 
 ## Overview of the process
 
-Perception node is launched. This registers a new service with ```roscore``` and pulls necessary parameters from the ROS parameter server. It then waits until service is called.
+The perception node is launched. This registers a new service with ```roscore``` and pulls necessary parameters from the ROS parameter server. It then waits until the service is called.
 
 [ROS perception service is called]
 
@@ -45,7 +45,7 @@ Additionally, it defines adds some associated rosparams to the parameter server.
 We first need to create the ROS service definition. This file will define the service inputs and outputs. 
 
 * In the demo3_perception/srv directory, open GetTargetPose.srv
-* Copy the following code into the file and save
+* Ensure that the following code is in this file. Note that the service request is empty, and it returns a boolean flag and a ROS message of the geometry_msgs/Pose type.
 
 
 ```
@@ -76,7 +76,7 @@ In order for a RIS service to be registered on roscore, it must be advertised si
      .
      .
 */
-/* ========  ENTER CODE HERE ======== */
+//ENTER CODE HERE: Brief Description
 ```
 
   * The '''find_pick_client''' object in your programs can use the '''call()''' method to send a request to a ros service.
@@ -91,19 +91,20 @@ In order for a RIS service to be registered on roscore, it must be advertised si
 Project -> Build Project
 ```
 
-  * Alternatively, in a terminal cd into the '''demo_manipulation''' directory and do the following
+  * Alternatively, in a terminal cd into your workspace directory and do the following
 ```
-catkin build --pkg demo3
+catkin build
 ```
 
-  * Run your node with the launch file:
+  * Run your node with the launch file used before which calls the processing_node.launch. While you could call that launch file directly, the environment would not be loaded, and there would be no point cloud to process.
 ```
-roslaunch demo3_perception processing_node.launch
+roslaunch pick_and_place pick_and_place.launch
 ```
-  * You can test your code from the command line by calling ```rosservice call /find_pick``` when a point cloud is is being published on the cloud_topic
+  * test_bed_core_node will call your service automatically. However, you can also test your code from the command line by calling ```rosservice call /find_pick``` when a point cloud is is being published on the cloud_topic (/cloud by default).
 
+  * Some errors and warnings will be present when the template code is run. As the correct code is filled, these will disappear until a fully defined Pose message is returned from the service.
+  * 
 ## API References
 
-TODO: Update this
 
 [call()](http://docs.ros.org/hydro/api/roscpp/html/classros_1_1ServiceClient.html#a8a0c9be49046998a830df625babd396f)
