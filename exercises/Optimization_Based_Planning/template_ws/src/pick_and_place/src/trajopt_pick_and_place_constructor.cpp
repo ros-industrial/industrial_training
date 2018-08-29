@@ -28,9 +28,9 @@ void TrajoptPickAndPlaceConstructor::addInitialJointPosConstraint(trajopt::Probl
   */
   /* ========  ENTER CODE HERE ======== */
 
-
-
-
+// ENTER CODE HERE:
+// ENTER CODE HERE:
+// ENTER CODE HERE:
   Eigen::VectorXd start_joint_pos = env_->getCurrentJointValues();
   start_constraint->vals = std::vector<double>(start_joint_pos.data(), start_joint_pos.data() + start_joint_pos.rows());
   pci.cnt_infos.push_back(start_constraint);
@@ -52,12 +52,12 @@ void TrajoptPickAndPlaceConstructor::addJointVelCost(trajopt::ProblemConstructio
          . Define the penalty type as sco::squared
     */
     /* ========  ENTER CODE HERE ======== */
-
-
-
-
-
-
+// ENTER CODE HERE:
+// ENTER CODE HERE:
+// ENTER CODE HERE:
+// ENTER CODE HERE:
+// ENTER CODE HERE:
+// ENTER CODE HERE:
     pci.cost_infos.push_back(jv);
   }
 }
@@ -79,12 +79,12 @@ void TrajoptPickAndPlaceConstructor::addCollisionCost(trajopt::ProblemConstructi
        . Define the penalty type as sco::squared
   */
   /* ========  ENTER CODE HERE ======== */
-
-
-
-
-
-
+// ENTER CODE HERE:
+// ENTER CODE HERE:
+// ENTER CODE HERE:
+// ENTER CODE HERE:
+// ENTER CODE HERE:
+// ENTER CODE HERE:
   collision->info = createSafetyMarginDataVector(last_step - first_step + 1, dist_pen, coeff);
 
   pci.cost_infos.push_back(collision);
@@ -116,11 +116,11 @@ void TrajoptPickAndPlaceConstructor::addLinearMotion(trajopt::ProblemConstructio
          . Set the pose xyz translation
     */
     /* ========  ENTER CODE HERE ======== */
-
-
-
-
-
+// ENTER CODE HERE:
+// ENTER CODE HERE:
+// ENTER CODE HERE:
+// ENTER CODE HERE:
+// ENTER CODE HERE:
 
     Quaterniond rotation_delta(cos(0.5 * angle_delta * i),
                                delta_axis.x() * sin(0.5 * angle_delta * i),
@@ -136,11 +136,11 @@ void TrajoptPickAndPlaceConstructor::addLinearMotion(trajopt::ProblemConstructio
          . pushback the constraint to cnt_infos
     */
     /* ========  ENTER CODE HERE ======== */
-
-
-
-
-
+// ENTER CODE HERE:
+// ENTER CODE HERE:
+// ENTER CODE HERE:
+// ENTER CODE HERE:
+// ENTER CODE HERE:
   }
 }
 
@@ -158,9 +158,9 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePickProblem(Affine3d& app
        . Set the manipulator name (see class members)
   */
   /* ========  ENTER CODE HERE ======== */
-
-
-
+// ENTER CODE HERE:
+// ENTER CODE HERE:
+// ENTER CODE HERE:
 
   // Add kinematics
   pci.kin = kin_;
@@ -174,11 +174,11 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePickProblem(Affine3d& app
        . Add linear motion contraints from approach_pose to final_pose
   */
   /* ========  ENTER CODE HERE ======== */
+// ENTER CODE HERE:
 
+// ENTER CODE HERE:
 
-
-
-
+// ENTER CODE HERE:
 
   this->addCollisionCost(pci, 0.025, 20, 0, steps_per_phase);
 
@@ -201,9 +201,9 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePlaceProblem(Affine3d& re
   */
   /* ========  ENTER CODE HERE ======== */
 
-
-
-
+// ENTER CODE HERE:
+// ENTER CODE HERE:
+// ENTER CODE HERE:
 
   // Add kinematics
   pci.kin = kin_;
@@ -226,15 +226,14 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePlaceProblem(Affine3d& re
        . Add linear motion from start_pose to retreat_pose
        . Add linear motion from approach_pose to final_pose
        . Add collision cost
-       . Construct the problem and store as result
   */
   /* ========  ENTER CODE HERE ======== */
+// ENTER CODE HERE:
 
+// ENTER CODE HERE:
 
+// ENTER CODE HERE:
 
-
-
-
-
+  TrajOptProbPtr result = ConstructProblem(pci);
   return result;
 }

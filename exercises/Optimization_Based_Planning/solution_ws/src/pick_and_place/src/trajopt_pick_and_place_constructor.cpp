@@ -226,10 +226,8 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePlaceProblem(Affine3d& re
        . Add linear motion from start_pose to retreat_pose
        . Add linear motion from approach_pose to final_pose
        . Add collision cost
-       . Construct the problem and store as result
   */
   /* ========  ENTER CODE HERE ======== */
-
   this->addLinearMotion(pci, start_pose, retreat_pose, steps_per_phase, 0);
 
   this->addLinearMotion(pci, approach_pose, final_pose, steps_per_phase, steps_per_phase * 2);
