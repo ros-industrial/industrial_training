@@ -15,8 +15,10 @@
 //#include <pcl/segmentation/sac_segmentation.h>
 //#include <pcl/filters/extract_indices.h>
 //#include <pcl/segmentation/extract_clusters.h>
-//#include <pcl/kdtree/kdtree_flann.h>
+//#include <pcl/filters/crop_box.h>
 //#include <pcl/filters/statistical_outlier_removal.h>
+//#include <tf_conversions/tf_eigen.h>
+//#include <pcl/segmentation/extract_polygonal_prism_data.h>
 
 int main(int argc, char *argv[])
 {
@@ -119,17 +121,6 @@ int main(int argc, char *argv[])
 
 
   /* ========================================
-   * CONVERT POINTCLOUD PCL->ROS
-   * PUBLISH CLOUD
-   * Fill Code: UPDATE AS NECESSARY
-   * ========================================*/
-  sensor_msgs::PointCloud2::Ptr pc2_cloud (new sensor_msgs::PointCloud2);
-  //pcl::toROSMsg(*cloud_ptr, *pc2_cloud);
-  pc2_cloud->header.frame_id=world_frame;
-  pc2_cloud->header.stamp=ros::Time::now();
-  object_pub.publish(pc2_cloud);
-
-  /* ========================================
    * Fill Code: PUBLISH OTHER MARKERS (OPTIONAL)
    * ========================================*/
 
@@ -144,6 +135,16 @@ int main(int argc, char *argv[])
    * ========================================*/
 
 
+  /* ========================================
+   * CONVERT POINTCLOUD PCL->ROS
+   * PUBLISH CLOUD
+   * Fill Code: UPDATE AS NECESSARY
+   * ========================================*/
+  sensor_msgs::PointCloud2::Ptr pc2_cloud (new sensor_msgs::PointCloud2);
+  //pcl::toROSMsg(*cloud_ptr, *pc2_cloud);
+  pc2_cloud->header.frame_id=world_frame;
+  pc2_cloud->header.stamp=ros::Time::now();
+  object_pub.publish(pc2_cloud);
   }
   return 0;
 }

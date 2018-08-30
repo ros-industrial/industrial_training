@@ -1,7 +1,5 @@
-<?xml version="1.0" ?>
 <launch>
-
-  <node name="processing_node" pkg="lesson_perception" type="perception_node" output="screen">  
+  <node name="processing_node" pkg="lesson_perception" type="perception_node" output="screen">
     <rosparam>
       cloud_topic: "kinect/depth_registered/points"
       world_frame: "world_frame"
@@ -15,7 +13,7 @@
       z_filter_max: 2.5 <!-- m -->
       plane_max_iterations: 100
       plane_distance_threshold: 0.03
-      cluster_tolerance: 0.02
+      cluster_tolerance: 0.01
       cluster_min_size: 250
       cluster_max_size: 500000
     </rosparam>

@@ -4,7 +4,7 @@ In this exercise, we will fill in the appropriate pieces of code to build a perc
 
 Prepare New Workspace:
 ----------------------
-We will create a new catkin workspace, since this exercise does not overlap with the previous PlanNScan exercises.
+We will create a new catkin workspace, since this exercise does not overlap with the previous exercises.
 
 #. Disable automatic sourcing of your previous catkin workspace:
 
@@ -25,7 +25,7 @@ We will create a new catkin workspace, since this exercise does not overlap with
 
    .. code-block:: bash
 
-      cp -r ~/industrial_training/exercises/perception_ws ~
+      cp -r ~/industrial_training/exercises/5.1/template_ws ~/perception_ws
       cd ~/perception_ws/
 
  #. Initialize and Build this new workspace
@@ -41,14 +41,15 @@ We will create a new catkin workspace, since this exercise does not overlap with
 
       source ~/perception_ws/devel/setup.bash
 
-#. Download the :download:`PointCloud file </_downloads/table.pcd>` and place the file in your home directory (~).
+#. Copy the PointCloud file from prior Exercise 4.2 to your home directory (~):
 
+    .. code-block:: bash
 
-
+      cp ~/industrial_training/exercises/4.2/table.pcd ~
 
 #. Import the new workspace into your QTCreator IDE:
 
-   * In QTCreator: File -> New Project -> Import -> Import ROS Workspace -> ~/perception_ws
+   * In QTCreator: `File -> New File or Project -> Other Project -> ROS Workspace -> ~/perception_ws`
 
 Intro (Review Existing Code)
 ----------------------------
@@ -96,6 +97,8 @@ The task of filling in the middle section containing the perception algorithms i
 
 Implement Voxel Filter
 ^^^^^^^^^^^^^^^^^^^^^^
+#. Uncomment the `voxel_grid` include header, near the top of the file.
+
 #. Change code:
     
    The first step in most point cloud processing pipelines is the voxel filter. This filter not only helps to downsample your points, but also eliminates any NAN values so that any further filtering or processing is done on real values. See  `PCL Voxel Filter Tutorial <http://pointclouds.org/documentation/tutorials/voxel_grid.php#voxelgrid>`_ for hints, otherwise you can copy the below code snippet.
@@ -173,6 +176,8 @@ Viewing Results
 
 Implement Pass-through Filters
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+#. As before, uncomment the PassThrough filter include-header near the top of the file.
+
 #. Change code:
 
    The next set of useful filtering to get the region of interest, is a series of pass-through filters. These filters crop your point cloud down to a volume of space (if you use x y and z filter). At this point you should apply a series of pass-through filters, one for each the x, y, and z directions. See `PCL Pass-Through Filter Tutorial <http://pointclouds.org/documentation/tutorials/passthrough.php#passthrough>`_ for hints, or use code below.
@@ -297,6 +302,7 @@ Plane Segmentation
 #. Find the ``pcl::toROSMsg`` call where the ``pc2_cloud`` is populated.  This is the point cloud that is published to RViz display.  Replace the current cloud (``zf_cloud``) with the plane-fit outliers result (``*cloud_f``).
 
 #. Compile and run, as in previous steps.
+    Did you forget to uncomment the new headers used in this step?
 
 #. Evaluate Results
 
@@ -389,7 +395,7 @@ Create a CropBox Filter
        * The user should choose one or the other method
        * ========================================*/
 
-   This CropBox filter should replace your passthrough filters, you may delete or comment the passthrough filters. There is not PCL tutorial to guide you, only the PCL documentation at the link above. The general setup will be the same (set the output, declare instance of filter, set input, set parameters, and filter).
+   This CropBox filter should replace your passthrough filters, you may delete or comment the passthrough filters. There is no PCL tutorial to guide you, only the PCL documentation at the link above. The general setup will be the same (set the output, declare instance of filter, set input, set parameters, and filter).
 
    Set the output cloud:
 
@@ -413,8 +419,8 @@ Create a CropBox Filter
 
    .. code-block:: c++
 
-      Eigen::Vector4f min_point = Eigen::Vector4f(x_filter_min, y_filter_min, z_filter_min, 0);
-      Eigen::Vector4f max_point = Eigen::Vector4f(x_filter_max, y_filter_max, z_filter_max, 0);
+      Eigen::Vector4f min_point = Eigen::Vector4f(-1.0, -1.0, -1.0, 0);
+      Eigen::Vector4f max_point = Eigen::Vector4f(1.0, 1.0, 1.0, 0);
       crop.setMin(min_point);
       crop.setMax(max_point);
 
@@ -431,77 +437,11 @@ Create a CropBox Filter
       pcl::PointCloud<pcl::PointXYZ>::Ptr cropped_cloud(new pcl::PointCloud<pcl::PointXYZ>(xyz_filtered_cloud));
 
 
-#. Update Publisher within perception_node.cpp, find section
+#. Find the ``pcl::toROSMsg`` call where the ``pc2_cloud`` is populated.  This is the point cloud that is published to RViz display.  Replace the current cloud with the new filtered results (``xyz_filtered_cloud``).
 
-   .. code-block:: c++
+#. Compile and run, as in previous steps
 
-     /* ========================================
-      * CONVERT POINTCLOUD PCL->ROS
-      * PUBLISH CLOUD
-      * Fill Code: UPDATE AS NECESSARY
-      * ========================================*/
-
-   Change the "toROSMsg" line to convert from your newly processed cloud into a ROS sensor_msgs::PointCloud2.
-
-   Change:
-
-   .. code-block:: c++
-
-      sensor_msgs::PointCloud2::Ptr pc2_cloud (new sensor_msgs::PointCloud2);
-      pcl::toROSMsg(zf_cloud, *pc2_cloud);
-
-   to:
-
-   .. code-block:: c++
-
-      sensor_msgs::PointCloud2::Ptr pc2_cloud (new sensor_msgs::PointCloud2);
-      pcl::toROSMsg(xyz_filtered_cloud, *pc2_cloud);
-
-#. Compile
-
-   .. code-block:: bash
-
-      catkin build
-
-
-   .. Note:: If you have the time/patience, I would suggest creating a ros publisher for each type of filter. It is often useful to view the results of multiple filters at once in Rviz and just toggle different clouds.
-
-Viewing Result
-""""""""""""""
-#. Open multiple terminals
-
-   Either open three more tabs within your terminal *CTRL-SHIFT-T* or open three more windows *CTRL-SHIFT-N*. These terminals will run a roscore, the pcl_ros, and Rviz. Below, Terminal 1 corresponds to the terminal you have been working out of.
-
-   In terminal 4:
-
-   .. code-block:: bash
-
-      roscore
-
-   In terminal 3:
-
-   .. code-block:: bash
-
-      cd ~
-      rosrun pcl_ros pcd_to_pointcloud table.pcd 0.1 _frame_id:=kinect_link cloud_pcd:=kinect/depth_registered/points
-
-   In terminal 2:
-
-   .. code-block:: bash
-
-      rosrun rviz rviz
-
-   In terminal 1:
-
-   .. code-block:: bash
-
-      rosrun lesson_perception perception_node
-
-#. View results
-
-   Within Rviz, add a *PointCloud2* and subscribe to the topic "object_cluster". What you see will be the results of the voxel filter overlaid on the original point cloud.
-
-   The following image of the CropBox filter in use will closely resemble the Plane Segmentation filter image.
+    The following image of the CropBox filter in use will closely resemble the Plane Segmentation filter image.
 
    .. image:: /_static/xyz_filtered_cloud.png
 
@@ -542,7 +482,7 @@ Create a Statistical Outlier Removal
 
       sor.setInputCloud (cluster_cloud_ptr);
 
-   Set parameters - looking at documentation, CropBox takes an Eigen Vector4f as inputs for max and min values:
+   Set parameters - looking at documentation, S.O.R. uses the number of neighbors to inspect and the standard-deviation threshold to use for outlier rejection:
 
    .. code-block:: c++
 
@@ -555,75 +495,9 @@ Create a Statistical Outlier Removal
 
       sor.filter (*sor_cloud_filtered);
 
-#. Update Publisher within perception_node.cpp, find section
+#. Find the ``pcl::toROSMsg`` call where the ``pc2_cloud`` is populated.  Replace the current cloud with the new filtered results (``*sor_cloud_filtered``).
 
-   .. code-block:: c++
-
-      /* ========================================
-       * CONVERT POINTCLOUD PCL->ROS
-       * PUBLISH CLOUD
-       * Fill Code: UPDATE AS NECESSARY
-       * ========================================*/
-
-   Change the "toROSMsg" line to convert from your newly processed cloud into a ROS sensor_msgs::PointCloud2.
-
-   Change:
-
-   .. code-block:: c++
-
-      sensor_msgs::PointCloud2::Ptr pc2_cloud (new sensor_msgs::PointCloud2);
-      pcl::toROSMsg(*cloud_f, *pc2_cloud);
-
-   to:
-
-   .. code-block:: c++
-
-      sensor_msgs::PointCloud2::Ptr pc2_cloud (new sensor_msgs::PointCloud2);
-      pcl::toROSMsg(*sor_cloud_filtered, *pc2_cloud);
-
-#. Compile
-
-   .. code-block:: bash
-
-      catkin build
-
-
-   .. Note:: If you have the time/patience, I would suggest creating a ros publisher for each type of filter. It is often useful to view the results of multiple filters at once in Rviz and just toggle different clouds.
-
-Viewing Result
-""""""""""""""
-#. Open multiple terminals
-
-   Either open three more tabs within your terminal *CTRL-SHIFT-T* or open three more windows *CTRL-SHIFT-N*. These terminals will run a roscore, the pcl_ros, and Rviz. Below, Terminal 1 corresponds to the terminal you have been working out of.
-
-   In terminal 4:
-
-   .. code-block:: bash
-
-      roscore
-
-   In terminal 3:
-
-   .. code-block:: bash
-
-      cd ~
-      rosrun pcl_ros pcd_to_pointcloud table.pcd 0.1 _frame_id:=kinect_link cloud_pcd:=kinect/depth_registered/points
-
-   In terminal 2:
-
-   .. code-block:: bash
-
-      rosrun rviz rviz
-
-   In terminal 1:
-
-   .. code-block:: bash
-
-      rosrun lesson_perception perception_node
-
-#. View results
-
-   Within Rviz, add a *PointCloud2* and subscribe to the topic "object_cluster". What you see will be the results of the voxel filter overlaid on the original point cloud.
+#. Compile and run, as in previous steps
 
    .. image:: /_static/sor_cloud_filtered.png
 
@@ -631,11 +505,9 @@ Viewing Result
 Create a Broadcast Transform
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-While this is not a filter method, it is directly related to the final project (the capstone project during the training class), so if you have the time, you should implement this to get a better understanding of how the demo works. 
+While this is not a filter method, it demonstrates how to publish the results of a processing pipeline for other nodes to use.  Often, the goal of a processing pipeline is to generate a measurement, location, or some other message for other nodes to use.  This sub-task broadcasts a TF transform to define the location of the largest box on the table.  This transform could be used by other nodes to identify the position/orientation of the box for grasping.
 
 #. Change/Insert code
-
-   Transforms are used to convey relations between two frames of reference or coordinate systems. In our demo, the AR tag detection software pipeline broadcasts a transform based on the position and orientation of the AR tag. A separate node then listens for that transform in order to identify the position/orientation of the box for grasping.
 
    Within perception_node.cpp, find section
 
@@ -664,55 +536,16 @@ While this is not a filter method, it is directly related to the final project (
 
       br.sendTransform(tf::StampedTransform(part_transform, ros::Time::now(), world_frame, "part"));
 
-#. Compile
-
-   .. code-block:: bash
-
-      catkin build
-
-Viewing Result
-""""""""""""""
-
-#. Open multiple terminals
-
-   Either open three more tabs within your terminal *CTRL-SHIFT-T* or open three more windows *CTRL-SHIFT-N*. These terminals will run a roscore, the pcl_ros, and Rviz. Below, Terminal 1 corresponds to the terminal you have been working out of.
-
-   In terminal 4:
-
-   .. code-block:: bash
-
-      roscore
-
-   In terminal 3:
-   .. code-block:: bash
-
-      cd ~
-      rosrun pcl_ros pcd_to_pointcloud table.pcd 0.1 _frame_id:=kinect_link cloud_pcd:=kinect/depth_registered/points
-
-   In terminal 2:
-
-   .. code-block:: bash
-
-      rosrun rviz rviz
-
-   In terminal 1:
-
-   .. code-block:: bash
-
-      rosrun lesson_perception perception_node
-
- 2. View results
-
-    Within Rviz, add a *PointCloud2* and subscribe to the topic "object_cluster". What you see will be the results of the voxel filter overlaid on the original point cloud. There is no difference in the point cloud from the last image given in the statistical outlier removal. 
+#. Compile and Run as usual.  In this case, add a TF display to Rviz and observe the new "part" transform located at the top of the box.
 
 Create a Polygonal Segmentation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This method was included primarily to have something that ties in directly to the demo that you will be programming in session 5. This demo uses AR tag perception, but also collision avoidance. The collision avoidance uses a pointcloud to actively determine where the obstacles are. However, becuase the part itself is within the scene, we must subtract the points that comprise the part in order to remove these points from becoming a collision object (which will then make a grasp impossible due to the object colliding with itself).
+When using sensor data for collision detection, it is sometimes necessary to exclude "known" objects from the scene to avoid interference from these objects.  MoveIt! contains methods for masking out a robot's own geometry as a "Self Collision" filtering feature.  This example shows how to do something similar using PCL's Polygonal Segmentation filtering.
 
 #. Change code
 
-   This method is similar to the plane segmentation from Sub-Task 3, but instead of segmenting out a plane, you can segment and remove a prism. Documentation on the PCL Polygonal Segmentation can be found `here <http://docs.pointclouds.org/1.7.0/classpcl_1_1_convex_hull.html>`__ and `here <http://docs.pointclouds.org/trunk/classpcl_1_1_extract_polygonal_prism_data.html>`__. The goal in using this filter for this demo is to remove the points that correspond to the object of interest (because the collision/path planning requires it). So this particular filter is applied to the entire point cloud, but only after we know the position/orientation of the box.
+   This method is similar to the plane segmentation from Sub-Task 3, but instead of segmenting out a plane, you can segment and remove a prism. Documentation on the PCL Polygonal Segmentation can be found `here <http://docs.pointclouds.org/1.7.0/classpcl_1_1_convex_hull.html>`__ and `here <http://docs.pointclouds.org/trunk/classpcl_1_1_extract_polygonal_prism_data.html>`__. The goal in this sub-task is to remove the points that correspond to a known object (e.g. the box we detected earlier). This particular filter is applied to the entire point cloud (original sensor data), but only after we've already completed the processing steps to identify the position/orientation of the box.
 
    Within perception_node.cpp, add ``#include <tf_conversions/tf_eigen.h>`` and find section
 
@@ -749,7 +582,7 @@ This method was included primarily to have something that ties in directly to th
       prism.setInputCloud(sensor_cloud_ptr);
       pcl::PointIndices::Ptr pt_inliers (new pcl::PointIndices());
 
-   Set parameters - looking at documentation, ExtractPolygonalPrismData takes a polygon pointcloud as input.
+   Set parameters - looking at documentation, ExtractPolygonalPrismData uses a pointcloud defining the polygon vertices as its input.
 
    .. code-block:: c++
 
@@ -802,7 +635,7 @@ This method was included primarily to have something that ties in directly to th
       extract_ind.setInputCloud(sensor_cloud_ptr);
       extract_ind.setIndices(pt_inliers);
 
-   Set parameters - looking at documentation, ExtractPolygonalPrismData takes a polygon pointcloud as input:
+   This time, we invert the index extraction, so that we remove points inside the filter and keep points outside the filter.
 
    .. code-block:: c++
 
@@ -814,88 +647,19 @@ This method was included primarily to have something that ties in directly to th
 
       extract_ind.filter(*prism_filtered_cloud);
 
-#. Update Publisher within perception_node.cpp, find section
+#. Find the ``pcl::toROSMsg`` call where the ``pc2_cloud`` is populated.  This is the point cloud that is published to RViz display.  Replace the current cloud with the new filtered results (``*prism_filtered_cloud``).
 
-   .. code-block:: c++
-
-      /* ========================================
-       * CONVERT POINTCLOUD PCL->ROS
-       * PUBLISH CLOUD
-       * Fill Code: UPDATE AS NECESSARY
-       * ========================================*/
-
-   Change the "toROSMsg" line to convert from your newly processed cloud into a ROS sensor_msgs::PointCloud2. Hint: If following the PCL tutorial, you will have a vector of sensor_msgs::PointCloud2; you can just publish the first one.
-
-    Change:
-
-    .. code-block:: c++
-
-       sensor_msgs::PointCloud2::Ptr pc2_cloud (new sensor_msgs::PointCloud2);
-       pcl::toROSMsg(*sor_cloud_filtered, *pc2_cloud);
-
-    to:
-
-    .. code-block:: c++
-
-       sensor_msgs::PointCloud2::Ptr pc2_cloud (new sensor_msgs::PointCloud2);
-       pcl::toROSMsg(*prism_filtered_cloud, *pc2_cloud);
-
-
-    .. Note:: *If you did not create your own publisher* to use for the Polygonal Segmentation filter, it will be necessary to move ``CONVERT POINTCLOUD PCL->ROS`` below ``extract_ind.filter(*prism_filtered_cloud);``.
-
-#. Compile
-
-   .. code-block:: bash
-
-      catkin build
-
-
-   .. Note:: If you have the time/patience, I would suggest creating a ros publisher for each type of filter. It is often useful to view the results of multiple filters at once in Rviz and just toggle different clouds.
-
-Viewing Result
-""""""""""""""
-
-#. Open multiple terminals
-
-   Either open three more tabs within your terminal *CTRL-SHIFT-T* or open three more windows *CTRL-SHIFT-N*. These terminals will run a roscore, the pcl_ros, and Rviz. Below, Terminal 1 corresponds to the terminal you have been working out of.
-
-   In terminal 4:
-
-   .. code-block:: bash
-
-      roscore
-
-   In terminal 3:
-
-   .. code-block:: bash
-
-      cd ~
-      rosrun pcl_ros pcd_to_pointcloud table.pcd 0.1 _frame_id:=kinect_link cloud_pcd:=kinect/depth_registered/points
-
-   In terminal 2:
-
-   .. code-block:: bash
-
-      rosrun rviz rviz
-
-   In terminal 1:
-
-   .. code-block:: bash
-
-      rosrun lesson_perception perception_node
-
- 2. View results
-
-    Within Rviz, add a *PointCloud2* and subscribe to the topic "object_cluster". What you see will be the results of the voxel filter overlaid on the original point cloud.
+#. Compile and run as before.
 
     .. image:: /_static/prism_filtered_cloud.png
 
-   .. Note:: Notice the pointer is pointing to empty area of the table. That is the goal of using the filter this way.
+   .. Note:: Notice that the target box has been removed from the point cloud display.
 
 Write a launch file
 ^^^^^^^^^^^^^^^^^^^
 
-While this is not a filter method, it is useful when using PCL or other perception methods because of the number of parameters used in the different methods.  
+While this is not a filter method, it is useful when using PCL or other perception methods because of the number of parameters used in the different methods.
+
 #. Change/Insert code
 
    If you are really awesome and read the Task 1 write-up thoroughly, you will note that it was suggested that you put your parameters in one place.
@@ -912,10 +676,10 @@ While this is not a filter method, it is useful when using PCL or other percepti
 
    .. code-block:: yaml
 
-      world_frame="camera_depth_optical_frame";
+      world_frame="kinect_link";
       camera_frame="kinect_link";
-      cloud_topic="camera/depth_registered/points";
-      voxel_leaf_size=0.001f;
+      cloud_topic="kinect/depth_registered/points";
+      voxel_leaf_size=0.002f;
       x_filter_min=-2.5;
       x_filter_max=2.5;
       y_filter_min=-2.5;
@@ -929,37 +693,29 @@ While this is not a filter method, it is useful when using PCL or other percepti
       cluster_max_size=50000;
 
 
-   If you took this step, you will be in great shape to convert what you have into something that can be input from a launch file, or yaml file. You will want to use the "getParam" method as described in this `tutorial <http://wiki.ros.org/roscpp_tutorials/Tutorials/Parameters>`_. Get params from ros parameter server/launch file:
+   If you took this step, you will be in great shape to convert what you have into something that can be input from a launch file, or yaml file. You could use the "getParam" method as described in this `tutorial <http://wiki.ros.org/roscpp_tutorials/Tutorials/Parameters>`_. But a better choice might be to use the `param <http://docs.ros.org/kinetic/api/roscpp/html/classros_1_1NodeHandle.html#aa9b23d4206216ed13b5833fb1a090f1a>`_ method, which returns a default value if the parameter is not found on the parameter server.  Get params from ros parameter server/launch file, replacing your previous hardcoded values (but leave the variable declarations!)
 
    .. code-block:: c++
 
-      priv_nh_.getParam("cloud_topic", cloud_topic);
-      priv_nh_.getParam("world_frame", world_frame);
-      priv_nh_.getParam("camera_frame", camera_frame);
-      priv_nh_.getParam("voxel_leaf_size", voxel_leaf_size);
-      priv_nh_.getParam("x_filter_min", x_filter_min);
-      priv_nh_.getParam("x_filter_max", x_filter_max);
-      priv_nh_.getParam("y_filter_min", y_filter_min);
-      priv_nh_.getParam("y_filter_max", y_filter_max);
-      priv_nh_.getParam("z_filter_min", z_filter_min);
-      priv_nh_.getParam("z_filter_max", z_filter_max);
-      priv_nh_.getParamCached("plane_max_iterations", plane_max_iter);
-      priv_nh_.getParamCached("plane_distance_threshold", plane_dist_thresh);
-      priv_nh_.getParam("cluster_tolerance", cluster_tol);
-      priv_nh_.getParam("cluster_min_size", cluster_min_size);
-      priv_nh_.getParam("cluster_max_size", cluster_max_size);
-
-   Once you've done this, you can either delete or comment out your hard-coded values, but leave the declaration of those variables!
-
-#. Compile
-
-   .. code-block:: c++
-
-      catkin build
+      cloud_topic = priv_nh_.param<std::string>("cloud_topic", "kinect/depth_registered/points");
+      world_frame = priv_nh_.param<std::string>("world_frame", "kinect_link");
+      camera_frame = priv_nh_.param<std::string>("camera_frame", "kinect_link");
+      voxel_leaf_size = param<float>("voxel_leaf_size", 0.002);
+      x_filter_min = priv_nh_.param<float>("x_filter_min", -2.5);
+      x_filter_max = priv_nh_.param<float>("x_filter_max",  2.5);
+      y_filter_min = priv_nh_.param<float>("y_filter_min", -2.5);
+      y_filter_max = priv_nh_.param<float>("y_filter_max",  2.5);
+      z_filter_min = priv_nh_.param<float>("z_filter_min", -2.5);
+      z_filter_max = priv_nh_.param<float>("z_filter_max",  2.5);
+      plane_max_iter = priv_nh_.param<int>("plane_max_iterations", 50);
+      plane_dist_thresh = priv_nh_.param<float>("plane_distance_threshold", 0.05);
+      cluster_tol = priv_nh_.param<float>("cluster_tolerance", 0.01);
+      cluster_min_size = priv_nh_.param<int>("cluster_min_size", 100);
+      cluster_max_size = priv_nh_.param<int>("cluster_max_size", 50000);
 
 #. Write launch file.
 
-   Using gedit or some other text editor, make a new file (processing_node.launch) and put the following in it.
+   Using gedit or some other text editor, make a new file (''lesson_perception/launch/processing_node.launch'') and put the following in it.
 
    .. code-block:: xml
 
@@ -985,37 +741,12 @@ While this is not a filter method, it is useful when using PCL or other percepti
         </node>
       </launch>
 
-Viewing Results
-"""""""""""""""
+#. Compile as usual...
 
-#. Open multiple terminals
+But this time, run the new launch file that was created instead of using rosrun to start the processing node.
 
-   Either open three more tabs within your terminal *CTRL-SHIFT-T* or open three more windows *CTRL-SHIFT-N*. These terminals will run a roscore, the pcl_ros, and Rviz. Below, Terminal 1 corresponds to the terminal you have been working out of.
+The results should look similar to previous runs.  However, now you can edit these configuration parameters much easier!  No recompile step is required; just edit the launch-file values and relaunch the node.  In a real application, you could take this approach one step further and implement dynamic_reconfigure support in your node.  That would allow you to see the results of parameter changes in RViz in real-time!
 
-   In terminal 4:
-
-   .. code-block:: bash
-
-      roscore
-
-   In terminal 3:
-
-   .. code-block:: bash
-
-      cd ~
-      rosrun pcl_ros pcd_to_pointcloud table.pcd 0.1 _frame_id:=kinect_link cloud_pcd:=kinect/depth_registered/points
-
-   In terminal 2:
-
-   .. code-block:: bash
-
-      rosrun rviz rviz -d `rospack find lesson_perception`/launch/lesson_perception.rviz
-
-   In terminal 1:
-
-   .. code-block:: bash
-
-      roslaunch lesson_perception processing_node.launch
 
    When you are satisfied with the results, go to each terminal and *CTRL-C*.
 

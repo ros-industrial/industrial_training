@@ -4,8 +4,9 @@
 
 fake_ar_publisher::ARMarkerConstPtr test_msg_;
 
-TEST(TestSuite, myworkcell_core_framework){
-    ASSERT_TRUE(true);
+TEST(TestSuite, myworkcell_core_framework)
+{
+  ASSERT_TRUE(true);
 }
 
 void testCallback(const fake_ar_publisher::ARMarkerConstPtr &msg)
@@ -13,7 +14,8 @@ void testCallback(const fake_ar_publisher::ARMarkerConstPtr &msg)
   test_msg_ = msg;
 }
 
-TEST(TestSuite, myworkcell_core_fake_ar_pub_ref_frame){
+TEST(TestSuite, myworkcell_core_fake_ar_pub_ref_frame)
+{
     ros::NodeHandle nh;
     ros::Subscriber sub = nh.subscribe("/ar_pose_marker", 1, &testCallback);
 
@@ -22,14 +24,15 @@ TEST(TestSuite, myworkcell_core_fake_ar_pub_ref_frame){
     EXPECT_EQ(test_msg_->header.frame_id, "camera_frame");
 }
 
-int main(int argc, char **argv){
-    testing::InitGoogleTest(&argc, argv);
-    ros::init(argc, argv, "MyWorkcellCoreTest");
+int main(int argc, char **argv)
+{
+  testing::InitGoogleTest(&argc, argv);
+  ros::init(argc, argv, "MyWorkcellCoreTest");
 
-    ros::AsyncSpinner spinner(1);
-    spinner.start();
-    int ret = RUN_ALL_TESTS();
-    spinner.stop();
-    ros::shutdown();
-    return ret;
+  ros::AsyncSpinner spinner(1);
+  spinner.start();
+  int ret = RUN_ALL_TESTS();
+  spinner.stop();
+  ros::shutdown();
+  return ret;
 }

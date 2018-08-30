@@ -121,6 +121,7 @@ Session 5 - Path Planning and Building a Perception Pipeline
    Exercise 5.1 - Building a Perception Pipeline <_source/session5/Building-a-Perception-Pipeline.md>
    Exercise 5.2 - Introduction to STOMP <_source/session5/Introduction-to-STOMP.md>
    Exercise 5.3 - Simple PCL Interface for Python <_source/session5/Simple-PCL-Interface-for-Python.rst>
+   Exercise 5.4 - OpenCV Image Processing (Python) <_source/session5/OpenCV-in-Python.md>
 
 Session 6 - Documentation, Unit Tests, ROS Utilities and Debugging ROS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

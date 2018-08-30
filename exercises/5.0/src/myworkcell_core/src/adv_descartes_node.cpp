@@ -25,7 +25,7 @@ std::vector<double> getCurrentJointState(const std::string& topic)
 EigenSTL::vector_Affine3d makeLine(const Eigen::Vector3d& start, const Eigen::Vector3d& stop, double ds)
 {
   EigenSTL::vector_Affine3d line;
-  
+
   const Eigen::Vector3d travel = stop - start;
   const int steps = std::floor(travel.norm() / ds);
 
@@ -61,7 +61,7 @@ public:
   {
     // Create a robot model
     model_ = boost::make_shared<ur5_demo_descartes::UR5RobotModel>();
-    
+
     // Define the relevant "frames"
     const std::string robot_description = "robot_description";
     const std::string group_name = "puzzle";
@@ -127,7 +127,8 @@ public:
     EigenSTL::vector_Affine3d path;
     std::ifstream indata;
 
-    std::string filename = ros::package::getPath("myworkcell_core") + "/config/puzzle_bent.csv";
+    std::string packagePath = ros::package::getPath("myworkcell_core");
+    std::string filename = packagePath + "/config/puzzle_bent.csv";
 
     indata.open(filename);
 
@@ -232,8 +233,8 @@ public:
     {
       auto p = point;
       TolerancedFrame tool_pt(p);
-      tool_pt.orientation_tolerance.z_lower -= M_PI;
-      tool_pt.orientation_tolerance.z_upper += M_PI;
+      tool_pt.orientation_tolerance.z_lower = -M_PI;
+      tool_pt.orientation_tolerance.z_upper = +M_PI;
 
       boost::shared_ptr<CartTrajectoryPt> pt(new CartTrajectoryPt(wobj_base, wobj_pt, tool_base, tool_pt, 0, M_PI/20.0));
       descartes_path.push_back(pt);
