@@ -14,15 +14,15 @@ Look in ```test_bed_core_node.cpp```. This code is already complete. A service t
 
 ## Setup for real sensor and simulated robot
 ```
-roslaunch demo3 demo3.launch sim_sensor:=false
+roslaunch pick_and_place pick_and_place.launch sim_sensor:=false
 ```
 
 ## Setup for real robot and simulated sensor data
 ```
-roslaunch demo3 demo3.launch sim_robot:=false robot_ip:= [robot ip]
+roslaunch pick_and_place pick_and_place.launch sim_robot:=false robot_ip:= [robot ip]
 ```
 
 ## Setup for real robot and real sensor
 ```
-roslaunch demo3 demo3.launch sim_robot:=false robot_ip:= [robot ip] sim_sensor:=false sim_gripper:=false
+roslaunch pick_and_place pick_and_place.launch sim_robot:=false robot_ip:= [robot ip] sim_sensor:=false sim_gripper:=false
 ```

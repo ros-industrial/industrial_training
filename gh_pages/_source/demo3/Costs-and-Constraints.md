@@ -1,5 +1,4 @@
-
-#Costs and Constraints
+# Costs and Constraints
 
 
 This section provides an overview of the common features of costs and constraints, the different types and their meaning, and a list of the currently avaible costs and constraints, as well as what information to provide them in order to fully define them.
