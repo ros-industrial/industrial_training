@@ -1,5 +1,5 @@
-# Inspect the "demo3" Package
->In this exercise, we will get familiar with all the files that you'll be interacting with throughout these exercises. 
+# Inspect the "pick_and_place" Package
+In this exercise, we will get familiar with all the files that you'll be interacting with throughout these exercises. 
 
 ## Acquire and initialize the workspace
 ```

@@ -5,46 +5,33 @@ The coordinate frame of the box's pick can be requested from a ros service that 
 
 ## Overview of the process
 
-The perception node is launched. This registers a new service with ```roscore``` and pulls necessary parameters from the ROS parameter server. It then waits until the service is called.
+The perception node is launched. This registers a new service with ```roscore``` and pulls necessary parameters from the ROS parameter server. It then waits until the service is called. When the ROS perception service is called:
 
-[ROS perception service is called]
-
-    1) Service pulls latest point cloud from the 3D sensor
-    2) Point cloud is cropped to exclude areas outside of the work cell
-    3) RANSAC plane segmentation is used to remove the work table from the point cloud
-    4) Euclidean clster extraction is used to cluster the remaining points 
-    5) Outliers are removed
-    6) The largest cluster is taken as the pick object (additional logic could be added here to support multiple pick objects in view)
-    7) RANSAC plane segmentations is used to find the top of the box
-    8) The centroid of these points is calcuated
-    9) The service returns this pose
+1) Service pulls latest point cloud from the 3D sensor
+2) Point cloud is cropped to exclude areas outside of the work cell
+3) RANSAC plane segmentation is used to remove the work table from the point cloud
+4) Euclidean clster extraction is used to cluster the remaining points 
+5) Outliers are removed
+6) The largest cluster is taken as the pick object (additional logic could be added here to support multiple pick objects in view)
+7) RANSAC plane segmentations is used to find the top of the box
+8) The centroid of these points is calcuated
+9) The service returns this pose
 
 ## Explore processing_node.launch
 Open processing_node.launch in demo3_perception/launch. This file launches the perception node. Note the standalone flag which can be set to true for testing the perception without the rest of the system.
 
-Additionally, it defines adds some associated rosparams to the parameter server. Explore these parameters
+Additionally, it defines adds some associated rosparams to the parameter server. Explore these parameters. While the given values should work in simulation, it is likely that some of the PCL filter parameters will need to be changed when moving to real hardware. Here are some of them associated with the ROS setup.
 
-* cloud_debug: true means intermediate point clouds will be published 
+* cloud_debug: true means intermediate point clouds will be published for debugging
 * cloud_topic: Topic from which the service pulls the point cloud
 * world_frame: Frame into which the point cloud is placed
 * camera_frame: Frame associated with the camera location
-* voxel_leaf_size: Parameter associated with the voxel filter
-* x_filter_min: Parameter associated with the passthrough filter 
-* x_filter_max: Parameter associated with the passthrough filter
-* y_filter_min: Parameter associated with the passthrough filter
-* y_filter_max: Parameter associated with the passthrough filter
-* z_filter_min: Parameter associated with the passthrough filter
-* z_filter_max: Parameter associated with the passthrough filter
-* plane_max_iterations: Parameter associated with the RANSAC algorithm
-* plane_distance_threshold: Parameter associated with the RANSAC algorithm
-* cluster_tolerance: Parameter associated with the clustering filter
-* cluster_min_size: Parameter associated with the clustering filter
-* cluster_max_size: Parameter associated with the clustering filter
+
 
 ## Define ROS Service
-We first need to create the ROS service definition. This file will define the service inputs and outputs. 
+We first review the ROS service definition. This file will define the service inputs and outputs. 
 
-* In the demo3_perception/srv directory, open GetTargetPose.srv
+* In the pick_and_place_perception/srv directory, open GetTargetPose.srv
 * Ensure that the following code is in this file. Note that the service request is empty, and it returns a boolean flag and a ROS message of the geometry_msgs/Pose type.
 
 
@@ -88,7 +75,7 @@ In order for a RIS service to be registered on roscore, it must be advertised si
 
   * Compile the pick and place node in QT
 ```
-Project -> Build Project
+Build -> Build Project
 ```
 
   * Alternatively, in a terminal cd into your workspace directory and do the following
@@ -103,7 +90,12 @@ roslaunch pick_and_place pick_and_place.launch
   * test_bed_core_node will call your service automatically. However, you can also test your code from the command line by calling ```rosservice call /find_pick``` when a point cloud is is being published on the cloud_topic (/cloud by default).
 
   * Some errors and warnings will be present when the template code is run. As the correct code is filled, these will disappear until a fully defined Pose message is returned from the service.
-  * 
+
+## Additional exploration (optional)
+
+You may notice that this service does not run terribly quickly. Aside from publishing the clouds for debugging, intermediate copies of the point cloud are made that simplify the demonstration but hurt performance. Additionally, PCL has a wide variety of filters available and the solution given here is just one of many possible. Use the included timing functions to explore changes that can speed processing.
+
+
 ## API References
 
 

@@ -1,5 +1,5 @@
 # Create Pick and Place Helpers 
-> Consider the steps in a pick and place operation.
+With knowledge of the way that TrajOpt works, we will now use it to build our application. Consider the motion steps in a pick and place operation.
 
 ***Pick***
 
@@ -16,7 +16,7 @@ In order to simplify the scripting of the pick and place operation, helper funct
 
 ## Explore function definitions
 
-  * In demo3/include open trajopt_pick_and_place_constructor.h
+  * In pick_and_place/include open trajopt_pick_and_place_constructor.h
   * Look at each of public member functions. These are the functions you will complete. Understand each the inputs and purpose of each of them.
 
 ## Complete Code
@@ -33,8 +33,7 @@ In order to simplify the scripting of the pick and place operation, helper funct
 // ENTER CODE HERE: 
 ```
 
-
- * The [[lookupTransform|http://mirror.umd.edu/roswiki/doc/hydro/api/tf/html/c++/classtf_1_1Transformer.html#ac01a9f8709a828c427f1a5faa0ced42b]] method can provide the pose of a target relative to another pose.
+You may find Sections 3.5 and 3.6 helpful in completing this exercise. Additionally, QT Creator's autocomplete functionality can aid in finding the correct methods described in the comments.
 
 ## Build Code and Run
 
