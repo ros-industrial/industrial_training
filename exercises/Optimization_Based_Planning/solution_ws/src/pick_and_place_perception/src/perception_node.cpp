@@ -79,7 +79,7 @@ public:
   bool findPickPose(pick_and_place_perception::GetTargetPoseRequest& req,
                     pick_and_place_perception::GetTargetPoseResponse& res)
   {
-
+    res.succeeded = true;
     ROS_INFO("Perception service running");
 
      // LISTEN FOR POINTCLOUD
@@ -220,6 +220,7 @@ public:
     {
      ROS_WARN_STREAM("Could not estimate a planar model for the given dataset. Proceeding with full point cloud.");
      *cloud_f = *cropped_cloud;
+     res.succeeded = false;
     }
     /* ========================================
      * Fill Code: EUCLIDEAN CLUSTER EXTRACTION
@@ -267,6 +268,7 @@ public:
     {
         ROS_WARN_STREAM("Clustering failed. Proceeding with full point cloud.");
        clusters.push_back(cloud_filtered);
+       res.succeeded = false;
     }
     /* ========================================
      * Fill Code: STATISTICAL OUTLIER REMOVAL (OPTIONAL)
@@ -327,6 +329,7 @@ public:
     {
         ROS_WARN_STREAM("Could not estimate a planar model for the given dataset. Proceeding with full point cloud.");
         *cloud_planeTop = *cluster_cloud_ptr;
+        res.succeeded = false;
     }
     // OPTIONAL TIMERS
     ros::Time finish_process = ros::Time::now();
@@ -366,9 +369,6 @@ public:
 
     // Store the returned values of the service as defined in the .srv file
     res.target_pose = part_pose;
-
-    // TODO - Add flag to return false if failed
-    res.succeeded = true;
     ROS_INFO("Perception service returning");
 
     // Publish the pick point as a TF for visualization

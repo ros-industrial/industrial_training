@@ -30,6 +30,8 @@ int main(int argc, char** argv)
   tf::TransformListener listener;
   ros::ServiceClient find_pick_client = nh.serviceClient<pick_and_place_perception::GetTargetPose>("find_pick");
 
+  bool plan = true;
+
   /////////////
   /// SETUP ///
   /////////////
@@ -110,12 +112,16 @@ int main(int argc, char** argv)
   if (find_pick_client.call(srv))
   {
     tf::poseMsgToEigen(srv.response.target_pose, world_to_box);
+    plan&=srv.response.succeeded;
   }
   else
   {
     ROS_ERROR("Failed to find pick location");
+    plan = false;
   }
 
+  if (plan == true)
+  {
   ROS_ERROR("Press enter to continue");
   std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
@@ -190,6 +196,11 @@ int main(int argc, char** argv)
   // TODO send the trajectory to the robot
 
   // TODO execute place trajectory
-
+  }
+  else
+  {
+   ROS_INFO("Planning disabled");
+  }
+  ROS_INFO("Done");
   ros::spin();
 }
