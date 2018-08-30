@@ -10,14 +10,10 @@ Trajopt is an optimization based path planner that utilizes Sequential Quadratic
 2. ***Reliability***: Trajopt can reliably solve a large number of planning problems.
 3. ***Flexibility***: Trajopt provides the ability for a user to define their own costs and constraints. This means that you can define a unique optimization objection specific to any application.
 
-## Parts of a TrajOpt system
-TODO
+
 ## Basic Usage
 
-### 1. Setup your environment variable
-(KDL for cpp and OpenRave for python?)
-
-###2. Basic Info
+### 1. Basic Info
 
 Basic information for the planner
 
@@ -35,9 +31,9 @@ Basic information for the planner
 * ***[vector/list of ints] dofs_fixed (optional)***:
         Indices corresponding to any degrees of freedom that you want to have remain in the same position the entire trajectory.
 
-### 3. Init Info
+### 2. Init Info
 
-    Information detailing what initial trajectory Trajopt should start from.
+Information detailing what initial trajectory Trajopt should start from.
 
 * ***[InitInfo::Type] type***:
         The type of initialization. These only do anything if you are constructing the problem from Json, but you can still assign it if you feel like it. Valid values are:
@@ -54,21 +50,19 @@ Basic information for the planner
             - If using Json, you should only provide what is needed given the type you chose.
             - What about Python?
 
-### 4. Optimization Info (optional)
+### 3. Optimization Info (optional)
 
-    TODO
+These can typically be set to defaults. More details can be found by exploring the TrajOpt documentation
 
-### 5. Costs
+### 4. Costs
 
-    These are functions that you desire to be minimized, such as joint accelerations or cartesian velocities, but that you do not need the value to be driven to ~0. The weights of these terms will never increase.
+These are functions that you desire to be minimized, such as joint accelerations or cartesian velocities, but that you do not need the value to be driven to ~0. The weights of these terms will never increase.
 
-### 6. Constraints
+### 5. Constraints
 
-    These are the functions that are needed to be driven to ~0. Failure to satisfy these constraints will cause the weighting of these terms to increase until they are satisfied or the maximum number of iterations is reached.
-    
-See `Costs and Constraints <costs_and_constraints_doc.html#term-dictionary>`_ for specific costs and constraints that are available to use.
+These are the functions that are needed to be driven to ~0. Failure to satisfy these constraints will cause the weighting of these terms to increase until they are satisfied or the maximum number of iterations is reached. Section 3.6 will cover the costs and contraints available.
 
-##Plan
+## Plan
 
 
 1. Use the relevant method to construct the problem
