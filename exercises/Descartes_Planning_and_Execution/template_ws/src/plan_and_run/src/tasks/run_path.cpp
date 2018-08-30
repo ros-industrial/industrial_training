@@ -56,25 +56,23 @@ void DemoApplication::runPath(const DescartesTrajectory& path)
   // sending robot path to server for execution
   /*  Fill Code:
    * Goal:
-   * - Complete the service request by placing the "moveit_msgs::RobotTrajectory" trajectory in the request object
-   * - Use the service client to send the trajectory for execution.
+   * - Complete the action goal by placing the "moveit_msgs::RobotTrajectory" trajectory in the goal object
+   * - Use the action client to send the trajectory for execution.
    * Hint:
-   * - The "srv.request.trajectory" can be assigned the Moveit trajectory.
-   * - The "moveit_run_path_client_.call(srv)" sends a trajectory execution request.
+   * - The "goal.trajectory" can be assigned the Moveit trajectory.
+   * - The "moveit_run_path_client_ptr_->sendGoalAndWait(goal)" sends a trajectory execution request.
    */
-  moveit_msgs::ExecuteKnownTrajectory srv;
-  srv.request.trajectory ; /* [ COMPLETE HERE ]: = ?? */;
-
-  srv.request.wait_for_execution = true;
+  moveit_msgs::ExecuteTrajectoryGoal goal;
+goal.trajectory ; /* [ COMPLETE HERE ]: = ?? */;
 
   ROS_INFO_STREAM("Robot path sent for execution");
-  if(false /* [ COMPLETE HERE ]: moveit_run_path_client_.??( ?? ) */)
+  if(false /* [ COMPLETE HERE ]: moveit_run_path_client_ptr_->??( ?? ) == actionlib:SimpleClientGoalState::SUCCEEDED*/)
   {
     ROS_INFO_STREAM("Robot path execution completed");
   }
   else
   {
-    ROS_ERROR_STREAM("Failed to run robot path with error "<<srv.response.error_code.val);
+    ROS_ERROR_STREAM("Failed to run robot path with error "<<*moveit_run_path_client_ptr_->getResult());
     exit(-1);
   }
 
