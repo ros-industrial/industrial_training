@@ -494,11 +494,10 @@
 <li class="toctree-l2"><a class="reference internal" href="#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#setup-workspace">Setup workspace</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#update-your-workcell-xacro-file">Update your workcell.xacro file.</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#add-new-move-group-to-your-moveit-config-package">Add new move group to your moveit_config package.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#add-new-planning-group-to-your-moveit-config-package">Add new planning group to your moveit_config package.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#complete-advanced-descartes-node">Complete Advanced Descartes Node</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#update-the-setup-launch-file">Update the setup.launch file.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#test-full-application">Test Full Application</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#solutions">Solutions</a></li>
 </ul>
 </li>
 </ul>
@@ -514,26 +513,11 @@
 <li class="toctree-l3"><a class="reference internal" href="Building-a-Perception-Pipeline.html#implement-pass-through-filters">Implement Pass-through Filters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Building-a-Perception-Pipeline.html#plane-segmentation">Plane Segmentation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Building-a-Perception-Pipeline.html#euclidean-cluster-extraction-optional-but-recommended">Euclidean Cluster Extraction (optional, but recommended)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Building-a-Perception-Pipeline.html#create-a-cropbox-filter">Create a CropBox Filter</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="Building-a-Perception-Pipeline.html#viewing-result">Viewing Result</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="Building-a-Perception-Pipeline.html#create-a-statistical-outlier-removal">Create a Statistical Outlier Removal</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="Building-a-Perception-Pipeline.html#id1">Viewing Result</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="Building-a-Perception-Pipeline.html#create-a-broadcast-transform">Create a Broadcast Transform</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="Building-a-Perception-Pipeline.html#id2">Viewing Result</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="Building-a-Perception-Pipeline.html#create-a-polygonal-segmentation">Create a Polygonal Segmentation</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="Building-a-Perception-Pipeline.html#id3">Viewing Result</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="Building-a-Perception-Pipeline.html#write-a-launch-file">Write a launch file</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="Building-a-Perception-Pipeline.html#id4">Viewing Results</a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="Building-a-Perception-Pipeline.html#create-a-cropbox-filter">Create a CropBox Filter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Building-a-Perception-Pipeline.html#create-a-statistical-outlier-removal">Create a Statistical Outlier Removal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Building-a-Perception-Pipeline.html#create-a-broadcast-transform">Create a Broadcast Transform</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Building-a-Perception-Pipeline.html#create-a-polygonal-segmentation">Create a Polygonal Segmentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Building-a-Perception-Pipeline.html#write-a-launch-file">Write a launch file</a></li>
 </ul>
 </li>
 </ul>
@@ -564,6 +548,19 @@
 <li class="toctree-l3"><a class="reference internal" href="Simple-PCL-Interface-for-Python.html#plane-segmentation">Plane Segmentation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Simple-PCL-Interface-for-Python.html#euclidian-cluster-extraction">Euclidian Cluster Extraction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Simple-PCL-Interface-for-Python.html#future-study">Future Study</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="OpenCV-in-Python.html">Exercise 5.4 - OpenCV Image Processing (Python)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="OpenCV-in-Python.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="OpenCV-in-Python.html#further-information-and-resources">Further Information and Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="OpenCV-in-Python.html#problem-statement">Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="OpenCV-in-Python.html#implementation">Implementation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="OpenCV-in-Python.html#create-package">Create package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="OpenCV-in-Python.html#create-an-image-publisher">Create an Image Publisher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="OpenCV-in-Python.html#create-the-detect-pump-image-processing-node">Create the Detect_Pump Image-Processing Node</a></li>
+<li class="toctree-l3"><a class="reference internal" href="OpenCV-in-Python.html#challenge-exercises">Challenge Exercises</a></li>
 </ul>
 </li>
 </ul>
@@ -727,21 +724,21 @@
 <p>In the interest of time, we’ve included several files:</p>
 <ol class="simple">
 <li>The first is a template node <code class="docutils literal"><span class="pre">adv_descartes_node.cpp</span></code> where most of the exercise is spent creating the complicated trajectory for deburring a complicated part.</li>
-<li>The second node <code class="docutils literal"><span class="pre">adv_myworkcell_node.cpp</span></code> which is a duplicate of the <code class="docutils literal"><span class="pre">myworkcell_node.cpp</span></code> where it calls a service within the <code class="docutils literal"><span class="pre">adv_descartes_node.cpp</span></code>.</li>
+<li>The second node, <code class="docutils literal"><span class="pre">adv_myworkcell_node.cpp</span></code>, is a duplicate of the <code class="docutils literal"><span class="pre">myworkcell_node.cpp</span></code> that has been updated to call the <code class="docutils literal"><span class="pre">adv_plan_path</span></code> service provided by <code class="docutils literal"><span class="pre">adv_descartes_node.cpp</span></code>.</li>
 <li>The config file <code class="docutils literal"><span class="pre">puzzle_bent.csv</span></code> which contains the path relative to the part coordinate system.</li>
 <li>The two xacro files <code class="docutils literal"><span class="pre">puzzle_mount.xacro</span></code> and <code class="docutils literal"><span class="pre">grinder.xacro</span></code> which are used to update the urdf/xacro <code class="docutils literal"><span class="pre">workcell.xacro</span></code> file.</li>
 </ol>
 <p>Left to you are the details of:</p>
 <ol class="simple">
 <li>Updating the workcell.xacro file to include the two new xacro files.</li>
-<li>Define a new move group in your moveit_config package called “puzzle”.</li>
+<li>Updating the moveit_config package to define a new Planning Group for this exercise, including the new end-effector links.</li>
 <li>Defining a series of Cartesian poses that comprise a robot “path”.</li>
 <li>Translating those paths into something Descartes can understand.</li>
 </ol>
 <div class="section" id="setup-workspace">
 <span id="setup-workspace"></span><h3>Setup workspace<a class="headerlink" href="#setup-workspace" title="Permalink to this headline">¶</a></h3>
 <ol>
-<li><p class="first">If have not went through sessions 1-4, copy the src directory from exercise 4.1. Otherwise move to the next step.</p>
+<li><p class="first">This exercise uses the same workspace from the Basic Training course.  If you don’t have this workspace (completed through Exercise 4.1), copy the completed reference code and pull in other required dependencies as shown below. Otherwise move to the next step.</p>
 <div class="highlight-bash"><div class="highlight"><pre>mkdir ~/catkin_ws
 <span class="nb">cd</span> ~/catkin_ws
 cp -r ~/industrial_training/exercises/4.1/src .
@@ -766,7 +763,7 @@ sudo apt install ros-kinetic-ur-description
 </div>
 </li>
 <li><p class="first">Copy over the <code class="docutils literal"><span class="pre">adv_myworkcell_node.cpp</span></code> into your core package’s src/ folder.</p>
-<div class="highlight-bash"><div class="highlight"><pre>cp ~/industrial_training/exercises/5.0/src/myworkcell_core/src/adv_myworkcell_node.cpp myworkcell_core/src/adv_myworkcell_node.cpp
+<div class="highlight-bash"><div class="highlight"><pre>cp ~/industrial_training/exercises/5.0/src/myworkcell_core/src/adv_myworkcell_node.cpp myworkcell_core/src/
 </pre></div>
 </div>
 </li>
@@ -779,59 +776,87 @@ sudo apt install ros-kinetic-ur-description
 </li>
 <li><p class="first">Copy over the necessesary config file:</p>
 <div class="highlight-bash"><div class="highlight"><pre>mkdir ~/catkin_ws/src/myworkcell_core/config
-cp ~/industrial_training/exercises/5.0/src/myworkcell_core/config/puzzle_bent.csv myworkcell_core/config/puzzle_bent.csv
-cp ~/industrial_training/exercises/5.0/src/myworkcell_support/urdf/grinder.xacro myworkcell_support/urdf/grinder.xacro
-cp ~/industrial_training/exercises/5.0/src/myworkcell_support/urdf/puzzle_mount.xacro myworkcell_support/urdf/puzzle_mount.xacro
+cp ~/industrial_training/exercises/5.0/src/myworkcell_core/config/puzzle_bent.csv myworkcell_core/config/
+cp ~/industrial_training/exercises/5.0/src/myworkcell_support/urdf/grinder.xacro myworkcell_support/urdf/
+cp ~/industrial_training/exercises/5.0/src/myworkcell_support/urdf/puzzle_mount.xacro myworkcell_support/urdf/
 mkdir ~/catkin_ws/src/myworkcell_support/meshes
 cp ~/industrial_training/exercises/5.0/src/myworkcell_support/meshes/* myworkcell_support/meshes/ 
 </pre></div>
 </div>
+</li>
+<li><p class="first">Add new package dependencies:</p>
+<ul class="simple">
+<li>Add <code class="docutils literal"><span class="pre">tf_conversions</span></code> to <code class="docutils literal"><span class="pre">CMakeLists.txt</span></code> (2 places) and <code class="docutils literal"><span class="pre">package.xml</span></code> (1 place)</li>
+</ul>
 </li>
 </ol>
 </div>
 <div class="section" id="update-your-workcell-xacro-file">
 <span id="update-your-workcell-xacro-file"></span><h3>Update your workcell.xacro file.<a class="headerlink" href="#update-your-workcell-xacro-file" title="Permalink to this headline">¶</a></h3>
 <ol>
-<li><p class="first">Add two include tags for grinder.xacro and puzzle_mount.xacro.</p>
+<li><p class="first">Add two <code class="docutils literal"><span class="pre">&lt;include&gt;</span></code> tags for the new <code class="docutils literal"><span class="pre">grinder.xacro</span></code> and <code class="docutils literal"><span class="pre">puzzle_mount.xacro</span></code> files.</p>
 </li>
-<li><p class="first">Attach grinder to the <strong>world</strong> link with the origin:</p>
+<li><p class="first">Attach the grinder to the <strong>world</strong> link with the following offset:</p>
 <div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;origin</span> <span class="na">xyz=</span><span class="s">&quot;0.0 -0.4 0.6&quot;</span> <span class="na">rpy=</span><span class="s">&quot;0 3.14159 0&quot;</span><span class="nt">/&gt;</span>
 </pre></div>
 </div>
+<ul class="simple">
+<li>Look in the <code class="docutils literal"><span class="pre">grinder.xacro</span></code> file to locate the appropriate <code class="docutils literal"><span class="pre">&lt;child_link&gt;</span></code> name.</li>
+<li>Copy one of the other <code class="docutils literal"><span class="pre">&lt;joint&gt;</span></code> tag definitions and modify as appropriate.</li>
+</ul>
 </li>
-<li><p class="first">Attach the puzzle mount the robot link <strong>tool0</strong> with the origin:</p>
+<li><p class="first">Attach the puzzle mount to the robot’s <strong>tool0</strong> frame with the following offset:</p>
 <div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;origin</span> <span class="na">xyz=</span><span class="s">&quot;0 0 0&quot;</span> <span class="na">rpy=</span><span class="s">&quot;1.5708 0 0&quot;</span><span class="nt">/&gt;</span>
 </pre></div>
 </div>
+<ul class="simple">
+<li>Look in the <code class="docutils literal"><span class="pre">puzzle_mount.xacro</span></code> file to locate the appropriate <code class="docutils literal"><span class="pre">&lt;child_link&gt;</span></code> name.  You may need to study its various <code class="docutils literal"><span class="pre">&lt;link&gt;</span></code> and <code class="docutils literal"><span class="pre">&lt;joint&gt;</span></code> definitions to find the root link of this part.</li>
+<li>The <code class="docutils literal"><span class="pre">tool0</span></code> frame is standardized across most ROS-I URDFs to be the robot’s end-effector mounting flange.</li>
+</ul>
 </li>
-<li><p class="first">Launch the demo.launch file within your moveit_config package to verify the workcell. There should be a grinder sticking out of the table and a puzzle piece shaped part attached to the robot.</p>
+<li><p class="first">Launch the demo.launch file within your moveit_config package to verify the workcell. There should be a grinder sticking out of the table and a puzzle-shaped part attached to the robot.</p>
 <div class="highlight-bash"><div class="highlight"><pre>roslaunch myworkcell_moveit_config demo.launch
 </pre></div>
 </div>
 </li>
 </ol>
 </div>
-<div class="section" id="add-new-move-group-to-your-moveit-config-package">
-<span id="add-new-move-group-to-your-moveit-config-package"></span><h3>Add new move group to your moveit_config package.<a class="headerlink" href="#add-new-move-group-to-your-moveit-config-package" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="add-new-planning-group-to-your-moveit-config-package">
+<span id="add-new-planning-group-to-your-moveit-config-package"></span><h3>Add new planning group to your moveit_config package.<a class="headerlink" href="#add-new-planning-group-to-your-moveit-config-package" title="Permalink to this headline">¶</a></h3>
 <ol>
-<li><p class="first">Run moveit setup assistant and add a new move group with the kinematic chain <strong>base_link -&gt; part</strong>. Note: Since you added geometry you should also regenerate the allowed collision matrix.</p>
-<div class="highlight-bash"><div class="highlight"><pre>roslaunch moveit_setup_assistant setup_assistant.launch 
+<li><p class="first">Re-run the MoveIt! Setup Assistant and create a new Planning Group named <strong>puzzle</strong>.  Define the kinematic chain to extend from the <strong>base_link</strong> to the new <strong>part</strong> link.</p>
+<div class="highlight-bash"><div class="highlight"><pre>roslaunch myworkcell_moveit_config setup_assistant.launch 
 </pre></div>
 </div>
+<ul class="simple">
+<li><em>Note: Since you added geometry, you should also regenerate the allowed collision matrix.</em></li>
+</ul>
 </li>
 </ol>
 </div>
 <div class="section" id="complete-advanced-descartes-node">
 <span id="complete-advanced-descartes-node"></span><h3>Complete Advanced Descartes Node<a class="headerlink" href="#complete-advanced-descartes-node" title="Permalink to this headline">¶</a></h3>
 <ol class="simple">
-<li>First, the function <code class="docutils literal"><span class="pre">EigenSTL::vector_Affine3d</span> <span class="pre">makePuzzleToolPoses()</span></code> needs to be completed. The file path for <strong>puzzle_bent.csv</strong> is need. Don’t not provide the full path, please use the ros tool <code class="docutils literal"><span class="pre">ros::package::getPath()</span></code> for getting the path of a package.</li>
-<li>Next, the function <code class="docutils literal"><span class="pre">std::vector&lt;descartes_core::TrajectoryPtPtr&gt;</span> <span class="pre">makeDescartesTrajectory(const</span> <span class="pre">EigenSTL::vector_Affine3d&amp;</span> <span class="pre">path)</span></code> needs to be completed. The transform between <strong>world</strong> and <strong>grinder_frame</strong> needs to be found. Also Each point needs to have a tolerance set for the z-axis to +/- PI;</li>
+<li>First, the function <code class="docutils literal"><span class="pre">makePuzzleToolPoses()</span></code> needs to be completed. The file path for <strong>puzzle_bent.csv</strong> is needed. For portability, don’t hardcode the full path. Please use the ROS tool <code class="docutils literal"><span class="pre">ros::package::getPath()</span></code> to retrieve the root path of the relevant package.<ul>
+<li>reference <a class="reference external" href="http://docs.ros.org/kinetic/api/roslib/html/c++/namespaceros_1_1package.html#ae9470dd201aa4e66abb833e710d812a4">getPath()</a> API</li>
+</ul>
+</li>
+<li>Next, the function <code class="docutils literal"><span class="pre">makeDescartesTrajectory()</span></code> needs to be completed. The transform between <strong>world</strong> and <strong>grinder_frame</strong> needs to be found. Also Each point needs to have the orientation tolerance set for the z-axis to +/- PI;<ul>
+<li>reference <a class="reference external" href="http://docs.ros.org/kinetic/api/tf/html/c++/classtf_1_1Transformer.html#ac01a9f8709a828c427f1a5faa0ced42b">lookupTransform()</a> API</li>
+<li>reference <a class="reference external" href="http://docs.ros.org/kinetic/api/tf_conversions/html/c++/tf__eigen_8h.html">tf::conversions</a> namespace</li>
+<li>reference <a class="reference external" href="https://github.com/ros-industrial-consortium/descartes/blob/kinetic-devel/descartes_trajectory/include/descartes_trajectory/cart_trajectory_pt.h#L156">TolerancedFrame</a> definition</li>
+<li>reference <a class="reference external" href="https://github.com/ros-industrial-consortium/descartes/blob/kinetic-devel/descartes_trajectory/include/descartes_trajectory/cart_trajectory_pt.h#L139">OrientationTolerance</a> definition</li>
+</ul>
+</li>
 </ol>
 </div>
 <div class="section" id="update-the-setup-launch-file">
 <span id="update-the-setup-launch-file"></span><h3>Update the setup.launch file.<a class="headerlink" href="#update-the-setup-launch-file" title="Permalink to this headline">¶</a></h3>
 <ol class="simple">
-<li>Update the file to take an argument <strong>adv</strong> so that either the basic or advanced descartes node can be launched.</li>
+<li>Update the file to take a boolean argument named <strong>adv</strong> so that either the basic or advanced descartes node can be launched.  Use <code class="docutils literal"><span class="pre">&lt;if&gt;</span></code> and <code class="docutils literal"><span class="pre">&lt;unless&gt;</span></code> modifiers to control which node is launched.<ul>
+<li>reference <a class="reference external" href="http://wiki.ros.org/roslaunch/XML">roslaunch XML</a> wiki</li>
+</ul>
+</li>
 </ol>
 </div>
 <div class="section" id="test-full-application">
@@ -842,60 +867,12 @@ cp ~/industrial_training/exercises/5.0/src/myworkcell_support/meshes/* myworkcel
 rosrun myworkcell_core adv_myworkcell_node
 </pre></div>
 </div>
-<p>It’s difficult to see what’s happening with the rviz planning-loop always running.  Disable this loop animation in rviz (Displays -&gt; Planned Path -&gt; Loop Animation), then rerun <code class="docutils literal"><span class="pre">adv_myworkcell_node</span></code>.</p>
+<ul class="simple">
+<li>Descartes can take <strong>several minutes</strong> to plan this complex path, so be patient.</li>
+<li>It’s difficult to see what’s happening with the rviz planning-loop animation always running.  Disable this loop animation in rviz (Displays -&gt; Planned Path -&gt; Loop Animation) before running <code class="docutils literal"><span class="pre">adv_myworkcell_node</span></code>.</li>
+</ul>
 </li>
 </ol>
-</div>
-<div class="section" id="solutions">
-<span id="solutions"></span><h3>Solutions<a class="headerlink" href="#solutions" title="Permalink to this headline">¶</a></h3>
-<ul>
-<li><p class="first">5.2 Update your workcell.xacro file.</p>
-<div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;include</span> <span class="na">filename=</span><span class="s">&quot;$(find myworkcell_support)/urdf/puzzle_mount.xacro&quot;</span> <span class="nt">/&gt;</span>
-<span class="nt">&lt;include</span> <span class="na">filename=</span><span class="s">&quot;$(find myworkcell_support)/urdf/grinder.xacro&quot;</span> <span class="nt">/&gt;</span>   
-
-<span class="nt">&lt;joint</span> <span class="na">name=</span><span class="s">&quot;world_to_grinder&quot;</span> <span class="na">type=</span><span class="s">&quot;fixed&quot;</span><span class="nt">&gt;</span>
- <span class="nt">&lt;parent</span> <span class="na">link=</span><span class="s">&quot;world&quot;</span><span class="nt">/&gt;</span>
- <span class="nt">&lt;child</span> <span class="na">link=</span><span class="s">&quot;grinder_frame&quot;</span><span class="nt">/&gt;</span>
- <span class="nt">&lt;origin</span> <span class="na">xyz=</span><span class="s">&quot;0.0 -0.4 0.6&quot;</span> <span class="na">rpy=</span><span class="s">&quot;0 3.14159 0&quot;</span><span class="nt">/&gt;</span>
-<span class="nt">&lt;/joint&gt;</span> 
-
-<span class="nt">&lt;joint</span> <span class="na">name=</span><span class="s">&quot;robot_tool&quot;</span> <span class="na">type=</span><span class="s">&quot;fixed&quot;</span><span class="nt">&gt;</span>
- <span class="nt">&lt;parent</span> <span class="na">link=</span><span class="s">&quot;tool0&quot;</span><span class="nt">/&gt;</span>
- <span class="nt">&lt;child</span> <span class="na">link=</span><span class="s">&quot;ee_mount&quot;</span><span class="nt">/&gt;</span>
- <span class="nt">&lt;origin</span> <span class="na">xyz=</span><span class="s">&quot;0 0 0&quot;</span> <span class="na">rpy=</span><span class="s">&quot;1.5708 0 0&quot;</span><span class="nt">/&gt;</span>
-<span class="nt">&lt;/joint&gt;</span>
-</pre></div>
-</div>
-</li>
-<li><p class="first">5.4 Complete Advanced Descartes Node</p>
-<p><strong>Step 1:</strong></p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">filename</span> <span class="o">=</span> <span class="n">ros</span><span class="o">::</span><span class="n">package</span><span class="o">::</span><span class="n">getPath</span><span class="p">(</span><span class="s">&quot;myworkcell_core&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;/config/puzzle_bent.csv&quot;</span><span class="p">;</span>
-</pre></div>
-</div>
-<p><strong>Step 2:</strong></p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="n">listener_</span><span class="p">.</span><span class="n">lookupTransform</span><span class="p">(</span><span class="s">&quot;world&quot;</span><span class="p">,</span> <span class="s">&quot;grinder_frame&quot;</span><span class="p">,</span> <span class="n">ros</span><span class="o">::</span><span class="n">Time</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">grinder_frame</span><span class="p">);</span>
-<span class="n">tf</span><span class="o">::</span><span class="n">transformTFToEigen</span><span class="p">(</span><span class="n">grinder_frame</span><span class="p">,</span> <span class="n">gf</span><span class="p">);</span>
-</pre></div>
-</div>
-<p><strong>Step 3:</strong></p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="n">tool_pt</span><span class="p">.</span><span class="n">orientation_tolerance</span><span class="p">.</span><span class="n">z_lower</span> <span class="o">-=</span> <span class="n">M_PI</span><span class="p">;</span>
-<span class="n">tool_pt</span><span class="p">.</span><span class="n">orientation_tolerance</span><span class="p">.</span><span class="n">z_upper</span> <span class="o">+=</span> <span class="n">M_PI</span><span class="p">;</span>
-</pre></div>
-</div>
-</li>
-<li><p class="first">5.5 Update the setup.launch file.</p>
-<div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;launch&gt;</span>
-  <span class="nt">&lt;arg</span> <span class="na">name=</span><span class="s">&quot;adv&quot;</span> <span class="na">default=</span><span class="s">&quot;0&quot;</span> <span class="nt">/&gt;</span>
-  <span class="nt">&lt;include</span> <span class="na">file=</span><span class="s">&quot;$(find myworkcell_moveit_config)/launch/myworkcell_planning_execution.launch&quot;</span><span class="nt">/&gt;</span>
-  <span class="nt">&lt;node</span> <span class="na">name=</span><span class="s">&quot;fake_ar_publisher&quot;</span> <span class="na">pkg=</span><span class="s">&quot;fake_ar_publisher&quot;</span> <span class="na">type=</span><span class="s">&quot;fake_ar_publisher_node&quot;</span> <span class="nt">/&gt;</span>
-  <span class="nt">&lt;node</span> <span class="na">name=</span><span class="s">&quot;vision_node&quot;</span> <span class="na">type=</span><span class="s">&quot;vision_node&quot;</span> <span class="na">pkg=</span><span class="s">&quot;myworkcell_core&quot;</span> <span class="na">output=</span><span class="s">&quot;screen&quot;</span><span class="nt">/&gt;</span>
-  <span class="nt">&lt;node</span> <span class="na">name=</span><span class="s">&quot;descartes_node&quot;</span> <span class="na">type=</span><span class="s">&quot;descartes_node&quot;</span> <span class="na">pkg=</span><span class="s">&quot;myworkcell_core&quot;</span> <span class="na">output=</span><span class="s">&quot;screen&quot;</span> <span class="na">unless=</span><span class="s">&quot;$(arg adv)&quot;</span><span class="nt">/&gt;</span>
-  <span class="nt">&lt;node</span> <span class="na">name=</span><span class="s">&quot;adv_descartes_node&quot;</span> <span class="na">type=</span><span class="s">&quot;adv_descartes_node&quot;</span> <span class="na">pkg=</span><span class="s">&quot;myworkcell_core&quot;</span> <span class="na">output=</span><span class="s">&quot;screen&quot;</span> <span class="na">if=</span><span class="s">&quot;$(arg adv)&quot;</span><span class="nt">/&gt;</span>
-<span class="nt">&lt;/launch&gt;</span>
-</pre></div>
-</div>
-</li>
-</ul>
 </div>
 </div>
 </div>

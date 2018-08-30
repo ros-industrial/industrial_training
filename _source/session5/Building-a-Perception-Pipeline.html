@@ -494,11 +494,10 @@
 <li class="toctree-l2"><a class="reference internal" href="Advanced-Descartes-Path-Planning.html#scan-n-plan-application-guidance">Scan-N-Plan Application: Guidance</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="Advanced-Descartes-Path-Planning.html#setup-workspace">Setup workspace</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Advanced-Descartes-Path-Planning.html#update-your-workcell-xacro-file">Update your workcell.xacro file.</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Advanced-Descartes-Path-Planning.html#add-new-move-group-to-your-moveit-config-package">Add new move group to your moveit_config package.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Advanced-Descartes-Path-Planning.html#add-new-planning-group-to-your-moveit-config-package">Add new planning group to your moveit_config package.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Advanced-Descartes-Path-Planning.html#complete-advanced-descartes-node">Complete Advanced Descartes Node</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Advanced-Descartes-Path-Planning.html#update-the-setup-launch-file">Update the setup.launch file.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Advanced-Descartes-Path-Planning.html#test-full-application">Test Full Application</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Advanced-Descartes-Path-Planning.html#solutions">Solutions</a></li>
 </ul>
 </li>
 </ul>
@@ -514,26 +513,11 @@
 <li class="toctree-l3"><a class="reference internal" href="#implement-pass-through-filters">Implement Pass-through Filters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#plane-segmentation">Plane Segmentation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#euclidean-cluster-extraction-optional-but-recommended">Euclidean Cluster Extraction (optional, but recommended)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#create-a-cropbox-filter">Create a CropBox Filter</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#viewing-result">Viewing Result</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#create-a-statistical-outlier-removal">Create a Statistical Outlier Removal</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id1">Viewing Result</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#create-a-broadcast-transform">Create a Broadcast Transform</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id2">Viewing Result</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#create-a-polygonal-segmentation">Create a Polygonal Segmentation</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id3">Viewing Result</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#write-a-launch-file">Write a launch file</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id4">Viewing Results</a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="#create-a-cropbox-filter">Create a CropBox Filter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-a-statistical-outlier-removal">Create a Statistical Outlier Removal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-a-broadcast-transform">Create a Broadcast Transform</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-a-polygonal-segmentation">Create a Polygonal Segmentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#write-a-launch-file">Write a launch file</a></li>
 </ul>
 </li>
 </ul>
@@ -564,6 +548,19 @@
 <li class="toctree-l3"><a class="reference internal" href="Simple-PCL-Interface-for-Python.html#plane-segmentation">Plane Segmentation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Simple-PCL-Interface-for-Python.html#euclidian-cluster-extraction">Euclidian Cluster Extraction</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Simple-PCL-Interface-for-Python.html#future-study">Future Study</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="OpenCV-in-Python.html">Exercise 5.4 - OpenCV Image Processing (Python)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="OpenCV-in-Python.html#motivation">Motivation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="OpenCV-in-Python.html#further-information-and-resources">Further Information and Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="OpenCV-in-Python.html#problem-statement">Problem Statement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="OpenCV-in-Python.html#implementation">Implementation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="OpenCV-in-Python.html#create-package">Create package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="OpenCV-in-Python.html#create-an-image-publisher">Create an Image Publisher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="OpenCV-in-Python.html#create-the-detect-pump-image-processing-node">Create the Detect_Pump Image-Processing Node</a></li>
+<li class="toctree-l3"><a class="reference internal" href="OpenCV-in-Python.html#challenge-exercises">Challenge Exercises</a></li>
 </ul>
 </li>
 </ul>
@@ -692,7 +689,7 @@
 <p>In this exercise, we will fill in the appropriate pieces of code to build a perception pipeline. The end goal will be to broadcast a transform with the pose information of the object of interest.</p>
 <div class="section" id="prepare-new-workspace">
 <h2>Prepare New Workspace:<a class="headerlink" href="#prepare-new-workspace" title="Permalink to this headline">¶</a></h2>
-<p>We will create a new catkin workspace, since this exercise does not overlap with the previous PlanNScan exercises.</p>
+<p>We will create a new catkin workspace, since this exercise does not overlap with the previous exercises.</p>
 <ol class="arabic">
 <li><p class="first">Disable automatic sourcing of your previous catkin workspace:</p>
 <ol class="arabic">
@@ -715,7 +712,7 @@
 </div></blockquote>
 </li>
 <li><p class="first">Copy the template workspace layout and files:</p>
-<div class="highlight-bash"><div class="highlight"><pre>cp -r ~/industrial_training/exercises/perception_ws ~
+<div class="highlight-bash"><div class="highlight"><pre>cp -r ~/industrial_training/exercises/5.1/template_ws ~/perception_ws
 <span class="nb">cd</span> ~/perception_ws/
 </pre></div>
 </div>
@@ -736,10 +733,17 @@ catkin build
 </li>
 </ol>
 </div></blockquote>
-<ol class="arabic simple">
-<li>Download the <code class="xref download docutils literal"><span class="pre">PointCloud</span> <span class="pre">file</span></code> and place the file in your home directory (~).</li>
-<li>Import the new workspace into your QTCreator IDE:<ul>
-<li>In QTCreator: File -&gt; New Project -&gt; Import -&gt; Import ROS Workspace -&gt; ~/perception_ws</li>
+<ol class="arabic">
+<li><p class="first">Copy the PointCloud file from prior Exercise 4.2 to your home directory (~):</p>
+<blockquote>
+<div><div class="highlight-bash"><div class="highlight"><pre>cp ~/industrial_training/exercises/4.2/table.pcd ~
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">Import the new workspace into your QTCreator IDE:</p>
+<ul class="simple">
+<li>In QTCreator: <cite>File -&gt; New File or Project -&gt; Other Project -&gt; ROS Workspace -&gt; ~/perception_ws</cite></li>
 </ul>
 </li>
 </ol>
@@ -790,6 +794,8 @@ catkin build
 <div class="section" id="implement-voxel-filter">
 <h3>Implement Voxel Filter<a class="headerlink" href="#implement-voxel-filter" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic">
+<li><p class="first">Uncomment the <cite>voxel_grid</cite> include header, near the top of the file.</p>
+</li>
 <li><p class="first">Change code:</p>
 <p>The first step in most point cloud processing pipelines is the voxel filter. This filter not only helps to downsample your points, but also eliminates any NAN values so that any further filtering or processing is done on real values. See  <a class="reference external" href="http://pointclouds.org/documentation/tutorials/voxel_grid.php#voxelgrid">PCL Voxel Filter Tutorial</a> for hints, otherwise you can copy the below code snippet.</p>
 <p>Within <code class="docutils literal"><span class="pre">perception_node.cpp</span></code>, find section</p>
@@ -866,6 +872,8 @@ rosrun lesson_perception perception_node
 <div class="section" id="implement-pass-through-filters">
 <h3>Implement Pass-through Filters<a class="headerlink" href="#implement-pass-through-filters" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic">
+<li><p class="first">As before, uncomment the PassThrough filter include-header near the top of the file.</p>
+</li>
 <li><p class="first">Change code:</p>
 <p>The next set of useful filtering to get the region of interest, is a series of pass-through filters. These filters crop your point cloud down to a volume of space (if you use x y and z filter). At this point you should apply a series of pass-through filters, one for each the x, y, and z directions. See <a class="reference external" href="http://pointclouds.org/documentation/tutorials/passthrough.php#passthrough">PCL Pass-Through Filter Tutorial</a> for hints, or use code below.</p>
 <p>Within perception_node.cpp, find section</p>
@@ -978,7 +986,11 @@ rosrun lesson_perception perception_node
 </li>
 <li><p class="first">Find the <code class="docutils literal"><span class="pre">pcl::toROSMsg</span></code> call where the <code class="docutils literal"><span class="pre">pc2_cloud</span></code> is populated.  This is the point cloud that is published to RViz display.  Replace the current cloud (<code class="docutils literal"><span class="pre">zf_cloud</span></code>) with the plane-fit outliers result (<code class="docutils literal"><span class="pre">*cloud_f</span></code>).</p>
 </li>
-<li><p class="first">Compile and run, as in previous steps.</p>
+<li><dl class="first docutils">
+<dt>Compile and run, as in previous steps.</dt>
+<dd><p class="first last">Did you forget to uncomment the new headers used in this step?</p>
+</dd>
+</dl>
 </li>
 <li><p class="first">Evaluate Results</p>
 <p>Within Rviz, compare PointCloud2 displays based on the <code class="docutils literal"><span class="pre">/kinect/depth_registered/points</span></code> (original camera data) and <code class="docutils literal"><span class="pre">object_cluster</span></code> (latest processing step) topics.  Only points lying above the table plane remain in the latest processing result.</p>
@@ -1060,7 +1072,7 @@ rosrun lesson_perception perception_node
 <span class="cm"> * ========================================*/</span>
 </pre></div>
 </div>
-<p>This CropBox filter should replace your passthrough filters, you may delete or comment the passthrough filters. There is not PCL tutorial to guide you, only the PCL documentation at the link above. The general setup will be the same (set the output, declare instance of filter, set input, set parameters, and filter).</p>
+<p>This CropBox filter should replace your passthrough filters, you may delete or comment the passthrough filters. There is no PCL tutorial to guide you, only the PCL documentation at the link above. The general setup will be the same (set the output, declare instance of filter, set input, set parameters, and filter).</p>
 <p>Set the output cloud:</p>
 <div class="highlight-c++"><div class="highlight"><pre><span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="n">xyz_filtered_cloud</span><span class="p">;</span>
 </pre></div>
@@ -1074,8 +1086,8 @@ rosrun lesson_perception perception_node
 </pre></div>
 </div>
 <p>Set parameters - looking at documentation, CropBox takes an Eigen Vector4f as inputs for max and min values:</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="n">Eigen</span><span class="o">::</span><span class="n">Vector4f</span> <span class="n">min_point</span> <span class="o">=</span> <span class="n">Eigen</span><span class="o">::</span><span class="n">Vector4f</span><span class="p">(</span><span class="n">x_filter_min</span><span class="p">,</span> <span class="n">y_filter_min</span><span class="p">,</span> <span class="n">z_filter_min</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-<span class="n">Eigen</span><span class="o">::</span><span class="n">Vector4f</span> <span class="n">max_point</span> <span class="o">=</span> <span class="n">Eigen</span><span class="o">::</span><span class="n">Vector4f</span><span class="p">(</span><span class="n">x_filter_max</span><span class="p">,</span> <span class="n">y_filter_max</span><span class="p">,</span> <span class="n">z_filter_max</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<div class="highlight-c++"><div class="highlight"><pre><span class="n">Eigen</span><span class="o">::</span><span class="n">Vector4f</span> <span class="n">min_point</span> <span class="o">=</span> <span class="n">Eigen</span><span class="o">::</span><span class="n">Vector4f</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="n">Eigen</span><span class="o">::</span><span class="n">Vector4f</span> <span class="n">max_point</span> <span class="o">=</span> <span class="n">Eigen</span><span class="o">::</span><span class="n">Vector4f</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
 <span class="n">crop</span><span class="p">.</span><span class="n">setMin</span><span class="p">(</span><span class="n">min_point</span><span class="p">);</span>
 <span class="n">crop</span><span class="p">.</span><span class="n">setMax</span><span class="p">(</span><span class="n">max_point</span><span class="p">);</span>
 </pre></div>
@@ -1089,66 +1101,15 @@ rosrun lesson_perception perception_node
 </pre></div>
 </div>
 </li>
-<li><p class="first">Update Publisher within perception_node.cpp, find section</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="cm">/* ========================================</span>
-<span class="cm"> * CONVERT POINTCLOUD PCL-&gt;ROS</span>
-<span class="cm"> * PUBLISH CLOUD</span>
-<span class="cm"> * Fill Code: UPDATE AS NECESSARY</span>
-<span class="cm"> * ========================================*/</span>
-</pre></div>
-</div>
-<p>Change the “toROSMsg” line to convert from your newly processed cloud into a ROS sensor_msgs::PointCloud2.</p>
-<p>Change:</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="n">sensor_msgs</span><span class="o">::</span><span class="n">PointCloud2</span><span class="o">::</span><span class="n">Ptr</span> <span class="n">pc2_cloud</span> <span class="p">(</span><span class="k">new</span> <span class="n">sensor_msgs</span><span class="o">::</span><span class="n">PointCloud2</span><span class="p">);</span>
-<span class="n">pcl</span><span class="o">::</span><span class="n">toROSMsg</span><span class="p">(</span><span class="n">zf_cloud</span><span class="p">,</span> <span class="o">*</span><span class="n">pc2_cloud</span><span class="p">);</span>
-</pre></div>
-</div>
-<p>to:</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="n">sensor_msgs</span><span class="o">::</span><span class="n">PointCloud2</span><span class="o">::</span><span class="n">Ptr</span> <span class="n">pc2_cloud</span> <span class="p">(</span><span class="k">new</span> <span class="n">sensor_msgs</span><span class="o">::</span><span class="n">PointCloud2</span><span class="p">);</span>
-<span class="n">pcl</span><span class="o">::</span><span class="n">toROSMsg</span><span class="p">(</span><span class="n">xyz_filtered_cloud</span><span class="p">,</span> <span class="o">*</span><span class="n">pc2_cloud</span><span class="p">);</span>
-</pre></div>
-</div>
+<li><p class="first">Find the <code class="docutils literal"><span class="pre">pcl::toROSMsg</span></code> call where the <code class="docutils literal"><span class="pre">pc2_cloud</span></code> is populated.  This is the point cloud that is published to RViz display.  Replace the current cloud with the new filtered results (<code class="docutils literal"><span class="pre">xyz_filtered_cloud</span></code>).</p>
 </li>
-<li><p class="first">Compile</p>
-<div class="highlight-bash"><div class="highlight"><pre>catkin build
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If you have the time/patience, I would suggest creating a ros publisher for each type of filter. It is often useful to view the results of multiple filters at once in Rviz and just toggle different clouds.</p>
-</div>
-</li>
-</ol>
-<div class="section" id="viewing-result">
-<h4>Viewing Result<a class="headerlink" href="#viewing-result" title="Permalink to this headline">¶</a></h4>
-<ol class="arabic">
-<li><p class="first">Open multiple terminals</p>
-<p>Either open three more tabs within your terminal <em>CTRL-SHIFT-T</em> or open three more windows <em>CTRL-SHIFT-N</em>. These terminals will run a roscore, the pcl_ros, and Rviz. Below, Terminal 1 corresponds to the terminal you have been working out of.</p>
-<p>In terminal 4:</p>
-<div class="highlight-bash"><div class="highlight"><pre>roscore
-</pre></div>
-</div>
-<p>In terminal 3:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nb">cd</span> ~
-rosrun pcl_ros pcd_to_pointcloud table.pcd 0.1 _frame_id:<span class="o">=</span>kinect_link cloud_pcd:<span class="o">=</span>kinect/depth_registered/points
-</pre></div>
-</div>
-<p>In terminal 2:</p>
-<div class="highlight-bash"><div class="highlight"><pre>rosrun rviz rviz
-</pre></div>
-</div>
-<p>In terminal 1:</p>
-<div class="highlight-bash"><div class="highlight"><pre>rosrun lesson_perception perception_node
-</pre></div>
-</div>
-</li>
-<li><p class="first">View results</p>
-<p>Within Rviz, add a <em>PointCloud2</em> and subscribe to the topic “object_cluster”. What you see will be the results of the voxel filter overlaid on the original point cloud.</p>
-<p>The following image of the CropBox filter in use will closely resemble the Plane Segmentation filter image.</p>
+<li><p class="first">Compile and run, as in previous steps</p>
+<blockquote>
+<div><p>The following image of the CropBox filter in use will closely resemble the Plane Segmentation filter image.</p>
+</div></blockquote>
 <img alt="../../_images/xyz_filtered_cloud.png" src="../../_images/xyz_filtered_cloud.png" />
 </li>
 </ol>
-</div>
 </div>
 <div class="section" id="create-a-statistical-outlier-removal">
 <h3>Create a Statistical Outlier Removal<a class="headerlink" href="#create-a-statistical-outlier-removal" title="Permalink to this headline">¶</a></h3>
@@ -1175,7 +1136,7 @@ rosrun pcl_ros pcd_to_pointcloud table.pcd 0.1 _frame_id:<span class="o">=</span
 <div class="highlight-c++"><div class="highlight"><pre><span class="n">sor</span><span class="p">.</span><span class="n">setInputCloud</span> <span class="p">(</span><span class="n">cluster_cloud_ptr</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>Set parameters - looking at documentation, CropBox takes an Eigen Vector4f as inputs for max and min values:</p>
+<p>Set parameters - looking at documentation, S.O.R. uses the number of neighbors to inspect and the standard-deviation threshold to use for outlier rejection:</p>
 <div class="highlight-c++"><div class="highlight"><pre><span class="n">sor</span><span class="p">.</span><span class="n">setMeanK</span> <span class="p">(</span><span class="mi">50</span><span class="p">);</span>
 <span class="n">sor</span><span class="p">.</span><span class="n">setStddevMulThresh</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">);</span>
 </pre></div>
@@ -1185,72 +1146,18 @@ rosrun pcl_ros pcd_to_pointcloud table.pcd 0.1 _frame_id:<span class="o">=</span
 </pre></div>
 </div>
 </li>
-<li><p class="first">Update Publisher within perception_node.cpp, find section</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="cm">/* ========================================</span>
-<span class="cm"> * CONVERT POINTCLOUD PCL-&gt;ROS</span>
-<span class="cm"> * PUBLISH CLOUD</span>
-<span class="cm"> * Fill Code: UPDATE AS NECESSARY</span>
-<span class="cm"> * ========================================*/</span>
-</pre></div>
-</div>
-<p>Change the “toROSMsg” line to convert from your newly processed cloud into a ROS sensor_msgs::PointCloud2.</p>
-<p>Change:</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="n">sensor_msgs</span><span class="o">::</span><span class="n">PointCloud2</span><span class="o">::</span><span class="n">Ptr</span> <span class="n">pc2_cloud</span> <span class="p">(</span><span class="k">new</span> <span class="n">sensor_msgs</span><span class="o">::</span><span class="n">PointCloud2</span><span class="p">);</span>
-<span class="n">pcl</span><span class="o">::</span><span class="n">toROSMsg</span><span class="p">(</span><span class="o">*</span><span class="n">cloud_f</span><span class="p">,</span> <span class="o">*</span><span class="n">pc2_cloud</span><span class="p">);</span>
-</pre></div>
-</div>
-<p>to:</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="n">sensor_msgs</span><span class="o">::</span><span class="n">PointCloud2</span><span class="o">::</span><span class="n">Ptr</span> <span class="n">pc2_cloud</span> <span class="p">(</span><span class="k">new</span> <span class="n">sensor_msgs</span><span class="o">::</span><span class="n">PointCloud2</span><span class="p">);</span>
-<span class="n">pcl</span><span class="o">::</span><span class="n">toROSMsg</span><span class="p">(</span><span class="o">*</span><span class="n">sor_cloud_filtered</span><span class="p">,</span> <span class="o">*</span><span class="n">pc2_cloud</span><span class="p">);</span>
-</pre></div>
-</div>
+<li><p class="first">Find the <code class="docutils literal"><span class="pre">pcl::toROSMsg</span></code> call where the <code class="docutils literal"><span class="pre">pc2_cloud</span></code> is populated.  Replace the current cloud with the new filtered results (<code class="docutils literal"><span class="pre">*sor_cloud_filtered</span></code>).</p>
 </li>
-<li><p class="first">Compile</p>
-<div class="highlight-bash"><div class="highlight"><pre>catkin build
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If you have the time/patience, I would suggest creating a ros publisher for each type of filter. It is often useful to view the results of multiple filters at once in Rviz and just toggle different clouds.</p>
-</div>
-</li>
-</ol>
-<div class="section" id="id1">
-<h4>Viewing Result<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
-<ol class="arabic">
-<li><p class="first">Open multiple terminals</p>
-<p>Either open three more tabs within your terminal <em>CTRL-SHIFT-T</em> or open three more windows <em>CTRL-SHIFT-N</em>. These terminals will run a roscore, the pcl_ros, and Rviz. Below, Terminal 1 corresponds to the terminal you have been working out of.</p>
-<p>In terminal 4:</p>
-<div class="highlight-bash"><div class="highlight"><pre>roscore
-</pre></div>
-</div>
-<p>In terminal 3:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nb">cd</span> ~
-rosrun pcl_ros pcd_to_pointcloud table.pcd 0.1 _frame_id:<span class="o">=</span>kinect_link cloud_pcd:<span class="o">=</span>kinect/depth_registered/points
-</pre></div>
-</div>
-<p>In terminal 2:</p>
-<div class="highlight-bash"><div class="highlight"><pre>rosrun rviz rviz
-</pre></div>
-</div>
-<p>In terminal 1:</p>
-<div class="highlight-bash"><div class="highlight"><pre>rosrun lesson_perception perception_node
-</pre></div>
-</div>
-</li>
-<li><p class="first">View results</p>
-<p>Within Rviz, add a <em>PointCloud2</em> and subscribe to the topic “object_cluster”. What you see will be the results of the voxel filter overlaid on the original point cloud.</p>
+<li><p class="first">Compile and run, as in previous steps</p>
 <img alt="../../_images/sor_cloud_filtered.png" src="../../_images/sor_cloud_filtered.png" />
 </li>
 </ol>
 </div>
-</div>
 <div class="section" id="create-a-broadcast-transform">
 <h3>Create a Broadcast Transform<a class="headerlink" href="#create-a-broadcast-transform" title="Permalink to this headline">¶</a></h3>
-<p>While this is not a filter method, it is directly related to the final project (the capstone project during the training class), so if you have the time, you should implement this to get a better understanding of how the demo works.</p>
+<p>While this is not a filter method, it demonstrates how to publish the results of a processing pipeline for other nodes to use.  Often, the goal of a processing pipeline is to generate a measurement, location, or some other message for other nodes to use.  This sub-task broadcasts a TF transform to define the location of the largest box on the table.  This transform could be used by other nodes to identify the position/orientation of the box for grasping.</p>
 <ol class="arabic">
 <li><p class="first">Change/Insert code</p>
-<p>Transforms are used to convey relations between two frames of reference or coordinate systems. In our demo, the AR tag detection software pipeline broadcasts a transform based on the position and orientation of the AR tag. A separate node then listens for that transform in order to identify the position/orientation of the box for grasping.</p>
 <p>Within perception_node.cpp, find section</p>
 <div class="highlight-c++"><div class="highlight"><pre><span class="cm">/* ========================================</span>
 <span class="cm"> * BROADCAST TRANSFORM (OPTIONAL)</span>
@@ -1273,52 +1180,16 @@ rosrun pcl_ros pcd_to_pointcloud table.pcd 0.1 _frame_id:<span class="o">=</span
 </pre></div>
 </div>
 </li>
-<li><p class="first">Compile</p>
-<div class="highlight-bash"><div class="highlight"><pre>catkin build
-</pre></div>
-</div>
+<li><p class="first">Compile and Run as usual.  In this case, add a TF display to Rviz and observe the new “part” transform located at the top of the box.</p>
 </li>
 </ol>
-<div class="section" id="id2">
-<h4>Viewing Result<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
-<ol class="arabic">
-<li><p class="first">Open multiple terminals</p>
-<p>Either open three more tabs within your terminal <em>CTRL-SHIFT-T</em> or open three more windows <em>CTRL-SHIFT-N</em>. These terminals will run a roscore, the pcl_ros, and Rviz. Below, Terminal 1 corresponds to the terminal you have been working out of.</p>
-<p>In terminal 4:</p>
-<div class="highlight-bash"><div class="highlight"><pre>roscore
-</pre></div>
-</div>
-<p>In terminal 3:
-.. code-block:: bash</p>
-<blockquote>
-<div><p>cd ~
-rosrun pcl_ros pcd_to_pointcloud table.pcd 0.1 _frame_id:=kinect_link cloud_pcd:=kinect/depth_registered/points</p>
-</div></blockquote>
-<p>In terminal 2:</p>
-<div class="highlight-bash"><div class="highlight"><pre>rosrun rviz rviz
-</pre></div>
-</div>
-<p>In terminal 1:</p>
-<div class="highlight-bash"><div class="highlight"><pre>rosrun lesson_perception perception_node
-</pre></div>
-</div>
-</li>
-</ol>
-<blockquote>
-<div><ol class="arabic" start="2">
-<li><p class="first">View results</p>
-<p>Within Rviz, add a <em>PointCloud2</em> and subscribe to the topic “object_cluster”. What you see will be the results of the voxel filter overlaid on the original point cloud. There is no difference in the point cloud from the last image given in the statistical outlier removal.</p>
-</li>
-</ol>
-</div></blockquote>
-</div>
 </div>
 <div class="section" id="create-a-polygonal-segmentation">
 <h3>Create a Polygonal Segmentation<a class="headerlink" href="#create-a-polygonal-segmentation" title="Permalink to this headline">¶</a></h3>
-<p>This method was included primarily to have something that ties in directly to the demo that you will be programming in session 5. This demo uses AR tag perception, but also collision avoidance. The collision avoidance uses a pointcloud to actively determine where the obstacles are. However, becuase the part itself is within the scene, we must subtract the points that comprise the part in order to remove these points from becoming a collision object (which will then make a grasp impossible due to the object colliding with itself).</p>
+<p>When using sensor data for collision detection, it is sometimes necessary to exclude “known” objects from the scene to avoid interference from these objects.  MoveIt! contains methods for masking out a robot’s own geometry as a “Self Collision” filtering feature.  This example shows how to do something similar using PCL’s Polygonal Segmentation filtering.</p>
 <ol class="arabic">
 <li><p class="first">Change code</p>
-<p>This method is similar to the plane segmentation from Sub-Task 3, but instead of segmenting out a plane, you can segment and remove a prism. Documentation on the PCL Polygonal Segmentation can be found <a class="reference external" href="http://docs.pointclouds.org/1.7.0/classpcl_1_1_convex_hull.html">here</a> and <a class="reference external" href="http://docs.pointclouds.org/trunk/classpcl_1_1_extract_polygonal_prism_data.html">here</a>. The goal in using this filter for this demo is to remove the points that correspond to the object of interest (because the collision/path planning requires it). So this particular filter is applied to the entire point cloud, but only after we know the position/orientation of the box.</p>
+<p>This method is similar to the plane segmentation from Sub-Task 3, but instead of segmenting out a plane, you can segment and remove a prism. Documentation on the PCL Polygonal Segmentation can be found <a class="reference external" href="http://docs.pointclouds.org/1.7.0/classpcl_1_1_convex_hull.html">here</a> and <a class="reference external" href="http://docs.pointclouds.org/trunk/classpcl_1_1_extract_polygonal_prism_data.html">here</a>. The goal in this sub-task is to remove the points that correspond to a known object (e.g. the box we detected earlier). This particular filter is applied to the entire point cloud (original sensor data), but only after we’ve already completed the processing steps to identify the position/orientation of the box.</p>
 <p>Within perception_node.cpp, add <code class="docutils literal"><span class="pre">#include</span> <span class="pre">&lt;tf_conversions/tf_eigen.h&gt;</span></code> and find section</p>
 <div class="highlight-c++"><div class="highlight"><pre><span class="cm">/* ========================================</span>
 <span class="cm"> * Fill Code: POLYGONAL SEGMENTATION (OPTIONAL)</span>
@@ -1344,7 +1215,7 @@ rosrun pcl_ros pcd_to_pointcloud table.pcd 0.1 _frame_id:=kinect_link cloud_pcd:
 <span class="n">pcl</span><span class="o">::</span><span class="n">PointIndices</span><span class="o">::</span><span class="n">Ptr</span> <span class="n">pt_inliers</span> <span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointIndices</span><span class="p">());</span>
 </pre></div>
 </div>
-<p>Set parameters - looking at documentation, ExtractPolygonalPrismData takes a polygon pointcloud as input.</p>
+<p>Set parameters - looking at documentation, ExtractPolygonalPrismData uses a pointcloud defining the polygon vertices as its input.</p>
 <div class="highlight-c++"><div class="highlight"><pre><span class="c1">// create prism surface</span>
 <span class="kt">double</span> <span class="n">box_length</span><span class="o">=</span><span class="mf">0.25</span><span class="p">;</span>
 <span class="kt">double</span> <span class="n">box_width</span><span class="o">=</span><span class="mf">0.25</span><span class="p">;</span>
@@ -1390,7 +1261,7 @@ rosrun pcl_ros pcd_to_pointcloud table.pcd 0.1 _frame_id:=kinect_link cloud_pcd:
 <span class="n">extract_ind</span><span class="p">.</span><span class="n">setIndices</span><span class="p">(</span><span class="n">pt_inliers</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>Set parameters - looking at documentation, ExtractPolygonalPrismData takes a polygon pointcloud as input:</p>
+<p>This time, we invert the index extraction, so that we remove points inside the filter and keep points outside the filter.</p>
 <div class="highlight-c++"><div class="highlight"><pre><span class="n">extract_ind</span><span class="p">.</span><span class="n">setNegative</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -1399,88 +1270,25 @@ rosrun pcl_ros pcd_to_pointcloud table.pcd 0.1 _frame_id:=kinect_link cloud_pcd:
 </pre></div>
 </div>
 </li>
-<li><p class="first">Update Publisher within perception_node.cpp, find section</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="cm">/* ========================================</span>
-<span class="cm"> * CONVERT POINTCLOUD PCL-&gt;ROS</span>
-<span class="cm"> * PUBLISH CLOUD</span>
-<span class="cm"> * Fill Code: UPDATE AS NECESSARY</span>
-<span class="cm"> * ========================================*/</span>
-</pre></div>
-</div>
-<p>Change the “toROSMsg” line to convert from your newly processed cloud into a ROS sensor_msgs::PointCloud2. Hint: If following the PCL tutorial, you will have a vector of sensor_msgs::PointCloud2; you can just publish the first one.</p>
+<li><p class="first">Find the <code class="docutils literal"><span class="pre">pcl::toROSMsg</span></code> call where the <code class="docutils literal"><span class="pre">pc2_cloud</span></code> is populated.  This is the point cloud that is published to RViz display.  Replace the current cloud with the new filtered results (<code class="docutils literal"><span class="pre">*prism_filtered_cloud</span></code>).</p>
+</li>
+<li><p class="first">Compile and run as before.</p>
 <blockquote>
-<div><p>Change:</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="n">sensor_msgs</span><span class="o">::</span><span class="n">PointCloud2</span><span class="o">::</span><span class="n">Ptr</span> <span class="n">pc2_cloud</span> <span class="p">(</span><span class="k">new</span> <span class="n">sensor_msgs</span><span class="o">::</span><span class="n">PointCloud2</span><span class="p">);</span>
-<span class="n">pcl</span><span class="o">::</span><span class="n">toROSMsg</span><span class="p">(</span><span class="o">*</span><span class="n">sor_cloud_filtered</span><span class="p">,</span> <span class="o">*</span><span class="n">pc2_cloud</span><span class="p">);</span>
-</pre></div>
-</div>
-<p>to:</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="n">sensor_msgs</span><span class="o">::</span><span class="n">PointCloud2</span><span class="o">::</span><span class="n">Ptr</span> <span class="n">pc2_cloud</span> <span class="p">(</span><span class="k">new</span> <span class="n">sensor_msgs</span><span class="o">::</span><span class="n">PointCloud2</span><span class="p">);</span>
-<span class="n">pcl</span><span class="o">::</span><span class="n">toROSMsg</span><span class="p">(</span><span class="o">*</span><span class="n">prism_filtered_cloud</span><span class="p">,</span> <span class="o">*</span><span class="n">pc2_cloud</span><span class="p">);</span>
-</pre></div>
-</div>
+<div><img alt="../../_images/prism_filtered_cloud.png" src="../../_images/prism_filtered_cloud.png" />
+</div></blockquote>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last"><em>If you did not create your own publisher</em> to use for the Polygonal Segmentation filter, it will be necessary to move <code class="docutils literal"><span class="pre">CONVERT</span> <span class="pre">POINTCLOUD</span> <span class="pre">PCL-&gt;ROS</span></code> below <code class="docutils literal"><span class="pre">extract_ind.filter(*prism_filtered_cloud);</span></code>.</p>
-</div>
-</div></blockquote>
-</li>
-<li><p class="first">Compile</p>
-<div class="highlight-bash"><div class="highlight"><pre>catkin build
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If you have the time/patience, I would suggest creating a ros publisher for each type of filter. It is often useful to view the results of multiple filters at once in Rviz and just toggle different clouds.</p>
+<p class="last">Notice that the target box has been removed from the point cloud display.</p>
 </div>
 </li>
 </ol>
-<div class="section" id="id3">
-<h4>Viewing Result<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
-<ol class="arabic">
-<li><p class="first">Open multiple terminals</p>
-<p>Either open three more tabs within your terminal <em>CTRL-SHIFT-T</em> or open three more windows <em>CTRL-SHIFT-N</em>. These terminals will run a roscore, the pcl_ros, and Rviz. Below, Terminal 1 corresponds to the terminal you have been working out of.</p>
-<p>In terminal 4:</p>
-<div class="highlight-bash"><div class="highlight"><pre>roscore
-</pre></div>
-</div>
-<p>In terminal 3:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nb">cd</span> ~
-rosrun pcl_ros pcd_to_pointcloud table.pcd 0.1 _frame_id:<span class="o">=</span>kinect_link cloud_pcd:<span class="o">=</span>kinect/depth_registered/points
-</pre></div>
-</div>
-<p>In terminal 2:</p>
-<div class="highlight-bash"><div class="highlight"><pre>rosrun rviz rviz
-</pre></div>
-</div>
-<p>In terminal 1:</p>
-<div class="highlight-bash"><div class="highlight"><pre>rosrun lesson_perception perception_node
-</pre></div>
-</div>
-</li>
-</ol>
-<blockquote>
-<div><ol class="arabic" start="2">
-<li><p class="first">View results</p>
-<p>Within Rviz, add a <em>PointCloud2</em> and subscribe to the topic “object_cluster”. What you see will be the results of the voxel filter overlaid on the original point cloud.</p>
-<img alt="../../_images/prism_filtered_cloud.png" src="../../_images/prism_filtered_cloud.png" />
-</li>
-</ol>
-<blockquote>
-<div><div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Notice the pointer is pointing to empty area of the table. That is the goal of using the filter this way.</p>
-</div>
-</div></blockquote>
-</div></blockquote>
-</div>
 </div>
 <div class="section" id="write-a-launch-file">
 <h3>Write a launch file<a class="headerlink" href="#write-a-launch-file" title="Permalink to this headline">¶</a></h3>
-<p>While this is not a filter method, it is useful when using PCL or other perception methods because of the number of parameters used in the different methods.
-#. Change/Insert code</p>
-<blockquote>
-<div><p>If you are really awesome and read the Task 1 write-up thoroughly, you will note that it was suggested that you put your parameters in one place.</p>
+<p>While this is not a filter method, it is useful when using PCL or other perception methods because of the number of parameters used in the different methods.</p>
+<ol class="arabic">
+<li><p class="first">Change/Insert code</p>
+<p>If you are really awesome and read the Task 1 write-up thoroughly, you will note that it was suggested that you put your parameters in one place.</p>
 <p>Within perception_node.cpp, find section</p>
 <div class="highlight-c++"><div class="highlight"><pre><span class="cm">/*</span>
 <span class="cm"> * SET UP PARAMETERS (COULD TO BE INPUT FROM LAUNCH FILE/TERMINAL)</span>
@@ -1488,10 +1296,10 @@ rosrun pcl_ros pcd_to_pointcloud table.pcd 0.1 _frame_id:<span class="o">=</span
 </pre></div>
 </div>
 <p>Ideally, as the given parameter examples showed, you would <em>declare</em> a parameter of a certain type (std::string frame;), then assign a value for that parameter (frame=”some_name”;).  Below is an example of some of the parameters you could have set.</p>
-<div class="highlight-yaml"><div class="highlight"><pre><span class="l l-Scalar l-Scalar-Plain">world_frame=&quot;camera_depth_optical_frame&quot;;</span>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="l l-Scalar l-Scalar-Plain">world_frame=&quot;kinect_link&quot;;</span>
 <span class="l l-Scalar l-Scalar-Plain">camera_frame=&quot;kinect_link&quot;;</span>
-<span class="l l-Scalar l-Scalar-Plain">cloud_topic=&quot;camera/depth_registered/points&quot;;</span>
-<span class="l l-Scalar l-Scalar-Plain">voxel_leaf_size=0.001f;</span>
+<span class="l l-Scalar l-Scalar-Plain">cloud_topic=&quot;kinect/depth_registered/points&quot;;</span>
+<span class="l l-Scalar l-Scalar-Plain">voxel_leaf_size=0.002f;</span>
 <span class="l l-Scalar l-Scalar-Plain">x_filter_min=-2.5;</span>
 <span class="l l-Scalar l-Scalar-Plain">x_filter_max=2.5;</span>
 <span class="l l-Scalar l-Scalar-Plain">y_filter_min=-2.5;</span>
@@ -1505,34 +1313,27 @@ rosrun pcl_ros pcd_to_pointcloud table.pcd 0.1 _frame_id:<span class="o">=</span
 <span class="l l-Scalar l-Scalar-Plain">cluster_max_size=50000;</span>
 </pre></div>
 </div>
-<p>If you took this step, you will be in great shape to convert what you have into something that can be input from a launch file, or yaml file. You will want to use the “getParam” method as described in this <a class="reference external" href="http://wiki.ros.org/roscpp_tutorials/Tutorials/Parameters">tutorial</a>. Get params from ros parameter server/launch file:</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="n">priv_nh_</span><span class="p">.</span><span class="n">getParam</span><span class="p">(</span><span class="s">&quot;cloud_topic&quot;</span><span class="p">,</span> <span class="n">cloud_topic</span><span class="p">);</span>
-<span class="n">priv_nh_</span><span class="p">.</span><span class="n">getParam</span><span class="p">(</span><span class="s">&quot;world_frame&quot;</span><span class="p">,</span> <span class="n">world_frame</span><span class="p">);</span>
-<span class="n">priv_nh_</span><span class="p">.</span><span class="n">getParam</span><span class="p">(</span><span class="s">&quot;camera_frame&quot;</span><span class="p">,</span> <span class="n">camera_frame</span><span class="p">);</span>
-<span class="n">priv_nh_</span><span class="p">.</span><span class="n">getParam</span><span class="p">(</span><span class="s">&quot;voxel_leaf_size&quot;</span><span class="p">,</span> <span class="n">voxel_leaf_size</span><span class="p">);</span>
-<span class="n">priv_nh_</span><span class="p">.</span><span class="n">getParam</span><span class="p">(</span><span class="s">&quot;x_filter_min&quot;</span><span class="p">,</span> <span class="n">x_filter_min</span><span class="p">);</span>
-<span class="n">priv_nh_</span><span class="p">.</span><span class="n">getParam</span><span class="p">(</span><span class="s">&quot;x_filter_max&quot;</span><span class="p">,</span> <span class="n">x_filter_max</span><span class="p">);</span>
-<span class="n">priv_nh_</span><span class="p">.</span><span class="n">getParam</span><span class="p">(</span><span class="s">&quot;y_filter_min&quot;</span><span class="p">,</span> <span class="n">y_filter_min</span><span class="p">);</span>
-<span class="n">priv_nh_</span><span class="p">.</span><span class="n">getParam</span><span class="p">(</span><span class="s">&quot;y_filter_max&quot;</span><span class="p">,</span> <span class="n">y_filter_max</span><span class="p">);</span>
-<span class="n">priv_nh_</span><span class="p">.</span><span class="n">getParam</span><span class="p">(</span><span class="s">&quot;z_filter_min&quot;</span><span class="p">,</span> <span class="n">z_filter_min</span><span class="p">);</span>
-<span class="n">priv_nh_</span><span class="p">.</span><span class="n">getParam</span><span class="p">(</span><span class="s">&quot;z_filter_max&quot;</span><span class="p">,</span> <span class="n">z_filter_max</span><span class="p">);</span>
-<span class="n">priv_nh_</span><span class="p">.</span><span class="n">getParamCached</span><span class="p">(</span><span class="s">&quot;plane_max_iterations&quot;</span><span class="p">,</span> <span class="n">plane_max_iter</span><span class="p">);</span>
-<span class="n">priv_nh_</span><span class="p">.</span><span class="n">getParamCached</span><span class="p">(</span><span class="s">&quot;plane_distance_threshold&quot;</span><span class="p">,</span> <span class="n">plane_dist_thresh</span><span class="p">);</span>
-<span class="n">priv_nh_</span><span class="p">.</span><span class="n">getParam</span><span class="p">(</span><span class="s">&quot;cluster_tolerance&quot;</span><span class="p">,</span> <span class="n">cluster_tol</span><span class="p">);</span>
-<span class="n">priv_nh_</span><span class="p">.</span><span class="n">getParam</span><span class="p">(</span><span class="s">&quot;cluster_min_size&quot;</span><span class="p">,</span> <span class="n">cluster_min_size</span><span class="p">);</span>
-<span class="n">priv_nh_</span><span class="p">.</span><span class="n">getParam</span><span class="p">(</span><span class="s">&quot;cluster_max_size&quot;</span><span class="p">,</span> <span class="n">cluster_max_size</span><span class="p">);</span>
-</pre></div>
-</div>
-<p>Once you’ve done this, you can either delete or comment out your hard-coded values, but leave the declaration of those variables!</p>
-</div></blockquote>
-<ol class="arabic">
-<li><p class="first">Compile</p>
-<div class="highlight-c++"><div class="highlight"><pre><span class="n">catkin</span> <span class="n">build</span>
+<p>If you took this step, you will be in great shape to convert what you have into something that can be input from a launch file, or yaml file. You could use the “getParam” method as described in this <a class="reference external" href="http://wiki.ros.org/roscpp_tutorials/Tutorials/Parameters">tutorial</a>. But a better choice might be to use the <a class="reference external" href="http://docs.ros.org/kinetic/api/roscpp/html/classros_1_1NodeHandle.html#aa9b23d4206216ed13b5833fb1a090f1a">param</a> method, which returns a default value if the parameter is not found on the parameter server.  Get params from ros parameter server/launch file, replacing your previous hardcoded values (but leave the variable declarations!)</p>
+<div class="highlight-c++"><div class="highlight"><pre><span class="n">cloud_topic</span> <span class="o">=</span> <span class="n">priv_nh_</span><span class="p">.</span><span class="n">param</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;cloud_topic&quot;</span><span class="p">,</span> <span class="s">&quot;kinect/depth_registered/points&quot;</span><span class="p">);</span>
+<span class="n">world_frame</span> <span class="o">=</span> <span class="n">priv_nh_</span><span class="p">.</span><span class="n">param</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;world_frame&quot;</span><span class="p">,</span> <span class="s">&quot;kinect_link&quot;</span><span class="p">);</span>
+<span class="n">camera_frame</span> <span class="o">=</span> <span class="n">priv_nh_</span><span class="p">.</span><span class="n">param</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;camera_frame&quot;</span><span class="p">,</span> <span class="s">&quot;kinect_link&quot;</span><span class="p">);</span>
+<span class="n">voxel_leaf_size</span> <span class="o">=</span> <span class="n">param</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;voxel_leaf_size&quot;</span><span class="p">,</span> <span class="mf">0.002</span><span class="p">);</span>
+<span class="n">x_filter_min</span> <span class="o">=</span> <span class="n">priv_nh_</span><span class="p">.</span><span class="n">param</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;x_filter_min&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.5</span><span class="p">);</span>
+<span class="n">x_filter_max</span> <span class="o">=</span> <span class="n">priv_nh_</span><span class="p">.</span><span class="n">param</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;x_filter_max&quot;</span><span class="p">,</span>  <span class="mf">2.5</span><span class="p">);</span>
+<span class="n">y_filter_min</span> <span class="o">=</span> <span class="n">priv_nh_</span><span class="p">.</span><span class="n">param</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;y_filter_min&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.5</span><span class="p">);</span>
+<span class="n">y_filter_max</span> <span class="o">=</span> <span class="n">priv_nh_</span><span class="p">.</span><span class="n">param</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;y_filter_max&quot;</span><span class="p">,</span>  <span class="mf">2.5</span><span class="p">);</span>
+<span class="n">z_filter_min</span> <span class="o">=</span> <span class="n">priv_nh_</span><span class="p">.</span><span class="n">param</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;z_filter_min&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.5</span><span class="p">);</span>
+<span class="n">z_filter_max</span> <span class="o">=</span> <span class="n">priv_nh_</span><span class="p">.</span><span class="n">param</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;z_filter_max&quot;</span><span class="p">,</span>  <span class="mf">2.5</span><span class="p">);</span>
+<span class="n">plane_max_iter</span> <span class="o">=</span> <span class="n">priv_nh_</span><span class="p">.</span><span class="n">param</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;plane_max_iterations&quot;</span><span class="p">,</span> <span class="mi">50</span><span class="p">);</span>
+<span class="n">plane_dist_thresh</span> <span class="o">=</span> <span class="n">priv_nh_</span><span class="p">.</span><span class="n">param</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;plane_distance_threshold&quot;</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">);</span>
+<span class="n">cluster_tol</span> <span class="o">=</span> <span class="n">priv_nh_</span><span class="p">.</span><span class="n">param</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;cluster_tolerance&quot;</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">);</span>
+<span class="n">cluster_min_size</span> <span class="o">=</span> <span class="n">priv_nh_</span><span class="p">.</span><span class="n">param</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;cluster_min_size&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+<span class="n">cluster_max_size</span> <span class="o">=</span> <span class="n">priv_nh_</span><span class="p">.</span><span class="n">param</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;cluster_max_size&quot;</span><span class="p">,</span> <span class="mi">50000</span><span class="p">);</span>
 </pre></div>
 </div>
 </li>
 <li><p class="first">Write launch file.</p>
-<p>Using gedit or some other text editor, make a new file (processing_node.launch) and put the following in it.</p>
+<p>Using gedit or some other text editor, make a new file (‘’lesson_perception/launch/processing_node.launch’‘) and put the following in it.</p>
 <div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;launch&gt;</span>
   <span class="nt">&lt;node</span> <span class="na">name=</span><span class="s">&quot;processing_node&quot;</span> <span class="na">pkg=</span><span class="s">&quot;lesson_perception&quot;</span> <span class="na">type=</span><span class="s">&quot;perception_node&quot;</span> <span class="na">output=</span><span class="s">&quot;screen&quot;</span><span class="nt">&gt;</span>
     <span class="nt">&lt;rosparam&gt;</span>
@@ -1557,34 +1358,15 @@ rosrun pcl_ros pcd_to_pointcloud table.pcd 0.1 _frame_id:<span class="o">=</span
 </pre></div>
 </div>
 </li>
-</ol>
-<div class="section" id="id4">
-<h4>Viewing Results<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
-<ol class="arabic">
-<li><p class="first">Open multiple terminals</p>
-<p>Either open three more tabs within your terminal <em>CTRL-SHIFT-T</em> or open three more windows <em>CTRL-SHIFT-N</em>. These terminals will run a roscore, the pcl_ros, and Rviz. Below, Terminal 1 corresponds to the terminal you have been working out of.</p>
-<p>In terminal 4:</p>
-<div class="highlight-bash"><div class="highlight"><pre>roscore
-</pre></div>
-</div>
-<p>In terminal 3:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nb">cd</span> ~
-rosrun pcl_ros pcd_to_pointcloud table.pcd 0.1 _frame_id:<span class="o">=</span>kinect_link cloud_pcd:<span class="o">=</span>kinect/depth_registered/points
-</pre></div>
-</div>
-<p>In terminal 2:</p>
-<div class="highlight-bash"><div class="highlight"><pre>rosrun rviz rviz -d <span class="sb">`</span>rospack find lesson_perception<span class="sb">`</span>/launch/lesson_perception.rviz
-</pre></div>
-</div>
-<p>In terminal 1:</p>
-<div class="highlight-bash"><div class="highlight"><pre>roslaunch lesson_perception processing_node.launch
-</pre></div>
-</div>
-<p>When you are satisfied with the results, go to each terminal and <em>CTRL-C</em>.</p>
-<p>We’re all done! So it’s best to make sure everything is wrapped up and closed.</p>
+<li><p class="first">Compile as usual…</p>
 </li>
 </ol>
-</div>
+<p>But this time, run the new launch file that was created instead of using rosrun to start the processing node.</p>
+<p>The results should look similar to previous runs.  However, now you can edit these configuration parameters much easier!  No recompile step is required; just edit the launch-file values and relaunch the node.  In a real application, you could take this approach one step further and implement dynamic_reconfigure support in your node.  That would allow you to see the results of parameter changes in RViz in real-time!</p>
+<blockquote>
+<div><p>When you are satisfied with the results, go to each terminal and <em>CTRL-C</em>.</p>
+<p>We’re all done! So it’s best to make sure everything is wrapped up and closed.</p>
+</div></blockquote>
 </div>
 </div>
 </div>

@@ -11,7 +11,7 @@ The ROS Scan-N-Plan application is complete and documented.  Now we want to test
 Information and Resources
 -------------------------
 
-`Google Test <https://github.com/google/googletest>`__: C++ XUnit test framework
+`Google Test <https://github.com/google/googletest/blob/master/googletest/docs/primer.md>`__: C++ XUnit test framework
 
 `rostest <http://wiki.ros.org/rostest>`__: ROS wrapper for XUnit test framework
 
@@ -73,11 +73,11 @@ Create the unit test frame work
 
    .. code-block:: cmake
 
-	       if(CATKIN_ENABLE_TESTING)
-		      find_package(rostest REQUIRED)
-		      add_rostest_gtest(utest_node test/utest_launch.test src/test/utest.cpp)
-		      target_link_libraries(utest_node ${catkin_LIBRARIES})
-	       endif()
+            if(CATKIN_ENABLE_TESTING)
+              find_package(rostest REQUIRED)
+              add_rostest_gtest(utest_node test/utest_launch.test src/test/utest.cpp)
+              target_link_libraries(utest_node ${catkin_LIBRARIES})
+            endif()
 
 #. Create a test folder under myworkcell_core
 
@@ -101,14 +101,13 @@ Create the unit test frame work
                 <test test-name="unit_test_node" pkg="myworkcell_core" type="utest_node"/>
             </launch>
 
-#. Test the framework
+#. Build and test the framework
 
    .. code-block:: bash
 
-	       catkin build
-	       catkin run_tests
+	       catkin run_tests myworkcell_core
 
-   The console output should show:
+   The console output should show (buried in the midst of many build messages):
 
    .. code-block:: bash
 
@@ -123,6 +122,8 @@ Create the unit test frame work
              * FAILURES: 0
 
    This means our framework is functional and now we can add usefull unit tests.
+
+   .. Note:: You can also run tests directly from the command line, using the launch file we made above: `rostest myworkcell_core utest_launch.test`.  Note that test files are not built using the regular `catkin build` command, so use `catkin run_tests myworkcell_core` instead.
 
 Add stock publisher tests
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -149,7 +150,7 @@ Add stock publisher tests
 
    .. code-block:: xml
 
-            rostest myworkcell_core utest_launch.test
+            catkin run_tests myworkcell_core
 
 You should see:
 
@@ -193,12 +194,28 @@ Write specific unit tests
                 EXPECT_EQ(test_msg_->header.frame_id, "camera_frame");
             }
 
+#. Add some node-initialization boilerplate to the main() function, since our unit tests interact with a running ROS system.  Replace the current main() function with the new code below:
+
+   .. code-block:: c++
+
+            int main(int argc, char **argv)
+            {
+              testing::InitGoogleTest(&argc, argv);
+              ros::init(argc, argv, "MyWorkcellCoreTest");
+
+              ros::AsyncSpinner spinner(1);
+              spinner.start();
+              int ret = RUN_ALL_TESTS();
+              spinner.stop();
+              ros::shutdown();
+              return ret;
+            }
+
 #. Run the test:
 
    .. code-block:: bash
 
-	       catkin build
-	       rostest myworkcell_core utest_launch.test
+	       catkin run_tests myworkcell_core
 
 #. view the results of the test:
 
