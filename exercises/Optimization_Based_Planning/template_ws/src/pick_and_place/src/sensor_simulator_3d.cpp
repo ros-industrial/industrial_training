@@ -54,7 +54,7 @@ int main(int argc, char** argv){
   ros::NodeHandle nh, pnh ("~");
 
   // Setup ROS interfaces
-  ros::Publisher cloud_pub = nh.advertise<pcl::PointCloud<pcl::PointXYZ>>("cloud", 1, true);
+  ros::Publisher cloud_pub = nh.advertise<pcl::PointCloud<pcl::PointXYZ>>("/camera/depth_registered/points", 1, true);
 
 //  tf::TransformBroadcaster broadcaster;
   tf::TransformListener listener;

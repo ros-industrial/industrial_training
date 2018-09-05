@@ -1,6 +1,6 @@
 - git: {local-name: tesseract, uri: 'https://github.com/mpowelson/tesseract.git', version: trajopt_planning}
 - git: {local-name: trajopt, uri: 'https://github.com/mpowelson/trajopt_ros.git', version: demo3}
 - git: {local-name: gl_depth_sim, uri: 'https://github.com/mpowelson/gl_depth_sim.git', version: demo3}
-
+- git: {local-name: realsense, uri: 'https://github.com/intel-ros/realsense.git', version: development}
 
 
