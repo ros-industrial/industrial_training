@@ -26,7 +26,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: PointCloud2
+    SyncSource: ""
 Visualization Manager:
   Class: ""
   Displays:
@@ -57,6 +57,30 @@ Visualization Manager:
           Value: true
         camera:
           Value: true
+        camera_aligned_depth_to_color_frame:
+          Value: false
+        camera_aligned_depth_to_infra1_frame:
+          Value: false
+        camera_aligned_depth_to_infra2_frame:
+          Value: false
+        camera_color_frame:
+          Value: false
+        camera_color_optical_frame:
+          Value: false
+        camera_depth_frame:
+          Value: false
+        camera_depth_optical_frame:
+          Value: false
+        camera_infra1_frame:
+          Value: false
+        camera_infra1_optical_frame:
+          Value: false
+        camera_infra2_frame:
+          Value: false
+        camera_infra2_optical_frame:
+          Value: false
+        camera_link:
+          Value: false
         panda_link0:
           Value: false
         panda_link1:
@@ -75,8 +99,6 @@ Visualization Manager:
           Value: false
         panda_link8:
           Value: false
-        part:
-          Value: true
         shelf_1:
           Value: true
         workcell_base:
@@ -90,14 +112,30 @@ Visualization Manager:
       Show Names: false
       Tree:
         world:
-          part:
-            {}
           shelf_1:
             {}
           workcell_base:
             base_link:
               camera:
-                {}
+                camera_link:
+                  camera_aligned_depth_to_color_frame:
+                    camera_color_optical_frame:
+                      {}
+                  camera_aligned_depth_to_infra1_frame:
+                    camera_infra1_optical_frame:
+                      {}
+                  camera_aligned_depth_to_infra2_frame:
+                    camera_infra2_optical_frame:
+                      {}
+                  camera_color_frame:
+                    {}
+                  camera_depth_frame:
+                    camera_depth_optical_frame:
+                      {}
+                  camera_infra1_frame:
+                    {}
+                  camera_infra2_frame:
+                    {}
               panda_link0:
                 panda_link1:
                   panda_link2:
@@ -223,7 +261,7 @@ Visualization Manager:
       Size (Pixels): 3
       Size (m): 0.00999999978
       Style: Flat Squares
-      Topic: /cloud
+      Topic: /camera/depth_registered/points
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
