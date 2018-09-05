@@ -60,8 +60,6 @@ int main(int argc, char** argv){
   tf::TransformListener listener;
 
 
-//  std::string mesh_path = "/home/mpowelson/workspaces/trajopt/src/franka_config/meshes/workcell.STL";
-//  std::string urdf_file = "/home/mpowelson/workspaces/trajopt/src/franka_config/urdf/model2.urdf";
   std::string urdf_file = pnh.param<std::string>("urdf_path" , ros::package::getPath("pick_and_place_support") + "/urdf/pick_and_place.urdf" );
   std::string base_frame = pnh.param<std::string>("base_frame", "world");
   std::string camera_frame = pnh.param<std::string>("camera_frame", "camera");
