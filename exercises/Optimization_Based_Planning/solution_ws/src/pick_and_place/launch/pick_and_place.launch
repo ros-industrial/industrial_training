@@ -1,4 +1,8 @@
 <launch>
+    <arg name="sim_robot" default="true"/>
+    <arg name="robot_ip" unless="$(arg sim_robot)"/>
+    <arg name="sim_sensor" default="true"/>
+
     <arg name="rviz" default="true"/>
     <arg name="box_side" default="0.2"/>
     <arg name="box_x" default="0.15"/>
@@ -11,25 +15,42 @@
     <!-- Load Robot Semantic -->
     <param name="robot_description_semantic" textfile="$(find pick_and_place_support)/urdf/robot.srdf" />
 
-    <!-- Set simulated box parameters -->
-    <param name="box_side" value="$(arg box_side)"/>
-    <param name="box_x" value="$(arg box_x)"/>
-    <param name="box_y" value="$(arg box_y)"/>
-    <param name="box_parent_link" value="$(arg box_parent_link)"/>
+    <!-- Launch Simulated robot -->
+    <group if="$(arg sim_robot)">
+        <!-- Set simulated box parameters -->
+        <param name="box_side" value="$(arg box_side)"/>
+        <param name="box_x" value="$(arg box_x)"/>
+        <param name="box_y" value="$(arg box_y)"/>
+        <param name="box_parent_link" value="$(arg box_parent_link)"/>
 
-    <!-- Launch GUI to drive joints   --> <!-- do we really want to? -->
-    <!-- <param name="use_gui" value="true"/> -->
-    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+        <!-- Launch GUI to drive joints   -->
+        <!-- <param name="use_gui" value="true"/> -->
+        <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
 
-    <!-- Launch robot state publisher -->
-    <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+        <!-- Launch robot state publisher -->
+        <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+    </group>
+
+    <!-- Launch real robot -->
+    <group unless="$(arg sim_robot)">
+    </group>
 
     <!-- Insert transforms for cameras x y z yaw(z) pitch(y) roll(x)-->
     <node pkg="tf" type="static_transform_publisher" name="camera_tf_broadcaster"
         args="0.75 0.5 .75 2.7 0 -2.4 base_link camera 10" />
 
-    <!-- Launch 3D camera simulator -->
-    <node name="sensor_sim" pkg="pick_and_place" type="sensor_simulator_3d"/>
+    <!-- Launch simulated sensor -->
+    <group if="$(arg sim_sensor)">
+        <node name="sensor_sim" pkg="pick_and_place" type="sensor_simulator_3d"/>
+    </group>
+
+    <!-- Launch real sensor -->
+    <group unless="$(arg sim_sensor)">
+         <node pkg="tf" type="static_transform_publisher" name="camera_tf_remap"
+            args="0 0 0 0 -1.57079 0 camera camera_link 1" />
+         <!-- Launch camera node -->
+         <include file="$(find realsense2_camera)/launch/rs_rgbd.launch" />
+    </group>
 
     <!-- Launch vision node -->
     <include file="$(find pick_and_place_perception)/launch/processing_node.launch" />
