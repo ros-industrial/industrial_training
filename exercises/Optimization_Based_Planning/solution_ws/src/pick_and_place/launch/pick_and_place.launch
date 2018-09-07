@@ -13,19 +13,20 @@
     <include file="$(find pick_and_place)/launch/bringup_robot.launch" />
 
 
-    <!-- Insert transforms for cameras x y z yaw(z) pitch(y) roll(x)-->
+    <!-- Publish the location of the camera -->
     <node pkg="tf" type="static_transform_publisher" name="camera_tf_broadcaster"
-        args="0.75 0.5 .75 2.7 0 -2.4 base_link camera 10" />
+       args="0.75 0.5 .75 -2.012 0.829 -1.571 base_link camera_link 10" />
 
     <!-- Launch simulated sensor -->
     <group if="$(arg sim_sensor)">
-        <node name="sensor_sim" pkg="pick_and_place" type="sensor_simulator_3d"/>
+        <!-- Rotate to suit simulation -->
+       <node pkg="tf" type="static_transform_publisher" name="camera_tf_remap"
+           args="0 0 0 0 1.57079 0 camera_link sim_camera_link 1" />
+       <node name="sensor_sim" pkg="pick_and_place" type="sensor_simulator_3d" output="screen"/>
     </group>
 
     <!-- Launch real sensor -->
     <group unless="$(arg sim_sensor)">
-         <node pkg="tf" type="static_transform_publisher" name="camera_tf_remap"
-            args="0 0 0 0 -1.57079 0 camera camera_link 1" />
          <!-- Launch camera node -->
          <include file="$(find realsense2_camera)/launch/rs_rgbd.launch" />
     </group>
@@ -41,3 +42,4 @@
         args="-d $(find pick_and_place)/config/pick_and_place.rviz" />
 
 </launch>
+

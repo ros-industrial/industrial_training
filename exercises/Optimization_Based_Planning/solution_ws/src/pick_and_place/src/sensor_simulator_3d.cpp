@@ -62,7 +62,7 @@ int main(int argc, char** argv){
 
   std::string urdf_file = pnh.param<std::string>("urdf_path" , ros::package::getPath("pick_and_place_support") + "/urdf/pick_and_place.urdf" );
   std::string base_frame = pnh.param<std::string>("base_frame", "world");
-  std::string camera_frame = pnh.param<std::string>("camera_frame", "camera");
+  std::string camera_frame = pnh.param<std::string>("camera_frame", "sim_camera_link");
 
   double radius = pnh.param<double>("radius", 1.0);
   double z = pnh.param<double>("z", 1.0);
@@ -137,10 +137,6 @@ int main(int argc, char** argv){
           listener.waitForTransform("/world","/" + linkName, ros::Time(0), ros::Duration(5));
           listener.lookupTransform("/world", "/" + linkName, ros::Time(0), meshTransform);
           tf::transformTFToEigen(meshTransform,mesh_loc);
-//          mesh_loc.matrix() << 1, 0, 0, 0,             // Replace this with info from the URDF
-//              0, 1, 0, 0,
-//              0, 0, 1, 0.77153,
-//              0, 0, 0, 1;
           sim.add(linkName, *mesh_ptr, mesh_loc);
         }
 
@@ -195,7 +191,7 @@ int main(int argc, char** argv){
   listener.lookupTransform("world", box_parent_link, ros::Time(0.0), world_to_box_tf);
   tf::transformTFToEigen(world_to_box_tf, world_to_box);
   world_to_box.translation() += Eigen::Vector3d(box_x, box_y, box_side/2.0);
-  sim.add(box_mesh, world_to_box);
+  sim.add("box_1", box_mesh, world_to_box);
 
 
 
@@ -208,7 +204,7 @@ int main(int argc, char** argv){
     //Step 1: Get camera tranform and render point cloud
     tf::StampedTransform camera_transform;
     try{
-      listener.lookupTransform("/world", "/camera", ros::Time(0), camera_transform);
+      listener.lookupTransform("/world", "/sim_camera_link", ros::Time(0), camera_transform);
     }
     catch (tf::TransformException &ex) {
 //      ROS_ERROR("%s",ex.what());
@@ -216,6 +212,7 @@ int main(int argc, char** argv){
     }
     auto pose = Eigen::Affine3d::Identity();
     tf::transformTFToEigen(camera_transform, pose);
+//    pose.rotate(Eigen::AngleAxisd(M_PI/2, Eigen::Vector3d(0,1,0))); // currently done in launch file with seperate TF
     const auto depth_img = sim.render(pose);
 
     // Step 2: Publish the cloud
