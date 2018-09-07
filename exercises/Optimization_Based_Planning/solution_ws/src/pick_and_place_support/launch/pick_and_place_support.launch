@@ -13,6 +13,6 @@
 
     <!-- Launch visualization -->
     <node if="$(arg rviz)" pkg="rviz" type="rviz" name="pick_and_place_viz"
-      args="-d $(find pick_and_place_support)/launch/pick_and_place.rviz" />
+      args="-d $(find pick_and_place_support)/config/pick_and_place_support.rviz" />
 
 </launch>
