@@ -1,0 +1,39 @@
+<launch>
+    <arg name="sim_robot" default="true"/>
+    <arg name="robot_ip" unless="$(arg sim_robot)"/>
+    <arg name="sim_sensor" default="true"/>
+
+    <arg name="rviz" default="true"/>
+    <arg name="box_side" default="0.2"/>
+    <arg name="box_x" default="0.15"/>
+    <arg name="box_y" default="0.4"/>
+    <arg name="box_parent_link" default="workcell_base"/>
+
+    <!-- Load Robot Model    -->
+    <param name="robot_description"  command="$(find xacro)/xacro --inorder $(find pick_and_place_support)/urdf/pick_and_place.urdf"/>
+
+    <!-- Load Robot Semantic -->
+    <param name="robot_description_semantic" textfile="$(find pick_and_place_support)/urdf/robot.srdf" />
+
+    <!-- Launch Simulated robot -->
+    <group if="$(arg sim_robot)">
+        <!-- Set simulated box parameters -->
+        <param name="box_side" value="$(arg box_side)"/>
+        <param name="box_x" value="$(arg box_x)"/>
+        <param name="box_y" value="$(arg box_y)"/>
+        <param name="box_parent_link" value="$(arg box_parent_link)"/>
+
+        <!-- Launch GUI to drive joints   -->
+        <!-- <param name="use_gui" value="true"/> -->
+        <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+
+        <!-- Launch robot state publisher -->
+        <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+    </group>
+
+    <!-- Launch real robot -->
+    <group unless="$(arg sim_robot)">
+    </group>
+
+
+</launch>
