@@ -6,7 +6,7 @@
 Now that we’ve got a working MoveIt! configuration for your workcell and we’ve played a bit in RViz with the planning tools, let’s perform planning and motion in code. This exercise will introduce you to the basic C++ interface for interacting with the MoveIt! node in your own program. There are lots of ways to use MoveIt!, but for simple applications this is the most straight forward.
 
 ## Reference Example
-[Move Group Interface tutorial](http://docs.ros.org/kinetic/api/moveit_tutorials/html/doc/pr2_tutorials/planning/src/doc/move_group_interface_tutorial.html#setup)
+[Move Group Interface tutorial](http://docs.ros.org/kinetic/api/moveit_tutorials/html/doc/move_group_interface/move_group_interface_tutorial.html#setup)
 
 ## 3. Further Information and Resources
  * [MoveIt! Tutorials](http://docs.ros.org/kinetic/api/moveit_tutorials/html/)
