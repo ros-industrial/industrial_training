@@ -12,15 +12,29 @@ int main(int argc, char** argv)
   static tf::TransformBroadcaster target_broadcaster;
   static tf::TransformListener listener;
 
-  // Update location of AR tag (done with robot calibration)
+  // Get ROS params
+  bool sim_robot;
+  double targ_x, targ_y, targ_z;
+  nh.param<bool>("calibration_node/sim_robot", sim_robot, true);
+  nh.param<double>("calibration_node/targ_x", targ_x, 0.4);
+  nh.param<double>("calibration_node/targ_y", targ_y, 0.0);
+  nh.param<double>("calibration_node/targ_z", targ_z, 0.0);
+
+  // Update location of AR tag
   tf::Transform targ_transform;
   tf::Quaternion targ_q;
-  targ_q.setRPY(0, 0, 0);
-  targ_transform.setOrigin(tf::Vector3(0.4, 0, 0));
-  targ_transform.setRotation(targ_q);
+  if (!sim_robot)
+  {
+    ROS_INFO("Move robot to target to calibration location");
+  }
+  else{
+    targ_q.setRPY(0, 0, 0);
+    targ_transform.setOrigin(tf::Vector3(targ_x, targ_y, targ_z));
+    targ_transform.setRotation(targ_q);
+  }
   ROS_INFO("Sending target transform");
   target_broadcaster.sendTransform(
-      tf::StampedTransform(targ_transform, ros::Time::now(), "base_link", "target_link"));
+        tf::StampedTransform(targ_transform, ros::Time::now(), "base_link", "target_link"));
   ros::Duration(1.0).sleep();
 
   // Broadcast initial camera transform that is based on target_link

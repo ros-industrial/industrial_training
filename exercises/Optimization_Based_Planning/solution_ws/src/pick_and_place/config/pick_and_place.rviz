@@ -4,8 +4,8 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
-        - /Global Options1
         - /Status1
+        - /TF1/Frames1
       Splitter Ratio: 0.5
     Tree Height: 895
   - Class: rviz/Selection
@@ -55,8 +55,6 @@ Visualization Manager:
         All Enabled: false
         base_link:
           Value: true
-        camera:
-          Value: true
         camera_aligned_depth_to_color_frame:
           Value: false
         camera_aligned_depth_to_infra1_frame:
@@ -80,7 +78,7 @@ Visualization Manager:
         camera_infra2_optical_frame:
           Value: false
         camera_link:
-          Value: false
+          Value: true
         panda_link0:
           Value: false
         panda_link1:
@@ -116,26 +114,25 @@ Visualization Manager:
             {}
           workcell_base:
             base_link:
-              camera:
-                camera_link:
-                  camera_aligned_depth_to_color_frame:
-                    camera_color_optical_frame:
-                      {}
-                  camera_aligned_depth_to_infra1_frame:
-                    camera_infra1_optical_frame:
-                      {}
-                  camera_aligned_depth_to_infra2_frame:
-                    camera_infra2_optical_frame:
-                      {}
-                  camera_color_frame:
+              camera_link:
+                camera_aligned_depth_to_color_frame:
+                  camera_color_optical_frame:
                     {}
-                  camera_depth_frame:
-                    camera_depth_optical_frame:
-                      {}
-                  camera_infra1_frame:
+                camera_aligned_depth_to_infra1_frame:
+                  camera_infra1_optical_frame:
                     {}
-                  camera_infra2_frame:
+                camera_aligned_depth_to_infra2_frame:
+                  camera_infra2_optical_frame:
                     {}
+                camera_color_frame:
+                  {}
+                camera_depth_frame:
+                  camera_depth_optical_frame:
+                    {}
+                camera_infra1_frame:
+                  {}
+                camera_infra2_frame:
+                  {}
               panda_link0:
                 panda_link1:
                   panda_link2:
