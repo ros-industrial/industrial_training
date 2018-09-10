@@ -45,7 +45,9 @@ int main(int argc, char** argv)
           tf::StampedTransform(targ_transform, ros::Time::now(), "base_link", "target_link"));
       try
       {
+        // Get actual location of target in camera frame
         listener.lookupTransform("/ar_marker_0", "camera_link", ros::Time(0), stamped);
+        // Update location of camera based on that transform
         stamped.frame_id_ = "target_link";
         stamped.child_frame_id_ = "camera_link";
         camera_broadcaster.sendTransform(stamped);
@@ -59,12 +61,16 @@ int main(int argc, char** argv)
       ros::spinOnce();
       ros::Duration(0.25).sleep();
     }
+    // Get transform from robot base to the camera and display it for the user to copy.
+    // Ideally, this would automatically be written to a file in a real system
     listener.lookupTransform("/base_link", "camera_link", ros::Time(0), stamped);
+    double yaw, pitch, roll;
+    stamped.getBasis().getRPY(roll, pitch, yaw);
     ROS_ERROR("Calibrated camera location in base_link frame. Update these values in launch file");
-    std::cout << "Translation: [" << stamped.getOrigin()[0] << ", " << stamped.getOrigin()[1] << ", "
-              << stamped.getOrigin()[2] << "]\n";
-    std::cout << "Rotation: [" << stamped.getRotation()[0] << ", " << stamped.getRotation()[1] << ", "
-              << stamped.getRotation()[2] << "]\n";
+    std::cout << stamped.getOrigin()[0] << " " << stamped.getOrigin()[1] << " "
+              << stamped.getOrigin()[2] << " " << roll << " "
+              << pitch << " " << yaw << "\n";
+
     ROS_ERROR(" Exit? y/n");
     char input;
     std::cin >> input;
