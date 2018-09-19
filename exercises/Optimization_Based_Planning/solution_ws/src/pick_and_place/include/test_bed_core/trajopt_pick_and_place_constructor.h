@@ -1,6 +1,8 @@
 #pragma once
 #include <tesseract_planning/trajopt/trajopt_planner.h>
 #include <tesseract_ros/kdl/kdl_env.h>
+#include <trajopt/problem_description.hpp>
+
 
 /**
  * @brief The TrajoptPickAndPlaceConstructor class
@@ -10,7 +12,7 @@ class TrajoptPickAndPlaceConstructor
 private:
   /**< @brief Problem Construction Info */
   std::string manipulator_, ee_link_, pick_object_;
-  Eigen::Affine3d tcp_;             /**< @brief Tool center point offset */
+  Eigen::Isometry3d tcp_;             /**< @brief Tool center point offset */
   tesseract::BasicEnvConstPtr env_; /**< @brief Environment description */
   tesseract::BasicKinConstPtr kin_; /**< @brief Kinematics description */
 
@@ -19,7 +21,7 @@ public:
                                  std::string manipulator,
                                  std::string ee_link,
                                  std::string pick_object,
-                                 Eigen::Affine3d tcp = Eigen::Affine3d::Identity());
+                                 Eigen::Isometry3d tcp = Eigen::Isometry3d::Identity());
 
   /**
    * @brief Constrains initial joint positiions
@@ -44,7 +46,6 @@ public:
    */
   void
   addCollisionCost(trajopt::ProblemConstructionInfo& pci, double dist_pen, double coeff, int first_step, int last_step);
-
   /**
    * @brief Adds a linear move to the problem construction info
    * @param pci - The trajopt problem construction info to which the move is added
@@ -54,8 +55,8 @@ public:
    * @param first_time_step - Time step at which the move is added
    */
   void addLinearMotion(trajopt::ProblemConstructionInfo& pci,
-                       Eigen::Affine3d start_pose,
-                       Eigen::Affine3d end_pose,
+                       Eigen::Isometry3d start_pose,
+                       Eigen::Isometry3d end_pose,
                        int num_steps,
                        int first_time_step);
 
@@ -67,8 +68,8 @@ public:
    * @param steps_per_phase - Number of steps per phase. Total move is steps_per_phase*2
    * @return
    */
-  trajopt::TrajOptProbPtr generatePickProblem(Eigen::Affine3d& approach_pose,
-                                              Eigen::Affine3d& final_pose,
+  trajopt::TrajOptProbPtr generatePickProblem(Eigen::Isometry3d& approach_pose,
+                                              Eigen::Isometry3d& final_pose,
                                               int steps_per_phase);
 
   /**
@@ -81,8 +82,8 @@ public:
    * @param steps_per_phase - Number of steps per move phase. Total move length is steps_per_phase*3
    * @return
    */
-  trajopt::TrajOptProbPtr generatePlaceProblem(Eigen::Affine3d& retreat_pose,
-                                               Eigen::Affine3d& approach_pose,
-                                               Eigen::Affine3d& final_pose,
+  trajopt::TrajOptProbPtr generatePlaceProblem(Eigen::Isometry3d& retreat_pose,
+                                               Eigen::Isometry3d& approach_pose,
+                                               Eigen::Isometry3d& final_pose,
                                                int steps_per_phase);
 };
