@@ -65,15 +65,18 @@ The calibration for this exercise is based off of an [AR Tag](http://wiki.ros.or
 
 Open ```calibration.launch``` in the pick_and_place_support package. Notice the first 4 arguments. ```sim_robot``` is a flag to set whether or not we will use the robot to locate the target or measure manually. ```targ_x``` is location of the target when performing the calibration.
 
-1) Measure the location of the center of the AR tag in meters. Note that x is in the direction of the long dimension of the workcell and z is up with x defined to follow the right hand rule.
+* Measure the location of the center of the AR tag in meters. Note that x is in the direction of the long dimension of the workcell and z is up with x defined to follow the right hand rule.
 
-2) Launch the calibration script filling the values for the target's location
+
+* Launch the calibration script filling the values for the target's location
 
 ```roslaunch pick_and_place_support calibration.launch sim_robot:=true targ_x:=[fill_value] targ_y:=[fill_value] targ_z:=[fill_value] ```
 
-3) Record the output. The script should show the camera as a TF floating in space. After 20 iterations, the program will pause and display the calibration result in the format ```x y z roll pitch yaw```. When you are satisfied that the camera location appears to match reality, copy this pose.
+*  Record the output. The script should show the camera as a TF floating in space. After 20 iterations, the program will pause and display the calibration result in the format ```x y z roll pitch yaw```. When you are satisfied that the camera location appears to match reality, copy this pose.
 
-4) Update the camera location in pick_and_place/launch/pick_and_place.launch. Lines 17 and 18 publish the location of the camera for the system. Update these numbers with the values from calibration (they are in the same ```x y z roll pitch yaw``` format.
+
+
+* Update the camera location in pick_and_place/launch/pick_and_place.launch. Lines 17 and 18 publish the location of the camera for the system. Update these numbers with the values from calibration (they are in the same ```x y z roll pitch yaw``` format.
 
 
 
