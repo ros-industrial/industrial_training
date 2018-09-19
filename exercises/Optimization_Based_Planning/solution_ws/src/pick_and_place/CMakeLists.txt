@@ -15,6 +15,7 @@ find_package(catkin REQUIRED COMPONENTS
   urdf
   gl_depth_sim
   tf_conversions
+  trajopt
   tesseract_planning
   pick_and_place_perception
 )
