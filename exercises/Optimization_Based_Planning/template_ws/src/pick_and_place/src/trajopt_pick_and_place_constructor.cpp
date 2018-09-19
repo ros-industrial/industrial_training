@@ -10,7 +10,7 @@ TrajoptPickAndPlaceConstructor::TrajoptPickAndPlaceConstructor(tesseract::BasicE
                                                                std::string manipulator,
                                                                std::string ee_link,
                                                                std::string pick_object,
-                                                               Affine3d tcp)
+                                                               Isometry3d tcp)
   : env_(env), manipulator_(manipulator), ee_link_(ee_link), pick_object_(pick_object), tcp_(tcp)
 {
   kin_ = env->getManipulator(manipulator_);
@@ -40,8 +40,8 @@ void TrajoptPickAndPlaceConstructor::addJointVelCost(trajopt::ProblemConstructio
 {
   std::vector<std::string> joint_names = kin_->getJointNames();
   // Loop over all of the joints
-  for (std::size_t i = 0; i < joint_names.size(); i++)
-  {
+//  for (std::size_t i = 0; i < joint_names.size(); i++)
+//  {
     std::shared_ptr<JointVelTermInfo> jv(new JointVelTermInfo);
     jv->coeffs = std::vector<double>(1, coeff);
     /* Fill Code:
@@ -59,7 +59,7 @@ void TrajoptPickAndPlaceConstructor::addJointVelCost(trajopt::ProblemConstructio
 // ENTER CODE HERE:
 // ENTER CODE HERE:
     pci.cost_infos.push_back(jv);
-  }
+//  }
 }
 
 void TrajoptPickAndPlaceConstructor::addCollisionCost(trajopt::ProblemConstructionInfo& pci,
@@ -91,8 +91,8 @@ void TrajoptPickAndPlaceConstructor::addCollisionCost(trajopt::ProblemConstructi
 }
 
 void TrajoptPickAndPlaceConstructor::addLinearMotion(trajopt::ProblemConstructionInfo& pci,
-                                                     Affine3d start_pose,
-                                                     Affine3d end_pose,
+                                                     Isometry3d start_pose,
+                                                     Isometry3d end_pose,
                                                      int num_steps,
                                                      int first_time_step)
 {
@@ -144,8 +144,8 @@ void TrajoptPickAndPlaceConstructor::addLinearMotion(trajopt::ProblemConstructio
   }
 }
 
-TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePickProblem(Affine3d& approach_pose,
-                                                                   Affine3d& final_pose,
+TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePickProblem(Isometry3d& approach_pose,
+                                                                   Isometry3d& final_pose,
                                                                    int steps_per_phase)
 {
   // create new problem
@@ -166,7 +166,8 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePickProblem(Affine3d& app
   pci.kin = kin_;
 
   pci.init_info.type = InitInfo::STATIONARY;
-  pci.init_info.data = env_->getCurrentJointValues(pci.kin->getName());
+  // Define the initial guess that is num_steps x num_joints
+  pci.init_info.data = env_->getCurrentJointValues(pci.kin->getName()).replicate(2*steps_per_phase, 1);
 
   /* Fill Code: Define motion
        . Add joint velocity contraint (this->addJointVelCost(pci, 5.0))
@@ -186,9 +187,9 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePickProblem(Affine3d& app
   return result;
 }
 
-TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePlaceProblem(Affine3d& retreat_pose,
-                                                                    Affine3d& approach_pose,
-                                                                    Affine3d& final_pose,
+TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePlaceProblem(Isometry3d& retreat_pose,
+                                                                    Isometry3d& approach_pose,
+                                                                    Isometry3d& final_pose,
                                                                     int steps_per_phase)
 {
   // create new problem
@@ -209,13 +210,14 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePlaceProblem(Affine3d& re
   pci.kin = kin_;
 
   pci.init_info.type = InitInfo::STATIONARY;
-  pci.init_info.data = env_->getCurrentJointValues(pci.kin->getName());
+  // Define the initial guess that is num_steps x num_joints
+  pci.init_info.data = env_->getCurrentJointValues(pci.kin->getName()).replicate(3*steps_per_phase, 1);
 
   this->addJointVelCost(pci, 5.0);
 
   this->addInitialJointPosConstraint(pci);
 
-  Eigen::Affine3d start_pose;
+  Eigen::Isometry3d start_pose;
   pci.kin->calcFwdKin(start_pose,
                       env_->getState()->transforms.at(kin_->getBaseLinkName()),
                       env_->getCurrentJointValues(),

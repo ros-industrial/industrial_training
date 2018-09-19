@@ -22,7 +22,7 @@ int main(int argc, char** argv)
 
   int steps_per_phase;
   std::string world_frame, pick_frame;
-  pnh.param<int>("steps_per_phase", steps_per_phase, 20);
+  pnh.param<int>("steps_per_phase", steps_per_phase, 50);
 
   nh.param<std::string>("world_frame", world_frame, "world");
   nh.param<std::string>("pick_frame", pick_frame, "part");
@@ -72,7 +72,7 @@ int main(int argc, char** argv)
   // attach the simulated box
   tesseract::AttachableObjectPtr obj(new tesseract::AttachableObject());
   std::shared_ptr<shapes::Box> box(new shapes::Box());
-  Eigen::Affine3d box_pose = Eigen::Affine3d::Identity();
+  Eigen::Isometry3d box_pose = Eigen::Isometry3d::Identity();
 
   box->size[0] = box_side;
   box->size[1] = box_side;
@@ -88,7 +88,7 @@ int main(int argc, char** argv)
   env->addAttachableObject(obj);
 
   tesseract::AttachedBodyInfo attached_body;
-  Eigen::Affine3d object_pose = Eigen::Affine3d::Identity();
+  Eigen::Isometry3d object_pose = Eigen::Isometry3d::Identity();
   object_pose.translation() += Eigen::Vector3d(box_x, box_y, box_side / 2.0);
   attached_body.object_name = "box";
   attached_body.parent_link_name = box_parent_link;
@@ -105,7 +105,7 @@ int main(int argc, char** argv)
   /// PICK ///
   ////////////
 
-  Eigen::Affine3d world_to_box;
+  Eigen::Isometry3d world_to_box;
   pick_and_place_perception::GetTargetPose srv;
   ROS_INFO("Calling Service to find pick location");
   // This calls the perception service
@@ -133,25 +133,24 @@ int main(int argc, char** argv)
   std::string manip = "Manipulator";
   std::string end_effector = "panda_link8";
   TrajoptPickAndPlaceConstructor prob_constructor(env, manip, end_effector, "box");
-  Eigen::Affine3d final_pose;
+  Eigen::Isometry3d final_pose;
   final_pose.linear() = orientation.matrix();
   final_pose.translation() = world_to_box.translation();
 
-  Eigen::Affine3d approach_pose = final_pose;
+  Eigen::Isometry3d approach_pose = final_pose;
   approach_pose.translation() += Eigen::Vector3d(0.0, 0.0, 0.15);
 
   trajopt::TrajOptProbPtr pick_prob = prob_constructor.generatePickProblem(approach_pose, final_pose, steps_per_phase);
   planner.solve(pick_prob, planning_response);
-
   plotter.plotTrajectory(env->getJointNames(), planning_response.trajectory);
 
   tf::StampedTransform world_to_box_parent_link_tf;
   listener.lookupTransform(world_frame, box_parent_link, ros::Time(0.0), world_to_box_parent_link_tf);
 
-  Eigen::Affine3d world_to_box_parent_link;
+  Eigen::Isometry3d world_to_box_parent_link;
   tf::transformTFToEigen(world_to_box_parent_link_tf, world_to_box_parent_link);
 
-  Eigen::Affine3d world_to_actual_box = world_to_box_parent_link;
+  Eigen::Isometry3d world_to_actual_box = world_to_box_parent_link;
   world_to_actual_box.translation() += Eigen::Vector3d(box_x, box_y, box_side);
 
   Eigen::Vector3d translation_err = (world_to_actual_box.inverse() * world_to_box).translation();
@@ -178,9 +177,9 @@ int main(int argc, char** argv)
       planning_response.trajectory.block(steps_per_phase * 2 - 1, 0, 1, env->getJointNames().size()).transpose());
 
   // create some arbitrary pose checkpoints and goals
-  Eigen::Affine3d retreat_pose = approach_pose;
+  Eigen::Isometry3d retreat_pose = approach_pose;
 
-  Eigen::Vector3d box_move(-0.7, -0.1, 0.0);
+  Eigen::Vector3d box_move(0.7, -0.1, 0.0);
   approach_pose.translation() += box_move;
 
   final_pose.translation() += box_move;
