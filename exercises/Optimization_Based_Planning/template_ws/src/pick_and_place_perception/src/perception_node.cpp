@@ -41,7 +41,9 @@ public:
     nh_ = nh;
     ROS_INFO("Perception service running");
 
-    nh.getParam("processing_node/cloud_topic", cloud_topic);
+    nh.getParam("processing_node/cloud_topic1", cloud_topic1);
+    nh.getParam("processing_node/cloud_topic2", cloud_topic2);
+    nh.getParam("processing_node/cloud_topic3", cloud_topic3);
     nh.getParam("processing_node/world_frame", world_frame);
     nh.getParam("processing_node/camera_frame", camera_frame);
     nh.getParam("processing_node/voxel_leaf_size", voxel_leaf_size);
@@ -79,36 +81,57 @@ public:
   bool findPickPose(pick_and_place_perception::GetTargetPoseRequest& req,
                     pick_and_place_perception::GetTargetPoseResponse& res)
   {
+      res.succeeded = true;
+      ROS_INFO("Perception service running");
 
-    ROS_INFO("Perception service running");
-    res.succeeded = true;
+       // LISTEN FOR POINTCLOUD
+      std::string topic1 = nh_.resolveName(cloud_topic1);
+      std::string topic2 = nh_.resolveName(cloud_topic2);
+      std::string topic3 = nh_.resolveName(cloud_topic3);
+      ROS_INFO_STREAM("Cloud service called; waiting for a PointCloud2 on topic " << topic1);
+      sensor_msgs::PointCloud2::ConstPtr recent_cloud1 = ros::topic::waitForMessage<sensor_msgs::PointCloud2>(topic1, nh_);
+      ROS_INFO_STREAM("Waiting for a PointCloud2 on topic " << topic2);
+      sensor_msgs::PointCloud2::ConstPtr recent_cloud2 = ros::topic::waitForMessage<sensor_msgs::PointCloud2>(topic2, nh_);
+      ROS_INFO_STREAM("Waiting for a PointCloud2 on topic " << topic3);
+      sensor_msgs::PointCloud2::ConstPtr recent_cloud3 = ros::topic::waitForMessage<sensor_msgs::PointCloud2>(topic3, nh_);
 
-     // LISTEN FOR POINTCLOUD
-    std::string topic = nh_.resolveName(cloud_topic);
-    ROS_INFO_STREAM("Cloud service called; waiting for a PointCloud2 on topic " << topic);
-    sensor_msgs::PointCloud2::ConstPtr recent_cloud = ros::topic::waitForMessage<sensor_msgs::PointCloud2>(topic, nh_);
 
-    // TRANSFORM POINTCLOUD FROM CAMERA FRAME TO WORLD FRAME
-    tf::TransformListener listener;
-    tf::StampedTransform stransform;
-    try
-    {
-      listener.waitForTransform(world_frame, recent_cloud->header.frame_id, ros::Time::now(), ros::Duration(6.0));
-      listener.lookupTransform(world_frame, recent_cloud->header.frame_id, ros::Time(0), stransform);
-    }
-    catch (tf::TransformException ex)
-    {
-      ROS_ERROR("%s", ex.what());
-    }
-    sensor_msgs::PointCloud2 transformed_cloud;
-    pcl_ros::transformPointCloud(world_frame, stransform, *recent_cloud, transformed_cloud);
 
-    // CONVERT POINTCLOUD ROS->PCL
-    pcl::PointCloud<pcl::PointXYZ> cloud;
-    pcl::fromROSMsg(transformed_cloud, cloud);
 
-    // MAKE TIMERS FOR PROCESS
-    ros::Time start_init = ros::Time::now();
+      // TRANSFORM POINTCLOUDS FROM CAMERA FRAME TO WORLD FRAME
+      tf::TransformListener listener;
+      tf::StampedTransform stransform1, stransform2, stransform3;
+      try
+      {
+        listener.waitForTransform(world_frame, recent_cloud1->header.frame_id, ros::Time::now(), ros::Duration(6.0));
+        listener.lookupTransform(world_frame, recent_cloud1->header.frame_id, ros::Time(0), stransform1);
+        listener.waitForTransform(world_frame, recent_cloud2->header.frame_id, ros::Time::now(), ros::Duration(6.0));
+        listener.lookupTransform(world_frame, recent_cloud2->header.frame_id, ros::Time(0), stransform2);
+        listener.waitForTransform(world_frame, recent_cloud3->header.frame_id, ros::Time::now(), ros::Duration(6.0));
+        listener.lookupTransform(world_frame, recent_cloud3->header.frame_id, ros::Time(0), stransform3);
+      }
+      catch (tf::TransformException ex)
+      {
+        ROS_ERROR("%s", ex.what());
+      }
+      sensor_msgs::PointCloud2 transformed_cloud1, transformed_cloud2, transformed_cloud3;
+      pcl_ros::transformPointCloud(world_frame, stransform1, *recent_cloud1, transformed_cloud1);
+      pcl_ros::transformPointCloud(world_frame, stransform2, *recent_cloud2, transformed_cloud2);
+      pcl_ros::transformPointCloud(world_frame, stransform3, *recent_cloud3, transformed_cloud3);
+
+      // COMBINE POINT CLOUDS
+      sensor_msgs::PointCloud2 temp, transformed_cloud;
+      pcl::concatenatePointCloud(transformed_cloud1, transformed_cloud2, temp);
+      pcl::concatenatePointCloud(temp, transformed_cloud3, transformed_cloud);
+
+      // CONVERT POINTCLOUD ROS->PCL
+      pcl::PointCloud<pcl::PointXYZ> cloud1, cloud2, cloud3, cloud;
+      pcl::fromROSMsg(transformed_cloud, cloud);
+
+
+
+      // MAKE TIMERS FOR PROCESS (OPTIONAL)
+      ros::Time start_init = ros::Time::now();
 
     /* ========================================
      * Fill Code: VOXEL GRID
