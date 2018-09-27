@@ -13,16 +13,29 @@
     <include file="$(find pick_and_place)/launch/bringup_robot.launch" />
 
 
-    <!-- Publish the location of the camera -->
-    <node pkg="tf" type="static_transform_publisher" name="camera_tf_broadcaster"
-       args="0.75 0.5 .75 -2.012 0.829 -1.571 base_link camera_link 10" />
+    <!-- Publish the location of the camera2 -->
+    <node pkg="tf" type="static_transform_publisher" name="camera1_tf_broadcaster"
+       args="0.75 0.5 .75 -2.012 0.829 -1.571 base_link camera_link1 10" />
+    <node pkg="tf" type="static_transform_publisher" name="camera2_tf_broadcaster"
+       args="0.75 -0.5 .75 0 1.5709 3.97 base_link camera_link2 10" />
+    <node pkg="tf" type="static_transform_publisher" name="camera3_tf_broadcaster"
+       args="0.4 0.0 1.15 0 1.57079 0 base_link camera_link3 10" />
 
     <!-- Launch simulated sensor -->
     <group if="$(arg sim_sensor)">
-        <!-- Rotate to suit simulation -->
-       <node pkg="tf" type="static_transform_publisher" name="camera_tf_remap"
-           args="0 0 0 0 1.57079 0 camera_link sim_camera_link 1" />
-       <node name="sensor_sim" pkg="pick_and_place" type="sensor_simulator_3d" output="screen"/>
+        <!-- Rotate the camera to suit simulation -->
+       <node pkg="tf" type="static_transform_publisher" name="camera1_tf_remap"
+           args="0 0 0 0 1.57079 0 camera_link1 sim_camera_link1 1" />
+       <node pkg="tf" type="static_transform_publisher" name="camera2_tf_remap"
+               args="0 0 0 0 1.57079 0 camera_link2 sim_camera_link2 1" />
+       <node pkg="tf" type="static_transform_publisher" name="camera3_tf_remap"
+           args="0 0 0 0 1.57079 0 camera_link3 sim_camera_link3 1" />
+
+       <!--- Launch 3 camera simulators -->
+       <node name="sensor_sim1" pkg="pick_and_place" type="sensor_simulator_3d" args="/camera1/depth_registered/points sim_camera_link1" output="screen"/>
+       <node name="sensor_sim2" pkg="pick_and_place" type="sensor_simulator_3d" args="/camera2/depth_registered/points sim_camera_link2"/>
+       <node name="sensor_sim3" pkg="pick_and_place" type="sensor_simulator_3d" args="/camera3/depth_registered/points sim_camera_link3"/>
+
     </group>
 
     <!-- Launch real sensor -->
@@ -30,6 +43,9 @@
          <!-- Launch camera node -->
          <include file="$(find realsense2_camera)/launch/rs_rgbd.launch" />
     </group>
+
+    <!-- Launch point cloud merging node -->
+    <node name="point_cloud_merger_node" pkg="pick_and_place_perception" type="point_cloud_merger_node" />
 
     <!-- Launch vision node -->
     <include file="$(find pick_and_place_perception)/launch/processing_node.launch" />

@@ -26,7 +26,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: ""
+    SyncSource: PointCloud2
 Visualization Manager:
   Class: ""
   Displays:
@@ -55,29 +55,11 @@ Visualization Manager:
         All Enabled: false
         base_link:
           Value: true
-        camera_aligned_depth_to_color_frame:
-          Value: false
-        camera_aligned_depth_to_infra1_frame:
-          Value: false
-        camera_aligned_depth_to_infra2_frame:
-          Value: false
-        camera_color_frame:
-          Value: false
-        camera_color_optical_frame:
-          Value: false
-        camera_depth_frame:
-          Value: false
-        camera_depth_optical_frame:
-          Value: false
-        camera_infra1_frame:
-          Value: false
-        camera_infra1_optical_frame:
-          Value: false
-        camera_infra2_frame:
-          Value: false
-        camera_infra2_optical_frame:
-          Value: false
-        camera_link:
+        camera_link1:
+          Value: true
+        camera_link2:
+          Value: true
+        camera_link3:
           Value: true
         panda_link0:
           Value: false
@@ -97,7 +79,15 @@ Visualization Manager:
           Value: false
         panda_link8:
           Value: false
+        part:
+          Value: true
         shelf_1:
+          Value: true
+        sim_camera_link1:
+          Value: true
+        sim_camera_link2:
+          Value: true
+        sim_camera_link3:
           Value: true
         workcell_base:
           Value: false
@@ -110,28 +100,20 @@ Visualization Manager:
       Show Names: false
       Tree:
         world:
+          part:
+            {}
           shelf_1:
             {}
           workcell_base:
             base_link:
-              camera_link:
-                camera_aligned_depth_to_color_frame:
-                  camera_color_optical_frame:
-                    {}
-                camera_aligned_depth_to_infra1_frame:
-                  camera_infra1_optical_frame:
-                    {}
-                camera_aligned_depth_to_infra2_frame:
-                  camera_infra2_optical_frame:
-                    {}
-                camera_color_frame:
+              camera_link1:
+                sim_camera_link1:
                   {}
-                camera_depth_frame:
-                  camera_depth_optical_frame:
-                    {}
-                camera_infra1_frame:
+              camera_link2:
+                sim_camera_link2:
                   {}
-                camera_infra2_frame:
+              camera_link3:
+                sim_camera_link3:
                   {}
               panda_link0:
                 panda_link1:
@@ -258,7 +240,7 @@ Visualization Manager:
       Size (Pixels): 3
       Size (m): 0.00999999978
       Style: Flat Squares
-      Topic: /camera/depth_registered/points
+      Topic: /cropped_cloud
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -288,7 +270,67 @@ Visualization Manager:
       Size (Pixels): 3
       Size (m): 0.00999999978
       Style: Flat Squares
-      Topic: /cropped_cloud
+      Topic: /camera1/depth_registered/points
+      Unreliable: false
+      Use Fixed Frame: true
+      Use rainbow: true
+      Value: false
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 10
+        Min Value: -10
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz/PointCloud2
+      Color: 255; 255; 255
+      Color Transformer: Intensity
+      Decay Time: 0
+      Enabled: false
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Max Intensity: 4096
+      Min Color: 0; 0; 0
+      Min Intensity: 0
+      Name: PointCloud2
+      Position Transformer: XYZ
+      Queue Size: 10
+      Selectable: true
+      Size (Pixels): 3
+      Size (m): 0.00999999978
+      Style: Flat Squares
+      Topic: /camera2/depth_registered/points
+      Unreliable: false
+      Use Fixed Frame: true
+      Use rainbow: true
+      Value: false
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 10
+        Min Value: -10
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz/PointCloud2
+      Color: 255; 255; 255
+      Color Transformer: Intensity
+      Decay Time: 0
+      Enabled: false
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Max Intensity: 4096
+      Min Color: 0; 0; 0
+      Min Intensity: 0
+      Name: PointCloud2
+      Position Transformer: XYZ
+      Queue Size: 10
+      Selectable: true
+      Size (Pixels): 3
+      Size (m): 0.00999999978
+      Style: Flat Squares
+      Topic: /camera3/depth_registered/points
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -348,25 +390,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 2.58317471
+      Distance: 2.85149407
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.110884875
-        Y: 0.469379783
-        Z: 1.09462988
+        X: -0.147240788
+        Y: 0.303750336
+        Z: 0.896597207
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.0500000007
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.450398088
+      Pitch: 0.485397995
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 0.372205973
+      Yaw: 0.40220058
     Saved: ~
 Window Geometry:
   Displays:
