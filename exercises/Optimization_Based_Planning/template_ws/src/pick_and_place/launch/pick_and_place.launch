@@ -15,11 +15,11 @@
 
     <!-- Publish the location of the camera2 -->
     <node pkg="tf" type="static_transform_publisher" name="camera1_tf_broadcaster"
-       args="0.75 0.5 .75 -2.012 0.829 -1.571 base_link camera_link1 10" />
+       args="0.4 0.35 1.05 1.57079 1.9 0.0 base_link camera_link1 10" />
     <node pkg="tf" type="static_transform_publisher" name="camera2_tf_broadcaster"
-       args="0.75 -0.5 .75 0 1.5709 3.97 base_link camera_link2 10" />
+       args="0.4 -0.35 1.05 1.57079 1.2 0 base_link camera_link2 10" />
     <node pkg="tf" type="static_transform_publisher" name="camera3_tf_broadcaster"
-       args="0.4 0.0 1.15 0 1.57079 0 base_link camera_link3 10" />
+       args="-.20 0.0 1.0 0 1.1 0 base_link camera_link3 10" />
 
     <!-- Launch simulated sensor -->
     <group if="$(arg sim_sensor)">
@@ -27,7 +27,7 @@
        <node pkg="tf" type="static_transform_publisher" name="camera1_tf_remap"
            args="0 0 0 0 1.57079 0 camera_link1 sim_camera_link1 1" />
        <node pkg="tf" type="static_transform_publisher" name="camera2_tf_remap"
-               args="0 0 0 0 1.57079 0 camera_link2 sim_camera_link2 1" />
+           args="0 0 0 0 1.57079 0 camera_link2 sim_camera_link2 1" />
        <node pkg="tf" type="static_transform_publisher" name="camera3_tf_remap"
            args="0 0 0 0 1.57079 0 camera_link3 sim_camera_link3 1" />
 
