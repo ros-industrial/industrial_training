@@ -98,8 +98,6 @@ Visualization Manager:
       Show Names: false
       Tree:
         world:
-          part:
-            {}
           workcell_base:
             base_link:
               camera_link1:
@@ -121,6 +119,8 @@ Visualization Manager:
                             iiwa_link_7:
                               iiwa_link_ee:
                                 {}
+              part:
+                {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -229,7 +229,7 @@ Visualization Manager:
       Queue Size: 10
       Selectable: true
       Size (Pixels): 3
-      Size (m): 0.00999999978
+      Size (m): 0.00200000009
       Style: Flat Squares
       Topic: /cropped_cloud
       Unreliable: false
@@ -346,10 +346,10 @@ Visualization Manager:
       Min Intensity: 0
       Name: PointCloud2
       Position Transformer: XYZ
-      Queue Size: 10
+      Queue Size: 1
       Selectable: true
       Size (Pixels): 3
-      Size (m): 0.00999999978
+      Size (m): 0.00499999989
       Style: Flat Squares
       Topic: /pick_surface
       Unreliable: false
@@ -396,10 +396,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.460398018
+      Pitch: 0.440398067
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 5.83038139
+      Yaw: 5.73538542
     Saved: ~
 Window Geometry:
   Displays:

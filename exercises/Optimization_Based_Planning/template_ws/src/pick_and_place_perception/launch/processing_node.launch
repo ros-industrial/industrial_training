@@ -11,12 +11,13 @@
       world_frame: "world"
       camera_frame: "camera"
       voxel_leaf_size: 0.001 <!-- mm -->
-      x_filter_min: -0.30 <!-- m -->
-      x_filter_max:  0.30 <!-- m -->
-      y_filter_min: -0.3 <!-- m -->
-      y_filter_max:  0.85 <!-- m -->
-      z_filter_min:  -2.5 <!-- m -->
-      z_filter_max:   2.5 <!-- m -->
+      y_filter_min: -0.25 <!-- m -->
+      y_filter_max:  0.80 <!-- m -->
+      x_filter_min: -0.35 <!-- m -->
+      x_filter_max:  0.35 <!-- m -->
+      <!-- Add .781  for the top of the table-->
+      z_filter_min:  .731 <!-- m -->
+      z_filter_max:  1.031 <!-- m -->
       plane_max_iterations: 100
       plane_distance_threshold: 0.03
       cluster_tolerance: 0.02
