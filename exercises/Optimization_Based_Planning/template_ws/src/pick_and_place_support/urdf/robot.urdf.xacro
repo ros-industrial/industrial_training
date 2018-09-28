@@ -4,9 +4,17 @@
     <link name="world"/>
     <link name="base_link"/>
 
+
+
+
+    <!-- Import Rviz colors -->
+    <xacro:include filename="$(find iiwa_description)/urdf/materials.xacro" />
+    <!--Import the lbr iiwa macro -->
+    <xacro:include filename="$(find iiwa_description)/urdf/iiwa7.xacro"/>
     <!-- Include robot -->
-    <xacro:include filename="$(find pick_and_place_support)/urdf/panda_arm.xacro"/>
-    <xacro:panda_arm connected_to="base_link"/>
+    <xacro:iiwa7 hardware_interface="PositionJointInterface" robot_name="iiwa" parent="base_link">
+        <origin xyz="0.0 0 0.0" rpy="0 0 0"/>
+    </xacro:iiwa7>
 
 
     <!-- Include workcell (creates joint from world to workcell_base)-->
@@ -14,9 +22,6 @@
     <xacro:workcell parent_link="world" >
         <origin xyz="0.0 0.0 0.77153" rpy="0 0 0"/>
     </xacro:workcell >
-    <xacro:shelf id="1" parent_link="world" >
-         <origin rpy="0 0 4.7124" xyz="-0.85 0.8 0.11"/>
-    </xacro:shelf >
 
     <!-- Create joints -->
     <joint name="workcell_base_to_base" type="fixed">
@@ -24,11 +29,5 @@
       <child link="base_link"/>
       <origin xyz="0 0 0.00953" rpy="0 0 1.5708"/>
     </joint>
-    <!--
-    <joint name="base_to_panda_link0" type="fixed">
-      <parent link="base_link"/>
-      <child link="panda_link0"/>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
-    </joint>
--->
+
 </robot>
