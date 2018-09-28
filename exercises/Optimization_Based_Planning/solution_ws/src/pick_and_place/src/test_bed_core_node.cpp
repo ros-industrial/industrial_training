@@ -52,13 +52,13 @@ int main(int argc, char** argv)
   assert(success);
 
   std::unordered_map<std::string, double> joint_states;
-  joint_states["panda_joint1"] = 0.0;
-  joint_states["panda_joint2"] = 0.0;
-  joint_states["panda_joint3"] = 0.0;
-  joint_states["panda_joint4"] = -1.57;
-  joint_states["panda_joint5"] = 0.0;
-  joint_states["panda_joint6"] = 0.0;
-  joint_states["panda_joint7"] = 0.0;
+  joint_states["iiwa_joint_1"] = 0.0;
+  joint_states["iiwa_joint_2"] = 0.0;
+  joint_states["iiwa_joint_3"] = 0.0;
+  joint_states["iiwa_joint_4"] = -1.57;
+  joint_states["iiwa_joint_5"] = 0.0;
+  joint_states["iiwa_joint_6"] = 0.0;
+  joint_states["iiwa_joint_7"] = 0.0;
   env->setState(joint_states);
 
   double box_side, box_x, box_y;
@@ -131,7 +131,7 @@ int main(int argc, char** argv)
     Eigen::Quaterniond orientation(0.0, 0.0, 1.0, 0.0);
 
     std::string manip = "Manipulator";
-    std::string end_effector = "panda_link8";
+    std::string end_effector = "iiwa_link_ee";
     TrajoptPickAndPlaceConstructor prob_constructor(env, manip, end_effector, "box");
     Eigen::Isometry3d final_pose;
     final_pose.linear() = orientation.matrix();
@@ -168,7 +168,7 @@ int main(int argc, char** argv)
 
     attached_body.parent_link_name = end_effector;
     attached_body.transform.translation() = Eigen::Vector3d(translation_err.x(), translation_err.y(), box_side / 2.0);
-    attached_body.touch_links = { "panda_link7", end_effector };  // allow the box to contact the end effector
+    attached_body.touch_links = { "iiwa_link_ee", end_effector };  // allow the box to contact the end effector
 
     env->attachBody(attached_body);
 

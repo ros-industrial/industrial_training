@@ -61,27 +61,25 @@ Visualization Manager:
           Value: true
         camera_link3:
           Value: true
-        panda_link0:
+        iiwa_link_0:
           Value: false
-        panda_link1:
+        iiwa_link_1:
           Value: false
-        panda_link2:
+        iiwa_link_2:
           Value: false
-        panda_link3:
+        iiwa_link_3:
           Value: false
-        panda_link4:
+        iiwa_link_4:
           Value: false
-        panda_link5:
+        iiwa_link_5:
           Value: false
-        panda_link6:
+        iiwa_link_6:
           Value: false
-        panda_link7:
+        iiwa_link_7:
           Value: false
-        panda_link8:
+        iiwa_link_ee:
           Value: false
         part:
-          Value: true
-        shelf_1:
           Value: true
         sim_camera_link1:
           Value: true
@@ -102,8 +100,6 @@ Visualization Manager:
         world:
           part:
             {}
-          shelf_1:
-            {}
           workcell_base:
             base_link:
               camera_link1:
@@ -115,15 +111,15 @@ Visualization Manager:
               camera_link3:
                 sim_camera_link3:
                   {}
-              panda_link0:
-                panda_link1:
-                  panda_link2:
-                    panda_link3:
-                      panda_link4:
-                        panda_link5:
-                          panda_link6:
-                            panda_link7:
-                              panda_link8:
+              iiwa_link_0:
+                iiwa_link_1:
+                  iiwa_link_2:
+                    iiwa_link_3:
+                      iiwa_link_4:
+                        iiwa_link_5:
+                          iiwa_link_6:
+                            iiwa_link_7:
+                              iiwa_link_ee:
                                 {}
       Update Interval: 0
       Value: true
@@ -148,55 +144,50 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        panda_link0:
+        iiwa_link_0:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        panda_link1:
+        iiwa_link_1:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        panda_link2:
+        iiwa_link_2:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        panda_link3:
+        iiwa_link_3:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        panda_link4:
+        iiwa_link_4:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        panda_link5:
+        iiwa_link_5:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        panda_link6:
+        iiwa_link_6:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        panda_link7:
+        iiwa_link_7:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        panda_link8:
+        iiwa_link_ee:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        shelf_1:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
         workcell_base:
           Alpha: 1
           Show Axes: false

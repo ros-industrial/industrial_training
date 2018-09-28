@@ -44,9 +44,6 @@
          <include file="$(find realsense2_camera)/launch/rs_rgbd.launch" />
     </group>
 
-    <!-- Launch point cloud merging node -->
-    <node name="point_cloud_merger_node" pkg="pick_and_place_perception" type="point_cloud_merger_node" />
-
     <!-- Launch vision node -->
     <include file="$(find pick_and_place_perception)/launch/processing_node.launch" />
 
@@ -58,3 +55,4 @@
         args="-d $(find pick_and_place)/config/pick_and_place.rviz" />
 
 </launch>
+
