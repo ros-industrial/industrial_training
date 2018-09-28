@@ -27,7 +27,7 @@
     <joint name="workcell_base_to_base" type="fixed">
       <parent link="workcell_base"/>
       <child link="base_link"/>
-      <origin xyz="0 0 0.00953" rpy="0 0 1.5708"/>
+      <origin xyz="0 -0.0381 0.00953" rpy="0 0 1.5708"/>
     </joint>
 
 </robot>
