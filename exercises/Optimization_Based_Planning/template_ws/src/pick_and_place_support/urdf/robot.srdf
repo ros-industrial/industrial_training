@@ -23,6 +23,12 @@
         <joint name="iiwa_joint_7" value="0" />
     </group_state>
     <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
+    <disable_collisions link1="cabinet_1" link2="iiwa_link_0" reason="Never" />
+    <disable_collisions link1="cabinet_1" link2="iiwa_link_1" reason="Never" />
+    <disable_collisions link1="cabinet_1" link2="iiwa_link_2" reason="Never" />
+    <disable_collisions link1="cabinet_1" link2="iiwa_link_3" reason="Never" />
+    <disable_collisions link1="cabinet_1" link2="iiwa_link_4" reason="Never" />
+    <disable_collisions link1="cabinet_1" link2="workcell_base" reason="Adjacent" />
     <disable_collisions link1="iiwa_link_0" link2="iiwa_link_1" reason="Adjacent" />
     <disable_collisions link1="iiwa_link_0" link2="iiwa_link_2" reason="Never" />
     <disable_collisions link1="iiwa_link_0" link2="iiwa_link_3" reason="Never" />

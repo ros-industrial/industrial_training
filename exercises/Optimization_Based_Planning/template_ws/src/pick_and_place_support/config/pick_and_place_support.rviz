@@ -6,6 +6,7 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
+        - /RobotModel1
         - /TF1/Frames1
       Splitter Ratio: 0.5
     Tree Height: 895
@@ -27,7 +28,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: PointCloud2
+    SyncSource: ""
 Visualization Manager:
   Class: ""
   Displays:
@@ -51,7 +52,7 @@ Visualization Manager:
       Value: true
     - Alpha: 1
       Class: rviz/RobotModel
-      Collision Enabled: false
+      Collision Enabled: true
       Enabled: true
       Links:
         All Links Enabled: true
@@ -63,47 +64,52 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        panda_link0:
+        cabinet_1:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        panda_link1:
+        iiwa_link_0:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        panda_link2:
+        iiwa_link_1:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        panda_link3:
+        iiwa_link_2:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        panda_link4:
+        iiwa_link_3:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        panda_link5:
+        iiwa_link_4:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        panda_link6:
+        iiwa_link_5:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        panda_link7:
+        iiwa_link_6:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        panda_link8:
+        iiwa_link_7:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        iiwa_link_ee:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -129,25 +135,25 @@ Visualization Manager:
         All Enabled: false
         base_link:
           Value: true
-        camera:
+        cabinet_1:
           Value: true
-        panda_link0:
-          Value: false
-        panda_link1:
-          Value: false
-        panda_link2:
-          Value: false
-        panda_link3:
-          Value: false
-        panda_link4:
-          Value: false
-        panda_link5:
-          Value: false
-        panda_link6:
-          Value: false
-        panda_link7:
-          Value: false
-        panda_link8:
+        iiwa_link_0:
+          Value: true
+        iiwa_link_1:
+          Value: true
+        iiwa_link_2:
+          Value: true
+        iiwa_link_3:
+          Value: true
+        iiwa_link_4:
+          Value: true
+        iiwa_link_5:
+          Value: true
+        iiwa_link_6:
+          Value: true
+        iiwa_link_7:
+          Value: true
+        iiwa_link_ee:
           Value: true
         workcell_base:
           Value: false
@@ -162,18 +168,18 @@ Visualization Manager:
         world:
           workcell_base:
             base_link:
-              camera:
-                {}
-              panda_link0:
-                panda_link1:
-                  panda_link2:
-                    panda_link3:
-                      panda_link4:
-                        panda_link5:
-                          panda_link6:
-                            panda_link7:
-                              panda_link8:
+              iiwa_link_0:
+                iiwa_link_1:
+                  iiwa_link_2:
+                    iiwa_link_3:
+                      iiwa_link_4:
+                        iiwa_link_5:
+                          iiwa_link_6:
+                            iiwa_link_7:
+                              iiwa_link_ee:
                                 {}
+            cabinet_1:
+              {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -231,25 +237,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 4.64404106
+      Distance: 3.54455757
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.610964715
-        Y: 0.30139482
-        Z: 0.814911962
+        X: -0.0125920456
+        Y: 0.884233654
+        Z: 1.03308678
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.0500000007
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.130398244
+      Pitch: 0.265398204
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 0.0153918266
+      Yaw: 5.41358376
     Saved: ~
 Window Geometry:
   Displays:
