@@ -225,7 +225,7 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePlaceProblem(Isometry3d& 
   // Define the initial guess that is num_steps x num_joints
   pci.init_info.data = env_->getCurrentJointValues(pci.kin->getName()).replicate(3*steps_per_phase, 1);
 
-  this->addJointVelCost(pci, 5.0);
+  this->addJointVelCost(pci, 100.0);
 
   this->addInitialJointPosConstraint(pci);
 
@@ -246,7 +246,7 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePlaceProblem(Isometry3d& 
 
   this->addLinearMotion(pci, approach_pose, final_pose, steps_per_phase, steps_per_phase * 2);
 
-//  this->addCollisionCost(pci, 0.025, 20, steps_per_phase, steps_per_phase * 2);
+  this->addCollisionCost(pci, 0.025, 20, steps_per_phase, steps_per_phase * 2);
 
   TrajOptProbPtr result = ConstructProblem(pci);
   return result;
