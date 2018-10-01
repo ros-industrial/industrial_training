@@ -63,6 +63,23 @@
 </xacro:macro>
 
 
+<!-- Shelf -->
+<xacro:macro name="cabinet" params="id parent_link *location">
+  <link name="cabinet_${id}">
+  <collision>
+    <geometry>
+      <mesh filename="package://pick_and_place_support/meshes/cabinet.STL"/>
+    </geometry>
+  </collision>
+  </link>
+<joint name="cabinet_${id}_joint" type ="fixed">
+  <xacro:insert_block name="location" />
+  <parent link="${parent_link}"/>
+  <child link="cabinet_${id}"/>
+</joint>
+
+</xacro:macro>
+
 
 <!-- Shelf -->
 <xacro:macro name="shelf" params="id parent_link *location">
