@@ -450,7 +450,7 @@
       </geometry>
       <origin xyz="-.3302 0.8382 0.6"/>
       colors
-    
+
     </collision>
     <collision name="workcell_columnNE">
       <geometry>
@@ -469,6 +469,18 @@
     <origin rpy="0 0 0" xyz="0.0 0.0 0.77153"/>
     <parent link="world"/>
     <child link="workcell_base"/>
+  </joint>
+  <link name="cabinet_1">
+    <collision>
+      <geometry>
+        <mesh filename="package://pick_and_place_support/meshes/cabinet.STL"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="cabinet_1_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="-0.3048 1.016 0.771525"/>
+    <parent link="workcell_base"/>
+    <child link="cabinet_1"/>
   </joint>
   <!-- Create joints -->
   <joint name="workcell_base_to_base" type="fixed">
