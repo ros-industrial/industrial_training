@@ -5,7 +5,7 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Status1
-        - /TF1/Frames1
+        - /TF1
       Splitter Ratio: 0.5
     Tree Height: 895
   - Class: rviz/Selection
@@ -55,6 +55,8 @@ Visualization Manager:
         All Enabled: false
         base_link:
           Value: true
+        cabinet_1:
+          Value: false
         camera_link1:
           Value: true
         camera_link2:
@@ -98,6 +100,8 @@ Visualization Manager:
       Show Names: false
       Tree:
         world:
+          part:
+            {}
           workcell_base:
             base_link:
               camera_link1:
@@ -119,8 +123,8 @@ Visualization Manager:
                             iiwa_link_7:
                               iiwa_link_ee:
                                 {}
-              part:
-                {}
+            cabinet_1:
+              {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -140,6 +144,11 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
         box:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        cabinet_1:
           Alpha: 1
           Show Axes: false
           Show Trail: false
