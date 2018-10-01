@@ -169,6 +169,8 @@ int main(int argc, char** argv)
     attached_body.parent_link_name = end_effector;
     attached_body.transform.translation() = Eigen::Vector3d(translation_err.x(), translation_err.y(), box_side / 2.0);
     attached_body.touch_links = { "iiwa_link_ee", end_effector };  // allow the box to contact the end effector
+    attached_body.touch_links = { "workcell_base",
+                                  end_effector };  // allow the box to contact the table (since it's sitting on it)
 
     env->attachBody(attached_body);
 
@@ -177,13 +179,22 @@ int main(int argc, char** argv)
         env->getJointNames(),
         planning_response.trajectory.block(steps_per_phase * 2 - 1, 0, 1, env->getJointNames().size()).transpose());
 
-    // create some arbitrary pose checkpoints and goals
+    // Pick up box
     Eigen::Isometry3d retreat_pose = approach_pose;
 
-    Eigen::Vector3d box_move(-0.7, -0.1, 0.0);
-    approach_pose.translation() += box_move;
+    // Define some place locations.
+    Eigen::Isometry3d middle_right_shelf, middle_left_shelf;
+    middle_right_shelf.linear() = Eigen::Quaterniond(0, 0, 0.7071068, 0.7071068).matrix();
+    middle_right_shelf.translation() = Eigen::Vector3d(0.148856, 0.75085, 1.15);
+    middle_left_shelf.linear() = Eigen::Quaterniond(0, 0, 0.7071068, 0.7071068).matrix();
+    middle_left_shelf.translation() = Eigen::Vector3d(-0.148856, 0.75085, 1.15);
 
-    final_pose.translation() += box_move;
+    // Set the target pose to middle_right_shelf
+    final_pose = middle_left_shelf;
+
+    // Setup approach for place
+    approach_pose = final_pose;
+    approach_pose.translation() += Eigen::Vector3d(0.0, -0.2, 0);
 
     // generate and solve the problem
     trajopt::TrajOptProbPtr place_prob =
@@ -191,8 +202,13 @@ int main(int argc, char** argv)
     planner.solve(place_prob, planning_response);
 
     // plot the trajectory in Rviz
-    plotter.plotTrajectory(env->getJointNames(), planning_response.trajectory);
-
+    char input = 'y';
+    while(input == 'y')
+    {
+      plotter.plotTrajectory(env->getJointNames(), planning_response.trajectory);
+      std::cout  << "Replot? y/n \n";
+      std::cin >> input;
+    }
     // TODO send the trajectory to the robot
 
     // TODO execute place trajectory
