@@ -167,11 +167,14 @@ int main(int argc, char** argv)
 
   tf::StampedTransform world_to_box_tf;
   Eigen::Affine3d world_to_box;
-  listener.lookupTransform("world", box_parent_link, ros::Time(0.0), world_to_box_tf);
-  tf::transformTFToEigen(world_to_box_tf, world_to_box);
-  world_to_box.translation() += Eigen::Vector3d(box_x, box_y, box_side / 2.0);
-  sim.add("box_1", box_mesh, world_to_box);
-
+  bool box_available = listener.waitForTransform("world", box_parent_link, ros::Time(0.0), ros::Duration(3));
+  if (box_available)
+  {
+    listener.lookupTransform("world", box_parent_link, ros::Time(0.0), world_to_box_tf);
+    tf::transformTFToEigen(world_to_box_tf, world_to_box);
+    world_to_box.translation() += Eigen::Vector3d(box_x, box_y, box_side / 2.0);
+    sim.add("box_1", box_mesh, world_to_box);
+  }
   auto pose = Eigen::Affine3d::Identity();
   auto depth_img = sim.render(pose);
   bool update = true;

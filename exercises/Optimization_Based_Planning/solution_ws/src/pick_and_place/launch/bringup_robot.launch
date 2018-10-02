@@ -1,6 +1,6 @@
 <launch>
     <arg name="sim_robot" default="true"/>
-    <arg name="robot_ip" unless="$(arg sim_robot)"/>
+    <arg name="robot_ip" default="" unless="$(arg sim_robot)"/>
     <arg name="sim_sensor" default="true"/>
 
     <arg name="rviz" default="true"/>
@@ -9,31 +9,55 @@
     <arg name="box_y" default="0.4"/>
     <arg name="box_parent_link" default="workcell_base"/>
 
+    <!-- hardware_interface to use : PositionJointInterface, EffortJointInterface, VelocityJointInterface. -->
+    <arg name="hardware_interface" default="PositionJointInterface"/>
+    <!-- The is gonna have its nodes/topics under a namespace with the same name. -->
+    <arg name="robot_name" default="iiwa"/>
+
+
     <!-- Load Robot Model    -->
     <param name="robot_description"  command="$(find xacro)/xacro --inorder $(find pick_and_place_support)/urdf/pick_and_place.urdf"/>
 
     <!-- Load Robot Semantic -->
     <param name="robot_description_semantic" textfile="$(find pick_and_place_support)/urdf/robot.srdf" />
 
+
+
+
+
     <!-- Launch Simulated robot -->
     <group if="$(arg sim_robot)">
-        <!-- Set simulated box parameters -->
-        <param name="box_side" value="$(arg box_side)"/>
-        <param name="box_x" value="$(arg box_x)"/>
-        <param name="box_y" value="$(arg box_y)"/>
-        <param name="box_parent_link" value="$(arg box_parent_link)"/>
 
-        <!-- Launch GUI to drive joints   -->
-        <!-- <param name="use_gui" value="true"/> -->
-        <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
 
-        <!-- Launch robot state publisher -->
-        <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
     </group>
+
 
     <!-- Launch real robot -->
-    <group unless="$(arg sim_robot)">
+    <group unless="$(arg sim_robot)" ns="iiwa">
+
+        <param name="publishJointStates" value="True"/> <!--  required for iiwa  driver to publish joint values -->
+
+        <arg name="controllers" value="joint_state_controller $(arg hardware_interface)_trajectory_controller" />
+
+        <!-- Loads joint controller configurations from YAML file to parameter server -->
+        <rosparam file="$(find iiwa_control)/config/$(arg robot_name)_control.yaml" command="load" />
+
+
+        <!-- Loads the controllers -->
+        <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+              output="screen" args="$(arg controllers) --shutdown-timeout 2" />
+
+        <!-- Robot interface -->
+        <include file="$(find iiwa_hw)/launch/iiwa_hw.launch">
+            <arg name="hardware_interface" value="$(arg hardware_interface)" />
+        </include>
     </group>
 
+    <!-- Launch GUI to drive joints   -->
+    <!-- <param name="use_gui" value="true"/> -->
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+
+    <!-- Launch robot state publisher - may need to remap to /iiwa/joints..-->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
 
 </launch>
