@@ -91,9 +91,9 @@ public:
     ROS_INFO_STREAM("Cloud service called; waiting for a PointCloud2 on topic " << topic1);
     sensor_msgs::PointCloud2::ConstPtr recent_cloud1 = ros::topic::waitForMessage<sensor_msgs::PointCloud2>(topic1, nh_);
     ROS_INFO_STREAM("Waiting for a PointCloud2 on topic " << topic2);
-    sensor_msgs::PointCloud2::ConstPtr recent_cloud2 = ros::topic::waitForMessage<sensor_msgs::PointCloud2>(topic2, nh_);
+    sensor_msgs::PointCloud2::ConstPtr recent_cloud2 = ros::topic::waitForMessage<sensor_msgs::PointCloud2>(topic2, nh_,ros::Duration(10));
     ROS_INFO_STREAM("Waiting for a PointCloud2 on topic " << topic3);
-    sensor_msgs::PointCloud2::ConstPtr recent_cloud3 = ros::topic::waitForMessage<sensor_msgs::PointCloud2>(topic3, nh_);
+    sensor_msgs::PointCloud2::ConstPtr recent_cloud3 = ros::topic::waitForMessage<sensor_msgs::PointCloud2>(topic3, nh_,ros::Duration(2));
 
 
 

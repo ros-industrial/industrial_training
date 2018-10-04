@@ -17,7 +17,7 @@ trajectory_msgs::JointTrajectory trajArrayToJointTrajectoryMsg(std::vector<std::
   traj_msg.header.stamp = ros::Time::now();
   traj_msg.joint_names = joint_names;
 
-  ros::Duration time_from_start(0.25);
+  ros::Duration time_from_start = time_increment;
   for (int ind = 0; ind < traj_array.rows(); ind++)
   {
     trajectory_msgs::JointTrajectoryPoint traj_point;
