@@ -41,10 +41,10 @@ void TrajoptPickAndPlaceConstructor::addJointVelCost(trajopt::ProblemConstructio
 {
   std::vector<std::string> joint_names = kin_->getJointNames();
   // Loop over all of the joints
-//  for (std::size_t i = 0; i < joint_names.size(); i++)
-//  {
-    std::shared_ptr<JointVelCostInfo> jv(new JointVelCostInfo);
-//    jv->coeffs = std::vector<double>(1, coeff);
+  for (std::size_t i = 0; i < joint_names.size(); i++)
+  {
+    std::shared_ptr<JointVelTermInfo> jv(new JointVelTermInfo);
+    jv->coeffs = std::vector<double>(1, coeff);
     /* Fill Code:
          . Define the term time (This is a cost)
          . Define the first time step
@@ -53,17 +53,16 @@ void TrajoptPickAndPlaceConstructor::addJointVelCost(trajopt::ProblemConstructio
          . Define the penalty type as sco::squared
     */
     /* ========  ENTER CODE HERE ======== */
-//    jv->name = joint_names[i] + "_vel";
-//    jv->term_type = TT_COST;
-//    jv->first_step = 0;
-//    jv->last_step = pci.basic_info.n_steps - 1;
-//    jv->joint_name = joint_names[i];
-//    jv->penalty_type = sco::SQUARED;
-//    pci.cost_infos.push_back(jv);
-    jv->coeffs = std::vector<double>(7, coeff);
+    jv->name = joint_names[i] + "_vel";
+//    jv->coeffs = std::vector<double>(7, coeff);
     jv->name = "joint_vel";
     jv->term_type = TT_COST;
+    jv->first_step = 0;
+    jv->last_step = pci.basic_info.n_steps - 1;
+    jv->joint_name = joint_names[i];
+    jv->penalty_type = sco::SQUARED;
     pci.cost_infos.push_back(jv);
+
 
 //    std::shared_ptr<JointAccCostInfo> joint_acc = std::shared_ptr<JointAccCostInfo>(new JointAccCostInfo);
 //    joint_acc->coeffs = std::vector<double>(7, 2.0);
@@ -71,7 +70,7 @@ void TrajoptPickAndPlaceConstructor::addJointVelCost(trajopt::ProblemConstructio
 //    joint_acc->term_type = TT_COST;
 //    pci.cost_infos.push_back(joint_acc);
 
-//  }
+  }
 }
 
 void TrajoptPickAndPlaceConstructor::addCollisionCost(trajopt::ProblemConstructionInfo& pci,
@@ -225,7 +224,7 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePlaceProblem(Isometry3d& 
   // Define the initial guess that is num_steps x num_joints
   pci.init_info.data = env_->getCurrentJointValues(pci.kin->getName()).replicate(3*steps_per_phase, 1);
 
-  this->addJointVelCost(pci, 100.0);
+  this->addJointVelCost(pci, 1.0);
 
   this->addInitialJointPosConstraint(pci);
 

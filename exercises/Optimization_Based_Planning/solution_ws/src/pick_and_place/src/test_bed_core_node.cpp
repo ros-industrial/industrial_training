@@ -124,6 +124,7 @@ int main(int argc, char** argv)
   init_pos.conservativeResize(init_pos.rows() + 1);
   plotter.plotTrajectory(env->getJointNames(), init_pos);
 
+
   ////////////
   /// PICK ///
   ////////////
@@ -167,6 +168,7 @@ int main(int argc, char** argv)
         prob_constructor.generatePickProblem(approach_pose, final_pose, steps_per_phase);
     planner.solve(pick_prob, planning_response);
     plotter.plotTrajectory(env->getJointNames(), planning_response.trajectory);
+    std::cout << planning_response.trajectory <<'\n';
 
     tf::StampedTransform world_to_box_parent_link_tf;
     listener.lookupTransform(world_frame, box_parent_link, ros::Time(0.0), world_to_box_parent_link_tf);
@@ -227,6 +229,7 @@ int main(int argc, char** argv)
 
     // plot the trajectory in Rviz
     plotter.plotTrajectory(planning_response_place.joint_names, planning_response_place.trajectory);
+    std::cout << planning_response_place.trajectory <<'\n';
 
     ///////////////
     /// EXECUTE ///
