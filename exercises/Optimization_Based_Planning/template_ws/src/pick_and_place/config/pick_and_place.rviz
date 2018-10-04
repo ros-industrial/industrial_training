@@ -57,11 +57,11 @@ Visualization Manager:
           Value: true
         cabinet_1:
           Value: false
-        camera_link1:
+        camera1_link:
           Value: true
-        camera_link2:
+        camera2_link:
           Value: true
-        camera_link3:
+        camera3_link:
           Value: true
         iiwa_link_0:
           Value: false
@@ -83,11 +83,11 @@ Visualization Manager:
           Value: false
         part:
           Value: true
-        sim_camera_link1:
+        sim_camera1_link:
           Value: true
-        sim_camera_link2:
+        sim_camera2_link:
           Value: true
-        sim_camera_link3:
+        sim_camera3_link:
           Value: true
         workcell_base:
           Value: false
@@ -104,14 +104,14 @@ Visualization Manager:
             {}
           workcell_base:
             base_link:
-              camera_link1:
-                sim_camera_link1:
+              camera1_link:
+                sim_camera1_link:
                   {}
-              camera_link2:
-                sim_camera_link2:
+              camera2_link:
+                sim_camera2_link:
                   {}
-              camera_link3:
-                sim_camera_link3:
+              camera3_link:
+                sim_camera3_link:
                   {}
               iiwa_link_0:
                 iiwa_link_1:

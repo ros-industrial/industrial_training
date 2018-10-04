@@ -135,7 +135,8 @@ target_link_libraries(sensor_simulator_3d ${catkin_LIBRARIES})
 
 add_executable(${PROJECT_NAME}_node
     src/test_bed_core_node.cpp
-    src/trajopt_pick_and_place_constructor.cpp)
+    src/trajopt_pick_and_place_constructor.cpp
+    src/trajopt_utils.cpp)
 add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 target_link_libraries(${PROJECT_NAME}_node
    ${catkin_LIBRARIES}

@@ -1,11 +1,12 @@
 <launch>
     <arg name="sim_robot" default="true"/>
-    <arg name="robot_ip" unless="$(arg sim_robot)"/>
+    <arg name="robot_ip" default="" unless="$(arg sim_robot)"/>
     <arg name="sim_sensor" default="true"/>
+    <arg name="single_camera" default="false" unless="$(arg sim_sensor)"/>
 
     <arg name="rviz" default="true"/>
     <arg name="box_side" default="0.2"/>
-    <arg name="box_x" default="-0.15"/>
+    <arg name="box_x" default="0.15"/>
     <arg name="box_y" default="0.4"/>
     <arg name="box_parent_link" default="workcell_base"/>
 
@@ -23,40 +24,50 @@
 
     <!-- Publish the location of the camera2 -->
     <node pkg="tf" type="static_transform_publisher" name="camera1_tf_broadcaster"
-       args="0.4 0.35 1.05 1.57079 1.9 0.0 base_link camera_link1 10" />
+       args="0.4 0.35 1.05 1.57079 1.9 0.0 base_link camera1_link 10" />
     <node pkg="tf" type="static_transform_publisher" name="camera2_tf_broadcaster"
-       args="0.4 -0.35 1.05 1.57079 1.2 0 base_link camera_link2 10" />
+       args="0.4 -0.35 1.05 1.57079 1.2 0 base_link camera2_link 10" />
     <node pkg="tf" type="static_transform_publisher" name="camera3_tf_broadcaster"
-       args="-.20 0.0 1.0 0 1.1 0 base_link camera_link3 10" />
+       args="-.20 0.0 1.0 0 1.1 0 base_link camera3_link 10" />
 
     <!-- Launch simulated sensor -->
     <group if="$(arg sim_sensor)">
         <!-- Rotate the camera to suit simulation -->
        <node pkg="tf" type="static_transform_publisher" name="camera1_tf_remap"
-           args="0 0 0 0 1.57079 0 camera_link1 sim_camera_link1 1" />
+           args="0 0 0 0 1.57079 0 camera1_link sim_camera1_link 1" />
        <node pkg="tf" type="static_transform_publisher" name="camera2_tf_remap"
-           args="0 0 0 0 1.57079 0 camera_link2 sim_camera_link2 1" />
+           args="0 0 0 0 1.57079 0 camera2_link sim_camera2_link 1" />
        <node pkg="tf" type="static_transform_publisher" name="camera3_tf_remap"
-           args="0 0 0 0 1.57079 0 camera_link3 sim_camera_link3 1" />
+           args="0 0 0 0 1.57079 0 camera3_link sim_camera3_link 1" />
 
        <!--- Launch 3 camera simulators -->
-       <node name="sensor_sim1" pkg="pick_and_place" type="sensor_simulator_3d" args="/camera1/depth_registered/points sim_camera_link1" output="screen"/>
-       <node name="sensor_sim2" pkg="pick_and_place" type="sensor_simulator_3d" args="/camera2/depth_registered/points sim_camera_link2"/>
-       <node name="sensor_sim3" pkg="pick_and_place" type="sensor_simulator_3d" args="/camera3/depth_registered/points sim_camera_link3"/>
+       <node name="sensor_sim1" pkg="pick_and_place" type="sensor_simulator_3d" args="/camera1/camera/depth_registered/points sim_camera1_link" output="screen"/>
+       <node name="sensor_sim2" pkg="pick_and_place" type="sensor_simulator_3d" args="/camera2/camera/depth_registered/points sim_camera2_link"/>
+       <node name="sensor_sim3" pkg="pick_and_place" type="sensor_simulator_3d" args="/camera3/camera/depth_registered/points sim_camera3_link"/>
+
+        <!-- Set simulated box parameters -->
+        <param name="box_side" value="$(arg box_side)"/>
+        <param name="box_x" value="$(arg box_x)"/>
+        <param name="box_y" value="$(arg box_y)"/>
+        <param name="box_parent_link" value="$(arg box_parent_link)"/>
 
     </group>
 
     <!-- Launch real sensor -->
     <group unless="$(arg sim_sensor)">
          <!-- Launch camera node -->
-         <include file="$(find realsense2_camera)/launch/rs_rgbd.launch" />
+         <include file="$(find pick_and_place)/launch/bringup_realsense.launch" >
+            <arg name="single_camera" value="$(arg single_camera)" />
+         </include>
     </group>
 
     <!-- Launch vision node -->
     <include file="$(find pick_and_place_perception)/launch/processing_node.launch" />
 
     <!-- Launch planner node -->
-    <node name="pick_and_place_node" pkg="pick_and_place" type="pick_and_place_node" output="screen"/>
+    <node name="pick_and_place_node" pkg="pick_and_place" type="pick_and_place_node" output="screen">
+            <param name="sim_robot" value="$(arg sim_robot)"/>
+    </node>
 
     <!-- Launch visualization -->
     <node if="$(arg rviz)" pkg="rviz" type="rviz" name="pick_and_place_viz"
