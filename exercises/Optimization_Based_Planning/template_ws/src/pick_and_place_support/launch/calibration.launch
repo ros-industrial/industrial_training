@@ -6,9 +6,10 @@
  <arg name="marker_size" default="11.4" />
  <arg name="max_new_marker_error" default="0.08" />
  <arg name="max_track_error" default="0.2" />
- <arg name="cam_image_topic" default="/camera/color/image_raw" />
- <arg name="cam_info_topic" default="/camera/color/camera_info" />
- <arg name="output_frame" default="/camera_link" />
+ <arg name="cam_image_topic" default="/camera/camera/color/image_raw" />
+ <arg name="cam_info_topic" default="/camera/camera/color/camera_info" />
+ <arg name="output_frame" default="/camera_color_optical_frame" />
+ <arg name="serial_no_camera" default="814412071614" />
  <arg name="rviz" default="true"/>
 
 
@@ -21,8 +22,14 @@
     <param name="targ_z" value="$(arg targ_z)"/>
 </node>
 
- <!-- Launch camera node -->
- <include file="$(find realsense2_camera)/launch/rs_rgbd.launch" />
+ <!-- Launch camera node-->
+<!-- <include file="$(find realsense2_camera)/launch/rs_rgbd.launch" />-->
+ <include file="$(find pick_and_place)/launch/bringup_realsense.launch" >
+    <arg name="single_camera" value="true" />
+    <arg name="serial_no_camera1" value="$(arg serial_no_camera)" />
+    <arg name="tf_prefix_camera1" value="camera"/>
+    <arg name="camera1" value="camera" />
+ </include>
 
  <!-- Launch AR tag node -->
   <node name="ar_track_alvar" pkg="ar_track_alvar" type="individualMarkersNoKinect" respawn="false" output="screen">

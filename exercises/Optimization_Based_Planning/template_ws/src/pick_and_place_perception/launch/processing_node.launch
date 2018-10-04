@@ -5,9 +5,9 @@
 
   <node name="processing_node" pkg="pick_and_place_perception" type="perception_node" output="screen">
     <rosparam>
-      cloud_topic1: "/camera1/depth_registered/points"
-      cloud_topic2: "/camera2/depth_registered/points"
-      cloud_topic3: "/camera3/depth_registered/points"
+      cloud_topic1: "/camera1/camera/depth_registered/points"
+      cloud_topic2: "/camera2/camera/depth_registered/points"
+      cloud_topic3: "/camera3/camera/depth_registered/points"
       world_frame: "world"
       camera_frame: "camera"
       voxel_leaf_size: 0.001 <!-- mm -->
