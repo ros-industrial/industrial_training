@@ -74,21 +74,21 @@ Visualization Manager:
       Size (Pixels): 3
       Size (m): 0.00999999978
       Style: Flat Squares
-      Topic: /camera/depth_registered/points
+      Topic: /camera/camera/depth_registered/points
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
       Value: true
     - Class: rviz/TF
       Enabled: true
-      Frame Timeout: 15
+      Frame Timeout: 500
       Frames:
         All Enabled: false
         ar_marker_0:
           Value: true
         base_link:
           Value: true
-        camera:
+        cabinet_1:
           Value: false
         camera_aligned_depth_to_color_frame:
           Value: false
@@ -114,26 +114,26 @@ Visualization Manager:
           Value: false
         camera_link:
           Value: true
-        panda_link0:
+        iiwa_link_0:
           Value: false
-        panda_link1:
+        iiwa_link_1:
           Value: false
-        panda_link2:
+        iiwa_link_2:
           Value: false
-        panda_link3:
+        iiwa_link_3:
           Value: false
-        panda_link4:
+        iiwa_link_4:
           Value: false
-        panda_link5:
+        iiwa_link_5:
           Value: false
-        panda_link6:
+        iiwa_link_6:
           Value: false
-        panda_link7:
+        iiwa_link_7:
           Value: false
-        panda_link8:
+        iiwa_link_ee:
           Value: false
-        shelf_1:
-          Value: false
+        target_link:
+          Value: true
         workcell_base:
           Value: false
         world:
@@ -145,11 +145,19 @@ Visualization Manager:
       Show Names: true
       Tree:
         world:
-          shelf_1:
-            {}
           workcell_base:
             base_link:
-              camera:
+              iiwa_link_0:
+                iiwa_link_1:
+                  iiwa_link_2:
+                    iiwa_link_3:
+                      iiwa_link_4:
+                        iiwa_link_5:
+                          iiwa_link_6:
+                            iiwa_link_7:
+                              iiwa_link_ee:
+                                {}
+              target_link:
                 camera_link:
                   camera_aligned_depth_to_color_frame:
                     camera_color_optical_frame:
@@ -170,16 +178,8 @@ Visualization Manager:
                     {}
                   camera_infra2_frame:
                     {}
-              panda_link0:
-                panda_link1:
-                  panda_link2:
-                    panda_link3:
-                      panda_link4:
-                        panda_link5:
-                          panda_link6:
-                            panda_link7:
-                              panda_link8:
-                                {}
+            cabinet_1:
+              {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -196,55 +196,55 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        panda_link0:
+        cabinet_1:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        panda_link1:
+        iiwa_link_0:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        panda_link2:
+        iiwa_link_1:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        panda_link3:
+        iiwa_link_2:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        panda_link4:
+        iiwa_link_3:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        panda_link5:
+        iiwa_link_4:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        panda_link6:
+        iiwa_link_5:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        panda_link7:
+        iiwa_link_6:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        panda_link8:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        shelf_1:
+        iiwa_link_7:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
+        iiwa_link_ee:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
         workcell_base:
           Alpha: 1
           Show Axes: false
@@ -302,10 +302,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.495398134
+      Pitch: 0.465397954
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 0.577213585
+      Yaw: 0.442213714
     Saved: ~
 Window Geometry:
   Displays:

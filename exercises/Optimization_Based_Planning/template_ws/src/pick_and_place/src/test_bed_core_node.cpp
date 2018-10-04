@@ -9,7 +9,11 @@
 #include <tf_conversions/tf_eigen.h>
 
 #include <test_bed_core/trajopt_pick_and_place_constructor.h>
+#include <test_bed_core/trajopt_utils.h>
 #include <pick_and_place_perception/GetTargetPose.h>
+#include <actionlib/client/simple_action_client.h>
+#include <control_msgs/FollowJointTrajectoryAction.h>
+#include <iiwa_msgs/JointPosition.h>
 
 int main(int argc, char** argv)
 {
@@ -22,13 +26,15 @@ int main(int argc, char** argv)
 
   int steps_per_phase;
   std::string world_frame, pick_frame;
+  bool sim_robot;
   pnh.param<int>("steps_per_phase", steps_per_phase, 20);
-
   nh.param<std::string>("world_frame", world_frame, "world");
   nh.param<std::string>("pick_frame", pick_frame, "part");
+  nh.param<bool>("/pick_and_place_node/sim_robot", sim_robot, true);
 
   tf::TransformListener listener;
   ros::ServiceClient find_pick_client = nh.serviceClient<pick_and_place_perception::GetTargetPose>("find_pick");
+  ros::Publisher test_pub = nh.advertise<trajectory_msgs::JointTrajectory>("joint_traj", 10);
 
   bool plan = true;
 
@@ -52,13 +58,30 @@ int main(int argc, char** argv)
   assert(success);
 
   std::unordered_map<std::string, double> joint_states;
-  joint_states["iiwa_joint_1"] = 0.0;
-  joint_states["iiwa_joint_2"] = 0.0;
-  joint_states["iiwa_joint_3"] = 0.0;
-  joint_states["iiwa_joint_4"] = -1.57;
-  joint_states["iiwa_joint_5"] = 0.0;
-  joint_states["iiwa_joint_6"] = 0.0;
-  joint_states["iiwa_joint_7"] = 0.0;
+
+  if (sim_robot)
+  {
+    joint_states["iiwa_joint_1"] = 0.0;
+    joint_states["iiwa_joint_2"] = 0.0;
+    joint_states["iiwa_joint_3"] = 0.0;
+    joint_states["iiwa_joint_4"] = -1.57;
+    joint_states["iiwa_joint_5"] = 0.0;
+    joint_states["iiwa_joint_6"] = 0.0;
+    joint_states["iiwa_joint_7"] = 0.0;
+  }
+  else
+  {
+    boost::shared_ptr<const iiwa_msgs::JointPosition> joint_pos =
+        ros::topic::waitForMessage<iiwa_msgs::JointPosition>("iiwa/state/JointPosition", nh);
+
+    joint_states["iiwa_joint_1"] = joint_pos.get()->position.a1;
+    joint_states["iiwa_joint_2"] = joint_pos.get()->position.a2;
+    joint_states["iiwa_joint_3"] = joint_pos.get()->position.a3;
+    joint_states["iiwa_joint_4"] = joint_pos.get()->position.a4;
+    joint_states["iiwa_joint_5"] = joint_pos.get()->position.a5;
+    joint_states["iiwa_joint_6"] = joint_pos.get()->position.a6;
+    joint_states["iiwa_joint_7"] = joint_pos.get()->position.a7;
+  }
   env->setState(joint_states);
 
   double box_side, box_x, box_y;
@@ -197,21 +220,90 @@ int main(int argc, char** argv)
     approach_pose.translation() += Eigen::Vector3d(0.0, -0.2, 0);
 
     // generate and solve the problem
+    tesseract::tesseract_planning::PlannerResponse planning_response_place;
     trajopt::TrajOptProbPtr place_prob =
         prob_constructor.generatePlaceProblem(retreat_pose, approach_pose, final_pose, steps_per_phase);
-    planner.solve(place_prob, planning_response);
+    planner.solve(place_prob, planning_response_place);
 
     // plot the trajectory in Rviz
-    char input = 'y';
-    while(input == 'y')
-    {
-      plotter.plotTrajectory(env->getJointNames(), planning_response.trajectory);
-      std::cout  << "Replot? y/n \n";
-      std::cin >> input;
-    }
-    // TODO send the trajectory to the robot
+    plotter.plotTrajectory(planning_response_place.joint_names, planning_response_place.trajectory);
 
-    // TODO execute place trajectory
+    ///////////////
+    /// EXECUTE ///
+    ///////////////
+
+    // Execute on hardware
+    if (!sim_robot)
+    {
+      // Execute trajectory
+      std::cout << "Execute Trajectory on hardware? y/n \n";
+      char input = 'n';
+      std::cin >> input;
+      if (input == 'y')
+      {
+        std::cout << "Executing... \n";
+
+        // Create action client to send trajectories
+        actionlib::SimpleActionClient<control_msgs::FollowJointTrajectoryAction> execution_client("iiwa/PositionJointInterface_trajectory_controller/follow_joint_trajectory",
+                                                                                                  true);
+        execution_client.waitForServer();
+
+        // Convert TrajArray (Eigen Matrix of joint values) to ROS message
+        trajectory_msgs::JointTrajectory traj_msg;
+        ros::Duration t(0.25);
+        traj_msg = trajArrayToJointTrajectoryMsg(planning_response.joint_names, planning_response.trajectory, t);
+
+
+        // Create action message
+        control_msgs::FollowJointTrajectoryGoal trajectory_action;
+        trajectory_action.trajectory = traj_msg;
+//        trajectory_action.trajectory.header.frame_id="world";
+//        trajectory_action.trajectory.header.stamp = ros::Time(0);
+//        trajectory_action.goal_time_tolerance = ros::Duration(1.0);
+        // May need to update other tolerances as well.
+
+        // Send to hardware
+        execution_client.sendGoal(trajectory_action);
+        execution_client.waitForResult(ros::Duration(20.0));
+
+        if (execution_client.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
+        {
+          std::cout << "Pick action succeeded! \n";
+        }
+        else
+        {
+          std::cout << "Pick action failed \n";
+        }
+        std::cout << "Press enter to continue \n";
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+        // Convert TrajArray (Eigen Matrix of joint values) to ROS message
+        trajectory_msgs::JointTrajectory traj_msg2;
+        ros::Duration t2(0.25);
+
+        traj_msg2 =
+            trajArrayToJointTrajectoryMsg(planning_response_place.joint_names, planning_response_place.trajectory, t2);
+        test_pub.publish(traj_msg2);
+
+        // Create action message
+        control_msgs::FollowJointTrajectoryGoal trajectory_action_place;
+        trajectory_action_place.trajectory = traj_msg2;
+        // May need to update tolerances as well.
+
+        // Send to hardware
+        execution_client.sendGoal(trajectory_action_place);
+        execution_client.waitForResult(ros::Duration(20.0));
+        if (execution_client.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
+        {
+          std::cout << "Place action succeeded! \n";
+        }
+        else
+        {
+          std::cout << "Place action failed \n";
+        }
+      }
+    }
   }
   else
   {
