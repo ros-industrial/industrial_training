@@ -276,6 +276,7 @@ int main(int argc, char** argv)
         }
         std::cout << "Press enter to continue \n";
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
         // Convert TrajArray (Eigen Matrix of joint values) to ROS message
         trajectory_msgs::JointTrajectory traj_msg2;

@@ -54,7 +54,10 @@ int main(int argc, char** argv)
 
   // Calibrate the camera position
   bool calibrating = true;
-    int iters = 20;
+
+  while (calibrating)
+  {
+   int iters = 20;
    double rx = 0;
    double ry = 0;
    double rz = 0;
@@ -62,8 +65,6 @@ int main(int argc, char** argv)
    double x = 0;
    double y = 0;
    double z = 0;
-  while (calibrating)
-  {
     for (int ind = 0; ind < iters; ind++)
     {
       target_broadcaster.sendTransform(
