@@ -36,6 +36,14 @@ public:
    */
   void addJointVelCost(trajopt::ProblemConstructionInfo& pci, double coeff);
 
+
+  /**
+   * @brief addTotalTimeCost
+   * @param pci
+   * @param coeff
+   */
+  void addTotalTimeCost(trajopt::ProblemConstructionInfo& pci, double coeff);
+
   /**
    * @brief Adds a collision cost to a subset of the time steps in a trajopt problem construction info
    * @param pci - The trajopt problem construction info to which the cost is added
