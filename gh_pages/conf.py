@@ -39,16 +39,14 @@ except git.exc.InvalidGitRepositoryError:
 extensions = ['sphinx.ext.githubpages']
 
 # Add any paths that contain templates here, relative to this directory.
-#templates_path = ['_templates']
+templates_path = ['_templates']
+
+from recommonmark.parser import CommonMarkParser
 
 source_parsers = {
-   '.md': 'recommonmark.parser.CommonMarkParser',
+    '.md': CommonMarkParser,
 }
 
-# The suffix(es) of source filenames.
-# You can specify multiple suffix as a list of string:
-#
-# source_suffix = ['.rst', '.md']
 source_suffix = ['.rst', '.md']
 
 # The master toctree document.
@@ -99,7 +97,21 @@ html_theme_path = ['_themes',]
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
-# html_theme_options = {}
+html_theme_options = {
+    #'canonical_url': '',
+    'analytics_id': '',
+    'logo_only': False,
+    'display_version': True,
+    'prev_next_buttons_location': 'bottom',
+    'style_external_links': False,
+    #'vcs_pageview_mode': '',
+    # Toc options
+    'collapse_navigation': True,
+    'sticky_navigation': False,
+    'navigation_depth': 4,
+    'includehidden': True,
+    'titles_only': False,
+}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -107,7 +119,7 @@ html_theme_path = ['_themes',]
 html_static_path = ['_static']
 
 html_context = {
-    "wiki_title": "ROS-Industrial Training Material",
+    #"wiki_title": "ROS-Industrial Training Material",
     "display_github": True,
     "github_user": "ros-industrial",
     "github_repo": "industrial_training",
@@ -115,8 +127,6 @@ html_context = {
     "conf_py_path": "gh_pages/",
     "source_suffix": source_suffix,
     "css_files": ['_static/override.css'],
-#    "favicon": "favicon.ico",
-#    "logo": "logo.png"
 }
 
 # Output file base name for HTML help builder.

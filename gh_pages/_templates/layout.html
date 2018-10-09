@@ -1,0 +1,39 @@
+{% extends '!layout.html' %}
+
+{% block extrabody %}
+  <script src="{{ pathto('_static/clipboard.min.js', 1) }}"></script>
+{% endblock %}
+
+{% block extracontent %}
+  <div class="header-override">
+    <a href="http://rosindustrial.org">
+      <img src="{{ pathto('_static/logo.jpg', 1) }}"/>
+    </a>
+    <p>
+      <a href="http://rosindustrial.org">ROS-Industrial Website</a>|<a href="http://rosindustrial.org/news">Blog</a>
+    </p>
+  </div>
+{% endblock %}
+
+{% block footer %}
+  <script>
+  var pre = document.getElementsByTagName('pre');
+  for (var i = 0; i < pre.length; i++) {
+    var button = document.createElement('button');
+    button.className = 'btn-copyboard fa fa-copy btn';
+    pre[i].before(button);
+  }
+  var clipboard = new Clipboard('.btn-copyboard', {
+    target: function(trigger) {return trigger.nextElementSibling;}
+  });
+  function showSuccess(elem){elem.setAttribute('class','btn-copyboard fa fa-check btn');}
+  function sleep (time) {
+    return new Promise((resolve) => setTimeout(resolve, time));
+  }
+  clipboard.on('success',function(e){
+    showSuccess(e.trigger);
+    sleep(350).then(() => {e.clearSelection();
+      e.trigger.setAttribute('class','btn-copyboard fa fa-copy btn');})
+  });
+  </script>
+{% endblock %}
