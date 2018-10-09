@@ -36,7 +36,7 @@ void TrajoptPickAndPlaceConstructor::addInitialJointPosConstraint(trajopt::Probl
   pci.cnt_infos.push_back(start_constraint);
 }
 
-//Commented to convert to format that does not depend on time parametrization
+
 void TrajoptPickAndPlaceConstructor::addJointVelCost(trajopt::ProblemConstructionInfo& pci, double coeff)
 {
   std::vector<std::string> joint_names = kin_->getJointNames();
@@ -56,6 +56,27 @@ void TrajoptPickAndPlaceConstructor::addJointVelCost(trajopt::ProblemConstructio
     jv->name = joint_names[i] + "_vel";
 //    jv->coeffs = std::vector<double>(7, coeff);
     jv->name = "joint_vel";
+    jv->term_type = TT_COST;
+    jv->first_step = 0;
+    jv->last_step = pci.basic_info.n_steps - 1;
+    jv->joint_name = joint_names[i];
+    jv->penalty_type = sco::SQUARED;
+    pci.cost_infos.push_back(jv);
+
+  }
+}
+
+void TrajoptPickAndPlaceConstructor::addJointAccelCost(trajopt::ProblemConstructionInfo& pci, double coeff)
+{
+  std::vector<std::string> joint_names = kin_->getJointNames();
+  // Loop over all of the joints
+  for (std::size_t i = 0; i < joint_names.size(); i++)
+  {
+    std::shared_ptr<JointAccCostInfo> jv(new JointAccCostInfo);
+    jv->coeffs = std::vector<double>(1, coeff);
+    jv->name = joint_names[i] + "_accel";
+//    jv->coeffs = std::vector<double>(7, coeff);
+    jv->name = "joint_accel";
     jv->term_type = TT_COST;
     jv->first_step = 0;
     jv->last_step = pci.basic_info.n_steps - 1;
@@ -175,7 +196,7 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePickProblem(Isometry3d& a
   pci.basic_info.n_steps = steps_per_phase * 2;
   pci.basic_info.start_fixed = false;
   pci.basic_info.manip = manipulator_;
-  pci.basic_info.dt_lower_lim = 0.01;
+  pci.basic_info.dt_lower_lim = 0.2;
   pci.basic_info.dt_upper_lim = 5;
 
   // Add kinematics
@@ -194,6 +215,8 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePickProblem(Isometry3d& a
   */
   /* ========  ENTER CODE HERE ======== */
   this->addJointVelCost(pci, 25.0);
+
+  this->addJointAccelCost(pci,5.0);
 
   this->addTotalTimeCost(pci, 5.0);
 
@@ -237,7 +260,7 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePlaceProblem(Isometry3d& 
   pci.init_info.data = env_->getCurrentJointValues(pci.kin->getName()).replicate(3*steps_per_phase, 1);
   pci.init_info.has_time = true;
 
-  this->addJointVelCost(pci, 100.0);
+  this->addJointVelCost(pci, 25.0);
 
   this->addTotalTimeCost(pci, 5.0);
 
