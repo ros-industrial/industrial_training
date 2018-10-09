@@ -36,6 +36,7 @@ public:
    */
   void addJointVelCost(trajopt::ProblemConstructionInfo& pci, double coeff);
 
+  void addJointAccelCost(trajopt::ProblemConstructionInfo& pci, double coeff);
 
   /**
    * @brief addTotalTimeCost
