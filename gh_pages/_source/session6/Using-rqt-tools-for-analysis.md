@@ -22,13 +22,13 @@ roslaunch myworkcell_support setup.launch
 rqt_graph
 ```
 3. Here we can see the basic layout of our Scan-N-Plan application:
-![](https://github.com/AustinDeric/images/blob/master/basic_rqt_graph.png)
+![](../../_static/basic_rqt_graph.png)
 4. In a 3rd terminal, launch the descartes path planner.:
 ```
 rosrun myworkcell_core myworkcell_node
 ```
 5. You must update the graph while the node is running because the graph will not update automatically.  After the update, we see our updated ROS network contains out myworkcell_node. Also, The myworkcell_node is publishing a new topic `/move_group/goal` which is subscribed by the move_group node. 
-![](https://github.com/AustinDeric/images/blob/master/planned_rqt_graph.png)
+![](../../_static/planned_rqt_graph.png)
 
 ### `rqt_console`: view messages:
 Now, we would like to see the output of the path planner.  rqt_console is a great gui for viewing ROS topics.
@@ -41,7 +41,7 @@ rqt_console
 rosrun myworkcell_core myworkcell_node
 ```
 3. The rqt_console automatically updates, showing the logic behind the path planner:
-![](https://github.com/AustinDeric/images/blob/master/rqt_console_output.png)
+![](../../_static/rqt_console_output.png)
 
 ### `rqt_plot`: view data plots
 rqt_plot is an easy way to plot ROS data in real time.  In this example, we will plot robot joint velocities from our path plan.
@@ -63,5 +63,5 @@ rqt_plot
 rosrun myworkcell_core myworkcell_node
 ```
 4. We can see the joint positions streaming in real-time:
-![](https://github.com/AustinDeric/images/blob/master/plot.png)
+![](../../_static/plot.png)
 

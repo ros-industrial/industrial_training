@@ -26,8 +26,7 @@ In this exercise, you will create a new node to determine the angular pose of a 
   1. Determine orientation using piston sleeve locations
   1. Calculate the axis orientation relative to a reference (horizontal) axis
   
-![pump images](https://aeswiki.datasys.swri.edu/rositraining/indigo/Exercises/2A.2?action=AttachFile&do=get&target=pump_images.png
-)
+![pump images](../../_static/pump_images.png)
 
 ## Implementation
 

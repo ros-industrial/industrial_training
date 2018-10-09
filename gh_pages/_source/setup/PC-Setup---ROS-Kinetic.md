@@ -3,12 +3,14 @@
 
 ## Virtual Machine Configuration (**Recommended**)
 The VM method is the most convenient method of utilizing the training materials:
+
  1. [Download virtual box](https://www.virtualbox.org/wiki/Downloads)
  1. [Download ROS Kinetic training VM](http://aeswiki.datasys.swri.edu/vm/ROSI_Training_Kinetic_latest.ova)
  1. [Import image into virtual box](https://www.virtualbox.org/manual/ch01.html#ovf)
  1. Start virtual machine
  1. Log into virtual machine, user: ```ros-industrial```, pass: ```rosindustrial``` (no spaces or hyphens)
- 1. Get the latest changes (Open Terminal). 
+ 1. Get the latest changes (Open Terminal).
+
     ```
     cd ~/industrial_training
     git checkout kinetic
