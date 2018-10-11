@@ -85,7 +85,7 @@ int main(int argc, char** argv)
   env->setState(joint_states);
 
   double box_side, box_x, box_y;
-  nh.getParam("box_side", box_side);
+//  nh.getParam("box_side", box_side);
   nh.getParam("box_x", box_x);
   nh.getParam("box_y", box_y);
 
@@ -101,12 +101,16 @@ int main(int argc, char** argv)
 
   Eigen::Isometry3d world_to_box;
   pick_and_place_perception::GetTargetPose srv;
+  double box_size_x, box_size_y, box_size_z;
   ROS_INFO("Calling Service to find pick location");
   // This calls the perception service
   if (find_pick_client.call(srv))
   {
     tf::poseMsgToEigen(srv.response.target_pose, world_to_box);
     plan &= srv.response.succeeded;
+    box_size_x = srv.response.max_pt.x - srv.response.min_pt.x;
+    box_size_y = srv.response.max_pt.y - srv.response.min_pt.y;
+    box_size_z = srv.response.max_pt.z - 0.77153;  //Subtract off table height
   }
   else
   {
@@ -119,10 +123,10 @@ int main(int argc, char** argv)
   std::shared_ptr<shapes::Box> box(new shapes::Box());
   Eigen::Isometry3d box_pose = Eigen::Isometry3d::Identity();
 
-  box->size[0] = 0.20;
-  box->size[1] = 0.16;
-  box->size[2] = 0.14;
-  box_side = 0.14;
+  box->size[0] = box_size_x;
+  box->size[1] = box_size_y;
+  box->size[2] = box_size_z;
+//  box_side = 0.14;
 
   obj->name = "box";
   obj->visual.shapes.push_back(box);
@@ -137,7 +141,7 @@ int main(int argc, char** argv)
   Eigen::Isometry3d object_pose = Eigen::Isometry3d::Identity();
 //  object_pose.translation() += Eigen::Vector3d(box_x, box_y, box_side / 2.0);
   object_pose = world_to_box;
-  object_pose.translation() += Eigen::Vector3d(0, 0, -0.77153 - box_side / 2.0); //convert to world frame
+  object_pose.translation() += Eigen::Vector3d(0, 0, -0.77153 - box_size_z / 2.0); //convert to world frame
   attached_body.object_name = "box";
   attached_body.parent_link_name = box_parent_link;
   attached_body.transform = object_pose;
@@ -188,7 +192,7 @@ int main(int argc, char** argv)
     tf::transformTFToEigen(world_to_box_parent_link_tf, world_to_box_parent_link);
 
     Eigen::Isometry3d world_to_actual_box = world_to_box_parent_link;
-    world_to_actual_box.translation() += Eigen::Vector3d(box_x, box_y, box_side);
+    world_to_actual_box.translation() += Eigen::Vector3d(box_x, box_y, box_size_z);
 
     Eigen::Vector3d translation_err = (world_to_actual_box.inverse() * world_to_box).translation();
 
@@ -208,7 +212,7 @@ int main(int argc, char** argv)
 //    attached_body.transform.translation() = Eigen::Vector3d(translation_err.x(), translation_err.y(), box_side / 2.0);
 //    attached_body.transform = world_to_box;
 //    attached_body.transform.translation() += Eigen::Vector3d(0, 0, -0.77153 - box_side / 2.0);
-    attached_body.transform.translation() = Eigen::Vector3d(0, 0, box_side/2.0 + 0.040);
+    attached_body.transform.translation() = Eigen::Vector3d(0, 0, box_size_z/2.0 + 0.040);
     attached_body.touch_links = { "iiwa_link_ee", end_effector };  // allow the box to contact the end effector
     attached_body.touch_links = { "workcell_base",
                                   end_effector };  // allow the box to contact the table (since it's sitting on it)
