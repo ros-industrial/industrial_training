@@ -22,7 +22,7 @@
     </include>
 
 
-    <!-- Publish the location of the camera2 -->
+    <!-- Publish the location of the camera -->
     <node pkg="tf" type="static_transform_publisher" name="camera1_tf_broadcaster"
        args="0.4 0.35 1.05 1.57079 1.9 0.0 base_link camera1_link 10" />
     <node pkg="tf" type="static_transform_publisher" name="camera2_tf_broadcaster"
@@ -45,13 +45,13 @@
        <node name="sensor_sim2" pkg="pick_and_place" type="sensor_simulator_3d" args="/camera2/camera/depth_registered/points sim_camera2_link"/>
        <node name="sensor_sim3" pkg="pick_and_place" type="sensor_simulator_3d" args="/camera3/camera/depth_registered/points sim_camera3_link"/>
 
-        <!-- Set simulated box parameters -->
-        <param name="box_side" value="$(arg box_side)"/>
-        <param name="box_x" value="$(arg box_x)"/>
-        <param name="box_y" value="$(arg box_y)"/>
-        <param name="box_parent_link" value="$(arg box_parent_link)"/>
-
     </group>
+
+    <!-- Set simulated box parameters -->
+    <param name="box_side" value="$(arg box_side)"/>
+    <param name="box_x" value="$(arg box_x)"/>
+    <param name="box_y" value="$(arg box_y)"/>
+    <param name="box_parent_link" value="$(arg box_parent_link)"/>
 
     <!-- Launch real sensor -->
     <group unless="$(arg sim_sensor)">

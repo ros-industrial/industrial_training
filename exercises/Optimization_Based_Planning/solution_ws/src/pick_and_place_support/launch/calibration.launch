@@ -1,6 +1,6 @@
 <launch>
  <arg name="sim_robot" default="true" />
- <arg name="targ_x" default="0.4" />
+ <arg name="targ_x" default="0.3048" />
  <arg name="targ_y" default="0.0" />
  <arg name="targ_z" default="0.0" />
  <arg name="marker_size" default="11.4" />
@@ -9,7 +9,7 @@
  <arg name="cam_image_topic" default="/camera/camera/color/image_raw" />
  <arg name="cam_info_topic" default="/camera/camera/color/camera_info" />
  <arg name="output_frame" default="/camera_color_optical_frame" />
- <arg name="serial_no_camera" default="814412071614" />
+ <arg name="serial_no_camera" default="802212061325" />
  <arg name="rviz" default="true"/>
 
 

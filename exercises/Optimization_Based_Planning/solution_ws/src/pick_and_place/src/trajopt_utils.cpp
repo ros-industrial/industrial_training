@@ -16,6 +16,7 @@ trajectory_msgs::JointTrajectory trajArrayToJointTrajectoryMsg(std::vector<std::
   // Create the joint trajectory
   trajectory_msgs::JointTrajectory traj_msg;
   traj_msg.header.stamp = ros::Time::now();
+  traj_msg.header.frame_id = "0";
   traj_msg.joint_names = joint_names;
 
   // Seperate out the time data in the last column from the joint position data

@@ -197,7 +197,7 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePickProblem(Isometry3d& a
   pci.basic_info.start_fixed = false;
   pci.basic_info.manip = manipulator_;
   pci.basic_info.dt_lower_lim = 0.2;
-  pci.basic_info.dt_upper_lim = 5;
+  pci.basic_info.dt_upper_lim = .5;
 
   // Add kinematics
   pci.kin = kin_;
@@ -218,7 +218,7 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePickProblem(Isometry3d& a
 
   this->addJointAccelCost(pci,5.0);
 
-  this->addTotalTimeCost(pci, 5.0);
+  this->addTotalTimeCost(pci, 50.0);
 
   this->addInitialJointPosConstraint(pci);
 
@@ -248,8 +248,8 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePlaceProblem(Isometry3d& 
   pci.basic_info.n_steps = steps_per_phase * 3;
   pci.basic_info.start_fixed = false;
   pci.basic_info.manip = manipulator_;
-  pci.basic_info.dt_lower_lim = 0.01;
-  pci.basic_info.dt_upper_lim = 5;
+  pci.basic_info.dt_lower_lim = 0.2;
+  pci.basic_info.dt_upper_lim = .5;
 
 
   // Add kinematics
@@ -262,7 +262,7 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePlaceProblem(Isometry3d& 
 
   this->addJointVelCost(pci, 25.0);
 
-  this->addTotalTimeCost(pci, 5.0);
+  this->addTotalTimeCost(pci, 50.0);
 
   this->addInitialJointPosConstraint(pci);
 
