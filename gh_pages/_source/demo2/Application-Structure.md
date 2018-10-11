@@ -112,7 +112,7 @@ int main(int argc,char** argv)
 }
 ```
 
-  In short, this program will run through each exercise by calling the corresponding function from the `application` object.  For instance, in order to initialize Descartes the program calls `application.iniDescartes()`.  Thus each exercise consists of editing the source file where that exercise is implemented, so for `application.initDescartes()` you'll be editing the `plan_and_run/src/tasks/init_descartes.src` source file.
+  In short, this program will run through each exercise by calling the corresponding function from the `application` object.  For instance, in order to initialize Descartes the program calls `application.initDescartes()`.  Thus each exercise consists of editing the source file where that exercise is implemented, so for `application.initDescartes()` you'll be editing the `plan_and_run/src/tasks/init_descartes.src` source file.
 
 
 ## The DemoApplication Class
@@ -186,7 +186,7 @@ public:
 
   /* Main Application Functions
    *  Functions that allow carrying out the various steps needed to run a
-   *  plan an run application.  All these functions will be invoked from within
+   *  plan and run application.  All these functions will be invoked from within
    *  the main routine.
    */
 
@@ -271,6 +271,6 @@ protected:
   * tip_link: Name of the last link in the kinematic chain, usually the tool link.
   * base_link: Name for the base link of the robot.
   * world_frame: The absolute coordinate frame of reference for all the objects defined in the planning environment.
- * The parameters under the "`trajectory`" namespace are used to generate the trajectory that is feed into the Descartes planner.
+ * The parameters under the "`trajectory`" namespace are used to generate the trajectory that is fed into the Descartes planner.
   * trajectory/seed_pose: This is of particular importance because it is used to indicate preferred start and end joint configurations of the robot when planning the path.  If a ''seed_pose'' wasn't specified then planning would take longer since multiple start and end joint configurations would have to be taken into account, leading to multiple path solutions that result from combining several start and end poses. 
  
