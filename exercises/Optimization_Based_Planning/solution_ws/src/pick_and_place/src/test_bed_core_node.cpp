@@ -27,7 +27,7 @@ int main(int argc, char** argv)
   int steps_per_phase;
   std::string world_frame, pick_frame;
   bool sim_robot;
-  pnh.param<int>("steps_per_phase", steps_per_phase, 20);
+  pnh.param<int>("steps_per_phase", steps_per_phase, 10);
   nh.param<std::string>("world_frame", world_frame, "world");
   nh.param<std::string>("pick_frame", pick_frame, "part");
   nh.param<bool>("/pick_and_place_node/sim_robot", sim_robot, true);
@@ -92,37 +92,7 @@ int main(int argc, char** argv)
   std::string box_parent_link;
   nh.getParam("box_parent_link", box_parent_link);
 
-  // attach the simulated box
-  tesseract::AttachableObjectPtr obj(new tesseract::AttachableObject());
-  std::shared_ptr<shapes::Box> box(new shapes::Box());
-  Eigen::Isometry3d box_pose = Eigen::Isometry3d::Identity();
 
-  box->size[0] = box_side;
-  box->size[1] = box_side;
-  box->size[2] = box_side;
-
-  obj->name = "box";
-  obj->visual.shapes.push_back(box);
-  obj->visual.shape_poses.push_back(box_pose);
-  obj->collision.shapes.push_back(box);
-  obj->collision.shape_poses.push_back(box_pose);
-  obj->collision.collision_object_types.push_back(tesseract::CollisionObjectType::UseShapeType);
-
-  env->addAttachableObject(obj);
-
-  tesseract::AttachedBodyInfo attached_body;
-  Eigen::Isometry3d object_pose = Eigen::Isometry3d::Identity();
-  object_pose.translation() += Eigen::Vector3d(box_x, box_y, box_side / 2.0);
-  attached_body.object_name = "box";
-  attached_body.parent_link_name = box_parent_link;
-  attached_body.transform = object_pose;
-
-  env->attachBody(attached_body);
-
-  tesseract::tesseract_ros::ROSBasicPlotting plotter(env);
-  Eigen::VectorXd init_pos = env->getCurrentJointValues();
-  init_pos.conservativeResize(init_pos.rows() + 1);
-  plotter.plotTrajectory(env->getJointNames(), init_pos);
 
 
   ////////////
@@ -144,6 +114,42 @@ int main(int argc, char** argv)
     plan = false;
   }
 
+  // attach the simulated box in correct location
+  tesseract::AttachableObjectPtr obj(new tesseract::AttachableObject());
+  std::shared_ptr<shapes::Box> box(new shapes::Box());
+  Eigen::Isometry3d box_pose = Eigen::Isometry3d::Identity();
+
+  box->size[0] = 0.20;
+  box->size[1] = 0.16;
+  box->size[2] = 0.14;
+  box_side = 0.14;
+
+  obj->name = "box";
+  obj->visual.shapes.push_back(box);
+  obj->visual.shape_poses.push_back(box_pose);
+  obj->collision.shapes.push_back(box);
+  obj->collision.shape_poses.push_back(box_pose);
+  obj->collision.collision_object_types.push_back(tesseract::CollisionObjectType::UseShapeType);
+
+  env->addAttachableObject(obj);
+
+  tesseract::AttachedBodyInfo attached_body;
+  Eigen::Isometry3d object_pose = Eigen::Isometry3d::Identity();
+//  object_pose.translation() += Eigen::Vector3d(box_x, box_y, box_side / 2.0);
+  object_pose = world_to_box;
+  object_pose.translation() += Eigen::Vector3d(0, 0, -0.77153 - box_side / 2.0); //convert to world frame
+  attached_body.object_name = "box";
+  attached_body.parent_link_name = box_parent_link;
+  attached_body.transform = object_pose;
+
+  env->attachBody(attached_body);
+
+  tesseract::tesseract_ros::ROSBasicPlotting plotter(env);
+  Eigen::VectorXd init_pos = env->getCurrentJointValues();
+  init_pos.conservativeResize(init_pos.rows() + 1);
+  plotter.plotTrajectory(env->getJointNames(), init_pos);
+
+
   if (plan == true)
   {
     ROS_ERROR("Press enter to continue");
@@ -157,22 +163,27 @@ int main(int argc, char** argv)
     std::string manip = "Manipulator";
     std::string end_effector = "iiwa_link_ee";
     TrajoptPickAndPlaceConstructor prob_constructor(env, manip, end_effector, "box");
+
+    //Define the final pose
     Eigen::Isometry3d final_pose;
     final_pose.linear() = orientation.matrix();
     final_pose.translation() = world_to_box.translation();
+    final_pose.translation() += Eigen::Vector3d(0.0, 0.0, 0.040);  // Temporarily add some for the gripper
 
+    //Define the approach pose
     Eigen::Isometry3d approach_pose = final_pose;
     approach_pose.translation() += Eigen::Vector3d(0.0, 0.0, 0.15);
 
+    //Create and solve pick problem
     trajopt::TrajOptProbPtr pick_prob =
         prob_constructor.generatePickProblem(approach_pose, final_pose, steps_per_phase);
     planner.solve(pick_prob, planning_response);
     plotter.plotTrajectory(env->getJointNames(), planning_response.trajectory);
     std::cout << planning_response.trajectory <<'\n';
 
+    // Get transform b/n world and the parent link of the box transform
     tf::StampedTransform world_to_box_parent_link_tf;
     listener.lookupTransform(world_frame, box_parent_link, ros::Time(0.0), world_to_box_parent_link_tf);
-
     Eigen::Isometry3d world_to_box_parent_link;
     tf::transformTFToEigen(world_to_box_parent_link_tf, world_to_box_parent_link);
 
@@ -181,23 +192,34 @@ int main(int argc, char** argv)
 
     Eigen::Vector3d translation_err = (world_to_actual_box.inverse() * world_to_box).translation();
 
+    trajectory_msgs::JointTrajectory traj_msg3;
+    ros::Duration t1(0.25);
+    traj_msg3 = trajArrayToJointTrajectoryMsg(planning_response.joint_names, planning_response.trajectory, t1);
+    test_pub.publish(traj_msg3);
+
     ROS_ERROR("Press enter to continue");
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-    /////////////
-    /// PLACE ///
-    /////////////
 
     // detach the simulated box from the world and attach to the end effector
     env->detachBody("box");
 
     attached_body.parent_link_name = end_effector;
-    attached_body.transform.translation() = Eigen::Vector3d(translation_err.x(), translation_err.y(), box_side / 2.0);
+//    attached_body.transform.translation() = Eigen::Vector3d(translation_err.x(), translation_err.y(), box_side / 2.0);
+//    attached_body.transform = world_to_box;
+//    attached_body.transform.translation() += Eigen::Vector3d(0, 0, -0.77153 - box_side / 2.0);
+    attached_body.transform.translation() = Eigen::Vector3d(0, 0, box_side/2.0 + 0.040);
     attached_body.touch_links = { "iiwa_link_ee", end_effector };  // allow the box to contact the end effector
     attached_body.touch_links = { "workcell_base",
                                   end_effector };  // allow the box to contact the table (since it's sitting on it)
 
     env->attachBody(attached_body);
+
+    /////////////
+    /// PLACE ///
+    /////////////
+
+
 
     // Set the current state to the last state of the trajectory
     env->setState(
@@ -210,9 +232,9 @@ int main(int argc, char** argv)
     // Define some place locations.
     Eigen::Isometry3d middle_right_shelf, middle_left_shelf;
     middle_right_shelf.linear() = Eigen::Quaterniond(0, 0, 0.7071068, 0.7071068).matrix();
-    middle_right_shelf.translation() = Eigen::Vector3d(0.148856, 0.75085, 1.15);
+    middle_right_shelf.translation() = Eigen::Vector3d(0.148856, 0.75085, 1.16);
     middle_left_shelf.linear() = Eigen::Quaterniond(0, 0, 0.7071068, 0.7071068).matrix();
-    middle_left_shelf.translation() = Eigen::Vector3d(-0.148856, 0.75085, 1.15);
+    middle_left_shelf.translation() = Eigen::Vector3d(-0.148856, 0.75085, 1.16);
 
     // Set the target pose to middle_right_shelf
     final_pose = middle_left_shelf;
@@ -230,6 +252,11 @@ int main(int argc, char** argv)
     // plot the trajectory in Rviz
     plotter.plotTrajectory(planning_response_place.joint_names, planning_response_place.trajectory);
     std::cout << planning_response_place.trajectory <<'\n';
+
+    trajectory_msgs::JointTrajectory traj_msg4;
+    ros::Duration t2(0.25);
+    traj_msg4 = trajArrayToJointTrajectoryMsg(planning_response_place.joint_names, planning_response_place.trajectory, t2);
+    test_pub.publish(traj_msg4);
 
     ///////////////
     /// EXECUTE ///
