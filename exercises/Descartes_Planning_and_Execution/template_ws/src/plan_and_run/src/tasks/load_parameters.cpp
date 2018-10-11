@@ -3,7 +3,7 @@
 
 /* LOAD PARAMETERS
   Goal:
-    - Load missing application parameters into the from the ros parameter server.
+    - Load missing application parameters from the ros parameter server.
     - Use a private NodeHandle in order to load parameters defined in the node's namespace.
 
   Hints:
