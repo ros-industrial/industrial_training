@@ -10,7 +10,7 @@
 
 ## Complete Code
 
- * Observe the use of the [AxialSymmetricPt::getClosesJointPose()](http://docs.ros.org/indigo/api/descartes_trajectory/html/classdescartes__trajectory_1_1CartTrajectoryPt.html#a1252c8f49a6e5a7d563b6d4a256b553b) in order to get the joint values of the robot that is closest to an arbitrary joint pose.  Furthermore, this step allows us to select a single joint pose for the start and end rather than multiple valid joint configurations.
+ * Observe the use of the [AxialSymmetricPt::getClosestJointPose()](http://docs.ros.org/indigo/api/descartes_trajectory/html/classdescartes__trajectory_1_1CartTrajectoryPt.html#a1252c8f49a6e5a7d563b6d4a256b553b) in order to get the joint values of the robot that is closest to an arbitrary joint pose.  Furthermore, this step allows us to select a single joint pose for the start and end rather than multiple valid joint configurations.
  * Call the [DensePlanner::planPath()](http://docs.ros.org/indigo/api/descartes_planner/html/classdescartes__planner_1_1DensePlanner.html#a2181f674af57b92023deabb5e8323a2a) method in order to compute a motion plan.
  * When planning succeeds, use the [DensePlanner::getPath()](http://docs.ros.org/indigo/api/descartes_planner/html/classdescartes__planner_1_1DensePlanner.html#aafd40b5dc5ed39b4f10e9b47fda0419f) method in order to retrieve the path from the planner and save it into the `output_path` variable.
  * Find comment block that starts with `/*  Fill Code:` and complete as described.
