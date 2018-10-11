@@ -87,7 +87,7 @@ public:
 
   /* Main Application Functions
    *  Functions that allow carrying out the various steps needed to run a
-   *  plan an run application.  All these functions will be invoked from within
+   *  plan and run application.  All these functions will be invoked from within
    *  the main routine.
    */
 
