@@ -5,7 +5,8 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Status1
-        - /TF1
+        - /TF1/Frames1
+        - /TF1/Tree1/world1/workcell_base1
       Splitter Ratio: 0.5
     Tree Height: 895
   - Class: rviz/Selection
@@ -57,10 +58,76 @@ Visualization Manager:
           Value: true
         cabinet_1:
           Value: false
+        camera1_aligned_depth_to_color_frame:
+          Value: false
+        camera1_aligned_depth_to_infra1_frame:
+          Value: false
+        camera1_aligned_depth_to_infra2_frame:
+          Value: false
+        camera1_color_frame:
+          Value: false
+        camera1_color_optical_frame:
+          Value: false
+        camera1_depth_frame:
+          Value: false
+        camera1_depth_optical_frame:
+          Value: false
+        camera1_infra1_frame:
+          Value: false
+        camera1_infra1_optical_frame:
+          Value: false
+        camera1_infra2_frame:
+          Value: false
+        camera1_infra2_optical_frame:
+          Value: false
         camera1_link:
           Value: true
+        camera2_aligned_depth_to_color_frame:
+          Value: false
+        camera2_aligned_depth_to_infra1_frame:
+          Value: false
+        camera2_aligned_depth_to_infra2_frame:
+          Value: false
+        camera2_color_frame:
+          Value: false
+        camera2_color_optical_frame:
+          Value: false
+        camera2_depth_frame:
+          Value: false
+        camera2_depth_optical_frame:
+          Value: false
+        camera2_infra1_frame:
+          Value: false
+        camera2_infra1_optical_frame:
+          Value: false
+        camera2_infra2_frame:
+          Value: false
+        camera2_infra2_optical_frame:
+          Value: false
         camera2_link:
           Value: true
+        camera3_aligned_depth_to_color_frame:
+          Value: false
+        camera3_aligned_depth_to_infra1_frame:
+          Value: false
+        camera3_aligned_depth_to_infra2_frame:
+          Value: false
+        camera3_color_frame:
+          Value: false
+        camera3_color_optical_frame:
+          Value: false
+        camera3_depth_frame:
+          Value: false
+        camera3_depth_optical_frame:
+          Value: false
+        camera3_infra1_frame:
+          Value: false
+        camera3_infra1_optical_frame:
+          Value: false
+        camera3_infra2_frame:
+          Value: false
+        camera3_infra2_optical_frame:
+          Value: false
         camera3_link:
           Value: true
         iiwa_link_0:
@@ -83,12 +150,6 @@ Visualization Manager:
           Value: false
         part:
           Value: true
-        sim_camera1_link:
-          Value: true
-        sim_camera2_link:
-          Value: true
-        sim_camera3_link:
-          Value: true
         workcell_base:
           Value: false
         world:
@@ -105,13 +166,61 @@ Visualization Manager:
           workcell_base:
             base_link:
               camera1_link:
-                sim_camera1_link:
+                camera1_aligned_depth_to_color_frame:
+                  camera1_color_optical_frame:
+                    {}
+                camera1_aligned_depth_to_infra1_frame:
+                  camera1_infra1_optical_frame:
+                    {}
+                camera1_aligned_depth_to_infra2_frame:
+                  camera1_infra2_optical_frame:
+                    {}
+                camera1_color_frame:
+                  {}
+                camera1_depth_frame:
+                  camera1_depth_optical_frame:
+                    {}
+                camera1_infra1_frame:
+                  {}
+                camera1_infra2_frame:
                   {}
               camera2_link:
-                sim_camera2_link:
+                camera2_aligned_depth_to_color_frame:
+                  camera2_color_optical_frame:
+                    {}
+                camera2_aligned_depth_to_infra1_frame:
+                  camera2_infra1_optical_frame:
+                    {}
+                camera2_aligned_depth_to_infra2_frame:
+                  camera2_infra2_optical_frame:
+                    {}
+                camera2_color_frame:
+                  {}
+                camera2_depth_frame:
+                  camera2_depth_optical_frame:
+                    {}
+                camera2_infra1_frame:
+                  {}
+                camera2_infra2_frame:
                   {}
               camera3_link:
-                sim_camera3_link:
+                camera3_aligned_depth_to_color_frame:
+                  camera3_color_optical_frame:
+                    {}
+                camera3_aligned_depth_to_infra1_frame:
+                  camera3_infra1_optical_frame:
+                    {}
+                camera3_aligned_depth_to_infra2_frame:
+                  camera3_infra2_optical_frame:
+                    {}
+                camera3_color_frame:
+                  {}
+                camera3_depth_frame:
+                  camera3_depth_optical_frame:
+                    {}
+                camera3_infra1_frame:
+                  {}
+                camera3_infra2_frame:
                   {}
               iiwa_link_0:
                 iiwa_link_1:
@@ -143,11 +252,6 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        box:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
         cabinet_1:
           Alpha: 1
           Show Axes: false
@@ -268,9 +372,9 @@ Visualization Manager:
       Queue Size: 10
       Selectable: true
       Size (Pixels): 3
-      Size (m): 0.00999999978
+      Size (m): 0.00100000005
       Style: Flat Squares
-      Topic: /camera1/depth_registered/points
+      Topic: /camera2/camera/depth_registered/points
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -298,9 +402,9 @@ Visualization Manager:
       Queue Size: 10
       Selectable: true
       Size (Pixels): 3
-      Size (m): 0.00999999978
+      Size (m): 0.00100000005
       Style: Flat Squares
-      Topic: /camera2/depth_registered/points
+      Topic: /camera2/camera/depth_registered/points
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -328,9 +432,9 @@ Visualization Manager:
       Queue Size: 10
       Selectable: true
       Size (Pixels): 3
-      Size (m): 0.00999999978
+      Size (m): 0.00100000005
       Style: Flat Squares
-      Topic: /camera3/depth_registered/points
+      Topic: /camera3/camera/depth_registered/points
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -390,7 +494,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 2.85149407
+      Distance: 3.46524191
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
@@ -405,10 +509,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.440398067
+      Pitch: 0.365397871
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 5.73538542
+      Yaw: 5.49037838
     Saved: ~
 Window Geometry:
   Displays:

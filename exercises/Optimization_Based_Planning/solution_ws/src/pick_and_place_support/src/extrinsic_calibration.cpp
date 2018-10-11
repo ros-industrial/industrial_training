@@ -19,7 +19,7 @@ int main(int argc, char** argv)
   double targ_x, targ_y, targ_z;
   std::string camera_link;
   nh.param<bool>("calibration_node/sim_robot", sim_robot, true);
-  nh.param<double>("calibration_node/targ_x", targ_x, 0.4);
+  nh.param<double>("calibration_node/targ_x", targ_x, 0.3048);
   nh.param<double>("calibration_node/targ_y", targ_y, 0.0);
   nh.param<double>("calibration_node/targ_z", targ_z, 0.0);
   nh.param<std::string>("calibration_node/camera_link", camera_link, "camera_link");
@@ -57,7 +57,7 @@ int main(int argc, char** argv)
 
   while (calibrating)
   {
-   int iters = 20;
+   int iters = 60;
    double rx = 0;
    double ry = 0;
    double rz = 0;
@@ -113,8 +113,8 @@ int main(int argc, char** argv)
     ROS_ERROR("Calibrated camera location in base_link frame. Update these values in launch file");
     std::cout << "Link name: " << camera_link << '\n';
     std::cout << stamped.getOrigin()[0] << " " << stamped.getOrigin()[1] << " "
-              << stamped.getOrigin()[2] << " " << roll << " "
-              << pitch << " " << yaw << "\n";
+              << stamped.getOrigin()[2] << " " << yaw << " "
+              << pitch << " " << roll << "\n";
 
     ROS_ERROR(" Exit? y/n");
     char input;
