@@ -20,6 +20,7 @@
 #include <visualization_msgs/Marker.h>
 #include <pcl/filters/crop_box.h>
 #include <pcl/filters/statistical_outlier_removal.h>
+#include <pcl/common/common.h>
 
 // polygonal segmentation
 #include <pcl/segmentation/extract_polygonal_prism_data.h>
@@ -28,6 +29,7 @@
 
 // Needed to return a Pose message
 #include <geometry_msgs/Pose.h>
+#include <geometry_msgs/Point.h>
 // Needed for ROS Service
 #include <pick_and_place_perception/GetTargetPose.h>
 
@@ -127,6 +129,7 @@ public:
     // CONVERT POINTCLOUD ROS->PCL
     pcl::PointCloud<pcl::PointXYZ> cloud1, cloud2, cloud3, cloud;
     pcl::fromROSMsg(transformed_cloud, cloud);
+//    pcl::fromROSMsg(transformed_cloud1, cloud);
 
 
 
@@ -390,6 +393,19 @@ public:
     part_pose.orientation.y = 0;
     part_pose.orientation.z = 0;
     part_pose.orientation.w = 1;
+
+    /* ========================================
+     * FIND BOUNDING BOX
+     * ========================================*/
+    Eigen::Vector4f min_pt, max_pt;
+    pcl::getMinMax3D(*cloud_planeTop, min_pt, max_pt);
+    res.min_pt.x = min_pt[0];
+    res.min_pt.y = min_pt[1];
+    res.min_pt.z = min_pt[2];
+    res.max_pt.x = max_pt[0];
+    res.max_pt.y = max_pt[1];
+    res.max_pt.z = max_pt[2];
+
 
     // Store the returned values of the service as defined in the .srv file
     res.target_pose = part_pose;

@@ -1,6 +1,8 @@
 # Request - empty
 ---
-# Response - service returns a bool and a geometry_msgs/Pose
+# Response - service returns a bool, a geometry_msgs/Pose, and 2 geometry_msgs/Points
 bool succeeded
 geometry_msgs/Pose target_pose
+geometry_msgs/Point min_pt
+geometry_msgs/Point max_pt
 
