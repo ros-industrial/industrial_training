@@ -5,7 +5,7 @@
 
  1. To open the terminal, click on the terminal icon: 
 
-    <p align="center"><img src="http://aeswiki.datasys.swri.edu/rositraining/Exercises/1.1.3?action=AttachFile&do=get&target=1.png"/></p>
+    ![](../../_static/ubuntu_terminal_icon.png)
 
  1. Create a second terminal window, either by:
 

@@ -5,11 +5,11 @@
 
  1. Open the folder browser application we opened in the [previous exercise](Navigating-the-Ubuntu-GUI.md). You should see an window like the one below. The icons and text above the main window show the current location of the window in the file system. 
 
- ![](http://aeswiki.datasys.swri.edu/rositraining/Exercises/1.1.2?action=AttachFile&do=get&target=1.png)
+ ![](../../_static/ubuntu_file_system.png)
 
  2. The icons at the top constitute the "location bar" of the file browser. While the location bar is very useful for navigating in the GUI, it hides the exact location of the window. You can show the location by pressing _Ctrl+L_. You should see the location bar turn into something like the image below: 
 
- ![](http://aeswiki.datasys.swri.edu/rositraining/Exercises/1.1.2?action=AttachFile&do=get&target=2.png)
+ ![](../../_static/ubuntu_file_system_location.png)
 
  3. The folder browser opens up in the user's home folder by default. This folder is typically _/home/<username>_, which in the ROS-Industrial training computer is _/home/ros-industrial_. This folder is the only one which the user has full access to. This is by design for security's sake.
 

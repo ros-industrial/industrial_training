@@ -7,11 +7,11 @@ Don't forget about the [presentation slides](../../_downloads/slides/ROS-I%20Bas
 ## Task 1: Familiarize Yourself with the Ubuntu Desktop
 At the log-in screen, click in the password input box, enter `rosindustrial` for the password, and hit enter. The screen should look like the image below when you log in: 
 
-![](http://aeswiki.datasys.swri.edu/rositraining/Exercises/1.1.1?action=AttachFile&do=get&target=1.png)
+![](../../_static/ubuntu_desktop.png)
 
 There are several things you will notice on the desktop: 
 
-![](http://aeswiki.datasys.swri.edu/rositraining/Exercises/1.1.1?action=AttachFile&do=get&target=2.png)
+![](../../_static/ubuntu_desktop_details.png)
 
 1. The gear icon on the top right of the screen brings up a menu which allows the user to log out, shut down the computer, access system settings, etc...
 2. The bar on the left side shows running and "favorite" applications, connected thumb drives, etc.
@@ -24,7 +24,7 @@ There are several things you will notice on the desktop:
 ## Task 2: Open and Inspect an Application
 Click on the filing-cabinet icon in the launcher. A window should show up, and your desktop should look like something below: 
 
-![](http://aeswiki.datasys.swri.edu/rositraining/Exercises/1.1.1?action=AttachFile&do=get&target=3.png)
+![](../../_static/ubuntu_folder_browser.png)
 
 Things to notice:
 
@@ -34,16 +34,16 @@ Things to notice:
  * If there is only one window open, this window gets focus.
  * If more than one are open, clicking a second time causes all of the windows to show up in the foreground, so that you can choose which window to go to (see below): 
 
-![](http://aeswiki.datasys.swri.edu/rositraining/Exercises/1.1.1?action=AttachFile&do=get&target=4.png)
+![](../../_static/ubuntu_inspect.png)
 
 ## Task 3: Start an Application & Pin it to the Launcher Bar
 Click on the launcher button (top left) and type gedit in the search box. The "Text Editor" application (this is actually gedit) should show up (see below): 
 
-![](http://aeswiki.datasys.swri.edu/rositraining/Exercises/1.1.1?action=AttachFile&do=get&target=5.png)
+![](../../_static/ubuntu_start_application.png)
 
 Click on the application. The text editor window should show up on the screen, and the text editor icon should show up on the launcher bar on the left-hand side (see below):
 
-![](http://aeswiki.datasys.swri.edu/rositraining/Exercises/1.1.1?action=AttachFile&do=get&target=6.png)
+![](../../_static/ubuntu_application_pin.png)
 
 1. Right-click on the text editor launch icon, and select "Lock to Launcher".
 2. Close the gedit window. The launcher icon should remain after the window closes.
