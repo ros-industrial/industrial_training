@@ -16,6 +16,7 @@
 #include <pcl/filters/extract_indices.h>
 #include <pcl/segmentation/extract_clusters.h>
 #include <pcl/kdtree/kdtree_flann.h>
+#include <pcl/common/common.h>
 
 #include <visualization_msgs/Marker.h>
 #include <pcl/filters/crop_box.h>
@@ -28,6 +29,7 @@
 
 // Needed to return a Pose message
 #include <geometry_msgs/Pose.h>
+#include <geometry_msgs/Point.h>
 // Needed for ROS Service
 #include <pick_and_place_perception/GetTargetPose.h>
 
@@ -390,6 +392,18 @@ public:
     //ENTER CODE HERE: Set rot y
     //ENTER CODE HERE: Set rot z
     part_pose.orientation.w = 1;
+
+    /* ========================================
+     * FIND BOUNDING BOX
+     * ========================================*/
+    Eigen::Vector4f min_pt, max_pt;
+    pcl::getMinMax3D(*cloud_planeTop, min_pt, max_pt);
+    res.min_pt.x = min_pt[0];
+    res.min_pt.y = min_pt[1];
+    res.min_pt.z = min_pt[2];
+    res.max_pt.x = max_pt[0];
+    res.max_pt.y = max_pt[1];
+    res.max_pt.z = max_pt[2];
 
     // Store the returned values of the service as defined in the .srv file
     res.target_pose = part_pose;
