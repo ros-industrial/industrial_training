@@ -10,19 +10,5 @@ roslaunch pick_and_place pick_and_place.launch
 
 Rviz will display all the workcell components including the robot in its default position. 
 
-Look in ```test_bed_core_node.cpp```. This code is already complete. A service to find the pick target is run, and a TrajOpt problem is setup to perform a pick and place operation. while, the service to find the pick target will run. it will not find a pick and the pathplanning will not run. These will be the next tasks.
+Look in ```test_bed_core_node.cpp```. This code is already complete. A service to find the pick target is run, and a TrajOpt problem is setup to perform a pick and place operation. While the service to find the pick target will run, it will not find a pick and the pathplanning will not run. These will be the next tasks.
 
-## Setup for real sensor and simulated robot
-```
-roslaunch pick_and_place pick_and_place.launch sim_sensor:=false
-```
-
-## Setup for real robot and simulated sensor data
-```
-roslaunch pick_and_place pick_and_place.launch sim_robot:=false robot_ip:= [robot ip]
-```
-
-## Setup for real robot and real sensor
-```
-roslaunch pick_and_place pick_and_place.launch sim_robot:=false robot_ip:= [robot ip] sim_sensor:=false sim_gripper:=false
-```

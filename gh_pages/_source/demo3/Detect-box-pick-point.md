@@ -32,15 +32,17 @@ Additionally, it defines adds some associated rosparams to the parameter server.
 We first review the ROS service definition. This file will define the service inputs and outputs. 
 
 * In the pick_and_place_perception/srv directory, open GetTargetPose.srv
-* Ensure that the following code is in this file. Note that the service request is empty, and it returns a boolean flag and a ROS message of the geometry_msgs/Pose type.
+* Ensure that the following code is in this file. Note that the service request is empty. It returns a boolean flag, a ROS message of the geometry_msgs/Pose type for the location of the center of the top of the box, and two geometry_msgs/Pose messages that define a bounding box around the top of the box.
 
 
 ```
 # Request - empty
 ---
-# Response - service returns a bool and a geometry_msgs/Pose
+# Response - service returns a bool, a geometry_msgs/Pose, and 2 geometry_msgs/Points
 bool succeeded
 geometry_msgs/Pose target_pose
+geometry_msgs/Point min_pt
+geometry_msgs/Point max_pt
 
 ``` 
 ## Explore perception_node architecture
