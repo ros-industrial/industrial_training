@@ -125,7 +125,6 @@ Session 5 - Path Planning and Building a Perception Pipeline
 
 Session 6 - Documentation, Unit Tests, ROS Utilities and Debugging ROS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-:download:`Slides <_downloads/slides/ROS-I Advanced Developers Training - Session 5.pdf>`
 
 .. toctree::
    :maxdepth: 1
