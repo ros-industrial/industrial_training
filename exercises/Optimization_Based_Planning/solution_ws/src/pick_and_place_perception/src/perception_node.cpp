@@ -16,11 +16,11 @@
 #include <pcl/filters/extract_indices.h>
 #include <pcl/segmentation/extract_clusters.h>
 #include <pcl/kdtree/kdtree_flann.h>
+#include <pcl/common/common.h>
 
 #include <visualization_msgs/Marker.h>
 #include <pcl/filters/crop_box.h>
 #include <pcl/filters/statistical_outlier_removal.h>
-#include <pcl/common/common.h>
 
 // polygonal segmentation
 #include <pcl/segmentation/extract_polygonal_prism_data.h>
@@ -406,9 +406,9 @@ public:
     res.max_pt.y = max_pt[1];
     res.max_pt.z = max_pt[2];
 
-
     // Store the returned values of the service as defined in the .srv file
     res.target_pose = part_pose;
+
     ROS_INFO("Perception service returning");
 
     // Publish the pick point as a TF for visualization

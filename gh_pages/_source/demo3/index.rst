@@ -14,7 +14,6 @@ Application Demo 3 - Optimization Based Planning
    Demo 3.7 - Create Pick and Place Helpers <Create-pick-place-helpers.md>
    Demo 3.8 - Moving to Hardware: Setting up a 3D sensor <Setting-up-a-3D-sensor.md>
    Demo 3.9 - Moving to Hardware: Setting up a robot <Setting-up-a-robot.md>
-   Demo 3.8 - Moving to Hardware: Operating the gripper <Open-gripper.md>
 
 
 

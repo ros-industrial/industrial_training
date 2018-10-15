@@ -1,6 +1,6 @@
 # Introduction to Trajopt
 ## What is TrajOpt?
-Trajopt is an optimization based path planner that utilizes Sequential Quadratic Programming. It models the path planning problem as an optimization problem of the costs and constraints provided by the user, |then iteratively attempts to converge to a global minimum (though with no guarantee).
+Trajopt is an optimization based path planner that utilizes Sequential Quadratic Programming. It models the path planning problem as an optimization problem of the costs and constraints provided by the user, then iteratively attempts to converge to a global minimum (though with no guarantee).
 
 
 ## Why use TrajOpt?
@@ -48,7 +48,6 @@ Information detailing what initial trajectory Trajopt should start from.
         Array containing the initialization information.
             - If doing C++, must contain a trajectory with all joints over all timesteps.
             - If using Json, you should only provide what is needed given the type you chose.
-            - What about Python?
 
 ### 3. Optimization Info (optional)
 
@@ -78,7 +77,7 @@ At its core, trajopt does nothing more than take some cost functions and minimiz
 
 In updating the trajectory, trajopt treats both costs and constraints as costs. If it fails to satisfy constraints, then it will increase the weight (penalty) of the constraints in an effort to have them overcome the weight of the costs to move the trajectory toward satisfying the constraints. It will increase the penalty applied to constraint violations a finite number of times, so if the weights of your costs are too high, it may fail produce a result that satisfies constraints.
 
-Furthermore, it should be noted that the result will be organized into a m x n matrix, where m is the number of timesteps and n is the number of joints. The ith row then represents the joint state at the ith timestep of the trajectory.
+Furthermore, it should be noted that the result will be organized into a m x n matrix, where m is the number of timesteps and n is the number of joints + a column for time. The ith row then represents the joint state at the ith timestep of the trajectory.
 
 
 
