@@ -1,6 +1,8 @@
 #pragma once
 #include <tesseract_planning/trajopt/trajopt_planner.h>
 #include <tesseract_ros/kdl/kdl_env.h>
+#include <trajopt/problem_description.hpp>
+
 
 /**
  * @brief The TrajoptPickAndPlaceConstructor class
@@ -34,6 +36,15 @@ public:
    */
   void addJointVelCost(trajopt::ProblemConstructionInfo& pci, double coeff);
 
+  void addJointAccelCost(trajopt::ProblemConstructionInfo& pci, double coeff);
+
+  /**
+   * @brief addTotalTimeCost
+   * @param pci
+   * @param coeff
+   */
+  void addTotalTimeCost(trajopt::ProblemConstructionInfo& pci, double coeff);
+
   /**
    * @brief Adds a collision cost to a subset of the time steps in a trajopt problem construction info
    * @param pci - The trajopt problem construction info to which the cost is added
@@ -44,7 +55,6 @@ public:
    */
   void
   addCollisionCost(trajopt::ProblemConstructionInfo& pci, double dist_pen, double coeff, int first_step, int last_step);
-
   /**
    * @brief Adds a linear move to the problem construction info
    * @param pci - The trajopt problem construction info to which the move is added
@@ -85,4 +95,13 @@ public:
                                                Eigen::Isometry3d& approach_pose,
                                                Eigen::Isometry3d& final_pose,
                                                int steps_per_phase);
+
+  /**
+   * @brief Uses trajopt to calculate inverse kinematics
+   * Calculates the IK solution that is closest to the current joint position. This is useful for creating a
+   * STRAIGHT_LINE constraint
+   * @param end_pose - The pose of the point for which the IK is desired.
+   * @return
+   */
+  Eigen::VectorXd numericalIK(Eigen::Isometry3d& end_pose);
 };

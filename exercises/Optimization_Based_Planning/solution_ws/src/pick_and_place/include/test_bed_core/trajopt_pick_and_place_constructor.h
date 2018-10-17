@@ -95,4 +95,13 @@ public:
                                                Eigen::Isometry3d& approach_pose,
                                                Eigen::Isometry3d& final_pose,
                                                int steps_per_phase);
+
+  /**
+   * @brief Uses trajopt to calculate inverse kinematics
+   * Calculates the IK solution that is closest to the current joint position. This is useful for creating a
+   * STRAIGHT_LINE constraint
+   * @param end_pose - The pose of the point for which the IK is desired.
+   * @return
+   */
+  Eigen::VectorXd numericalIK(Eigen::Isometry3d& end_pose);
 };
