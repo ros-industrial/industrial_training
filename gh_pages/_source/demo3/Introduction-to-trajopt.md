@@ -13,6 +13,11 @@ Trajopt is an optimization based path planner that utilizes Sequential Quadratic
 
 ## Basic Usage
 
+The typical workflow of using Trajopt for pathplanning is as follows.
+1) Create a ProblemConstructionInfo. This can either be loaded from a json file or generated directly in C++. This contains information about the costs/constraints desired, the robot, and the planning environment.
+2) Convert ProblemConstructionInfo to a TrajOptProb using ConstructProblem. This constructs the optimization into a standardized format used by the optimizers.
+3) Optimize. The optimizer will optimize a `num_timesteps x num_joints + 1` matrix to minimize the costs and constraints. Each column represents a joint with the exception of the last one which is time.
+
 ### 1. Basic Info
 
 Basic information for the planner
@@ -69,6 +74,18 @@ These are the functions that are needed to be driven to ~0. Failure to satisfy t
 2. Optimize
 
 3. View results
+
+## Performance
+
+There are several things that you can do to help speed the trajopt optimization.
+
+1) Be sure to build your project in Release mode. Using the command line this is `catkin build --cmake-args -DCMAKE_BUILD_TYPE=Release"` In Qt Creator, the build type option is under the projects tab.
+
+2) Set the Trajopt logging level higher than Info before optimization. Do this with 
+`#include <trajopt_utils/logging.hpp>
+trajopt::gLogLevel = util::LevelWarn;'`
+
+3) Change optimization parameters. The parameters in BasicTrustRegionSQPParameters can effect both the speed with which the optimization converges and the point at which the optimization triggers as having converged.
 
 Notes
 -----
