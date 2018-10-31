@@ -15,6 +15,9 @@
 #include <control_msgs/FollowJointTrajectoryAction.h>
 #include <iiwa_msgs/JointPosition.h>
 
+#include <trajopt/file_write_callback.hpp>
+#include <trajopt/plot_callback.hpp>
+
 int main(int argc, char** argv)
 {
   //////////////////////
@@ -37,6 +40,8 @@ int main(int argc, char** argv)
   ros::Publisher test_pub = nh.advertise<trajectory_msgs::JointTrajectory>("joint_traj", 10);
 
   bool plan = true;
+  bool plotting_cb = false;
+  bool file_write_cb = false;
 
   /////////////
   /// SETUP ///
@@ -85,15 +90,12 @@ int main(int argc, char** argv)
   env->setState(joint_states);
 
   double box_side, box_x, box_y;
-//  nh.getParam("box_side", box_side);
+  //  nh.getParam("box_side", box_side);
   nh.getParam("box_x", box_x);
   nh.getParam("box_y", box_y);
 
   std::string box_parent_link;
   nh.getParam("box_parent_link", box_parent_link);
-
-
-
 
   ////////////
   /// PICK ///
@@ -110,7 +112,7 @@ int main(int argc, char** argv)
     plan &= srv.response.succeeded;
     box_size_x = srv.response.max_pt.x - srv.response.min_pt.x;
     box_size_y = srv.response.max_pt.y - srv.response.min_pt.y;
-    box_size_z = srv.response.max_pt.z - 0.77153;  //Subtract off table height
+    box_size_z = srv.response.max_pt.z - 0.77153;  // Subtract off table height
   }
   else
   {
@@ -126,7 +128,7 @@ int main(int argc, char** argv)
   box->size[0] = box_size_x;
   box->size[1] = box_size_y;
   box->size[2] = box_size_z;
-//  box_side = 0.14;
+  //  box_side = 0.14;
 
   obj->name = "box";
   obj->visual.shapes.push_back(box);
@@ -139,9 +141,9 @@ int main(int argc, char** argv)
 
   tesseract::AttachedBodyInfo attached_body;
   Eigen::Isometry3d object_pose = Eigen::Isometry3d::Identity();
-//  object_pose.translation() += Eigen::Vector3d(box_x, box_y, box_side / 2.0);
+  //  object_pose.translation() += Eigen::Vector3d(box_x, box_y, box_side / 2.0);
   object_pose = world_to_box;
-  object_pose.translation() += Eigen::Vector3d(0, 0, -0.77153 - box_size_z / 2.0); //convert to world frame
+  object_pose.translation() += Eigen::Vector3d(0, 0, -0.77153 - box_size_z / 2.0);  // convert to world frame
   attached_body.object_name = "box";
   attached_body.parent_link_name = box_parent_link;
   attached_body.transform = object_pose;
@@ -152,7 +154,6 @@ int main(int argc, char** argv)
   Eigen::VectorXd init_pos = env->getCurrentJointValues();
   init_pos.conservativeResize(init_pos.rows() + 1);
   plotter.plotTrajectory(env->getJointNames(), init_pos);
-
 
   if (plan == true)
   {
@@ -168,22 +169,49 @@ int main(int argc, char** argv)
     std::string end_effector = "iiwa_link_ee";
     TrajoptPickAndPlaceConstructor prob_constructor(env, manip, end_effector, "box");
 
-    //Define the final pose
+    // Define the final pose
     Eigen::Isometry3d final_pose;
     final_pose.linear() = orientation.matrix();
     final_pose.translation() = world_to_box.translation();
     final_pose.translation() += Eigen::Vector3d(0.0, 0.0, 0.040);  // Temporarily add some for the gripper
 
-    //Define the approach pose
+    // Define the approach pose
     Eigen::Isometry3d approach_pose = final_pose;
     approach_pose.translation() += Eigen::Vector3d(0.0, 0.0, 0.15);
 
-    //Create and solve pick problem
+    // Create and solve pick problem
     trajopt::TrajOptProbPtr pick_prob =
         prob_constructor.generatePickProblem(approach_pose, final_pose, steps_per_phase);
-    planner.solve(pick_prob, planning_response);
+
+    // Set the parameters
+    trajopt::BasicTrustRegionSQPParameters params;
+    params.max_iter = 500;
+
+    // Define Callbacks
+    std::vector<trajopt::Optimizer::Callback> callbacks;
+    // Create Plot Callback
+    if (plotting_cb)
+    {
+      tesseract::tesseract_ros::ROSBasicPlottingPtr plotter_ptr(new tesseract::tesseract_ros::ROSBasicPlotting(env));
+      callbacks.push_back(PlotCallback(*pick_prob, plotter_ptr));
+    }
+    // Create file write callback discarding any of the file's current contents
+    std::shared_ptr<std::ofstream> stream_ptr(new std::ofstream);
+    if (file_write_cb)
+    {
+      std::string path = ros::package::getPath("pick_and_place") + "/file_output_pick.csv";
+      stream_ptr->open(path, std::ofstream::out | std::ofstream::trunc);
+      callbacks.push_back(trajopt::WriteCallback(stream_ptr, pick_prob));
+    }
+
+    // Solve problem
+    planner.solve(planning_response,pick_prob, params, callbacks);
+
+    if (file_write_cb)
+      stream_ptr->close();
+
     plotter.plotTrajectory(env->getJointNames(), planning_response.trajectory);
-    std::cout << planning_response.trajectory <<'\n';
+    std::cout << planning_response.trajectory << '\n';
 
     // Get transform b/n world and the parent link of the box transform
     tf::StampedTransform world_to_box_parent_link_tf;
@@ -204,15 +232,14 @@ int main(int argc, char** argv)
     ROS_ERROR("Press enter to continue");
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-
     // detach the simulated box from the world and attach to the end effector
     env->detachBody("box");
 
     attached_body.parent_link_name = end_effector;
-//    attached_body.transform.translation() = Eigen::Vector3d(translation_err.x(), translation_err.y(), box_side / 2.0);
-//    attached_body.transform = world_to_box;
-//    attached_body.transform.translation() += Eigen::Vector3d(0, 0, -0.77153 - box_side / 2.0);
-    attached_body.transform.translation() = Eigen::Vector3d(0, 0, box_size_z/2.0 + 0.040);
+    //    attached_body.transform.translation() = Eigen::Vector3d(translation_err.x(), translation_err.y(), box_side
+    //    / 2.0); attached_body.transform = world_to_box; attached_body.transform.translation() += Eigen::Vector3d(0, 0,
+    //    -0.77153 - box_side / 2.0);
+    attached_body.transform.translation() = Eigen::Vector3d(0, 0, box_size_z / 2.0 + 0.040);
     attached_body.touch_links = { "iiwa_link_ee", end_effector };  // allow the box to contact the end effector
     attached_body.touch_links = { "workcell_base",
                                   end_effector };  // allow the box to contact the table (since it's sitting on it)
@@ -222,8 +249,6 @@ int main(int argc, char** argv)
     /////////////
     /// PLACE ///
     /////////////
-
-
 
     // Set the current state to the last state of the trajectory
     env->setState(
@@ -251,15 +276,42 @@ int main(int argc, char** argv)
     tesseract::tesseract_planning::PlannerResponse planning_response_place;
     trajopt::TrajOptProbPtr place_prob =
         prob_constructor.generatePlaceProblem(retreat_pose, approach_pose, final_pose, steps_per_phase);
-    planner.solve(place_prob, planning_response_place);
+
+    // Set the parameters
+    trajopt::BasicTrustRegionSQPParameters params_place;
+    params_place.max_iter = 500;
+
+    // Define Callbacks
+    std::vector<trajopt::Optimizer::Callback> callbacks_place;
+    // Create Plot Callback
+    if (plotting_cb)
+    {
+      tesseract::tesseract_ros::ROSBasicPlottingPtr plotter_ptr(new tesseract::tesseract_ros::ROSBasicPlotting(env));
+      callbacks_place.push_back(PlotCallback(*pick_prob, plotter_ptr));
+    }
+    // Create file write callback discarding any of the file's current contents
+    std::shared_ptr<std::ofstream> stream_ptr_place(new std::ofstream);
+    if (file_write_cb)
+    {
+      std::string path = ros::package::getPath("pick_and_place") + "/file_output_place.csv";
+      stream_ptr->open(path, std::ofstream::out | std::ofstream::trunc);
+      callbacks_place.push_back(trajopt::WriteCallback(stream_ptr_place, pick_prob));
+    }
+
+    // Solve problem
+    planner.solve(planning_response_place, place_prob, params_place, callbacks_place);
+
+    if (file_write_cb)
+      stream_ptr_place->close();
 
     // plot the trajectory in Rviz
     plotter.plotTrajectory(planning_response_place.joint_names, planning_response_place.trajectory);
-    std::cout << planning_response_place.trajectory <<'\n';
+    std::cout << planning_response_place.trajectory << '\n';
 
     trajectory_msgs::JointTrajectory traj_msg4;
     ros::Duration t2(0.25);
-    traj_msg4 = trajArrayToJointTrajectoryMsg(planning_response_place.joint_names, planning_response_place.trajectory, t2);
+    traj_msg4 =
+        trajArrayToJointTrajectoryMsg(planning_response_place.joint_names, planning_response_place.trajectory, t2);
     test_pub.publish(traj_msg4);
 
     ///////////////
@@ -278,7 +330,12 @@ int main(int argc, char** argv)
         std::cout << "Executing... \n";
 
         // Create action client to send trajectories
-        actionlib::SimpleActionClient<control_msgs::FollowJointTrajectoryAction> execution_client("iiwa/PositionJointInterface_trajectory_controller/follow_joint_trajectory",
+        actionlib::SimpleActionClient<control_msgs::FollowJointTrajectoryAction> execution_client("iiwa/"
+                                                                                                  "PositionJointInterfa"
+                                                                                                  "ce_trajectory_"
+                                                                                                  "controller/"
+                                                                                                  "follow_joint_"
+                                                                                                  "trajectory",
                                                                                                   true);
         execution_client.waitForServer();
 
@@ -287,13 +344,12 @@ int main(int argc, char** argv)
         ros::Duration t(0.25);
         traj_msg = trajArrayToJointTrajectoryMsg(planning_response.joint_names, planning_response.trajectory, t);
 
-
         // Create action message
         control_msgs::FollowJointTrajectoryGoal trajectory_action;
         trajectory_action.trajectory = traj_msg;
-//        trajectory_action.trajectory.header.frame_id="world";
-//        trajectory_action.trajectory.header.stamp = ros::Time(0);
-//        trajectory_action.goal_time_tolerance = ros::Duration(1.0);
+        //        trajectory_action.trajectory.header.frame_id="world";
+        //        trajectory_action.trajectory.header.stamp = ros::Time(0);
+        //        trajectory_action.goal_time_tolerance = ros::Duration(1.0);
         // May need to update other tolerances as well.
 
         // Send to hardware
