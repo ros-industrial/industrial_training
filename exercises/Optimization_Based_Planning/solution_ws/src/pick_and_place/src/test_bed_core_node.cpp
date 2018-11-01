@@ -29,19 +29,20 @@ int main(int argc, char** argv)
 
   int steps_per_phase;
   std::string world_frame, pick_frame;
-  bool sim_robot;
+  bool sim_robot, plotting_cb, file_write_cb;
+
   pnh.param<int>("steps_per_phase", steps_per_phase, 10);
   nh.param<std::string>("world_frame", world_frame, "world");
   nh.param<std::string>("pick_frame", pick_frame, "part");
   nh.param<bool>("/pick_and_place_node/sim_robot", sim_robot, true);
+  nh.param<bool>("/pick_and_place_node/plotting", plotting_cb, false);
+  nh.param<bool>("/pick_and_place_node/file_write_cb", file_write_cb, false);
 
   tf::TransformListener listener;
   ros::ServiceClient find_pick_client = nh.serviceClient<pick_and_place_perception::GetTargetPose>("find_pick");
   ros::Publisher test_pub = nh.advertise<trajectory_msgs::JointTrajectory>("joint_traj", 10);
 
   bool plan = true;
-  bool plotting_cb = false;
-  bool file_write_cb = false;
 
   /////////////
   /// SETUP ///
@@ -51,6 +52,7 @@ int main(int argc, char** argv)
   std::string urdf_xml_string, srdf_xml_string;
   nh.getParam("robot_description", urdf_xml_string);
   nh.getParam("robot_description_semantic", srdf_xml_string);
+
   urdf::ModelInterfaceSharedPtr urdf_model = urdf::parseURDF(urdf_xml_string);
 
   srdf::ModelSharedPtr srdf_model = srdf::ModelSharedPtr(new srdf::Model);
@@ -205,7 +207,7 @@ int main(int argc, char** argv)
     }
 
     // Solve problem
-    planner.solve(planning_response,pick_prob, params, callbacks);
+    planner.solve(planning_response, pick_prob, params, callbacks);
 
     if (file_write_cb)
       stream_ptr->close();
@@ -287,7 +289,7 @@ int main(int argc, char** argv)
     if (plotting_cb)
     {
       tesseract::tesseract_ros::ROSBasicPlottingPtr plotter_ptr(new tesseract::tesseract_ros::ROSBasicPlotting(env));
-      callbacks_place.push_back(PlotCallback(*pick_prob, plotter_ptr));
+      callbacks_place.push_back(PlotCallback(*place_prob, plotter_ptr));
     }
     // Create file write callback discarding any of the file's current contents
     std::shared_ptr<std::ofstream> stream_ptr_place(new std::ofstream);
@@ -295,7 +297,7 @@ int main(int argc, char** argv)
     {
       std::string path = ros::package::getPath("pick_and_place") + "/file_output_place.csv";
       stream_ptr->open(path, std::ofstream::out | std::ofstream::trunc);
-      callbacks_place.push_back(trajopt::WriteCallback(stream_ptr_place, pick_prob));
+      callbacks_place.push_back(trajopt::WriteCallback(stream_ptr_place, place_prob));
     }
 
     // Solve problem

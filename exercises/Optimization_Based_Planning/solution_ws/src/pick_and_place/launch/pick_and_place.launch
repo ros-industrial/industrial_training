@@ -9,6 +9,8 @@
     <arg name="box_x" default="0.15"/>
     <arg name="box_y" default="0.4"/>
     <arg name="box_parent_link" default="workcell_base"/>
+    <arg name="plotting" default="false" />
+    <arg name="file_write_cb" default="false" />
 
     <!-- Bringup the robot -->
     <include file="$(find pick_and_place)/launch/bringup_robot.launch" >
@@ -67,6 +69,8 @@
     <!-- Launch planner node -->
     <node name="pick_and_place_node" pkg="pick_and_place" type="pick_and_place_node" output="screen">
             <param name="sim_robot" value="$(arg sim_robot)"/>
+            <param name="plotting" value="$(arg plotting)"/>
+            <param name="file_write_cb" value="$(arg file_write_cb)" />
     </node>
 
     <!-- Launch visualization -->
