@@ -101,7 +101,7 @@ void TrajoptPickAndPlaceConstructor::addCollisionCost(trajopt::ProblemConstructi
   /* Fill Code:
        . Define the cost name
        . Define the term type (This is a cost)
-       . Define this cost as not continuous
+       . Define this cost as continuous
        . Define the first time step
        . Define the last time step
        . Set the cost gap to be 1
@@ -110,7 +110,7 @@ void TrajoptPickAndPlaceConstructor::addCollisionCost(trajopt::ProblemConstructi
   /* ========  ENTER CODE HERE ======== */
   collision->name = "collision";
   collision->term_type = TT_COST;
-  collision->continuous = false;
+  collision->continuous = true;
   collision->first_step = first_step;
   collision->last_step = last_step;
   collision->gap = 1;
