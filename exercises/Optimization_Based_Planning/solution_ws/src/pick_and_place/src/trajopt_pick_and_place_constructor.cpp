@@ -288,7 +288,7 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePlaceProblem(Isometry3d& 
 
   this->addLinearMotion(pci, approach_pose, final_pose, steps_per_phase, steps_per_phase * 2);
 
-  this->addCollisionCost(pci, 0.025, 40, steps_per_phase, steps_per_phase * 2);
+  this->addCollisionCost(pci, 0.025, 40, steps_per_phase-1, steps_per_phase * 2+1);
 
   TrajOptProbPtr result = ConstructProblem(pci);
   return result;
