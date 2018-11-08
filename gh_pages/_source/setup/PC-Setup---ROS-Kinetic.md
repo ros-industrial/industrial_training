@@ -5,7 +5,7 @@
 The VM method is the most convenient method of utilizing the training materials:
 
  1. [Download virtual box](https://www.virtualbox.org/wiki/Downloads)
- 1. [Download ROS Kinetic training VM](https://rosi-images.datasys.swri.edu/kinetic/latest.ova)
+ 1. [Download ROS Kinetic training VM](https://rosi-images.datasys.swri.edu)
  1. [Import image into virtual box](https://www.virtualbox.org/manual/ch01.html#ovf)
  1. Start virtual machine
  1. Log into virtual machine, user: ```ros-industrial```, pass: ```rosindustrial``` (no spaces or hyphens)
