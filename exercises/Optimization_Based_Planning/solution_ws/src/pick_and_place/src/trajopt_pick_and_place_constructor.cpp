@@ -19,7 +19,7 @@ TrajoptPickAndPlaceConstructor::TrajoptPickAndPlaceConstructor(tesseract::BasicE
 
 void TrajoptPickAndPlaceConstructor::addInitialJointPosConstraint(trajopt::ProblemConstructionInfo& pci)
 {
-  std::shared_ptr<JointConstraintInfo> start_constraint = std::shared_ptr<JointConstraintInfo>(new JointConstraintInfo);
+  std::shared_ptr<JointPosTermInfo> start_constraint = std::shared_ptr<JointPosTermInfo>(new JointPosTermInfo);
 
   /* Fill Code:
        . Define the term type (This is a constraint)
@@ -97,7 +97,7 @@ void TrajoptPickAndPlaceConstructor::addCollisionCost(trajopt::ProblemConstructi
                                                       int first_step,
                                                       int last_step)
 {
-  std::shared_ptr<CollisionCostInfo> collision(new CollisionCostInfo);
+  std::shared_ptr<CollisionTermInfo> collision(new CollisionTermInfo);
   /* Fill Code:
        . Define the cost name
        . Define the term type (This is a cost)
@@ -145,7 +145,7 @@ void TrajoptPickAndPlaceConstructor::addLinearMotion(trajopt::ProblemConstructio
          . Set the pose xyz translation
     */
     /* ========  ENTER CODE HERE ======== */
-    std::shared_ptr<StaticPoseCostInfo> pose_constraint = std::shared_ptr<StaticPoseCostInfo>(new StaticPoseCostInfo);
+    std::shared_ptr<CartPoseTermInfo> pose_constraint = std::shared_ptr<CartPoseTermInfo>(new CartPoseTermInfo);
     pose_constraint->term_type = TT_CNT;
     pose_constraint->link = ee_link_;
     pose_constraint->timestep = i + first_time_step;
@@ -313,7 +313,7 @@ Eigen::VectorXd TrajoptPickAndPlaceConstructor::numericalIK(Isometry3d& end_pose
   this->addJointVelCost(pci_ik, 10);
 
   // Set static pose constraint
-  std::shared_ptr<StaticPoseCostInfo> pose_constraint = std::shared_ptr<StaticPoseCostInfo>(new StaticPoseCostInfo);
+  std::shared_ptr<CartPoseTermInfo> pose_constraint = std::shared_ptr<CartPoseTermInfo>(new CartPoseTermInfo);
   pose_constraint->term_type = TT_CNT;
   pose_constraint->link = ee_link_;
   pose_constraint->timestep = 1;
