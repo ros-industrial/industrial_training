@@ -17,6 +17,7 @@
 
 #include <trajopt/file_write_callback.hpp>
 #include <trajopt/plot_callback.hpp>
+#include <trajopt_utils/logging.hpp>
 
 int main(int argc, char** argv)
 {
@@ -43,6 +44,9 @@ int main(int argc, char** argv)
   ros::Publisher test_pub = nh.advertise<trajectory_msgs::JointTrajectory>("joint_traj", 10);
 
   bool plan = true;
+
+  // Set Log Level
+  util::gLogLevel = util::LevelInfo;
 
   /////////////
   /// SETUP ///
@@ -153,16 +157,16 @@ int main(int argc, char** argv)
   env->attachBody(attached_body);
 
   tesseract::tesseract_ros::ROSBasicPlotting plotter(env);
-  Eigen::VectorXd init_pos = env->getCurrentJointValues();
-  init_pos.conservativeResize(init_pos.rows() + 1);
-  plotter.plotTrajectory(env->getJointNames(), init_pos);
+  Eigen::RowVectorXd init_pos = env->getCurrentJointValues();
+  //  init_pos.conservativeResize(init_pos.rows() + 1);
+  plotter.plotTrajectory(env->getJointNames(), init_pos.leftCols(env->getJointNames().size()));
 
   if (plan == true)
   {
     ROS_ERROR("Press enter to continue");
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-    tesseract::tesseract_planning::TrajoptPlanner planner;
+    tesseract::tesseract_planning::TrajOptPlanner planner;
     tesseract::tesseract_planning::PlannerResponse planning_response;
 
     Eigen::Quaterniond orientation(0.0, 0.0, 1.0, 0.0);
@@ -186,16 +190,14 @@ int main(int argc, char** argv)
         prob_constructor.generatePickProblem(approach_pose, final_pose, steps_per_phase);
 
     // Set the parameters
-    trajopt::BasicTrustRegionSQPParameters params;
-    params.max_iter = 500;
+    tesseract::tesseract_planning::TrajOptPlannerConfig config(pick_prob);
+    config.params.max_iter = 500;
 
-    // Define Callbacks
-    std::vector<trajopt::Optimizer::Callback> callbacks;
     // Create Plot Callback
     if (plotting_cb)
     {
       tesseract::tesseract_ros::ROSBasicPlottingPtr plotter_ptr(new tesseract::tesseract_ros::ROSBasicPlotting(env));
-      callbacks.push_back(PlotCallback(*pick_prob, plotter_ptr));
+      config.callbacks.push_back(PlotCallback(*pick_prob, plotter_ptr));
     }
     // Create file write callback discarding any of the file's current contents
     std::shared_ptr<std::ofstream> stream_ptr(new std::ofstream);
@@ -203,16 +205,16 @@ int main(int argc, char** argv)
     {
       std::string path = ros::package::getPath("pick_and_place") + "/file_output_pick.csv";
       stream_ptr->open(path, std::ofstream::out | std::ofstream::trunc);
-      callbacks.push_back(trajopt::WriteCallback(stream_ptr, pick_prob));
+      config.callbacks.push_back(trajopt::WriteCallback(stream_ptr, pick_prob));
     }
 
     // Solve problem
-    planner.solve(planning_response, pick_prob, params, callbacks);
+    planner.solve(planning_response, config);
 
     if (file_write_cb)
       stream_ptr->close();
 
-    plotter.plotTrajectory(env->getJointNames(), planning_response.trajectory);
+    plotter.plotTrajectory(env->getJointNames(), planning_response.trajectory.leftCols(env->getJointNames().size()));
     std::cout << planning_response.trajectory << '\n';
 
     // Get transform b/n world and the parent link of the box transform
@@ -253,9 +255,7 @@ int main(int argc, char** argv)
     /////////////
 
     // Set the current state to the last state of the trajectory
-    env->setState(
-        env->getJointNames(),
-        planning_response.trajectory.block(steps_per_phase * 2 - 1, 0, 1, env->getJointNames().size()).transpose());
+    env->setState(env->getJointNames(), planning_response.trajectory.bottomRows(1).transpose());
 
     // Pick up box
     Eigen::Isometry3d retreat_pose = approach_pose;
@@ -280,16 +280,14 @@ int main(int argc, char** argv)
         prob_constructor.generatePlaceProblem(retreat_pose, approach_pose, final_pose, steps_per_phase);
 
     // Set the parameters
-    trajopt::BasicTrustRegionSQPParameters params_place;
-    params_place.max_iter = 500;
+    tesseract::tesseract_planning::TrajOptPlannerConfig config_place(place_prob);
+    config_place.params.max_iter = 500;
 
-    // Define Callbacks
-    std::vector<trajopt::Optimizer::Callback> callbacks_place;
     // Create Plot Callback
     if (plotting_cb)
     {
       tesseract::tesseract_ros::ROSBasicPlottingPtr plotter_ptr(new tesseract::tesseract_ros::ROSBasicPlotting(env));
-      callbacks_place.push_back(PlotCallback(*place_prob, plotter_ptr));
+      config_place.callbacks.push_back(PlotCallback(*place_prob, plotter_ptr));
     }
     // Create file write callback discarding any of the file's current contents
     std::shared_ptr<std::ofstream> stream_ptr_place(new std::ofstream);
@@ -297,11 +295,11 @@ int main(int argc, char** argv)
     {
       std::string path = ros::package::getPath("pick_and_place") + "/file_output_place.csv";
       stream_ptr->open(path, std::ofstream::out | std::ofstream::trunc);
-      callbacks_place.push_back(trajopt::WriteCallback(stream_ptr_place, place_prob));
+      config_place.callbacks.push_back(trajopt::WriteCallback(stream_ptr_place, place_prob));
     }
 
     // Solve problem
-    planner.solve(planning_response_place, place_prob, params_place, callbacks_place);
+    planner.solve(planning_response_place, config_place);
 
     if (file_write_cb)
       stream_ptr_place->close();
