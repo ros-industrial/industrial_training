@@ -57,6 +57,7 @@ int main(int argc, char** argv)
 
   tf::TransformListener listener;
 
+  // TODO: Replace with xacro
   std::string urdf_file = pnh.param<std::string>("urdf_path",
                                                  ros::package::getPath("pick_and_place_support") + "/urdf/"
                                                                                                    "pick_and_place."

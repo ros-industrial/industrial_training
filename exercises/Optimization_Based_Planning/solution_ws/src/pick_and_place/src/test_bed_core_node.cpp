@@ -305,7 +305,7 @@ int main(int argc, char** argv)
       stream_ptr_place->close();
 
     // plot the trajectory in Rviz
-    plotter.plotTrajectory(planning_response_place.joint_names, planning_response_place.trajectory);
+    plotter.plotTrajectory(env->getJointNames(), planning_response_place.trajectory.leftCols(env->getJointNames().size()));
     std::cout << planning_response_place.trajectory << '\n';
 
     trajectory_msgs::JointTrajectory traj_msg4;
