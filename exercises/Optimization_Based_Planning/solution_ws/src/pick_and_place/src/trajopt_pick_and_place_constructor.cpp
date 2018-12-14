@@ -167,6 +167,11 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePickProblem(Isometry3d& a
 
   // ================= Velocity cost =======================
   std::shared_ptr<JointVelTermInfo> jv(new JointVelTermInfo);
+
+  // Taken from iiwa documentation (radians/s) and scaled by 0.8
+  std::vector<double> vel_lower_lim{ 1.71*-0.8, 1.71*-0.8, 1.75*-0.8, 2.27*-0.8, 2.44*-0.8, 3.14*-0.8, 3.14*-0.8 };
+  std::vector<double> vel_upper_lim{ 1.71*0.8, 1.71*0.8, 1.75*0.8, 2.27*0.8, 2.44*0.8, 3.14*0.8, 3.14*0.8 };
+
   /* Fill Code:
        . Define the term time (This is a cost)
        . Define the first time step
@@ -176,6 +181,8 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePickProblem(Isometry3d& a
   /* ========  ENTER CODE HERE ======== */
   jv->targets = std::vector<double>(7, 0.0);
   jv->coeffs = std::vector<double>(7, 5.0);
+//  jv->lower_tols = vel_lower_lim;
+//  jv->upper_tols = vel_upper_lim;
   jv->term_type = TT_COST;
   jv->first_step = 0;
   jv->last_step = pci.basic_info.n_steps - 1;
@@ -214,7 +221,7 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePlaceProblem(Isometry3d& 
   /* ========  ENTER CODE HERE ======== */
   pci.basic_info.n_steps = steps_per_phase * 3;
   pci.basic_info.manip = manipulator_;
-  pci.basic_info.dt_lower_lim = 0.2;
+  pci.basic_info.dt_lower_lim = 0.005;
   pci.basic_info.dt_upper_lim = .5;
   pci.basic_info.start_fixed = true;
   pci.basic_info.use_time = false;
@@ -260,6 +267,11 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePlaceProblem(Isometry3d& 
 
   // ================= Velocity cost =======================
   std::shared_ptr<JointVelTermInfo> jv(new JointVelTermInfo);
+
+  // Taken from iiwa documentation (radians/s) and scaled by 0.8
+  std::vector<double> vel_lower_lim{ 1.71*-0.8, 1.71*-0.8, 1.75*-0.8, 2.27*-0.8, 2.44*-0.8, 3.14*-0.8, 3.14*-0.8 };
+  std::vector<double> vel_upper_lim{ 1.71*0.8, 1.71*0.8, 1.75*0.8, 2.27*0.8, 2.44*0.8, 3.14*0.8, 3.14*0.8 };
+
   /* Fill Code:
        . Define the term time (This is a cost)
        . Define the first time step
@@ -269,6 +281,8 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePlaceProblem(Isometry3d& 
   /* ========  ENTER CODE HERE ======== */
   jv->targets = std::vector<double>(7, 0.0);
   jv->coeffs = std::vector<double>(7, 5.0);
+//  jv->lower_tols = vel_lower_lim;
+//  jv->upper_tols = vel_upper_lim;
   jv->term_type = TT_COST;
   jv->first_step = 0;
   jv->last_step = pci.basic_info.n_steps - 1;

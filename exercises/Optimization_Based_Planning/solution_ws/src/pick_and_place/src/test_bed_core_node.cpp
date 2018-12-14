@@ -263,9 +263,9 @@ int main(int argc, char** argv)
     // Define some place locations.
     Eigen::Isometry3d middle_right_shelf, middle_left_shelf;
     middle_right_shelf.linear() = Eigen::Quaterniond(0, 0, 0.7071068, 0.7071068).matrix();
-    middle_right_shelf.translation() = Eigen::Vector3d(0.148856, 0.75085, 1.16);
+    middle_right_shelf.translation() = Eigen::Vector3d(0.148856, 0.73085, 1.16);
     middle_left_shelf.linear() = Eigen::Quaterniond(0, 0, 0.7071068, 0.7071068).matrix();
-    middle_left_shelf.translation() = Eigen::Vector3d(-0.148856, 0.75085, 1.16);
+    middle_left_shelf.translation() = Eigen::Vector3d(-0.148856, 0.73085, 1.16);
 
     // Set the target pose to middle_right_shelf
     final_pose = middle_left_shelf;
