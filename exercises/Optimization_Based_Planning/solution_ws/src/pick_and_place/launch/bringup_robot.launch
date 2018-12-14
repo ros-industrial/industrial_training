@@ -16,7 +16,7 @@
 
 
     <!-- Load Robot Model    -->
-    <param name="robot_description"  command="$(find xacro)/xacro --inorder $(find pick_and_place_support)/urdf/pick_and_place.urdf"/>
+    <param name="robot_description"  command="$(find xacro)/xacro --inorder $(find pick_and_place_support)/urdf/robot.urdf.xacro"/>
 
     <!-- Load Robot Semantic -->
     <param name="robot_description_semantic" textfile="$(find pick_and_place_support)/urdf/robot.srdf" />
