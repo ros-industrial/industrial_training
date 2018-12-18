@@ -15,7 +15,7 @@
 
 
  <!-- Launch calibration -->
- <node name = "calibration_node" pkg="pick_and_place_support" type="extrinsic_calibration_node" output="screen" >
+ <node name = "calibration_node" pkg="pick_and_place_support" type="extrinsic_calibration_node" output="screen" required="true">
     <param name="sim_robot" value="$(arg sim_robot)"/>
     <param name="targ_x" value="$(arg targ_x)"/>
     <param name="targ_y" value="$(arg targ_y)"/>

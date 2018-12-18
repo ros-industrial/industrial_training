@@ -14,13 +14,11 @@ The additional machine, having ROS installed, will be able to send and receive R
 We make use of ROS messages already available in a mint ROS distribution as well as custom ones, made to work with the KUKA arm (*iiwa_msgs*).    
 A user is then able to manipulate the messages received from the robot and to send new ones as commands to it, simply within C++ or python code, taking leverage of all the ROS functionalities.
 
-In this wiki, we will refer as **ROSCORE** side for the additional machine equipped with ROS and **SUNRISE** side for anything included in robot cabinet. The following image shows a schematic overview of the system architecture :
-
-![system overview][overview]
+In this wiki, we will refer as **ROSCORE** side for the additional machine equipped with ROS and **SUNRISE** side for anything included in robot cabinet.
 
 ## **Setup Guide**
 
-> IMPORTANT : A version of **Sunrise Workbench** with the **Sunrise.Connectivity** module is required to use this stack. If you have something referring to "Smart Servoing", that is the correct module. Connectivity has been tested on Sunrise versions: 1.5, 1.7, 1.9, 1.11, 1.13, and 1.14. It If you don't have the Connectivity module, you might want to ask KUKA for it.
+> IMPORTANT : A version of **Sunrise Workbench** with the **Sunrise.Connectivity** module is required to use this stack. If you have something referring to "Smart Servoing", that is the correct module. Connectivity has been tested on Sunrise versions: 1.5, 1.7, 1.9, 1.11, 1.13, 1.14, and 1.15. If you don't have the Connectivity module, you might want to ask KUKA for it.
 
 > Whatever version you use, the Sunrise OS, Sunrise workbench, and Connectivity module must all be compatible.
 
@@ -30,7 +28,9 @@ In this wiki, we will refer as **ROSCORE** side for the additional machine equip
 
 A good part of this page is taken from [Khansari's wiki][1]. In case that one will go down one day, here it is.
 
-First of all, the Cabinet of an IIWA robot has multiple ethernet ports, from here after, we are gonna make use of the KONI interface.
+Before we start, this is a good time to make a factory image of your cabinet. If you purchased the KUKA recovery stick, this will allow you to restore the cabinet in case something goes wrong. Unfortunately the recovery stick does not come with a factory image, so make one before you get started. To do that, connect a monitor and keyboard to the cabinet then simply turn off the cabinet, insert the usb, and reboot the cabinet. It will boot to the recovery menu. You will likely need to change the language using the Sprachauswahl button. Select create image and give it a name. When you're done shut down the cabinet, remove the stick, and reboot.
+
+The Cabinet of an IIWA robot has multiple ethernet ports, from here after, we are gonna make use of the KONI interface.
 
 > NOTE: The KONI Ethernet port is on the left side of the front panel of the cabinet. There should be a label on top of it.     
 
@@ -57,13 +57,20 @@ Just remember it exists and **DO NOT EVER CHANGE ITS SETTINGS**.
 `C:\KUKA\Hardware\Manager\KUKAHardwareManager.exe -assign OptionNIC -os WIN`    
 This will assign the KONI interface to Windows.  
 
+Note: If you are not familiar with the German keyboard, you might want to change it by going to start->Region and Language -> Keyboards and language and selecting your favorite keyboard layout.
+
+A COMMON ISSUE: It is been reported by several users that the above command does not work in some new versions of
+Sunrise OS, and gives the following error: "Assignment not possible while KS is running". To handle this issue you
+need to remove KS from the windows auto startup. Do this by going to start -> msconfig.exe and disabling BoardPackage and KR C. Restart the PC and now KUKA software should not be loaded. Now apply the command. After that, put back the KS in the Windows auto startup. Restart Windows and you should be good to continue with the remaining steps.
+
 4. **Install the network adapter driver (often not needed)**    
 Open the Device Manager, if you don't have any network adapter marked in yellow then just skip this point.     
 Else, You can find the driver for it in C:\KUKA\Hardware\Drivers\.        
 Sometimes you will find there two folders for different Ethernet controllers, check within the Device Manager which one you need.
 
 5. **Reboot and open Start -> View network connections again**   
-Change the settings (IP address) of the **new** Ethernet adapter to the one you want to use - within the Network adapter settings in Windows. Choose a **different** subnet than the one used by Sunrise Workbench, for example, we use *160.69.69.69*.     
+Change the settings (IP address) of the **new** Ethernet adapter to the one you want to use - within the Network adapter settings in Windows. Choose a **different** subnet than the one used by Sunrise Workbench, for example, we use IP: *160.69.69.69* and subnet mask: 255.255.0.0.     
+
 **Alternatively**, you could open `C:\Windows\System32\drivers\etc\hosts` as Administrator and add the hostname and IP of the ROS machine you are using. This will allow to get an IP in the subnet via DHCP.
 
 Connect an Ethernet cable between the **KONI** interface and the Ethernet adapter on the **ROSCORE** side.
@@ -85,6 +92,8 @@ this will assign back the KONI interface to the Real Time OS.
 
 ### Roscore PC setup
 
+The first 3 steps should already have been completed if you are following this tutorial. However, they are kept here for completeness.
+
 1. **Install ROS KINETIC or INDIGO** (if not already there) as described at http://wiki.ros.org/kinetic/Installation/Ubuntu. (till section 1.7)   
    It's also a good idea to install the python catkin tools     
    `sudo apt-get install python-catkin-tools`
@@ -105,6 +114,8 @@ this will assign back the KONI interface to the Real Time OS.
 `source devel/setup.bash`
 
 6. **Setup network** :    
+Connect the KONI port of the cabinet to the ROS PC. Setup the network such that the ROS PC has a static IP address on the same subnet as the one used by the cabinet. For this example we are using subnet: 255.255.0.0 and IP: 160.69.69.100.
+
 Open   
 `gedit ~/.bashrc &`    
 and append these two lines at the end     
@@ -136,7 +147,9 @@ You could either:
 
     1. Copy the content of _iiwa\_stack_/_iiwa\_ros\_java_/_src_ inside the _src_ folder.
     1. Copy the folder _iiwa\_stack_/_iiwa\_ros\_java_/_ROSJavaLib_ into the root of the project.
-    1. Inside Sunrise Workbench select all the files inside _ROSJavaLib_, right click and choose _Build Path_ -> Add to Build Path...
+    1. Inside Sunrise Workbench select all the files inside _ROSJavaLib_, right click and choose _Build Path_ -> Add to Build Path... (you may have to refresh to see them)
+
+or
 
 - Create symlinks to iiwa_ros_java: (changes will be tracked by git!)
 
@@ -165,16 +178,18 @@ There you can set :
 Once you properly fill this file, **everything is ready**. There should be no red sign or problem found by the IDE.
 If this is a new project? Then you first need to _Install_ it (_Station Setup_ -> _Installation_) and then synchronize it.
 
-[stationsetup]: https://github.com/SalvoVirga/iiwa_stack/blob/wiki/img/stationsetup.png
-[projectview]: https://github.com/SalvoVirga/iiwa_stack/blob/wiki/img/projectview.png
-[addlibraries]: https://github.com/SalvoVirga/iiwa_stack/blob/wiki/img/addlibraries.png
-
-
 ## Execute trajectory on robot
 
-With setup complete, simply run the same code from before, this time with sim_robot=false.
+With setup complete, you are ready to execute on the robot. First, switch the robot into auto mode by turning the key, selecting auto, and turning the key back.
+
+Then select the ROSSMArtServo program on the smart pad and press the run button.
+
+Finally, simply run the same code from before, this time with sim_robot=false.
 
 ```roslaunch pick_and_place pick_and_place.launch sim_sensor:=false sim_robot:=false```
 
 
 The system should use a 3D scan of the environment to find the pick location, path plan the pick and place moves, then ask you if you would like to execute. Simply type y+enter to execute on the robot.
+
+One thing to note is that a ROS node is actually running on the KUKA cabinet PC. This means that pausing the program on the smart pad (e.g. by manually jogging it) or restarting the launch file can cause problems. In order to get the program to reconnect to ROS master, you may need to restart the program by unselecting it and reselecting it in the program menu then rerunning it.
+
