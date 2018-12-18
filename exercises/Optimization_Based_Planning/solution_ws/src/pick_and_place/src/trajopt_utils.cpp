@@ -11,7 +11,9 @@
 
 
 trajectory_msgs::JointTrajectory trajArrayToJointTrajectoryMsg(std::vector<std::string> joint_names,
-                                                               tesseract::TrajArray traj_array, ros::Duration time_increment)
+                                                               tesseract::TrajArray traj_array,
+                                                               bool use_time,
+                                                               ros::Duration time_increment)
 {
   // Create the joint trajectory
   trajectory_msgs::JointTrajectory traj_msg;
@@ -19,9 +21,18 @@ trajectory_msgs::JointTrajectory trajArrayToJointTrajectoryMsg(std::vector<std::
   traj_msg.header.frame_id = "0";
   traj_msg.joint_names = joint_names;
 
-  // Seperate out the time data in the last column from the joint position data
-  auto pos_mat = traj_array.leftCols(traj_array.cols()-1);
-  auto time_mat = traj_array.rightCols(1);
+  tesseract::TrajArray pos_mat;
+  tesseract::TrajArray time_mat;
+  if (use_time)
+  {
+      // Seperate out the time data in the last column from the joint position data
+      pos_mat = traj_array.leftCols(traj_array.cols());
+      time_mat = traj_array.rightCols(1);
+  }
+  else
+  {
+      pos_mat = traj_array;
+  }
 
 //  std::cout << traj_array <<'\n';
 //  std::cout << "pos: " << pos_mat <<'\n';
@@ -40,7 +51,13 @@ trajectory_msgs::JointTrajectory trajArrayToJointTrajectoryMsg(std::vector<std::
     traj_point.positions = vec;
 
     //Add the current dt to the time_from_start
-    time_from_start += ros::Duration(time_mat(ind, time_mat.cols()-1));
+    if (use_time)
+    {
+        time_from_start += ros::Duration(time_mat(ind, time_mat.cols()-1));
+    }
+    else {
+        time_from_start += time_increment;
+    }
     traj_point.time_from_start = time_from_start;
 
     traj_msg.points.push_back(traj_point);

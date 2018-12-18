@@ -23,6 +23,10 @@ Then, run the following command from the **/src** directory of your workspace.
 rosdep install --from-paths . --ignore-src -y -r
 ```
 
+We also need to install glfw.
+``` 
+sudo apt install libglfw3-dev libglfw3 
+```
 ## Build your workspace
 ```
 catkin build

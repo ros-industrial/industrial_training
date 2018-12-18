@@ -50,10 +50,22 @@ catkin build
 ```
 If errors occur, make sure that the RealSense SDK was correctly installed.
 
-Run the demo launch file to verify that the ROS interface is working. You should see an RGBD image displayed in RVIZ.
+The calibration makes use of one other package. Install that now.
+```
+sudo apt install ros-kinetic-rgdb-launch
+```
+
+Run the demo launch file to verify that the ROS interface is working. You should see an RGBD image displayed in RVIZ. As usual, you may need to source your workspace again if you have added new packages. Do this with ```source devel/setup.bash``` from the root of your workspace.
+
 ```
 roslaunch realsense2_camera demo_pointcloud.launch
 ```
+Note: The Realsense ROS package only supports certain versions of the Realsense SDK. When in realsense-viewer make note of the release number, and make sure that the branch of the ROS package you are using is compatible. To pull a specific release (in this case 2.1.2), use 
+```
+git clone https://github.com/intel-ros/realsense.git -b 2.1.2
+```
+
+Further, you may need to update the camera firmware version. To do that, see [Intel's documentation](https://downloadcenter.intel.com/download/28237/Latest-Firmware-for-Intel-RealSense-D400-Product-Family). It is recommended that you use the latest production release.
 
 ## Calibration
 
@@ -85,17 +97,19 @@ Open ```calibration.launch``` in the pick_and_place_support package. Notice the 
 
 * Measure the location of the center of the AR tag in meters. Note that x is in the direction of the long dimension of the workcell and z is up with y defined to follow the right hand rule.
 
-* If more than one camera is connected, the serial number of the camera to be calibrated must be provided. The serial numbers of all connected cameras can be found by using ```rs_enumerate_devices```.
+* If more than one camera is connected, the serial number of the camera to be calibrated must be provided. The serial numbers of all connected cameras can be found by using ```rs-enumerate-devices```.
 
 * Launch the calibration script filling the values for the target's location and size
 
-```roslaunch pick_and_place_support calibration.launch sim_robot:=true targ_x:=[fill_value] targ_y:=[fill_value] targ_z:=[fill_value] marker_size:=[fill_value] serial_no_camera:=[fill_value] ```
+```
+roslaunch pick_and_place_support calibration.launch sim_robot:=true targ_x:=[fill_value] targ_y:=[fill_value] targ_z:=[fill_value] marker_size:=[fill_value] serial_no_camera:=[fill_value] 
+```
 
 *  Record the output. The script should show the camera as a TF floating in space. After 60 iterations, the program will pause and display the calibration result in the format ```x y z roll pitch yaw```. When you are satisfied that the camera location appears to match reality, copy this pose.
 
 
 
-* Update the camera location in pick_and_place/launch/pick_and_place.launch. Lines 17 and 18 publish the location of the camera for the system. Update these numbers with the values from calibration (they are in the same ```x y z yaw pitch roll``` format.
+* Update the camera location in pick_and_place/launch/pick_and_place.launch. Lines 38-43 publish the locations of the cameras for the system. Update these numbers with the values from calibration (they are in the same ```x y z yaw pitch roll``` format.
 
 
 
@@ -103,7 +117,9 @@ Open ```calibration.launch``` in the pick_and_place_support package. Notice the 
 
 With the camera calibrated, it is time to run the system with a simulated robot but real depth camera. Since our code has already been tested in simulation, this is quite easy. First, update the camera serial numbers in ***pick_and_place/launch/bringup_realsense.launch***. Then simply launch the same file as before but set the sim_sensor flag to false
 
-```roslaunch pick_and_place pick_and_place.launch sim_sensor:=false```
+```
+roslaunch pick_and_place pick_and_place.launch sim_sensor:=false
+```
 
 
 
