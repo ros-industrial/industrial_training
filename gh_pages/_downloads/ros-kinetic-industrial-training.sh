@@ -13,20 +13,20 @@ cd $HOME
 sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
 sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116
 sudo apt update -y
-sudo apt install ros-kinetic-desktop -y
+sudo apt install ros-melodic-desktop -y
 sudo rosdep init
 rosdep update
 sudo apt install python-rosinstall -y
-sudo apt install ros-kinetic-perception -y
-sudo apt install ros-kinetic-urdf-tutorials -y
-sudo apt install ros-kinetic-moveit -y
+sudo apt install ros-melodic-perception -y
+sudo apt install ros-melodic-urdf-tutorials -y
+sudo apt install ros-melodic-moveit -y
 sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu `lsb_release -sc` main" > /etc/apt/sources.list.d/ros-latest.list'
 wget http://packages.ros.org/ros.key -O - | sudo apt-key add -
 sudo apt update -y
 sudo apt install python-catkin-tools -y
-sudo apt install ros-kinetic-openni-camera ros-kinetic-openni-launch ros-kinetic-openni2-camera ros-kinetic-openni2-launch -y
+sudo apt install ros-melodic-openni-camera ros-melodic-openni-launch ros-melodic-openni2-camera ros-melodic-openni2-launch -y
 sudo apt install pcl-tools -y
-echo "source /opt/ros/kinetic/setup.bash" >> $HOME/.bashrc
+echo "source /opt/ros/melodic/setup.bash" >> $HOME/.bashrc
 source $HOME/.bashrc
 
 wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add - 
@@ -36,8 +36,8 @@ sudo apt-get install google-chrome-stable
 #then install clipboardy extension
 
 # NOTE: no way (yet?) to do headless QT IFW install.  Do this last, but will require user action
-QTFILE=qtcreator-ros-xenial-latest-online-installer.run
-wget -q https://aeswiki.datasys.swri.edu/qtcreator_ros/downloads/installers/xenial/$QTFILE
+QTFILE=qtcreator-ros-bionic-latest-online-installer.run
+wget -q https://aeswiki.datasys.swri.edu/qtcreator_ros/downloads/installers/bionic/$QTFILE
 chmod u+x ./$QTFILE
 ./$QTFILE
 rm ./$QTFILE
