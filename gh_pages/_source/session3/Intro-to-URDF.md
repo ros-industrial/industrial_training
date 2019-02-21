@@ -29,7 +29,7 @@ Your goal is to describe a workcell that features:
 
 ## Scan-N-Plan Application: Guidance
 
-1. It’s customary to put describing files that aren’t code into their own “support” package. URDFs typically go into their own subfolder ''urdf/''. See the [abb_irb2400_support](https://github.com/ros-industrial/abb/tree/melodic-devel/abb_irb2400_support) package. Add a `urdf` sub-folder to your application support package.
+1. It’s customary to put describing files that aren’t code into their own “support” package. URDFs typically go into their own subfolder ''urdf/''. See the [abb_irb2400_support](https://github.com/ros-industrial/abb/tree/kinetic-devel/abb_irb2400_support) package. Add a `urdf` sub-folder to your application support package.
 1. Create a new `workcell.urdf` file inside the `myworkcell_support/urdf/` folder and insert the following XML skeleton:
 
    ``` xml

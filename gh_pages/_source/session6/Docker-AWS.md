@@ -64,7 +64,7 @@ In this demo we will run an industrial robot URDF viewable in a browser
 In terminal 1 we will load a robot to the parameter server
 ```
 mkdir -p abb_ws/src
-git clone -b melodic-devel https://github.com/ros-industrial/abb.git
+git clone -b kinetic-devel https://github.com/ros-industrial/abb.git
 docker run -v "/home/aderic/roscloud/training/abb_ws:/abb_ws" --network=host -it rosindustrial/core:melodic /bin/bash
 cd abb_ws
 catkin build
