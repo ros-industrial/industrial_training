@@ -47,7 +47,7 @@ Left to you are the details of:
     cd src
     git clone https://github.com/jmeyer1292/fake_ar_publisher.git
     git clone -b melodic-devel https://github.com/ros-industrial-consortium/descartes.git
-    git clone -b melodic-devel https://github.com/ros-industrial/universal_robot.git
+    git clone -b kinetic-devel https://github.com/ros-industrial/universal_robot.git
     ```
 
  1. Copy over the `adv_descartes_node_unfinished.cpp` into your core package's src/ folder and rename it `adv_descartes_node.cpp`.
