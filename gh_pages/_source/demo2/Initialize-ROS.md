@@ -31,4 +31,4 @@ roslaunch plan_and_run demo_run.launch
 
 [visualization_msgs::MarkerArray](http://docs.ros.org/api/visualization_msgs/html/msg/MarkerArray.html)
 
-[NodeHandle::serviceClient()](http://docs.ros.org/kinetic/api/roscpp/html/classros_1_1NodeHandle.html#a183d4cba0ea5c78f075304b91e07cc61)
+[NodeHandle::serviceClient()](http://docs.ros.org/melodic/api/roscpp/html/classros_1_1NodeHandle.html#a183d4cba0ea5c78f075304b91e07cc61)

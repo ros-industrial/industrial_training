@@ -6,10 +6,10 @@
 Now that we’ve got a working MoveIt! configuration for your workcell and we’ve played a bit in RViz with the planning tools, let’s perform planning and motion in code. This exercise will introduce you to the basic C++ interface for interacting with the MoveIt! node in your own program. There are lots of ways to use MoveIt!, but for simple applications this is the most straight forward.
 
 ## Reference Example
-[Move Group Interface tutorial](http://docs.ros.org/kinetic/api/moveit_tutorials/html/doc/move_group_interface/move_group_interface_tutorial.html#setup)
+[Move Group Interface tutorial](http://docs.ros.org/melodic/api/moveit_tutorials/html/doc/move_group_interface/move_group_interface_tutorial.html#setup)
 
 ## 3. Further Information and Resources
- * [MoveIt! Tutorials](http://docs.ros.org/kinetic/api/moveit_tutorials/html/)
+ * [MoveIt! Tutorials](http://docs.ros.org/melodic/api/moveit_tutorials/html/)
  * [MoveIt! home-page](http://moveit.ros.org/)
 
 ## Scan-N-Plan Application: Problem Statement
@@ -80,5 +80,5 @@ In this exercise, your goal is to modify the `myworkcell_core` node to:
     * Try repeating the motion planning sequence:
       1. Use the MoveIt rviz interface to move the arm back to the "allZeros" position
       1. Ctrl+C the `workcell.launch` file, then rerun
-    * Try updating the `workcell_node`'s `start` method to automatically move back to the `allZeros` position after moving to the AR_target position.  See [here](http://docs.ros.org/kinetic/api/moveit_ros_planning_interface/html/classmoveit_1_1planning__interface_1_1MoveGroup.html) for a list of `move_group`'s available methods.
+    * Try updating the `workcell_node`'s `start` method to automatically move back to the `allZeros` position after moving to the AR_target position.  See [here](http://docs.ros.org/melodic/api/moveit_ros_planning_interface/html/classmoveit_1_1planning__interface_1_1MoveGroup.html) for a list of `move_group`'s available methods.
     * Try moving to an "approach position" located a few inches away from the target position, prior to the final move-to-target.

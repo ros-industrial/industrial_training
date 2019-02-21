@@ -7,7 +7,7 @@
 cd ~/industrial_training/exercises/Descartes_Planning_and_Execution
 cp -r template_ws ~/descartes_ws
 cd ~/descartes_ws
-source /opt/ros/kinetic/setup.bash
+source /opt/ros/melodic/setup.bash
 catkin init
 ```
 

@@ -46,9 +46,8 @@ Left to you are the details of:
     cp -r ~/industrial_training/exercises/4.1/src .
     cd src
     git clone https://github.com/jmeyer1292/fake_ar_publisher.git
-    git clone -b kinetic-devel https://github.com/ros-industrial-consortium/descartes.git
-    sudo apt install ros-kinetic-ur-kinematics
-    sudo apt install ros-kinetic-ur-description
+    git clone -b melodic-devel https://github.com/ros-industrial-consortium/descartes.git
+    git clone -b melodic-devel https://github.com/ros-industrial/universal_robot.git
     ```
 
  1. Copy over the `adv_descartes_node_unfinished.cpp` into your core package's src/ folder and rename it `adv_descartes_node.cpp`.
@@ -121,12 +120,12 @@ Left to you are the details of:
 
 ### Complete Advanced Descartes Node
  1. First, the function `makePuzzleToolPoses()` needs to be completed. The file path for **puzzle_bent.csv** is needed. For portability, don't hardcode the full path. Please use the ROS tool `ros::package::getPath()` to retrieve the root path of the relevant package.
-    * reference [getPath()](http://docs.ros.org/kinetic/api/roslib/html/c++/namespaceros_1_1package.html#ae9470dd201aa4e66abb833e710d812a4) API
+    * reference [getPath()](http://docs.ros.org/melodic/api/roslib/html/c++/namespaceros_1_1package.html#ae9470dd201aa4e66abb833e710d812a4) API
  1. Next, the function `makeDescartesTrajectory()` needs to be completed. The transform between **world** and **grinder_frame** needs to be found. Also Each point needs to have the orientation tolerance set for the z-axis to +/- PI;
-    * reference [lookupTransform()](http://docs.ros.org/kinetic/api/tf/html/c++/classtf_1_1Transformer.html#ac01a9f8709a828c427f1a5faa0ced42b) API
-    * reference [tf::conversions](http://docs.ros.org/kinetic/api/tf_conversions/html/c++/tf__eigen_8h.html) namespace
-    * reference [TolerancedFrame](https://github.com/ros-industrial-consortium/descartes/blob/kinetic-devel/descartes_trajectory/include/descartes_trajectory/cart_trajectory_pt.h#L156) definition
-    * reference [OrientationTolerance](https://github.com/ros-industrial-consortium/descartes/blob/kinetic-devel/descartes_trajectory/include/descartes_trajectory/cart_trajectory_pt.h#L139) definition
+    * reference [lookupTransform()](http://docs.ros.org/melodic/api/tf/html/c++/classtf_1_1Transformer.html#ac01a9f8709a828c427f1a5faa0ced42b) API
+    * reference [tf::conversions](http://docs.ros.org/melodic/api/tf_conversions/html/c++/tf__eigen_8h.html) namespace
+    * reference [TolerancedFrame](https://github.com/ros-industrial-consortium/descartes/blob/melodic-devel/descartes_trajectory/include/descartes_trajectory/cart_trajectory_pt.h#L156) definition
+    * reference [OrientationTolerance](https://github.com/ros-industrial-consortium/descartes/blob/melodic-devel/descartes_trajectory/include/descartes_trajectory/cart_trajectory_pt.h#L139) definition
 
 ### Update the setup.launch file.
  1. Update the file to take a boolean argument named **adv** so that either the basic or advanced descartes node can be launched.  Use `<if>` and `<unless>` modifiers to control which node is launched.

@@ -29,7 +29,13 @@ Specifically, you will need to:
 
  1. Bring in the `ur_description` package into your ROS environment. You have a few options:
 
-    1. You can install the debian packages: `sudo apt install ros-kinetic-ur-description ros-kinetic-ur-kinematics`
+    1. You can install the debian packages.
+
+       ```
+       sudo apt install ros-melodic-ur-description ros-melodic-ur-kinematics
+       ```
+
+    >Note: these may or may not exist for the current distribution of ROS. If this is the case, you will need to download them from source (see next step)
 
     1. You can clone it from [GitHub](https://github.com/ros-industrial/universal_robot) to your catkin workspace:
 

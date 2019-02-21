@@ -24,7 +24,7 @@
 
  * Since moveit plans the robot path for the arm's wrist, then it is necessary to convert all the pick poses to the wrist coordinate frame.
 
- * The [lookupTransform](http://docs.ros.org/kinetic/api/tf/html/c++/classtf_1_1Transformer.html#a14536fe915c0c702534409c15714aa2f) method can provide the pose of a target relative to another pose.
+ * The [lookupTransform](http://docs.ros.org/melodic/api/tf/html/c++/classtf_1_1Transformer.html#a14536fe915c0c702534409c15714aa2f) method can provide the pose of a target relative to another pose.
 
 ## Build Code and Run
 
@@ -59,6 +59,6 @@ z: 0.3
 
 ## API References
 
-[lookupTransform](http://docs.ros.org/kinetic/api/tf/html/c++/classtf_1_1Transformer.html#a14536fe915c0c702534409c15714aa2f)
+[lookupTransform](http://docs.ros.org/melodic/api/tf/html/c++/classtf_1_1Transformer.html#a14536fe915c0c702534409c15714aa2f)
 
 [TF Transforms and other useful data types](http://wiki.ros.org/tf/Overview/Data%20Types)

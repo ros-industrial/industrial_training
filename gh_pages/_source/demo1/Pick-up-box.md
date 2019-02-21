@@ -25,7 +25,7 @@
 
  * Inspect the `create_motion_plan` method to see how an entire motion plan request is defined and sent.
 
- * The [execute()](http://docs.ros.org/kinetic/api/moveit_ros_planning_interface/html/classmoveit_1_1planning__interface_1_1MoveGroupInterface.html#add236df4ab9ba7b7011ec53f8aa9c026) method sends a motion plan to the robot.
+ * The [execute()](http://docs.ros.org/melodic/api/moveit_ros_planning_interface/html/classmoveit_1_1planning__interface_1_1MoveGroupInterface.html#add236df4ab9ba7b7011ec53f8aa9c026) method sends a motion plan to the robot.
 
 ## Build Code and Run
 
@@ -50,4 +50,4 @@ roslaunch collision_avoidance_pick_and_place ur5_pick_and_place.launch
 
 ## API References
 
-[MoveGroupInterface class](http://docs.ros.org/kinetic/api/moveit_ros_planning_interface/html/classmoveit_1_1planning__interface_1_1MoveGroupInterface.html)
+[MoveGroupInterface class](http://docs.ros.org/melodic/api/moveit_ros_planning_interface/html/classmoveit_1_1planning__interface_1_1MoveGroupInterface.html)

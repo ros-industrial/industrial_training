@@ -1,4 +1,4 @@
-Code can be found at industrial_training repository in gh_pages folder. Use kinetic branch.
+Code can be found at industrial_training repository in gh_pages folder. Use melodic branch.
 
 Building a Simple PCL Interface for Python
 ==========================================
@@ -19,7 +19,7 @@ We will create a new catkin workspace, since this exercise does not overlap with
 
    .. code-block:: bash
 
-            source /opt/ros/kinetic/setup.bash
+            source /opt/ros/melodic/setup.bash
 
 
 #. Copy the template workspace layout and files:

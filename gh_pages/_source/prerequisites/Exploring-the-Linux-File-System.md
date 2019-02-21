@@ -19,7 +19,7 @@
 
  6. On the left hand side of the window are some quick links to removable devices, other hard drives, bookmarks, etc. Click on the "Computer" shortcut link. This will take you to the "root" of the file system, the / folder. All of the files on the computer are in sub-folders under this folder.
 
- 7. Double click on the _opt_ folder, then the _ros_ folder. This is where all of the ROS software resides. Each version is stored in its own folder; we should see a kinetic folder there. Double-click on that folder. The _setup.bash_ file will be used in the [terminal exercise](The-Linux-Terminal.md) to configure the terminal for ROS. The programs, data, etc. are in the _bin_ and _share_ folders. You generally do not need to modify any of these files directly, but it is good to know where they reside.
+ 7. Double click on the _opt_ folder, then the _ros_ folder. This is where all of the ROS software resides. Each version is stored in its own folder; we should see a "melodic" folder there. Double-click on that folder. The _setup.bash_ file will be used in the [terminal exercise](The-Linux-Terminal.md) to configure the terminal for ROS. The programs, data, etc. are in the _bin_ and _share_ folders. You generally do not need to modify any of these files directly, but it is good to know where they reside.
 
 ## Making Changes
 

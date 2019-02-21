@@ -5,7 +5,7 @@
 ```
 cp -r ~/industrial_training/exercises/Perception-Driven_Manipulation/template_ws ~/perception_driven_ws
 cd ~/perception_driven_ws
-source /opt/ros/kinetic/setup.bash
+source /opt/ros/melodic/setup.bash
 catkin init
 ```
 

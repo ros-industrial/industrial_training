@@ -40,10 +40,10 @@ Your goal is to have access to both of these packages' resources within your pac
    * You should see an error message `**No such package/stack 'calibration_msgs**' .
    * _This package is not installed on the system, so we will install it._
 
-2. Type _apt install ros-kinetic-calibration-msgs_.
+2. Type _apt install ros-melodic-calibration-msgs_.
 
    ```
-   apt install ros-kinetic-calibration-msgs
+   apt install ros-melodic-calibration-msgs
    ```
 
    * The program will say it cannot install the package, and suggests that we must run the program as root.
@@ -51,10 +51,10 @@ Your goal is to have access to both of these packages' resources within your pac
      * The system will try to automatically complete the package name, if possible.
      * Frequent use of the TAB key will help speed up entry of many typed commands.
 
-3. Type _sudo apt install ros-kinetic-calibration-msgs_.
+3. Type _sudo apt install ros-melodic-calibration-msgs_.
 
    ```
-   sudo apt install ros-kinetic-calibration-msgs
+   sudo apt install ros-melodic-calibration-msgs
    ```
 
    * Note the use of the _sudo_ command to run a command with "root" (administrator) privileges.
@@ -66,12 +66,12 @@ Your goal is to have access to both of these packages' resources within your pac
    roscd calibration_msgs
    ```
 
-   * This time, you will see the working directory change to _/opt/ros/kinetic/share/calibration_msgs_.
+   * This time, you will see the working directory change to _/opt/ros/melodic/share/calibration_msgs_.
 
-6. Type _sudo apt remove ros-kinetic-calibration-msgs_ to remove the package.
+6. Type _sudo apt remove ros-melodic-calibration-msgs_ to remove the package.
 
    ```
-   sudo apt remove ros-kinetic-calibration-msgs
+   sudo apt remove ros-melodic-calibration-msgs
    ```
 
    * _Don't worry. We won't be needing this package for any future exercises, so it's safe to remove._

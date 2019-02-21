@@ -19,7 +19,7 @@ We will create a new catkin workspace, since this exercise does not overlap with
 
     .. code-block:: bash
 
-			source /opt/ros/kinetic/setup.bash
+			source /opt/ros/melodic/setup.bash
 
 #. Copy the template workspace layout and files:
 
@@ -693,7 +693,7 @@ While this is not a filter method, it is useful when using PCL or other percepti
       cluster_max_size=50000;
 
 
-   If you took this step, you will be in great shape to convert what you have into something that can be input from a launch file, or yaml file. You could use the "getParam" method as described in this `tutorial <http://wiki.ros.org/roscpp_tutorials/Tutorials/Parameters>`_. But a better choice might be to use the `param <http://docs.ros.org/kinetic/api/roscpp/html/classros_1_1NodeHandle.html#aa9b23d4206216ed13b5833fb1a090f1a>`_ method, which returns a default value if the parameter is not found on the parameter server.  Get params from ros parameter server/launch file, replacing your previous hardcoded values (but leave the variable declarations!)
+   If you took this step, you will be in great shape to convert what you have into something that can be input from a launch file, or yaml file. You could use the "getParam" method as described in this `tutorial <http://wiki.ros.org/roscpp_tutorials/Tutorials/Parameters>`_. But a better choice might be to use the `param <http://docs.ros.org/melodic/api/roscpp/html/classros_1_1NodeHandle.html#aa9b23d4206216ed13b5833fb1a090f1a>`_ method, which returns a default value if the parameter is not found on the parameter server.  Get params from ros parameter server/launch file, replacing your previous hardcoded values (but leave the variable declarations!)
 
    .. code-block:: c++
 

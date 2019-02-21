@@ -39,7 +39,7 @@ Left to you are the details of:
      
     ```bash
     cd ~/catkin_ws/src
-    git clone -b kinetic-devel https://github.com/ros-industrial-consortium/descartes.git
+    git clone -b melodic-devel https://github.com/ros-industrial-consortium/descartes.git
     ```
 
  1. Copy over the `ur5_demo_descartes` package into your workspace src/ directory.
