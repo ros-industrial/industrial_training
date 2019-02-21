@@ -1,7 +1,7 @@
 #!/bin/bash
 
-TARGET_BRANCH=kinetic  # industrial_training git branch
-ROS_RELEASE=kinetic    # ROS release version
+TARGET_BRANCH=melodic  # industrial_training git branch
+ROS_RELEASE=melodic    # ROS release version
 
 #=======================================================================
 # verify that PC configuration matches requirements for training class
