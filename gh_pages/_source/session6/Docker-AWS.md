@@ -64,8 +64,8 @@ In this demo we will run an industrial robot URDF viewable in a browser
 In terminal 1 we will load a robot to the parameter server
 ```
 mkdir -p abb_ws/src
-git clone -b kinetic-devel https://github.com/ros-industrial/abb.git
-docker run -v "/home/aderic/roscloud/training/abb_ws:/abb_ws" --network=host -it rosindustrial/core:kinetic /bin/bash
+git clone -b melodic-devel https://github.com/ros-industrial/abb.git
+docker run -v "/home/aderic/roscloud/training/abb_ws:/abb_ws" --network=host -it rosindustrial/core:melodic /bin/bash
 cd abb_ws
 catkin build
 source devel/setup.bash
@@ -74,7 +74,7 @@ roslaunch abb_irb5400_support load_irb5400.launch
 
 in terminal 2 we will start the robot web tools:
 ```
-docker run --network=host rosindustrial/viz:kinetic roslaunch viz.launch
+docker run --network=host rosindustrial/viz:melodic roslaunch viz.launch
 ```
 in terminal 3 we will launch the webserver
 first we need to start a www folder

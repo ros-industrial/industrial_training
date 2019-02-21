@@ -9,7 +9,7 @@ In order to start programming in ROS, you should know how to install ROS on a ne
 [Configuring ROS](http://wiki.ros.org/ROS/Tutorials/InstallingandConfiguringROSEnvironment)
 
 ## Further Information and Resources
-[Installation Instructions](http://wiki.ros.org/kinetic/Installation/Ubuntu)
+[Installation Instructions](http://wiki.ros.org/melodic/Installation/Ubuntu)
 
 [Navigating ROS](http://wiki.ros.org/ROS/Tutorials/NavigatingTheFilesystem)
 
@@ -27,16 +27,16 @@ We believe we have a good installation of ROS but let's test it to make sure.
 2. If they are not then you might need to 'source' some setup.*sh files.
 
    ```
-   source /opt/ros/kinetic/setup.bash
+   source /opt/ros/melodic/setup.bash
    ```
 
-3. In a "bare" ROS install, you will need to run this command on every new shell you open to have access to the ROS commands.  One of the setup steps in a _typical_ ROS install is to add that command to the end of your `~/.bashrc` file, which is run automatically in every new terminal window.  Check that your `.bashrc` file has already been configured to source the ROS-kinetic `setup.bash` script:
+3. In a "bare" ROS install, you will need to run this command on every new shell you open to have access to the ROS commands.  One of the setup steps in a _typical_ ROS install is to add that command to the end of your `~/.bashrc` file, which is run automatically in every new terminal window.  Check that your `.bashrc` file has already been configured to source the ROS-melodic `setup.bash` script:
 
    ```
    tail ~/.bashrc
    ```
 
-This process allows you to install several ROS distributions (e.g. indigo and kinetic) on the same computer and switch between them by sourcing the distribution-specific `setup.bash` file.
+This process allows you to install several ROS distributions (e.g. indigo, kinetic, melodic) on the same computer and switch between them by sourcing the distribution-specific `setup.bash` file.
 
 ### Starting roscore
 1. _roscore_ is a collection of nodes and programs that are pre-requisites of a ROS-based system. You must have a roscore running in order for ROS nodes to communicate. It is launched using the _roscore_ command.

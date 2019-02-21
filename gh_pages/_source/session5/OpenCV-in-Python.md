@@ -12,7 +12,7 @@ This tutorial uses python to build the image-processing pipeline.  Python is a g
 * [OpenCV Python Tutorials](https://docs.opencv.org/3.4.2/d6/d00/tutorial_py_root.html)
 * [ROS cv_bridge package (Python)](http://wiki.ros.org/cv_bridge/Tutorials/ConvertingBetweenROSImagesAndOpenCVImagesPython)
 * [Writing a Publisher and Subscriber (Python)](http://wiki.ros.org/rospy_tutorials/Tutorials/WritingPublisherSubscriber)
-* [sensor_msgs/Image](http://docs.ros.org/kinetic/api/sensor_msgs/html/msg/Image.html)
+* [sensor_msgs/Image](http://docs.ros.org/melodic/api/sensor_msgs/html/msg/Image.html)
 
 
 ## Problem Statement
@@ -50,13 +50,13 @@ This exercise uses a single package that can be placed in any catkin workspace. 
     mkdir nodes
     ```
 
-    * For a simple package such as this, the [Python Style Guide](http://docs.ros.org/kinetic/api/catkin/html/howto/format2/installing_python.html) recommends this simplified package structure.
+    * For a simple package such as this, the [Python Style Guide](http://docs.ros.org/melodic/api/catkin/html/howto/format2/installing_python.html) recommends this simplified package structure.
     * More complex packages (e.g. with exportable modules, msg/srv defintions, etc.) should us a more complex package structure, with an `__init__.py` and `setup.py`.
-        * reference [Installing Python Scripts](http://docs.ros.org/kinetic/api/catkin/html/howto/format2/installing_python.html)
+        * reference [Installing Python Scripts](http://docs.ros.org/melodic/api/catkin/html/howto/format2/installing_python.html)
         * reference [Handling setup.py](http://docs.ros.org/api/catkin/html/user_guide/setup_dot_py.html)
 
 ### Create an Image Publisher
-The first node will read in an image from a file and publish it as a ROS [Image](http://docs.ros.org/kinetic/api/sensor_msgs/html/msg/Image.html) message on the `image` topic.
+The first node will read in an image from a file and publish it as a ROS [Image](http://docs.ros.org/melodic/api/sensor_msgs/html/msg/Image.html) message on the `image` topic.
 
  * Note: ROS already contains an `image_publisher` package/node that performs this function, but we will duplicate it here to learn about ROS Publishers in Python.
 
@@ -233,8 +233,8 @@ The next node will subscribe to the `image` topic and execute a series of proces
        rospy.spin()
        ```
 
-       * reference: [rospy.Subscriber](http://docs.ros.org/kinetic/api/rospy/html/rospy.topics.Subscriber-class.html)
-       * reference: [rospy.spin](http://docs.ros.org/kinetic/api/rospy/html/rospy-module.html#spin)
+       * reference: [rospy.Subscriber](http://docs.ros.org/melodic/api/rospy/html/rospy.topics.Subscriber-class.html)
+       * reference: [rospy.spin](http://docs.ros.org/melodic/api/rospy/html/rospy-module.html#spin)
 
     1. Run the new node and verify that it is subscribing to the topic as expected:
 

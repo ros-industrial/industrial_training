@@ -32,7 +32,7 @@
     ```
     cd ~/catkin_ws/src
     git clone https://github.com/ros-industrial/industrial_moveit.git
-    git checkout kinetic-devel
+    git checkout melodic-devel
     ```
   * Install Missing Dependencies
     ```

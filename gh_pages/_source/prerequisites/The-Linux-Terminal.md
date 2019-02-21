@@ -21,12 +21,12 @@
 
  1. The window will have a single line, which looks like this:
 
-    `ros-industrial@ros-i-kinetic-vm:~$`
+    `ros-industrial@ros-i-melodic-vm:~$`
 
  1. This is called the prompt, where you enter commands. The prompt, by default, provides three pieces of information:
 
     1. _ros-industrial_ is the login name of the user you are running as.
-    1. _ros-i-kinetic-vm_ is the host name of the computer.
+    1. _ros-i-melodic-vm_ is the host name of the computer.
     1. ~ is the directory in which the terminal is currently in. (More on this later).
 
  1. Close the terminal window by typing `exit` or clicking on the red 'x' in the window's titlebar.
@@ -64,7 +64,7 @@
  1. Enter `pwd` into the terminal.
     * This will show you the full path of the directory you are working in.
  1. Enter `cd new` into the terminal.
-    * The prompt should change to `ros-industrial@ros-i-kinetic-vm:~/ex0.3/new$`.
+    * The prompt should change to `ros-industrial@ros-i-melodic-vm:~/ex0.3/new$`.
     * Typing `pwd` will show you now in the directory `/home/ros-industrial/ex0.3/new`.
   1. Enter `cd ..` into the terminal.
     * In the [previous exercise](Exploring-the-Linux-File-System.md), we noted that `..` is the parent folder.

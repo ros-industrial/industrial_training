@@ -25,4 +25,4 @@ roslaunch plan_and_run demo_run.launch
 
 ## API References
 
-[MoveGroupInterface::move()](http://docs.ros.org/kinetic/api/moveit_ros_planning_interface/html/classmoveit_1_1planning__interface_1_1MoveGroupInterface.html#a3513c41b0c73400fc6713b25bc6b1637)
+[MoveGroupInterface::move()](http://docs.ros.org/melodic/api/moveit_ros_planning_interface/html/classmoveit_1_1planning__interface_1_1MoveGroupInterface.html#a3513c41b0c73400fc6713b25bc6b1637)

@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-ROS Industrial (Kinetic) Training Exercises
+ROS Industrial (Melodic) Training Exercises
 ===========================================
 
 Setup PC
@@ -12,7 +12,7 @@ Setup PC
 .. toctree::
    :maxdepth: 1
 
-   PC Setup <_source/setup/PC-Setup---ROS-Kinetic.md>
+   PC Setup <_source/setup/PC-Setup---ROS-Melodic.md>
 
 Prerequisites
 -------------

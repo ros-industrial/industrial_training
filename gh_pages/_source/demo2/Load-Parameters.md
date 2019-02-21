@@ -29,6 +29,6 @@ roslaunch plan_and_run demo_run.launch
 
 ## API References
 
-[ros::NodeHandle](http://docs.ros.org/kinetic/api/roscpp/html/classros_1_1NodeHandle.html)
+[ros::NodeHandle](http://docs.ros.org/melodic/api/roscpp/html/classros_1_1NodeHandle.html)
 
-[NodeHandle::getParam()](http://docs.ros.org/kinetic/api/roscpp/html/classros_1_1NodeHandle.html#a8b5db588e675cf3e360da65bae6a55e4)
+[NodeHandle::getParam()](http://docs.ros.org/melodic/api/roscpp/html/classros_1_1NodeHandle.html#a8b5db588e675cf3e360da65bae6a55e4)

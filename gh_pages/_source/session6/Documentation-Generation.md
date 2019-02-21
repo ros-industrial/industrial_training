@@ -73,7 +73,7 @@ int main(int argc, char** argv)
 
  1. Install rosdoc_lite:
 ```
-sudo apt install ros-kinetic-rosdoc-lite
+sudo apt install ros-melodic-rosdoc-lite
 ```
 
  2. Build the package so we can source it later:
