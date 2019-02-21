@@ -8,7 +8,7 @@ MoveIt! is a free-space motion planning framework for ROS. It’s an incredibly 
 [Using MoveIt with ROS-I](http://wiki.ros.org/Industrial/Tutorials/Create_a_MoveIt_Pkg_for_an_Industrial_Robot)
 
 ## Further Information and Resources
-[MoveIt’s Standard Wizard Guide](http://docs.ros.org/melodic/api/moveit_tutorials/html/doc/setup_assistant/setup_assistant_tutorial.html)
+[MoveIt’s Standard Wizard Guide](http://docs.ros.org/kinetic/api/moveit_tutorials/html/doc/setup_assistant/setup_assistant_tutorial.html)
 
 ## Scan-N-Plan Application: Problem Statement
 In this exercise, you will generate a MoveIt package for the UR5 workcell you built in a previous step. This process will mostly involve running the MoveIt! Setup Assistant. At the end of the exercise you should have the following:

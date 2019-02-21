@@ -74,7 +74,7 @@ roslaunch abb_irb5400_support load_irb5400.launch
 
 in terminal 2 we will start the robot web tools:
 ```
-docker run --network=host rosindustrial/viz:melodic roslaunch viz.launch
+docker run --network=host rosindustrial/viz:kinetic roslaunch viz.launch
 ```
 in terminal 3 we will launch the webserver
 first we need to start a www folder
