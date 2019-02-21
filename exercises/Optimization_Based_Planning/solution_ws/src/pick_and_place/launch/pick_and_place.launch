@@ -11,6 +11,7 @@
     <arg name="box_parent_link" default="workcell_base"/>
     <arg name="plotting" default="false" />
     <arg name="file_write_cb" default="false" />
+    <arg name="actuate_gripper" default="false" />
 
     <!-- Bringup the robot -->
     <include file="$(find pick_and_place)/launch/bringup_robot.launch" >
@@ -21,6 +22,7 @@
         <arg name="box_x" value="$(arg box_x)"/>
         <arg name="box_y" value="$(arg box_y)"/>
         <arg name="box_parent_link" value="$(arg box_parent_link)"/>
+        <arg name="actuate_gripper" value="$(arg actuate_gripper)"/>
     </include>
 
 
@@ -69,6 +71,7 @@
     <!-- Launch planner node -->
     <node name="pick_and_place_node" pkg="pick_and_place" type="pick_and_place_node" output="screen">
             <param name="sim_robot" value="$(arg sim_robot)"/>
+            <param name="actuate_gripper" value="$(arg actuate_gripper)"/>
             <param name="plotting" value="$(arg plotting)"/>
             <param name="file_write_cb" value="$(arg file_write_cb)" />
     </node>

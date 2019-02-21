@@ -30,12 +30,13 @@ int main(int argc, char** argv)
 
   int steps_per_phase;
   std::string world_frame, pick_frame;
-  bool sim_robot, plotting_cb, file_write_cb;
+  bool sim_robot, actuate_gripper, plotting_cb, file_write_cb;
 
   pnh.param<int>("steps_per_phase", steps_per_phase, 10);
   nh.param<std::string>("world_frame", world_frame, "world");
   nh.param<std::string>("pick_frame", pick_frame, "part");
   nh.param<bool>("/pick_and_place_node/sim_robot", sim_robot, true);
+  pnh.param<bool>("actuate_gripper", actuate_gripper, true);
   nh.param<bool>("/pick_and_place_node/plotting", plotting_cb, false);
   nh.param<bool>("/pick_and_place_node/file_write_cb", file_write_cb, false);
 
@@ -328,6 +329,9 @@ int main(int argc, char** argv)
       std::cin >> input;
       if (input == 'y')
       {
+          // Put gripper setup here
+          if(actuate_gripper){
+          }// End gripper setup here
         std::cout << "Executing... \n";
 
         // Create action client to send trajectories
@@ -360,6 +364,9 @@ int main(int argc, char** argv)
         if (execution_client.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
         {
           std::cout << "Pick action succeeded! \n";
+          // Put gripper pick code here
+          if(actuate_gripper){
+         } // End gripper pick code
         }
         else
         {
@@ -388,6 +395,9 @@ int main(int argc, char** argv)
         if (execution_client.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
         {
           std::cout << "Place action succeeded! \n";
+          // Put gripper release code here
+          if(actuate_gripper){
+        } // End gripper release code
         }
         else
         {
