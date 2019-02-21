@@ -5,7 +5,7 @@
 The VM method is the most convenient method of utilizing the training materials:
 
  1. [Download virtual box](https://www.virtualbox.org/wiki/Downloads)
- 1. [Download ROS Kinetic training VM](https://rosi-images.datasys.swri.edu)
+ 1. [Download ROS Melodic training VM](https://rosi-images.datasys.swri.edu)
  1. [Import image into virtual box](https://www.virtualbox.org/manual/ch01.html#ovf)
  1. Start virtual machine
  1. Log into virtual machine, user: ```ros-industrial```, pass: ```rosindustrial``` (no spaces or hyphens)
@@ -13,7 +13,7 @@ The VM method is the most convenient method of utilizing the training materials:
 
     ```
     cd ~/industrial_training
-    git checkout kinetic
+    git checkout melodic
     git pull
     ./.check_training_config.bash
     ```
@@ -26,12 +26,12 @@ On most new systems, Virtual Box and VMs work out of the box.  The following is 
   * Virtualization must be enabled - Older systems do not have virtualization enabled (by default).  Virtualization must be enabled in the BIOS.  See <http://www.sysprobs.com/disable-enable-virtualization-technology-bios> for more information.
 
 ## Direct Linux PC Configuration (**NOT Recommended**)
-An installation [shell script](https://github.com/ros-industrial/industrial_training/blob/kinetic/gh_pages/_downloads/ros-kinetic-industrial-training.sh)
+An installation [shell script](https://github.com/ros-industrial/industrial_training/blob/melodic/gh_pages/_downloads/ros-melodic-industrial-training.sh)
 is provided to run in Ubuntu Linux 16.04 (Xenial Xerus) LTS. This script installs ROS and any other packages needed for the environment used for this training.
 
 After this step (or if you already have a working ROS environment), clone the training material repository into your home directory:
 
-`git clone -b kinetic https://github.com/ros-industrial/industrial_training.git ~/industrial_training`
+`git clone -b melodic https://github.com/ros-industrial/industrial_training.git ~/industrial_training`
 
 ## Configuration Check
 The following is a quick check to ensure that the appropriate packages have been installed and the the `industrial_training` git repository is current.  Enter the following into the terminal:
