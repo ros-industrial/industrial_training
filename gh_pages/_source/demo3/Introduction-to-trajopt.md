@@ -14,39 +14,54 @@ Trajopt is an optimization based path planner that utilizes Sequential Quadratic
 ## Basic Usage
 
 The typical workflow of using Trajopt for pathplanning is as follows.
-1) Create a ProblemConstructionInfo. This can either be loaded from a json file or generated directly in C++. This contains information about the costs/constraints desired, the robot, and the planning environment.
+1) Create a ProblemConstructionInfo (pci). This can either be loaded from a json file or generated directly in C++. This contains information about the costs/constraints desired, the robot, and the planning environment.
 2) Convert ProblemConstructionInfo to a TrajOptProb using ConstructProblem. This constructs the optimization into a standardized format used by the optimizers.
 3) Optimize. The optimizer will optimize a `num_timesteps x num_joints + 1` matrix to minimize the costs and constraints. Each column represents a joint with the exception of the last one which is time.
 
+The next sections will cover some of the important parts of setting up a TrajOpt problem.
+
 ### 1. Basic Info
 
-Basic information for the planner
+The basic_info section of the pci contains (as you might expect) basic information for the planner.
 
 * ***[int] n_steps***:
         The number of trajectory states (timesteps) to be used in the planning of the trajectory.
 
 * ***[string] manip***:
         The name of the manipulator of the robot to plan for.
-        
-* ***[bool] start_fixed***:
-        Whether to force the first trajectory state to exactly equal the first state given in the init info.
-        
+
 * ***[string] robot (optional)***:
-        TODO
+    TODO
+
+* ***[bool] start_fixed***:
+        Whether to force the first trajectory state to exactly equal the first state given in the init info. If true, the associated joint values will be set to the initial conditions with an equality constraint
+
 * ***[vector/list of ints] dofs_fixed (optional)***:
-        Indices corresponding to any degrees of freedom that you want to have remain in the same position the entire trajectory.
+        Indices corresponding to any degrees of freedom that you want to have remain in the same position the entire trajectory. These will be set to the initial conditions with an equality constraint
+
+* ***[sco::ModelType] convex_solver (optional)***:
+    This specifies the solver to use. If unspecified, the included BPMPD solver will be used.
+
+* ***[bool] use_time ***:
+    If true, TrajOpt adds a column to represent (1/dt). This must be set to true if any of the costs/constraints are set to use time.
+
+* ***[double] dt_upper_limit (optional)***:
+    This is the upper limit of 1/dt values allowed. Note this value is 1/dt ***NOT*** dt.
+
+* ***[double] dt_lower_limit (optional)***:
+    This is the lower limit of 1/dt values allowed. Note this value is 1/dt ***NOT*** dt.
 
 ### 2. Init Info
 
-Information detailing what initial trajectory Trajopt should start from.
+The init_info section of the pci contains information detailing the initial trajectory Trajopt should start from.
 
 * ***[InitInfo::Type] type***:
-        The type of initialization. These only do anything if you are constructing the problem from Json, but you can still assign it if you feel like it. Valid values are:
+        The type of initialization. Valid values are:
         
     * ***STATIONARY***: Initializes the entire trajectory to the current joint states of the robot. No data is needed.
     * ***GIVEN_TRAJ***:
         You provide the entire initial trajectory in the **data** member
-*    ***STRAIGHT_LINE***:
+*    ***JOINT_INTERPOLATED***:
         You provide an **endpoint** member for the initial trajectory. The trajectory is the joint interpolated between the current state and the endpoint.
 
 * ***[TrajArray] data***:
@@ -56,24 +71,16 @@ Information detailing what initial trajectory Trajopt should start from.
 
 ### 3. Optimization Info (optional)
 
-These can typically be set to defaults. More details can be found by exploring the TrajOpt documentation
+This section of the pci can typically be set to defaults. In fact, when using a Tesseract planner as we will in this demo, the selections here get overwritten. These are the parameters that govern the SQP optimization routine. More details can be found by exploring the TrajOpt documentation.
 
 ### 4. Costs
 
-These are functions that you desire to be minimized, such as joint accelerations or cartesian velocities, but that you do not need the value to be driven to ~0. The weights of these terms will never increase.
+These are functions that you desire to be minimized, such as joint accelerations or cartesian velocities. The optimizer will seek to optimize the sum of the weighted costs subject to the constraints below. These correspond to the objective function. These will be discussed in more detail in 3.6.
 
 ### 5. Constraints
 
-These are the functions that are needed to be driven to ~0. Failure to satisfy these constraints will cause the weighting of these terms to increase until they are satisfied or the maximum number of iterations is reached. Section 3.6 will cover the costs and contraints available.
+These are the conditions that must be satisfied by the optimizer. Failure to satisfy these constraints will cause the weighting of these terms to increase until they are satisfied or the maximum number of iterations is reached. These directly correspond to optimizer constraints. Section 3.6 will cover the costs and contraints available.
 
-## Plan
-
-
-1. Use the relevant method to construct the problem
-
-2. Optimize
-
-3. View results
 
 ## Performance
 
@@ -81,11 +88,12 @@ There are several things that you can do to help speed the trajopt optimization.
 
 1) Be sure to build your project in Release mode. Using the command line this is `catkin build --cmake-args -DCMAKE_BUILD_TYPE=Release"` In Qt Creator, the build type option is under the projects tab.
 
-2) Set the Trajopt logging level higher than Info before optimization. Do this with 
-`#include <trajopt_utils/logging.hpp>
-trajopt::gLogLevel = util::LevelWarn;'`
+2) Set the Trajopt logging level higher than Info before optimization. Do this with `#include <trajopt_utils/logging.hpp>
+trajopt::gLogLevel = util::LevelWarn;`
 
 3) Change optimization parameters. The parameters in BasicTrustRegionSQPParameters can effect both the speed with which the optimization converges and the point at which the optimization triggers as having converged.
+
+4) Change your problem. This may seem obvious, but sometimes constraints can be mutually exlusive. You can also have two very similar competing costs (this is one of TrajOpt's advantages). For example, a cartesian pose constraint that is out of the robot workspace would cause a failure. A cartesian pose cost that is in collision could slow down optimization. Be judicious about which terms are really necessary to be constraints and which ones could be costs.
 
 Notes
 -----

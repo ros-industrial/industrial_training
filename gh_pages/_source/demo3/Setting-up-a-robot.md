@@ -14,7 +14,8 @@ The additional machine, having ROS installed, will be able to send and receive R
 We make use of ROS messages already available in a mint ROS distribution as well as custom ones, made to work with the KUKA arm (*iiwa_msgs*).    
 A user is then able to manipulate the messages received from the robot and to send new ones as commands to it, simply within C++ or python code, taking leverage of all the ROS functionalities.
 
-In this wiki, we will refer as **ROSCORE** side for the additional machine equipped with ROS and **SUNRISE** side for anything included in robot cabinet.
+### Note on computers
+In this wiki, we will potentially deal with 3 computers. The first is the **Workbench** PC. It is used to load settings on the KUKA. It has a version Sunrise Workbench that is compabitle with your robot's firmware installed, and is running a Windows OS.The second computer is the **ROSCORE** computer. This will refer to the additional machine equipped with ROS. This is the computer (or partition) containing your ROS workspace. Finally there is the **CABINET** PC that is used to refer to anything included in robot cabinet.
 
 ## **Setup Guide**
 
@@ -23,14 +24,14 @@ In this wiki, we will refer as **ROSCORE** side for the additional machine equip
 > Whatever version you use, the Sunrise OS, Sunrise workbench, and Connectivity module must all be compatible.
 
 
-### Sunrise Cabinet setup
+## Cabinet setup
 ### Cabinet setup
 
 A good part of this page is taken from [Khansari's wiki][1]. In case that one will go down one day, here it is.
 
 Before we start, this is a good time to make a factory image of your cabinet. If you purchased the KUKA recovery stick, this will allow you to restore the cabinet in case something goes wrong. Unfortunately the recovery stick does not come with a factory image, so make one before you get started. To do that, connect a monitor and keyboard to the cabinet then simply turn off the cabinet, insert the usb, and reboot the cabinet. It will boot to the recovery menu. You will likely need to change the language using the Sprachauswahl button. Select create image and give it a name. When you're done shut down the cabinet, remove the stick, and reboot.
 
-The Cabinet of an IIWA robot has multiple ethernet ports, from here after, we are gonna make use of the KONI interface.
+The Cabinet of an IIWA robot has multiple ethernet ports, unless otherwise specified, we are going to make use of the KONI interface.
 
 > NOTE: The KONI Ethernet port is on the left side of the front panel of the cabinet. There should be a label on top of it.     
 
@@ -128,9 +129,12 @@ In **our case** : `ping 160.69.69.69`
 if you get an answer, everything is ready.  
 
 
-## Sunrise Setup
+### Sunrise OS Setup (on Workbench PC)
+Next we will do some setup on the robot's Sunrise OS using the workbench PC (the Windows PC with sunrise workbench installed). The iiwa is somewhat unique in that the ROS node actually runs on the controller. Here we are going to use the Sunrise Workbench utility to load the necessary files on the controller. It is worth noting that this utility is also the only way to change the majority of the iiwa settings, so if you need to make changes to the safety config or other settings, this will be the way to do it.
+#### Connect the Workbench PC
+The workbench PC should be connected to the cabinet using the x66 ethernet port. Depending on your computer's setup, you may have to define a static IP as well.
 
-### **Set up your Sunrise Project**
+#### **Set up your Sunrise Project**
 
 1. Create a Sunrise project, or load an existing one from the controller (default IP: 172.31.1.147).
 2. Open the StationSetup.cat file
@@ -182,7 +186,7 @@ If this is a new project? Then you first need to _Install_ it (_Station Setup_ -
 
 With setup complete, you are ready to execute on the robot. First, switch the robot into auto mode by turning the key, selecting auto, and turning the key back.
 
-Then select the ROSSMArtServo program on the smart pad and press the run button.
+Then select the ROSSmartServo program on the smart pad and press the run button.
 
 Finally, simply run the same code from before, this time with sim_robot=false.
 
