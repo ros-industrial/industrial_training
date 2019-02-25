@@ -12,7 +12,7 @@
       camera_frame: "camera"
       voxel_leaf_size: 0.001 <!-- mm -->
       y_filter_min: -0.25 <!-- m -->
-      y_filter_max:  0.80 <!-- m -->
+      y_filter_max:  0.70 <!-- m -->
       x_filter_min: -0.35 <!-- m -->
       x_filter_max:  0.35 <!-- m -->
       <!-- Add .781  for the top of the table-->

@@ -4,11 +4,6 @@
 #include <ros/ros.h>
 
 #include <trajectory_msgs/JointTrajectory.h>
-//#include <trajopt/typedefs.hpp>
-
-// using namespace trajopt;
-// using namespace Eigen;
-
 
 trajectory_msgs::JointTrajectory trajArrayToJointTrajectoryMsg(std::vector<std::string> joint_names,
                                                                tesseract::TrajArray traj_array,
@@ -25,19 +20,14 @@ trajectory_msgs::JointTrajectory trajArrayToJointTrajectoryMsg(std::vector<std::
   tesseract::TrajArray time_mat;
   if (use_time)
   {
-      // Seperate out the time data in the last column from the joint position data
-      pos_mat = traj_array.leftCols(traj_array.cols());
-      time_mat = traj_array.rightCols(1);
+    // Seperate out the time data in the last column from the joint position data
+    pos_mat = traj_array.leftCols(traj_array.cols());
+    time_mat = traj_array.rightCols(1);
   }
   else
   {
-      pos_mat = traj_array;
+    pos_mat = traj_array;
   }
-
-//  std::cout << traj_array <<'\n';
-//  std::cout << "pos: " << pos_mat <<'\n';
-//  std::cout << "time: "<< time_mat <<'\n';
-
 
   ros::Duration time_from_start(0);
   for (int ind = 0; ind < traj_array.rows(); ind++)
@@ -45,23 +35,23 @@ trajectory_msgs::JointTrajectory trajArrayToJointTrajectoryMsg(std::vector<std::
     // Create trajectory point
     trajectory_msgs::JointTrajectoryPoint traj_point;
 
-    //Set the position for this time step
+    // Set the position for this time step
     auto mat = pos_mat.row(ind);
     std::vector<double> vec(mat.data(), mat.data() + mat.rows() * mat.cols());
     traj_point.positions = vec;
 
-    //Add the current dt to the time_from_start
+    // Add the current dt to the time_from_start
     if (use_time)
     {
-        time_from_start += ros::Duration(time_mat(ind, time_mat.cols()-1));
+      time_from_start += ros::Duration(time_mat(ind, time_mat.cols() - 1));
     }
-    else {
-        time_from_start += time_increment;
+    else
+    {
+      time_from_start += time_increment;
     }
     traj_point.time_from_start = time_from_start;
 
     traj_msg.points.push_back(traj_point);
-
   }
   return traj_msg;
 }
