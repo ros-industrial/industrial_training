@@ -12,73 +12,9 @@ TrajoptPickAndPlaceConstructor::TrajoptPickAndPlaceConstructor(tesseract::BasicE
                                                                std::string ee_link,
                                                                std::string pick_object,
                                                                Isometry3d tcp)
-  : env_(env), manipulator_(manipulator), ee_link_(ee_link), pick_object_(pick_object), tcp_(tcp)
+  : manipulator_(manipulator), ee_link_(ee_link), pick_object_(pick_object), tcp_(tcp), env_(env)
 {
   kin_ = env->getManipulator(manipulator_);
-}
-
-void TrajoptPickAndPlaceConstructor::addInitialJointPosConstraint(trajopt::ProblemConstructionInfo& pci)
-{
-  std::shared_ptr<JointConstraintInfo> start_constraint = std::shared_ptr<JointConstraintInfo>(new JointConstraintInfo);
-
-  /* Fill Code:
-       . Define the term type (This is a constraint)
-       . Define the time step
-       . Define the constraint name
-
-  */
-  /* ========  ENTER CODE HERE ======== */
-
-  // ENTER CODE HERE:
-  // ENTER CODE HERE:
-  // ENTER CODE HERE:
-  Eigen::VectorXd start_joint_pos = env_->getCurrentJointValues();
-  start_constraint->vals = std::vector<double>(start_joint_pos.data(), start_joint_pos.data() + start_joint_pos.rows());
-  pci.cnt_infos.push_back(start_constraint);
-}
-
-void TrajoptPickAndPlaceConstructor::addJointVelCost(trajopt::ProblemConstructionInfo& pci, double coeff)
-{
-  std::vector<std::string> joint_names = kin_->getJointNames();
-  // Loop over all of the joints
-  //  for (std::size_t i = 0; i < joint_names.size(); i++)
-  //  {
-  std::shared_ptr<JointVelTermInfo> jv(new JointVelTermInfo);
-  jv->coeffs = std::vector<double>(1, coeff);
-  /* Fill Code:
-       . Define the term time (This is a cost)
-       . Define the first time step
-       . Define the last time step
-       . Define the joint name
-       . Define the penalty type as sco::squared
-  */
-  /* ========  ENTER CODE HERE ======== */
-  // ENTER CODE HERE:
-  // ENTER CODE HERE:
-  // ENTER CODE HERE:
-  // ENTER CODE HERE:
-  // ENTER CODE HERE:
-  // ENTER CODE HERE:
-  pci.cost_infos.push_back(jv);
-  //  }
-}
-
-void TrajoptPickAndPlaceConstructor::addJointAccelCost(trajopt::ProblemConstructionInfo& pci, double coeff)
-{
-  std::vector<std::string> joint_names = kin_->getJointNames();
-  // Loop over all of the joints
-  for (std::size_t i = 0; i < joint_names.size(); i++)
-  {
-    std::shared_ptr<JointAccCostInfo> jv(new JointAccCostInfo);
-    jv->coeffs = std::vector<double>(1, coeff);
-    jv->name = joint_names[i] + "_accel";
-    jv->term_type = TT_COST;
-    jv->first_step = 0;
-    jv->last_step = pci.basic_info.n_steps - 1;
-    jv->joint_name = joint_names[i];
-    jv->penalty_type = sco::SQUARED;
-    pci.cost_infos.push_back(jv);
-  }
 }
 
 void TrajoptPickAndPlaceConstructor::addTotalTimeCost(ProblemConstructionInfo& pci, double coeff)
@@ -91,32 +27,23 @@ void TrajoptPickAndPlaceConstructor::addTotalTimeCost(ProblemConstructionInfo& p
   pci.cost_infos.push_back(time_cost);
 }
 
-void TrajoptPickAndPlaceConstructor::addCollisionCost(trajopt::ProblemConstructionInfo& pci,
-                                                      double dist_pen,
-                                                      double coeff,
-                                                      int first_step,
-                                                      int last_step)
+void TrajoptPickAndPlaceConstructor::addSingleWaypoint(trajopt::ProblemConstructionInfo& pci,
+                                                       Isometry3d pose,
+                                                       int time_step)
 {
-  std::shared_ptr<CollisionCostInfo> collision(new CollisionCostInfo);
-  /* Fill Code:
-       . Define the cost name
-       . Define the term type (This is a cost)
-       . Define this cost as continuous
-       . Define the first time step
-       . Define the last time step
-       . Set the cost gap to be 1
-       . Define the penalty type as sco::squared
-  */
-  /* ========  ENTER CODE HERE ======== */
-  // ENTER CODE HERE:
-  // ENTER CODE HERE:
-  // ENTER CODE HERE:
-  // ENTER CODE HERE:
-  // ENTER CODE HERE:
-  // ENTER CODE HERE:
-  collision->info = createSafetyMarginDataVector(last_step - first_step + 1, dist_pen, coeff);
+  Quaterniond rotation(pose.linear());
 
-  pci.cost_infos.push_back(collision);
+  std::shared_ptr<CartPoseTermInfo> pose_constraint = std::shared_ptr<CartPoseTermInfo>(new CartPoseTermInfo);
+  pose_constraint->term_type = TT_CNT;
+  pose_constraint->link = ee_link_;
+  pose_constraint->timestep = time_step;
+  pose_constraint->xyz = pose.translation();
+
+  pose_constraint->wxyz = Vector4d(rotation.w(), rotation.x(), rotation.y(), rotation.z());
+  pose_constraint->pos_coeffs = Vector3d(10.0, 10.0, 10.0);
+  pose_constraint->rot_coeffs = Vector3d(10.0, 10.0, 10.0);
+  pose_constraint->name = "pose_" + std::to_string(time_step);
+  pci.cnt_infos.push_back(pose_constraint);
 }
 
 void TrajoptPickAndPlaceConstructor::addLinearMotion(trajopt::ProblemConstructionInfo& pci,
@@ -142,7 +69,7 @@ void TrajoptPickAndPlaceConstructor::addLinearMotion(trajopt::ProblemConstructio
          . Define the term type (This is a constraint)
          . Set the link constrained as the end effector (see class members)
          . Set the correct time step for this pose
-         . Set the pose xyz translation
+         . Set the pose xyz translation (the starting pose + xyz_delta * i)
     */
     /* ========  ENTER CODE HERE ======== */
     // ENTER CODE HERE:
@@ -177,16 +104,20 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePickProblem(Isometry3d& a
                                                                    Isometry3d& final_pose,
                                                                    int steps_per_phase)
 {
-  // create new problem
+  //---------------------------------------------------------
+  // ---------------- Fill Basic Info -----------------------
+  //---------------------------------------------------------
   trajopt::ProblemConstructionInfo pci(env_);
+  // Add kinematics
+  pci.kin = kin_;
 
-  /* Fill Code:
-   * Define the basic info
+  /* Fill Code: Define the basic info
        . Set the pci number of steps
        . Set the start_fixed to false
        . Set the manipulator name (see class members)
        . Set dt lower limit
        . Set dt upper limit
+       . Set use_time to false
   */
   /* ========  ENTER CODE HERE ======== */
   // ENTER CODE HERE:
@@ -194,41 +125,76 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePickProblem(Isometry3d& a
   // ENTER CODE HERE:
   // ENTER CODE HERE:
   // ENTER CODE HERE:
+  // ENTER CODE HERE:
 
-  // Add kinematics
-  pci.kin = kin_;
+  //---------------------------------------------------------
+  // ---------------- Fill Init Info ------------------------
+  //---------------------------------------------------------
 
-  // Initialize
-  // To use STRAIGHT_LINE - a linear interpolation of joint values
-//  pci.init_info.type = InitInfo::STRAIGHT_LINE;
-//  pci.init_info.data = numericalIK(final_pose);  // Note, take the last value off if has_time=false
+  // To use JOINT_INTERPOLATED - a linear interpolation of joint values
+  //  pci.init_info.type = InitInfo::JOINT_INTERPOLATED;
+  //  pci.init_info.data = numericalIK(final_pose);  // Note, take the last value off if using time (just want jnt
+  //  values)
 
-  // To use STATIONARY - All steps initialized at start point
+  // To use STATIONARY - all jnts initialized to the starting value
   pci.init_info.type = InitInfo::STATIONARY;
-  pci.init_info.data = env_->getCurrentJointValues(pci.kin->getName()).replicate(2*steps_per_phase, 1);   // Define the initial guess that is num_steps x num_joints
+  pci.init_info.dt = 0.5;
 
-  // Turn on time parameterization
-  pci.init_info.has_time = true;
+  //---------------------------------------------------------
+  // ---------------- Fill Term Infos -----------------------
+  //---------------------------------------------------------
 
-  /* Fill Code: Define motion
-       . Add joint velocity contraint (this->addJointVelCost(pci, 5.0))
-       . Add joint acceleration constraint
-       . Add total time cost
-       . Add initial joint pose constraint
-       . Add linear motion contraints from approach_pose to final_pose
+  // ================= Collision cost =======================
+  std::shared_ptr<CollisionTermInfo> collision(new CollisionTermInfo);
+  /* Fill Code:
+       . Define the cost name
+       . Define the term type (This is a cost)
+       . Define this cost as continuous
+       . Define the first time step
+       . Define the last time step
+       . Set the cost gap to be 1
   */
   /* ========  ENTER CODE HERE ======== */
   // ENTER CODE HERE:
+  // ENTER CODE HERE:
+  // ENTER CODE HERE:
+  // ENTER CODE HERE:
+  // ENTER CODE HERE:
+  // ENTER CODE HERE:
+  collision->info = createSafetyMarginDataVector(pci.basic_info.n_steps, 0.025, 40);
 
+  pci.cost_infos.push_back(collision);
+
+  // ================= Velocity cost =======================
+  std::shared_ptr<JointVelTermInfo> jv(new JointVelTermInfo);
+
+  // Taken from iiwa documentation (radians/s) and scaled by 0.8
+  std::vector<double> vel_lower_lim{ 1.71 * -0.8, 1.71 * -0.8, 1.75 * -0.8, 2.27 * -0.8,
+                                     2.44 * -0.8, 3.14 * -0.8, 3.14 * -0.8 };
+  std::vector<double> vel_upper_lim{
+    1.71 * 0.8, 1.71 * 0.8, 1.75 * 0.8, 2.27 * 0.8, 2.44 * 0.8, 3.14 * 0.8, 3.14 * 0.8
+  };
+
+  /* Fill Code:
+       . Define the term time (This is a cost)
+       . Define the first time step
+       . Define the last time step
+       . Define vector of target velocities. Length = DOF. Value = 0
+       . Define vector of coefficients. Length = DOF. Value = 5
+       . Define the term name
+  */
+  /* ========  ENTER CODE HERE ======== */
+  // ENTER CODE HERE:
+  // ENTER CODE HERE:
+  // ENTER CODE HERE:
+  // ENTER CODE HERE:
+  // ENTER CODE HERE:
   // ENTER CODE HERE:
 
-  // ENTER CODE HERE:
+  pci.cost_infos.push_back(jv);
 
-  // ENTER CODE HERE:
-
-  // ENTER CODE HERE:
-
-  this->addCollisionCost(pci, 0.025, 20, 0, steps_per_phase);
+  // ================= Path waypoints =======================
+  this->addLinearMotion(pci, approach_pose, final_pose, steps_per_phase, steps_per_phase);
 
   TrajOptProbPtr result = ConstructProblem(pci);
   return result;
@@ -239,8 +205,12 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePlaceProblem(Isometry3d& 
                                                                     Isometry3d& final_pose,
                                                                     int steps_per_phase)
 {
-  // create new problem
+  //---------------------------------------------------------
+  // ---------------- Fill Basic Info -----------------------
+  //---------------------------------------------------------
   trajopt::ProblemConstructionInfo pci(env_);
+  // Add kinematics
+  pci.kin = kin_;
 
   /* Fill Code: Define the basic info
        . Set the pci number of steps
@@ -248,29 +218,83 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePlaceProblem(Isometry3d& 
        . Set the manipulator name (see class members)
        . Set dt lower limit
        . Set dt upper limit
+       . Set use_time to false
   */
   /* ========  ENTER CODE HERE ======== */
+  // ENTER CODE HERE:
+  // ENTER CODE HERE:
+  // ENTER CODE HERE:
+  // ENTER CODE HERE:
+  // ENTER CODE HERE:
+  // ENTER CODE HERE:
 
-  // ENTER CODE HERE:
-  // ENTER CODE HERE:
-  // ENTER CODE HERE:
-  // ENTER CODE HERE:
-  // ENTER CODE HERE:
+  //---------------------------------------------------------
+  // ---------------- Fill Init Info ------------------------
+  //---------------------------------------------------------
 
-  // Add kinematics
-  pci.kin = kin_;
+  // To use JOINT_INTERPOLATED - a linear interpolation of joint values
+  //  pci.init_info.type = InitInfo::JOINT_INTERPOLATED;
+  //  pci.init_info.data = numericalIK(final_pose);  // Note, take the last value off if using time (just want jnt
+  //  values)
 
+  // To use STATIONARY - all jnts initialized to the starting value
   pci.init_info.type = InitInfo::STATIONARY;
-  // Define the initial guess that is num_steps x num_joints
-  pci.init_info.data = env_->getCurrentJointValues(pci.kin->getName()).replicate(3 * steps_per_phase, 1);
-  pci.init_info.has_time = true;
+  pci.init_info.dt = 0.5;
 
-  this->addJointVelCost(pci, 100.0);
+  //---------------------------------------------------------
+  // ---------------- Fill Term Infos -----------------------
+  //---------------------------------------------------------
 
-  this->addTotalTimeCost(pci, 50.0);
+  // ================= Collision cost =======================
+  std::shared_ptr<CollisionTermInfo> collision(new CollisionTermInfo);
+  /* Fill Code:
+       . Define the cost name
+       . Define the term type (This is a cost)
+       . Define this cost as continuous
+       . Define the first time step
+       . Define the last time step
+       . Set the cost gap to be 1
+  */
+  /* ========  ENTER CODE HERE ======== */
+  // ENTER CODE HERE:
+  // ENTER CODE HERE:
+  // ENTER CODE HERE:
+  // ENTER CODE HERE:
+  // ENTER CODE HERE:
+  // ENTER CODE HERE:;
+  collision->info = createSafetyMarginDataVector(pci.basic_info.n_steps, 0.025, 40);
 
-  this->addInitialJointPosConstraint(pci);
+  pci.cost_infos.push_back(collision);
 
+  // ================= Velocity cost =======================
+  std::shared_ptr<JointVelTermInfo> jv(new JointVelTermInfo);
+
+  // Taken from iiwa documentation (radians/s) and scaled by 0.8
+  std::vector<double> vel_lower_lim{ 1.71 * -0.8, 1.71 * -0.8, 1.75 * -0.8, 2.27 * -0.8,
+                                     2.44 * -0.8, 3.14 * -0.8, 3.14 * -0.8 };
+  std::vector<double> vel_upper_lim{
+    1.71 * 0.8, 1.71 * 0.8, 1.75 * 0.8, 2.27 * 0.8, 2.44 * 0.8, 3.14 * 0.8, 3.14 * 0.8
+  };
+
+  /* Fill Code:
+       . Define the term time (This is a cost)
+       . Define the first time step
+       . Define the last time step
+       . Define vector of target velocities. Length = DOF. Value = 0
+       . Define vector of coefficients. Length = DOF. Value = 5
+       . Define the term name
+  */
+  /* ========  ENTER CODE HERE ======== */
+  // ENTER CODE HERE:
+  // ENTER CODE HERE:
+  // ENTER CODE HERE:
+  // ENTER CODE HERE:
+  // ENTER CODE HERE:
+  // ENTER CODE HERE:;
+
+  pci.cost_infos.push_back(jv);
+
+  // Get current pose
   Eigen::Isometry3d start_pose;
   pci.kin->calcFwdKin(start_pose,
                       env_->getState()->transforms.at(kin_->getBaseLinkName()),
@@ -279,13 +303,10 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePlaceProblem(Isometry3d& 
                       *env_->getState());
 
   /* Fill Code: Define motion
-       . Add linear motion from start_pose to retreat_pose
+       . Add linear motion from start_pose to retreat_pose (hint: Use the helpers defined above)
        . Add linear motion from approach_pose to final_pose
-       . Add collision cost
   */
   /* ========  ENTER CODE HERE ======== */
-  // ENTER CODE HERE:
-
   // ENTER CODE HERE:
 
   // ENTER CODE HERE:
@@ -301,19 +322,22 @@ Eigen::VectorXd TrajoptPickAndPlaceConstructor::numericalIK(Isometry3d& end_pose
   // Only 2 steps
   pci_ik.basic_info.n_steps = 2;
   pci_ik.basic_info.manip = "manipulator";
-  pci_ik.basic_info.start_fixed = false;
+  pci_ik.basic_info.start_fixed = true;
   pci_ik.init_info.type = InitInfo::STATIONARY;
   pci_ik.kin = kin_;
   pci_ik.init_info.data = env_->getCurrentJointValues(pci_ik.kin->getName());
 
-  // Set initial joint constraint
-  this->addInitialJointPosConstraint(pci_ik);
-
   // Set velocity cost to get "shortest" ik solution
-  this->addJointVelCost(pci_ik, 10);
+  std::shared_ptr<JointVelTermInfo> jv(new JointVelTermInfo);
+  jv->coeffs = std::vector<double>(7, 5.0);
+  jv->term_type = TT_COST;
+  jv->first_step = 0;
+  jv->last_step = pci_ik.basic_info.n_steps - 1;
+  jv->name = "joint_velocity_cost";
+  pci_ik.cost_infos.push_back(jv);
 
   // Set static pose constraint
-  std::shared_ptr<StaticPoseCostInfo> pose_constraint = std::shared_ptr<StaticPoseCostInfo>(new StaticPoseCostInfo);
+  std::shared_ptr<CartPoseTermInfo> pose_constraint = std::shared_ptr<CartPoseTermInfo>(new CartPoseTermInfo);
   pose_constraint->term_type = TT_CNT;
   pose_constraint->link = ee_link_;
   pose_constraint->timestep = 1;
@@ -335,11 +359,11 @@ Eigen::VectorXd TrajoptPickAndPlaceConstructor::numericalIK(Isometry3d& end_pose
   TrajOptProbPtr problem = ConstructProblem(pci_ik);
 
   // Create trust region
-  BasicTrustRegionSQP opt(problem);
+  sco::BasicTrustRegionSQP opt(problem);
   opt.initialize(DblVec(problem->GetNumDOF() * 2, 0));
   opt.optimize();
 
   // Get the joint values for only the last point from the output and return them
-  Eigen::VectorXd output = toVectorXd(opt.x());
+  Eigen::VectorXd output = util::toVectorXd(opt.x());
   return output.segment(problem->GetNumDOF(), problem->GetNumDOF());
 }

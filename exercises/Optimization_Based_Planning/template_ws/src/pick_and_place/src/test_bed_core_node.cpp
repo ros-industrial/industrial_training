@@ -29,20 +29,24 @@ int main(int argc, char** argv)
 
   int steps_per_phase;
   std::string world_frame, pick_frame;
-  bool sim_robot, plotting_cb, file_write_cb;
+  bool sim_robot, actuate_gripper, plotting_cb, file_write_cb;
 
   pnh.param<int>("steps_per_phase", steps_per_phase, 10);
   nh.param<std::string>("world_frame", world_frame, "world");
   nh.param<std::string>("pick_frame", pick_frame, "part");
-  nh.param<bool>("/pick_and_place_node/sim_robot", sim_robot, true);
-  nh.param<bool>("/pick_and_place_node/plotting", plotting_cb, false);
-  nh.param<bool>("/pick_and_place_node/file_write_cb", file_write_cb, false);
+  pnh.param<bool>("sim_robot", sim_robot, true);
+  pnh.param<bool>("actuate_gripper", actuate_gripper, true);
+  pnh.param<bool>("plotting", plotting_cb, false);
+  pnh.param<bool>("file_write_cb", file_write_cb, false);
 
   tf::TransformListener listener;
   ros::ServiceClient find_pick_client = nh.serviceClient<pick_and_place_perception::GetTargetPose>("find_pick");
   ros::Publisher test_pub = nh.advertise<trajectory_msgs::JointTrajectory>("joint_traj", 10);
 
   bool plan = true;
+
+  // Set Log Level
+  util::gLogLevel = util::LevelInfo;
 
   /////////////
   /// SETUP ///
@@ -66,6 +70,7 @@ int main(int argc, char** argv)
 
   std::unordered_map<std::string, double> joint_states;
 
+  // The initial robot position
   if (sim_robot)
   {
     joint_states["iiwa_joint_1"] = 0.0;
@@ -92,10 +97,8 @@ int main(int argc, char** argv)
   env->setState(joint_states);
 
   double box_side, box_x, box_y;
-  //  nh.getParam("box_side", box_side);
   nh.getParam("box_x", box_x);
   nh.getParam("box_y", box_y);
-
   std::string box_parent_link;
   nh.getParam("box_parent_link", box_parent_link);
 
@@ -130,7 +133,6 @@ int main(int argc, char** argv)
   box->size[0] = box_size_x;
   box->size[1] = box_size_y;
   box->size[2] = box_size_z;
-  //  box_side = 0.14;
 
   obj->name = "box";
   obj->visual.shapes.push_back(box);
@@ -143,7 +145,6 @@ int main(int argc, char** argv)
 
   tesseract::AttachedBodyInfo attached_body;
   Eigen::Isometry3d object_pose = Eigen::Isometry3d::Identity();
-  //  object_pose.translation() += Eigen::Vector3d(box_x, box_y, box_side / 2.0);
   object_pose = world_to_box;
   object_pose.translation() += Eigen::Vector3d(0, 0, -0.77153 - box_size_z / 2.0);  // convert to world frame
   attached_body.object_name = "box";
@@ -153,16 +154,16 @@ int main(int argc, char** argv)
   env->attachBody(attached_body);
 
   tesseract::tesseract_ros::ROSBasicPlotting plotter(env);
-  Eigen::VectorXd init_pos = env->getCurrentJointValues();
-  init_pos.conservativeResize(init_pos.rows() + 1);
-  plotter.plotTrajectory(env->getJointNames(), init_pos);
+  Eigen::RowVectorXd init_pos = env->getCurrentJointValues();
+  plotter.plotTrajectory(env->getJointNames(), init_pos.leftCols(env->getJointNames().size()));
 
+  // Begin the path planning
   if (plan == true)
   {
     ROS_ERROR("Press enter to continue");
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-    tesseract::tesseract_planning::TrajoptPlanner planner;
+    tesseract::tesseract_planning::TrajOptPlanner planner;
     tesseract::tesseract_planning::PlannerResponse planning_response;
 
     Eigen::Quaterniond orientation(0.0, 0.0, 1.0, 0.0);
@@ -175,7 +176,8 @@ int main(int argc, char** argv)
     Eigen::Isometry3d final_pose;
     final_pose.linear() = orientation.matrix();
     final_pose.translation() = world_to_box.translation();
-    final_pose.translation() += Eigen::Vector3d(0.0, 0.0, 0.040);  // Temporarily add some for the gripper
+    double gripper_offset = 0.08;
+    final_pose.translation() += Eigen::Vector3d(0.0, 0.0, gripper_offset);  // We add an offset for a gripper since it's not in the URDF
 
     // Define the approach pose
     Eigen::Isometry3d approach_pose = final_pose;
@@ -191,6 +193,7 @@ int main(int argc, char** argv)
 
     // Define Callbacks
     std::vector<trajopt::Optimizer::Callback> callbacks;
+
     // Create Plot Callback
     if (plotting_cb)
     {
@@ -212,7 +215,7 @@ int main(int argc, char** argv)
     if (file_write_cb)
       stream_ptr->close();
 
-    plotter.plotTrajectory(env->getJointNames(), planning_response.trajectory);
+    plotter.plotTrajectory(env->getJointNames(), planning_response.trajectory.leftCols(env->getJointNames().size()));
     std::cout << planning_response.trajectory << '\n';
 
     // Get transform b/n world and the parent link of the box transform
@@ -226,9 +229,10 @@ int main(int argc, char** argv)
 
     Eigen::Vector3d translation_err = (world_to_actual_box.inverse() * world_to_box).translation();
 
+    // Publish the trajectory for debugging
     trajectory_msgs::JointTrajectory traj_msg3;
     ros::Duration t1(0.25);
-    traj_msg3 = trajArrayToJointTrajectoryMsg(planning_response.joint_names, planning_response.trajectory, t1);
+    traj_msg3 = trajArrayToJointTrajectoryMsg(planning_response.joint_names, planning_response.trajectory, false, t1);
     test_pub.publish(traj_msg3);
 
     ROS_ERROR("Press enter to continue");
@@ -238,10 +242,7 @@ int main(int argc, char** argv)
     env->detachBody("box");
 
     attached_body.parent_link_name = end_effector;
-    //    attached_body.transform.translation() = Eigen::Vector3d(translation_err.x(), translation_err.y(), box_side
-    //    / 2.0); attached_body.transform = world_to_box; attached_body.transform.translation() += Eigen::Vector3d(0, 0,
-    //    -0.77153 - box_side / 2.0);
-    attached_body.transform.translation() = Eigen::Vector3d(0, 0, box_size_z / 2.0 + 0.040);
+    attached_body.transform.translation() = Eigen::Vector3d(0, 0, box_size_z / 2.0 + gripper_offset);
     attached_body.touch_links = { "iiwa_link_ee", end_effector };  // allow the box to contact the end effector
     attached_body.touch_links = { "workcell_base",
                                   end_effector };  // allow the box to contact the table (since it's sitting on it)
@@ -253,19 +254,21 @@ int main(int argc, char** argv)
     /////////////
 
     // Set the current state to the last state of the trajectory
-    env->setState(
-        env->getJointNames(),
-        planning_response.trajectory.block(steps_per_phase * 2 - 1, 0, 1, env->getJointNames().size()).transpose());
+    env->setState(env->getJointNames(), planning_response.trajectory.bottomRows(1).transpose());
 
     // Pick up box
     Eigen::Isometry3d retreat_pose = approach_pose;
 
     // Define some place locations.
-    Eigen::Isometry3d middle_right_shelf, middle_left_shelf;
+    Eigen::Isometry3d middle_right_shelf, middle_left_shelf, top_right_shelf, top_left_shelf;
     middle_right_shelf.linear() = Eigen::Quaterniond(0, 0, 0.7071068, 0.7071068).matrix();
-    middle_right_shelf.translation() = Eigen::Vector3d(0.148856, 0.75085, 1.16);
+    middle_right_shelf.translation() = Eigen::Vector3d(0.148856, 0.73085 - gripper_offset, 1.16);
     middle_left_shelf.linear() = Eigen::Quaterniond(0, 0, 0.7071068, 0.7071068).matrix();
-    middle_left_shelf.translation() = Eigen::Vector3d(-0.148856, 0.75085, 1.16);
+    middle_left_shelf.translation() = Eigen::Vector3d(-0.148856, 0.73085 - gripper_offset, 1.16);
+    top_right_shelf.linear() = Eigen::Quaterniond(0, 0, 0.7071068, 0.7071068).matrix();
+    top_right_shelf.translation() = Eigen::Vector3d(0.148856, 0.73085 - gripper_offset, 1.414);
+    top_left_shelf.linear() = Eigen::Quaterniond(0, 0, 0.7071068, 0.7071068).matrix();
+    top_left_shelf.translation() = Eigen::Vector3d(-0.148856, 0.73085 - gripper_offset, 1.414);
 
     // Set the target pose to middle_right_shelf
     final_pose = middle_left_shelf;
@@ -280,40 +283,40 @@ int main(int argc, char** argv)
         prob_constructor.generatePlaceProblem(retreat_pose, approach_pose, final_pose, steps_per_phase);
 
     // Set the parameters
-    trajopt::BasicTrustRegionSQPParameters params_place;
-    params_place.max_iter = 500;
+    tesseract::tesseract_planning::TrajOptPlannerConfig config_place(place_prob);
+    config_place.params.max_iter = 500;
 
-    // Define Callbacks
-    std::vector<trajopt::Optimizer::Callback> callbacks_place;
-    // Create Plot Callback
+    // Create Plot Callback (optional)
     if (plotting_cb)
     {
       tesseract::tesseract_ros::ROSBasicPlottingPtr plotter_ptr(new tesseract::tesseract_ros::ROSBasicPlotting(env));
-      callbacks_place.push_back(PlotCallback(*place_prob, plotter_ptr));
+      config_place.callbacks.push_back(PlotCallback(*place_prob, plotter_ptr));
     }
-    // Create file write callback discarding any of the file's current contents
+    // Create file write callback discarding any of the file's current contents (optional)
     std::shared_ptr<std::ofstream> stream_ptr_place(new std::ofstream);
     if (file_write_cb)
     {
       std::string path = ros::package::getPath("pick_and_place") + "/file_output_place.csv";
       stream_ptr->open(path, std::ofstream::out | std::ofstream::trunc);
-      callbacks_place.push_back(trajopt::WriteCallback(stream_ptr_place, place_prob));
+      config_place.callbacks.push_back(trajopt::WriteCallback(stream_ptr_place, place_prob));
     }
 
     // Solve problem
-    planner.solve(planning_response_place, place_prob, params_place, callbacks_place);
+    planner.solve(planning_response_place, config_place);
 
     if (file_write_cb)
       stream_ptr_place->close();
 
     // plot the trajectory in Rviz
-    plotter.plotTrajectory(planning_response_place.joint_names, planning_response_place.trajectory);
+    plotter.plotTrajectory(env->getJointNames(),
+                           planning_response_place.trajectory.leftCols(env->getJointNames().size()));
     std::cout << planning_response_place.trajectory << '\n';
 
+    // Publish the trajectory for debugging
     trajectory_msgs::JointTrajectory traj_msg4;
     ros::Duration t2(0.25);
-    traj_msg4 =
-        trajArrayToJointTrajectoryMsg(planning_response_place.joint_names, planning_response_place.trajectory, t2);
+    traj_msg4 = trajArrayToJointTrajectoryMsg(
+        planning_response_place.joint_names, planning_response_place.trajectory, false, t2);
     test_pub.publish(traj_msg4);
 
     ///////////////
@@ -329,6 +332,10 @@ int main(int argc, char** argv)
       std::cin >> input;
       if (input == 'y')
       {
+        // Put gripper setup here (See Demo 3.10)
+        if (actuate_gripper)
+        {
+        }  // End gripper setup here
         std::cout << "Executing... \n";
 
         // Create action client to send trajectories
@@ -344,7 +351,7 @@ int main(int argc, char** argv)
         // Convert TrajArray (Eigen Matrix of joint values) to ROS message
         trajectory_msgs::JointTrajectory traj_msg;
         ros::Duration t(0.25);
-        traj_msg = trajArrayToJointTrajectoryMsg(planning_response.joint_names, planning_response.trajectory, t);
+        traj_msg = trajArrayToJointTrajectoryMsg(planning_response.joint_names, planning_response.trajectory, false, t);
 
         // Create action message
         control_msgs::FollowJointTrajectoryGoal trajectory_action;
@@ -361,6 +368,10 @@ int main(int argc, char** argv)
         if (execution_client.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
         {
           std::cout << "Pick action succeeded! \n";
+          // Put gripper pick code here (See Demo 3.10)
+          if (actuate_gripper)
+          {
+          }  // End gripper pick code
         }
         else
         {
@@ -374,8 +385,8 @@ int main(int argc, char** argv)
         trajectory_msgs::JointTrajectory traj_msg2;
         ros::Duration t2(0.25);
 
-        traj_msg2 =
-            trajArrayToJointTrajectoryMsg(planning_response_place.joint_names, planning_response_place.trajectory, t2);
+        traj_msg2 = trajArrayToJointTrajectoryMsg(
+            planning_response_place.joint_names, planning_response_place.trajectory, false, t2);
         test_pub.publish(traj_msg2);
 
         // Create action message
@@ -389,6 +400,10 @@ int main(int argc, char** argv)
         if (execution_client.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
         {
           std::cout << "Place action succeeded! \n";
+          // Put gripper release code here (See Demo 3.10)
+          if (actuate_gripper)
+          {
+          }  // End gripper release code
         }
         else
         {

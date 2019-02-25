@@ -86,7 +86,7 @@ find_package(PCL REQUIRED)
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
+#  INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include
 #  LIBRARIES lesson_perception
 #  CATKIN_DEPENDS roscpp sensor_msgs tf
 #  DEPENDS system_lib
@@ -114,8 +114,8 @@ include_directories(
 
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
-# add_dependencies(lesson_perception_node lesson_perception_generate_messages_cpp)
-add_dependencies(perception_node ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
+# add_dependencies(perception_node perception_node_generate_messages_cpp)
+ add_dependencies(perception_node ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
  target_link_libraries(perception_node ${catkin_LIBRARIES} ${PCL_LIBRARIES})

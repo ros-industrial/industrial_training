@@ -17,6 +17,9 @@ private:
   tesseract::BasicKinConstPtr kin_; /**< @brief Kinematics description */
 
 public:
+  // Needed because an Eigen::Isometry3d is a class member
+  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+
   TrajoptPickAndPlaceConstructor(tesseract::BasicEnvConstPtr env,
                                  std::string manipulator,
                                  std::string ee_link,
@@ -24,37 +27,22 @@ public:
                                  Eigen::Isometry3d tcp = Eigen::Isometry3d::Identity());
 
   /**
-   * @brief Constrains initial joint positiions
+   * @brief addTotalTimeCost - Adds cost to the overall total time to elapsed in the trajectory
    * @param pci - The trajopt problem construction info to which the cost is added
-   */
-  void addInitialJointPosConstraint(trajopt::ProblemConstructionInfo& pci);
-
-  /**
-   * @brief Adds a cost to the optimization of the joint velocities
-   * @param pci - The trajopt problem construction info to which the cost is added
-   * @param coeff -
-   */
-  void addJointVelCost(trajopt::ProblemConstructionInfo& pci, double coeff);
-
-  void addJointAccelCost(trajopt::ProblemConstructionInfo& pci, double coeff);
-
-  /**
-   * @brief addTotalTimeCost
-   * @param pci
-   * @param coeff
+   * @param coeff - Used to scale this cost relative to other costs
    */
   void addTotalTimeCost(trajopt::ProblemConstructionInfo& pci, double coeff);
 
   /**
-   * @brief Adds a collision cost to a subset of the time steps in a trajopt problem construction info
+   * @brief Adds a single waypoint at the desired pose
    * @param pci - The trajopt problem construction info to which the cost is added
-   * @param dist_pen
-   * @param coeff
-   * @param first_step - First step to which the collision cost is added
-   * @param last_step
+   * @param pose - The target pose
+   * @param time_step - Time step at which the cost applies
    */
-  void
-  addCollisionCost(trajopt::ProblemConstructionInfo& pci, double dist_pen, double coeff, int first_step, int last_step);
+  void addSingleWaypoint(trajopt::ProblemConstructionInfo& pci,
+                                                       Eigen::Isometry3d pose,
+                                                       int time_step);
+
   /**
    * @brief Adds a linear move to the problem construction info
    * @param pci - The trajopt problem construction info to which the move is added

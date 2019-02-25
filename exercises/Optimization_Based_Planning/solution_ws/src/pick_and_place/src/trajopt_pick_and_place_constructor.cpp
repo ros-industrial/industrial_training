@@ -17,15 +17,15 @@ TrajoptPickAndPlaceConstructor::TrajoptPickAndPlaceConstructor(tesseract::BasicE
   kin_ = env->getManipulator(manipulator_);
 }
 
-// void TrajoptPickAndPlaceConstructor::addTotalTimeCost(ProblemConstructionInfo& pci, double coeff)
-//{
-//  std::shared_ptr<TotalTimeTermInfo> time_cost(new TotalTimeTermInfo);
-//  time_cost->name = "time_cost";
-//  time_cost->penalty_type = sco::ABS;
-//  time_cost->weight = coeff;
-//  time_cost->term_type = TT_COST;
-//  pci.cost_infos.push_back(time_cost);
-//}
+void TrajoptPickAndPlaceConstructor::addTotalTimeCost(ProblemConstructionInfo& pci, double coeff)
+{
+  std::shared_ptr<TotalTimeTermInfo> time_cost(new TotalTimeTermInfo);
+  time_cost->name = "time_cost";
+  time_cost->penalty_type = sco::ABS;
+  time_cost->weight = coeff;
+  time_cost->term_type = TT_COST;
+  pci.cost_infos.push_back(time_cost);
+}
 
 void TrajoptPickAndPlaceConstructor::addSingleWaypoint(trajopt::ProblemConstructionInfo& pci,
                                                        Isometry3d pose,
@@ -117,6 +117,7 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePickProblem(Isometry3d& a
        . Set the manipulator name (see class members)
        . Set dt lower limit
        . Set dt upper limit
+       . Set use_time to false
   */
   /* ========  ENTER CODE HERE ======== */
   pci.basic_info.n_steps = steps_per_phase * 2;
@@ -152,7 +153,6 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePickProblem(Isometry3d& a
        . Define the first time step
        . Define the last time step
        . Set the cost gap to be 1
-       . Define the penalty type as sco::squared
   */
   /* ========  ENTER CODE HERE ======== */
   collision->name = "collision";
@@ -169,31 +169,32 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePickProblem(Isometry3d& a
   std::shared_ptr<JointVelTermInfo> jv(new JointVelTermInfo);
 
   // Taken from iiwa documentation (radians/s) and scaled by 0.8
-  std::vector<double> vel_lower_lim{ 1.71*-0.8, 1.71*-0.8, 1.75*-0.8, 2.27*-0.8, 2.44*-0.8, 3.14*-0.8, 3.14*-0.8 };
-  std::vector<double> vel_upper_lim{ 1.71*0.8, 1.71*0.8, 1.75*0.8, 2.27*0.8, 2.44*0.8, 3.14*0.8, 3.14*0.8 };
+  std::vector<double> vel_lower_lim{ 1.71 * -0.8, 1.71 * -0.8, 1.75 * -0.8, 2.27 * -0.8,
+                                     2.44 * -0.8, 3.14 * -0.8, 3.14 * -0.8 };
+  std::vector<double> vel_upper_lim{
+    1.71 * 0.8, 1.71 * 0.8, 1.75 * 0.8, 2.27 * 0.8, 2.44 * 0.8, 3.14 * 0.8, 3.14 * 0.8
+  };
 
   /* Fill Code:
        . Define the term time (This is a cost)
        . Define the first time step
        . Define the last time step
+       . Define vector of target velocities. Length = DOF. Value = 0
+       . Define vector of coefficients. Length = DOF. Value = 5
        . Define the term name
   */
   /* ========  ENTER CODE HERE ======== */
-  jv->targets = std::vector<double>(7, 0.0);
-  jv->coeffs = std::vector<double>(7, 5.0);
-//  jv->lower_tols = vel_lower_lim;
-//  jv->upper_tols = vel_upper_lim;
   jv->term_type = TT_COST;
   jv->first_step = 0;
   jv->last_step = pci.basic_info.n_steps - 1;
+  jv->targets = std::vector<double>(7, 0.0);
+  jv->coeffs = std::vector<double>(7, 5.0);
   jv->name = "joint_velocity_cost";
 
   pci.cost_infos.push_back(jv);
 
   // ================= Path waypoints =======================
   this->addLinearMotion(pci, approach_pose, final_pose, steps_per_phase, steps_per_phase);
-
-  //  this->addTotalTimeCost(pci, 50.0);
 
   TrajOptProbPtr result = ConstructProblem(pci);
   return result;
@@ -213,10 +214,11 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePlaceProblem(Isometry3d& 
 
   /* Fill Code: Define the basic info
        . Set the pci number of steps
-       . Set the start_fixed to false
        . Set the manipulator name (see class members)
        . Set dt lower limit
        . Set dt upper limit
+       . Set the start_fixed to false
+       . Set use_time to false
   */
   /* ========  ENTER CODE HERE ======== */
   pci.basic_info.n_steps = steps_per_phase * 3;
@@ -252,7 +254,6 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePlaceProblem(Isometry3d& 
        . Define the first time step
        . Define the last time step
        . Set the cost gap to be 1
-       . Define the penalty type as sco::squared
   */
   /* ========  ENTER CODE HERE ======== */
   collision->name = "collision";
@@ -269,28 +270,29 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePlaceProblem(Isometry3d& 
   std::shared_ptr<JointVelTermInfo> jv(new JointVelTermInfo);
 
   // Taken from iiwa documentation (radians/s) and scaled by 0.8
-  std::vector<double> vel_lower_lim{ 1.71*-0.8, 1.71*-0.8, 1.75*-0.8, 2.27*-0.8, 2.44*-0.8, 3.14*-0.8, 3.14*-0.8 };
-  std::vector<double> vel_upper_lim{ 1.71*0.8, 1.71*0.8, 1.75*0.8, 2.27*0.8, 2.44*0.8, 3.14*0.8, 3.14*0.8 };
+  std::vector<double> vel_lower_lim{ 1.71 * -0.8, 1.71 * -0.8, 1.75 * -0.8, 2.27 * -0.8,
+                                     2.44 * -0.8, 3.14 * -0.8, 3.14 * -0.8 };
+  std::vector<double> vel_upper_lim{
+    1.71 * 0.8, 1.71 * 0.8, 1.75 * 0.8, 2.27 * 0.8, 2.44 * 0.8, 3.14 * 0.8, 3.14 * 0.8
+  };
 
   /* Fill Code:
        . Define the term time (This is a cost)
        . Define the first time step
        . Define the last time step
+       . Define vector of target velocities. Length = DOF. Value = 0
+       . Define vector of coefficients. Length = DOF. Value = 5
        . Define the term name
   */
   /* ========  ENTER CODE HERE ======== */
-  jv->targets = std::vector<double>(7, 0.0);
-  jv->coeffs = std::vector<double>(7, 5.0);
-//  jv->lower_tols = vel_lower_lim;
-//  jv->upper_tols = vel_upper_lim;
   jv->term_type = TT_COST;
   jv->first_step = 0;
   jv->last_step = pci.basic_info.n_steps - 1;
+  jv->targets = std::vector<double>(7, 0.0);
+  jv->coeffs = std::vector<double>(7, 5.0);
   jv->name = "joint_velocity_cost";
 
   pci.cost_infos.push_back(jv);
-
-  //  this->addTotalTimeCost(pci, 50.0);
 
   // Get current pose
   Eigen::Isometry3d start_pose;
@@ -301,9 +303,8 @@ TrajOptProbPtr TrajoptPickAndPlaceConstructor::generatePlaceProblem(Isometry3d& 
                       *env_->getState());
 
   /* Fill Code: Define motion
-       . Add linear motion from start_pose to retreat_pose
+       . Add linear motion from start_pose to retreat_pose (hint: Use the helpers defined above)
        . Add linear motion from approach_pose to final_pose
-       . Add collision cost
   */
   /* ========  ENTER CODE HERE ======== */
   this->addLinearMotion(pci, start_pose, retreat_pose, steps_per_phase, 0);

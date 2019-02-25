@@ -28,7 +28,6 @@
     </xacro:cabinet >
 
 
-
     <!-- Create joints -->
     <joint name="workcell_base_to_base" type="fixed">
       <parent link="workcell_base"/>

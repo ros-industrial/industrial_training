@@ -13,24 +13,18 @@
     <arg name="hardware_interface" default="PositionJointInterface"/>
     <!-- The is gonna have its nodes/topics under a namespace with the same name. -->
     <arg name="robot_name" default="iiwa"/>
-
+    <arg name="actuate_gripper" default="false" />
 
     <!-- Load Robot Model    -->
-    <param name="robot_description"  command="$(find xacro)/xacro --inorder $(find pick_and_place_support)/urdf/pick_and_place.urdf"/>
+    <param name="robot_description"  command="$(find xacro)/xacro --inorder $(find pick_and_place_support)/urdf/robot.urdf.xacro"/>
 
     <!-- Load Robot Semantic -->
     <param name="robot_description_semantic" textfile="$(find pick_and_place_support)/urdf/robot.srdf" />
 
-
-
-
-
     <!-- Launch Simulated robot -->
     <group if="$(arg sim_robot)">
 
-
     </group>
-
 
     <!-- Launch real robot -->
     <group unless="$(arg sim_robot)" ns="iiwa">
@@ -51,6 +45,14 @@
         <include file="$(find iiwa_hw)/launch/iiwa_hw.launch">
             <arg name="hardware_interface" value="$(arg hardware_interface)" />
         </include>
+    </group>
+
+    <!-- Interface with a Schunk Gripper -->
+    <group if="$(arg actuate_gripper)">
+        <node name="ipa325_wsg50" pkg="ipa325_wsg50" type="schunk_gripper">
+            <param name="ip" value="160.69.69.20"/>
+            <param name="port" value="1000"/>
+        </node>
     </group>
 
     <!-- Launch GUI to drive joints   -->
