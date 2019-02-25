@@ -12,7 +12,7 @@ Setup PC
 .. toctree::
    :maxdepth: 1
 
-   PC Setup <_source/setup/PC-Setup---ROS-Melodic.md>
+   PC Setup <_source/setup/PC-Setup---ROS.md>
 
 Prerequisites
 -------------
