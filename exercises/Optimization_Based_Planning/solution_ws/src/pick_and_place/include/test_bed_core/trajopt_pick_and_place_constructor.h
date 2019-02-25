@@ -27,9 +27,9 @@ public:
                                  Eigen::Isometry3d tcp = Eigen::Isometry3d::Identity());
 
   /**
-   * @brief addTotalTimeCost
-   * @param pci
-   * @param coeff
+   * @brief addTotalTimeCost - Adds cost to the overall total time to elapsed in the trajectory
+   * @param pci - The trajopt problem construction info to which the cost is added
+   * @param coeff - Used to scale this cost relative to other costs
    */
   void addTotalTimeCost(trajopt::ProblemConstructionInfo& pci, double coeff);
 

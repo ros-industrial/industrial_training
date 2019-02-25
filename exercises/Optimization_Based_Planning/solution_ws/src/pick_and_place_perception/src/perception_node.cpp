@@ -33,8 +33,6 @@
 // Needed for ROS Service
 #include <pick_and_place_perception/GetTargetPose.h>
 
-
-
 class PerceptionPipeline
 {
 public:
@@ -62,14 +60,12 @@ public:
     nh.getParam("processing_node/cluster_max_size", cluster_max_size);
     nh.getParam("cloud_debug", debug_);
 
-
-    // TODO Add check parameters
+    // TODO (for SwRI. Not for the student) Add check parameters
     //    if (!nh.getParam("stuff", data_)) throw std::runtime_error("Must provide parameter 'stuff'");
-
 
     // Create ROS interfaces
     server_ = nh.advertiseService("find_pick", &PerceptionPipeline::findPickPose, this);
-    if(debug_)
+    if (debug_)
     {
       ROS_INFO("Perception Debug Enabled: Intermediate clouds are being published");
       cropped_pub_ = nh.advertise<sensor_msgs::PointCloud2>("cropped_cloud", 1, true);
@@ -77,7 +73,6 @@ public:
       cluster_pub_ = nh.advertise<sensor_msgs::PointCloud2>("primary_cluster", 1, true);
       pick_surface_pub_ = nh.advertise<sensor_msgs::PointCloud2>("pick_surface", 1, true);
     }
-
   }
 
   bool findPickPose(pick_and_place_perception::GetTargetPoseRequest& req,
@@ -86,19 +81,19 @@ public:
     res.succeeded = true;
     ROS_INFO("Perception service running");
 
-     // LISTEN FOR POINTCLOUD
+    // LISTEN FOR POINTCLOUD
     std::string topic1 = nh_.resolveName(cloud_topic1);
     std::string topic2 = nh_.resolveName(cloud_topic2);
     std::string topic3 = nh_.resolveName(cloud_topic3);
     ROS_INFO_STREAM("Cloud service called; waiting for a PointCloud2 on topic " << topic1);
-    sensor_msgs::PointCloud2::ConstPtr recent_cloud1 = ros::topic::waitForMessage<sensor_msgs::PointCloud2>(topic1, nh_);
+    sensor_msgs::PointCloud2::ConstPtr recent_cloud1 =
+        ros::topic::waitForMessage<sensor_msgs::PointCloud2>(topic1, nh_);
     ROS_INFO_STREAM("Waiting for a PointCloud2 on topic " << topic2);
-    sensor_msgs::PointCloud2::ConstPtr recent_cloud2 = ros::topic::waitForMessage<sensor_msgs::PointCloud2>(topic2, nh_,ros::Duration(10));
+    sensor_msgs::PointCloud2::ConstPtr recent_cloud2 =
+        ros::topic::waitForMessage<sensor_msgs::PointCloud2>(topic2, nh_, ros::Duration(10));
     ROS_INFO_STREAM("Waiting for a PointCloud2 on topic " << topic3);
-    sensor_msgs::PointCloud2::ConstPtr recent_cloud3 = ros::topic::waitForMessage<sensor_msgs::PointCloud2>(topic3, nh_,ros::Duration(2));
-
-
-
+    sensor_msgs::PointCloud2::ConstPtr recent_cloud3 =
+        ros::topic::waitForMessage<sensor_msgs::PointCloud2>(topic3, nh_, ros::Duration(2));
 
     // TRANSFORM POINTCLOUDS FROM CAMERA FRAME TO WORLD FRAME
     tf::TransformListener listener;
@@ -129,9 +124,7 @@ public:
     // CONVERT POINTCLOUD ROS->PCL
     pcl::PointCloud<pcl::PointXYZ> cloud1, cloud2, cloud3, cloud;
     pcl::fromROSMsg(transformed_cloud, cloud);
-//    pcl::fromROSMsg(transformed_cloud1, cloud);
-
-
+    //    pcl::fromROSMsg(transformed_cloud1, cloud);
 
     // MAKE TIMERS FOR PROCESS (OPTIONAL)
     ros::Time start_init = ros::Time::now();
@@ -197,11 +190,11 @@ public:
 
     ROS_INFO_STREAM("Cropped point cloud: " << zf_cloud.points.size() << " data points.");
     // Publish cropped cloud
-    if(debug_)
+    if (debug_)
     {
       sensor_msgs::PointCloud2::Ptr cropped(new sensor_msgs::PointCloud2);
       pcl::toROSMsg(zf_cloud, *cropped);
-//    pcl::toROSMsg(xyz_filtered_cloud, *cropped);
+      //    pcl::toROSMsg(xyz_filtered_cloud, *cropped);
       cropped->header.frame_id = world_frame;
       cropped->header.stamp = ros::Time::now();
       cropped_pub_.publish(*cropped);
@@ -211,7 +204,7 @@ public:
      * Fill Code: PLANE SEGEMENTATION - REMOVE THE WORKTABLE
      * ========================================*/
     pcl::PointCloud<pcl::PointXYZ>::Ptr cropped_cloud(
-          new pcl::PointCloud<pcl::PointXYZ>(zf_cloud));  // this passes in either passthrough or crop filtered cloud.
+        new pcl::PointCloud<pcl::PointXYZ>(zf_cloud));  // this passes in either passthrough or crop filtered cloud.
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_f(new pcl::PointCloud<pcl::PointXYZ>);
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered(new pcl::PointCloud<pcl::PointXYZ>);
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_plane(new pcl::PointCloud<pcl::PointXYZ>());
@@ -229,25 +222,26 @@ public:
     seg.segment(*inliers, *coefficients);
     if (inliers->indices.size() > 0)
     {
-    // Extract the planar inliers from the input cloud
-    pcl::ExtractIndices<pcl::PointXYZ> extract;
-    extract.setInputCloud(cropped_cloud);
-    extract.setIndices(inliers);
-    extract.setNegative(false);
+      // Extract the planar inliers from the input cloud
+      pcl::ExtractIndices<pcl::PointXYZ> extract;
+      extract.setInputCloud(cropped_cloud);
+      extract.setIndices(inliers);
+      extract.setNegative(false);
 
-    // Get the points associated with the planar surface
-    extract.filter(*cloud_plane);
-    ROS_INFO_STREAM("PointCloud representing the planar component: " << cloud_plane->points.size() << " data points.");
+      // Get the points associated with the planar surface
+      extract.filter(*cloud_plane);
+      ROS_INFO_STREAM("PointCloud representing the planar component: " << cloud_plane->points.size()
+                                                                       << " data points.");
 
-    // Remove the planar inliers, extract the rest
-    extract.setNegative(true);
-    extract.filter(*cloud_f);
+      // Remove the planar inliers, extract the rest
+      extract.setNegative(true);
+      extract.filter(*cloud_f);
     }
     else
     {
-     ROS_WARN_STREAM("Could not estimate a planar model for the given dataset. Proceeding with full point cloud.");
-     *cloud_f = *cropped_cloud;
-     res.succeeded = false;
+      ROS_WARN_STREAM("Could not estimate a planar model for the given dataset. Proceeding with full point cloud.");
+      *cloud_f = *cropped_cloud;
+      res.succeeded = false;
     }
     /* ========================================
      * Fill Code: EUCLIDEAN CLUSTER EXTRACTION
@@ -282,20 +276,20 @@ public:
       pcl::toROSMsg(*cloud_cluster, *tempROSMsg);
       pc2_clusters.push_back(tempROSMsg);
     }
-    if(pc2_clusters.size() > 0)
+    if (pc2_clusters.size() > 0)
     {
-        pc2_clusters.at(0)->header.frame_id = world_frame;
-        pc2_clusters.at(0)->header.stamp = ros::Time::now();
-        if(debug_)
-        {
-            cluster_pub_.publish(pc2_clusters.at(0));
-        }
+      pc2_clusters.at(0)->header.frame_id = world_frame;
+      pc2_clusters.at(0)->header.stamp = ros::Time::now();
+      if (debug_)
+      {
+        cluster_pub_.publish(pc2_clusters.at(0));
+      }
     }
     else
     {
-        ROS_WARN_STREAM("Clustering failed. Proceeding with full point cloud.");
-       clusters.push_back(cloud_filtered);
-       res.succeeded = false;
+      ROS_WARN_STREAM("Clustering failed. Proceeding with full point cloud.");
+      clusters.push_back(cloud_filtered);
+      res.succeeded = false;
     }
     /* ========================================
      * Fill Code: STATISTICAL OUTLIER REMOVAL (OPTIONAL)
@@ -309,7 +303,7 @@ public:
     sor.filter(*sor_cloud_filtered);
 
     // Publish object as point cloud
-    if(debug_)
+    if (debug_)
     {
       sensor_msgs::PointCloud2::Ptr pc2_cloud(new sensor_msgs::PointCloud2);
       pcl::toROSMsg(*sor_cloud_filtered, *pc2_cloud);
@@ -341,23 +335,24 @@ public:
     segTop.segment(*inliers2, *coefficients2);
     if (inliers2->indices.size() > 0)
     {
-        // Extract the planar inliers from the input cloud
-        pcl::ExtractIndices<pcl::PointXYZ> extractTop;
-        extractTop.setInputCloud(cluster_cloud_ptr);
-        extractTop.setIndices(inliers2);
-        extractTop.setNegative(false);
+      // Extract the planar inliers from the input cloud
+      pcl::ExtractIndices<pcl::PointXYZ> extractTop;
+      extractTop.setInputCloud(cluster_cloud_ptr);
+      extractTop.setIndices(inliers2);
+      extractTop.setNegative(false);
 
-        // Get the points associated with the planar surface
-        extractTop.filter(*cloud_planeTop);
-        ROS_INFO_STREAM("PointCloud representing the top planar component: " << cloud_planeTop->points.size() << " data points.");
-
+      // Get the points associated with the planar surface
+      extractTop.filter(*cloud_planeTop);
+      ROS_INFO_STREAM("PointCloud representing the top planar component: " << cloud_planeTop->points.size()
+                                                                           << " data points.");
     }
     else
     {
-        ROS_WARN_STREAM("Could not estimate a planar model for the given dataset. Proceeding with full point cloud.");
-        *cloud_planeTop = *cluster_cloud_ptr;
-        res.succeeded = false;
+      ROS_WARN_STREAM("Could not estimate a planar model for the given dataset. Proceeding with full point cloud.");
+      *cloud_planeTop = *cluster_cloud_ptr;
+      res.succeeded = false;
     }
+
     // OPTIONAL TIMERS
     ros::Time finish_process = ros::Time::now();
     ros::Duration total_process = finish_process - start_init;
@@ -372,11 +367,10 @@ public:
     pcl::toROSMsg(*cloud_planeTop, *pc2_cloud_top);
     pc2_cloud_top->header.frame_id = world_frame;
     pc2_cloud_top->header.stamp = ros::Time::now();
-    if(debug_)
+    if (debug_)
     {
       pick_surface_pub_.publish(*pc2_cloud_top);
     }
-
 
     /* ========================================
      * Fill Code: BROADCAST PART TRANSFORM
@@ -412,10 +406,10 @@ public:
     ROS_INFO("Perception service returning");
 
     // Publish the pick point as a TF for visualization
-    if(debug_)
+    if (debug_)
     {
       tf::Transform part_transform;
-      part_transform.setOrigin(tf::Vector3(origin[0],origin[1],origin[2]));
+      part_transform.setOrigin(tf::Vector3(origin[0], origin[1], origin[2]));
       tf::Quaternion q;
       q.setRPY(0, 0, 0);
       part_transform.setRotation(q);
@@ -441,11 +435,8 @@ private:
   bool debug_ = false;
 };
 
-
-
 int main(int argc, char* argv[])
 {
-
   ros::init(argc, argv, "processing_node");
   ros::NodeHandle nh;
 

@@ -1,4 +1,4 @@
-- git: {local-name: tesseract, uri: 'https://github.com/mpowelson/tesseract.git', version: kinetic-devel}
+- git: {local-name: tesseract, uri: 'https://github.com/ros-industrial-consortium/trajopt_ros.git', version: kinetic-devel}
 - git: {local-name: trajopt, uri: 'https://github.com/ros-industrial-consortium/trajopt_ros.git', version: kinetic-devel}
 - git: {local-name: gl_depth_sim, uri: 'https://github.com/mpowelson/gl_depth_sim.git', version: demo3}
 - git: {local-name: iiwa_stack, uri: 'https://github.com/IFL-CAMP/iiwa_stack.git', version: 1.2.5}

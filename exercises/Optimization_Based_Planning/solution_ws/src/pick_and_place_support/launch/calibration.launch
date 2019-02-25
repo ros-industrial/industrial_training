@@ -12,8 +12,6 @@
  <arg name="serial_no_camera" default="802212061325" />
  <arg name="rviz" default="true"/>
 
-
-
  <!-- Launch calibration -->
  <node name = "calibration_node" pkg="pick_and_place_support" type="extrinsic_calibration_node" output="screen" required="true" >
     <param name="sim_robot" value="$(arg sim_robot)"/>
@@ -51,8 +49,6 @@
  <!-- Launch visualization -->
  <node if="$(arg rviz)" pkg="rviz" type="rviz" name="pick_and_place_viz"
     args="-d $(find pick_and_place_support)/config/calibration.rviz" />
-
-
 
 </launch>
 

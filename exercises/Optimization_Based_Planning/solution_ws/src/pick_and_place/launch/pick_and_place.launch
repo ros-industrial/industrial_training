@@ -25,7 +25,6 @@
         <arg name="actuate_gripper" value="$(arg actuate_gripper)"/>
     </include>
 
-
     <!-- Publish the location of the camera -->
     <node pkg="tf" type="static_transform_publisher" name="camera1_tf_broadcaster"
        args="0.4 0.35 1.05 1.57079 1.9 0.0 base_link camera1_link 10" />
@@ -48,7 +47,6 @@
        <node name="sensor_sim1" pkg="pick_and_place" type="sensor_simulator_3d" args="/camera1/camera/depth_registered/points sim_camera1_link" output="screen"/>
        <node name="sensor_sim2" pkg="pick_and_place" type="sensor_simulator_3d" args="/camera2/camera/depth_registered/points sim_camera2_link"/>
        <node name="sensor_sim3" pkg="pick_and_place" type="sensor_simulator_3d" args="/camera3/camera/depth_registered/points sim_camera3_link"/>
-
     </group>
 
     <!-- Set simulated box parameters -->

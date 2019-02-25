@@ -15,23 +15,16 @@
     <arg name="robot_name" default="iiwa"/>
     <arg name="actuate_gripper" default="false" />
 
-
     <!-- Load Robot Model    -->
     <param name="robot_description"  command="$(find xacro)/xacro --inorder $(find pick_and_place_support)/urdf/robot.urdf.xacro"/>
 
     <!-- Load Robot Semantic -->
     <param name="robot_description_semantic" textfile="$(find pick_and_place_support)/urdf/robot.srdf" />
 
-
-
-
-
     <!-- Launch Simulated robot -->
     <group if="$(arg sim_robot)">
 
-
     </group>
-
 
     <!-- Launch real robot -->
     <group unless="$(arg sim_robot)" ns="iiwa">
