@@ -36,6 +36,12 @@ Specifically, edit the service callback inside the vision_node to transform the 
 
  1. Add code to the existing `localizePart` method to convert the reported target pose from its reference frame ("camera_frame") to the service-request frame:
 
+    1. Remove the placeholder line from a previous exercise that sets the resulting pose equal to the pose from the last message
+
+       ``` diff
+       - res.pose = p->pose.pose;
+       ```
+
     1. For better or worse, ROS uses lots of different math libraries. You’ll need to transform the over-the-wire format of `geometry_msgs::Pose` into a `tf::Transform object`:
 
        ``` c++
