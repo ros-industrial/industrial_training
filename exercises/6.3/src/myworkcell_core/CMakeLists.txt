@@ -14,6 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
   message_generation
   tf
   moveit_ros_planning_interface
+  roslint
 )
 
 ## System dependencies are found with CMake's conventions
@@ -158,6 +159,9 @@ add_dependencies(myworkcell_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EX
 ## Specify libraries to link a library or executable target against
 target_link_libraries(vision_node ${catkin_LIBRARIES})
 target_link_libraries(myworkcell_node ${catkin_LIBRARIES})
+
+# Run roslint
+roslint_cpp()
 
 #############
 ## Install ##

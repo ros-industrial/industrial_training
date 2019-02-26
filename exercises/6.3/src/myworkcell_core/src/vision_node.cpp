@@ -1,6 +1,18 @@
-/**
-**  Simple ROS Node
-**/
+/*
+ * Copyright 2019 Southwest Research Institute
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+
+ *   http://www.apache.org/licenses/LICENSE-2.0
+
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+*/
 #include <ros/ros.h>
 #include <fake_ar_publisher/ARMarker.h>
 #include <myworkcell_core/LocalizePart.h>
@@ -9,7 +21,7 @@
 class Localizer
 {
 public:
-    Localizer(ros::NodeHandle& nh)
+    explicit Localizer(ros::NodeHandle& nh)
     {
         ar_sub_ = nh.subscribe<fake_ar_publisher::ARMarker>("ar_pose_marker", 1,
         &Localizer::visionCallback, this);
@@ -20,7 +32,7 @@ public:
     void visionCallback(const fake_ar_publisher::ARMarkerConstPtr& msg)
     {
         last_msg_ = msg;
-        //ROS_INFO_STREAM(last_msg_->pose.pose);
+        // ROS_INFO_STREAM(last_msg_->pose.pose);
     }
 
     bool localizePart(myworkcell_core::LocalizePart::Request& req,
