@@ -50,6 +50,7 @@ So far we haven't used the request field, `base_frame`, for anything. In this ex
 3. Create a temporary string object, `std::string base_frame;`, and then use the private node handle's [API](http://docs.ros.org/indigo/api/roscpp/html/classros_1_1NodeHandle.html) to load the parameter `"base_frame"`.
 
    ``` c++
+   std::string base_frame;
    private_node_handle.param<std::string>("base_frame", base_frame, "world"); // parameter name, string object reference, default value
    ```
    * _`base_frame` parameter should be read after the `private_node_handle` is declared, but before `app.start()` is called_
