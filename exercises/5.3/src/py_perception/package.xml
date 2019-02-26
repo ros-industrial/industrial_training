@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<package>
+<package format="2">
   <name>lesson_perception</name>
   <version>0.0.0</version>
   <description>The lesson_perception package</description>
@@ -31,39 +31,25 @@
   <!-- The *_depend tags are used to specify dependencies -->
   <!-- Dependencies can be catkin packages or system dependencies -->
   <!-- Examples: -->
-  <!-- Use build_depend for packages you need at compile time: -->
+  <!-- Use depend for packages you need at compile time: -->
   <!-- Use buildtool_depend for build tool packages: -->
   <!--   <buildtool_depend>catkin</buildtool_depend> -->
   <!-- Use run_depend for packages you need at runtime: -->
   <!-- Use test_depend for packages you need only for testing: -->
   <!--   <test_depend>gtest</test_depend> -->
-  <build_depend>message_generation</build_depend>
   <buildtool_depend>catkin</buildtool_depend>
-  <build_depend>roscpp</build_depend>
-  <build_depend>sensor_msgs</build_depend>
-  <build_depend>tf</build_depend>
-  <build_depend>pcl_conversions</build_depend>
-  <build_depend>pcl_msgs</build_depend>
-  <build_depend>pcl_ros</build_depend>
-  <build_depend>filterCallback</build_depend>
-  <build_depend>visualization_msgs</build_depend>
-  <build_depend>std_msgs</build_depend>
   <build_depend>message_generation</build_depend>
-  <build_depend>rospy</build_depend>
-
-  <run_depend>message_runtime</run_depend>
-  <run_depend>roscpp</run_depend>
-  <run_depend>sensor_msgs</run_depend>
-  <run_depend>tf</run_depend>
-  <run_depend>pcl_conversions</run_depend>
-  <run_depend>pcl_msgs</run_depend>
-  <run_depend>pcl_ros</run_depend>
-  <run_depend>filterCallback</run_depend>
-  <run_depend>visualization_msgs</run_depend>
-  <run_depend>std_msgs</run_depend>
-  <run_depend>message_generation</run_depend>
-  <run_depend>rospy</run_depend>
-
+  <exec_depend>message_runtime</exec_depend>
+  <depend>roscpp</depend>
+  <depend>sensor_msgs</depend>
+  <depend>tf</depend>
+  <depend>pcl_conversions</depend>
+  <depend>pcl_msgs</depend>
+  <depend>pcl_ros</depend>
+  <depend>filterCallback</depend>
+  <depend>visualization_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>rospy</depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
