@@ -1,1 +1,0 @@
-Run moveit setup assistant to generate a workcell
