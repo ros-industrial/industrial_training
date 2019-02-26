@@ -168,12 +168,12 @@ bool URKinematicsPlugin::initialize(const std::string &robot_description,
                                      const std::string& tip_frame,
                                      double search_discretization)
 {
-  setValues(robot_description, group_name, base_frame, tip_frame, search_discretization);
+  setValues(robot_description, group_name, base_frame, std::vector<std::string> {tip_frame}, search_discretization);
 
   ros::NodeHandle private_handle("~");
   rdf_loader::RDFLoader rdf_loader(robot_description_);
-  const boost::shared_ptr<srdf::Model> &srdf = rdf_loader.getSRDF();
-  const boost::shared_ptr<urdf::ModelInterface>& urdf_model = rdf_loader.getURDF();
+  const std::shared_ptr<srdf::Model> &srdf = rdf_loader.getSRDF();
+  const std::shared_ptr<urdf::ModelInterface>& urdf_model = rdf_loader.getURDF();
 
   if (!urdf_model || !srdf)
   {
