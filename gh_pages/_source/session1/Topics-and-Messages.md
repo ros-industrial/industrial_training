@@ -176,7 +176,7 @@ Your goal is to create your first ROS subscriber:
 
 1. In a new terminal, type `rqt_graph`. You should see a window similar to the one below:
 
-<p align="center"><img src=http://aeswiki.datasys.swri.edu/rositraining/Exercises/1.6?action=AttachFile&do=get&target=1.png /></p>
+<p align="center"><img src=../../_static/simple_rqt_graph.png/></p>
 
    * The rectangles in the the window show the topics currently available on the system.
    * The ovals are ROS nodes.
