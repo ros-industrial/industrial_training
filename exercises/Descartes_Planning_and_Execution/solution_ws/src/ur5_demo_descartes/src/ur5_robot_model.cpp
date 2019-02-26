@@ -55,13 +55,13 @@ bool UR5RobotModel::initialize(const std::string &robot_description, const std::
 }
 
 
-bool UR5RobotModel::getAllIK(const Eigen::Affine3d &pose, std::vector<std::vector<double> > &joint_poses) const
+bool UR5RobotModel::getAllIK(const Eigen::Isometry3d &pose, std::vector<std::vector<double> > &joint_poses) const
 {
   using namespace ur_kinematics;
 
   bool rtn = false;
   KDL::Frame frame;
-  Eigen::Affine3d tool_pose = world_to_base_.frame_inv* pose* tool_to_tip_.frame;
+  Eigen::Isometry3d tool_pose = world_to_base_.frame_inv* pose* tool_to_tip_.frame;
   tf::transformEigenToKDL(tool_pose, frame);
   joint_poses.clear();
 
@@ -150,7 +150,7 @@ static double jointCost(const std::vector<double>& source, const std::vector<dou
   return cost;
 } 
 
-bool UR5RobotModel::getIK(const Eigen::Affine3d &pose, const std::vector<double> &seed_state,
+bool UR5RobotModel::getIK(const Eigen::Isometry3d &pose, const std::vector<double> &seed_state,
                           std::vector<double> &joint_pose) const
 {
   // forward to getAllIK
