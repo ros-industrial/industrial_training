@@ -83,9 +83,10 @@ The first node will read in an image from a file and publish it as a ROS [Image]
     chmod u+x nodes/image_pub.py
     ```
 
- 1. Test run the image publisher:
+ 1. Build the package and run the image publisher:
 
     ```bash
+    catkin build
     roscore
     rosrun detect_pump image_pump.py
     ```
