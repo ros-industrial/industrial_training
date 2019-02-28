@@ -10,15 +10,26 @@ find_package(catkin REQUIRED COMPONENTS
   moveit_msgs
   moveit_ros_planning_interface
   ur5_demo_descartes
+  eigen_conversions
 )
 
 ## System dependencies are found with CMake's conventions
 find_package(Boost REQUIRED COMPONENTS system)
 
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES plan_and_run
-#  CATKIN_DEPENDS descartes_core descartes_planner trajectory_msgs
+  INCLUDE_DIRS
+    include
+  LIBRARIES
+    ${PROJECT_NAME}
+  CATKIN_DEPENDS
+    descartes_core
+    descartes_planner
+    descartes_moveit
+    descartes_utilities
+    moveit_msgs
+    moveit_ros_planning_interface
+    ur5_demo_descartes
+    eigen_conversions
 #  DEPENDS system_lib
 )
 

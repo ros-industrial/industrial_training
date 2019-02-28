@@ -19,6 +19,7 @@ find_package(catkin REQUIRED COMPONENTS
   descartes_planner
   descartes_utilities
   trajectory_msgs
+  eigen_conversions
   tf_conversions
 )
 
@@ -127,6 +128,7 @@ catkin_package(
      descartes_planner
      descartes_utilities
      trajectory_msgs
+     eigen_conversions
      tf_conversions
 #  DEPENDS system_lib
 )

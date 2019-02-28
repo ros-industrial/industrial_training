@@ -1,12 +1,12 @@
 Unit Testing
 ============
 
-In this exercise we will write a unit tests in the myworkcell_core package.
+In this exercise we will write a unit tests in the `myworkcell_core` package.
 
 Motivation
 ----------
 
-The ROS Scan-N-Plan application is complete and documented.  Now we want to test the program to make sure it behaves as expected.
+The ROS Scan-N-Plan application from Exercise 4.0 is complete and documented.  Now we want to test the program to make sure it behaves as expected.
 
 Information and Resources
 -------------------------
@@ -28,7 +28,7 @@ Guidance
 Create the unit test frame work
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-#. Create a `test` folder in the myworkcell_core/src folder. In the workspace directory:
+#. Create a `test` folder in the `myworkcell_core/src` folder. In the workspace directory:
 
    .. code-block:: bash
 
@@ -69,7 +69,7 @@ Create the unit test frame work
               return RUN_ALL_TESTS();
             }
 
-#. Edit myworkcell_core CMakeLists.txt to build the u_test.cpp file.  Append CMakeLists.txt:
+#. Edit `myworkcell_core/CMakeLists.txt` to build the u_test.cpp file.  Append CMakeLists.txt:
 
    .. code-block:: cmake
 
@@ -79,10 +79,11 @@ Create the unit test frame work
               target_link_libraries(utest_node ${catkin_LIBRARIES})
             endif()
 
-#. Create a test folder under myworkcell_core
+#. Create a test folder under `myworkcell_core`
 
    .. code-block:: bash
 
+            roscd myworkcell_core
             mkdir test
 
 #. Create a test launch file:
@@ -91,7 +92,7 @@ Create the unit test frame work
 
 	       touch test/utest_launch.test
 
-#. Open the utest_launch.test file in QT and populate the file:
+#. Open the `utest_launch.test` file in QT and populate the file:
 
    .. code-block:: xml
 
@@ -225,4 +226,6 @@ Write specific unit tests
 
 You should see:
 
-	Summary: 3 tests, 0 errors, 0 failures
+    .. code-block:: bash
+
+            Summary: 3 tests, 0 errors, 0 failures

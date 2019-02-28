@@ -93,7 +93,7 @@ catkin_package(
     rospy
     sensor_msgs
     std_msgs
-    message_generation
+    message_runtime
     visualization_msgs
     tf
     pcl_ros

@@ -5,8 +5,8 @@
   <description>
      An automatically generated package with all the configuration and launch files for using the myworkcell with the MoveIt! Motion Planning Framework
   </description>
-  <author email="ros-i@rosindustrial.org">ROS Industrial</author>
-  <maintainer email="ros-i@rosindustrial.org">ROS Industrial</maintainer>
+  <author email="ros_industrial_trainee@rosindustrial.org">ROS Industrial Trainee</author>
+  <maintainer email="ros_industrial_trainee@rosindustrial.org">ROS Industrial Trainee</maintainer>
 
   <license>BSD</license>
 
@@ -21,8 +21,10 @@
   <run_depend>moveit_kinematics</run_depend>
   <run_depend>moveit_planners_ompl</run_depend>
   <run_depend>moveit_ros_visualization</run_depend>
+  <run_depend>moveit_setup_assistant</run_depend>
   <run_depend>joint_state_publisher</run_depend>
   <run_depend>robot_state_publisher</run_depend>
+  <run_depend>tf2_ros</run_depend>
   <run_depend>xacro</run_depend>
   <!-- This package is referenced in the warehouse launch files, but does not build out of the box at the moment. Commented the dependency until this works. -->
   <!-- <run_depend>warehouse_ros_mongo</run_depend> -->

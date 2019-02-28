@@ -25,13 +25,13 @@
  * Fill Code: Filter Parameters
  * ========================================*/
 double leaf_size_;
-//double passThrough_max_;
-//double passThrough_min_;
-//double maxIterations_;
-//double distThreshold_;
-//double clustTol_;
-//double clustMax_;
-//double clustMin_;
+double passThrough_max_;
+double passThrough_min_;
+double maxIterations_;
+double distThreshold_;
+double clustTol_;
+double clustMax_;
+double clustMin_;
 
 ros::NodeHandlePtr nh_;
 
@@ -167,52 +167,52 @@ clusterExtraction(const pcl::PointCloud<pcl::PointXYZ>::ConstPtr &input_cloud)
 /* ========================================
  * Fill Code: SERVICE
  * ========================================*/
-//bool filterCallback(lesson_perception::FilterCloud::Request& request,
-//                    lesson_perception::FilterCloud::Response& response)
-//{
-//  pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
-//  pcl::PointCloud<pcl::PointXYZ>::Ptr filtered_cloud (new pcl::PointCloud<pcl::PointXYZ>);
-//  if (request.pcdfilename.empty())
-//  {
-//    pcl::fromROSMsg(request.input_cloud, *cloud);
-//    ROS_INFO_STREAM("cloud size: " <<cloud->size());
-//    if (cloud->empty())
-//    {
-//      ROS_ERROR("input cloud empty");
-//      response.success = false;
-//      return false;
-//    }
-//  }
-//  else
-//  {
-//    pcl::io::loadPCDFile(request.pcdfilename, *cloud);
-//  }
+bool filterCallback(lesson_perception::FilterCloud::Request& request,
+                    lesson_perception::FilterCloud::Response& response)
+{
+  pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
+  pcl::PointCloud<pcl::PointXYZ>::Ptr filtered_cloud (new pcl::PointCloud<pcl::PointXYZ>);
+  if (request.pcdfilename.empty())
+  {
+    pcl::fromROSMsg(request.input_cloud, *cloud);
+    ROS_INFO_STREAM("cloud size: " <<cloud->size());
+    if (cloud->empty())
+    {
+      ROS_ERROR("input cloud empty");
+      response.success = false;
+      return false;
+    }
+  }
+  else
+  {
+    pcl::io::loadPCDFile(request.pcdfilename, *cloud);
+  }
 
-//  switch (request.operation)
-//  {
+  switch (request.operation)
+  {
 
-//    case lesson_perception::FilterCloud::Request::VOXELGRID :
-//    {
-//      filtered_cloud = voxelGrid(cloud, 0.01);
-//      break;
-//    }
-//    default :
-//    {
-//      ROS_ERROR("no point cloud found");
-//      return false;
-//    }
+    case lesson_perception::FilterCloud::Request::VOXELGRID :
+    {
+      filtered_cloud = voxelGrid(cloud, 0.01);
+      break;
+    }
+    default :
+    {
+      ROS_ERROR("no point cloud found");
+      return false;
+    }
 
-//   }
+   }
 
-///*
-// * SETUP RESPONSE
-// */
-//  pcl::toROSMsg(*filtered_cloud, response.output_cloud);
-//  response.output_cloud.header=request.input_cloud.header;
-//  response.output_cloud.header.frame_id="kinect_link";
-//  response.success = true;
-//  return true;
-//}
+/*
+ * SETUP RESPONSE
+ */
+  pcl::toROSMsg(*filtered_cloud, response.output_cloud);
+  response.output_cloud.header=request.input_cloud.header;
+  response.output_cloud.header.frame_id="kinect_link";
+  response.success = true;
+  return true;
+}
 
   /* ========================================
    * Fill Code: PUBLISH OTHER MARKERS (OPTIONAL)
@@ -236,14 +236,14 @@ int main(int argc, char *argv[])
   ros::init(argc, argv, "perception_node");
   ros::NodeHandle priv_nh_("~");
 
-//  priv_nh_.param<double>("leaf_size", leaf_size_, 0.0f);
-//  priv_nh_.param<double>("passThrough_max", passThrough_max_, 1.0f);
-//  priv_nh_.param<double>("passThrough_min", passThrough_min_, -1.0f);
-//  priv_nh_.param<double>("maxIterations", maxIterations_, 200.0f);
-//  priv_nh_.param<double>("distThreshold", distThreshold_, 0.01f);
-//  priv_nh_.param<double>("clustTol", clustTol_, 0.01f);
-//  priv_nh_.param<double>("clustMax", clustMax_, 10000.0);
-//  priv_nh_.param<double>("clustMin", clustMin_, 300.0f);
+  priv_nh_.param<double>("leaf_size", leaf_size_, 0.0f);
+  priv_nh_.param<double>("passThrough_max", passThrough_max_, 1.0f);
+  priv_nh_.param<double>("passThrough_min", passThrough_min_, -1.0f);
+  priv_nh_.param<double>("maxIterations", maxIterations_, 200.0f);
+  priv_nh_.param<double>("distThreshold", distThreshold_, 0.01f);
+  priv_nh_.param<double>("clustTol", clustTol_, 0.01f);
+  priv_nh_.param<double>("clustMax", clustMax_, 10000.0);
+  priv_nh_.param<double>("clustMin", clustMin_, 300.0f);
 
   nh_.reset(new ros::NodeHandle());
   ros::ServiceServer server = nh_->advertiseService("filter_cloud", &filterCallback);

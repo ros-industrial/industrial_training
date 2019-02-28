@@ -27,7 +27,9 @@
   <!-- run the "real robot" interface nodes -->
   <!--   - this typically includes: robot_state, motion_interface, and joint_trajectory_action nodes -->
   <!--   - replace these calls with appropriate robot-specific calls or launch files -->
-  
+  <group unless="$(arg sim)">
+    <include file="$(find ur_bringup)/launch/ur5_bringup.launch" />
+  </group>
 
   <!-- publish the robot state (tf transforms) -->
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />

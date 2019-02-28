@@ -63,6 +63,7 @@
   <depend>descartes_planner</depend>
   <depend>descartes_utilities</depend>
   <depend>trajectory_msgs</depend>
+  <depend>eigen_conversions</depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->

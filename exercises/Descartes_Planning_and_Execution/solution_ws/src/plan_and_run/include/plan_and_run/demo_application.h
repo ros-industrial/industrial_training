@@ -108,12 +108,12 @@ protected:
   static bool createLemniscateCurve(double foci_distance, double sphere_radius,
                                     int num_points, int num_lemniscates,
                                     const Eigen::Vector3d& sphere_center,
-                                    EigenSTL::vector_Affine3d& poses);
+                                    EigenSTL::vector_Isometry3d& poses);
 
   void fromDescartesToMoveitTrajectory(const DescartesTrajectory& in_traj,
                                               trajectory_msgs::JointTrajectory& out_traj);
 
-  void publishPosesMarkers(const EigenSTL::vector_Affine3d& poses);
+  void publishPosesMarkers(const EigenSTL::vector_Isometry3d& poses);
 
 
 protected:

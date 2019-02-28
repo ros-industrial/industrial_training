@@ -648,7 +648,7 @@ Visualization Manager:
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: /world
+    Fixed Frame: world
   Name: root
   Tools:
     - Class: rviz/Interact

@@ -16,9 +16,9 @@ std::vector<double> getCurrentJointState(const std::string& topic)
   return state->position;
 }
 
-EigenSTL::vector_Affine3d makeLine(const Eigen::Vector3d& start, const Eigen::Vector3d& stop, double ds)
+EigenSTL::vector_Isometry3d makeLine(const Eigen::Vector3d& start, const Eigen::Vector3d& stop, double ds)
 {
-  EigenSTL::vector_Affine3d line;
+  EigenSTL::vector_Isometry3d line;
   
   const Eigen::Vector3d travel = stop - start;
   const int steps = std::floor(travel.norm() / ds);
@@ -28,7 +28,7 @@ EigenSTL::vector_Affine3d makeLine(const Eigen::Vector3d& start, const Eigen::Ve
   {
     double ratio = static_cast<float>(i) / steps;
     Eigen::Vector3d position = start + ratio * travel;
-    Eigen::Affine3d tr;
+    Eigen::Isometry3d tr;
     tr = Eigen::Translation3d(position);
     line.push_back( tr );
   }
@@ -81,7 +81,7 @@ public:
     ROS_INFO("Recieved cartesian planning request");
 
     // Step 1: Generate path poses
-    EigenSTL::vector_Affine3d tool_poses = makeToolPoses();
+    EigenSTL::vector_Isometry3d tool_poses = makeToolPoses();
     
     // Step 2: Translate that path by the input reference pose and convert to "Descartes points"
     std::vector<descartes_core::TrajectoryPtPtr> path = makeDescartesTrajectory(req.pose, tool_poses);
@@ -111,9 +111,9 @@ public:
     return true;
   }
 
-  EigenSTL::vector_Affine3d makeToolPoses()
+  EigenSTL::vector_Isometry3d makeToolPoses()
   {
-    EigenSTL::vector_Affine3d path;
+    EigenSTL::vector_Isometry3d path;
 
     // We assume that our path is centered at (0, 0, 0), so let's define the
     // corners of the AR marker
@@ -139,11 +139,11 @@ public:
 
   std::vector<descartes_core::TrajectoryPtPtr>
   makeDescartesTrajectory(const geometry_msgs::Pose& reference,
-                           const EigenSTL::vector_Affine3d& path)
+                           const EigenSTL::vector_Isometry3d& path)
   {
     std::vector<descartes_core::TrajectoryPtPtr> descartes_path; // return value
 
-    Eigen::Affine3d ref;
+    Eigen::Isometry3d ref;
     tf::poseMsgToEigen(reference, ref);
 
     for (auto& point : path)
@@ -155,7 +155,7 @@ public:
     return descartes_path;
   }
 
-  descartes_core::TrajectoryPtPtr makeTolerancedCartesianPoint(const Eigen::Affine3d& pose)
+  descartes_core::TrajectoryPtPtr makeTolerancedCartesianPoint(const Eigen::Isometry3d& pose)
   {
     using namespace descartes_core;
     using namespace descartes_trajectory;

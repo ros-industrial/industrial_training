@@ -19,6 +19,7 @@ find_package(catkin REQUIRED COMPONENTS
   descartes_planner
   descartes_utilities
   trajectory_msgs
+  eigen_conversions
 )
 
 ## System dependencies are found with CMake's conventions
@@ -126,6 +127,7 @@ catkin_package(
    descartes_planner
    descartes_utilities
    trajectory_msgs
+   eigen_conversions
 #  DEPENDS system_lib
 )
 

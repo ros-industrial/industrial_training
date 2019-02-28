@@ -22,7 +22,7 @@ DemoApplication::~DemoApplication()
 
 }
 
-void DemoApplication::publishPosesMarkers(const EigenSTL::vector_Affine3d& poses)
+void DemoApplication::publishPosesMarkers(const EigenSTL::vector_Isometry3d& poses)
 {
   // creating rviz markers
   visualization_msgs::Marker z_axes, y_axes, x_axes, line;
@@ -76,27 +76,27 @@ void DemoApplication::publishPosesMarkers(const EigenSTL::vector_Affine3d& poses
   line.points.reserve(poses.size());
   geometry_msgs::Point p_start,p_end;
   double distance = 0;
-  Eigen::Affine3d prev = poses[0];
+  Eigen::Isometry3d prev = poses[0];
   for(unsigned int i = 0; i < poses.size(); i++)
   {
-    const Eigen::Affine3d& pose = poses[i];
+    const Eigen::Isometry3d& pose = poses[i];
     distance = (pose.translation() - prev.translation()).norm();
 
     tf::pointEigenToMsg(pose.translation(),p_start);
 
     if(distance > config_.min_point_distance)
     {
-      Eigen::Affine3d moved_along_x = pose * Eigen::Translation3d(AXIS_LINE_LENGHT,0,0);
+      Eigen::Isometry3d moved_along_x = pose * Eigen::Translation3d(AXIS_LINE_LENGHT,0,0);
       tf::pointEigenToMsg(moved_along_x.translation(),p_end);
       x_axes.points.push_back(p_start);
       x_axes.points.push_back(p_end);
 
-      Eigen::Affine3d moved_along_y = pose * Eigen::Translation3d(0,AXIS_LINE_LENGHT,0);
+      Eigen::Isometry3d moved_along_y = pose * Eigen::Translation3d(0,AXIS_LINE_LENGHT,0);
       tf::pointEigenToMsg(moved_along_y.translation(),p_end);
       y_axes.points.push_back(p_start);
       y_axes.points.push_back(p_end);
 
-      Eigen::Affine3d moved_along_z = pose * Eigen::Translation3d(0,0,AXIS_LINE_LENGHT);
+      Eigen::Isometry3d moved_along_z = pose * Eigen::Translation3d(0,0,AXIS_LINE_LENGHT);
       tf::pointEigenToMsg(moved_along_z.translation(),p_end);
       z_axes.points.push_back(p_start);
       z_axes.points.push_back(p_end);
@@ -117,14 +117,14 @@ void DemoApplication::publishPosesMarkers(const EigenSTL::vector_Affine3d& poses
 
 }
 
-void swap_segments(EigenSTL::vector_Affine3d& poses, unsigned npoints, unsigned idx1, unsigned idx2)
+void swap_segments(EigenSTL::vector_Isometry3d& poses, unsigned npoints, unsigned idx1, unsigned idx2)
 {
   auto n = npoints / 2;
   std::swap_ranges(poses.begin() + n * idx1, poses.begin() + n * (idx1 + 1),
                    poses.begin() + n * idx2);
 }
 
-void insert_segment(EigenSTL::vector_Affine3d& poses, const EigenSTL::vector_Affine3d& orig, unsigned npoints, unsigned idx)
+void insert_segment(EigenSTL::vector_Isometry3d& poses, const EigenSTL::vector_Isometry3d& orig, unsigned npoints, unsigned idx)
 {
   auto n = npoints / 2;
   poses.insert(poses.end(), orig.begin() + n * idx, orig.begin() + n * (idx + 1));
@@ -132,7 +132,7 @@ void insert_segment(EigenSTL::vector_Affine3d& poses, const EigenSTL::vector_Aff
 
 bool DemoApplication::createLemniscateCurve(double foci_distance, double sphere_radius,
                                   int num_points, int num_lemniscates,const Eigen::Vector3d& sphere_center,
-                                  EigenSTL::vector_Affine3d& poses)
+                                  EigenSTL::vector_Isometry3d& poses)
 {
   double a = foci_distance;
   double ro = sphere_radius;
@@ -178,7 +178,7 @@ bool DemoApplication::createLemniscateCurve(double foci_distance, double sphere_
 
   // std::swap(omega[1], omega[2]);
 
-  Eigen::Affine3d pose;
+  Eigen::Isometry3d pose;
   double x,y,z,r,phi;
 
   poses.clear();
@@ -201,8 +201,8 @@ bool DemoApplication::createLemniscateCurve(double foci_distance, double sphere_
       unit_x = (Eigen::Vector3d(0,1,0).cross( unit_z)).normalized();
       unit_y = (unit_z .cross(unit_x)).normalized();
 
-      Eigen::Matrix3d rot;
-      rot << unit_x(0),unit_y(0),unit_z(0)
+      Eigen::Isometry3d rot;
+      rot.matrix() << unit_x(0),unit_y(0),unit_z(0)
          ,unit_x(1),unit_y(1),unit_z(1)
          ,unit_x(2),unit_y(2),unit_z(2);
 
@@ -218,7 +218,7 @@ bool DemoApplication::createLemniscateCurve(double foci_distance, double sphere_
   // Hacky optimization for purposes of smoother demo
   if (nlemns == 4) 
   {
-    EigenSTL::vector_Affine3d other;
+    EigenSTL::vector_Isometry3d other;
     insert_segment(other, poses, npoints, 0);
     insert_segment(other, poses, npoints, 1);
     insert_segment(other, poses, npoints, 5);

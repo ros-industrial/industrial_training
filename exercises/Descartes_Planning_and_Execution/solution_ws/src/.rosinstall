@@ -1,5 +1,3 @@
-# - git: {local-name: universal_robot, uri: 'https://github.com/ros-industrial/universal_robot.git', version: kinetic-devel}
-- git: {local-name: descartes, uri: 'https://github.com/ros-industrial-consortium/descartes.git', version: kinetic-devel}
-- git: {local-name: ur_modern_driver, uri: 'https://github.com/Zagitta/ur_modern_driver.git', version: master}
-
-
+﻿- git: {local-name: universal_robot, uri: 'https://github.com/ros-industrial/universal_robot.git', version: kinetic-devel}
+- git: {local-name: descartes, uri: 'https://github.com/ros-industrial-consortium/descartes.git', version: melodic-devel}
+- git: {local-name: ur_modern_driver, uri: 'https://github.com/ros-industrial/ur_modern_driver.git', version: kinetic-devel}

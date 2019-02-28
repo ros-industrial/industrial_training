@@ -63,6 +63,7 @@
   <depend>descartes_planner</depend>
   <depend>descartes_utilities</depend>
   <depend>trajectory_msgs</depend>
+  <depend>eigen_conversions</depend>
   <depend>tf_conversions</depend>
 
 

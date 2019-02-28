@@ -18,7 +18,7 @@ void DemoApplication::generateTrajectory(DescartesTrajectory& traj)
 
 
   // generating trajectory using a lemniscate curve function.
-  EigenSTL::vector_Affine3d poses;
+  EigenSTL::vector_Isometry3d poses;
   Eigen::Vector3d center(config_.center[0],config_.center[1],config_.center[2]);
   if(createLemniscateCurve(config_.foci_distance,config_.radius,config_.num_points,
                         config_.num_lemniscates,center,poses))
@@ -40,7 +40,7 @@ void DemoApplication::generateTrajectory(DescartesTrajectory& traj)
   traj.reserve(poses.size());
   for(unsigned int i = 0; i < poses.size(); i++)
   {
-    const Eigen::Affine3d& pose = poses[i];
+    const Eigen::Isometry3d& pose = poses[i];
 
     /*  Fill Code:
      * Goal:
