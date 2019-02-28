@@ -1,4 +1,4 @@
-# Build a MoveIt! Package
+﻿# Build a MoveIt! Package
 >In this exercise, we will create a MoveIt! package for an industrial robot. This package creates the configuration and launch files required to use a robot with the MoveIt! Motion-Control nodes. In general, the MoveIt! package does not contain any C++ code.
 
 ## Motivation
@@ -135,17 +135,22 @@ To do this, we need to define a few extra files.
       <!-- run the robot simulator and action interface nodes -->
       <group if="$(arg sim)">
         <include file="$(find industrial_robot_simulator)/launch/robot_interface_simulator.launch" />
+
+        <!-- publish the robot state (tf transforms) -->
+        <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
       </group>
 
       <!-- run the "real robot" interface nodes -->
       <!--   - this typically includes: robot_state, motion_interface, and joint_trajectory_action nodes -->
       <!--   - replace these calls with appropriate robot-specific calls or launch files -->
       <group unless="$(arg sim)">
-        <include file="$(find ur_bringup)/launch/ur5_bringup.launch" />
+        <remap from="follow_joint_trajectory" to="joint_trajectory_action"/>
+        <include file="$(find ur_modern_driver)/launch/ur_common.launch" >
+          <arg name="robot_ip" value="$(arg robot_ip)"/>
+          <arg name="min_payload" value="0.0"/>
+          <arg name="max_payload" value="5.0"/>
+        </include>
       </group>
-
-      <!-- publish the robot state (tf transforms) -->
-      <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
 
       <include file="$(find myworkcell_moveit_config)/launch/move_group.launch">
         <arg name="publish_monitored_planning_scene" value="true" />
