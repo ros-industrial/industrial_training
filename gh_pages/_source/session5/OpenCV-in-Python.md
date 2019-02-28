@@ -218,8 +218,8 @@ The next node will subscribe to the `image` topic and execute a series of proces
 
        ```python
        def process_image(msg):
-	   try:
-	       pass
+           try:
+              pass
            except Exception as err:
                print err
        ```
