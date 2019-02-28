@@ -22,9 +22,9 @@ std::vector<double> getCurrentJointState(const std::string& topic)
   return state->position;
 }
 
-EigenSTL::vector_Affine3d makeLine(const Eigen::Vector3d& start, const Eigen::Vector3d& stop, double ds)
+EigenSTL::vector_Isometry3d makeLine(const Eigen::Vector3d& start, const Eigen::Vector3d& stop, double ds)
 {
-  EigenSTL::vector_Affine3d line;
+  EigenSTL::vector_Isometry3d line;
 
   const Eigen::Vector3d travel = stop - start;
   const int steps = std::floor(travel.norm() / ds);
@@ -34,7 +34,7 @@ EigenSTL::vector_Affine3d makeLine(const Eigen::Vector3d& start, const Eigen::Ve
   {
     double ratio = static_cast<float>(i) / steps;
     Eigen::Vector3d position = start + ratio * travel;
-    Eigen::Affine3d tr;
+    Eigen::Isometry3d tr;
     tr = Eigen::Translation3d(position);
     line.push_back( tr );
   }
@@ -91,7 +91,7 @@ public:
     ROS_INFO("Recieved cartesian planning request");
 
     // Step 1: Generate path poses
-    EigenSTL::vector_Affine3d tool_poses = makePuzzleToolPoses();//makeToolPoses();
+    EigenSTL::vector_Isometry3d tool_poses = makePuzzleToolPoses();//makeToolPoses();
     visualizePuzzlePath(tool_poses);
 
     // Step 2: Translate that path by the input reference pose and convert to "Descartes points"
@@ -122,9 +122,9 @@ public:
     return true;
   }
 
-  EigenSTL::vector_Affine3d makePuzzleToolPoses()
+  EigenSTL::vector_Isometry3d makePuzzleToolPoses()
   {
-    EigenSTL::vector_Affine3d path;
+    EigenSTL::vector_Isometry3d path;
     std::ifstream indata;
 
     // TODO
@@ -161,7 +161,7 @@ public:
         Eigen::Vector3d temp_x = (-1 * pos).normalized();
         Eigen::Vector3d y_axis = (norm.cross(temp_x)).normalized();
         Eigen::Vector3d x_axis = (y_axis.cross(norm)).normalized();
-        Eigen::Affine3d pose;
+        Eigen::Isometry3d pose;
         pose.matrix().col(0).head<3>() = x_axis;
         pose.matrix().col(1).head<3>() = y_axis;
         pose.matrix().col(2).head<3>() = norm;
@@ -174,7 +174,7 @@ public:
     return path;
   }
 
-  bool visualizePuzzlePath(EigenSTL::vector_Affine3d path)
+  bool visualizePuzzlePath(EigenSTL::vector_Isometry3d path)
   {
     int cnt = 0;
     visualization_msgs::MarkerArray marker_array;
@@ -212,7 +212,7 @@ public:
   }
 
   std::vector<descartes_core::TrajectoryPtPtr>
-  makeDescartesTrajectory(const EigenSTL::vector_Affine3d& path)
+  makeDescartesTrajectory(const EigenSTL::vector_Isometry3d& path)
   {
     using namespace descartes_core;
     using namespace descartes_trajectory;
@@ -221,9 +221,9 @@ public:
 
     // need to get the transform between grinder_frame and base_link;
     tf::StampedTransform grinder_frame;
-    Eigen::Affine3d gf;
+    Eigen::Isometry3d gf;
     // TODO: Use the listener_ to lookup the transform between world and grinder_frame. Then
-    // convert it to an Eigen::Affine3d object gf.
+    // convert it to an Eigen::Isometry3d object gf.
 
     Frame wobj_base(gf);
     Frame tool_base = Frame::Identity();

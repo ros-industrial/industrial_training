@@ -1,5 +1,0 @@
-# req
-geometry_msgs/Pose pose
----
-# reply
-trajectory_msgs/JointTrajectory trajectory

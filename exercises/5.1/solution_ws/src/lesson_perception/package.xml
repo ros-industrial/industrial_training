@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<package>
+<package format="2">
   <name>lesson_perception</name>
   <version>0.0.0</version>
   <description>The lesson_perception package</description>
@@ -31,8 +31,8 @@
   <!-- The *_depend tags are used to specify dependencies -->
   <!-- Dependencies can be catkin packages or system dependencies -->
   <!-- Examples: -->
-  <!-- Use build_depend for packages you need at compile time: -->
-  <!--   <build_depend>message_generation</build_depend> -->
+  <!-- Use depend for packages you need at compile time: -->
+  <!--   <depend>message_generation</depend> -->
   <!-- Use buildtool_depend for build tool packages: -->
   <!--   <buildtool_depend>catkin</buildtool_depend> -->
   <!-- Use run_depend for packages you need at runtime: -->
@@ -40,24 +40,15 @@
   <!-- Use test_depend for packages you need only for testing: -->
   <!--   <test_depend>gtest</test_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
-  <build_depend>roscpp</build_depend>
-  <build_depend>sensor_msgs</build_depend>
-  <build_depend>tf</build_depend>
-  <build_depend>pcl_conversions</build_depend>
-  <build_depend>pcl_msgs</build_depend>
-  <build_depend>pcl_ros</build_depend>
-  <build_depend>visualization_msgs</build_depend>
-  <build_depend>tf_conversions</build_depend>
+  <depend>roscpp</depend>
+  <depend>sensor_msgs</depend>
+  <depend>tf</depend>
+  <depend>pcl_conversions</depend>
+  <depend>pcl_msgs</depend>
+  <depend>pcl_ros</depend>
+  <depend>visualization_msgs</depend>
+  <depend>tf_conversions</depend>
   
-  <run_depend>roscpp</run_depend>
-  <run_depend>sensor_msgs</run_depend>
-  <run_depend>tf</run_depend>
-  <run_depend>pcl_conversions</run_depend>
-  <run_depend>pcl_msgs</run_depend>
-  <run_depend>pcl_ros</run_depend>
-  <run_depend>visualization_msgs</run_depend>
-  <run_depend>tf_conversions</run_depend>
-
   <!-- The export tag contains other, unspecified, tags -->
   <export>
     <!-- You can specify that this package is a metapackage here: -->
