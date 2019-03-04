@@ -426,7 +426,7 @@ private:
   tf::TransformBroadcaster br_;
 
   // Configuration data
-  std::string cloud_topic, world_frame, camera_frame;
+  std::string cloud_topic1, cloud_topic2, cloud_topic3, world_frame, camera_frame;
   double voxel_leaf_size;
   double x_filter_min, x_filter_max, y_filter_min, y_filter_max, z_filter_min, z_filter_max;
   double plane_max_iter, plane_dist_thresh;
