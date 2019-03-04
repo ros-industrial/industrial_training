@@ -16,6 +16,7 @@
 #include <tf_conversions/tf_eigen.h>
 
 #include <chrono>
+#include <boost/pointer_cast.hpp>
 
 static Eigen::Affine3d lookat(const Eigen::Vector3d& origin, const Eigen::Vector3d& eye, const Eigen::Vector3d& up)
 {

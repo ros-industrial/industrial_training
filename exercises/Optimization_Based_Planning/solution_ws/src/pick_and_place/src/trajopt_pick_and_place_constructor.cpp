@@ -21,8 +21,6 @@ void TrajoptPickAndPlaceConstructor::addTotalTimeCost(ProblemConstructionInfo& p
 {
   std::shared_ptr<TotalTimeTermInfo> time_cost(new TotalTimeTermInfo);
   time_cost->name = "time_cost";
-  time_cost->penalty_type = sco::ABS;
-  time_cost->weight = coeff;
   time_cost->term_type = TT_COST;
   pci.cost_infos.push_back(time_cost);
 }

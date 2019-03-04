@@ -17,6 +17,7 @@
 
 #include <trajopt/file_write_callback.hpp>
 #include <trajopt/plot_callback.hpp>
+#include <trajopt_utils/logging.hpp>
 
 int main(int argc, char** argv)
 {
@@ -187,18 +188,15 @@ int main(int argc, char** argv)
     trajopt::TrajOptProbPtr pick_prob =
         prob_constructor.generatePickProblem(approach_pose, final_pose, steps_per_phase);
 
-    // Set the parameters
-    trajopt::BasicTrustRegionSQPParameters params;
-    params.max_iter = 500;
-
-    // Define Callbacks
-    std::vector<trajopt::Optimizer::Callback> callbacks;
+    // Set the optimization parameters (Most are being left as defaults)
+    tesseract::tesseract_planning::TrajOptPlannerConfig config(pick_prob);
+    config.params.max_iter = 500;
 
     // Create Plot Callback
     if (plotting_cb)
     {
       tesseract::tesseract_ros::ROSBasicPlottingPtr plotter_ptr(new tesseract::tesseract_ros::ROSBasicPlotting(env));
-      callbacks.push_back(PlotCallback(*pick_prob, plotter_ptr));
+      config.callbacks.push_back(PlotCallback(*pick_prob, plotter_ptr));
     }
     // Create file write callback discarding any of the file's current contents
     std::shared_ptr<std::ofstream> stream_ptr(new std::ofstream);
@@ -206,11 +204,11 @@ int main(int argc, char** argv)
     {
       std::string path = ros::package::getPath("pick_and_place") + "/file_output_pick.csv";
       stream_ptr->open(path, std::ofstream::out | std::ofstream::trunc);
-      callbacks.push_back(trajopt::WriteCallback(stream_ptr, pick_prob));
+      config.callbacks.push_back(trajopt::WriteCallback(stream_ptr, pick_prob));
     }
 
     // Solve problem
-    planner.solve(planning_response, pick_prob, params, callbacks);
+    planner.solve(planning_response, config);
 
     if (file_write_cb)
       stream_ptr->close();
