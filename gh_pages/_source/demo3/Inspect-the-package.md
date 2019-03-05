@@ -5,7 +5,7 @@ In this exercise, we will get familiar with all the files that you'll be interac
 ```
 cp -r ~/industrial_training/exercises/Optimization_Based_Planning/template_ws ~/optimized_planning_ws
 cd ~/optimized_planning_ws
-source /opt/ros/kinetic/setup.bash
+source /opt/ros/melodic/setup.bash
 catkin init
 ```
 
