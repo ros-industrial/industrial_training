@@ -10,7 +10,7 @@ File -> New -> Other Project -> ROS Workspace
 2) Fill the Project Name and Location information
 
 * Name:  ```pick_and_place```
-* Distribution: ``kinetic```
+* Distribution: ```melodic```
 * Build System: ```CatkinTools```
 * Workspace Path ```~/optimized_planning_ws```
 
