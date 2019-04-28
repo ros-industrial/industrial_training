@@ -66,7 +66,7 @@ Your goal is to create your first ROS node:
    target_link_libraries(vision_node ${catkin_LIBRARIES})
    ```
 
-   These lines can be placed anywhere in `CMakeLists.txt`, but I typically:
+   These lines can be placed anywhere after the find_package lines in `CMakeLists.txt`, but I typically:
 
    * Uncomment existing template examples for `add_compile_options` near the top (just below `project()`)
    * Uncomment and edit existing template examples for `add_executable` and `target_link_libraries` near the bottom
