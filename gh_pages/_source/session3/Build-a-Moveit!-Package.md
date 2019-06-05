@@ -55,7 +55,7 @@ In this exercise, you will generate a MoveIt package for the UR5 workcell you bu
        * make sure to create the package inside your `catkin_ws/src` directory
 
     1. The current MoveIt! Settup Assistant has a [bug](https://github.com/ros-planning/moveit/issues/955) that causes some minor errors and abnormal behaviors.  To fix these errors:
-       1. Edit the `myworkcell_core_moveit_config/config/ompl_planning.yaml` file.
+       1. Edit the `myworkcell_moveit_config/config/ompl_planning.yaml` file.
        1. Append the text string `kConfigDefault` to each planner name
           * e.g. `SBL:` -> `SBLkConfigDefault`, etc.
 
