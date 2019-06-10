@@ -8,6 +8,7 @@ The VM method is the most convenient method of utilizing the training materials:
  1. [Download ROS Melodic training VM](https://rosi-images.datasys.swri.edu)
  1. [Import image into virtual box](https://www.virtualbox.org/manual/ch01.html#ovf)
  1. Start virtual machine
+    1. *Note: If possible, assign two cores in Settings>>System>>Processor to your virtual machine before starting your virtual machine. This setting can be adjusted when the virtual machine is closed and shut down.
  1. Log into virtual machine, user: ```ros-industrial```, pass: ```rosindustrial``` (no spaces or hyphens)
  1. Get the latest changes (Open Terminal).
 
