@@ -28,6 +28,7 @@ Your goal is to describe a workcell that features:
 1. A frame (geometry optional) called `camera_frame` that is oriented such that its Z axis is flipped relative to the Z axis of `world`
 
 ## Scan-N-Plan Application: Guidance
+*Note: If you have not completed the previous tutorials, copy myworkcell_core and myworkcell_support packages from ~/industrial-training/exercises/2.3/src and git clone https://github.com/jmeyer1292/fake_ar_publisher.git into your current workspace src folder. 
 
 1. It’s customary to put describing files that aren’t code into their own “support” package. URDFs typically go into their own subfolder ''urdf/''. See the [abb_irb2400_support](https://github.com/ros-industrial/abb/tree/kinetic-devel/abb_irb2400_support) package. Add a `urdf` sub-folder to your application support package.
 1. Create a new `workcell.urdf` file inside the `myworkcell_support/urdf/` folder and insert the following XML skeleton:
