@@ -13,6 +13,7 @@ The VM method is the most convenient method of utilizing the training materials:
 
     ```
     cd ~/industrial_training
+    git fetch origin
     git checkout melodic
     git pull
     ./.check_training_config.bash
