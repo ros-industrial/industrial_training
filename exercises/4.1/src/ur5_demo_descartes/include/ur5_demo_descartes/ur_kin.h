@@ -35,14 +35,8 @@
  *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************/
-#ifndef UR5_DEMO_DESCARTES_UR_KIN_H
-#define UR5_DEMO_DESCARTES_UR_KIN_H
-#include <math.h>
-#include <stdio.h>
-
-#define ZERO_THRESH 0.00000001
-#define SIGN(x) ( ( (x) > 0 ) - ( (x) < 0 ) )
-#define PI M_PI
+#ifndef UR_KIN_H
+#define UR_KIN_H
 
 // These kinematics find the tranfrom from the base link to the end effector.
 // Though the raw D-H parameters specify a transform from the 0th link to the 6th link,

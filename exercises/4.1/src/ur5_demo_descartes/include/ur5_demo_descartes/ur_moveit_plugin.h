@@ -72,8 +72,8 @@
 
 /* Author: Sachin Chitta, David Lu!!, Ugo Cupcic */
 
-#ifndef UR5_DEMO_DESCARTES_UR_KINEMATICS_PLUGIN_
-#define UR5_DEMO_DESCARTES_UR_KINEMATICS_PLUGIN_
+#ifndef UR_KINEMATICS_PLUGIN_
+#define UR_KINEMATICS_PLUGIN_
 
 // ROS
 #include <ros/ros.h>
@@ -94,8 +94,6 @@
 #include <kdl/chainiksolvervel_pinv.hpp>
 #include <kdl/chainiksolverpos_nr_jl.hpp>
 #include <kdl/chainfksolverpos_recursive.hpp>
-#include <moveit/kdl_kinematics_plugin/chainiksolver_pos_nr_jl_mimic.hpp>
-#include <moveit/kdl_kinematics_plugin/chainiksolver_vel_pinv_mimic.hpp>
 #include <moveit/kdl_kinematics_plugin/joint_mimic.hpp>
 
 // MoveIt!
@@ -206,7 +204,6 @@ namespace ur_kinematics
   protected:
 
     bool timedOut(const ros::WallTime &start_time, double duration) const;
-
 
     /** @brief Check whether the solution lies within the consistency limit of the seed state
 * @param seed_state Seed state
