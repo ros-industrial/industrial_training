@@ -21,7 +21,7 @@ namespace ur5_demo_descartes
 {
 
 const std::string UR5_BASE_LINK = "base_link";
-const std::string UR5_TIP_LINK = "ee_link";
+const std::string UR5_TIP_LINK = "tool0";
 
 class UR5RobotModel: public descartes_moveit::MoveitStateAdapter, public ur_kinematics::URKinematicsPlugin
 {

@@ -1,13 +1,26 @@
 #include <ur5_demo_descartes/ur_kin.h>
 
-#define d1 0.089159
-#define a2 -0.42500
-#define a3 -0.39225
-#define d4 0.10915
-#define d5 0.09465
-#define d6 0.0823
+#include <math.h>
+#include <stdio.h>
+
 
 namespace ur_kinematics {
+
+  namespace {
+    const double ZERO_THRESH = 0.00000001;
+    int SIGN(double x) {
+      return (x > 0) - (x < 0);
+    }
+    const double PI = M_PI;
+
+    const double d1 =  0.089159;
+    const double a2 = -0.42500;
+    const double a3 = -0.39225;
+    const double d4 =  0.10915;
+    const double d5 =  0.09465;
+    const double d6 =  0.0823;
+
+  }
 
   void forward(const double* q, double* T) {
     double s1 = sin(*q), c1 = cos(*q); q++;
