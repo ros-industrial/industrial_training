@@ -72,8 +72,6 @@
 
 /* Author: Sachin Chitta, David Lu!!, Ugo Cupcic */
 
-#include <class_loader/class_loader.h>
-
 //#include <tf/transform_datatypes.h>
 #include <tf_conversions/tf_kdl.h>
 #include <kdl_parser/kdl_parser.hpp>
@@ -85,11 +83,8 @@
 #include <moveit/rdf_loader/rdf_loader.h>
 
 // UR kin
-#include <ur_kinematics/ur_moveit_plugin.h>
-#include <ur_kinematics/ur_kin.h>
-
-//register KDLKinematics as a KinematicsBase implementation
-CLASS_LOADER_REGISTER_CLASS(ur_kinematics::URKinematicsPlugin, kinematics::KinematicsBase)
+#include <ur5_demo_descartes/ur_moveit_plugin.h>
+#include <ur5_demo_descartes/ur_kin.h>
 
 namespace ur_kinematics
 {

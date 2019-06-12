@@ -72,8 +72,8 @@
 
 /* Author: Sachin Chitta, David Lu!!, Ugo Cupcic */
 
-#ifndef UR_KINEMATICS_PLUGIN_
-#define UR_KINEMATICS_PLUGIN_
+#ifndef UR5_DEMO_DESCARTES_UR_KINEMATICS_PLUGIN_
+#define UR5_DEMO_DESCARTES_UR_KINEMATICS_PLUGIN_
 
 // ROS
 #include <ros/ros.h>
@@ -277,4 +277,4 @@ namespace ur_kinematics
   };
 }
 
-#endif
+#endif // UR5_DEMO_DESCARTES_UR_KINEMATICS_PLUGIN_

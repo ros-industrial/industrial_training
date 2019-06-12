@@ -1,4 +1,4 @@
-#include <ur_kinematics/ur_kin.h>
+#include <ur5_demo_descartes/ur_kin.h>
 
 #include <math.h>
 #include <stdio.h>
@@ -13,35 +13,13 @@ namespace ur_kinematics {
     }
     const double PI = M_PI;
 
-    //#define UR10_PARAMS
-    #ifdef UR10_PARAMS
-    const double d1 =  0.1273;
-    const double a2 = -0.612;
-    const double a3 = -0.5723;
-    const double d4 =  0.163941;
-    const double d5 =  0.1157;
-    const double d6 =  0.0922;
-    #endif
-
-    //#define UR5_PARAMS
-    #ifdef UR5_PARAMS
     const double d1 =  0.089159;
     const double a2 = -0.42500;
     const double a3 = -0.39225;
     const double d4 =  0.10915;
     const double d5 =  0.09465;
     const double d6 =  0.0823;
-    #endif
-    
-    //#define UR3_PARAMS
-    #ifdef UR3_PARAMS
-    const double d1 =  0.1519;
-    const double a2 = -0.24365;
-    const double a3 = -0.21325;
-    const double d4 =  0.11235;
-    const double d5 =  0.08535;
-    const double d6 =  0.0819;
-    #endif
+
   }
 
   void forward(const double* q, double* T) {
