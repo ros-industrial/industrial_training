@@ -37,6 +37,7 @@
       <arg name="min_payload" value="0.0"/>
       <arg name="max_payload" value="5.0"/>
     </include>
+    <param name="move_group/trajectory_execution/execution_duration_monitoring" value="false"/>
   </group>
 
   <include file="$(find myworkcell_moveit_config)/launch/move_group.launch">

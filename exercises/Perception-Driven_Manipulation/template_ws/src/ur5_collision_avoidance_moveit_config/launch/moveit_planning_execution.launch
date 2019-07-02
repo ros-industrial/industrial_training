@@ -42,6 +42,7 @@
       <arg name="max_payload" value="$(arg max_payload)" />
     </include>  
 
+    <param name="move_group/trajectory_execution/execution_duration_monitoring" value="false"/>
   </group>
 
 

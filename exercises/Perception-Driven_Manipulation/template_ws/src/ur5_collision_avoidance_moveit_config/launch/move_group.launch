@@ -14,7 +14,7 @@
   <arg name="max_safe_path_cost" default="1"/>
   <arg name="jiggle_fraction" default="0.05" />
   <arg name="publish_monitored_planning_scene" default="true"/>
-
+	
   <include ns="move_group" file="$(find ur5_collision_avoidance_moveit_config)/launch/planning_pipeline.launch">
     <arg name="pipeline" value="ompl" />
   </include>
