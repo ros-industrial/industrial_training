@@ -12,6 +12,4 @@
 
   <rosparam command="load" file="$(find ur5_collision_avoidance_moveit_config)/config/joint_names.yaml"/>
 
-  <include file="$(find ur5_collision_avoidance_moveit_config)/launch/default_warehouse_db.launch" />
-
 </launch>

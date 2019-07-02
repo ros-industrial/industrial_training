@@ -37,12 +37,6 @@
  *********************************************************************/
 #ifndef UR5_DEMO_DESCARTES_UR_KIN_H
 #define UR5_DEMO_DESCARTES_UR_KIN_H
-#include <math.h>
-#include <stdio.h>
-
-#define ZERO_THRESH 0.00000001
-#define SIGN(x) ( ( (x) > 0 ) - ( (x) < 0 ) )
-#define PI M_PI
 
 // These kinematics find the tranfrom from the base link to the end effector.
 // Though the raw D-H parameters specify a transform from the 0th link to the 6th link,
@@ -79,4 +73,4 @@ namespace ur_kinematics {
   int inverse(const double* T, double* q_sols, double q6_des=0.0);
 };
 
-#endif //UR_KIN_H
+#endif //UR5_DEMO_DESCARTES_UR_KIN_H

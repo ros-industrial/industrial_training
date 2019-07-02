@@ -4,7 +4,7 @@
 string arm_name
 
 # the object to be placed
-manipulation_msgs/GraspableObject target
+#manipulation_msgs/GraspableObject target
 
 # a default orientation for the object when placed
 # this is somewhat specific to the interactive manipulation tool gripper_click
