@@ -202,9 +202,10 @@ bool DemoApplication::createLemniscateCurve(double foci_distance, double sphere_
       unit_y = (unit_z .cross(unit_x)).normalized();
 
       Eigen::Isometry3d rot;
-      rot.matrix() << unit_x(0),unit_y(0),unit_z(0)
-         ,unit_x(1),unit_y(1),unit_z(1)
-         ,unit_x(2),unit_y(2),unit_z(2);
+      rot.matrix() << unit_x(0),unit_y(0),unit_z(0),0
+         ,unit_x(1),unit_y(1),unit_z(1),0
+         ,unit_x(2),unit_y(2),unit_z(2),0
+         ,0,0,0,0;
 
 
 
