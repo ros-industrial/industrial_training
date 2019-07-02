@@ -37,8 +37,9 @@ sudo apt-get install google-chrome-stable
 
 # NOTE: no way (yet?) to do headless QT IFW install.  Do this last, but will require user action
 QTFILE=qtcreator-ros-bionic-latest-online-installer.run
-wget -q https://aeswiki.datasys.swri.edu/qtcreator_ros/downloads/installers/bionic/$QTFILE
-chmod u+x ./$QTFILE
+wget -q https://qtcreator-ros.datasys.swri.edu/downloads/installers/bionic/$QTFILE
+chmod u+x $QTFILE
 ./$QTFILE
-rm ./$QTFILE
+rm $QTFILE
+
 
