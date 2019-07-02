@@ -27,7 +27,7 @@ void PickAndPlace::set_attached_object(bool attach, const geometry_msgs::Pose &p
     // constructing pose
     tf::Transform attached_tf;
     tf::poseMsgToTF(cfg.ATTACHED_OBJECT.primitive_poses[0],attached_tf);
-    EigenSTL::vector_Affine3d pose_array(1);
+    EigenSTL::vector_Isometry3d pose_array(1);
     tf::transformTFToEigen(attached_tf,pose_array[0]);
 
     // attaching
