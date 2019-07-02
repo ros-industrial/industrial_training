@@ -63,7 +63,7 @@ Now that we have converted several filters to C++ functions, we are ready to cal
    .. code-block:: bash
 
             cd ~/python-pcl_ws/src/
-            catkin_create_pkg filter_call rospy roscpp perception_msgs
+            catkin_create_pkg filter_call rospy roscpp 
 
 #. Check that your package was created:
 
@@ -71,7 +71,7 @@ Now that we have converted several filters to C++ functions, we are ready to cal
 
             ls
 
-We will not be using ‘perception_msgs’ as we will not be creating custom messages in this course.  It is included for further student knowledge. If you wish for a more in depth explanation including how to implement customer messages, here is a good `MIT resource <http://duckietown.mit.edu/media/pdfs/1rpRisFoCYUm0XT78j-nAYidlh-cDtLCdEbIaBCnx9ew.pdf>`__ on the steps taken.
+We will not be including ‘perception_msgs’ as a dependency as we will not be creating custom messages in this course. If you wish for a more in depth explanation including how to implement customer messages, here is a good `MIT resource <http://duckietown.mit.edu/media/pdfs/1rpRisFoCYUm0XT78j-nAYidlh-cDtLCdEbIaBCnx9ew.pdf>`__ on the steps taken.
 
 
 #. Open *CMakeLists.txt*. You can open the file in Pycharm or Qt (or you can use nano, emacs, vim, or sublime). Uncomment line 23, and save.
@@ -299,6 +299,12 @@ Viewing Results
    .. code-block:: bash
 
             rosrun filter_call filter_call.py _pcdfilename:="/home/ros-industrial/catkin_ws/table.pcd"
+
+#. Source a new terminal and run the tf2_ros package to publish a static coordinate transform from the child frame to the world frame
+
+   .. code-block:: bash
+   
+            rosrun tf2_ros static_transform_publisher 0 0 0 0 0 0 0 world_frame kinect_link
 
 #. Source a new terminal and run rviz
 
