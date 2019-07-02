@@ -63,7 +63,7 @@ Now that we have converted several filters to C++ functions, we are ready to cal
    .. code-block:: bash
 
             cd ~/python-pcl_ws/src/
-            catkin_create_pkg filter_call rospy roscpp 
+            catkin create pkg filter_call rospy roscpp 
 
 #. Check that your package was created:
 
@@ -304,7 +304,7 @@ Viewing Results
 
    .. code-block:: bash
    
-            rosrun tf2_ros static_transform_publisher 0 0 0 0 0 0 0 world_frame kinect_link
+            rosrun tf2_ros static_transform_publisher 0 0 0 0 0 0 world_frame kinect_link
 
 #. Source a new terminal and run rviz
 
