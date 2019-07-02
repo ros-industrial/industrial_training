@@ -4,7 +4,7 @@
 string arm_name
 
 # the object to be grasped
-moveit_msgs/GraspableObject target
+#manipulation_msgs/GraspableObject target
 
 # How the object should be lifted 
 GripperTranslation lift
