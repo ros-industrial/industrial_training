@@ -56,6 +56,8 @@
       <arg name="max_payload" value="$(arg max_payload)" />
     </include>  
     
+    <param name="move_group/trajectory_execution/execution_duration_monitoring" value="false"/>
+
     <!-- TF Buffer Server -->
     <node pkg="tf2_ros" type="buffer_server" name="tf2_buffer_server" output="screen">
       <param name="buffer_size" value="120.0"/>

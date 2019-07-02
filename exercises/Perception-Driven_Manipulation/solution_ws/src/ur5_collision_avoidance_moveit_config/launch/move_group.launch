@@ -15,9 +15,6 @@
   <arg name="jiggle_fraction" default="0.05" />
   <arg name="publish_monitored_planning_scene" default="true"/>
 
-  <param name="move_group/trajectory_execution/allowed_execution_duration_scaling" value="4.0"/>
-  <param name="move_group/trajectory_execution/execution_duration_monitoring" value="false"/>
-	
   <include ns="move_group" file="$(find ur5_collision_avoidance_moveit_config)/launch/planning_pipeline.launch">
     <arg name="pipeline" value="ompl" />
   </include>
