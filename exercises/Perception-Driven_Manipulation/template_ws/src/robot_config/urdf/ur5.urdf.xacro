@@ -310,7 +310,7 @@
       </collision>
     </link>
 
-    <xacro:ur_arm_transmission prefix="${prefix}" />
+    <xacro:ur_arm_transmission prefix="${prefix}" hw_interface = ""/>
     <xacro:ur_arm_gazebo prefix="${prefix}" />
 
   </xacro:macro>
