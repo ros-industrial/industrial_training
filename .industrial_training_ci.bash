@@ -200,8 +200,10 @@ function build_ws()
 
   # Perform rosinstall
   ci_run wstool init
-  ci_run wstool merge -t src/ src/.rosinstall
-  ci_run wstool update -t src
+  if [ -f src/.rosinstall ]; then
+    ci_run wstool merge -t src/ src/.rosinstall
+    ci_run wstool update -t src
+  fi
 
   # Install dependencies with rosdep
   ci_run rosdep -q install --from-paths src --ignore-src -r -y
