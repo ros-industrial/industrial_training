@@ -6,11 +6,8 @@ add_definitions(-std=c++11)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
-  rospy
   sensor_msgs
-  std_msgs
   message_generation
-  visualization_msgs
   tf
   pcl_ros
 )
@@ -72,8 +69,7 @@ find_package(catkin REQUIRED COMPONENTS
 # Generate added messages and services with any dependencies listed here
  generate_messages(
    DEPENDENCIES
-   sensor_msgs
-   visualization_msgs
+    sensor_msgs
  )
 
 ###################################
@@ -90,11 +86,8 @@ catkin_package(
 #  LIBRARIES lesson_perception
   CATKIN_DEPENDS
     roscpp
-    rospy
     sensor_msgs
-    std_msgs
-    message_generation
-    visualization_msgs
+    message_runtime
     tf
     pcl_ros
 #  DEPENDS system_lib
