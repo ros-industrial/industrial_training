@@ -173,11 +173,11 @@ function ci_run_silent() {
 
 function setup()
 {
-  ci_run apt update -qq > /dev/null
-  ci_run apt install python-catkin-tools -qq -y > /dev/null
-  ci_run apt install ros-$ROS_DISTRO-moveit -qq -y > /dev/null
-  ci_run apt install ros-$ROS_DISTRO-pcl-ros -qq -y > /dev/null
-  ci_run apt upgrade -qq -y > /dev/null
+  ci_run_silent apt update -y
+  ci_run_silent apt install python-catkin-tools -y
+  ci_run_silent apt install ros-$ROS_DISTRO-moveit -y
+  ci_run_silent apt install ros-$ROS_DISTRO-pcl-ros -y
+  ci_run_silent apt upgrade -y
 }
 
 ######################################################
@@ -206,7 +206,7 @@ function build_ws()
   fi
 
   # Install dependencies with rosdep
-  ci_run rosdep -q install --from-paths src --ignore-src -r -y > /dev/null
+  ci_run_silent rosdep -q install --from-paths src --ignore-src -r -y
 
   # Build the workspace
   ci_run catkin build --no-status --summarize
