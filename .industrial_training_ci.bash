@@ -240,8 +240,6 @@ function update_image()
 #########################
 function build_exercises()
 {
-  ci_run update_image
-
   # Create a counter for naming containers
   N=1
 
