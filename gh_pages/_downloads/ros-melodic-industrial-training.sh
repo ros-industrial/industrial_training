@@ -18,7 +18,7 @@ sudo rosdep init
 rosdep update
 sudo apt install python-rosinstall -y
 sudo apt install ros-melodic-perception -y
-sudo apt install ros-melodic-urdf-tutorials -y
+sudo apt install ros-melodic-urdf-tutorial -y
 sudo apt install ros-melodic-moveit -y
 sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu `lsb_release -sc` main" > /etc/apt/sources.list.d/ros-latest.list'
 wget http://packages.ros.org/ros.key -O - | sudo apt-key add -
