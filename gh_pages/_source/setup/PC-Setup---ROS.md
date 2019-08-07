@@ -29,7 +29,7 @@ On most new systems, Virtual Box and VMs work out of the box.  The following is 
 
 ## Direct Linux PC Configuration (**NOT Recommended**)
 An installation [shell script](https://github.com/ros-industrial/industrial_training/blob/melodic/gh_pages/_downloads/ros-melodic-industrial-training.sh)
-is provided to run in Ubuntu Linux 16.04 (Xenial Xerus) LTS. This script installs ROS and any other packages needed for the environment used for this training.
+is provided to run in Ubuntu Linux 18.04 (Bionic Beaver) LTS. This script installs ROS and any other packages needed for the environment used for this training.
 
 After this step (or if you already have a working ROS environment), clone the training material repository into your home directory:
 
