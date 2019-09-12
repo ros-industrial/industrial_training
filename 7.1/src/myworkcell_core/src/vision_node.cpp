@@ -1,14 +1,14 @@
 /**
 **  Simple ROS Node
 **/
-#include <ros/ros.h>
+#include <rclcpp/rclcpp.hpp>
 #include <fake_ar_publisher/ARMarker.h>
 #include <myworkcell_core/LocalizePart.h>
 
 class Localizer
 {
 public:
-    Localizer(ros::NodeHandle& nh)
+    Localizer(rclcpp::Node& nh)
     {
         ar_sub_ = nh.subscribe<fake_ar_publisher::ARMarker>("ar_pose_marker", 1,
         &Localizer::visionCallback, this);
@@ -41,16 +41,16 @@ public:
 int main(int argc, char* argv[])
 {
     // This must be called before anything else ROS-related
-    ros::init(argc, argv, "vision_node");
+    rclcpp::init(argc, argv);
 
     // Create a ROS node handle
-    ros::NodeHandle nh;
+    auto node = rclcpp::Node::make_shared("vision_node");
 
     // The Localizer class provides this node's ROS interfaces
-    Localizer localizer(nh);
+    Localizer localizer(node);
 
-    ROS_INFO("Vision node starting");
+    RCLCPP_INFO("Vision node starting");
 
     // Don't exit the program.
-    ros::spin();
+    rclcpp::spin();
 }
