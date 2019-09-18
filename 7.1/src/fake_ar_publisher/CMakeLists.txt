@@ -22,15 +22,13 @@ find_package(std_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(visualization_msgs REQUIRED)
 
-include_directories(${rclcpp_INCLUDE_DIRS}
-                    ${std_msgs_INCLUDE_DIRS})
-
 ## Declare a C++ executable
 add_executable(fake_ar_publisher_node src/fake_ar_publisher.cpp)
 
 # add_dependencies(fake_ar_publisher_node ${PROJECT_NAME})
 target_include_directories(fake_ar_publisher_node PUBLIC
                           ${rclcpp_INCLUDE_DIRS}
+                          ${fake_ar_publisher_msgs_INCLUDE_DIRS}
                           ${std_msgs_INCLUDE_DIRS})
 
 ## Specify libraries to link a library or executable target against
