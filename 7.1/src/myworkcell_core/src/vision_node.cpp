@@ -1,10 +1,9 @@
 /**
 **  Simple ROS2 Node; WIP
 **/
-
 #include <rclcpp/rclcpp.hpp>
-#include <fake_ar_publisher_msgs/msg/ARMarker.hpp>
-#include <myworkcell_core/srv/LocalizePart.hpp>
+#include <fake_ar_publisher_msgs/msg/ar_marker.hpp>
+#include "myworkcell_core/srv/localize_part.hpp"
 
 class Localizer
 {
