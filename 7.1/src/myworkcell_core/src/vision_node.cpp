@@ -10,13 +10,13 @@ class Localizer
 public:
     Localizer(rclcpp::Node& node)
     {
-        ar_sub_ = node->create_subscription<fake_ar_publisher::msg::ARMarker>("ar_pose_marker", 1,
-        &Localizer::visionCallback, this);
+        ar_sub_ = node->create_subscription<fake_ar_publisher_msgs::msg::ARMarker>("ar_pose_marker", 1,
+        std::bind(&Localizer::visionCallback, this, _1));
 
         server_ = node->create_service("localize_part", &Localizer::localizePart, this);
     }
 
-    void visionCallback(const fake_ar_publisher::msg::ARMarkerConstPtr& msg)
+    void visionCallback(const fake_ar_publisher_msgs::msg::ARMarkerConstPtr& msg)
     {
         last_msg_ = msg;
         RCLPP_INFO(node->get_logger(), last_msg_->pose.pose); //ros2 INFO_STREAM?
@@ -33,8 +33,8 @@ public:
       return true;
     }
 
-    ros::Subscriber ar_sub_;
-    fake_ar_publisher::msg::ARMarkerConstPtr last_msg_;
+    rclcpp::Subscription<fake_ar_publisher_msgs::msg::String>::SharedPtr ar_sub_;
+    fake_ar_publisher_msgs::msg::ARMarkerConstPtr last_msg_;
     ros::ServiceServer server_;
 };
 
