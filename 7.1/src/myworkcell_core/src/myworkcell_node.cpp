@@ -1,11 +1,14 @@
+#include <chrono>
+#include <cinttypes>
+#include <memory>
 #include <rclcpp/rclcpp.hpp>
 #include "myworkcell_core/srv/localize_part.hpp"
 
 
 class ScanNPlan : public rclcpp::Node
 {
-public:
-  ScanNPlan(rclcpp::Node& node)
+public: 
+  explicit ScanNPlan()
   : Node("scan_n_plan")
   {
     vision_client_ = this->create_client<myworkcell_core::srv::LocalizePart>("localize_part");
@@ -14,17 +17,30 @@ public:
   void start(const std::string& base_frame)
   {
     RCLCPP_INFO(this->get_logger(), "Attempting to localize part");
-    // Localize the part
-    myworkcell_core::srv::LocalizePart srvr; //srv changed to srvr to avoid ambiguity
-    srvr.request.base_frame = base_frame;
-    RCLCPP_INFO(this->get_logger(), "Requesting pose in base frame: %s", base_frame);
 
-    if (!vision_client_->call(srv))
+    while (!vision_client_->wait_for_service(std::chrono::duration<int, std::milli>(500))) {
+      if (!rclcpp::ok()) {
+        RCLCPP_ERROR(this->get_logger(), "client interrupted while waiting for service to appear.");
+        return;
+      }
+      RCLCPP_INFO(this->get_logger(), "waiting for service to appear...");
+    }
+
+    // Localize the part
+    auto request = std::make_shared<myworkcell_core::srv::LocalizePart::Request>(); //srv changed to srvr to avoid ambiguity
+    request->base_frame = base_frame;
+
+    RCLCPP_INFO(this->get_logger(), "Requesting pose in base frame: %s", base_frame);
+    auto result_future = vision_client_->async_send_request(request);
+
+    if (result_future.wait_for(std::chrono::duration<int, std::milli>(500)) ==
+      std::future_status::timeout)
     {
       RCLCPP_ERROR(this->get_logger(), "Could not localize part");
       return;
     }
-    RCLCPP_INFO(this->get_logger(), "part localized: %s", srvr.response);
+    auto result = result_future.get();
+    RCLCPP_INFO(this->get_logger(), "part localized: %s", result->pose);
   }
 
 private:
@@ -36,15 +52,19 @@ int main(int argc, char **argv)
 {
   rclcpp::init(argc, argv);
   auto node = rclcpp::Node::make_shared("myworkcell_node");
+  // auto parameters_client = std::make_shared<rclcpp::SyncParametersClient>(node);
   RCLCPP_INFO(node->get_logger(), "ScanNPlan node has been initialized");
 
-  std::string base_frame;
+  // node->declare_parameter("base_frame");
+
+
+  //std::string base_frame;
 // parameter name, string object reference, default value
 
-  ScanNPlan app();
+  auto app = std::make_shared<ScanNPlan>();
+  app->start("world");
 
-  rclcpp::Duration(.5).sleep();  // wait for the class to initialize
-  app.start(base_frame);
-
-  rclcpp::spin();
+  rclcpp::spin(app);
+  rclcpp::shutdown();
+  return 0;
 }
