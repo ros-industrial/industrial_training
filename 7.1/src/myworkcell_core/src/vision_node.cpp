@@ -7,6 +7,7 @@
 
 using std::placeholders::_1;
 using std::placeholders::_2;
+using std::placeholders::_3;
 
 class Localizer : public rclcpp::Node
 {
@@ -18,7 +19,7 @@ public:
         ar_sub_ = this->create_subscription<fake_ar_publisher_msgs::msg::ARMarker>("ar_pose_marker", 1,
         std::bind(&Localizer::visionCallback, this, std::placeholders::_1));
 
-        server_ = this->create_service<myworkcell_core::srv::LocalizePart>("localize_part", localizePart);
+        server_ = this->create_service<myworkcell_core::srv::LocalizePart>("localize_part", std::bind(&Localizer::localizePart, this, _1, _2, _3));
     }
 
     void visionCallback(const fake_ar_publisher_msgs::msg::ARMarker::SharedPtr msg) //need to sort out this shared pointer situation
@@ -27,9 +28,9 @@ public:
         //RCLCPP_INFO(this->get_logger(), last_msg_->pose.pose); //need to either pass in node or find a new pipeine out
     }
 
-    bool localizePart( 
-                      myworkcell_core::srv::LocalizePart::Request req,
-                      myworkcell_core::srv::LocalizePart::Response res) //server response & request in ROS2?
+    bool localizePart (const std::shared_ptr<rmw_request_id_t> request_header,
+                      const std::shared_ptr<myworkcell_core::srv::LocalizePart::Request> req,
+                      std::shared_ptr<myworkcell_core::srv::LocalizePart::Response> res) //server response & request in ROS2?
     {
       // Read last message
       
