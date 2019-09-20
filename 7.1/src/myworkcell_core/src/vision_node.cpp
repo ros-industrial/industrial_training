@@ -5,37 +5,45 @@
 #include <fake_ar_publisher_msgs/msg/ar_marker.hpp>
 #include "myworkcell_core/srv/localize_part.hpp"
 
-class Localizer
+using std::placeholders::_1;
+using std::placeholders::_2;
+
+class Localizer : public rclcpp::Node
 {
 public:
-    Localizer(rclcpp::Node& node)
-    {
-        ar_sub_ = node->create_subscription<fake_ar_publisher_msgs::msg::ARMarker>("ar_pose_marker", 1,
-        std::bind(&Localizer::visionCallback, this, _1));
+    Localizer()
+    : Node("vision_node")
+    {    
+        //gave ar_sub a type,  -> to .    change node to n for namesapce issues
+        ar_sub_ = this->create_subscription<fake_ar_publisher_msgs::msg::ARMarker>("ar_pose_marker", 1,
+        std::bind(&Localizer::visionCallback, this, std::placeholders::_1));
 
-        server_ = node->create_service("localize_part", &Localizer::localizePart, this);
+        server_ = this->create_service<myworkcell_core::srv::LocalizePart>("localize_part", localizePart);
     }
 
-    void visionCallback(const fake_ar_publisher_msgs::msg::ARMarkerConstPtr& msg)
+    void visionCallback(const fake_ar_publisher_msgs::msg::ARMarker::SharedPtr msg) //need to sort out this shared pointer situation
     {
         last_msg_ = msg;
-        RCLPP_INFO(node->get_logger(), last_msg_->pose.pose); //ros2 INFO_STREAM?
+        //RCLCPP_INFO(this->get_logger(), last_msg_->pose.pose); //need to either pass in node or find a new pipeine out
     }
 
-    bool localizePart(myworkcell_core::srv::LocalizePart::Request& req,
-                      myworkcell_core::srv::LocalizePart::Response& res) //server response & request in ROS2?
+    bool localizePart( 
+                      myworkcell_core::srv::LocalizePart::Request req,
+                      myworkcell_core::srv::LocalizePart::Response res) //server response & request in ROS2?
     {
       // Read last message
-      fake_ar_publisher::msg::ARMarkerConstPtr p = last_msg_;
+      
+      fake_ar_publisher_msgs::msg::ARMarker::SharedPtr p = last_msg_;
       if (!p) return false;
 
-      res.pose = p->pose.pose;
+      res->pose = p->pose.pose;
       return true;
     }
 
-    rclcpp::Subscription<fake_ar_publisher_msgs::msg::String>::SharedPtr ar_sub_;
-    fake_ar_publisher_msgs::msg::ARMarkerConstPtr last_msg_;
-    ros::ServiceServer server_;
+    
+    rclcpp::Subscription<fake_ar_publisher_msgs::msg::ARMarker>::SharedPtr ar_sub_;
+    fake_ar_publisher_msgs::msg::ARMarker::SharedPtr last_msg_;
+    rclcpp::Service<myworkcell_core::srv::LocalizePart>::SharedPtr server_;
 };
 
 int main(int argc, char* argv[])
@@ -43,14 +51,12 @@ int main(int argc, char* argv[])
     // This must be called before anything else ROS-related
     rclcpp::init(argc, argv);
 
-    // Create a ROS node. There are not node handles in ros 2
-    auto node = rclcpp::Node::make_shared("vision_node");
+    // Create a ROS node. There are not node handles in ros 2. Or we can not
 
     // The Localizer class provides this node's ROS interfaces
-    Localizer localizer(node);
-
-    RCLCPP_INFO(node->get_logger(),"Vision node starting");
+    
+    //Localizer localizer();
 
     // Don't exit the program.
-    rclcpp::spin_some(node);
+    rclcpp::spin_some(std::make_shared<Localizer>());
 }

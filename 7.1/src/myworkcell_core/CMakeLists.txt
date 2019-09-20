@@ -26,48 +26,33 @@ rosidl_generate_interfaces(myworkcell_core
   DEPENDENCIES geometry_msgs
 )
 
-
+#Uncomment lines 32, 34, 39-40, 46-55 for myworkcell_node
 
 ## Declare a C++ executable
-add_executable(myworkcell_node src/myworkcell_node.cpp)
+#add_executable(myworkcell_node src/myworkcell_node.cpp)
 
-ament_target_dependencies(myworkcell_node rclcpp fake_ar_publisher_msgs)
+#ament_target_dependencies(myworkcell_node rclcpp fake_ar_publisher_msgs)
 
 add_executable(vision_node src/vision_node.cpp)
+ament_target_dependencies(vision_node rclcpp fake_ar_publisher_msgs)
 
-rosidl_target_interfaces(myworkcell_node
-      ${PROJECT_NAME} "rosidl_typesupport_cpp")
+#rosidl_target_interfaces(myworkcell_node
+#      ${PROJECT_NAME} "rosidl_typesupport_cpp")
 
 rosidl_target_interfaces(vision_node
       ${PROJECT_NAME} "rosidl_typesupport_cpp")
-#DangerZone--------------------------------------------------------------------
-#get_default_rmw_implementation(rmw_implementation)
-#find_package("${rmw_implementation}" REQUIRED)
-#get_rmw_typesupport(typesupport_impls "${rmw_implementation}" LANGUAGE "cpp")
 
-#foreach(typesupport_impl ${typesupport_impls})
-#  rosidl_target_interfaces(myworkcell_node
-#    ${PROJECT_NAME} ${typesupport_impl}
-#  )
-#endforeach()
-
-#install(DIRECTORY
-#  srv
-#  DESTINATION share/${PROJECT_NAME}/
-#  )
-#------------------------------------------------------------------------------
-
-# add_dependencies(fake_ar_publisher_node ${PROJECT_NAME})
-include_directories(myworkcell_node PUBLIC
-                          ${rclcpp_INCLUDE_DIRS}
-                          ${fake_ar_publisher_msgs_INCLUDE_DIRS}
-                          ${std_msgs_INCLUDE_DIRS})
+#add_dependencies(fake_ar_publisher_node ${PROJECT_NAME})
+#include_directories(myworkcell_node PUBLIC
+#                          ${rclcpp_INCLUDE_DIRS}
+#                          ${fake_ar_publisher_msgs_INCLUDE_DIRS}
+#                          ${std_msgs_INCLUDE_DIRS})
 
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(myworkcell_node
-                      ${rclcpp_LIBRARIES}
-                      ${std_msgs_LIBRARIES})
+#target_link_libraries(myworkcell_node
+#                      ${rclcpp_LIBRARIES}
+#                      ${std_msgs_LIBRARIES})
 
 
 
