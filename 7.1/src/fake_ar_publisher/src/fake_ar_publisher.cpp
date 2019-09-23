@@ -80,9 +80,10 @@ int main(int argc, char **argv)
 {
   // Set up ROS.
   rclcpp::init(argc, argv);
-  auto node = rclcpp::Node::make_shared("fake_ar_publisher");
+  //auto node = rclcpp::Node::make_shared("fake_ar_publisher"); Only want one node
+  auto node = std::make_shared<FakeARPublisher>();
   RCLCPP_INFO(node->get_logger(), "Starting simulated ARMarker publisher");  
-  rclcpp::spin(std::make_shared<FakeARPublisher>());
+  rclcpp::spin(node);
   rclcpp::shutdown();
   return 0;
 }

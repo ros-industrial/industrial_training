@@ -4,7 +4,7 @@
 #include <rclcpp/rclcpp.hpp>
 #include "myworkcell_core/srv/localize_part.hpp"
 
-
+//TODO: we are somehow blocking on this node, preventing successful run
 class ScanNPlan : public rclcpp::Node
 {
 public: 
@@ -33,7 +33,7 @@ public:
     RCLCPP_INFO(this->get_logger(), "Requesting pose in base frame: %s", base_frame);
     auto result_future = vision_client_->async_send_request(request);
 
-    if (result_future.wait_for(std::chrono::duration<int, std::milli>(500)) ==
+    if (result_future.wait_for(std::chrono::duration<int, std::milli>(5000)) ==
       std::future_status::timeout)
     {
       RCLCPP_ERROR(this->get_logger(), "Could not localize part");
@@ -51,18 +51,20 @@ private:
 int main(int argc, char **argv)
 {
   rclcpp::init(argc, argv);
-  auto node = rclcpp::Node::make_shared("myworkcell_node");
-  // auto parameters_client = std::make_shared<rclcpp::SyncParametersClient>(node);
-  RCLCPP_INFO(node->get_logger(), "ScanNPlan node has been initialized");
+  //auto node = rclcpp::Node::make_shared("myworkcell_node");// OMG Jerit ya only get on node per node my dude
+  auto app = std::make_shared<ScanNPlan>();
 
-  // node->declare_parameter("base_frame");
+  std::string base_frame;
+  auto parameters_client = std::make_shared<rclcpp::SyncParametersClient>(app);
+  RCLCPP_INFO(app->get_logger(), "ScanNPlan node has been initialized");
+
+  app->declare_parameter("base_frame");
 
 
-  //std::string base_frame;
 // parameter name, string object reference, default value
 
-  auto app = std::make_shared<ScanNPlan>();
-  app->start("world");
+
+  app->start("base_frame");
 
   rclcpp::spin(app);
   rclcpp::shutdown();

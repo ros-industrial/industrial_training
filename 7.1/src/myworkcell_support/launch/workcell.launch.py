@@ -12,7 +12,7 @@ import launch_ros.actions
 def generate_launch_description():
   return LaunchDescription([
     launch_ros.actions.Node(
-      node_name='fake_ar_publisher',
+      node_name='fake_ar_publisher_node',
       package='fake_ar_publisher',
       node_executable='fake_ar_publisher_node',
       output='screen',

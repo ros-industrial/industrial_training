@@ -25,7 +25,7 @@ public:
     void visionCallback(const fake_ar_publisher_msgs::msg::ARMarker::SharedPtr msg) //need to sort out this shared pointer situation
     {
         last_msg_ = msg;
-        //RCLCPP_INFO(this->get_logger(), last_msg_->pose.pose); //need to either pass in node or find a new pipeine out
+        //RCLCPP_INFO(this->get_logger(), std::to_string(last_msg_->pose.pose));
     }
 
     bool localizePart (const std::shared_ptr<rmw_request_id_t> request_header,
@@ -59,5 +59,5 @@ int main(int argc, char* argv[])
     //Localizer localizer();
 
     // Don't exit the program.
-    rclcpp::spin_some(std::make_shared<Localizer>());
+    rclcpp::spin(std::make_shared<Localizer>());
 }

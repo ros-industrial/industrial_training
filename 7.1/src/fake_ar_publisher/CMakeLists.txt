@@ -34,6 +34,11 @@ target_link_libraries(fake_ar_publisher_node
                       ${std_msgs_LIBRARIES})
 
 
+ install(TARGETS 
+ fake_ar_publisher_node
+DESTINATION lib/${PROJECT_NAME}
+)
+
 # ament_package is called after the targets
 ament_export_dependencies(rosidl_default_runtime)
 ament_package()

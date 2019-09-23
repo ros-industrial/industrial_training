@@ -52,7 +52,12 @@ target_link_libraries(myworkcell_node
                      ${rclcpp_LIBRARIES}
                      ${std_msgs_LIBRARIES})
 
-
+## Mark executables and/or libraries for installation
+ install(TARGETS 
+  myworkcell_node
+  vision_node
+DESTINATION lib/${PROJECT_NAME}
+)
 
 # ament_package is called after the targets
 ament_export_dependencies(rosidl_default_runtime rclcpp)
