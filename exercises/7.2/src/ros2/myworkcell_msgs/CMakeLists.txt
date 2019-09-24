@@ -27,6 +27,8 @@ find_package(trajectory_msgs REQUIRED)
 set(srv_files
    "srv/LocalizePart.srv"
    "srv/PlanCartesianPath.srv"
+   "srv/MoveToPose.srv"
+   "srv/ExecuteTrajectory.srv"
  )
 
 rosidl_generate_interfaces(${PROJECT_NAME}

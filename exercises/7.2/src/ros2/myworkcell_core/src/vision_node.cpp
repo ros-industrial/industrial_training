@@ -22,22 +22,36 @@ public:
     rclcpp::Node(NODE_NAME, opt),
     tf_listener_(tf_buffer_)
   {
-    using namespace Eigen;
-
     auto server_cb = std::bind(&Localizer::localizePart,
                        this,
                        std::placeholders::_1,
-                       std::placeholders::_2,
-                       std::placeholders::_3);
+                       std::placeholders::_2);
     server_ = this->create_service<myworkcell_msgs::srv::LocalizePart>("localize_part",server_cb);
 
-    // load cam to target pose
-    std::shared_ptr<rclcpp::SyncParametersClient> parameters_client = std::make_shared<rclcpp::SyncParametersClient>(this);
-    std::string frame_id = parameters_client->get_parameter<std::string>("frame_id");
-    std::vector<double> pose_vals = parameters_client->get_parameter< std::vector<double> >(
-        "pose_vals",{-0.6, 0.2, 0.5, 0.0, 0.0, 0.0});
+  }
 
-    // converting values to a pose
+  bool init()
+  {
+    using namespace Eigen;
+
+    // load parameters
+    std::string frame_id;
+    std::vector<double> pose_vals = {-0.6, 0.2, 0.5, 0.0, 0.0, 0.0};
+    const std::vector<rclcpp::ParameterValue> parameters = {this->declare_parameter("frame_id"),
+                                                            this->declare_parameter("pose_vals")};
+    // checking parameters
+    if(!std::all_of(parameters.begin(), parameters.end(),[](const rclcpp::ParameterValue& p){
+      return p.get_type() !=  rclcpp::ParameterType::PARAMETER_NOT_SET;
+    }))
+    {
+      RCLCPP_INFO(this->get_logger(), "One or more parameters not set");
+      return false;
+    }
+
+    // getting parameters now
+    frame_id = parameters[0].get<std::string>();
+    pose_vals = parameters[1].get<std::vector<double>>();
+
     Eigen::Isometry3d pose = Translation3d(pose_vals[0],pose_vals[1],pose_vals[2]) * AngleAxisd(pose_vals[3], Vector3d::UnitX()) *
         AngleAxisd(pose_vals[4], Vector3d::UnitY()) * AngleAxisd(pose_vals[5], Vector3d::UnitZ());
 
@@ -45,10 +59,10 @@ public:
     pose_.header.frame_id = frame_id;
     pose_.pose = tf2::toMsg(pose);
 
+    return true;
   }
 
-  void localizePart(const std::shared_ptr<rmw_request_id_t> request_header,
-                    const std::shared_ptr<myworkcell_msgs::srv::LocalizePart::Request> req,
+  void localizePart(const std::shared_ptr<myworkcell_msgs::srv::LocalizePart::Request> req,
                     const std::shared_ptr<myworkcell_msgs::srv::LocalizePart::Response> res)
   {
 
@@ -75,7 +89,11 @@ protected:
 int main(int argc, char** argv)
 {
   rclcpp::init(argc,argv);
-  std::shared_ptr<rclcpp::Node> localizer_node = std::make_shared<Localizer>(rclcpp::NodeOptions());
+  std::shared_ptr<Localizer> localizer_node = std::make_shared<Localizer>(rclcpp::NodeOptions());
+  if(!localizer_node->init())
+  {
+    return -1;
+  }
   rclcpp::spin(localizer_node);
   rclcpp::shutdown();
 

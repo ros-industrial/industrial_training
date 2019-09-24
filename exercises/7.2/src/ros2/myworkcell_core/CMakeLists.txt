@@ -30,4 +30,21 @@ ament_target_dependencies(myworkcell_node "rclcpp"
 add_executable(vision_node src/vision_node.cpp)
 ament_target_dependencies(vision_node "rclcpp" "myworkcell_msgs" "tf2_ros" "tf2_eigen")
 
+
+install(DIRECTORY include/${PROJECT_NAME}/
+  DESTINATION include/${PROJECT_NAME}/
+  FILES_MATCHING PATTERN "*.h*"
+  PATTERN ".svn" EXCLUDE)
+install(DIRECTORY
+  launch
+  DESTINATION share/${PROJECT_NAME}/
+)
+
+install(TARGETS
+  myworkcell_node
+  vision_node
+  DESTINATION lib/${PROJECT_NAME})
+
+
+
 ament_package()
