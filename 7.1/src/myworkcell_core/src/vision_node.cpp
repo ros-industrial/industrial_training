@@ -26,7 +26,6 @@ public:
     void visionCallback(const fake_ar_publisher_msgs::msg::ARMarker::SharedPtr msg) //need to sort out this shared pointer situation
     {
         last_msg_ = msg;
-        std::cout << std::to_string(last_msg_->pose.pose.position.x) <<std::endl;
     }
 
     bool localizePart (const std::shared_ptr<rmw_request_id_t> request_header,
@@ -34,14 +33,10 @@ public:
                       std::shared_ptr<myworkcell_core::srv::LocalizePart::Response> res) //server response & request in ROS2?
     {
       // Read last message
-
-      //RCLCPP_INFO(this->get_logger(), std::to_string(last_msg_->pose.pose.position));
-
       fake_ar_publisher_msgs::msg::ARMarker::SharedPtr p = last_msg_;
       if (!p) return false;
 
       std::cout << "P is not empty, and we called a service" << "\n";//RCLCPP_INFO(this->get_logger(), std::to_string(last_msg_->pose.pose));
-
       res->pose = p->pose.pose;
       return true;
     }

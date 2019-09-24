@@ -32,20 +32,26 @@ public:
 
     RCLCPP_INFO(this->get_logger(), base_frame);  //This cannot represent strings correctly unless given as variable (no %s)
     
-    auto result_future = vision_client_->async_send_request(request);
+    using ServiceResponseFuture =
+      rclcpp::Client<myworkcell_core::srv::LocalizePart>::SharedFuture;
 
+    auto response_received_callback = [this](ServiceResponseFuture future) {
+        auto result = future.get();
+        RCLCPP_INFO(this->get_logger(), "part localized: %s", result->pose); //not printing correctly, but ecternal service calls are showing that this does work
+        rclcpp::shutdown();
+      };    
 
-    RCLCPP_INFO(this->get_logger(), "part g:");
-    // if (result_future.wait_for(std::chrono::duration<int, std::milli>(5000)) ==
-    //   std::future_status::timeout)
-    // {
-    //   RCLCPP_ERROR(this->get_logger(), "Could not localize part");
-    //   return;
-    // }
-        RCLCPP_INFO(this->get_logger(), "part localized:");
-    auto result = result_future.get();
-        RCLCPP_INFO(this->get_logger(), "part jh:");
+    auto result_future = vision_client_->async_send_request(request, response_received_callback);
+    
 
+     if (result_future.wait_for(std::chrono::duration<int, std::milli>(5000)) ==
+       std::future_status::timeout)
+     {
+       RCLCPP_ERROR(this->get_logger(), "Could not localize part");
+       return;
+     }
+
+    //RCLCPP_INFO(this->get_logger(), "part localized: %s", result->pose);
   }
 
 private:
@@ -67,10 +73,7 @@ int main(int argc, char **argv)
   app->get_parameter("base_frame", base_frame);
 
 // parameter name, string object reference, default value
-
-
   app->start(base_frame);
-  RCLCPP_INFO(app->get_logger(), "???");
   rclcpp::spin(app);
   rclcpp::shutdown();
   return 0;
