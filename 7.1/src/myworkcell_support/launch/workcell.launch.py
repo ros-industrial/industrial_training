@@ -16,6 +16,10 @@ def generate_launch_description():
       package='fake_ar_publisher',
       node_executable='fake_ar_publisher_node',
       output='screen',
+      parameters=[{'x': -0.6},
+                  {'y': 0.4},
+                  {'z': 0.1},
+                  {'camera_frame': 'camera_frame'}],
     ),
     launch_ros.actions.Node(
       node_name='vision_node',

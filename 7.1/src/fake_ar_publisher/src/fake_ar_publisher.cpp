@@ -64,10 +64,6 @@ private:
     fake_ar_publisher_msgs::msg::ARMarker m;
     m.header.frame_id = camera_frame_name();
     m.header.stamp = this->now();
-    p.position.x = 0.1;
-    p.position.y = 0.3;
-    p.position.z = -0.4;
-    p.orientation.w = 1;
     m.pose.pose = p;
 
     ar_pub_->publish(m);
@@ -82,21 +78,22 @@ private:
 
 int main(int argc, char **argv)
 {
-  //std::float x,y,z;
-
   // Set up ROS.
   rclcpp::init(argc, argv);
-
   auto node = std::make_shared<FakeARPublisher>();
-  //auto parameters_client = std::make_shared<rclcpp::SyncParametersClient>(node);
+  auto parameters_client = std::make_shared<rclcpp::SyncParametersClient>(node);
 
-  //node->declare_parameter("x");
-  //node->declare_parameter("y");
-  //node->declare_parameter("z");
+  node->declare_parameter("x");
+  node->declare_parameter("y");
+  node->declare_parameter("z");
+  node->declare_parameter("camera_frame");
 
-  //node->get_parameter("x", x);
-  //node->get_parameter("y", y);
-  //node->get_parameter("z", z);
+  // init pose
+  pose().orientation.w = 1.0; // facing straight up
+  node->get_parameter("x", pose().position.x);
+  node->get_parameter("y", pose().position.y);
+  node->get_parameter("z", pose().position.z);
+  node->get_parameter("camera_frame", camera_frame_name());
 
   RCLCPP_INFO(node->get_logger(), "Starting simulated ARMarker publisher");  
   rclcpp::spin(node);
