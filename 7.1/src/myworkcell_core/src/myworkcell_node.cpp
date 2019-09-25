@@ -4,7 +4,6 @@
 #include <rclcpp/rclcpp.hpp>
 #include "myworkcell_core/srv/localize_part.hpp"
 
-//TODO: we are somehow blocking on this node, preventing successful run
 class ScanNPlan : public rclcpp::Node
 {
 public: 
@@ -16,41 +15,44 @@ public:
   
   void start(const std::string& base_frame)
   {
-    RCLCPP_INFO(this->get_logger(), "Attempting to localize part");
+    // Need to wait until vision node has data
+    rclcpp::Rate rate(std::chrono::duration<int, std::milli>(1000));
+    rate.sleep();
 
+    RCLCPP_INFO(this->get_logger(), "Attempting to localize part in frame: %s", base_frame.c_str());
+    
     while (!vision_client_->wait_for_service(std::chrono::duration<int, std::milli>(500))) {
       if (!rclcpp::ok()) {
         RCLCPP_ERROR(this->get_logger(), "client interrupted while waiting for service to appear.");
         return;
-      }
+      } 
       RCLCPP_INFO(this->get_logger(), "waiting for service to appear...");
     }
 
     // Localize the part
-    auto request = std::make_shared<myworkcell_core::srv::LocalizePart::Request>(); //srv changed to srvr to avoid ambiguity
+    auto request = std::make_shared<myworkcell_core::srv::LocalizePart::Request>();
     request->base_frame = base_frame;
-
-    //RCLCPP_INFO(this->get_logger(), base_frame);  //This cannot represent strings correctly unless given as variable (no %s)
     
     using ServiceResponseFuture =
       rclcpp::Client<myworkcell_core::srv::LocalizePart>::SharedFuture; //holds results of async call
 
     auto response_received_callback = [this](ServiceResponseFuture future) { // we need to have less autos; future is empty
         auto result = future.get();
-        RCLCPP_INFO(this->get_logger(), "part localized: %s", result->pose); //not printing correctly, but external service calls are showing that this does work
-        std::cout << result->pose.position.x << std::endl;
+        RCLCPP_INFO(this->get_logger(), "Part Localized:  w: %f, x: %f, y: %f, z: %f",
+                                      result->pose.orientation.w, 
+                                      result->pose.position.x, 
+                                      result->pose.position.y, 
+                                      result->pose.position.z);
         rclcpp::shutdown();
       };    
 
     auto future = vision_client_->async_send_request(request, response_received_callback);
-    
-
-     if (future.wait_for(std::chrono::duration<int, std::milli>(10000)) ==
-       std::future_status::timeout)
-     {
-       RCLCPP_ERROR(this->get_logger(), "Could not localize part");
-       return;
-     }
+    // if (future.wait_for(std::chrono::duration<int, std::milli>(1000)) ==
+    //   std::future_status::timeout)
+    // {
+    //   RCLCPP_ERROR(this->get_logger(), "Could not localize part");
+    //   return;
+    // }
 
   }
 

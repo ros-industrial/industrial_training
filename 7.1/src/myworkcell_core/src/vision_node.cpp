@@ -34,12 +34,10 @@ public:
     {
       // Read last message
       fake_ar_publisher_msgs::msg::ARMarker::SharedPtr p = last_msg_;
-      if (!p) return false;
       res->pose = p->pose.pose;
       return true;
     }
 
-    
     rclcpp::Subscription<fake_ar_publisher_msgs::msg::ARMarker>::SharedPtr ar_sub_;
     fake_ar_publisher_msgs::msg::ARMarker::SharedPtr last_msg_;
     rclcpp::Service<myworkcell_core::srv::LocalizePart>::SharedPtr server_;
