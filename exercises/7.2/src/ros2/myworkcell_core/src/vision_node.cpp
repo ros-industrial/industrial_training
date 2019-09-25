@@ -59,18 +59,30 @@ public:
     pose_.header.frame_id = frame_id;
     pose_.pose = tf2::toMsg(pose);
 
+    // buffering for tf2
+    rclcpp::sleep_for(std::chrono::seconds(2));
+
     return true;
   }
 
-  void localizePart(const std::shared_ptr<myworkcell_msgs::srv::LocalizePart::Request> req,
-                    const std::shared_ptr<myworkcell_msgs::srv::LocalizePart::Response> res)
+  void localizePart(std::shared_ptr<myworkcell_msgs::srv::LocalizePart::Request> req,
+                    std::shared_ptr<myworkcell_msgs::srv::LocalizePart::Response> res)
   {
 
     tf2::Transform cam_to_target;
     tf2::fromMsg(pose_.pose,cam_to_target);
-
-    geometry_msgs::msg::TransformStamped  req_to_cam_st = tf_buffer_.lookupTransform(
-        req->base_frame, pose_.header.frame_id,tf2::TimePointZero);
+    geometry_msgs::msg::TransformStamped  req_to_cam_st;
+    try
+    {
+      req_to_cam_st = tf_buffer_.lookupTransform(
+          req->base_frame, pose_.header.frame_id,tf2::TimePointZero);
+    }
+    catch(tf2::LookupException& e)
+    {
+      RCLCPP_ERROR(this->get_logger(),e.what());
+      res->succeeded = false;
+      return;
+    }
 
     tf2::Transform req_to_target, req_to_cam;
     tf2::fromMsg(req_to_cam_st.transform,req_to_cam);
@@ -78,6 +90,7 @@ public:
 
     // saving to response
     tf2::toMsg(req_to_target,res->pose);
+    res->succeeded = true;
   }
 protected:
   rclcpp::Service<myworkcell_msgs::srv::LocalizePart>::SharedPtr server_;

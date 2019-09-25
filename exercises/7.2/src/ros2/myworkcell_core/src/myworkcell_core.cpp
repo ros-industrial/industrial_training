@@ -9,9 +9,11 @@
 #include <myworkcell_msgs/srv/localize_part.hpp>
 #include <myworkcell_msgs/srv/plan_cartesian_path.hpp>
 #include <myworkcell_msgs/srv/move_to_pose.hpp>
+#include <myworkcell_msgs/srv/execute_trajectory.hpp>
 #include <console_bridge/console.h>
 
 static const std::string NODE_NAME = "myworkcell_node";
+static const int WAIT_SERVICE_PERIOD = 10;
 
 class ScanNPlan: public rclcpp::Node
 {
@@ -22,7 +24,7 @@ public:
     vision_client_ = this->create_client<myworkcell_msgs::srv::LocalizePart>("localize_part");
     cartesian_client_ = this->create_client<myworkcell_msgs::srv::PlanCartesianPath>("plan_path");
     move_client_ = this->create_client<myworkcell_msgs::srv::MoveToPose>("move_to_pose");
-
+    exec_traj_client_ = this->create_client<myworkcell_msgs::srv::ExecuteTrajectory>("execute_trajectory");
   }
 
   ~ScanNPlan()
@@ -35,10 +37,13 @@ public:
     using namespace myworkcell_msgs::srv;
 
     // waiting for services
-    std::vector<rclcpp::ClientBase* > clients = {vision_client_.get(), cartesian_client_.get() , move_client_.get()};
+    std::vector<rclcpp::ClientBase* > clients = {vision_client_.get(),
+                                                 cartesian_client_.get() ,
+                                                 move_client_.get(),
+                                                 exec_traj_client_.get()};
     if(std::all_of(clients.begin(), clients.end(),[](rclcpp::ClientBase* c){
       std::cout<<"Waiting for client "<< c->get_service_name()<<std::endl;
-      return c->wait_for_service(std::chrono::seconds(2));
+      return c->wait_for_service(std::chrono::seconds(WAIT_SERVICE_PERIOD));
     }))
     {
       std::cout<<"Found all services"<<std::endl;
@@ -49,14 +54,20 @@ public:
       return false;
     }
 
-    // sending localizatio request
+    // sending localization request
     LocalizePart::Request::SharedPtr req = std::make_shared<LocalizePart::Request>();
     req->base_frame = base_frame;
     std::cout<<"Requesting pose in base frame: "<< base_frame << std::endl;
-    //RCLCPP_INFO(this->get_logger(),"Requesting pose in base frame: %s", base_frame.c_str());
+    //RCLCPP_INFO(this->get_logger(),"Requesting pose in base frame: %s", base_frame.c_str()); // TODO: enable this when printing to console works again
 
     std::shared_future<LocalizePart::Response::SharedPtr> result_future = vision_client_->async_send_request(req);
     if(rclcpp::spin_until_future_complete(this->get_node_base_interface(),result_future) != rclcpp::executor::FutureReturnCode::SUCCESS)
+    {
+      RCLCPP_ERROR(this->get_logger(), "Localize service call failed");
+      return false;
+    }
+
+    if(!result_future.get()->succeeded)
     {
       RCLCPP_ERROR(this->get_logger(), "Could not localize part");
       return false;
@@ -81,6 +92,7 @@ public:
     // planning cartesian path
     PlanCartesianPath_Request::SharedPtr plan_req = std::make_shared<PlanCartesianPath::Request>();
     plan_req->pose = move_target;
+    std::cout<<"Planning trajectory"<<std::endl;
     std::shared_future<PlanCartesianPath_Response::SharedPtr> plan_future = cartesian_client_->async_send_request(plan_req);
     if(rclcpp::spin_until_future_complete(this->get_node_base_interface(),plan_future) != rclcpp::executor::FutureReturnCode::SUCCESS)
     {
@@ -89,12 +101,22 @@ public:
     }
 
     // executing
+    ExecuteTrajectory::Request::SharedPtr exec_req = std::make_shared<ExecuteTrajectory::Request>();
+    exec_req->trajectory = plan_future.get()->trajectory;
+    std::cout<<"Executing trajectory"<<std::endl;
+    std::shared_future<ExecuteTrajectory::Response::SharedPtr> exec_future = exec_traj_client_->async_send_request(exec_req);
+    if(rclcpp::spin_until_future_complete(this->get_node_base_interface(), exec_future) != rclcpp::executor::FutureReturnCode::SUCCESS)
+    {
+      RCLCPP_ERROR(this->get_logger(),"Failed to execute trajectory");
+    }
+    std::cout<<"Trajectory execution complete"<<std::endl;
     return true;
   }
 
   rclcpp::Client<myworkcell_msgs::srv::LocalizePart>::SharedPtr vision_client_;
   rclcpp::Client<myworkcell_msgs::srv::PlanCartesianPath>::SharedPtr cartesian_client_;
   rclcpp::Client<myworkcell_msgs::srv::MoveToPose>::SharedPtr move_client_;
+  rclcpp::Client<myworkcell_msgs::srv::ExecuteTrajectory>::SharedPtr exec_traj_client_;
 };
 
 int main(int argc, char** argv)
@@ -112,16 +134,12 @@ int main(int argc, char** argv)
   std::string base_frame = base_frame_param.get<std::string>();
   std::cout<<"Got base_frame parameter " << base_frame << std::endl;
 
-  std::thread t([&](){
-    rclcpp::spin(app);
-  });
-
   if(!app->start(base_frame))
   {
     rclcpp::shutdown();
     return -1;
   }
-  t.join();
+
   rclcpp::shutdown();
   return 0;
 }

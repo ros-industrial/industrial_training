@@ -38,3 +38,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
 
 ament_export_dependencies(rosidl_default_runtime)
 ament_package()
+
+install(
+  FILES message_mappings.yaml
+  DESTINATION share/${PROJECT_NAME})

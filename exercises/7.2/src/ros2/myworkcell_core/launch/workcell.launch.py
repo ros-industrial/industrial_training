@@ -10,7 +10,7 @@ def generate_launch_description():
                 node_executable='vision_node',
                 output='screen',
                 arguments = [],
-                parameters=[{'frame_id': 'world', 'pose_vals':[-0.6, 0.2, 0.5, 0.0, 0.0, 0.0]}])
+                parameters=[{'frame_id': 'camera_frame', 'pose_vals':[-0.6, 0.2, 0.5, 0.0, 0.0, 0.0]}])
     
     myworkcell_node = launch_ros.actions.Node(
                 node_name='myworkcell_node',

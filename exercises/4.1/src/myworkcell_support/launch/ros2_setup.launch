@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<launch>
+  <include file="$(find myworkcell_moveit_config)/launch/myworkcell_planning_execution.launch">
+    <arg name="rviz" value="True"/>
+  </include>
+  <node name="move_robot" pkg="myworkcell_core" type="move_robot" >
+    <param name="group" value="manipulator"/>
+  </node>
+  <node name="descartes_node" type="descartes_node" pkg="myworkcell_core" output="screen"/>
+</launch>

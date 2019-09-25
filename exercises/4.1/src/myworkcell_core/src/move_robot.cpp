@@ -13,6 +13,8 @@
 #include "myworkcell_core/ExecuteTrajectory.h"
 
 static const std::string JOINT_TRAJECTORY_ACTION = "joint_trajectory_action";
+static const std::string MOVE_TO_POSE_SERVICE = "move_to_pose";
+static const std::string EXECUTE_TRAJECTORY_SERVICE = "execute_trajectory";
 
 class MoveRobot
 {
@@ -39,8 +41,8 @@ public:
 
     // advertise service(s)
     ros::NodeHandle nh;
-    move_to_pose_server_ = nh.advertiseService("move_to_pose", &MoveRobot::moveToPoseCallback, this);
-    execute_traj_server_ = nh.advertiseService("execute_trajectory", &MoveRobot::executeTrajCallback, this);
+    move_to_pose_server_ = nh.advertiseService(MOVE_TO_POSE_SERVICE, &MoveRobot::moveToPoseCallback, this);
+    execute_traj_server_ = nh.advertiseService(EXECUTE_TRAJECTORY_SERVICE, &MoveRobot::executeTrajCallback, this);
 
     // wait for action
     if(!ac_.waitForServer(ros::Duration(1.0)))
@@ -91,6 +93,12 @@ int main(int argc, char** argv)
   ros::NodeHandle nh;
   ros::AsyncSpinner spinner(2);
   spinner.start();
+  MoveRobot app;
+  if(!app.run())
+  {
+    ros::shutdown();
+    return -1;
+  }
   ros::waitForShutdown();
   return 0;
 }
