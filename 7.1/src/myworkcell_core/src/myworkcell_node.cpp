@@ -30,28 +30,28 @@ public:
     auto request = std::make_shared<myworkcell_core::srv::LocalizePart::Request>(); //srv changed to srvr to avoid ambiguity
     request->base_frame = base_frame;
 
-    RCLCPP_INFO(this->get_logger(), base_frame);  //This cannot represent strings correctly unless given as variable (no %s)
+    //RCLCPP_INFO(this->get_logger(), base_frame);  //This cannot represent strings correctly unless given as variable (no %s)
     
     using ServiceResponseFuture =
-      rclcpp::Client<myworkcell_core::srv::LocalizePart>::SharedFuture;
+      rclcpp::Client<myworkcell_core::srv::LocalizePart>::SharedFuture; //holds results of async call
 
-    auto response_received_callback = [this](ServiceResponseFuture future) {
+    auto response_received_callback = [this](ServiceResponseFuture future) { // we need to have less autos; future is empty
         auto result = future.get();
-        RCLCPP_INFO(this->get_logger(), "part localized: %s", result->pose); //not printing correctly, but ecternal service calls are showing that this does work
+        RCLCPP_INFO(this->get_logger(), "part localized: %s", result->pose); //not printing correctly, but external service calls are showing that this does work
+        std::cout << result->pose.position.x << std::endl;
         rclcpp::shutdown();
       };    
 
-    auto result_future = vision_client_->async_send_request(request, response_received_callback);
+    auto future = vision_client_->async_send_request(request, response_received_callback);
     
 
-     if (result_future.wait_for(std::chrono::duration<int, std::milli>(5000)) ==
+     if (future.wait_for(std::chrono::duration<int, std::milli>(10000)) ==
        std::future_status::timeout)
      {
        RCLCPP_ERROR(this->get_logger(), "Could not localize part");
        return;
      }
 
-    //RCLCPP_INFO(this->get_logger(), "part localized: %s", result->pose);
   }
 
 private:

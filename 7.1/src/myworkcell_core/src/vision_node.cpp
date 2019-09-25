@@ -35,8 +35,6 @@ public:
       // Read last message
       fake_ar_publisher_msgs::msg::ARMarker::SharedPtr p = last_msg_;
       if (!p) return false;
-
-      std::cout << "P is not empty, and we called a service" << "\n";//RCLCPP_INFO(this->get_logger(), std::to_string(last_msg_->pose.pose));
       res->pose = p->pose.pose;
       return true;
     }
