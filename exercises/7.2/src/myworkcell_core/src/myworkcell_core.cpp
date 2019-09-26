@@ -108,6 +108,7 @@ public:
     if(rclcpp::spin_until_future_complete(this->get_node_base_interface(), exec_future) != rclcpp::executor::FutureReturnCode::SUCCESS)
     {
       RCLCPP_ERROR(this->get_logger(),"Failed to execute trajectory");
+      return false;
     }
     std::cout<<"Trajectory execution complete"<<std::endl;
     return true;
