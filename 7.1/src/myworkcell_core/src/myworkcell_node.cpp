@@ -47,12 +47,14 @@ public:
       };    
 
     auto future = vision_client_->async_send_request(request, response_received_callback);
-    // if (future.wait_for(std::chrono::duration<int, std::milli>(1000)) ==
-    //   std::future_status::timeout)
-    // {
-    //   RCLCPP_ERROR(this->get_logger(), "Could not localize part");
-    //   return;
-    // }
+    
+
+     if (future.wait_for(std::chrono::seconds(5)) ==
+       std::future_status::timeout)
+     {
+       RCLCPP_ERROR(this->get_logger(), "Could not localize part");
+       return;
+     }
 
   }
 
