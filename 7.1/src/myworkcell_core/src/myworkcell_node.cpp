@@ -48,19 +48,19 @@ public:
 
     auto future = vision_client_->async_send_request(request, response_received_callback);
     
-
-     if (future.wait_for(std::chrono::seconds(5)) ==
-       std::future_status::timeout)
-     {
-       RCLCPP_ERROR(this->get_logger(), "Could not localize part");
-       return;
+    do {
+      std::cout << "waiting for response" << std::endl;
+      return;
      }
+     while (future.wait_for(std::chrono::seconds(1)) != std::future_status::ready);
 
-  }
+    }
+
 
 private:
   //
   rclcpp::Client<myworkcell_core::srv::LocalizePart>::SharedPtr vision_client_;
+
 };
 
 int main(int argc, char **argv)
