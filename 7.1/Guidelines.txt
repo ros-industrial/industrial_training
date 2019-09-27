@@ -8,10 +8,19 @@ find_package(rclcpp REQUIRED)
 find_package(builtin_interfaces REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
-messages are linked using  rosidl generate interfaces, like so:
+messages and services are linked using  rosidl generate interfaces, like so:
 
 rosidl_generate_interfaces(myworkcell_core
   "srv/LocalizePart.srv"
   DEPENDENCIES geometry_msgs
 )
 
+.cpp:
+
+Headers for #includes now end in .hpp not .h :
+#include <rclcpp/rclcpp.hpp>
+
+Additionally, headers for messages and service no longer match the name of service or message file, instead they use snake_case:
+#include "myworkcell_core/srv/localize_part.hpp"
+for services:
+#include <fake_ar_publisher_msgs/msg/ar_marker.hpp>

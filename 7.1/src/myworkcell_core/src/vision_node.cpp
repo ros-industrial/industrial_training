@@ -16,11 +16,11 @@ public:
     Localizer()
     : Node("vision_node")
     {    
-        //gave ar_sub a type,  -> to .    change node to n for namesapce issues
         ar_sub_ = this->create_subscription<fake_ar_publisher_msgs::msg::ARMarker>("ar_pose_marker", 1,
         std::bind(&Localizer::visionCallback, this, std::placeholders::_1));
 
-        server_ = this->create_service<myworkcell_core::srv::LocalizePart>("localize_part", std::bind(&Localizer::localizePart, this, _1, _2, _3));
+        server_ = this->create_service<myworkcell_core::srv::LocalizePart>("localize_part", 
+        std::bind(&Localizer::localizePart, this, _1, _2, _3));
     }
 
     void visionCallback(const fake_ar_publisher_msgs::msg::ARMarker::SharedPtr msg) //need to sort out this shared pointer situation
