@@ -51,8 +51,8 @@ public:
 
     auto future = vision_client_->async_send_request(request, response_received_callback);
     
-    //auto larry = rclcpp::Node::get_node_base_interface();
-    rclcpp::spin(rclcpp::Node::get_node_base_interface()); //this needs to be tested
+    // Make sure node doesn't exit using the node interface to spin
+    rclcpp::spin(rclcpp::Node::get_node_base_interface());
     }
 
 
@@ -82,8 +82,6 @@ int main(int argc, char **argv)
 
   // Call the vision client's LocalizePart service using base_frame as a parameter
   app->start(base_frame);
-  // Spin on the node so we don't exit the program
-  rclcpp::spin(app);
   rclcpp::shutdown();
   return 0;
 }
