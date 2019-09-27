@@ -1,0 +1,17 @@
+Cmake:
+While catkin has headings in the cmake file, Ament/Colcon does not. Additionally, the Cmake version is upped from C++ 11 in melodic to C++ 14 in Dashing.
+
+Additionally, the catkin package has been conveniently replaced with the rclcpp and ament packages. 'Default messages' interfaces also require the builtin interfaces and rosidl defalut genrators
+
+find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(builtin_interfaces REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
+
+messages are linked using  rosidl generate interfaces, like so:
+
+rosidl_generate_interfaces(myworkcell_core
+  "srv/LocalizePart.srv"
+  DEPENDENCIES geometry_msgs
+)
+
