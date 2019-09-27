@@ -51,13 +51,8 @@ public:
 
     auto future = vision_client_->async_send_request(request, response_received_callback);
     
-    // Wait for the future
-    do {
-      RCLCPP_INFO(this->get_logger(), "waiting for response...");
-      return;
-     }
-     while (future.wait_for(std::chrono::seconds(1)) != std::future_status::ready);
-
+    //auto larry = rclcpp::Node::get_node_base_interface();
+    rclcpp::spin(rclcpp::Node::get_node_base_interface()); //this needs to be tested
     }
 
 
