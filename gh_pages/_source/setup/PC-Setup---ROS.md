@@ -27,9 +27,9 @@ The Virtual Box is limited both in hardware capability(due to VM limitations) an
 On most new systems, Virtual Box and VMs work out of the box.  The following is a list of issues others have encountered and solutions:
   * Virtualization must be enabled - Older systems do not have virtualization enabled (by default).  Virtualization must be enabled in the BIOS.  See <http://www.sysprobs.com/disable-enable-virtualization-technology-bios> for more information.
 
-## Direct Linux PC Configuration (**NOT Recommended**)
-An installation [shell script](https://github.com/ros-industrial/industrial_training/blob/melodic/gh_pages/_downloads/ros-melodic-industrial-training.sh)
-is provided to run in Ubuntu Linux 16.04 (Xenial Xerus) LTS. This script installs ROS and any other packages needed for the environment used for this training.
+## Direct Linux PC Configuration
+An installation [shell script](https://github.com/ros-industrial/industrial_training/blob/melodic/gh_pages/_downloads/ros-industrial-training-setup.sh)
+is provided to run in Ubuntu Linux 18.04 LTS (Bionic). This script installs ROS and any other packages needed for the environment used for this training.
 
 After this step (or if you already have a working ROS environment), clone the training material repository into your home directory:
 
