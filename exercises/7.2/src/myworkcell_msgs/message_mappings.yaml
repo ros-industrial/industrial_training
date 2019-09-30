@@ -1,0 +1,15 @@
+-
+  ros1_package_name: 'myworkcell_core'
+  ros1_service_name: 'PlanCartesianPath'
+  ros2_package_name: 'myworkcell_msgs'
+  ros2_service_name: 'PlanCartesianPath'
+-
+  ros1_package_name: 'myworkcell_core'
+  ros1_service_name: 'MoveToPose'
+  ros2_package_name: 'myworkcell_msgs'
+  ros2_service_name: 'MoveToPose'
+-
+  ros1_package_name: 'myworkcell_core'
+  ros1_service_name: 'ExecuteTrajectory'
+  ros2_package_name: 'myworkcell_msgs'
+  ros2_service_name: 'ExecuteTrajectory'

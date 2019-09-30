@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>fake_ar_publisher</name>
+  <version>0.0.0</version>
+  <description>The fake_ar_publisher package</description>
+
+  <!-- One maintainer tag required, multiple allowed, one person per tag --> 
+  <!-- Example:  -->
+  <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
+  <maintainer email="ros-industrial@todo.todo">ros-industrial</maintainer>
+
+
+  <!-- One license tag required, multiple allowed, one license per tag -->
+  <!-- Commonly used license strings: -->
+  <!--   BSD, MIT, Boost Software License, GPLv2, GPLv3, LGPLv2.1, LGPLv3 -->
+  <license>BSD</license>
+
+
+  <!-- Url tags are optional, but mutiple are allowed, one per tag -->
+  <!-- Optional attribute type can be: website, bugtracker, or repository -->
+  <!-- Example: -->
+  <!-- <url type="website">http://wiki.ros.org/fake_ar_publisher</url> -->
+
+
+  <!-- Author tags are optional, mutiple are allowed, one per tag -->
+  <!-- Authors do not have to be maintianers, but could be -->
+  <!-- Example: -->
+  <!-- <author email="jane.doe@example.com">Jane Doe</author> -->
+
+
+  <!-- The *_depend tags are used to specify dependencies -->
+  <!-- Dependencies can be ament packages or system dependencies -->
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <build_depend>rclcpp</build_depend>
+  <build_depend>visualization_msgs</build_depend>
+  <build_depend>fake_ar_publisher_msgs</build_depend>
+  <build_depend>geometry_msgs</build_depend>
+
+  <exec_depend>rclcpp</exec_depend>
+  <exec_depend>visualization_msgs</exec_depend>
+  <exec_depend>fake_ar_publisher_msgs</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
+
+  <member_of_group>rosidl_interface_packages</member_of_group>
+  
+  <!-- The export tag contains other, unspecified, tags -->
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

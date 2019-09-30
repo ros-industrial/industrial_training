@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>myworkcell_core</name>
+  <version>0.0.0</version>
+  <description>The myworkcell_core package</description>
+
+  <!-- One maintainer tag required, multiple allowed, one person per tag --> 
+  <!-- Example:  -->
+  <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
+  <maintainer email="ros-industrial@todo.todo">ros-industrial</maintainer>
+
+
+  <!-- One license tag required, multiple allowed, one license per tag -->
+  <!-- Commonly used license strings: -->
+  <!--   BSD, MIT, Boost Software License, GPLv2, GPLv3, LGPLv2.1, LGPLv3 -->
+  <license>BSD</license>
+  <member_of_group>rosidl_interface_packages</member_of_group>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <exec_depend>rosidl_default_runtime</exec_depend>
+  <buildtool_depend>rosidl_default_generators</buildtool_depend>
+
+  <depend>fake_ar_publisher</depend>
+  <depend>geometry_msgs</depend>
+  <depend>rclcpp</depend>
+
+  <!-- The export tag contains other, unspecified, tags -->
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
