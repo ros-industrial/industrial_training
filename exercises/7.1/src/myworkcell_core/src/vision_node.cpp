@@ -1,52 +1,46 @@
-/**
-**  Simple ROS2 Node; WIP
-**/
 #include <rclcpp/rclcpp.hpp>
 #include <fake_ar_publisher_msgs/msg/ar_marker.hpp>
-#include "myworkcell_core/srv/localize_part.hpp"
-#include <iostream>
-
-using std::placeholders::_1;
-using std::placeholders::_2;
-using std::placeholders::_3;
+#include <myworkcell_core/srv/localize_part.hpp>
 
 class Localizer : public rclcpp::Node
 {
 public:
     Localizer()
     : Node("vision_node")
-    {    
-        ar_sub_ = this->create_subscription<fake_ar_publisher_msgs::msg::ARMarker>("ar_pose_marker", 1,
-        std::bind(&Localizer::visionCallback, this, std::placeholders::_1));
+    {
+        using namespace std::placeholders;
 
-        server_ = this->create_service<myworkcell_core::srv::LocalizePart>("localize_part", 
-        std::bind(&Localizer::localizePart, this, _1, _2, _3));
+        ar_sub_ = this->create_subscription<fake_ar_publisher_msgs::msg::ARMarker>("ar_pose_marker", rclcpp::QoS(1),
+          std::bind(&Localizer::visionCallback, this, std::placeholders::_1));
+
+        server_ = this->create_service<myworkcell_core::srv::LocalizePart>("localize_part",
+          std::bind(&Localizer::localizePart, this, _1, _2));
     }
 
-    void visionCallback(const fake_ar_publisher_msgs::msg::ARMarker::SharedPtr msg) //need to sort out this shared pointer situation
+    void visionCallback(fake_ar_publisher_msgs::msg::ARMarker::SharedPtr msg)
     {
       last_msg_ = msg;
     }
 
-    bool localizePart (const std::shared_ptr<rmw_request_id_t> request_header,
-                      const std::shared_ptr<myworkcell_core::srv::LocalizePart::Request> req,
-                      std::shared_ptr<myworkcell_core::srv::LocalizePart::Response> res) //server response & request in ROS2?
+    void localizePart(std::shared_ptr<myworkcell_core::srv::LocalizePart::Request> req,
+                      std::shared_ptr<myworkcell_core::srv::LocalizePart::Response> res)
     {
       // Read last message
       fake_ar_publisher_msgs::msg::ARMarker::SharedPtr p = last_msg_;
-      
+
       if (!p){
-        std::cout <<"no data" << std::endl;
-        return false;
+        RCLCPP_ERROR(this->get_logger(), "no data");
+        res->success = false;
+        return;
       }
 
+      res->success = true;
       res->pose = p->pose.pose;
-      return true;
     }
 
     rclcpp::Subscription<fake_ar_publisher_msgs::msg::ARMarker>::SharedPtr ar_sub_;
-    fake_ar_publisher_msgs::msg::ARMarker::SharedPtr last_msg_;
     rclcpp::Service<myworkcell_core::srv::LocalizePart>::SharedPtr server_;
+    fake_ar_publisher_msgs::msg::ARMarker::SharedPtr last_msg_;
 };
 
 int main(int argc, char* argv[])

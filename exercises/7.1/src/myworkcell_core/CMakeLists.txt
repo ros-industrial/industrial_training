@@ -12,54 +12,31 @@ endif()
 
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
-find_package(builtin_interfaces REQUIRED)
-find_package(rosidl_default_generators REQUIRED)
 find_package(fake_ar_publisher_msgs REQUIRED)
-find_package(std_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
-find_package(visualization_msgs REQUIRED)
-#REQUIRED tags?
 
-
-rosidl_generate_interfaces(myworkcell_core
+find_package(rosidl_default_generators REQUIRED)
+rosidl_generate_interfaces(${PROJECT_NAME}
   "srv/LocalizePart.srv"
   DEPENDENCIES geometry_msgs
 )
 
 ## Declare a C++ executable
 add_executable(myworkcell_node src/myworkcell_node.cpp)
-
 ament_target_dependencies(myworkcell_node rclcpp fake_ar_publisher_msgs)
+rosidl_target_interfaces(myworkcell_node ${PROJECT_NAME} "rosidl_typesupport_cpp")
 
 add_executable(vision_node src/vision_node.cpp)
 ament_target_dependencies(vision_node rclcpp fake_ar_publisher_msgs)
-
-rosidl_target_interfaces(myworkcell_node
-     ${PROJECT_NAME} "rosidl_typesupport_cpp")
-
-rosidl_target_interfaces(vision_node
-      ${PROJECT_NAME} "rosidl_typesupport_cpp")
-
-#add_dependencies(fake_ar_publisher_node ${PROJECT_NAME})
-include_directories(myworkcell_node PUBLIC
-                         ${rclcpp_INCLUDE_DIRS}
-                         ${fake_ar_publisher_msgs_INCLUDE_DIRS}
-                         ${std_msgs_INCLUDE_DIRS})
-
-
-# Specify libraries to link a library or executable target against
-target_link_libraries(myworkcell_node
-                     ${rclcpp_LIBRARIES}
-                     ${std_msgs_LIBRARIES})
+rosidl_target_interfaces(vision_node ${PROJECT_NAME} "rosidl_typesupport_cpp")
 
 ## Mark executables and/or libraries for installation
- install(TARGETS 
-  myworkcell_node
-  vision_node
-DESTINATION lib/${PROJECT_NAME}
+install(TARGETS myworkcell_node vision_node
+    ARCHIVE DESTINATION lib/${PROJECT_NAME}
+    LIBRARY DESTINATION lib/${PROJECT_NAME}
+    RUNTIME DESTINATION lib/${PROJECT_NAME}
 )
 
 # ament_package is called after the targets
-ament_export_dependencies(rosidl_default_runtime rclcpp)
+ament_export_dependencies(rclcpp fake_ar_publisher_msgs)
 ament_package()
-
