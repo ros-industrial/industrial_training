@@ -1,25 +1,19 @@
-# <launch>
-#   <node name="fake_ar_publisher" pkg="fake_ar_publisher" type="fake_ar_publisher_node" output="screen"/>
-#   <node name="vision_node" pkg="myworkcell_core" type="vision_node" output="screen"/>
-#   <node name="myworkcell_node" pkg="myworkcell_core" type="myworkcell_node" output="screen">
-#     <param name="base_frame" value="world"/>
-#   </node>
-# </launch>
-
-from launch import LaunchDescription
-import launch_ros.actions
+import launch
+import launch_ros
 
 def generate_launch_description():
-  return LaunchDescription([
+  return launch.LaunchDescription([
     launch_ros.actions.Node(
       node_name='fake_ar_publisher_node',
       package='fake_ar_publisher',
       node_executable='fake_ar_publisher_node',
       output='screen',
-      parameters=[{'x': -0.6},
-                  {'y': 0.4},
-                  {'z': 0.1},
-                  {'camera_frame': 'camera_frame'}],
+      parameters=[{
+          'x': -0.6,
+          'y': 0.4,
+          'z': 0.1,
+          'camera_frame': 'camera_frame'
+      }],
     ),
     launch_ros.actions.Node(
       node_name='vision_node',
