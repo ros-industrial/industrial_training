@@ -33,12 +33,6 @@ sudo apt install -y python3-colcon-common-extensions python3-argcomplete
 sudo rosdep init
 rosdep update
 
-wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add - 
-sudo sh -c 'echo "deb https://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-sudo apt-get update
-sudo apt-get install google-chrome-stable
-#then install clipboardy extension
-
 # Install Qt Creator with ROS plugin
 # NOTE: no way (yet?) to do headless QT IFW install.  Do this last, but will require user action
 QTFILE=qtcreator-ros-bionic-latest-online-installer.run
