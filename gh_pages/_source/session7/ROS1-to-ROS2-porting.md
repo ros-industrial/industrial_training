@@ -105,7 +105,7 @@ Our goal for this exercise is to have you fully port a small ROS1 application in
 
  2. Start by changing the headers. ROS2 requires headers to end in .hpp instead of .h and includes for msgs and srv require the file 
     name to file/srv/ and file/msg/ respectively in their names.
-    ```
+    ``` c++
     #include <chrono>
     #include <cinttypes>
     #include <memory>
@@ -119,21 +119,21 @@ Our goal for this exercise is to have you fully port a small ROS1 application in
     {
     public:
         explicit ScanNPlan()
-    : Node("scan_n_plan")
+        : Node("scan_n_plan")
         {
         vision_client_ = this->create_client<myworkcell_core::srv::LocalizePart>("localize_part");
         }
     private:
         rclcpp::Client<myworkcell_core::srv::LocalizePart>::SharedPtr vision_client_;
-
+    }
     ```
 
-  4. The start function will require a few changes as well
-    ``` c++
+  4. The start function will require a few changes as well. 
+    ```c++
     void start(const std::string& base_frame)
     {
         using namespace std::chrono_literals;
-
+        
         // Need to wait until vision node has data
         rclcpp::sleep_for(1s);
 
@@ -173,8 +173,8 @@ Our goal for this exercise is to have you fully port a small ROS1 application in
             result->pose.position.y,
             result->pose.position.z);
     }
-
     ```
+
    5. Lastly, we need to modify the contents of main
     ``` c++
     // This must be called before anything else ROS-related
