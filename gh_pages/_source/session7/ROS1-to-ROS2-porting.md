@@ -57,7 +57,7 @@ Our goal for this exercise is to have you fully port a small ROS1 application in
         ${PROJECT_NAME} "rosidl_typesupport_cpp")
     ```
  7. Next, we will need to add the include_directories, libraries, and mark install targets
-    ```
+    ``` 
     include_directories(myworkcell_node PUBLIC
                             ${rclcpp_INCLUDE_DIRS}
                             ${fake_ar_publisher_msgs_INCLUDE_DIRS}
@@ -93,7 +93,7 @@ Our goal for this exercise is to have you fully port a small ROS1 application in
  4. The `<build_depend>` needs to be changed to `rclcpp`
 
  5. Inside the export tag, `<build_type>` tag needs to be added with ament_cmake
-    ```
+    ``` xml
     <export>
         <build_type>ament_cmake</build_type>
     </export>
@@ -113,7 +113,8 @@ Our goal for this exercise is to have you fully port a small ROS1 application in
     #include "myworkcell_core/srv/localize_part.hpp"
     ```
   3. We will create a ScanNPlan class which will inherit from Node.
-    ```
+    
+    ``` c++
     class ScanNPlan : public rclcpp::Node
     {
     public:
@@ -128,7 +129,7 @@ Our goal for this exercise is to have you fully port a small ROS1 application in
     ```
 
   4. The start function will require a few changes as well
-    ```
+    ``` c++
     void start(const std::string& base_frame)
     {
         using namespace std::chrono_literals;
@@ -175,7 +176,7 @@ Our goal for this exercise is to have you fully port a small ROS1 application in
 
     ```
    5. Lastly, we need to modify the contents of main
-    ```
+    ``` c++
     // This must be called before anything else ROS-related
     rclcpp::init(argc, argv);
 
@@ -208,7 +209,7 @@ Our goal for this exercise is to have you fully port a small ROS1 application in
  1. Open and start porting over the vision_node.cpp file.
 
  2. Again, start by changing the headers
-    ```
+    ``` c++
     #include <rclcpp/rclcpp.hpp>
     #include <fake_ar_publisher_msgs/msg/ar_marker.hpp>
     #include "myworkcell_core/srv/localize_part.hpp"
@@ -223,7 +224,7 @@ Our goal for this exercise is to have you fully port a small ROS1 application in
  2. Start by renaming the `workcell.launch` file to `workcell.launch.py`
 
  3. Modify the contents to add python headers and the necessary python functions
-    ```
+    ``` py
     from launch import LaunchDescription
     import launch_ros.actions
 
@@ -255,7 +256,7 @@ Our goal for this exercise is to have you fully port a small ROS1 application in
     ])
     ```
 4. Make the necessary changes to the CMakesList.txt
-   ```
+   ``` 
    cmake_minimum_required(VERSION 3.10)
     project(myworkcell_support)
     
@@ -276,7 +277,7 @@ Our goal for this exercise is to have you fully port a small ROS1 application in
     ament_package()
     ```
 5. Make the necessary changes to the package.xml
-   ```
+   ``` xml
     <?xml version="1.0"?>
     <package format="3">
       <buildtool_depend>ament_cmake</buildtool_depend>
