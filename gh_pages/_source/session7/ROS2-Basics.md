@@ -18,7 +18,7 @@ Our goal for this exercise is to go through the basic ROS2 commands to understan
    ```bash
    rosdep install -i --from-paths src
    ```
-1. Build with colcon: `colcon build`. Keep in mind that this will create colcon build, install, and log folders whereever it's run so you will likely want to run this from the workspace root directory!
+1. Build with colcon: `colcon build`. Keep in mind that this will create colcon build, install, and log folders where it's run so you will likely want to run this from the workspace root directory!
 
 1. Inspect build packages
    ```
@@ -31,4 +31,21 @@ Our goal for this exercise is to go through the basic ROS2 commands to understan
    ros2 run <package_name> <executable_file>
    ros2 run demo_nodes_cpp listener
    ros2 run demo_nodes_cpp talker
+   ```
+
+1. Inspecting topics and messages
+   ```
+   ros2 node list
+   ros2 node info /talker
+   ros2 topic list
+   ros2 topic info /chatter
+   ros2 echo /chatter
+   ros2 msg packages
+   ros2 msg list
+   ```
+
+1. The general syntax for running a launch file is - `ros2 launch <package_name> <launch_file>`
+   ```
+   ros2 launch dummy_robot_bringup dummy_robot_bringup.launch.py
+   ros2 run rviz2
    ```
