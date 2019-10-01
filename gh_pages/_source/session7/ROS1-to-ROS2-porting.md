@@ -4,25 +4,25 @@
 Our goal for this exercise is to have you fully port a small ROS1 application into ROS2. We'll be using the basic training material from sessions 1 and 2 as the initial ROS1 application. We will be using exercise 2.3 as the starting point.
 
 
- 1. Create a new ROS2 workspace
+1. Create a new ROS2 workspace
  
- 2. Copy the exercise 2.3 folder and rename it 7.1
+1. Copy the exercise 2.3 folder and rename it 7.1
 
- 3. Inside the src folder, open the myworkcell_core package. 
+1. Inside the src folder, open the myworkcell_core package. 
 
- ## CMakeLists.txt
+## CMakeLists.txt
 
- 1. Open and start editing the `CMakeLists.txt` file.
+1. Open and start editing the `CMakeLists.txt` file.
 
- 2. Start by changing the `cmake_minimuim_required` from `VERSION 2.8.3` to `VERSION 3.5`
+1. Start by changing the `cmake_minimuim_required` from `VERSION 2.8.3` to `VERSION 3.5`
 
- 3. Next, the required C++ standard for compilation is now C++ 14. 
-   ``` 
+1. Next, the required C++ standard for compilation is now C++ 14. 
+    ``` 
     if(NOT CMAKE_CXX_STANDARD)
-        set(CMAKE_CXX_STANDARD 14)
+      set(CMAKE_CXX_STANDARD 14)
     endif()
-   ```
- 4. Next, each find_package(X) will need to be separate in ROS2. Also, a few packages need to be changed, `catkin` is replaced with `ament_cmake`, `roscpp` is replaced with `rclcpp`, and, `rosidl_default_generators` needs to be added to the list of packages.
+    ```
+1. Next, each find_package(X) will need to be separate in ROS2. Also, a few packages need to be changed, `catkin` is replaced with `ament_cmake`, `roscpp` is replaced with `rclcpp`, and, `rosidl_default_generators` needs to be added to the list of packages.
     ``` 
     find_package(ament_cmake REQUIRED)
     find_package(rclcpp REQUIRED)
@@ -33,14 +33,14 @@ Our goal for this exercise is to have you fully port a small ROS1 application in
     find_package(geometry_msgs REQUIRED)
     find_package(visualization_msgs REQUIRED)
     ```
- 5. Next, replace `add_message_files` and `add_service_files` with `rosidl_generate_interfaces`
+1. Next, replace `add_message_files` and `add_service_files` with `rosidl_generate_interfaces`
     ```
     rosidl_generate_interfaces(myworkcell_core
         "srv/LocalizePart.srv"
         DEPENDENCIES geometry_msgs
     )
     ```
- 6. Declare the C++ executables and the ament dependencies. We will also declare the target_interfaces for the nodes here.
+1. Declare the C++ executables and the ament dependencies. We will also declare the target_interfaces for the nodes here.
     ```
     add_executable(myworkcell_node src/myworkcell_node.cpp)
 
@@ -56,7 +56,7 @@ Our goal for this exercise is to have you fully port a small ROS1 application in
     rosidl_target_interfaces(vision_node
         ${PROJECT_NAME} "rosidl_typesupport_cpp")
     ```
- 7. Next, we will need to add the include_directories, libraries, and mark install targets
+1. Next, we will need to add the include_directories, libraries, and mark install targets
     ``` 
     include_directories(myworkcell_node PUBLIC
                             ${rclcpp_INCLUDE_DIRS}
@@ -75,24 +75,29 @@ Our goal for this exercise is to have you fully port a small ROS1 application in
         DESTINATION lib/${PROJECT_NAME}
     )
     ```
- 8. Lastly,at the end of the file ament_package() must be called instead of catkin_package()
+1. Lastly,at the end of the file ament_package() must be called instead of catkin_package()
     ```
     # ament_package is called after the targets
     ament_export_dependencies(rosidl_default_runtime rclcpp)
     ament_package()
     ```
 
- ## package.xml
+## package.xml
 
- 1. Open and start editing the `package.xml` file. Only a few changes need to be made to this file.
+1. Open and start editing the `package.xml` file. Only a few changes need to be made to this file.
 
- 2. The package format should be changed to "3"
+1. The package format should be changed to "3"
 
- 3. The `<buildtool_depend>` needs to be changed `ament_cmake`
+1. The `<buildtool_depend>` needs to be changed `ament_cmake`
 
- 4. The `<build_depend>` needs to be changed to `rclcpp`
+1. Add the package dependencies
+    ```
+    <depend>rclcpp</depend>
+    <depend>fake_ar_publisher_msgs</depend>
+    <depend>geometry_msgs</depend>
+    ```
 
- 5. Inside the export tag, `<build_type>` tag needs to be added with ament_cmake
+1. Inside the export tag, `<build_type>` tag needs to be added with ament_cmake
     ``` xml
     <export>
         <build_type>ament_cmake</build_type>
@@ -101,9 +106,9 @@ Our goal for this exercise is to have you fully port a small ROS1 application in
 
  ## myworkcell_node.cpp
 
- 1. Inside the src folder, open myworkcell_node.cpp to start porting it over. The main changes will consist of changing headers and     changing from using the `roscpp` library API to the `rclcpp` library API.
+1. Inside the src folder, open myworkcell_node.cpp to start porting it over. The main changes will consist of changing headers and     changing from using the `roscpp` library API to the `rclcpp` library API.
 
- 2. Start by changing the headers. ROS2 requires headers to end in .hpp instead of .h and includes for msgs and srv require the file 
+1. Start by changing the headers. ROS2 requires headers to end in .hpp instead of .h and includes for msgs and srv require the file 
     name to file/srv/ and file/msg/ respectively in their names.
     ``` c++
     #include <chrono>
@@ -112,7 +117,7 @@ Our goal for this exercise is to have you fully port a small ROS1 application in
     #include <rclcpp/rclcpp.hpp>
     #include "myworkcell_core/srv/localize_part.hpp"
     ```
-  3. We will create a ScanNPlan class which will inherit from Node.
+1. We will create a ScanNPlan class which will inherit from Node.
     
     ``` c++
     class ScanNPlan : public rclcpp::Node
@@ -128,7 +133,7 @@ Our goal for this exercise is to have you fully port a small ROS1 application in
     }
     ```
 
-  4. The start function will require a few changes as well. 
+1. The start function will require a few changes as well. 
     ```c++
     void start(const std::string& base_frame)
     {
@@ -175,7 +180,7 @@ Our goal for this exercise is to have you fully port a small ROS1 application in
     }
     ```
 
-   5. Lastly, we need to modify the contents of main
+1. Lastly, we need to modify the contents of main
     ``` c++
     // This must be called before anything else ROS-related
     rclcpp::init(argc, argv);
@@ -204,26 +209,26 @@ Our goal for this exercise is to have you fully port a small ROS1 application in
 
     ```
    
- ## vision_node.cpp
+## vision_node.cpp
 
- 1. Open and start porting over the vision_node.cpp file.
+1. Open and start porting over the vision_node.cpp file.
 
- 2. Again, start by changing the headers
+1. Again, start by changing the headers
     ``` c++
     #include <rclcpp/rclcpp.hpp>
     #include <fake_ar_publisher_msgs/msg/ar_marker.hpp>
     #include "myworkcell_core/srv/localize_part.hpp"
     #include <iostream>
     ```
- 3. We will also again have the object inherit from node
+1. We will also again have the object inherit from node
 
- ## myworkcell_support
+## myworkcell_support
 
- 1. The myworkcell_support package will mainly consist of the launch file which is now is in python as well as the accompanying CMakeLists.txt and package.xml
+1. The myworkcell_support package will mainly consist of the launch file which is now is in python as well as the accompanying CMakeLists.txt and package.xml
 
- 2. Start by renaming the `workcell.launch` file to `workcell.launch.py`
+1. Start by renaming the `workcell.launch` file to `workcell.launch.py`
 
- 3. Modify the contents to add python headers and the necessary python functions
+1. Modify the contents to add python headers and the necessary python functions
     ``` py
     from launch import LaunchDescription
     import launch_ros.actions
@@ -255,9 +260,9 @@ Our goal for this exercise is to have you fully port a small ROS1 application in
         )
     ])
     ```
-4. Make the necessary changes to the CMakesList.txt
-   ``` 
-   cmake_minimum_required(VERSION 3.10)
+1. Make the necessary changes to the CMakesList.txt
+    ``` 
+    cmake_minimum_required(VERSION 3.10)
     project(myworkcell_support)
     
     # Default to C++14
@@ -276,8 +281,8 @@ Our goal for this exercise is to have you fully port a small ROS1 application in
 
     ament_package()
     ```
-5. Make the necessary changes to the package.xml
-   ``` xml
+1. Make the necessary changes to the package.xml
+    ``` xml
     <?xml version="1.0"?>
     <package format="3">
       <buildtool_depend>ament_cmake</buildtool_depend>
@@ -288,5 +293,5 @@ Our goal for this exercise is to have you fully port a small ROS1 application in
         <build_type>ament_cmake</build_type>
     </export>
     </package>
-   ```
+    ```
 
