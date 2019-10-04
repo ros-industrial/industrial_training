@@ -151,3 +151,4 @@ Session 7 - ROS2
 
    Exercise 7.0 - ROS2 basics <_source/session7/ROS2-Basics.md>
    Exercise 7.1 - ROS1 to ROS2 porting <_source/session7/ROS1-to-ROS2-porting.md>
+   Exercise 7.2 - Using the ROS1-ROS2 bridge <_source/session7/ROS1-ROS2-bridge.md>
