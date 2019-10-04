@@ -11,13 +11,13 @@ public:
         using namespace std::placeholders;
 
         ar_sub_ = this->create_subscription<fake_ar_publisher_msgs::msg::ARMarker>("ar_pose_marker", rclcpp::QoS(1),
-          std::bind(&Localizer::visionCallback, this, std::placeholders::_1));
+          std::bind(&Localizer::visionCallback, this, _1));
 
         server_ = this->create_service<myworkcell_core::srv::LocalizePart>("localize_part",
           std::bind(&Localizer::localizePart, this, _1, _2));
     }
 
-    void visionCallback(fake_ar_publisher_msgs::msg::ARMarker::SharedPtr msg)
+    void visionCallback(fake_ar_publisher_msgs::msg::ARMarker::ConstSharedPtr msg)
     {
       last_msg_ = msg;
     }
@@ -38,7 +38,7 @@ public:
       res->pose = p->pose.pose;
     }
 
-    rclcpp::Subscription<fake_ar_publisher_msgs::msg::ARMarker>::SharedPtr ar_sub_;
+    rclcpp::Subscription<fake_ar_publisher_msgs::msg::ARMarker>::ConstSharedPtr ar_sub_;
     rclcpp::Service<myworkcell_core::srv::LocalizePart>::SharedPtr server_;
     fake_ar_publisher_msgs::msg::ARMarker::SharedPtr last_msg_;
 };
