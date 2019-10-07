@@ -10,33 +10,19 @@ subscribers, services, and parameters. We will be using exercise 2.3 as the star
 ## Sequence of actions
 
 1. Create a new workspace
-
 1. Get source dependencies
-
 1. Create new ROS2 packages
-
 1. Test build
-
 1. Copy ROS1 code into ROS2 packages
-
 1. Port the vision node
-
-  1. Class as node and main function
-
-  1. Subscriber
-
-  1. Service (call manually)
-
+    1. Node structure and main function
+    1. Subscriber
+    1. Service (call manually)
 1. Port the application node
-
-  1. Node structure and main function
-
-  1. Service client (harcoded parameter)
-
-  1. Runtime parameter
-
+    1. Node structure and main function
+    1. Service client (harcoded parameter)
+    1. Runtime parameter
 1. Port the launch file
-
 
 ## Setup
 
