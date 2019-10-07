@@ -1,7 +1,8 @@
 #!/bin/bash
 
 TARGET_BRANCH=melodic  # industrial_training git branch
-ROS_RELEASE=melodic    # ROS release version
+ROS_RELEASE=melodic    # ROS1 release version
+ROS2_RELEASE=dashing   # ROS2 release version
 
 #=======================================================================
 # verify that PC configuration matches requirements for training class
@@ -21,7 +22,7 @@ function check_internet() {
   print_result $(ping -q -c1 google.com &> /dev/null)
   printf "  - %-30s" "training wiki:"
   print_result $(/usr/bin/wget -q -O /dev/null https://github.com/ros-industrial/industrial_training/wiki)
- 
+
 } #end check_internet()
 
 function check_repo() {
@@ -66,20 +67,26 @@ function check_debs() {
   echo "Checking debian packages... "
   check_deb git
   check_deb meld
-  check_deb ros-$ROS_RELEASE-desktop
-  check_deb ros-$ROS_RELEASE-perception
-  check_deb ros-$ROS_RELEASE-moveit
-  check_deb ros-$ROS_RELEASE-industrial-core
-  check_deb python-catkin-tools
-  check_deb ros-$ROS_RELEASE-openni-launch
-  check_deb ros-$ROS_RELEASE-openni-camera
-  check_deb ros-$ROS_RELEASE-openni2-launch
-  check_deb ros-$ROS_RELEASE-openni2-launch
   check_deb build-essential
   check_deb libfontconfig1
   check_deb mesa-common-dev
   check_deb libglu1-mesa-dev
   check_deb pcl-tools
+  echo "Checking ROS1 packages:"
+  check_deb python-catkin-tools
+  check_deb ros-$ROS_RELEASE-desktop
+  check_deb ros-$ROS_RELEASE-perception
+  check_deb ros-$ROS_RELEASE-moveit
+  check_deb ros-$ROS_RELEASE-industrial-core
+  check_deb ros-$ROS_RELEASE-openni-launch
+  check_deb ros-$ROS_RELEASE-openni-camera
+  check_deb ros-$ROS_RELEASE-openni2-launch
+  check_deb ros-$ROS_RELEASE-openni2-launch
+  echo "Checking ROS2 packages:"
+  check_deb python3-colcon-bash
+  check_deb python3-colcon-core
+  check_deb python3-colcon-ros
+  check_deb ros-$ROS2_RELEASE-desktop
 }
 
 function check_bashrc() {
@@ -89,7 +96,7 @@ function check_bashrc() {
 	print_result $(false)
   else
 	print_result $([ $ROS_ROOT == "/opt/ros/$ROS_RELEASE/share/ros" ])
-  fi  
+  fi
 }
 
 function check_qtc() {
