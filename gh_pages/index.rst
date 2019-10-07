@@ -149,5 +149,5 @@ Session 7 - ROS2
 .. toctree::
    :maxdepth: 1
 
-   Exercise 7.0 - ROS2 basics
+   Exercise 7.0 - ROS2 basics <_source/session7/ROS2-Basics.md>
    Exercise 7.1 - ROS1 to ROS2 porting <_source/session7/ROS1-to-ROS2-porting.md>
