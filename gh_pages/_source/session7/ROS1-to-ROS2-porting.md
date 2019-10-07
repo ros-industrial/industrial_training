@@ -1,8 +1,44 @@
 # ROS1 to ROS2 porting
 
 ## Motivation
-Our goal for this exercise is to have you fully port a small ROS1 application into ROS2. We'll be using the basic training material from sessions 1 and 2 as the initial ROS1 application. We will be using exercise 2.3 as the starting point.
 
+Our goal for this exercise is to have you fully port a small ROS1 application into ROS2. We'll be
+using the basic training material from sessions 1 and 2 as the initial ROS1 application. This will
+provide some exposure to the differences in the basic tools of ROS development including publishers,
+subscribers, services, and parameters. We will be using exercise 2.3 as the starting point.
+
+## Sequence of actions
+
+1. Create a new workspace
+
+1. Get source dependencies
+
+1. Create new ROS2 packages
+
+1. Test build
+
+1. Copy ROS1 code into ROS2 packages
+
+1. Port the vision node
+
+  1. Class as node and main function
+
+  1. Subscriber
+
+  1. Service (call manually)
+
+1. Port the application node
+
+  1. Node structure and main function
+
+  1. Service client (harcoded parameter)
+
+  1. Runtime parameter
+
+1. Port the launch file
+
+
+## Setup
 
 1. Create a new ROS2 workspace
  
