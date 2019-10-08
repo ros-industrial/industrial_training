@@ -44,50 +44,52 @@ ROS2.
 
 ### Topic subscription
 
-1. Open and start editing the `CMakeLists.txt` file in `myworkcell_core`
+1.  Open and start editing the `CMakeLists.txt` file in `myworkcell_core`
 
-1. Package dependencies: Ament packages you depend on are now found directly using the CMake
-   `find_package` command. Almost always the first invocation will be `find_package(ament_cmake)`
-   which is required to make this package an ament package.
+1.  Package dependencies: Ament packages you depend on are now found directly using the CMake
+    `find_package` command. Almost always the first invocation will be `find_package(ament_cmake)`
+    which is required to make this package an ament package.
 
-   Add additional dependencies for this application below this first `find_package` command:
+    Add additional dependencies for this application below this first `find_package` command:
 
     ```
     find_package(rclcpp REQUIRED)
     find_package(fake_ar_publisher_msgs REQUIRED)
     ```
 
-1. Build the vision node: An executable is added in the usual CMake way. Rather than use
-   `include_directories` and `target_link_libraries` to depend on other packages, a convenience
-   macro is provided to depend on other ament packages.
+1.  Build the vision node: An executable is added in the usual CMake way. Rather than use
+    `include_directories` and `target_link_libraries` to depend on other packages, a convenience
+    macro is provided to depend on other ament packages.
 
     ```
     add_executable(vision_node src/vision_node.cpp)
     ament_target_dependencies(vision_node rclcpp fake_ar_publisher)
     ```
 
-1. Install the vision node: Everything in ROS2 must have an install rule in order to be used at
-   runtime.
+1.  Install the vision node: Everything in ROS2 must have an install rule in order to be used at
+    runtime.
 
-   ```
-   install(TARGETS vision_node
-       ARCHIVE DESTINATION lib/${PROJECT_NAME}
-       LIBRARY DESTINATION lib/${PROJECT_NAME}
-       RUNTIME DESTINATION lib/${PROJECT_NAME}
-   )
+    ```
+    install(TARGETS vision_node
+        ARCHIVE DESTINATION lib/${PROJECT_NAME}
+        LIBRARY DESTINATION lib/${PROJECT_NAME}
+        RUNTIME DESTINATION lib/${PROJECT_NAME}
+    )
+    ```
 
-1. Above the final call to `ament_package()` add a line which indicates which ament packages this
-   package depends on at runtime:
+1.  Above the final call to `ament_package()` add a line which indicates which ament packages this
+    package depends on at runtime:
 
     ```
     ament_export_dependencies(rclcpp fake_ar_publisher)
     ```
 
-1. You may try to build the workspace again now and you should get a compile error about `ros/ros.h`
-   not being found. We're now ready to port the C++ code. Open `vision_node.cpp` for editing.
+1.  You may try to build the workspace again now and you should get a compile error about
+    `ros/ros.h` not being found. We're now ready to port the C++ code. Open `vision_node.cpp` for
+    editing.
 
-1. Change the headers: ROS2 requires headers to end in .hpp instead of .h and includes for msgs and
-   srv require the file name to file/msg/ and file/srv/ respectively in their names.
+1.  Change the headers: ROS2 requires headers to end in .hpp instead of .h and includes for msgs and
+    srv require the file name to file/msg/ and file/srv/ respectively in their names.
 
     ```diff
     - #include <ros/ros.h>
@@ -96,8 +98,8 @@ ROS2.
     + #include <fake_ar_publisher/msg/ar_marker.hpp>
     ```
 
-1. Comment out the callbacks, the member variables, and the contents of the constructor. Change the
-   `Localizer` class to inherit from `rclcpp::Node`.
+1.  Comment out the callbacks, the member variables, and the contents of the constructor. Change the
+    `Localizer` class to inherit from `rclcpp::Node`.
 
     ```c++
     class Localizer : public rclcpp::Node
@@ -112,8 +114,8 @@ ROS2.
     };
     ```
 
-1. The main function can now be replaced with ROS2 equivalents of creating a node and spinning to
-   wait for callbacks to be invoked:
+1.  The main function can now be replaced with ROS2 equivalents of creating a node and spinning to
+    wait for callbacks to be invoked:
 
     ```c++
     int main(int argc, char* argv[])
@@ -129,14 +131,14 @@ ROS2.
     }
     ```
 
-1. Now we'll port the subscriber Replace the `ar_sub_` and `last_msg_` member variables with:
+1.  Now we'll port the subscriber Replace the `ar_sub_` and `last_msg_` member variables with:
 
     ```c++
     rclcpp::Subscription<fake_ar_publisher::msg::ARMarker>::SharedPtr ar_sub_;
     fake_ar_publisher::msg::ARMarker::SharedPtr last_msg_;
     ```
 
-1. Add the subscription creation to the constructor:
+1.  Add the subscription creation to the constructor:
 
     ```c++
     using namespace std::placeholders;
@@ -155,13 +157,13 @@ ROS2.
     }
     ```
 
-1. Verify the workspace builds now and test the topic subscription. Run the publisher node and
-   vision node in separate terminals:
+1.  Verify the workspace builds now and test the topic subscription. Run the publisher node and
+    vision node in separate terminals:
 
-   ```
-   ros2 run fake_ar_publisher fake_ar_publisher
-   ros2 run myworkcell_core vision_node
-   ```
+    ```
+    ros2 run fake_ar_publisher fake_ar_publisher
+    ros2 run myworkcell_core vision_node
+    ```
 
 ### Interface generation
 
@@ -250,7 +252,7 @@ We'll now build the `LocalizePart` service type to use in the `myworkcell_core` 
       res->success = true;
       res->pose = p->pose.pose;
     }
-   ```
+    ```
 
 1.  Run both the `fake_ar_publisher` node and the `vision_node` and try manually calling the
     service.
@@ -351,7 +353,7 @@ We'll now build the `LocalizePart` service type to use in the `myworkcell_core` 
     }
     ```
 
-1. Verify everything builds and works
+1.  Verify everything builds and works
 
 ### Parameters
 

@@ -8,31 +8,31 @@ in the shell.
 
 ## Workspaces and packages
 
-1. Start by creating a new ROS2 workspace. As with catkin in ROS1, a workspace consists of a folder
-   with a `src/` subdirectory.
+1.  Start by creating a new ROS2 workspace. As with catkin in ROS1, a workspace consists of a folder
+    with a `src/` subdirectory.
 
-   ```bash
-   mkdir -p ~/ros2_ws/src
-   ```
+    ```bash
+    mkdir -p ~/ros2_ws/src
+    ```
 
-1. Clone the ROS2 demos examples repositories which we will use to run some examples. When building
-   existing packages from source, it is important to verify the code version as the most recent
-   version may have changes incompatible with the current release. Here we checkout the repositories
-   to the `dashing` release branch when cloned.
+1.  Clone the ROS2 demos examples repositories which we will use to run some examples. When building
+    existing packages from source, it is important to verify the code version as the most recent
+    version may have changes incompatible with the current release. Here we checkout the
+    repositories to the `dashing` release branch when cloned.
 
-   ```bash
-   cd ~/ros2_ws/src
-   git clone -b dashing git@github.com:ros2/demos.git
-   git clone -b dashing git@github.com:ros2/examples.git
-   ```
+    ```bash
+    cd ~/ros2_ws/src
+    git clone -b dashing git@github.com:ros2/demos.git
+    git clone -b dashing git@github.com:ros2/examples.git
+    ```
 
-1. Install any required dependencies for the repositories using rosdep. This step is the same as in
-   ROS1 since rosdep is installed as a system tool.
+1.  Install any required dependencies for the repositories using rosdep. This step is the same as in
+    ROS1 since rosdep is installed as a system tool.
 
-   ```bash
-   cd ~/ros2_ws
-   rosdep install --ignore-src --from-paths src/
-   ```
+    ```bash
+    cd ~/ros2_ws
+    rosdep install --ignore-src --from-paths src/
+    ```
 
 ## Building packages
 
@@ -40,38 +40,38 @@ ROS2 uses `colcon` as the build tool for ROS packages. Colcon is installed separ
 distributions as a pure Python package. It is always available in the user's PATH without sourcing a
 workspace setup file.
 
-1. Run `colcon -h` to see a short help summary and a list of verbs that can be used. Run `colcon
-   build -h` to see the help description for the `build` verb.
+1.  Run `colcon -h` to see a short help summary and a list of verbs that can be used. Run `colcon
+    build -h` to see the help description for the `build` verb.
 
-1. Run `colcon list` and `colcon info` to see infomation about what packages are currently in the
-   workspace. Colcon can be directed to ignore packages if a directory contains an empty file named
-   `COLCON_IGNORE`.
+1.  Run `colcon list` and `colcon info` to see infomation about what packages are currently in the
+    workspace. Colcon can be directed to ignore packages if a directory contains an empty file named
+    `COLCON_IGNORE`.
 
-1. Build the workspace. This will require a setup script to be sourced so Ament can find the
-   required dependent ROS packages. Check your `.bashrc` file and either change or remove any
-   line that sources a ROS1 setup file at the end of the file. Remember if you change your `.bashrc`
-   to start a terminal for it to take effect.
+1.  Build the workspace. This will require a setup script to be sourced so Ament can find the
+    required dependent ROS packages. Check your `.bashrc` file and either change or remove any line
+    that sources a ROS1 setup file at the end of the file. Remember if you change your `.bashrc` to
+    start a terminal for it to take effect.
 
-   ```bash
-   source /opt/ros/dashing/setup.bash
-   colcon build
-   ```
+    ```bash
+    source /opt/ros/dashing/setup.bash
+    colcon build
+    ```
 
-   **Important**: Unlike catkin tools, colcon looks for packages and will create its output folders
-   wherever you run it. Be sure you are in the workspace root before running it.
+    - **Important**: Unlike catkin tools, colcon looks for packages and will create its output folders
+    wherever you run it. Be sure you are in the workspace root before running it.
 
-   Colcon does not currently have a `clean` verb. To rebuild a workspace from scratch, you must
-   remove the generated outputs manually: `rm -r build/ install/ log/`
+    - Colcon does not currently have a `clean` verb. To rebuild a workspace from scratch, you must
+    remove the generated outputs manually: `rm -r build/ install/ log/`
 
-1. Source the newly-built workspace. Inside the new `install/` folder will be both `setup.bash` and
-   `local_setup.bash` files. The `setup.bash` will configure a terminal environment to see the
-   workspace packages as well as the environment the workspace was built in. `local_setup.bash` will
-   add the workspace packages to the current environment.
+1.  Source the newly-built workspace. Inside the new `install/` folder will be both `setup.bash` and
+    `local_setup.bash` files. The `setup.bash` will configure a terminal environment to see the
+    workspace packages as well as the environment the workspace was built in. `local_setup.bash`
+    will add the workspace packages to the current environment.
 
-   - If you keep your `.bashrc` to source `/opt/ros/dashing/setup.bash` then you should only need to
-   run `source install/local_setup.bash`
+    - If you keep your `.bashrc` to source `/opt/ros/dashing/setup.bash` then you should only need to
+    run `source install/local_setup.bash`
 
-   - Otherwise, run `source install/setup.bash`
+    - Otherwise, run `source install/setup.bash`
 
 ## The `ros2` command
 
