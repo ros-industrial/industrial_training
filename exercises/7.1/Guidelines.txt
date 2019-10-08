@@ -1,0 +1,96 @@
+##Cmake:
+While catkin has headings in the cmake file, Ament/Colcon does not. Additionally, the Cmake version is upped from C++ 11 in melodic to C++ 14 in Dashing.
+
+
+
+####FINDING PACKAGES:
+
+
+Additionally, the catkin package has been conveniently replaced with the rclcpp and ament_cmake. 'Message Generation' is also replaced by two packages, builtin_interfaces and rosidl_default_genrators. All packages have a REQUIRED tag, formatted as below:
+
+
+find_package(ament_cmake REQUIRED)
+
+
+####DECLARE CUSTOM MESSAGES
+
+Instead of add_service_files/add_msgs_files, message interfaces are made using rosidl, like so:
+
+rosidl_generate_interfaces(myworkcell_core
+  "srv/LocalizePart.srv"
+  DEPENDENCIES geometry_msgs
+)
+
+note that DEPENDENCIES will include any types that are requiste for custom messages to work. In the authors experience, it seems to work better if each custom message gets its own generate_interfaces block.
+
+####ADDING EXECUTABLES
+
+adding executables is straight forward in ROS2. It behaves like the add_executable command from ROS1 cmake, except that dependencies are stated explicitly subsequently with the ament_target_dependencies command:
+
+add_executable(vision_node src/vision_node.cpp)
+ament_target_dependencies(vision_node rclcpp fake_ar_publisher_msgs)
+
+#####LINKING CUSTOM MESSAGES
+
+Any node that is going to use a custom message needs to be linked to it through rosidl_target_interfaces(?)
+
+rosidl_target_interfaces(myworkcell_node
+     ${PROJECT_NAME} "rosidl_typesupport_cpp")
+
+####INCLUDE DIRECTORIES
+
+While catkin packages could be called through catkin_INCLUDE_DIRS, ROS2 headers (?) need to explicity included by package. Additionally rclcpp headers(?) needs to be included.
+
+include_directories(myworkcell_node PUBLIC
+                         ${rclcpp_INCLUDE_DIRS}
+                         ${fake_ar_publisher_msgs_INCLUDE_DIRS}
+                         ${std_msgs_INCLUDE_DIRS})
+
+####LINKING LIBRARIES
+
+Once again, Ament/RCLCPP does not have the internal organization of catkin for linking libraries. While ROS1 would have the user use the $CATKIN_LIBRARIES keyword for linking, ROS2 hsa the user link the needed libraries explicitly.
+
+target_link_libraries(myworkcell_node
+                     ${rclcpp_LIBRARIES}
+                     ${std_msgs_LIBRARIES}) 
+
+####INSTALLING
+All nodes must be explicitly installed. However, the cmake syntrax reamins the same as installation in ROS1:
+
+ install(TARGETS 
+  myworkcell_node
+  vision_node
+DESTINATION lib/${PROJECT_NAME}
+
+
+####BOILERPLATE
+
+All ros2 cmake packages must end with 
+
+ament_export_dependencies()
+ament_package()
+
+where the exported dependencies are project specific
+
+##Project_xml
+
+
+####FORMAT
+Unlike the CMAKE files, the prokect xml files for ROS 1 & 2 are very similar. The only systematic change is <package format="1"> must be changed to <package format="3">.
+
+
+####PACKAGES
+Additionally, the new packages need to be included:
+(?)
+
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <build_depend>rclcpp</build_depend>
+  <build_export_depend>rclcpp</build_export_depend>
+  <exec_depend>rclcpp</exec_depend>
+
+  <exec_depend>rosidl_default_runtime</exec_depend>
+  <buildtool_depend>rosidl_default_generators</buildtool_depend>
+  <member_of_group>rosidl_interface_packages</member_of_group>
+
+    <build_type>ament_cmake</build_type>

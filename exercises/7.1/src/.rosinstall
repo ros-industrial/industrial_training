@@ -1,0 +1,1 @@
+- git: {local-name: fake_ar_publisher, uri: 'https://github.com/jmeyer1292/fake_ar_publisher.git', version: master}

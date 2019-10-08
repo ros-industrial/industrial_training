@@ -67,6 +67,8 @@ add_service_files(
   FILES
   LocalizePart.srv
   PlanCartesianPath.srv
+  MoveToPose.srv
+  ExecuteTrajectory.srv
 )
 
 ## Generate actions in the 'action' folder
@@ -158,6 +160,7 @@ include_directories(
 add_executable(vision_node src/vision_node.cpp)
 add_executable(myworkcell_node src/myworkcell_node.cpp)
 add_executable(descartes_node src/descartes_node.cpp)
+add_executable(move_robot src/move_robot.cpp) # used for ROS2 bridging support
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -170,11 +173,13 @@ add_executable(descartes_node src/descartes_node.cpp)
 add_dependencies(vision_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(myworkcell_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(descartes_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(move_robot ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(vision_node ${catkin_LIBRARIES})
 target_link_libraries(myworkcell_node ${catkin_LIBRARIES})
 target_link_libraries(descartes_node ${catkin_LIBRARIES})
+target_link_libraries(move_robot ${catkin_LIBRARIES})
 
 #############
 ## Install ##
