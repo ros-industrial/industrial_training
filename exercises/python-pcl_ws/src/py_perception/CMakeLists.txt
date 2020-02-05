@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(lesson_perception)
+project(py_perception)
 add_definitions(-std=c++11)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -87,7 +87,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES lesson_perception
+#  LIBRARIES py_perception
   CATKIN_DEPENDS
     roscpp
     rospy
@@ -113,7 +113,7 @@ include_directories(
 )
 
 ## Declare a cpp library
-# add_library(lesson_perception
+# add_library(py_perception
 #   src/${PROJECT_NAME}/lesson_perception.cpp
 # )
 
