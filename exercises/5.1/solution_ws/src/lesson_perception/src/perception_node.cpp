@@ -110,8 +110,8 @@ int main(int argc, char *argv[])
   voxel_filter.setLeafSize (voxel_leaf_size, voxel_leaf_size, voxel_leaf_size);
   voxel_filter.filter (*cloud_voxel_filtered);
 
-  //ROS_INFO_STREAM("Original cloud  had " << cloud_ptr->size() << " points");
-  //ROS_INFO_STREAM("Downsampled cloud  with " << cloud_voxel_filtered->size() << " points");
+  ROS_INFO_STREAM("Original cloud  had " << cloud_ptr->size() << " points");
+  ROS_INFO_STREAM("Downsampled cloud  with " << cloud_voxel_filtered->size() << " points");
 
   /* ========================================
    * Fill Code: PASSTHROUGH FILTER(S)
@@ -149,6 +149,15 @@ int main(int argc, char *argv[])
   crop.setMax(max_point);
   crop.filter(xyz_filtered_cloud);
 
+  {
+    sensor_msgs::PointCloud2::Ptr pc2_cloud (new sensor_msgs::PointCloud2);
+    pcl::toROSMsg(xyz_filtered_cloud, *pc2_cloud);
+    pc2_cloud->header.frame_id=world_frame;
+    pc2_cloud->header.stamp=ros::Time::now();
+    object_pub.publish(pc2_cloud);
+  }
+  continue;
+
   /* ========================================
    * Fill Code: PLANE SEGEMENTATION
    * ========================================*/
@@ -171,22 +180,25 @@ int main(int argc, char *argv[])
   if (inliers->indices.size () == 0)
   {
     ROS_WARN_STREAM ("Could not estimate a planar model for the given dataset.") ;
+    pcl::copyPointCloud(*cropped_cloud,*cloud_f);
     //break;
   }
+  else
+  {
+    // Extract the planar inliers from the input cloud
+    pcl::ExtractIndices<pcl::PointXYZ> extract;
+    extract.setInputCloud (cropped_cloud);
+    extract.setIndices(inliers);
+    extract.setNegative (false);
 
-  // Extract the planar inliers from the input cloud
-  pcl::ExtractIndices<pcl::PointXYZ> extract;
-  extract.setInputCloud (cropped_cloud);
-  extract.setIndices(inliers);
-  extract.setNegative (false);
+    // Get the points associated with the planar surface
+    extract.filter (*cloud_plane);
+    ROS_INFO_STREAM("PointCloud representing the planar component: " << cloud_plane->points.size () << " data points." );
 
-  // Get the points associated with the planar surface
-  extract.filter (*cloud_plane);
-  ROS_INFO_STREAM("PointCloud representing the planar component: " << cloud_plane->points.size () << " data points." );
-
-  // Remove the planar inliers, extract the rest
-  extract.setNegative (true);
-  extract.filter (*cloud_f);
+    // Remove the planar inliers, extract the rest
+    extract.setNegative (true);
+    extract.filter (*cloud_f);
+  }
 
   /* ========================================
    * Fill Code: PUBLISH PLANE MARKER (OPTIONAL)
@@ -237,6 +249,15 @@ int main(int argc, char *argv[])
   sor.setMeanK (50);
   sor.setStddevMulThresh (1.0);
   sor.filter (*sor_cloud_filtered);
+
+  {
+    sensor_msgs::PointCloud2::Ptr pc2_cloud (new sensor_msgs::PointCloud2);
+    pcl::toROSMsg(*sor_cloud_filtered, *pc2_cloud);
+    pc2_cloud->header.frame_id=world_frame;
+    pc2_cloud->header.stamp=ros::Time::now();
+    object_pub.publish(pc2_cloud);
+  }
+  continue;
 
 
   /* ========================================
@@ -318,7 +339,7 @@ int main(int argc, char *argv[])
   pcl::toROSMsg(*prism_filtered_cloud, *pc2_cloud);
   pc2_cloud->header.frame_id=world_frame;
   pc2_cloud->header.stamp=ros::Time::now();
-  object_pub.publish(pc2_cloud);
+  cluster_pub.publish(pc2_cloud);
   }
   return 0;
 }
