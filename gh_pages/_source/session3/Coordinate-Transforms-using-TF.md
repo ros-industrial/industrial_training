@@ -79,4 +79,4 @@ Specifically, edit the service callback inside the vision_node to transform the 
 
  1. Change the "base_frame" parameter in `workcell.launch` (e.g. to "table"), relaunch the `workcell.launch` file, and note the different pose result.  Change the "base_frame" parameter back to "world" when you're done.
  
- 1. This tutorial is meant to show a very basic use case of TF.  However, it is recommended to use tf2, it has a similar interface but it's more robust, more info on that can be found here http://wiki.ros.org/tf2
+ 1. This tutorial is meant to show a very basic use case of TF.  However, it is recommended to use `tf2`, which has a similar interface but is more robust. More information on `tf2` can be found [here](http://wiki.ros.org/tf2)
