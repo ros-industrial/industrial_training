@@ -25,7 +25,7 @@ In this exercise, you will create a new node to determine the angular pose of a 
   1. Estimate primary axis using bounding box
   1. Determine orientation using piston sleeve locations
   1. Calculate the axis orientation relative to a reference (horizontal) axis
-  
+
 ![pump images](../../_static/pump_images.png)
 
 ## Implementation
@@ -323,7 +323,7 @@ The next node will subscribe to the `image` topic and execute a series of proces
     # threshold grayscale to binary (black & white) image
     threshVal = 75
     ret,thresh = cv2.threshold(gray, threshVal, 255, cv2.THRESH_BINARY)
-    drawImg = cv2.cvtColor(thresh, cv2.COLOR_GRAY2BGR) 
+    drawImg = cv2.cvtColor(thresh, cv2.COLOR_GRAY2BGR)
     ```
 
     You should experiment with the `threshVal` paramter to find a value that works best for this image.  Valid values for this parameter lie between [0-255], to match the grayscale pixel intensity range.  Find a value that clearly highlights the pump face geometry.  I found that a value of `150` seemed good to me.
@@ -382,9 +382,9 @@ The next node will subscribe to the `image` topic and execute a series of proces
        # detect blobs inside pump body
        pistonArea = 3.14159 * PISTON_DIAMETER**2 / 4
        blobParams = cv2.SimpleBlobDetector_Params()
-       blobParams.filterByArea = True;
-       blobParams.minArea = 0.80 * pistonArea;
-       blobParams.maxArea = 1.20 * pistonArea;
+       blobParams.filterByArea = True
+       blobParams.minArea = 0.80 * pistonArea
+       blobParams.maxArea = 1.20 * pistonArea
        blobDetector = cv2.SimpleBlobDetector_create(blobParams)
        blobs = blobDetector.detect(thresh)
        ```
@@ -513,4 +513,3 @@ For a greater challenge, try the following suggestions to modify the operation o
  1. Change the `detect_pump` node to provide a **service** that performs the image detection.  Define a custom service type that takes an input image and outputs the pump angle.  Create a new application node that subscribes to the `image` topic and calls the `detect_pump` service.
 
  1. Try using `HoughCircles` instead of `BlobDetector` to locate the piston sleeves.
-
