@@ -1,6 +1,8 @@
+<?xml version="1.0"?>
 <launch>
   <!-- The planning and execution components of MoveIt! configured to run -->
   <!-- using the ROS-Industrial interface. -->
+  <arg name="rviz" default="True"/>
  
   <!-- Non-standard joint names:
        - Create a file [robot_moveit_config]/config/joint_names.yaml
@@ -37,13 +39,14 @@
       <arg name="min_payload" value="0.0"/>
       <arg name="max_payload" value="5.0"/>
     </include>
+    <param name="move_group/trajectory_execution/execution_duration_monitoring" value="false"/>
   </group>
 
   <include file="$(find myworkcell_moveit_config)/launch/move_group.launch">
     <arg name="publish_monitored_planning_scene" value="true" />
   </include>
 
-  <include file="$(find myworkcell_moveit_config)/launch/moveit_rviz.launch">
+  <include if="$(arg rviz)" file="$(find myworkcell_moveit_config)/launch/moveit_rviz.launch">
     <arg name="config" value="true"/>
   </include>
   

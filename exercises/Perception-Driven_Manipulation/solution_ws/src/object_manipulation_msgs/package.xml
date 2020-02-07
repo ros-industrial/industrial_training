@@ -23,8 +23,7 @@
   <build_depend>trajectory_msgs</build_depend>
   <build_depend>sensor_msgs</build_depend>
   <build_depend>shape_msgs</build_depend>
-  <build_depend>manipulation_msgs</build_depend>
-  <build_depend>household_objects_database_msgs</build_depend>
+  <build_depend>moveit_msgs</build_depend>
 
   <run_depend>actionlib_msgs</run_depend>
   <run_depend>std_msgs</run_depend>
@@ -33,8 +32,7 @@
   <run_depend>trajectory_msgs</run_depend>
   <run_depend>sensor_msgs</run_depend>
   <run_depend>shape_msgs</run_depend>
-  <run_depend>manipulation_msgs</run_depend>
+  <run_depend>moveit_msgs</run_depend>
   <run_depend>message_runtime</run_depend>
-  <run_depend>household_objects_database_msgs</run_depend>
 
 </package>

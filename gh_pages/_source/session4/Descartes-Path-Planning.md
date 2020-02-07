@@ -59,6 +59,7 @@ Left to you are the details of:
     * `descartes_trajectory`
     * `descartes_planner`
     * `descartes_utilities`
+    * `eigen_conversions`
 
  1. Create rules in the `myworkcell_core` package's `CMakeLists.txt` to build a new node called `descartes_node`.  As in previous exercises, add these lines near similar lines in the template file (not as a block as shown below).
      

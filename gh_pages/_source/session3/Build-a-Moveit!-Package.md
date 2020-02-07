@@ -39,7 +39,7 @@ In this exercise, you will generate a MoveIt package for the UR5 workcell you bu
        type = 'fixed'
        ```
 
-    1. Add a planning group called `manipulator` that names the kinematic chain between `base_link` and `tool0`. Note: Follow [ROS naming guidelines/requirements](http://wiki.ros.org/ROS/Patterns/Conventions) and don't use any whitespace, anywhere. 
+    1. Add a planning group called `manipulator` that names the kinematic chain between `base_link` and `tool0`. Note: Follow [ROS naming guidelines/requirements](http://wiki.ros.org/ROS/Patterns/Conventions) and don't use any whitespace, anywhere.
 
        a. Set the kinematics solver to `KDLKinematicsPlugin`
 
@@ -53,11 +53,6 @@ In this exercise, you will generate a MoveIt package for the UR5 workcell you bu
 
     1. Generate a new package and name it `myworkcell_moveit_config`.
        * make sure to create the package inside your `catkin_ws/src` directory
-
-    1. The current MoveIt! Settup Assistant has a [bug](https://github.com/ros-planning/moveit/issues/955) that causes some minor errors and abnormal behaviors.  To fix these errors:
-       1. Edit the `myworkcell_core_moveit_config/config/ompl_planning.yaml` file.
-       1. Append the text string `kConfigDefault` to each planner name
-          * e.g. `SBL:` -> `SBLkConfigDefault`, etc.
 
  The outcome of these steps will be a new package that contains a large number of launch and configuration files. At this point, it's possible to do motion planning, but not to execute the plan on any robot.  To try out your new configuration:
 
@@ -109,7 +104,7 @@ To do this, we need to define a few extra files.
     ```
 
  1. Create a new `myworkcell_planning_execution.launch` (in `myworkcell_moveit_config/launch`):
- 
+
     ``` xml
     <launch>
       <!-- The planning and execution components of MoveIt! configured to run -->
@@ -121,12 +116,12 @@ To do this, we need to define a few extra files.
            - Update with joint names for your robot (in order expected by rbt controller)
            - and uncomment the following line: -->
       <rosparam command="load" file="$(find myworkcell_moveit_config)/config/joint_names.yaml"/>
- 
+
       <!-- the "sim" argument controls whether we connect to a Simulated or Real robot -->
       <!--  - if sim=false, a robot_ip argument is required -->
       <arg name="sim" default="true" />
       <arg name="robot_ip" unless="$(arg sim)" />
- 
+
       <!-- load the robot_description parameter before launching ROS-I nodes -->
       <include file="$(find myworkcell_moveit_config)/launch/planning_context.launch" >
        <arg name="load_robot_description" value="true" />
@@ -157,9 +152,9 @@ To do this, we need to define a few extra files.
       </include>
 
       <include file="$(find myworkcell_moveit_config)/launch/moveit_rviz.launch">
-        <arg name="config" value="true"/>
+        <!-- <arg name="config" value="true"/> -->
       </include>
-  
+
     </launch>
     ```
 

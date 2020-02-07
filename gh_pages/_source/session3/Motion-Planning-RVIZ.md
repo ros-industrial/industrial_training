@@ -72,7 +72,7 @@
 
       * since the position is unreachable, you can see the robot search through different positions as it tries to find a solution
 
-      * try disabling the Use Collision-Aware IK setting on the Context tab
+      * try disabling the Use Collision-Aware IK setting on the Planning tab
 
       * see that the collisions are still detected, but the solver no longer searches for a collision-free solution
 

@@ -20,20 +20,14 @@ The first type of ROS communication that we will explore is a one-way communicat
 We now have a base ROS node and we want to build on this node. Now we want to create a subscriber within our node.
 
 Your goal is to create your first ROS subscriber:
- 1. First you will want to find out the message structure.
- 2. You also want to determine the topic name.
- 3. Last you can write the c++ code which serves as the subscriber.
+  1. First you will want to find out the message structure.
+  1. You also want to determine the topic name.
+  1. Last you can write the c++ code which serves as the subscriber.
 
 ## Scan-N-Plan Application: Guidance
 ### Add the fake_ar_publisher Package as a Dependency
 
-1. Locate the `fake_ar_publisher` package you downloaded earlier.
-
-   ```
-   rospack find fake_ar_publisher
-   ```
-
-2. Edit your package's `CMakeLists.txt` file (`~/catkin_ws/src/myworkcell_core/CMakeLists.txt`).  Make the following changes in the matching sections of the existing template file, by uncommenting and/or editing existing rules.
+1. Edit your package's `CMakeLists.txt` file (`~/catkin_ws/src/myworkcell_core/CMakeLists.txt`).  Make the following changes in the matching sections of the existing template file, by uncommenting and/or editing existing rules.
 
    1. Tell cmake to find the fake_ar_publisher package:
 
@@ -47,7 +41,7 @@ Your goal is to create your first ROS subscriber:
       )
       ```
 
-   2. Add The catkin runtime dependency for publisher.
+   1. Add The catkin runtime dependency for publisher.
 
       ``` cmake
       ## The catkin_package macro generates cmake config files for your package
@@ -65,34 +59,34 @@ Your goal is to create your first ROS subscriber:
       )
       ```
 
-   3. Uncomment/edit the `add_dependencies` line __below__ your `add_executable` rule:
+   1. Uncomment/edit the `add_dependencies` line __below__ your `add_executable` rule:
       
       ``` cmake
       add_dependencies(vision_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
       ```
 
-3. add dependencies into your package's `package.xml`:
+1. add dependencies into your package's `package.xml`:
 
    ```xml
    <depend>fake_ar_publisher</depend>
    ```
 
-4. `cd` into your catkin workspace
+1. `cd` into your catkin workspace
 
    ```
    cd ~/catkin_ws
    ```
 
-5. Build your package and source the setup file to activate the changes in the current terminal.
+1. Build your package and source the setup file to activate the changes in the current terminal.
 
    ```
    catkin build
    source ~/catkin_ws/devel/setup.bash
    ```
 
-7. In a terminal, enter `rosmsg list`.  You will notice that, included in the list, is `fake_ar_publisher/ARMarker`.  If you want to see only the messages in a package, type `rosmsg package <package_name>`
+1. In a terminal, enter `rosmsg list`.  You will notice that, included in the list, is `fake_ar_publisher/ARMarker`.  If you want to see only the messages in a package, type `rosmsg package <package_name>`
 
-8. Type `rosmsg show fake_ar_publisher/ARMarker`.  The terminal will return the types and names of the fields in the message.
+1. Type `rosmsg show fake_ar_publisher/ARMarker`.  The terminal will return the types and names of the fields in the message.
 
    *Note that three fields under the `header` field are indented, indicating that these are members of the `std_msgs/Header` message type*
 
@@ -100,19 +94,19 @@ Your goal is to create your first ROS subscriber:
 
 1. In a terminal, type `rosrun fake_ar_publisher fake_ar_publisher_node`. You should see the program start up and begin publishing messages.
 
-2. In another terminal, enter `rostopic list`.  You should see `/ar_pose_marker` among the topics listed. Entering `rostopic type /ar_pose_marker` will return the type of the message.
+1. In another terminal, enter `rostopic list`.  You should see `/ar_pose_marker` among the topics listed. Entering `rostopic type /ar_pose_marker` will return the type of the message.
 
-3. Enter `rostopic echo /ar_pose_marker`. The terminal will show the fields for each message as they come in, separated by a `---` line.  Press Ctrl+C to exit.
+1. Enter `rostopic echo /ar_pose_marker`. The terminal will show the fields for each message as they come in, separated by a `---` line.  Press Ctrl+C to exit.
 
-4. Enter `rqt_plot`.
+1. Enter `rqt_plot`.
 
    1. Once the window opens, type `/ar_pose_marker/pose/pose/position/x` in the "Topic:" field and click the "+" button. You should see the X value be plotted.
 
-   2. Type `/ar_pose_marker/pose/pose/position/y` in the topic field, and click on the add button.  You will now see both the x and y values being graphed.
+   1. Type `/ar_pose_marker/pose/pose/position/y` in the topic field, and click on the add button.  You will now see both the x and y values being graphed.
 
-   3. Close the window
+   1. Close the window
 
-5. Leave the publisher node running for the next task.
+1. Leave the publisher node running for the next task.
 
 ## Create a Subscriber Node
 1. Edit the `vision_node.cpp` file.

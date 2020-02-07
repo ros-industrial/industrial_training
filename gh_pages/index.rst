@@ -142,3 +142,13 @@ Session 6 - Documentation, Unit Tests, ROS Utilities and Debugging ROS
    Exercise 6.2 - Using rqt tools for Analysis <_source/session6/Using-rqt-tools-for-analysis.md>
    Exercise 6.3 - ROS Style Guide and ros_lint <_source/session6/Style-Guide-and-ros_lint.md>
    Exercise 6.4 - Introduction to ROS with Docker and Amazon Web Services (AWS) <_source/session6/Docker-AWS.md>
+
+Session 7 - ROS2
+~~~~~~~~~~~~~~~~
+
+.. toctree::
+   :maxdepth: 1
+
+   Exercise 7.0 - ROS2 basics <_source/session7/ROS2-Basics.md>
+   Exercise 7.1 - ROS1 to ROS2 porting <_source/session7/ROS1-to-ROS2-porting.md>
+   Exercise 7.2 - Using the ROS1-ROS2 bridge <_source/session7/ROS1-ROS2-bridge.md>

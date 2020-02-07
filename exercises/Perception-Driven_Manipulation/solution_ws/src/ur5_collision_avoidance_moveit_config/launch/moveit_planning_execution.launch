@@ -29,7 +29,7 @@
   <!--   - this typically includes: robot_state, motion_interface, and joint_trajectory_action nodes -->
   <!--   - replace these calls with appropriate robot-specific calls or launch files -->
   <group unless="$(arg sim)">
-	  <remap from="/follow_joint_trajectory/status" to="/joint_trajectory_action/status" />
+    <remap from="/follow_joint_trajectory/status" to="/joint_trajectory_action/status" />
     <remap from="/follow_joint_trajectory/feedback" to="/joint_trajectory_action/feedback" />
     <remap from="/follow_joint_trajectory/result" to="/joint_trajectory_action/result" />
     <remap from="/follow_joint_trajectory/goal" to="/joint_trajectory_action/goal" />
@@ -42,8 +42,8 @@
       <arg name="max_payload" value="$(arg max_payload)" />
     </include>  
 
+    <param name="move_group/trajectory_execution/execution_duration_monitoring" value="false"/>
   </group>
-
 
   <rosparam command="load" file="$(find ur5_collision_avoidance_moveit_config)/config/joint_names.yaml"/>
 </launch>

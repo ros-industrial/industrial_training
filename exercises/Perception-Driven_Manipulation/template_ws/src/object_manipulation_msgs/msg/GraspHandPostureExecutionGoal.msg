@@ -4,7 +4,7 @@
 # for each arm
 
 # the grasp to be executed
-manipulation_msgs/Grasp grasp
+moveit_msgs/Grasp grasp
 
 # the goal of this action
 # requests that the hand be set in the pre-grasp posture

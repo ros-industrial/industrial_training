@@ -1,0 +1,68 @@
+sudo: required
+
+services:
+  - docker
+
+language: minimal
+
+matrix:
+  include:
+  - name: "Exercise 1"
+    env:
+    - CONTAINER_IMAGE=ros:melodic \
+      CONTAINER_NAME=industrial_training_ci \
+      SRC_DIRS="exercises/1.3/src exercises/1.4/src"
+  - name: "Exercise 2"
+    env:
+    - CONTAINER_IMAGE=ros:melodic \
+      CONTAINER_NAME=industrial_training_ci \
+      SRC_DIRS="exercises/2.0/src exercises/2.2/src exercises/2.3/src"
+  - name: "Exercise 3"
+    env:
+    - CONTAINER_IMAGE=ros:melodic \
+      CONTAINER_NAME=industrial_training_ci \
+      SRC_DIRS="exercises/3.0/src exercises/3.1/src exercises/3.2/src exercises/3.3/src"
+  - name: "Exercise 4"
+    env:
+    - CONTAINER_IMAGE=ros:melodic \
+      CONTAINER_NAME=industrial_training_ci \
+      SRC_DIRS="exercises/4.0/src exercises/4.1/src"
+  - name: "Exercise 5"
+    env:
+    - CONTAINER_IMAGE=ros:melodic \
+      CONTAINER_NAME=industrial_training_ci \
+      SRC_DIRS="exercises/5.0/src exercises/5.1/solution_ws/src exercises/5.2/src exercises/5.3/src exercises/5.4/src"
+  - name: "Exercise 6"
+    env:
+    - CONTAINER_IMAGE=ros:melodic \
+      CONTAINER_NAME=industrial_training_ci \
+      SRC_DIRS="exercises/6.0/src exercises/6.1/src exercises/6.3/src"
+  - name: "Descartes Planning and Execution"
+    env:
+    - CONTAINER_IMAGE=ros:melodic \
+      CONTAINER_NAME=industrial_training_ci \
+      SRC_DIRS="exercises/Descartes_Planning_and_Execution/solution_ws/src"
+  - name: "Optimization Based Planning"
+    env:
+    - CONTAINER_IMAGE=ros:melodic \
+      CONTAINER_NAME=industrial_training_ci \
+      SRC_DIRS="exercises/Optimization_Based_Planning/solution_ws/src"
+  - name: "Perception Driven Manipulation"
+    env:
+    - CONTAINER_IMAGE=ros:melodic \
+      CONTAINER_NAME=industrial_training_ci \
+      SRC_DIRS="exercises/Perception-Driven_Manipulation/solution_ws/src"
+  - name: "Python PCL"
+    env:
+    - CONTAINER_IMAGE=ros:melodic \
+      CONTAINER_NAME=industrial_training_ci \
+      SRC_DIRS="exercises/python-pcl_ws/src"
+
+install:
+  - docker pull $CONTAINER_IMAGE
+
+before_script:
+  - source .industrial_training_ci.bash && ci_run update_image
+
+script:
+  - source .industrial_training_ci.bash && ci_run build_exercises $SRC_DIRS

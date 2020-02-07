@@ -1,0 +1,5 @@
+# request
+trajectory_msgs/JointTrajectory trajectory
+---
+# response
+bool succeeded
