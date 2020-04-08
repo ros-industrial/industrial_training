@@ -36,7 +36,7 @@ Left to you are the details of:
 
 ### Setup workspace
  1. Clone the Descartes repository into your workspace src/ directory.
-     
+
     ```bash
     cd ~/catkin_ws/src
     git clone -b melodic-devel https://github.com/ros-industrial-consortium/descartes.git
@@ -62,7 +62,7 @@ Left to you are the details of:
     * `eigen_conversions`
 
  1. Create rules in the `myworkcell_core` package's `CMakeLists.txt` to build a new node called `descartes_node`.  As in previous exercises, add these lines near similar lines in the template file (not as a block as shown below).
-     
+
     ```cmake
     add_executable(descartes_node src/descartes_node.cpp)
     add_dependencies(descartes_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
@@ -86,7 +86,7 @@ We will create a Service interface to execute the Descartes planning algorithm.
     ```
 
  1. Add the newly-created service file to the `add_service_file()` rule in the package's `CMakeLists.txt`.
-     
+
  1. Since our new service references a message type from another package, we'll need to add that other package (`trajectory_msgs`) as a dependency in the `myworkcell_core` `CMakeLists.txt` (3 lines) and `package.xml` (1 line) files.  
 
  1. Review `descartes_node.cpp` to understand the code structure.  In particular, the `planPath` method outlines the main sequence of steps.
@@ -100,7 +100,7 @@ We will create a Service interface to execute the Descartes planning algorithm.
        * Allow the point to be symmetric about the Z-axis (`AxialSymmetricPt::Z_AXIS`), with an increment of 90 degrees (PI/2 radians)
 
  1. Build the project, to make sure there are no errors in the new `descartes_node`
- 
+
 ### Update Workcell Node
 
 With the Descartes node completed, we now want to invoke its logic by adding a new `ServiceClient` to the primary workcell node. The result of this service is a joint trajectory that we must then execute on the robot. This can be accomplished in many ways; here we will call the `JointTrajectoryAction` directly.
@@ -161,10 +161,12 @@ With the Descartes node completed, we now want to invoke its logic by adding a n
  1. Create a new `setup.launch` file (in `workcell_support` package) that brings up everything except your workcell_node:
 
     ``` xml
-    <include file="$(find myworkcell_moveit_config)/launch/myworkcell_planning_execution.launch"/>
-    <node name="fake_ar_publisher" pkg="fake_ar_publisher" type="fake_ar_publisher_node" />
-    <node name="vision_node" type="vision_node" pkg="myworkcell_core" output="screen"/>
-    <node name="descartes_node" type="descartes_node" pkg="myworkcell_core" output="screen"/>
+    <launch>
+      <include file="$(find myworkcell_moveit_config)/launch/myworkcell_planning_execution.launch"/>
+      <node name="fake_ar_publisher" pkg="fake_ar_publisher" type="fake_ar_publisher_node" />
+      <node name="vision_node" type="vision_node" pkg="myworkcell_core" output="screen"/>
+      <node name="descartes_node" type="descartes_node" pkg="myworkcell_core" output="screen"/>
+    </launch>
     ```
 
  1. Run the new setup file, then your main workcell node:

@@ -13,7 +13,7 @@ The start of most perception processing is ROS message data from a sensor.  In t
       cd ~/ex4.2
       cp ~/industrial_training/exercises/4.2/table.pcd .
       ```
-      
+
    1. Publish pointcloud messages from the pre-recorded `table.pcd` point cloud data file:
       ```
       cd ~/ex4.2
@@ -36,7 +36,7 @@ The start of most perception processing is ROS message data from a sensor.  In t
 
 ## Experiment with PCL
    Next, we will experiment with various command line tool provided by PCL for processing point cloud data. There are over 140 command line tools available, but only a few will be used as part of this exercise. The intent is to get you familiar with the capabilities of PCL without writing any code, but these command line tools are a great place to start when writing your own.  Although command line tools are helpful for testing various processing methods, most applications typically use the C++ libraries directly for "real" processing pipelines.  The ROS-I Advanced training course explores these C++ PCL methods in more detail.
-   
+
    Each of the PCL commands below generates a new point cloud file (`.pcd`) with the result of the PCL processing command.  Use either the `pcl_viewer` to view the results directly or the `pcd_to_pointcloud` command to publish the point cloud data as a ROS message for display in rviz.  Feel free to stop the `pcd_to_pointcloud` command after reviewing the results in rviz.
 
 ### Downsample the point cloud using the pcl_voxel_grid.
@@ -65,7 +65,7 @@ The start of most perception processing is ROS message data from a sensor.  In t
   rosrun pcl_ros pcd_to_pointcloud only_table.pcd 0.1 _frame_id:=map cloud_pcd:=only_table
   ```
   Note: For the PointCloud2 in rviz change the topic to */only_table* to show the new data.
-  
+
 ### Extracting the largest cluster on the table from point cloud using the pcl_sac_segmentation_plane.
 
 1.  Extract the largest point-cluster not belonging to the table.

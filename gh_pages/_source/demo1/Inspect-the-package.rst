@@ -23,12 +23,23 @@ Download debian dependencies
 
 .. note:: Make sure you have installed and configured the `rosdep tool <http://wiki.ros.org/rosdep>`_.
 
-Then, run the following command from the :file:`src` directory of your workspace:
+Then, run the following command from the ``src`` directory of your workspace to install the required distributed software:
 
 .. code-block:: shell
 
   rosdep install --from-paths . --ignore-src -y
 
+
+Download source dependencies
+----------------------------
+
+.. note:: Make sure you have installed and configured `wstool <http://wiki.ros.org/wstool>`_.
+
+Run the following command from the ``src`` directory of your workspace to install required software that must be built from source
+
+.. code-block:: shell
+
+  wstool update -t src
 
 Build your workspace
 --------------------
