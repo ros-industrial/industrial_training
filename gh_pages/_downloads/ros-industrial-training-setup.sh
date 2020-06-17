@@ -31,6 +31,7 @@ sudo apt install -y ros-dashing-desktop
 sudo apt install -y python3-colcon-common-extensions python3-argcomplete
 
 # rosdep setup
+sudo apt install python-rosdep
 sudo rosdep init
 rosdep update
 
