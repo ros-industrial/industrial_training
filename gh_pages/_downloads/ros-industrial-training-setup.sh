@@ -23,6 +23,7 @@ sudo apt install -y ros-melodic-desktop
 sudo apt install -y python-wstool python-catkin-tools
 sudo apt install -y ros-melodic-perception ros-melodic-urdf-tutorial ros-melodic-moveit
 sudo apt install -y ros-melodic-openni-camera ros-melodic-openni-launch ros-melodic-openni2-camera ros-melodic-openni2-launch
+sudo apt install -y ros-melodic-industrial-core
 sudo apt install -y pcl-tools
 
 # ROS2 install
