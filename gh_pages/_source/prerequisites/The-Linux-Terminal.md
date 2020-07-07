@@ -111,6 +111,10 @@ _If you want a full list of options available for any of the commands given in t
  1. Type `mkdir new2`, then `ls`.
     * You will see there is a new folder `new2`.
 
+### touch Command ###
+ 1. Type `touch ~/Templates/"Untitled Document"`.
+    * This will create a new Document named **"Untitiled Document"**
+
 _You can use the  `-i` flag with `cp`, `mv`, and `rm` commands to prompt you when a file will be overwritten or removed._
 
 ## Job management ##

@@ -30,7 +30,7 @@ Things to notice:
 
 1. The close, minimize, and maximize buttons typically found on the right-hand side of the window title bar are found on the left-hand side.
 2. The menu for windows are found on the menu bar at the top of the screen, much in the same way Macs do. The menus, however, only show up when you hover the mouse over the menu bar.
-3. Notice that there are triangles on the left and right of the folder icon. The triangles on the left show how many windows of this application are open, and the right shows which application is currently in the foreground, or "has focus". Clicking on these icons when the applications are open does one of two things:
+3. Notice that there are menu hightlights of the folder icon. The dots on the left show how many windows of this application are open. Clicking on these icons when the applications are open does one of two things:
  * If there is only one window open, this window gets focus.
  * If more than one are open, clicking a second time causes all of the windows to show up in the foreground, so that you can choose which window to go to (see below): 
 
@@ -48,3 +48,4 @@ Click on the application. The text editor window should show up on the screen, a
 1. Right-click on the text editor launch icon, and select "Lock to Launcher".
 2. Close the gedit window. The launcher icon should remain after the window closes.
 3. Click on the gedit launcher icon. You should see a new gedit window appear.
+
