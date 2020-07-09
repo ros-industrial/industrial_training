@@ -7,6 +7,7 @@ cp -r ~/industrial_training/exercises/Perception-Driven_Manipulation/template_ws
 cd ~/perception_driven_ws
 source /opt/ros/melodic/setup.bash
 catkin init
+wstool update -t src
 ```
 
 ## Download debian dependencies
