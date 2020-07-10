@@ -1,4 +1,4 @@
-/# The Linux Terminal
+# The Linux Terminal
 > In this exercise, we will familiarize ourselves with the Linux terminal.
 
 ## Starting the Terminal
