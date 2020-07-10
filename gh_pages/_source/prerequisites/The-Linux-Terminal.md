@@ -3,7 +3,7 @@
 
 ## Starting the Terminal
 
- 1. To open the terminal, click on the terminal icon: 
+ 1. To open the terminal, click on the terminal icon:
 
     ![](../../_static/ubuntu_terminal_icon.png)
 
@@ -42,10 +42,10 @@
     * `cp -a ~/industrial_training/exercises/0.3/. .`
 
 ### ls Command ###
- 1. Enter `ls` into the terminal. 
+ 1. Enter `ls` into the terminal.
     * You should see `test.txt`, and `new` listed. (If you don't see 'new', go back and complete the [previous exercise](Exploring-the-Linux-File-System.md)).
     * Directories, like `new`, are colored in blue.
-    * The file `sample_job` is in green; this indicates it has its "execute" bit set, which means it can be executed as a command.  
+    * The file `sample_job` is in green; this indicates it has its "execute" bit set, which means it can be executed as a command.
  1. Type `ls *.txt`.  Only the file `test.txt` will be displayed.
  1. Enter `ls -l` into the terminal.
     * Adding the `-l` option shows one entry per line, with additional information about each entry in the directory.
@@ -86,7 +86,7 @@ _If you want a full list of options available for any of the commands given in t
     * You will notice that the file has been renamed to `test2.txt`.<BR>
     _This step shows how `mv` can rename files._
  1. Type `mv test2.txt new`, then `ls`.
-    * The file will no longer be present in the folder. 
+    * The file will no longer be present in the folder.
  1. Type `cd new`, then `ls`.
     * You will see `test2.txt` in the folder.<BR>
     _These steps show how `mv` can move files._
@@ -110,6 +110,10 @@ _If you want a full list of options available for any of the commands given in t
 ### mkdir Command ###
  1. Type `mkdir new2`, then `ls`.
     * You will see there is a new folder `new2`.
+
+### touch Command ###
+ 1. Type `touch ~/Templates/"Untitled Document"`.
+    * This will create a new Document named **"Untitled Document"**
 
 _You can use the  `-i` flag with `cp`, `mv`, and `rm` commands to prompt you when a file will be overwritten or removed._
 
@@ -167,7 +171,7 @@ _You can use the  `-i` flag with `cp`, `mv`, and `rm` commands to prompt you whe
  1. **Moving an already running program into the background:**
     1. Type `gedit test.txt`.
        * The window should open, and the terminal should not have a prompt waiting.
-    1. In the terminal window, press Ctrl+Z. 
+    1. In the terminal window, press Ctrl+Z.
        * The terminal will indicate that `gedit` has stopped, and a prompt will appear.
     1. Try to use the `gedit` window.
        * Because it is paused, the window will not run.
