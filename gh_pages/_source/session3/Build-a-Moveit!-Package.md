@@ -152,7 +152,7 @@ To do this, we need to define a few extra files.
       </include>
 
       <include file="$(find myworkcell_moveit_config)/launch/moveit_rviz.launch">
-        <!-- <arg name="config" value="true"/> -->
+        <arg name="config" value="true"/>
       </include>
 
     </launch>
