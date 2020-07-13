@@ -48,7 +48,13 @@ Build Code and Run
 
       catkin build collision_avoidance_pick_and_place
 
-* Run your node with the launch file:
+* Run the support packages with the launch file:
+
+  .. code-block:: shell
+
+    roslaunch collision_avoidance_pick_and_place ur5_setup.launch
+
+* In another terminal, run your node with the launch file:
 
   .. code-block:: shell
 
