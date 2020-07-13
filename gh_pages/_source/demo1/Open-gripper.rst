@@ -11,8 +11,8 @@ Locate Function
 * In the main program, locate the function call to
   ``application.set_gripper()``.
 * Go to the source file of that function by clicking in any part of the
-  function and pressing :kbd:`F2`.
-* Remove the fist line containing the following ``ROS_ERROR_STREAM ...`` so
+  function and pressing :kbd:`F2` in QtCreator.
+* Remove the first line containing the following ``ROS_ERROR_STREAM ...`` so
   that the program runs.
 
 
@@ -57,7 +57,7 @@ Build Code and Run
 
       catkin build collision_avoidance_pick_and_place
 
-* Run the support packages with the launch file:
+* Run the supporting nodes with the launch file:
 
   .. code-block:: shell
 
@@ -73,7 +73,7 @@ Build Code and Run
   terminal (below). The robot will not move, only gripper I/O is triggered:
 
   .. code-block:: text
-  
+
     [ INFO] [1400553290.464877904]: Move wait Succeeded
     [ INFO] [1400553290.720864559]: Gripper opened
     [ERROR] [1400553290.720985315]: detect_box_pick is not implemented yet.  Aborting.

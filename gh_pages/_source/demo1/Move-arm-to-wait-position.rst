@@ -11,13 +11,17 @@ Move Arm to Wait Position
 Locate Function
 ---------------
 
-* In the main program , locate the method call to 
+* In the main program, locate the method call to
   ``application.move_to_wait_position()``.
 * Go to the source file of that function by clicking in any part of the
-  function and pressing :kbd:`F2`.
-* Alternatively, browse to the file in 
-  :file:`[Source directory]/src/tasks/move_to_wait_position.cpp`.
-* Remove the fist line containing the following ``ROS_ERROR_STREAM ...`` so
+  function and pressing :kbd:`F2` in QtCreator.
+* Alternatively, browse to the file at
+
+  .. code-block:: shell
+
+    [workspace source directory]/collision_avoidance_pick_and_place/src/tasks/move_to_wait_position.cpp
+
+* Remove the first line containing the following ``ROS_ERROR_STREAM ...`` so
   that the program runs.
 
 
@@ -48,13 +52,13 @@ Build Code and Run
 
   * In QTCreator: :menuselection:`Build --> Build Project`
   * Alternatively, in a terminal:
-  
+
     .. code-block:: shell
 
       catkin build collision_avoidance_pick_and_place
       source ./devel/setup.bash
 
-* Run the support packages with the launch file:
+* Run the supporting nodes with the launch file:
 
   .. code-block:: shell
 

@@ -2,9 +2,9 @@ Pick Up Box
 ===========
 
   In this exercise, we will move the robot through the pick motion while
-  avoiding obstacles in the environment. This is to be accomplished by
+  avoiding obstacles in the environment. This will be accomplished by
   planning for each pose and closing or opening the vacuum gripper when
-  apropriate. Also, it will be demonstrated how to create a motion plan that
+  apropriate. Also, we will demonstrate how to create a motion plan that
   MoveIt! can understand and solve.
 
 
@@ -14,7 +14,7 @@ Locate Function
 * In the main program, locate the function call to
   ``application.pickup_box()``.
 * Go to the source file of that function by clicking in any part of the
-  function and pressing :kbd:`F2`.
+  function and pressing :kbd:`F2` in QtCreator.
 * Remove the first line containing the following ``ROS_ERROR_STREAM ...`` so
   that the program runs.
 
@@ -55,7 +55,7 @@ Build Code and Run
 
       catkin build collision_avoidance_pick_and_place
 
-* Run the support packages with the launch file:
+* Run the supporting nodes with the launch file:
 
   .. code-block:: shell
 
@@ -67,7 +67,7 @@ Build Code and Run
 
     roslaunch collision_avoidance_pick_and_place ur5_pick_and_place.launch
 
-* The robot should go through the pick moves (Approach, pick and retreat) in
+* The robot should go through the pick moves (approach, pick and retreat) in
   addition to the moves from the previous exercises. In the terminal you will
   see something like:
 
@@ -83,7 +83,7 @@ API References
 
 * |execute()|_
 
-* `MoveGroupInterface clas <http://docs.ros.org/melodic/api/moveit_ros_planning_interface/html/classmoveit_1_1planning__interface_1_1MoveGroupInterface.html>`_
+* `MoveGroupInterface class <http://docs.ros.org/melodic/api/moveit_ros_planning_interface/html/classmoveit_1_1planning__interface_1_1MoveGroupInterface.html>`_
 
 
 .. |execute()| replace:: `execute()`_

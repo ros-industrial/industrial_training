@@ -1,7 +1,7 @@
 Create Pick Moves
 =================
 
-  The gripper moves through three poses in order to do a pick: Approach,
+  The gripper moves through three poses in order to do a pick: approach,
   target and retreat. In this exercise, we will use the box pick transform to
   create the pick poses for the :abbr:`TCP (Tool Center Point)` coordinate
   frame and then transform them to the arm's wrist coordinate frame.
@@ -13,7 +13,7 @@ Locate Function
 * In the main program, locate the function call to
   ``application.create_pick_moves()``.
 * Go to the source file of that function by clicking in any part of the
-  function and pressing :kbd:`F2`.
+  function and pressing :kbd:`F2` in QtCreator.
 * Remove the first line containing the following ``ROS_ERROR_STREAM ...`` so
   that the program runs.
 
@@ -56,7 +56,7 @@ Build Code and Run
 
       catkin build collision_avoidance_pick_and_place
 
-* Run the support packages with the launch file:
+* Run the supporting nodes with the launch file:
 
   .. code-block:: shell
 

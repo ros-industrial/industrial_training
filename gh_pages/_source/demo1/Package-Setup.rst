@@ -31,6 +31,4 @@ with the :guilabel:`Choose` button.
 Open the Main Thread Source File
 --------------------------------
 
-In the :guilabel:`Edit` tab, navigate into the
-:file:`[Source directory]/collision_avoidance_pick_and_place/src/nodes`
-directory and open the :file:`pick_and_place_node.cpp` file.
+In the :guilabel:`Edit` tab, open the file :file:`pick_and_place_node.cpp` in the directory ``[workspace source directory]/collision_avoidance_pick_and_place/src/nodes``

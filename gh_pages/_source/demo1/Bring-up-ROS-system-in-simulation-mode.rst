@@ -31,7 +31,7 @@ Setup for real robot and simulated sensor data
 .. code-block:: shell
 
   roslaunch collision_avoidance_pick_and_place ur5_setup.launch \
-      sim_robot:=false robot_ip:= [robot ip]
+      sim_robot:=false robot_ip:=[robot ip]
 
 
 Setup for real robot and real sensor
@@ -40,5 +40,5 @@ Setup for real robot and real sensor
 .. code-block:: shell
 
   roslaunch collision_avoidance_pick_and_place ur5_setup.launch \
-      sim_robot:=false robot_ip:= [robot ip] sim_sensor:=false \
+      sim_robot:=false robot_ip:=[robot ip] sim_sensor:=false \
       sim_gripper:=false

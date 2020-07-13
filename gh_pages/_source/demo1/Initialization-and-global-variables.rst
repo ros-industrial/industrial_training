@@ -9,13 +9,11 @@ Initialization and Global Variables
 Application Variables
 ---------------------
 
-In QTCreator, navigate into 
+Open the file :file:`pick_and_place_utilities.h` in the following directory:
 
 .. code-block::
 
-  [Source directory]/collision_avoidance_pick_and_place/include/collision_avoidance_pick_and_place/
-
-and open :file:`pick_and_place_utilities.h`.
+  [workspace source directory]/collision_avoidance_pick_and_place/include/collision_avoidance_pick_and_place/
 
 The C++ class ``pick_and_place_config`` defines public global variables used
 in various parts of the program. These variables are listed below:
