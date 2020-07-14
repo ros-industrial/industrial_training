@@ -16,6 +16,7 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
+from sphinx import version_info as sphinx_version_info
 import os
 import git
 curr_path = os.path.abspath('.')
@@ -38,14 +39,17 @@ except git.exc.InvalidGitRepositoryError:
 # ones.
 extensions = ['sphinx.ext.githubpages']
 
+if sphinx_version_info >= (1, 4):
+  extensions += ['recommonmark']
+else:
+  from recommonmark.parser import CommonMarkParser
+
+  source_parsers = {
+      '.md': CommonMarkParser,
+  }
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
-
-from recommonmark.parser import CommonMarkParser
-
-source_parsers = {
-    '.md': CommonMarkParser,
-}
 
 source_suffix = ['.rst', '.md']
 
