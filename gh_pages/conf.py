@@ -37,7 +37,7 @@ except git.exc.InvalidGitRepositoryError:
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinx.ext.githubpages']
+extensions = ['sphinx.ext.githubpages', 'recommonmark']
 
 if sphinx_version_info >= (1, 4):
   extensions += ['recommonmark']
@@ -58,7 +58,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Industrial Training'
-copyright = u'2017, ROS-Industrial'
+copyright = u'2020, ROS-Industrial'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

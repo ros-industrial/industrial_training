@@ -1,7 +1,9 @@
 # PC Setup
+
 >There are two options for utilizing the ROS-Industrial training materials.  The first **recommended** option is to utilize a pre-configured virtual machine.  The second option is to install a native Ubuntu machine with the required software.  The virtual machine approach is by far the easiest option and ensures the fewest build errors during training but is limited in its ability to connect to certain hardware, particularly over USB (i.e. kinect-like devices).  For the perception training a .bag file is provided so that USB connection is not required for this training course.
 
 ## Virtual Machine Configuration (**Recommended**)
+
 The VM method is the most convenient method of utilizing the training materials:
 
  1. [Download virtual box](https://www.virtualbox.org/wiki/Downloads)

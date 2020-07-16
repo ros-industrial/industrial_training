@@ -5,7 +5,7 @@
 - Install Sphinx and dependencies (use of a python virtual environment encouraged):
 
     pip3 install --user --upgrade pip
-    pip3 install --user Sphinx python-git recommonmark
+    pip3 install --user Sphinx gitpython recommonmark
 
 - Build the html:
 
