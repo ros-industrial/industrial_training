@@ -58,22 +58,6 @@ Your goal is to create your first ROS node:
 
 
 ### Create a Node
-1. In the package folder, edit the _CMakeLists.txt_ file using _gedit_. Browse through the example rules, and add an executable(_add_executable_), node named vision_node, source file named vision_node.cpp. Also within the _CMakeLists.txt_, make sure your new vision_node gets linked ('target_link_libraries') to the catkin libraries.
-
-   ``` cmake
-   add_compile_options(-std=c++11)
-   add_executable(vision_node src/vision_node.cpp)
-   target_link_libraries(vision_node ${catkin_LIBRARIES})
-   ```
-
-   These lines can be placed anywhere in `CMakeLists.txt`, but I typically:
-
-   * Uncomment existing template examples for `add_compile_options` near the top (just below `project()`)
-   * Uncomment and edit existing template examples for `add_executable` and `target_link_libraries` near the bottom
-   * This helps make sure these rules are defined in the correct order, and makes it easy to remember the proper syntax.
-
-   _Note: You're also allowed to spread most of the CMakeLists rules across multiple lines, as shown in the `target_link_libraries` template code_
-
 1. In the package folder, create the file _src/vision_node.cpp_ (using _gedit_).
 
 1. Add the ros header (include ros.h).
@@ -181,6 +165,34 @@ Your goal is to create your first ROS node:
    * There are 5 levels of logging: _DEBUG, INFO, WARNING, ERROR, & FATAL._
    * To use a different logging level, replace INFO in _ROS_INFO_ or _ROS_INFO_STREAM_ with the appropriate level.
    * Use _ROS_INFO_ for printf-style logging, and _ROS_INFO_STREAM_ for cout-style logging.
+
+1. Now that you have created the source code for the node, we need to add instructions for building it into an executable program. In the package folder, edit the `CMakeLists.txt` file. Browse through the example rules, and add an executable (`add_executable`) named `vision_node` with the source file named `src/vision_node.cpp`. Also within the `CMakeLists.txt`, make sure your new `vision_node` executable gets linked (`target_link_libraries`) to the catkin libraries.
+
+   ``` diff
+   project(myworkcell_core)
+   + add_compile_options(-std=c++11)
+   
+   ...
+   
+   ###########
+   ## BUILD ##
+   ###########
+   
+   include_directories(
+     ${catkin_INCLUDE_DIRS}
+   )
+   
+   + add_executable(vision_node src/vision_node.cpp)
+   + target_link_libraries(vision_node ${catkin_LIBRARIES})
+   ```
+
+   These lines should be added to the `CMakeLists.txt` in the order and location specified above. The commands already exist in the template `CMakeLists.txt` file and can be uncommented and slightly modified  
+
+   * Uncomment existing template examples for `add_compile_options` near the top (just below `project()`)
+   * Uncomment and edit existing template examples for `add_executable` and `target_link_libraries` near the bottom in the _BUILD_ section
+   * This helps make sure these rules are defined in the correct order, and makes it easy to remember the proper syntax.
+
+   _Note: You're also allowed to spread most of the CMakeLists rules across multiple lines, as shown in the `target_link_libraries` template code_
 
 1. Build your program (node), by running `catkin build` in a terminal window
 
