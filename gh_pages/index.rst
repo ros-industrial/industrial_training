@@ -3,6 +3,17 @@ ROS Industrial Training
 
 Welcome to the ROS-Industrial training page!
 
+The content on this site is divided into several sessions, each of which is focused on building
+skills in a particular area. The main sessions first introduce you to ROS itself before moving on to
+ideas specific to ROS-Industrial. Afterwards, deeper exploration is encouraged with some full scale
+application demos, which provide a good sense of what a real ROS application entails. Finally, some
+advanced modules are provided which focus on specific ROS tools or capabilities.
+
+We are currently in the process of updating much of our training content from ROS1 to ROS2.
+Currently, the ROS basics sessions are written to teach ROS2 while the rest of the material still
+uses ROS1. The old ROS1 basic material can still be found under the :doc:`Legacy Material
+<_source/legacy>` page.
+
 ..
    For developers: the site contents are listed in both normal ReST and in Sphinx toctrees below for
    more flexibility in how the table of contents is presented on the home page. If you make a change
@@ -44,6 +55,8 @@ Session 1 - ROS Concepts and Fundamentals (ROS2)
 - :doc:`1.3 - Packages and Nodes <_source/session1/ros2/Creating-a-ROS-Package-and-Node>`
 - :doc:`1.4 - Topics and Messages <_source/session1/ros2/Topics-and-Messages>`
 
+For equivalent ROS1 content, see the :doc:`Legacy Material <_source/legacy>` page.
+
 Session 2 - Basic ROS Applications (ROS2)
 -----------------------------------------
 
@@ -53,6 +66,8 @@ Session 2 - Basic ROS Applications (ROS2)
 - :doc:`2.1 - Actions <_source/session2/ros2/Actions>`
 - :doc:`2.2 - Launch Files <_source/session2/ros2/Launch-Files>`
 - :doc:`2.3 - Parameters <_source/session2/ros2/Parameters>`
+
+For equivalent ROS1 content, see the :doc:`Legacy Material <_source/legacy>` page.
 
 Session 3 - Motion Control of Manipulators
 ------------------------------------------
@@ -106,28 +121,12 @@ Session 6 - ROS Tools
 - :doc:`6.3 - ROS Style Guide and ros_lint <_source/session6/Style-Guide-and-ros_lint>`
 - :doc:`6.4 - Introduction to ROS with Docker and Amazon Web Services (AWS) <_source/session6/Docker-AWS>`
 
-Session 7 - ROS2
-----------------
+Session 7 - ROS2 Topics
+-----------------------
 
 - :doc:`7.0 - ROS2 basics <_source/session7/ROS2-Basics>`
 - :doc:`7.1 - ROS1 to ROS2 porting <_source/session7/ROS1-to-ROS2-porting>`
 - :doc:`7.2 - Using the ROS1-ROS2 bridge <_source/session7/ROS1-ROS2-bridge>`
-
-Legacy Material
----------------
-
-ROS1 Basics
------------
-
-- :doc:`1.0 - ROS Setup <_source/session1/ros1/ROS-Setup>`
-- :doc:`1.1 - Create a Workspace <_source/session1/ros1/Create-Catkin-Workspace>`
-- :doc:`1.2 - Installing Packages <_source/session1/ros1/Installing-Existing-Packages>`
-- :doc:`1.3 - Packages and Nodes <_source/session1/ros1/Creating-a-ROS-Package-and-Node>`
-- :doc:`1.4 - Topics and Messages <_source/session1/ros1/Topics-and-Messages>`
-- :doc:`2.0 - Services <_source/session2/ros1/Services>`
-- :doc:`2.1 - Actions <_source/session2/ros1/Actions>`
-- :doc:`2.2 - Launch Files <_source/session2/ros1/Launch-Files>`
-- :doc:`2.3 - Parameters <_source/session2/ros1/Parameters>`
 
 .. toctree::
     :hidden:
@@ -202,15 +201,6 @@ ROS1 Basics
 
 .. toctree::
     :hidden:
-    :caption: Legacy Material (ROS1)
     :maxdepth: 1
 
-    1.0 - ROS Setup <_source/session1/ros1/ROS-Setup>
-    1.1 - Create a Workspace <_source/session1/ros1/Create-Catkin-Workspace>
-    1.2 - Installing Packages <_source/session1/ros1/Installing-Existing-Packages>
-    1.3 - Packages and Nodes <_source/session1/ros1/Creating-a-ROS-Package-and-Node>
-    1.4 - Topics and Messages <_source/session1/ros1/Topics-and-Messages>
-    2.0 - Services <_source/session2/ros1/Services>
-    2.1 - Actions <_source/session2/ros1/Actions>
-    2.2 - Launch Files <_source/session2/ros1/Launch-Files>
-    2.3 - Parameters <_source/session2/ros1/Parameters>
+    Legacy Material (ROS1) <_source/legacy>
