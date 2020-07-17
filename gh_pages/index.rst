@@ -44,15 +44,15 @@ Session 1 - ROS Concepts and Fundamentals (ROS2)
 - :doc:`1.3 - Packages and Nodes <_source/session1/ros2/Creating-a-ROS-Package-and-Node>`
 - :doc:`1.4 - Topics and Messages <_source/session1/ros2/Topics-and-Messages>`
 
-Session 2 - Basic ROS Applications
-----------------------------------
+Session 2 - Basic ROS Applications (ROS2)
+-----------------------------------------
 
 :download:`Slides <_downloads/slides/ROS-I Basic Developers Training - Session 2.pdf>`
 
-- :doc:`2.0 - Services <_source/session2/Services>`
-- :doc:`2.1 - Actions <_source/session2/Actions>`
-- :doc:`2.2 - Launch Files <_source/session2/Launch-Files>`
-- :doc:`2.3 - Parameters <_source/session2/Parameters>`
+- :doc:`2.0 - Services <_source/session2/ros2/Services>`
+- :doc:`2.1 - Actions <_source/session2/ros2/Actions>`
+- :doc:`2.2 - Launch Files <_source/session2/ros2/Launch-Files>`
+- :doc:`2.3 - Parameters <_source/session2/ros2/Parameters>`
 
 Session 3 - Motion Control of Manipulators
 ------------------------------------------
@@ -113,6 +113,22 @@ Session 7 - ROS2
 - :doc:`7.1 - ROS1 to ROS2 porting <_source/session7/ROS1-to-ROS2-porting>`
 - :doc:`7.2 - Using the ROS1-ROS2 bridge <_source/session7/ROS1-ROS2-bridge>`
 
+Legacy Material
+---------------
+
+ROS1 Basics
+-----------
+
+- :doc:`1.0 - ROS Setup <_source/session1/ros1/ROS-Setup>`
+- :doc:`1.1 - Create a Workspace <_source/session1/ros1/Create-Catkin-Workspace>`
+- :doc:`1.2 - Installing Packages <_source/session1/ros1/Installing-Existing-Packages>`
+- :doc:`1.3 - Packages and Nodes <_source/session1/ros1/Creating-a-ROS-Package-and-Node>`
+- :doc:`1.4 - Topics and Messages <_source/session1/ros1/Topics-and-Messages>`
+- :doc:`2.0 - Services <_source/session2/ros1/Services>`
+- :doc:`2.1 - Actions <_source/session2/ros1/Actions>`
+- :doc:`2.2 - Launch Files <_source/session2/ros1/Launch-Files>`
+- :doc:`2.3 - Parameters <_source/session2/ros1/Parameters>`
+
 .. toctree::
     :hidden:
     :caption: Getting Started
@@ -127,18 +143,6 @@ Session 7 - ROS2
     0.2 - The Linux File System <_source/prerequisites/Exploring-the-Linux-File-System>
     0.3 - Using the Terminal <_source/prerequisites/The-Linux-Terminal>
 
-Legacy Material
----------------
-
-ROS1 Basics
------------
-
-- :doc:`1.0 - ROS Setup <_source/session1/ros1/ROS-Setup>`
-- :doc:`1.1 - Create a Workspace <_source/session1/ros1/Create-Catkin-Workspace>`
-- :doc:`1.2 - Installing Packages <_source/session1/ros1/Installing-Existing-Packages>`
-- :doc:`1.3 - Packages and Nodes <_source/session1/ros1/Creating-a-ROS-Package-and-Node>`
-- :doc:`1.4 - Topics and Messages <_source/session1/ros1/Topics-and-Messages>`
-
 .. toctree::
     :hidden:
     :caption: ROS Basics (ROS2)
@@ -149,10 +153,10 @@ ROS1 Basics
     1.2 - Installing Packages <_source/session1/ros2/Installing-Existing-Packages>
     1.3 - Packages and Nodes <_source/session1/ros2/Creating-a-ROS-Package-and-Node>
     1.4 - Topics and Messages <_source/session1/ros2/Topics-and-Messages>
-    2.0 - Services <_source/session2/Services>
-    2.1 - Actions <_source/session2/Actions>
-    2.2 - Launch Files <_source/session2/Launch-Files>
-    2.3 - Parameters <_source/session2/Parameters>
+    2.0 - Services <_source/session2/ros2/Services>
+    2.1 - Actions <_source/session2/ros2/Actions>
+    2.2 - Launch Files <_source/session2/ros2/Launch-Files>
+    2.3 - Parameters <_source/session2/ros2/Parameters>
 
 .. toctree::
     :hidden:
@@ -206,3 +210,7 @@ ROS1 Basics
     1.2 - Installing Packages <_source/session1/ros1/Installing-Existing-Packages>
     1.3 - Packages and Nodes <_source/session1/ros1/Creating-a-ROS-Package-and-Node>
     1.4 - Topics and Messages <_source/session1/ros1/Topics-and-Messages>
+    2.0 - Services <_source/session2/ros1/Services>
+    2.1 - Actions <_source/session2/ros1/Actions>
+    2.2 - Launch Files <_source/session2/ros1/Launch-Files>
+    2.3 - Parameters <_source/session2/ros1/Parameters>
