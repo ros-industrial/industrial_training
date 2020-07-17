@@ -49,11 +49,11 @@ Session 1 - ROS Concepts and Fundamentals (ROS2)
 
 :download:`Slides <_downloads/slides/ROS-I Basic Developers Training - Session 1.pdf>`
 
-- :doc:`1.0 - ROS Setup <_source/session1/ros2/ROS-Setup>`
-- :doc:`1.1 - Create a Workspace <_source/session1/ros2/Create-ROS-Workspace>`
-- :doc:`1.2 - Installing Packages <_source/session1/ros2/Installing-Existing-Packages>`
-- :doc:`1.3 - Packages and Nodes <_source/session1/ros2/Creating-a-ROS-Package-and-Node>`
-- :doc:`1.4 - Topics and Messages <_source/session1/ros2/Topics-and-Messages>`
+- :doc:`1.0 - ROS Setup <_source/session1/ros2/0-ROS-Setup>`
+- :doc:`1.1 - Create a Workspace <_source/session1/ros2/1-Create-ROS-Workspace>`
+- :doc:`1.2 - Installing Packages <_source/session1/ros2/2-Installing-Existing-Packages>`
+- :doc:`1.3 - Packages and Nodes <_source/session1/ros2/3-Creating-a-ROS-Package-and-Node>`
+- :doc:`1.4 - Topics and Messages <_source/session1/ros2/4-Topics-and-Messages>`
 
 For equivalent ROS1 content, see the :doc:`Legacy Material <_source/legacy>` page.
 
@@ -62,10 +62,10 @@ Session 2 - Basic ROS Applications (ROS2)
 
 :download:`Slides <_downloads/slides/ROS-I Basic Developers Training - Session 2.pdf>`
 
-- :doc:`2.0 - Services <_source/session2/ros2/Services>`
-- :doc:`2.1 - Actions <_source/session2/ros2/Actions>`
-- :doc:`2.2 - Launch Files <_source/session2/ros2/Launch-Files>`
-- :doc:`2.3 - Parameters <_source/session2/ros2/Parameters>`
+- :doc:`2.0 - Services <_source/session2/ros2/0-Services>`
+- :doc:`2.1 - Actions <_source/session2/ros2/1-Actions>`
+- :doc:`2.2 - Launch Files <_source/session2/ros2/2-Launch-Files>`
+- :doc:`2.3 - Parameters <_source/session2/ros2/3-Parameters>`
 
 For equivalent ROS1 content, see the :doc:`Legacy Material <_source/legacy>` page.
 
@@ -74,20 +74,20 @@ Session 3 - Motion Control of Manipulators
 
 :download:`Slides <_downloads/slides/ROS-I Basic Developers Training - Session 3.pdf>`
 
-- :doc:`3.0 - Intro to URDF <_source/session3/Intro-to-URDF>`
-- :doc:`3.1 - Workcell XACRO <_source/session3/Workcell-XACRO>`
-- :doc:`3.2 - Transforms using TF <_source/session3/Coordinate-Transforms-using-TF>`
-- :doc:`3.3 - Build a MoveIt! Package <_source/session3/Build-a-Moveit!-Package>`
-- :doc:`3.4 - Motion Planning using RViz <_source/session3/Motion-Planning-RVIZ>`
+- :doc:`3.0 - Intro to URDF <_source/session3/0-Intro-to-URDF>`
+- :doc:`3.1 - Workcell XACRO <_source/session3/1-Workcell-XACRO>`
+- :doc:`3.2 - Transforms using TF <_source/session3/2-Coordinate-Transforms-using-TF>`
+- :doc:`3.3 - Build a MoveIt Package <_source/session3/3-Build-a-MoveIt-Package>`
+- :doc:`3.4 - Motion Planning using RViz <_source/session3/4-Motion-Planning-RVIZ>`
 
 Session 4 - Descartes and Perception
 ------------------------------------
 
 :download:`Slides <_downloads/slides/ROS-I Basic Developers Training - Session 4.pdf>`
 
-- :doc:`4.0 - Motion Planning using C++ <_source/session4/Motion-Planning-CPP>`
-- :doc:`4.1 - Intro to Descartes <_source/session4/Descartes-Path-Planning>`
-- :doc:`4.2 - Intro to Perception <_source/session4/Introduction-to-Perception>`
+- :doc:`4.0 - Motion Planning using C++ <_source/session4/0-Motion-Planning-CPP>`
+- :doc:`4.1 - Intro to Descartes <_source/session4/1-Descartes-Path-Planning>`
+- :doc:`4.2 - Intro to Perception <_source/session4/2-Introduction-to-Perception>`
 
 Application Demos
 -----------------
@@ -147,29 +147,29 @@ Session 7 - ROS2 Topics
     :caption: ROS Basics (ROS2)
     :maxdepth: 1
 
-    1.0 - ROS Setup <_source/session1/ros2/ROS-Setup>
-    1.1 - Create a Workspace <_source/session1/ros2/Create-ROS-Workspace>
-    1.2 - Installing Packages <_source/session1/ros2/Installing-Existing-Packages>
-    1.3 - Packages and Nodes <_source/session1/ros2/Creating-a-ROS-Package-and-Node>
-    1.4 - Topics and Messages <_source/session1/ros2/Topics-and-Messages>
-    2.0 - Services <_source/session2/ros2/Services>
-    2.1 - Actions <_source/session2/ros2/Actions>
-    2.2 - Launch Files <_source/session2/ros2/Launch-Files>
-    2.3 - Parameters <_source/session2/ros2/Parameters>
+    1.0 - ROS Setup <_source/session1/ros2/0-ROS-Setup>
+    1.1 - Create a Workspace <_source/session1/ros2/1-Create-ROS-Workspace>
+    1.2 - Installing Packages <_source/session1/ros2/2-Installing-Existing-Packages>
+    1.3 - Packages and Nodes <_source/session1/ros2/3-Creating-a-ROS-Package-and-Node>
+    1.4 - Topics and Messages <_source/session1/ros2/4-Topics-and-Messages>
+    2.0 - Services <_source/session2/ros2/0-Services>
+    2.1 - Actions <_source/session2/ros2/1-Actions>
+    2.2 - Launch Files <_source/session2/ros2/2-Launch-Files>
+    2.3 - Parameters <_source/session2/ros2/3-Parameters>
 
 .. toctree::
     :hidden:
     :caption: ROS-Industrial Basics
     :maxdepth: 1
 
-    3.0 - Intro to URDF <_source/session3/Intro-to-URDF>
-    3.1 - Workcell XACRO <_source/session3/Workcell-XACRO>
-    3.2 - Transforms using TF <_source/session3/Coordinate-Transforms-using-TF>
-    3.3 - Build a MoveIt! Package <_source/session3/Build-a-Moveit!-Package>
-    3.4 - Motion Planning using RViz <_source/session3/Motion-Planning-RVIZ>
-    4.0 - Motion Planning using C++ <_source/session4/Motion-Planning-CPP>
-    4.1 - Intro to Descartes <_source/session4/Descartes-Path-Planning>
-    4.2 - Intro to Perception <_source/session4/Introduction-to-Perception>
+    3.0 - Intro to URDF <_source/session3/0-Intro-to-URDF>
+    3.1 - Workcell XACRO <_source/session3/1-Workcell-XACRO>
+    3.2 - Transforms using TF <_source/session3/2-Coordinate-Transforms-using-TF>
+    3.3 - Build a MoveIt Package <_source/session3/3-Build-a-MoveIt-Package>
+    3.4 - Motion Planning using RViz <_source/session3/4-Motion-Planning-RVIZ>
+    4.0 - Motion Planning using C++ <_source/session4/0-Motion-Planning-CPP>
+    4.1 - Intro to Descartes <_source/session4/1-Descartes-Path-Planning>
+    4.2 - Intro to Perception <_source/session4/2-Introduction-to-Perception>
 
 .. toctree::
     :hidden:

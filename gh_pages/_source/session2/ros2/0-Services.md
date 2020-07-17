@@ -238,8 +238,10 @@ Your goal is to create a more intricate system of nodes:
      // Planning components
      ros::ServiceClient vision_client_;
    };
+   ```
 
-   The `async_send_request` function is used on the `vision_client_` object to initiate the service call. Notice that it doesn't return a response object, but instead, something called a `future`. This is because the function immediately returns after sending the request and does not wait for a response from the server. It is our responsibility to wait for the response to arrive, which will be known by the future object becoming 'ready'.
+   The `async_send_request` function is used on the `vision_client_` object to initiate the service call. Notice that it doesn't return a response object, but instead, something called a `future`. This is because the function immediately returns after sending the request and does not wait for a response from the server. It is our responsibility to wait for the response to arrive, which will be known by the future object becoming 'complete'.
+
 
 1. Now add the code that will wait until the service response arrives and then prints the response:
 
