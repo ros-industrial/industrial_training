@@ -44,7 +44,7 @@ ln -s ~/industrial_training/exercises/7.2/src demo
 1. Source and build
 ```
 cd ..
-. /opt/ros/dashing/setup.bash
+. /opt/ros/eloquent/setup.bash
 colcon build
 ```
 
@@ -59,13 +59,13 @@ cd ~/ros1_bridge_ws/src
 ```
 git clone https://github.com/ros2/ros1_bridge.git
 cd ros1_bridge/
-git checkout dashing
+git checkout eloquent
 ```
 1. Source ROS and ROS2 setup bash files
 ```
 cd ~/ros1_bridge_ws/
 . /opt/ros/melodic/setup.bash
-. /opt/ros/dashing/setup.bash
+. /opt/ros/eloquent/setup.bash
 . ~/catkin_ws/devel/setup.bash
 . ~/colcon_ws/install/local_setup.bash
 ```

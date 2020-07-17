@@ -18,12 +18,12 @@ in the shell.
 1.  Clone the ROS2 demos examples repositories which we will use to run some examples. When building
     existing packages from source, it is important to verify the code version as the most recent
     version may have changes incompatible with the current release. Here we checkout the
-    repositories to the `dashing` release branch when cloned.
+    repositories to the `eloquent` release branch when cloned.
 
     ```bash
     cd ~/ros2_ws/src
-    git clone -b dashing git@github.com:ros2/demos.git
-    git clone -b dashing git@github.com:ros2/examples.git
+    git clone -b eloquent git@github.com:ros2/demos.git
+    git clone -b eloquent git@github.com:ros2/examples.git
     ```
 
 1.  Install any required dependencies for the repositories using rosdep. This step is the same as in
@@ -53,7 +53,7 @@ workspace setup file.
     start a terminal for it to take effect.
 
     ```bash
-    source /opt/ros/dashing/setup.bash
+    source /opt/ros/eloquent/setup.bash
     colcon build
     ```
 
@@ -68,7 +68,7 @@ workspace setup file.
     workspace packages as well as the environment the workspace was built in. `local_setup.bash`
     will add the workspace packages to the current environment.
 
-    - If you keep your `.bashrc` to source `/opt/ros/dashing/setup.bash` then you should only need to
+    - If you keep your `.bashrc` to source `/opt/ros/eloquent/setup.bash` then you should only need to
     run `source install/local_setup.bash`
 
     - Otherwise, run `source install/setup.bash`

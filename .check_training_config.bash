@@ -2,7 +2,7 @@
 
 TARGET_BRANCH=melodic  # industrial_training git branch
 ROS_RELEASE=melodic    # ROS1 release version
-ROS2_RELEASE=dashing   # ROS2 release version
+ROS2_RELEASE=eloquent  # ROS2 release version
 
 #=======================================================================
 # verify that PC configuration matches requirements for training class

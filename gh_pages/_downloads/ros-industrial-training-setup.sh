@@ -27,7 +27,7 @@ sudo apt install -y ros-melodic-industrial-core
 sudo apt install -y pcl-tools
 
 # ROS2 install
-sudo apt install -y ros-dashing-desktop
+sudo apt install -y ros-eloquent-desktop
 sudo apt install -y python3-colcon-common-extensions python3-argcomplete
 
 # rosdep setup

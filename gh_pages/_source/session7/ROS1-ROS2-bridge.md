@@ -60,7 +60,7 @@ procedure is somewhat involved.
 1.  Source and build
     ```
     cd ~/colcon_ws/src
-    . /opt/ros/dashing/setup.bash
+    . /opt/ros/eloquent/setup.bash
     colcon build
     ```
 
@@ -77,7 +77,7 @@ procedure is somewhat involved.
 1.  Clone the ROS1 bridge into your ROS2 workspace, selecting the branch that matches your ROS
     release
     ```
-    git clone -b dashing https://github.com/ros2/ros1_bridge.git
+    git clone -b eloquent https://github.com/ros2/ros1_bridge.git
     ```
 
 1.  Source ROS1 and ROS2 setup bash files. This is one of the only times you'll want to mix setup
