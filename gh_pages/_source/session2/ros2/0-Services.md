@@ -140,8 +140,8 @@ Your goal is to create a more intricate system of nodes:
 1. The `create_service` command above referenced a service callback named `localizePart`. Create an empty function with this name in the `Localizer` class. Remember that your request and response types were defined in the `LocalizePart.srv` file. The arguments to the boolean function are the request and response type, with the general structure of `Package::ServiceName::Request` or `Package::ServiceName::Response`. 
 
    ``` c++
-   void localizePart(myworkcell_core::LocalizePart::Request::SharedPtr req,
-                     myworkcell_core::LocalizePart::Response::SharedPtr res)
+   void localizePart(myworkcell_core::srv::LocalizePart::Request::SharedPtr req,
+                     myworkcell_core::srv::LocalizePart::Response::SharedPtr res)
    {
 
    }
@@ -150,8 +150,8 @@ Your goal is to create a more intricate system of nodes:
 1. Now add code to the `localizePart` callback function to fill in the Service Response. Eventually, this callback will transform the pose received from the `fake_ar_publisher` (in `visionCallback`) into the frame specifed in the Service Request.  For now, we will skip the frame-transform, and just pass through the data received from `fake_ar_publisher`.  Copy the pose measurement received from `fake_ar_publisher` (saved to `last_msg_`) directly to the Service Response. 
 
    ``` c++
-   void localizePart(myworkcell_core::LocalizePart::Request::SharedPtr req,
-                     myworkcell_core::LocalizePart::Response::SharedPtr res)
+   void localizePart(myworkcell_core::srv::LocalizePart::Request::SharedPtr req,
+                     myworkcell_core::srv::LocalizePart::Response::SharedPtr res)
    {
      // Read last message
      fake_ar_publisher::msg::ARMarker::SharedPtr p = last_msg_;
@@ -236,7 +236,7 @@ Your goal is to create a more intricate system of nodes:
 
    private:
      // Planning components
-     ros::ServiceClient vision_client_;
+     rclcpp::Client<myworkcell_core::srv::LocalizePart>::SharedPtr vision_client_;
    };
    ```
 
@@ -268,8 +268,7 @@ Your goal is to create a more intricate system of nodes:
        return;
      }
 
-     RCLCPP_INFO(this->get_logger(), "Part Localized:  w: %f, x: %f, y: %f, z: %f",
-         response->pose.orientation.w,
+     RCLCPP_INFO(this->get_logger(), "Part Localized: x: %f, y: %f, z: %f",
          response->pose.position.x,
          response->pose.position.y,
          response->pose.position.z);
@@ -292,9 +291,17 @@ Your goal is to create a more intricate system of nodes:
 
    ``` cmake
    add_executable(myworkcell_node src/myworkcell_node.cpp)
-   ament_target_dependencies(myworkcell_node rclcpp fake_ar_publisher)
+   ament_target_dependencies(myworkcell_node rclcpp)
    rosidl_target_interfaces(myworkcell_node ${PROJECT_NAME} "rosidl_typesupport_cpp")
    ``` 
+
+   Also add `myworkcell_node` to the existing call to `install` along with `vision_node`:
+
+   ``` cmake
+   install(TARGETS vision_node myworkcell_node
+       ...
+   )
+   ```
 
 5. Build the nodes to check for any compile-time errors:
 

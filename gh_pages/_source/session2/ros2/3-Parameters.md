@@ -56,6 +56,13 @@ So far we haven't used the request field, `base_frame`, for anything. In this ex
    * Note we didn't do any checking that the parameter exists or has the right type. This because the `declare_parameter` function provides these guarantees.
    * The `declare_parameter` function actually returns the parameter value as well, so if you want to declare and get a parameter in the same place, you can do it with one line.
 
+1. Also prior to calling `start`, insert a call to sleep for a few seconds. Without this, the service will be called immediately when the node starts and if the nodes all start together, there is a good chance the _vision_node_ won't have received any data from the _fake_ar_publisher_ yet:
+
+   ``` c++
+   //Wait for the vision node to receive data
+   rclcpp::sleep_for(std::chrono::seconds(2));
+   ```
+
 1. Add an argument to your `myworkcell_node` "start" function of a string named `base_frame`, and assign the value from the argument into the service request. Make sure to update the `app->start` call in your `main()` routine to pass through the `base_frame` value you obtained.
 
    ``` c++

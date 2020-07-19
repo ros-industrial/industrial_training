@@ -174,6 +174,17 @@ Your goal is to create your first ROS node:
 
    _Note: You're allowed to spread most of the CMakeLists rules across multiple lines, which is often required when a target contains many source files or has many dependencies.
 
+1. We've now told CMake about the _vision_node_ executable and how to build it, but to actually run it, the file must be *installed* along with all the other workspace outputs. Typically, the installation location will be the `install/` directory alongside the `src/` directory. Add the following lines to declare an installation rule for the _vision_node_ executable:
+
+   ``` cmake
+   # Mark executables and/or libraries for installation
+   install(TARGETS vision_node
+       ARCHIVE DESTINATION lib/${PROJECT_NAME}
+       LIBRARY DESTINATION lib/${PROJECT_NAME}
+       RUNTIME DESTINATION lib/${PROJECT_NAME}
+   )
+   ```
+
 1. Build your program (node), by running `colcon build` in a terminal window
 
    * _Remember that you must run `colcon build` from the `ros2_ws` directory.
