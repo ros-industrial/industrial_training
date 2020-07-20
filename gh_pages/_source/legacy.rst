@@ -4,6 +4,8 @@ Legacy Material
 Session 1 - ROS1 Basics
 -----------------------
 
+:download:`Slides </_downloads/slides/ROS-I Basic Developers Training - Session 1.pdf>`
+
 .. toctree::
     :maxdepth: 1
 
@@ -15,6 +17,8 @@ Session 1 - ROS1 Basics
 
 Session 2 - ROS1 Applications
 -----------------------------
+
+:download:`Slides </_downloads/slides/ROS-I Basic Developers Training - Session 2.pdf>`
 
 .. toctree::
     :maxdepth: 1
