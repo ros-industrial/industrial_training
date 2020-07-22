@@ -40,7 +40,7 @@ Specifically, edit the service callback inside the vision_node to transform the 
 
     ``` c++
     #include <geometry_msgs/PoseStamped.h>
-    #include <tf2_geometry_msgs/tf2_geometry_msgs.g>
+    #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
     ```
 
  1. The transform listener must be constructed using the buffer. Initialize it in the class constructor:
