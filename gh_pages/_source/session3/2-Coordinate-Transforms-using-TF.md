@@ -36,6 +36,8 @@ Specifically, edit the service callback inside the vision_node to transform the 
     tf2_ros::TransformListener listener_;
     ```
 
+ 1. Also add the line `#include <geometry_msgs/PoseStamped.h> as we will be using that datatype.
+
  1. The transform listener must be constructed using the buffer. Initialize it in the class constructor:
 
     ``` c++
