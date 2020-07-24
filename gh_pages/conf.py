@@ -15,20 +15,21 @@
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-#
+
 from sphinx import version_info as sphinx_version_info
 import os
 import git
 curr_path = os.path.abspath('.')
-# The try catch is need because of the subversion tool when it creates the master.
+# The try catch is needed because of the subversion tool when it creates the
+# master.
 try:
-  repo = git.Repo(curr_path)
-  current_branch = repo.active_branch.name
+    repo = git.Repo(curr_path)
+    current_branch = repo.active_branch.name
 except git.exc.InvalidGitRepositoryError:
-  current_branch = ''
+    current_branch = ''
 
 
-# -- General configuration ------------------------------------------------
+# -- General configuration ---------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
@@ -36,13 +37,13 @@ except git.exc.InvalidGitRepositoryError:
 extensions = []
 
 if sphinx_version_info >= (1, 4):
-  extensions += ['recommonmark']
+    extensions += ['recommonmark']
 else:
-  from recommonmark.parser import CommonMarkParser
+    from recommonmark.parser import CommonMarkParser
 
-  source_parsers = {
-      '.md': CommonMarkParser,
-  }
+    source_parsers = {
+        '.md': CommonMarkParser,
+    }
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -52,7 +53,8 @@ source_suffix = ['.rst', '.md']
 # The master toctree document.
 master_doc = 'index'
 
-# General information about the project.
+# -- Project information -----------------------------------------------------
+
 project = u'Industrial Training'
 copyright = u'2017, ROS-Industrial'
 
@@ -74,7 +76,7 @@ language = None
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-# This pattern also affects html_static_path and html_extra_path .
+# This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', 'README.md', 'exercise']
 
 # The name of the Pygments (syntax highlighting) style to use.
