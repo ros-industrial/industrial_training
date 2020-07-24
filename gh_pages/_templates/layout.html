@@ -4,7 +4,8 @@
   <script src="{{ pathto('_static/clipboard.min.js', 1) }}"></script>
 {% endblock %}
 
-{% block extracontent %}
+<!-- Copied the 'block content' from the original sphinx_rtd_theme to insert the header -->
+{%- block content %}
   <div class="header-override">
     <a href="http://rosindustrial.org">
       <img src="{{ pathto('_static/logo.jpg', 1) }}"/>
@@ -13,7 +14,27 @@
       <a href="http://rosindustrial.org">ROS-Industrial Website</a>|<a href="http://rosindustrial.org/news">Blog</a>
     </p>
   </div>
-{% endblock %}
+{% if theme_style_external_links|tobool %}
+<div class="rst-content style-external-links">
+{% else %}
+<div class="rst-content">
+{% endif %}
+  {% include "breadcrumbs.html" %}
+  <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+  {%- block document %}
+   <div itemprop="articleBody">
+    {% block body %}{% endblock %}
+   </div>
+   {% if self.comments()|trim %}
+   <div class="articleComments">
+    {% block comments %}{% endblock %}
+   </div>
+   {% endif%}
+  </div>
+  {%- endblock %}
+  {% include "footer.html" %}
+</div>
+{%- endblock %}
 
 {% block footer %}
   <script>
