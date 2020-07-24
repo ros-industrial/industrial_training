@@ -38,11 +38,16 @@
 
 {% block footer %}
   <script>
-  var pre = document.getElementsByTagName('pre');
-  for (var i = 0; i < pre.length; i++) {
+  // Only select divs with class highlight, to prevent line number columns from
+  // getting a copy button.
+  var hls = document.querySelectorAll('div.highlight');
+  for (var i = 0; i < hls.length; i++) {
     var button = document.createElement('button');
     button.className = 'btn-copyboard fa fa-copy btn';
-    pre[i].before(button);
+    // Reset overflow to 'visible' to prevent double scrollbars from appearing
+    hls[i].childNodes[0].style.overflow = 'visible';
+    // Insert the copy button before the first child of the divs.
+    hls[i].insertBefore(button, hls[i].childNodes[0]);
   }
   var clipboard = new Clipboard('.btn-copyboard', {
     target: function(trigger) {return trigger.nextElementSibling;}
