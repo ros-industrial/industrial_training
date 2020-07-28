@@ -14,26 +14,7 @@
       <a href="http://rosindustrial.org">ROS-Industrial Website</a>|<a href="http://rosindustrial.org/news">Blog</a>
     </p>
   </div>
-{% if theme_style_external_links|tobool %}
-<div class="rst-content style-external-links">
-{% else %}
-<div class="rst-content">
-{% endif %}
-  {% include "breadcrumbs.html" %}
-  <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-  {%- block document %}
-   <div itemprop="articleBody">
-    {% block body %}{% endblock %}
-   </div>
-   {% if self.comments()|trim %}
-   <div class="articleComments">
-    {% block comments %}{% endblock %}
-   </div>
-   {% endif%}
-  </div>
-  {%- endblock %}
-  {% include "footer.html" %}
-</div>
+  {{ super() }}
 {%- endblock %}
 
 {% block footer %}
