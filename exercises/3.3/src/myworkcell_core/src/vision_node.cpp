@@ -4,12 +4,15 @@
 #include <ros/ros.h>
 #include <fake_ar_publisher/ARMarker.h>
 #include <myworkcell_core/LocalizePart.h>
-#include <tf/transform_listener.h>
+#include <geometry_msgs/PoseStamped.h>
+#include <tf2_ros/buffer.h>
+#include <tf2_ros/transform_listener.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 
 class Localizer
 {
 public:
-    Localizer(ros::NodeHandle& nh)
+    Localizer(ros::NodeHandle& nh) : listener_(buffer_)
     {
         ar_sub_ = nh.subscribe<fake_ar_publisher::ARMarker>("ar_pose_marker", 1,
         &Localizer::visionCallback, this);
@@ -30,23 +33,22 @@ public:
       fake_ar_publisher::ARMarkerConstPtr p = last_msg_;
       if (!p) return false;
 
-      tf::Transform cam_to_target;
-      tf::poseMsgToTF(p->pose.pose, cam_to_target);
+      geometry_msgs::PoseStamped target_pose_from_cam;
+      target_pose_from_cam.header = p->header;
+      target_pose_from_cam.pose = p->pose.pose;
 
-      tf::StampedTransform req_to_cam;
-      listener_.lookupTransform(req.base_frame, p->header.frame_id, ros::Time(0), req_to_cam);
+      geometry_msgs::PoseStamped target_pose_from_req = buffer_.transform(
+          target_pose_from_cam, req.base_frame);
 
-      tf::Transform req_to_target;
-      req_to_target = req_to_cam * cam_to_target;
-
-      tf::poseTFToMsg(req_to_target, res.pose);
+      res.pose = target_pose_from_req.pose;
       return true;
     }
 
     ros::Subscriber ar_sub_;
     fake_ar_publisher::ARMarkerConstPtr last_msg_;
     ros::ServiceServer server_;
-    tf::TransformListener listener_;
+    tf2_ros::Buffer buffer_;
+    tf2_ros::TransformListener listener_;
 };
 
 int main(int argc, char* argv[])
