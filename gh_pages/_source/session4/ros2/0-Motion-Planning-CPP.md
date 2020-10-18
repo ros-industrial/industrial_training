@@ -19,66 +19,183 @@ In this exercise, your goal is to modify the `myworkcell_core` node to:
 
 ## Scan-N-Plan Application: Guidance
 
- 1. Edit your `myworkcell_node.cpp` file.
+### Using MoveGroupInterface
 
-    1. Add `#include <tf/tf.h>` to allow access to the tf library (for frame transforms/utilities).
+ 1. Edit your `myworkcell_node.cpp` file. In the `ScanNPlan` class's `start` method, use the response from the `LocalizePart` service to initialize a new `move_target` variable:
 
-       * Remember that we already added a dependency on the `tf` package in a previous exercise.
-
-    1. In the `ScanNPlan` class's `start` method, use the response from the `LocalizePart` service to initialize a new `move_target` variable:
-
-       ``` c++
-       geometry_msgs::Pose move_target = srv.response.pose;
-       ```
-
-       * make sure to place this code _after_ the call to the vision_node's service.
-
- 1. Use the `MoveGroupInterface` to plan/execute a move to the `move_target` position:
-
-    1. In order to use the `MoveGroupInterface` class it is necessary to add the `moveit_ros_planning_interface` package as a dependency of your `myworkcell_core` package. Add the `moveit_ros_planning_interface` dependency by modifying your package's `CMakeLists.txt` (2 lines) and `package.xml` (1 line) as in previous exercises.
-
-    1. Add the appropriate "include" reference to allow use of the `MoveGroupInterface`:
-      
-       ```c++
-       #include <moveit/move_group_interface/move_group_interface.h>
-       ``` 
-
-    1. Create a `moveit::planning_interface::MoveGroupInterface` object in the `ScanNPlan` class's `start()` method. It has a single constructor that takes the name of the planning group you defined when creating the workcell moveit package (“manipulator”).
-
-       ```c++
-       moveit::planning_interface::MoveGroupInterface move_group("manipulator");
-       ```
-
-    1. Set the desired cartesian target position using the `move_group` object’s `setPoseTarget` function. Call the object's `move()` function to plan and execute a move to the target position.
-
-       ```c++
-       // Plan for robot to move to part
-       move_group.setPoseReferenceFrame(base_frame);
-       move_group.setPoseTarget(move_target); 
-       move_group.move();
-       ```
-
-    1. As described [here](http://docs.ros.org/jade/api/moveit_ros_planning_interface/html/classmoveit_1_1planning__interface_1_1MoveGroup.html#a4c63625e2e9eb5c342d1fc6732bd8cf7), the `move_group.move()` command requires use of an "asynchronous" spinner, to allow processing of ROS messages during the blocking `move()` command.  Initialize the spinner near the start of the `main()` routine after `ros::init(argc, argv, "myworkcell_node")`, and **replace** the existing `ros::spin()` command with `ros::waitForShutdown()`, as shown:
-
-       ```c++
-       ros::AsyncSpinner async_spinner(1);
-       async_spinner.start();
-       ...
-       ros::waitForShutdown();
-       ```
-
- 1. Test the system!
-
-    ``` bash
-    catkin build
-    roslaunch myworkcell_moveit_config myworkcell_planning_execution.launch
-    roslaunch myworkcell_support workcell.launch
+    ``` c++
+    geometry_msgs::msg::PoseStamped move_target;
+    move_target.header.frame_id = base_frame;
+    move_target.pose = response->pose;
     ```
 
- 1. More to explore...
-    * In RViz, add a "Marker" display of topic "/ar_pose_visual" to confirm that the final robot position matches the position published by `fake_ar_publisher`
-    * Try repeating the motion planning sequence:
-      1. Use the MoveIt rviz interface to move the arm back to the "allZeros" position
-      1. Ctrl+C the `workcell.launch` file, then rerun
-    * Try updating the `workcell_node`'s `start` method to automatically move back to the `allZeros` position after moving to the AR_target position.  See [here](http://docs.ros.org/kinetic/api/moveit_ros_planning_interface/html/classmoveit_1_1planning__interface_1_1MoveGroup.html) for a list of `move_group`'s available methods.
-    * Try moving to an "approach position" located a few inches away from the target position, prior to the final move-to-target.
+    * make sure to place this code _after_ the call to the vision_node's service.
+
+ 1. Create a `MoveGroupInterface` object which will be used for performing the motion planning
+
+     1. Add these lines in the `start` function:
+
+        ```
+        moveit::planning_interface::MoveGroupInterface move_group(
+            this->shared_from_this(),
+            "manipulator");
+
+        move_group.setPoseTarget(move_target);
+        move_group.move();
+        ```
+
+     1. Add required dependencies in your `CMakeLists.txt`:
+
+        ```
+        find_package(moveit_msgs REQUIRED)
+        find_package(moveit_ros_planning_interface REQUIRED)
+
+        ...
+
+        ament_target_dependencies(myworkcell_node
+          rclcpp
+          moveit_msgs
+          moveit_ros_planning_interface
+        )
+        target_link_libraries(myworkcell_node Boost::system)
+        ```
+
+        and in `package.xml`:
+
+        ```
+        <depend>moveit_msgs</depend>
+        <depend>moveit_ros_planning_interface</depend>
+        ```
+
+     1. Add includes at the top of file for the needed MoveIt components:
+
+        ```
+        #include <moveit/move_group_interface/move_group_interface.h>
+        ```
+
+ 1. Currently, MoveIt2 uses many parameters that are not declared ahead of time. To enable this, we have to construct our ROS2 node with an option to automatically declare parameters when they are set in a launch file. Modify the `ScanNPlan` constructor to start with the following:
+
+    ```
+    ScanNPlan() : Node("scan_n_plan", rclcpp::NodeOptions().automatically_declare_parameters_from_overrides(true))
+    {
+      if (! this->has_parameter("base_frame"))
+      {
+        this->declare_parameter("base_frame", "world");
+      }
+    ```
+
+    Note that the previous `declare_parameter` will now throw an exception if the parameter gets automatically declared which is why we first check if the parameter already exists now.
+
+### Execution
+
+ 1. The `move` command is all that's needed to get your manipulator to move (with the right parameters) but some support when running MoveIt to have it function properly. Inside the `main` function, insert the following lines before you call `app->start`:
+
+    ```
+    // Start spinning in a background thread so MoveIt internals can execute
+    std::thread worker{
+      [app]()
+      {
+        rclcpp::spin(app);
+      }
+    };
+    ```
+
+    This lets ROS process callbacks in a separate worker thread while the main thread remains available for us to define our application logic. This implies we can no longer call any spin functions in the main thread now. Replace the call to `spin_until_future_complete` in the `start` function with a function to simply wait for the future to be ready:
+
+    ```diff
+    -if (rclcpp::spin_until_future_complete(this->get_node_base_interface(), future) != rclcpp::executor::FutureReturnCode::SUCCESS)
+    +if (future.wait_for(std::chrono::seconds(3)) == std::future_status::timeout)
+    ```
+
+### Launch files and testing
+
+ 1. Open your `workcell.launch.py` and replace it with the following contents:
+
+    ```
+    import os
+    import yaml
+    import launch
+    import launch_ros
+    from ament_index_python import get_package_share_directory
+
+    def get_package_file(package, file_path):
+        """Get the location of a file installed in an ament package"""
+        package_path = get_package_share_directory(package)
+        absolute_file_path = os.path.join(package_path, file_path)
+        return absolute_file_path
+
+    def load_file(file_path):
+        """Load the contents of a file into a string"""
+        try:
+            with open(file_path, 'r') as file:
+                return file.read()
+        except EnvironmentError: # parent of IOError, OSError *and* WindowsError where available
+            return None
+
+    def load_yaml(file_path):
+        """Load a yaml file into a dictionary"""
+        try:
+            with open(file_path, 'r') as file:
+                return yaml.safe_load(file)
+        except EnvironmentError: # parent of IOError, OSError *and* WindowsError where available
+            return None
+
+    def run_xacro(xacro_file):
+        """Run xacro and output a file in the same directory with the same name, w/o a .xacro suffix"""
+        urdf_file, ext = os.path.splitext(xacro_file)
+        if ext != '.xacro':
+            raise RuntimeError(f'Input file to xacro must have a .xacro extension, got {xacro_file}')
+        os.system(f'xacro {xacro_file} -o {urdf_file}')
+        return urdf_file
+
+
+    def generate_launch_description():
+        xacro_file = get_package_file('myworkcell_support', 'urdf/workcell.urdf.xacro')
+        urdf_file = run_xacro(xacro_file)
+        srdf_file = get_package_file('myworkcell_moveit_config', 'config/myworkcell.srdf')
+        kinematics_file = get_package_file('myworkcell_moveit_config', 'config/kinematics.yaml')
+
+        robot_description = load_file(urdf_file)
+        robot_description_semantic = load_file(srdf_file)
+        kinematics_config = load_yaml(kinematics_file)
+
+        return launch.LaunchDescription([
+            launch_ros.actions.Node(
+                name='fake_ar_publisher_node',
+                package='fake_ar_publisher',
+                executable='fake_ar_publisher_node',
+                output='screen',
+            ),
+            launch_ros.actions.Node(
+                name='vision_node',
+                package='myworkcell_core',
+                executable='vision_node',
+                output='screen',
+            ),
+            launch_ros.actions.Node(
+                name='myworkcell_node',
+                package='myworkcell_core',
+                executable='myworkcell_node',
+                output='screen',
+                parameters=[
+                    {
+                        'base_frame': 'world',
+                        'robot_description': robot_description,
+                        'robot_description_semantic': robot_description_semantic,
+                        'robot_description_kinematics': kinematics_config,
+                    },
+                ],
+            ),
+        ])
+    ```
+
+    * Note that this uses the same set of helper functions as previous launch files
+    * All of the extra complexity is used to build the set of parameters for the `myworkcell_node` node.
+
+ 1. Now let's test the system!
+
+    ``` bash
+    colcon build
+    ros2 launch myworkcell_moveit_config myworkcell_planning_execution.launch.py
+    ros2 launch myworkcell_support workcell.launch.py
+    ```
