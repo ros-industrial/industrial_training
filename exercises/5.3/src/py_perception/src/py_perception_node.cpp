@@ -4,7 +4,7 @@
 #include <tf/transform_listener.h>
 #include <tf/transform_broadcaster.h>
 #include <sensor_msgs/PointCloud2.h> //hydro
-#include <lesson_perception/FilterCloud.h>
+#include <py_perception/FilterCloud.h>
 
 // PCL specific includes
 #include <pcl_conversions/pcl_conversions.h> //hydro
@@ -167,8 +167,8 @@ clusterExtraction(const pcl::PointCloud<pcl::PointXYZ>::ConstPtr &input_cloud)
 /* ========================================
  * Fill Code: FILTER CALLBACK
  * ========================================*/
-bool filterCallback(lesson_perception::FilterCloud::Request& request,
-                    lesson_perception::FilterCloud::Response& response)
+bool filterCallback(py_perception::FilterCloud::Request& request,
+                    py_perception::FilterCloud::Response& response)
 {
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
   pcl::PointCloud<pcl::PointXYZ>::Ptr filtered_cloud (new pcl::PointCloud<pcl::PointXYZ>);
@@ -193,22 +193,22 @@ bool filterCallback(lesson_perception::FilterCloud::Request& request,
   switch (request.operation)
   {
 
-    case lesson_perception::FilterCloud::Request::VOXELGRID :
+    case py_perception::FilterCloud::Request::VOXELGRID :
     {
       filtered_cloud = voxelGrid(cloud, 0.01);
       break;
     }
-    case lesson_perception::FilterCloud::Request::PASSTHROUGH :
+    case py_perception::FilterCloud::Request::PASSTHROUGH :
     {
       filtered_cloud = passThrough(cloud);
       break;
     }
-    case lesson_perception::FilterCloud::Request::PLANESEGMENTATION :
+    case py_perception::FilterCloud::Request::PLANESEGMENTATION :
     {
       filtered_cloud = planeSegmentation(cloud);
       break;
     }
-    case lesson_perception::FilterCloud::Request::CLUSTEREXTRACTION :
+    case py_perception::FilterCloud::Request::CLUSTEREXTRACTION :
     {
       std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> temp =clusterExtraction(cloud);
       if (temp.size()>0)

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(lesson_perception)
+project(py_perception)
 add_definitions(-std=c++11)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -83,7 +83,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES lesson_perception
+#  LIBRARIES py_perception
   CATKIN_DEPENDS
     roscpp
     sensor_msgs
@@ -106,8 +106,8 @@ include_directories(
 )
 
 ## Declare a cpp library
-# add_library(lesson_perception
-#   src/${PROJECT_NAME}/lesson_perception.cpp
+# add_library(py_perception
+#   src/${PROJECT_NAME}/py_perception.cpp
 # )
 
 ## Declare a cpp executable
@@ -115,7 +115,7 @@ include_directories(
 
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
-# add_dependencies(lesson_perception_node lesson_perception_generate_messages_cpp)
+# add_dependencies(py_perception py_perception_generate_messages_cpp)
 
 ## Specify libraries to link a library or executable target against
  target_link_libraries(py_perception_node
@@ -138,7 +138,7 @@ include_directories(
 # )
 
 ## Mark executables and/or libraries for installation
-# install(TARGETS lesson_perception lesson_perception_node
+# install(TARGETS py_perception py_perception_node
 #   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -162,7 +162,7 @@ include_directories(
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_lesson_perception.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_py_perception.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
