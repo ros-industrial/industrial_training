@@ -391,8 +391,6 @@ Create a CropBox Filter
 
       /* ========================================
        * Fill Code: CROPBOX (OPTIONAL)
-       * Instead of three passthrough filters, the cropbox filter can be used
-       * The user should choose one or the other method
        * ========================================*/
 
    This CropBox filter should replace your passthrough filters, you may delete or comment the passthrough filters. There is no PCL tutorial to guide you, only the PCL documentation at the link above. The general setup will be the same (set the output, declare instance of filter, set input, set parameters, and filter).
@@ -700,7 +698,7 @@ While this is not a filter method, it is useful when using PCL or other percepti
       cloud_topic = priv_nh_.param<std::string>("cloud_topic", "kinect/depth_registered/points");
       world_frame = priv_nh_.param<std::string>("world_frame", "kinect_link");
       camera_frame = priv_nh_.param<std::string>("camera_frame", "kinect_link");
-      voxel_leaf_size = param<float>("voxel_leaf_size", 0.002);
+      voxel_leaf_size = priv_nh_.param<float>("voxel_leaf_size", 0.002);
       x_filter_min = priv_nh_.param<float>("x_filter_min", -2.5);
       x_filter_max = priv_nh_.param<float>("x_filter_max",  2.5);
       y_filter_min = priv_nh_.param<float>("y_filter_min", -2.5);

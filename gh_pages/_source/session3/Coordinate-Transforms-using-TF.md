@@ -7,12 +7,12 @@ TF is a fundamental tool that allows for the lookup the transformation between a
 
 
 ## Reference Example
-[ROS TF Listener Tutorial](http://wiki.ros.org/tf/Tutorials/Writing%20a%20tf%20listener%20(C%2B%2B))
+[ROS TF2 Listener Tutorial](http://wiki.ros.org/tf2/Tutorials/Writing%20a%20tf2%20listener%20%28C%2B%2B%29)
 
 ## Further Information and Resources
- * [Wiki Documentation](http://wiki.ros.org/tf)
- * [TF Tutorials](http://wiki.ros.org/tf/Tutorials)
- * [TF Listener API](http://docs.ros.org/melodic/api/tf/html/)
+ * [Wiki Documentation](http://wiki.ros.org/tf2)
+ * [TF2 Tutorials](http://wiki.ros.org/tf2/Tutorials)
+ * [TF2 Buffer API](http://docs.ros.org/melodic/api/tf2_ros/html/c++/classtf2__ros_1_1Buffer.html)
 
 ## Scan-N-Plan Application: Problem Statement
 The part pose information returned by our (simulated) camera is given in the optical reference frame of the camera itself. For the robot to do something with this data, we need to transform the data into the robot’s reference frame.
@@ -22,16 +22,27 @@ Specifically, edit the service callback inside the vision_node to transform the 
 
 ## Scan-N-Plan Application: Guidance
 
- 1. Specify `tf` as a dependency of your core package.
+ 1. Specify `tf2_ros` and `tf2_geometry_msgs` as dependencies of your core package.
 
-    * Edit `package.xml` (1 line) and `CMakeLists.txt` (2 lines) as in previous exercises
+    * Edit `package.xml` (+2 lines) and `CMakeLists.txt` (+4 lines) as in previous exercises
 
- 1. Add a `tf::TransformListener` object to the vision node (as a class member variable). 
+ 1. Add `tf2_ros::Buffer` and `tf2_ros::TransformListener` objects to the vision node (as class members variables). 
 
     ``` c++
-    #include <tf/transform_listener.h>
+    #include <tf2/buffer.h>
+    #include <tf2/transform_listener.h>
     ...
-    tf::TransformListener listener_;
+    tf2_ros::Buffer buffer_;
+    tf2_ros::TransformListener listener_;
+    ```
+
+ 1. The transform listener must be constructed using the buffer. Initialize it in the class constructor:
+
+    ``` c++
+    class Localizer
+    {
+    public:
+      Localizer(ros::NodeHandle& nh) : listener_(buffer_)
     ```
 
  1. Add code to the existing `localizePart` method to convert the reported target pose from its reference frame ("camera_frame") to the service-request frame:
@@ -42,31 +53,27 @@ Specifically, edit the service callback inside the vision_node to transform the 
        - res.pose = p->pose.pose;
        ```
 
-    1. For better or worse, ROS uses lots of different math libraries. You’ll need to transform the over-the-wire format of `geometry_msgs::Pose` into a `tf::Transform object`:
+    1. To perform a coordinate transformation, we will use a _stamped pose_ object which bundles a 3D pose with metadata about what coordinate system the pose is in, which is known as a _header_. These pieces of data both come from the message received by the marker publisher:
 
        ``` c++
-       tf::Transform cam_to_target;
-       tf::poseMsgToTF(p->pose.pose, cam_to_target);
+       geometry_msgs::PoseStamped target_pose_from_cam;
+       target_pose_from_cam.header = p->header;
+       target_pose_from_cam.pose = p->pose.pose;
        ```
 
-    1. Use the listener object to lookup the latest transform between the `request.base_frame` and the reference frame from the `ARMarker` message (which should be "camera_frame"):
+    1. Use the buffer object to transform this `PoseStamped` object to another coordinate frame, specified by the frame in the service request:
 
        ``` c++
-       tf::StampedTransform req_to_cam;
-       listener_.lookupTransform(req.base_frame, p->header.frame_id, ros::Time(0), req_to_cam);
+       geometry_msgs::PoseStamped target_pose_from_req = buffer_.transform(
+           target_pose_from_cam, req.base_frame);
        ```
-
-    1. Using the above information, transform the object pose into the target frame.
-
-       ``` c++
-       tf::Transform req_to_target;
-       req_to_target = req_to_cam * cam_to_target;
-       ```
+      - Note: The buffer looks up the transformation between the camera frame and the base frame at the specific time when the message was first generated, which is also recorded in the header of the message.
+      - There are many other _Stamped_ versions messages besides `PoseStamped`. Most of them can also be transformed to different coordinate system using the same method.
 
     1. Return the transformed pose in the service response. 
 
        ``` c++
-       tf::poseTFToMsg(req_to_target, res.pose);
+       res.pose = target_pose_from_req.pose;
        ```
 
  1. Run the nodes to test the transforms:

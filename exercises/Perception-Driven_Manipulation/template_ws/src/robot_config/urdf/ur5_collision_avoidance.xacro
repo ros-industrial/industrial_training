@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <robot name="ur5_collision_avoidance" xmlns:xacro="http://ros.org/wiki/xacro">
     <xacro:include filename="$(find robot_config)/urdf/vacuum_gripper_macro.xacro"/>
-    <xacro:include filename="$(find robot_config)/urdf/ur5.urdf.xacro" />
+    <xacro:include filename="$(find ur_description)/urdf/ur5.urdf.xacro" />
     <xacro:include filename="$(find robot_config)/urdf/workspace_components.xacro"/>
     <xacro:include filename="$(find robot_config)/urdf/kinect_sensor_macro.xacro"/>
 
