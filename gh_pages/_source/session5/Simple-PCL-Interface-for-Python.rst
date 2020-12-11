@@ -58,7 +58,7 @@ Create a Python Package
 
 Now that we have converted several filters to C++ functions, we are ready to call it from a Python node.
 
-#. In the terminal, change the directory to your src folder. Create a new package inside your python-pcl_ws:
+#. In the terminal, change the directory to your src folder. Create a new package called **filter_call** inside your python-pcl_ws:
 
    .. code-block:: bash
 
@@ -74,7 +74,7 @@ Now that we have converted several filters to C++ functions, we are ready to cal
 We will not be including ‘perception_msgs’ as a dependency as we will not be creating custom messages in this course. If you wish for a more in depth explanation including how to implement customer messages, here is a good `MIT resource <http://duckietown.mit.edu/media/pdfs/1rpRisFoCYUm0XT78j-nAYidlh-cDtLCdEbIaBCnx9ew.pdf>`__ on the steps taken.
 
 
-#. Open ``CMakeLists.txt``. Uncomment line 19 or wherever you find **# catkin_python_setup()** and save.
+#. Open ``CMakeLists.txt`` in the **filter_call** package. Uncomment line 19 or wherever you find **# catkin_python_setup()** and save.
 
    .. code-block:: bash
 
@@ -89,6 +89,7 @@ The ``setup.py`` file makes your python module available to the entire workspace
 
    .. code-block:: bash
 
+            touch filter_call/setup.py
             gedit filter_call/setup.py
 
 #. Copy and paste the following to the ``setup.py`` file
@@ -100,7 +101,7 @@ The ``setup.py`` file makes your python module available to the entire workspace
             from catkin_pkg.python_setup import generate_distutils_setup
             # fetch values from package.xml
             setup_args = generate_distutils_setup(
-            packages=[''],
+            packages=['filter_call'],
             package_dir={'': 'include'},
             )
             setup(**setup_args)
@@ -116,6 +117,7 @@ The ``setup.py`` file makes your python module available to the entire workspace
 
    .. code-block:: bash
 
+            mkdir -p filter_call/include/filter_call
             touch filter_call/include/filter_call/__init__.py
 
 Publishing the Point Cloud
@@ -192,6 +194,8 @@ Implement a Voxel Filter
    .. code-block:: bash
 
             mkdir scripts
+            touch scripts/filter_call.py
+            gedit scripts/filter_call.py
 
 #. Copy and paste the following code at the top of ``filter_call.py`` to import necessary libraries:
 
@@ -271,13 +275,17 @@ Viewing Results
 
    .. code-block:: bash
 
+            cd ~/python-pcl_ws
+            source devel/setup.bash
             rosrun py_perception py_perception_node
 
 #. Source a new terminal and run the Python service client node. Note your file path may be different.
 
    .. code-block:: bash
 
-            rosrun filter_call filter_call.py _pcdfilename:=`d`/src/table.pcd
+            cd ~/python-pcl_ws
+            source devel/setup.bash
+            rosrun filter_call filter_call.py _pcdfilename:=$PWD/src/table.pcd
 
 #. Source a new terminal and run the ``tf2_ros`` package to publish a static coordinate transform from the child frame to the world frame
 
