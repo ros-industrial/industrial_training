@@ -44,7 +44,7 @@ We will create a new catkin workspace, since this exercise does not overlap with
 #. Download the PointCloud file and place the file in your workspace's **src** directory :
 
    .. code-block:: bash
-   
+
       cp -r ~/industrial_training/exercises/4.2/table.pcd src/
 
 
@@ -58,23 +58,23 @@ Create a Python Package
 
 Now that we have converted several filters to C++ functions, we are ready to call it from a Python node.
 
-#. In the terminal, change the directory to your src folder. Create a new package inside your python-pcl_ws:
+#. In the terminal, change the directory to your src folder. Create a new package called **filter_call** inside your python-pcl_ws:
 
    .. code-block:: bash
 
             cd ~/python-pcl_ws/src/
-            catkin create pkg test_pkg_python --catkin-deps rospy
+            catkin create pkg filter_call --catkin-deps rospy
 
 #. Check that your package was created:
 
    .. code-block:: bash
 
-            ls 
+            ls
 
 We will not be including ‘perception_msgs’ as a dependency as we will not be creating custom messages in this course. If you wish for a more in depth explanation including how to implement customer messages, here is a good `MIT resource <http://duckietown.mit.edu/media/pdfs/1rpRisFoCYUm0XT78j-nAYidlh-cDtLCdEbIaBCnx9ew.pdf>`__ on the steps taken.
 
 
-#. Open ``CMakeLists.txt``. Uncomment line 19 or wherever you find **# catkin_python_setup()** and save.
+#. Open ``CMakeLists.txt`` in the **filter_call** package. Uncomment line 19 or wherever you find **# catkin_python_setup()** and save.
 
    .. code-block:: bash
 
@@ -89,6 +89,7 @@ The ``setup.py`` file makes your python module available to the entire workspace
 
    .. code-block:: bash
 
+            touch filter_call/setup.py
             gedit filter_call/setup.py
 
 #. Copy and paste the following to the ``setup.py`` file
@@ -100,7 +101,7 @@ The ``setup.py`` file makes your python module available to the entire workspace
             from catkin_pkg.python_setup import generate_distutils_setup
             # fetch values from package.xml
             setup_args = generate_distutils_setup(
-            packages=[''],
+            packages=['filter_call'],
             package_dir={'': 'include'},
             )
             setup(**setup_args)
@@ -116,6 +117,7 @@ The ``setup.py`` file makes your python module available to the entire workspace
 
    .. code-block:: bash
 
+            mkdir -p filter_call/include/filter_call
             touch filter_call/include/filter_call/__init__.py
 
 Publishing the Point Cloud
@@ -130,8 +132,8 @@ Implement a Voxel Filter
 
    .. code-block:: c++
 
-        bool filterCallback(lesson_perception::FilterCloud::Request& request,
-                            lesson_perception::FilterCloud::Response& response)
+        bool filterCallback(py_perception::FilterCloud::Request& request,
+                            py_perception::FilterCloud::Response& response)
         {
           pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
           pcl::PointCloud<pcl::PointXYZ>::Ptr filtered_cloud (new pcl::PointCloud<pcl::PointXYZ>);
@@ -156,7 +158,7 @@ Implement a Voxel Filter
           switch (request.operation)
           {
 
-            case lesson_perception::FilterCloud::Request::VOXELGRID :
+            case py_perception::FilterCloud::Request::VOXELGRID :
             {
               filtered_cloud = voxelGrid(cloud, 0.01);
               break;
@@ -180,11 +182,11 @@ Implement a Voxel Filter
         }
 
 
-#. Within ``main``, take notice of the lines starting at 244, this is where we load the parameters used by the various filters. 
+#. Within ``main``, take notice of the lines starting at 244, this is where we load the parameters used by the various filters.
 
    .. code-block:: c++
 
-            priv_nh_.param<double>("leaf_size", leaf_size_, 0.0f); 
+            priv_nh_.param<double>("leaf_size", leaf_size_, 0.0f);
    Build the package and go into the **filter_call** package now
 
 #. Now that we have the framework for the filtering, open your terminal. Make sure you are in the ``filter_call`` directory. Create a ``scripts`` folder.
@@ -192,6 +194,8 @@ Implement a Voxel Filter
    .. code-block:: bash
 
             mkdir scripts
+            touch scripts/filter_call.py
+            gedit scripts/filter_call.py
 
 #. Copy and paste the following code at the top of ``filter_call.py`` to import necessary libraries:
 
@@ -200,7 +204,7 @@ Implement a Voxel Filter
             #!/usr/bin/env python
 
             import rospy
-            import lesson_perception.srv
+            import py_perception.srv
             from sensor_msgs.msg import PointCloud2
 
 #. We will create an ``if`` statement that contains the ``main`` function that is called when the node is run from the command line. Paste the following after the import statements:
@@ -211,7 +215,7 @@ Implement a Voxel Filter
             try:
                rospy.init_node('filter_cloud', anonymous=True)
                rospy.wait_for_service('filter_cloud')
-               
+
                rospy.spin()
             except Exception as e:
                 print("Service call failed: %s" % str(e))
@@ -223,15 +227,15 @@ Implement a Voxel Filter
 #. Call the service to apply a Voxel Grid filter. Copy and paste the following inside the ``try`` block in the line following the ``rospy.wait_for_service`` function:
 
    .. code-block:: python
-   
+
         # =======================
         # VOXEL GRID FILTER
         # =======================
-        
-        srvp = rospy.ServiceProxy('filter_cloud', lesson_perception.srv.FilterCloud)
-        req = lesson_perception.srv.FilterCloudRequest()
+
+        srvp = rospy.ServiceProxy('filter_cloud', py_perception.srv.FilterCloud)
+        req = py_perception.srv.FilterCloudRequest()
         req.pcdfilename = rospy.get_param('~pcdfilename', '')
-        req.operation = lesson_perception.srv.FilterCloudRequest.VOXELGRID
+        req.operation = py_perception.srv.FilterCloudRequest.VOXELGRID
 
         # FROM THE SERVICE, ASSIGN POINTS
         req.input_cloud = PointCloud2()
@@ -271,18 +275,22 @@ Viewing Results
 
    .. code-block:: bash
 
-            rosrun lesson_perception py_perception_node
+            cd ~/python-pcl_ws
+            source devel/setup.bash
+            rosrun py_perception py_perception_node
 
 #. Source a new terminal and run the Python service client node. Note your file path may be different.
 
    .. code-block:: bash
 
-            rosrun filter_call filter_call.py _pcdfilename:=`d`/src/table.pcd
+            cd ~/python-pcl_ws
+            source devel/setup.bash
+            rosrun filter_call filter_call.py _pcdfilename:=$PWD/src/table.pcd
 
 #. Source a new terminal and run the ``tf2_ros`` package to publish a static coordinate transform from the child frame to the world frame
 
    .. code-block:: bash
-   
+
             rosrun tf2_ros static_transform_publisher 0 0 0 0 0 0 world_frame kinect_link
 
 #. Source a new terminal and run Rviz
@@ -302,19 +310,19 @@ Viewing Results
 Implement Pass-Through Filters
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-#. In ``py_perception_node.cpp`` in the ``lesson_perception`` package, update the switch to look as shown below:
+#. In ``py_perception_node.cpp`` in the ``py_perception`` package, update the switch to look as shown below:
 
    .. code-block:: bash
 
         switch (request.operation)
         {
 
-          case lesson_perception::FilterCloud::Request::VOXELGRID :
+          case py_perception::FilterCloud::Request::VOXELGRID :
           {
             filtered_cloud = voxelGrid(cloud, 0.01);
             break;
           }
-          case lesson_perception::FilterCloud::Request::PASSTHROUGH :
+          case py_perception::FilterCloud::Request::PASSTHROUGH :
           {
             filtered_cloud = passThrough(cloud);
             break;
@@ -341,10 +349,10 @@ Implement Pass-Through Filters
         # PASSTHROUGH FILTER
         # =======================
 
-        srvp = rospy.ServiceProxy('filter_cloud', lesson_perception.srv.FilterCloud)
-        req = lesson_perception.srv.FilterCloudRequest()
+        srvp = rospy.ServiceProxy('filter_cloud', py_perception.srv.FilterCloud)
+        req = py_perception.srv.FilterCloudRequest()
         req.pcdfilename = ''
-        req.operation = lesson_perception.srv.FilterCloudRequest.PASSTHROUGH
+        req.operation = py_perception.srv.FilterCloudRequest.PASSTHROUGH
         # FROM THE SERVICE, ASSIGN POINTS
         req.input_cloud = res_voxel.output_cloud
 
@@ -380,17 +388,17 @@ This method is one of the most useful for any application where the object is on
         switch (request.operation)
         {
 
-          case lesson_perception::FilterCloud::Request::VOXELGRID :
+          case py_perception::FilterCloud::Request::VOXELGRID :
           {
             filtered_cloud = voxelGrid(cloud, 0.01);
             break;
           }
-          case lesson_perception::FilterCloud::Request::PASSTHROUGH :
+          case py_perception::FilterCloud::Request::PASSTHROUGH :
           {
             filtered_cloud = passThrough(cloud);
             break;
           }
-          case lesson_perception::FilterCloud::Request::PLANESEGMENTATION :
+          case py_perception::FilterCloud::Request::PLANESEGMENTATION :
           {
             filtered_cloud = planeSegmentation(cloud);
             break;
@@ -416,10 +424,10 @@ This method is one of the most useful for any application where the object is on
         # PLANE SEGMENTATION
         # =======================
 
-        srvp = rospy.ServiceProxy('filter_cloud', lesson_perception.srv.FilterCloud)
-        req = lesson_perception.srv.FilterCloudRequest()
+        srvp = rospy.ServiceProxy('filter_cloud', py_perception.srv.FilterCloud)
+        req = py_perception.srv.FilterCloudRequest()
         req.pcdfilename = ''
-        req.operation = lesson_perception.srv.FilterCloudRequest.PLANESEGMENTATION
+        req.operation = py_perception.srv.FilterCloudRequest.PLANESEGMENTATION
         # FROM THE SERVICE, ASSIGN POINTS
         req.input_cloud = res_pass.output_cloud
 
@@ -448,7 +456,7 @@ This method is one of the most useful for any application where the object is on
 Euclidian Cluster Extraction
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This method is useful for any application where there are multiple objects. This is also a complicated PCL method. An in depth example can be found on the `PCL Euclidean Cluster Extration Tutorial <http://pointclouds.org/documentation/tutorials/cluster_extraction.php#cluster-extraction>`__.
+This method is useful for any application where there are multiple objects. This is also a complicated PCL method. An in depth example can be found on the `PCL Euclidean Cluster Extraction Tutorial <http://pointclouds.org/documentation/tutorials/cluster_extraction.php#cluster-extraction>`__.
 
 
 #. In ``py_perception_node.cpp``, update the switch statement in ``filterCallback`` to look as shown below:
@@ -458,22 +466,22 @@ This method is useful for any application where there are multiple objects. This
         switch (request.operation)
         {
 
-          case lesson_perception::FilterCloud::Request::VOXELGRID :
+          case py_perception::FilterCloud::Request::VOXELGRID :
           {
             filtered_cloud = voxelGrid(cloud, 0.01);
             break;
           }
-          case lesson_perception::FilterCloud::Request::PASSTHROUGH :
+          case py_perception::FilterCloud::Request::PASSTHROUGH :
           {
             filtered_cloud = passThrough(cloud);
             break;
           }
-          case lesson_perception::FilterCloud::Request::PLANESEGMENTATION :
+          case py_perception::FilterCloud::Request::PLANESEGMENTATION :
           {
             filtered_cloud = planeSegmentation(cloud);
             break;
           }
-          case lesson_perception::FilterCloud::Request::CLUSTEREXTRACTION :
+          case py_perception::FilterCloud::Request::CLUSTEREXTRACTION :
           {
             std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> temp =clusterExtraction(cloud);
             if (temp.size()>0)
@@ -505,10 +513,10 @@ This method is useful for any application where there are multiple objects. This
         # CLUSTER EXTRACTION
         # =======================
 
-        srvp = rospy.ServiceProxy('filter_cloud', lesson_perception.srv.FilterCloud)
-        req = lesson_perception.srv.FilterCloudRequest()
+        srvp = rospy.ServiceProxy('filter_cloud', py_perception.srv.FilterCloud)
+        req = py_perception.srv.FilterCloudRequest()
         req.pcdfilename = ''
-        req.operation = lesson_perception.srv.FilterCloudRequest.CLUSTEREXTRACTION
+        req.operation = py_perception.srv.FilterCloudRequest.CLUSTEREXTRACTION
         # FROM THE SERVICE, ASSIGN POINTS
         req.input_cloud = res_seg.output_cloud
 
