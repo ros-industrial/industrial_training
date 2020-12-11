@@ -456,7 +456,7 @@ This method is one of the most useful for any application where the object is on
 Euclidian Cluster Extraction
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This method is useful for any application where there are multiple objects. This is also a complicated PCL method. An in depth example can be found on the `PCL Euclidean Cluster Extration Tutorial <http://pointclouds.org/documentation/tutorials/cluster_extraction.php#cluster-extraction>`__.
+This method is useful for any application where there are multiple objects. This is also a complicated PCL method. An in depth example can be found on the `PCL Euclidean Cluster Extraction Tutorial <http://pointclouds.org/documentation/tutorials/cluster_extraction.php#cluster-extraction>`__.
 
 
 #. In ``py_perception_node.cpp``, update the switch statement in ``filterCallback`` to look as shown below:
