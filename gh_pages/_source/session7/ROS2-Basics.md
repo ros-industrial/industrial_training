@@ -1,4 +1,4 @@
-# ROS2 Basics Exercise
+# ROS2 Introduction
 
 ## Motivation
 
@@ -18,12 +18,12 @@ in the shell.
 1.  Clone the ROS2 demos examples repositories which we will use to run some examples. When building
     existing packages from source, it is important to verify the code version as the most recent
     version may have changes incompatible with the current release. Here we checkout the
-    repositories to the `dashing` release branch when cloned.
+    repositories to the `foxy` release branch when cloned.
 
     ```bash
     cd ~/ros2_ws/src
-    git clone -b dashing git@github.com:ros2/demos.git
-    git clone -b dashing git@github.com:ros2/examples.git
+    git clone -b foxy git@github.com:ros2/demos.git
+    git clone -b foxy git@github.com:ros2/examples.git
     ```
 
 1.  Install any required dependencies for the repositories using rosdep. This step is the same as in
@@ -53,7 +53,7 @@ workspace setup file.
     start a terminal for it to take effect.
 
     ```bash
-    source /opt/ros/dashing/setup.bash
+    source /opt/ros/foxy/setup.bash
     colcon build
     ```
 
@@ -68,7 +68,7 @@ workspace setup file.
     workspace packages as well as the environment the workspace was built in. `local_setup.bash`
     will add the workspace packages to the current environment.
 
-    - If you keep your `.bashrc` to source `/opt/ros/dashing/setup.bash` then you should only need to
+    - If you keep your `.bashrc` to source `/opt/ros/foxy/setup.bash` then you should only need to
     run `source install/local_setup.bash`
 
     - Otherwise, run `source install/setup.bash`
@@ -175,18 +175,3 @@ screen.
 - Add a `LaserScan` display and have it display the '/scan' topic. You should start to see 2D laser
 scan data appear as if the scanner were attached to the end of the robot. Getting intermittent
 transform errors is normal.
-
-# ROS2 File System
-
-## 1. Introduction
-
-During this tutorial, you will learn how to navigate through your ROS2 system. In addition, you will start your first ROS2 nodes and create your own ROS workspace for further tutorials. You can use the given links in the documentation for further information.
-
-- Lines beginning with $ are terminal commands.
-
-  - To open a new terminal → use the shortcut ctrl+alt+t.
-  - To open a new tab inside an existing terminal → use the shortcut ctrl+shift+t.
-  - To kill a process in a terminal → use the shortcut crtl+c.
-
-- Lines beginning with # indicate the syntax of the commands.
-
