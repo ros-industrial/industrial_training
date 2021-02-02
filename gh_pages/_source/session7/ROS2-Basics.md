@@ -175,3 +175,18 @@ screen.
 - Add a `LaserScan` display and have it display the '/scan' topic. You should start to see 2D laser
 scan data appear as if the scanner were attached to the end of the robot. Getting intermittent
 transform errors is normal.
+
+# ROS2 File System
+
+## 1. Introduction
+
+During this tutorial, you will learn how to navigate through your ROS2 system. In addition, you will start your first ROS2 nodes and create your own ROS workspace for further tutorials. You can use the given links in the documentation for further information.
+
+- Lines beginning with $ are terminal commands.
+
+  - To open a new terminal → use the shortcut ctrl+alt+t.
+  - To open a new tab inside an existing terminal → use the shortcut ctrl+shift+t.
+  - To kill a process in a terminal → use the shortcut crtl+c.
+
+- Lines beginning with # indicate the syntax of the commands.
+
