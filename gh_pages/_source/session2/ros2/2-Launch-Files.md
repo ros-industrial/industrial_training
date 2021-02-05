@@ -10,7 +10,7 @@ The ROS architecture encourages engineers to use ''nodes'' as a fundamental unit
 
 ## Further Information and Resources
 
-[ROS2 python launch Node action](https://github.com/ros2/launch_ros/blob/eloquent/launch_ros/launch_ros/actions/node.py#L71-L128)
+[ROS2 python launch Node action](https://github.com/ros2/launch_ros/blob/foxy/launch_ros/launch_ros/actions/node.py#L68-L150)
 
 ## Scan-N-Plan Application: Problem Statement
 In this exercise, you will:
@@ -59,18 +59,18 @@ You may also choose to launch `myworkcell_core` node with the others or keep it 
 
    ``` py
    launch_ros.actions.Node(
-       node_name='fake_ar_publisher_node',
+       name='fake_ar_publisher_node',
        package='fake_ar_publisher',
-       node_executable='fake_ar_publisher_node',
+       executable='fake_ar_publisher_node',
    ),
    launch_ros.actions.Node(
-       node_name='vision_node',
+       name='vision_node',
        package='myworkcell_core',
-       node_executable='vision_node',
+       executable='vision_node',
    ),
    ```
 
-   * There are other options you can set for these `Node` actions; `node_name`, `package`, and `node_executable` are the required ones.
+   * There are other options you can set for these `Node` actions; `name`, `package`, and `executable` are the required ones.
  
 5. Try to run the launch file:
 
@@ -99,15 +99,15 @@ You may also choose to launch `myworkcell_core` node with the others or keep it 
 
    ``` py
    launch_ros.actions.Node(
-       node_name='fake_ar_publisher_node',
+       name='fake_ar_publisher_node',
        package='fake_ar_publisher',
-       node_executable='fake_ar_publisher_node',
+       executable='fake_ar_publisher_node',
        output='screen',
    ),
    launch_ros.actions.Node(
-       node_name='vision_node',
+       name='vision_node',
        package='myworkcell_core',
-       node_executable='vision_node',
+       executable='vision_node',
        output='screen',
    ),
    ```
