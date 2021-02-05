@@ -156,7 +156,7 @@ Your goal is to create your first ROS node:
    }
    ```
 
-   `RCLCPP_INFO` is one of the many [logging methods](http://docs.ros2.org/eloquent/api/rclcpp/logging_8hpp.html)
+   `RCLCPP_INFO` is one of the many [logging methods](http://docs.ros2.org/foxy/api/rclcpp/logging_8hpp.html)
 
    * It will print the message to the terminal output, and send it to the _/rosout_ topic for other nodes to monitor.
    * There are 5 levels of logging: _DEBUG, INFO, WARNING, ERROR, & FATAL._

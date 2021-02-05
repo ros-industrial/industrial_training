@@ -26,7 +26,7 @@ We believe we have a good installation of ROS but let's test it to make sure.
 1. If they are not then you might need to 'source' some setup.*sh files.
 
    ```
-   source /opt/ros/eloquent/setup.bash
+   source /opt/ros/foxy/setup.bash
    ```
 
 1. In a "bare" ROS install, you will need to run this command on every new shell you open to have access to the ROS commands.  One of the setup steps in a _typical_ ROS install is to add that command to the end of your `~/.bashrc` file, which is run automatically in every new terminal window.  Check that your `.bashrc` file has already been configured to source the ROS-melodic `setup.bash` script:
