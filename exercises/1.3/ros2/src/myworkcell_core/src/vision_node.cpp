@@ -1,6 +1,3 @@
-/**
-**  Simple ROS Node
-**/
 #include <rclcpp/rclcpp.hpp>
 
 int main(int argc, char* argv[])

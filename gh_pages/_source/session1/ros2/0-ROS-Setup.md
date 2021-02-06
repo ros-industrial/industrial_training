@@ -9,7 +9,7 @@ In order to start programming in ROS, you should know how to install ROS on a ne
 [Configuring ROS](https://index.ros.org/doc/ros2/Tutorials/Configuring-ROS2-Environment/)
 
 ## Further Information and Resources
-[ROS2 Eloquent Installation Instructions](https://index.ros.org/doc/ros2/Installation/Eloquent/)
+[ROS2 Foxy Installation Instructions](https://index.ros.org/doc/ros2/Installation/Foxy/)
 
 ## Scan-N-Plan Application: Problem Statement
 We believe we have a good installation of ROS but let's test it to make sure.
@@ -29,7 +29,7 @@ We believe we have a good installation of ROS but let's test it to make sure.
    source /opt/ros/foxy/setup.bash
    ```
 
-1. In a "bare" ROS install, you will need to run this command on every new shell you open to have access to the ROS commands.  One of the setup steps in a _typical_ ROS install is to add that command to the end of your `~/.bashrc` file, which is run automatically in every new terminal window.  Check that your `.bashrc` file has already been configured to source the ROS-melodic `setup.bash` script:
+1. In a "bare" ROS install, you will need to run this command on every new shell you open to have access to the ROS commands.  One of the setup steps in a _typical_ ROS install is to add that command to the end of your `~/.bashrc` file, which is run automatically in every new terminal window.  Check that your `.bashrc` file has already been configured to source the ROS-foxy `setup.bash` script:
 
    ```
    tail ~/.bashrc

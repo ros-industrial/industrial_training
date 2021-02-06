@@ -213,7 +213,7 @@ Your goal is to create a more intricate system of nodes:
    };
    ```
 
-1. Within your new ScanNPlan class, define a ROS Client as a private member variable of the class.  Initialize the Client in the ScanNPlan constructor, using the same service name as defined earlier ("localize_part"). Create a void function within the ScanNPlan class named `start`, with no arguments. This will contain most of our application workflow.  For now, this function will call the `LocalizePart` service and print the response. 
+1. Within your new ScanNPlan class, define a ROS Client as a private member variable of the class.  Initialize the Client in the ScanNPlan constructor, using the same service name as defined earlier ("localize_part"). Create a void function within the ScanNPlan class named `start`, with no arguments. This will eventually contain most of our application workflow.
 
    ``` c++
    class ScanNPlan : public rclcpp::Node
@@ -227,16 +227,56 @@ Your goal is to create a more intricate system of nodes:
      void start()
      {
        RCLCPP_INFO(get_logger(), "Attempting to localize part");
+     }
+
+   private:
+     // Planning components
+     rclcpp::Client<myworkcell_core::srv::LocalizePart>::SharedPtr vision_client_;
+   };
+   ```
+
+1. When the node is first created, it takes a few seconds to connect to other nodes and detremine what services and topics are available.  Attempting to call the service during this time may cause the call to hang indefinitely.  Add a call to wait for the service to be available before submitting the request:
+
+   ``` c++
+   class ScanNPlan : public rclcpp::Node
+   {
+     ...
+     void start()
+     {
+       RCLCPP_INFO(get_logger(), "Attempting to localize part");
+
+       // Wait for service to be available
+       if (!vision_client_->wait_for_service(std::chrono::seconds(5))) {
+         RCLCPP_ERROR(get_logger(), "Unable to find localize_part service. Start vision_node first.");
+         return;
+       }
+     ...
+   };
+   ```
+
+1. Now add code to prepare the request data and call the service.  For now, the request fields are left empty.  They will be added in a later exercise.
+
+   ``` c++
+   class ScanNPlan : public rclcpp::Node
+   {
+   public:
+     ...
+     void start()
+     {
+       RCLCPP_INFO(get_logger(), "Attempting to localize part");
+
+       // Wait for service to be available
+       if (!vision_client_->wait_for_service(std::chrono::seconds(5))) {
+         RCLCPP_ERROR(get_logger(), "Unable to find localize_part service. Start vision_node first.");
+         return;
+       }
 
        // Create a request for the LocalizePart service call
        auto request = std::make_shared<myworkcell_core::srv::LocalizePart::Request>();
 
        auto future = vision_client_->async_send_request(request);
      }
-
-   private:
-     // Planning components
-     rclcpp::Client<myworkcell_core::srv::LocalizePart>::SharedPtr vision_client_;
+     ...
    };
    ```
 
@@ -249,6 +289,12 @@ Your goal is to create a more intricate system of nodes:
    void start()
    {
      RCLCPP_INFO(get_logger(), "Attempting to localize part");
+
+     // Wait for service to be available
+     if (!vision_client_->wait_for_service(std::chrono::seconds(5))) {
+       RCLCPP_ERROR(get_logger(), "Unable to find localize_part service. Start vision_node first.");
+       return;
+     }
 
      // Create a request for the LocalizePart service call
      auto request = std::make_shared<myworkcell_core::srv::LocalizePart::Request>();

@@ -19,11 +19,11 @@ sudo sh -c 'echo "deb [arch=amd64,arm64] http://packages.ros.org/ros2/ubuntu `ls
 sudo apt update -y
 
 # ROS1 install
-sudo apt install -y ros-melodic-desktop
-sudo apt install -y python-wstool python-catkin-tools
-sudo apt install -y ros-melodic-perception ros-melodic-urdf-tutorial ros-melodic-moveit
-sudo apt install -y ros-melodic-openni-camera ros-melodic-openni-launch ros-melodic-openni2-camera ros-melodic-openni2-launch
-sudo apt install -y ros-melodic-industrial-core
+sudo apt install -y ros-noetic-desktop
+sudo apt install -y python3-wstool python3-catkin-tools
+sudo apt install -y ros-noetic-perception ros-noetic-urdf-tutorial ros-noetic-moveit
+sudo apt install -y ros-noetic-openni-camera ros-noetic-openni-launch ros-noetic-openni2-camera ros-noetic-openni2-launch
+sudo apt install -y ros-noetic-industrial-core
 sudo apt install -y pcl-tools
 
 # ROS2 install
@@ -31,7 +31,7 @@ sudo apt install -y ros-foxy-desktop
 sudo apt install -y python3-colcon-common-extensions python3-argcomplete
 
 # rosdep setup
-sudo apt install python-rosdep
+sudo apt install python3-rosdep
 sudo rosdep init
 rosdep update
 

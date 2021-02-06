@@ -8,6 +8,7 @@ The basis of ROS communication is that multiple executables called nodes are run
 [Create a Package](https://index.ros.org/doc/ros2/Tutorials/Creating-Your-First-ROS2-Package)
 
 ## Further Information and Resources
+[Package.xml Format](https://ros.org/reps/rep-0149.html#data-representation)
 [Understanding Nodes](https://index.ros.org/doc/ros2/Tutorials/Understanding-ROS2-Nodes)
 
 ## Scan-N-Plan Application: Problem Statement
@@ -91,7 +92,7 @@ Your goal is to create your first ROS node:
    int main(int argc, char* argv[])
    {
      // This must be called before anything else ROS-related
-     rclcpp::init(argc, argv, "vision_node");
+     rclcpp::init(argc, argv);
    }
    ```
 
@@ -136,9 +137,6 @@ Your goal is to create your first ROS node:
 1. Do not exit the program automatically - keep the node alive.
 
    ``` c++
-   /**
-   **  Simple ROS Node
-   **/
    #include <rclcpp/rclcpp.hpp>
 
    int main(int argc, char* argv[])
@@ -167,12 +165,12 @@ Your goal is to create your first ROS node:
 
    ``` cmake
    add_executable(vision_node src/vision_node.cpp)
-   ament_target_dependencies(vision_node PUBLIC rclcpp)
+   ament_target_dependencies(vision_node rclcpp)
    ```
 
    These lines should be place after the section labeled `# find dependencies`. The flow of a _CMakeLists.txt_ file is almost always to first find all dependencies the current project requires, then to declare the _targets_ the current project is creating, and finally to specify extra information such as how to test the targets and things that projects making use of this one need to know. Note that the term "project" is used here in the context of CMake. Each ROS package acts as a separate CMake project (notice the `project(myworkcell_core)`) line at the very top of the file). 
 
-   _Note: You're allowed to spread most of the CMakeLists rules across multiple lines, which is often required when a target contains many source files or has many dependencies.
+   _Note: You're allowed to spread most of the CMakeLists rules across multiple lines, which is often required when a target contains many source files or has many dependencies._
 
 1. We've now told CMake about the _vision_node_ executable and how to build it, but to actually run it, the file must be *installed* along with all the other workspace outputs. Typically, the installation location will be the `install/` directory alongside the `src/` directory. Add the following lines to declare an installation rule for the _vision_node_ executable:
 
@@ -187,7 +185,7 @@ Your goal is to create your first ROS node:
 
 1. Build your program (node), by running `colcon build` in a terminal window
 
-   * _Remember that you must run `colcon build` from the `ros2_ws` directory.
+   * _Remember that you must run `colcon build` from the `ros2_ws` directory._
    * This will build all of the programs, libraries, etc. in _myworkcell_core_
    * In this case, it's just a single ROS node _vision_node_
 

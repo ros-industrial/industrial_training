@@ -21,7 +21,7 @@ find_package(rclcpp REQUIRED)
 
 # The vision_node executable
 add_executable(vision_node src/vision_node.cpp)
-ament_target_dependencies(vision_node PUBLIC rclcpp)
+ament_target_dependencies(vision_node rclcpp)
 
 # Mark executables and/or libraries for installation
 install(TARGETS vision_node

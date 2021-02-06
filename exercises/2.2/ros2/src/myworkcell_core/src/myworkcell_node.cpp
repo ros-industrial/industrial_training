@@ -13,6 +13,12 @@ public:
   {
     RCLCPP_INFO(get_logger(), "Attempting to localize part");
 
+    // Wait for service to be available
+    if (!vision_client_->wait_for_service(std::chrono::seconds(5))) {
+      RCLCPP_ERROR(get_logger(), "Unable to find localize_part service. Start vision_node first.");
+      return;
+    }
+
     // Create a request for the LocalizePart service call
     auto request = std::make_shared<myworkcell_core::srv::LocalizePart::Request>();
 

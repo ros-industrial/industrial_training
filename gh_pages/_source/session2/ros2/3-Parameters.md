@@ -86,9 +86,9 @@ So far we haven't used the request field, `base_frame`, for anything. In this ex
 
    ``` py
    launch_ros.actions.Node(
-       node_name='myworkcell_node',
+       name='myworkcell_node',
        package='myworkcell_core',
-       node_executable='myworkcell_node',
+       executable='myworkcell_node',
        output='screen',
        parameters=[{'base_frame': 'world'}],
    )
