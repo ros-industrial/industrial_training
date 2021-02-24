@@ -1,8 +1,8 @@
 #!/bin/bash
 
-TARGET_BRANCH=melodic  # industrial_training git branch
-ROS_RELEASE=melodic    # ROS1 release version
-ROS2_RELEASE=dashing   # ROS2 release version
+TARGET_BRANCH=foxy  # industrial_training git branch
+ROS_RELEASE=noetic     # ROS1 release version
+ROS2_RELEASE=foxy      # ROS2 release version
 
 #=======================================================================
 # verify that PC configuration matches requirements for training class
@@ -73,7 +73,7 @@ function check_debs() {
   check_deb libglu1-mesa-dev
   check_deb pcl-tools
   echo "Checking ROS1 packages:"
-  check_deb python-catkin-tools
+  check_deb python3-catkin-tools
   check_deb ros-$ROS_RELEASE-desktop
   check_deb ros-$ROS_RELEASE-perception
   check_deb ros-$ROS_RELEASE-moveit
@@ -91,11 +91,17 @@ function check_debs() {
 
 function check_bashrc() {
   echo "Checking .bashrc... "
-  printf "  - %-30s" "\$ROS_ROOT:"
-  if [ -z ${ROS_ROOT+x} ]; then
+  printf "  - %-30s" "\$ROS_VERSION:"
+  if [ -z ${ROS_VERSION+x} ]; then
 	print_result $(false)
   else
-	print_result $([ $ROS_ROOT == "/opt/ros/$ROS_RELEASE/share/ros" ])
+	print_result $([ $ROS_VERSION == "2" ])
+  fi
+  printf "  - %-30s" "\$ROS_DISTRO:"
+  if [ -z ${ROS_DISTRO+x} ]; then
+	print_result $(false)
+  else
+	print_result $([ $ROS_DISTRO == "$ROS2_RELEASE" ])
   fi
 }
 

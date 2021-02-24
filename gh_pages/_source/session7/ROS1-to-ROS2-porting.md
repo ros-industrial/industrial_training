@@ -27,7 +27,7 @@ subscribers, services, and parameters. We will be using exercise 2.3 as the star
 1.  Verify the workspace builds with `colcon build`
 
 1.  Set up a new project in Qt Creator with 'Build System' set to 'Colcon' and 'Distribution' set to
-    '/opt/ros/dashing'. This is optional but highly recommended since you will get code
+    '/opt/ros/eloquent'. This is optional but highly recommended since you will get code
     autocompletion when editing C++ in the Qt Creator IDE. Verify that the workspace builds
     successfully from inside the IDE.
 
