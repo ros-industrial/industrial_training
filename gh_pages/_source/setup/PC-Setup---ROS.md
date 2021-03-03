@@ -30,7 +30,7 @@ On most new systems, Virtual Box and VMs work out of the box.  The following is 
   * Virtualization must be enabled - Older systems do not have virtualization enabled (by default).  Virtualization must be enabled in the BIOS.  See <http://www.sysprobs.com/disable-enable-virtualization-technology-bios> for more information.
 
 ## Direct Linux PC Configuration
-An installation [shell script](https://github.com/ros-industrial/industrial_training/blob/melodic/gh_pages/_downloads/ros-industrial-training-setup.sh)
+An installation [shell script](https://github.com/ros-industrial/industrial_training/blob/foxy/gh_pages/_downloads/ros-industrial-training-setup.sh)
 is provided to run in Ubuntu Linux 20.04 LTS (Focal). This script installs ROS and any other packages needed for the environment used for this training.
 
 After this step (or if you already have a working ROS environment), clone the training material repository into your home directory:
