@@ -21,12 +21,12 @@ matrix:
     env:
     - CONTAINER_IMAGE=ros:melodic \
       CONTAINER_NAME=industrial_training_ci \
-      SRC_DIRS="exercises/3.0/src exercises/3.1/src exercises/3.2/src exercises/3.3/src"
+      SRC_DIRS="exercises/3.0/ros1/src exercises/3.1/ros1/src exercises/3.2/ros1/src exercises/3.3/ros1/src"
   - name: "Exercise 4"
     env:
     - CONTAINER_IMAGE=ros:melodic \
       CONTAINER_NAME=industrial_training_ci \
-      SRC_DIRS="exercises/4.0/src exercises/4.1/src"
+      SRC_DIRS="exercises/4.0/ros1/src exercises/4.1/ros1/src"
   - name: "Exercise 5"
     env:
     - CONTAINER_IMAGE=ros:melodic \
