@@ -16,6 +16,11 @@ function print_result() {
   fi
 }
 
+# replace print_result() call with print_disabled() call to temporarily disable a test
+function print_disabled() {
+  echo -e "\e[00;30m[DISABLED]\e[00m"
+}
+
 function check_internet() {
   echo "Checking internet connection... "
   printf "  - %-30s" "google.com:"
@@ -63,6 +68,11 @@ function check_deb() {
   print_result $(dpkg-query -s $1 &> /dev/null)
 }
 
+function disable_deb() {
+  printf "  - %-30s" "$1:"
+  print_disabled $(dpkg-query -s $1 &> /dev/null)
+}
+
 function check_debs() {
   echo "Checking debian packages... "
   check_deb git
@@ -77,11 +87,11 @@ function check_debs() {
   check_deb ros-$ROS_RELEASE-desktop
   check_deb ros-$ROS_RELEASE-perception
   check_deb ros-$ROS_RELEASE-moveit
-  check_deb ros-$ROS_RELEASE-industrial-core
-  check_deb ros-$ROS_RELEASE-openni-launch
-  check_deb ros-$ROS_RELEASE-openni-camera
-  check_deb ros-$ROS_RELEASE-openni2-launch
-  check_deb ros-$ROS_RELEASE-openni2-launch
+  disable_deb ros-$ROS_RELEASE-industrial-core
+  disable_deb ros-$ROS_RELEASE-openni-launch
+  disable_deb ros-$ROS_RELEASE-openni-camera
+  disable_deb ros-$ROS_RELEASE-openni2-launch
+  disable_deb ros-$ROS_RELEASE-openni2-launch
   echo "Checking ROS2 packages:"
   check_deb python3-colcon-bash
   check_deb python3-colcon-core
@@ -93,13 +103,13 @@ function check_bashrc() {
   echo "Checking .bashrc... "
   printf "  - %-30s" "\$ROS_VERSION:"
   if [ -z ${ROS_VERSION+x} ]; then
-	print_result $(false)
+	print_disabled $(false)
   else
 	print_result $([ $ROS_VERSION == "2" ])
   fi
   printf "  - %-30s" "\$ROS_DISTRO:"
   if [ -z ${ROS_DISTRO+x} ]; then
-	print_result $(false)
+	print_disabled $(false)
   else
 	print_result $([ $ROS_DISTRO == "$ROS2_RELEASE" ])
   fi
@@ -108,7 +118,7 @@ function check_bashrc() {
 function check_qtc() {
   echo "Checking for QTCreator w/ ROS plugin... "
   printf "  - %-30s" "qtcreator-ros:"
-  print_result $( which qtcreator-ros )
+  print_result $( [ `which qtcreator-ros` ] || [ -f "$HOME/QtCreator/latest/bin/qtcreator-ros" ] )
 }
 
 
