@@ -28,19 +28,19 @@ procedure is somewhat involved.
 1.  Create a symlink to exercise 4.1 in the training repo
     ```
     cd ~/catkin_ws/src
-    ln -s ~/industrial_training/exercises/4.1/src demo
+    ln -s ~/industrial_training/exercises/4.1/ros1/src demo
     ```
 
 1.  Clone additional dependencies
     ```
-    git clone https://github.com/ros-industrial-consortium/descartes.git
-    git clone https://github.com/ros-industrial/universal_robot.git
-    git clone https://github.com/ros-industrial/fake_ar_publisher.git
+    git clone --branch melodic-devel https://github.com/ros-industrial-consortium/descartes.git
+    git clone --branch kinetic-devel https://github.com/ros-industrial/universal_robot.git
+    git clone --branch master https://github.com/ros-industrial/fake_ar_publisher.git
     ```
 
 1.  Source and build exercise
     ```
-    . /opt/ros/melodic/setup.bash
+    . /opt/ros/noetic/setup.bash
     catkin build
     ```
 
@@ -60,7 +60,7 @@ procedure is somewhat involved.
 1.  Source and build
     ```
     cd ~/colcon_ws/src
-    . /opt/ros/eloquent/setup.bash
+    . /opt/ros/foxy/setup.bash
     colcon build
     ```
 
@@ -77,7 +77,7 @@ procedure is somewhat involved.
 1.  Clone the ROS1 bridge into your ROS2 workspace, selecting the branch that matches your ROS
     release
     ```
-    git clone -b eloquent https://github.com/ros2/ros1_bridge.git
+    git clone -b foxy https://github.com/ros2/ros1_bridge.git
     ```
 
 1.  Source ROS1 and ROS2 setup bash files. This is one of the only times you'll want to mix setup
