@@ -131,8 +131,16 @@ Specifically, you will need to:
             )
         ])
     ```
-
- 1. Rebuild your workspace and check the updated URDF in RViz, using the launch file you just created:
+ 1. Before we can launch this file, we may need to install two new packages that we have introduced: the xacro definition and the joint_state_publisher_gui that we want to launch.  You can check if they are already installed.  Here, the * is a wildcard, so `*foxy*xacro*` means "find something that contains the word foxy, and later the word xacro"
+    ```
+    apt list --installed *foxy*publisher*gui*
+    apt list --installed *foxy*xacro*
+    ```
+    If nothing shows up, we need to install them:
+    ```
+    sudo apt install ros-foxy-joint-state-publisher-gui ros-foxy-xacro
+    ```
+ 3. Rebuild your workspace and check the updated URDF in RViz, using the launch file you just created:
 
     `ros2 launch myworkcell_support urdf.launch.py`
 
