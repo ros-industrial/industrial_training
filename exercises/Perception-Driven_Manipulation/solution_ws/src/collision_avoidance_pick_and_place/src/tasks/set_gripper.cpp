@@ -7,19 +7,20 @@
     - Use the grasp action client to send an grasp request to the grasp server.
     - Confirm that the gripper was successfully opened or closed and exit on error
 */
-void collision_avoidance_pick_and_place::PickAndPlace::set_gripper(bool do_grasp)
+void collision_avoidance_pick_and_place::PickAndPlaceApp::set_gripper(bool do_grasp)
 {
-  //ROS_ERROR_STREAM("set_gripper is not implemented yet.  Aborting."); exit(1);
+  using GraspGoalType = pick_and_place_msgs::action::ExecuteGraspMove::Goal;
+  using GraspGoalHandle = rclcpp_action::ClientGoalHandle<pick_and_place_msgs::action::ExecuteGraspMove>;
+  //RCLCPP_ERROR_STREAM(node,"set_gripper is not implemented yet.  Aborting."); exit(1);
 
   // task variables
-  object_manipulation_msgs::GraspHandPostureExecutionGoal grasp_goal;
-  bool success;
+  GraspGoalType grasp_goal;
 
   // set the corresponding gripper action in the "grasp_goal" object.
   if (do_grasp)
-    grasp_goal.goal = object_manipulation_msgs::GraspHandPostureExecutionGoal::GRASP;
+    grasp_goal.goal = GraspGoalType::GRASP;
   else
-    grasp_goal.goal = object_manipulation_msgs::GraspHandPostureExecutionGoal::RELEASE;
+    grasp_goal.goal = GraspGoalType::RELEASE;
 
   /* Fill Code:
    * Goal:
@@ -28,7 +29,9 @@ void collision_avoidance_pick_and_place::PickAndPlace::set_gripper(bool do_grasp
    * - Use the "sendGoal" method of the grasp client "grasp_action_client_ptr"
    * to make a call to the server.
    */
-  grasp_action_client_ptr->sendGoal(grasp_goal);
+  std::shared_future<GraspGoalHandle::SharedPtr> goal_fut = grasp_action_client->async_send_goal(
+      grasp_goal);
+  std::future_status st = goal_fut.wait_for(std::chrono::duration<double>(2));
 
 
   /* Fill Code:
@@ -40,18 +43,18 @@ void collision_avoidance_pick_and_place::PickAndPlace::set_gripper(bool do_grasp
    * - Timeouts in ros can be created using "ros::Duration(4.0f)".
    * - Save returned boolean from waitForResult() in the "success" variable.
    */
-  success = grasp_action_client_ptr->waitForResult(ros::Duration(4.0f));
+  //success = grasp_action_client_ptr->waitForResult(ros::Duration(4.0f));
 
-  if(success)
+  if(st == std::future_status::ready )
   {
     if (do_grasp)
-      ROS_INFO_STREAM("Gripper closed");
+      RCLCPP_INFO_STREAM(node->get_logger(), "Gripper closed");
     else
-      ROS_INFO_STREAM("Gripper opened");
+      RCLCPP_INFO_STREAM(node->get_logger(), "Gripper opened");
   }
   else
   {
-    ROS_ERROR_STREAM("Gripper failure");
+    RCLCPP_ERROR_STREAM(node->get_logger(), "Gripper failure");
     exit(1);
   }
 }

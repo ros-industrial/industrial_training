@@ -5,31 +5,60 @@
  *      Author: ros-industrial
  */
 
-#include <collision_avoidance_pick_and_place/pick_and_place_utilities.h>
-#include <moveit/kinematic_constraints/utils.h>
-#include <tf/transform_listener.h>
-#include <boost/assign/std/vector.hpp>
 #include <iostream>
-#include <ros/ros.h>
 
-using namespace tf;
-using namespace boost::assign;
+#include <rclcpp/rclcpp.hpp>
+
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
+#include <tf2_ros/transform_listener.h>
+
+#include <moveit/kinematic_constraints/utils.h>
+
+#include <collision_avoidance_pick_and_place/pick_and_place_utilities.h>
+
+using namespace tf2;
 
 // =============================== Utility functions ===============================
-
-std::vector<geometry_msgs::Pose> create_manipulation_poses(double retreat_dis,double approach_dis,const tf::Transform &target_tf)
+namespace tf2
 {
-  geometry_msgs::Pose start_pose, target_pose, end_pose;
-  std::vector<geometry_msgs::Pose> poses;
+  geometry_msgs::msg::Pose transformToPoseMsg(const tf2::Transform& t_in)
+  {
+    geometry_msgs::msg::Pose pose;
+    pose.position.x = t_in.getOrigin().x();
+    pose.position.y = t_in.getOrigin().y();
+    pose.position.z = t_in.getOrigin().z();
+    pose.orientation = tf2::toMsg(t_in.getRotation());
+    return pose;
+  }
+
+  tf2::Transform poseMsgToTransform(const geometry_msgs::msg::Pose& pose_in)
+  {
+    tf2::Transform t_out;
+    tf2::Vector3 pos(pose_in.position.x, pose_in.position.y, pose_in.position.z);
+    t_out.setOrigin(pos);
+    tf2::Quaternion q;
+    tf2::fromMsg(pose_in.orientation, q);
+    t_out.setRotation(q);
+    return t_out;
+  }
+}
+
+
+std::vector<geometry_msgs::msg::Pose> create_manipulation_poses(double retreat_dis,
+                                                                double approach_dis,
+                                                                const tf2::Transform &target_tf)
+{
+  geometry_msgs::msg::Pose start_pose, target_pose, end_pose;
+  std::vector<geometry_msgs::msg::Pose> poses;
 
   // creating start pose by applying a translation along +z by approach distance
-  tf::poseTFToMsg(Transform(Quaternion::getIdentity(),Vector3(0,0,approach_dis))*target_tf,start_pose);
+  tf2::toMsg(Transform(Quaternion::getIdentity(),Vector3(0,0,approach_dis))*target_tf,start_pose);
 
   // converting target pose
-  tf::poseTFToMsg(target_tf,target_pose);
+  tf2::toMsg(target_tf,target_pose);
 
   // creating end pose by applying a translation along +z by retreat distance
-  tf::poseTFToMsg(Transform(Quaternion::getIdentity(),Vector3(0,0,retreat_dis))*target_tf,end_pose);
+  tf2::toMsg(Transform(Quaternion::getIdentity(),Vector3(0,0,retreat_dis))*target_tf,end_pose);
 
   poses.clear();
   poses.push_back(start_pose);
@@ -39,35 +68,37 @@ std::vector<geometry_msgs::Pose> create_manipulation_poses(double retreat_dis,do
   return poses;
 }
 
-std::vector<geometry_msgs::Pose> transform_from_tcp_to_wrist(tf::Transform tcp_to_wrist_tf,const std::vector<geometry_msgs::Pose> tcp_poses)
+std::vector<geometry_msgs::msg::Pose> transform_from_tcp_to_wrist(tf2::Transform tcp_to_wrist_tf,
+                                                                  const std::vector<geometry_msgs::msg::Pose> tcp_poses)
 {
   // array for poses of the wrist
-  std::vector<geometry_msgs::Pose> wrist_poses;
+  std::vector<geometry_msgs::msg::Pose> wrist_poses;
   wrist_poses.resize(tcp_poses.size());
 
   // applying transform to each tcp poses
-  tf::Transform world_to_wrist_tf, world_to_tcp_tf;
+  tf2::Transform world_to_wrist_tf, world_to_tcp_tf;
   wrist_poses.resize(tcp_poses.size());
   for(unsigned int i = 0; i < tcp_poses.size(); i++)
   {
-    tf::poseMsgToTF(tcp_poses[i],world_to_tcp_tf);
+    tf2::fromMsg(tcp_poses[i],world_to_tcp_tf);
     world_to_wrist_tf = world_to_tcp_tf * tcp_to_wrist_tf;
-    tf::poseTFToMsg(world_to_wrist_tf,wrist_poses[i]);
+    //tf2::fromMsg(world_to_wrist_tf,wrist_poses[i]);
+    wrist_poses[i] = tf2::transformToPoseMsg(world_to_wrist_tf);
   }
 
   return wrist_poses;
 }
 
-moveit_msgs::Constraints create_path_orientation_constraints(const geometry_msgs::Pose &goal_pose,
+moveit_msgs::msg::Constraints create_path_orientation_constraints(const geometry_msgs::msg::Pose &goal_pose,
 		float x_tolerance,float y_tolerance,float z_tolerance,std::string link_name)
 {
-	moveit_msgs::Constraints path_constraints = moveit_msgs::Constraints();
+	moveit_msgs::msg::Constraints path_constraints = moveit_msgs::msg::Constraints();
 	path_constraints.name = "tcp_orientation_constraint";
 
 	// setting constraint properties
-	moveit_msgs::OrientationConstraint orientation_constraint = moveit_msgs::OrientationConstraint();
+	moveit_msgs::msg::OrientationConstraint orientation_constraint = moveit_msgs::msg::OrientationConstraint();
 	orientation_constraint.header.frame_id="world_frame";
-	//orientation_constraint.orientation = goal_pose.orientation;
+	orientation_constraint.orientation = goal_pose.orientation;
 	orientation_constraint.orientation.w = 1;
 	orientation_constraint.absolute_x_axis_tolerance = x_tolerance;
 	orientation_constraint.absolute_y_axis_tolerance = y_tolerance;
@@ -80,80 +111,64 @@ moveit_msgs::Constraints create_path_orientation_constraints(const geometry_msgs
 	return path_constraints;
 }
 
-std::ostream& operator<<(std::ostream& os, const tf::Vector3 vec)
+std::ostream& operator<<(std::ostream& os, const tf2::Vector3 vec)
 {
   return os << "[" << vec.getX() << ", " << vec.getY() << ", " << vec.getZ() << "]";
 }
 
-std::ostream& operator<<(std::ostream& os, const geometry_msgs::Point pt)
+std::ostream& operator<<(std::ostream& os, const geometry_msgs::msg::Point pt)
 {
   return os << "[" << pt.x << ", " << pt.y << ", " << pt.z << "]";
 }
 
-bool pick_and_place_config::init()
+bool PickAndPlaceConfig::init(rclcpp::Node::SharedPtr node)
 {
-  ros::NodeHandle nh("~");
   double w, l, h, x, y, z;
-  XmlRpc::XmlRpcValue list;
-
-  if(nh.getParam("arm_group_name",ARM_GROUP_NAME)
-      && nh.getParam("tcp_link_name",TCP_LINK_NAME)
-      && nh.getParam("wrist_link_name",WRIST_LINK_NAME)
-      && nh.getParam("attached_object_link",ATTACHED_OBJECT_LINK_NAME)
-      && nh.getParam("world_frame_id",WORLD_FRAME_ID)
-      && nh.getParam("home_pose_name",HOME_POSE_NAME)
-      && nh.getParam("wait_pose_name",WAIT_POSE_NAME)
-      && nh.getParam("ar_frame_id",AR_TAG_FRAME_ID)
-      && nh.getParam("box_width",w)
-      && nh.getParam("box_length",l)
-      && nh.getParam("box_height",h)
-      && nh.getParam("box_place_x",x)
-      && nh.getParam("box_place_y",y)
-      && nh.getParam("box_place_z",z)
-      && nh.getParam("touch_links",list)
-      && nh.getParam("retreat_distance",RETREAT_DISTANCE)
-      && nh.getParam("approach_distance",APPROACH_DISTANCE))
+  if(node->get_parameter("arm_group_name",ARM_GROUP_NAME)
+      && node->get_parameter("tcp_link_name",TCP_LINK_NAME)
+      && node->get_parameter("wrist_link_name",WRIST_LINK_NAME)
+      && node->get_parameter("attached_object_link",ATTACHED_OBJECT_LINK_NAME)
+      && node->get_parameter("world_frame_id",WORLD_FRAME_ID)
+      && node->get_parameter("home_pose_name",HOME_POSE_NAME)
+      && node->get_parameter("wait_pose_name",WAIT_POSE_NAME)
+      && node->get_parameter("ar_frame_id",AR_TAG_FRAME_ID)
+      && node->get_parameter("box_width",w)
+      && node->get_parameter("box_length",l)
+      && node->get_parameter("box_height",h)
+      && node->get_parameter("box_place_x",x)
+      && node->get_parameter("box_place_y",y)
+      && node->get_parameter("box_place_z",z)
+      && node->get_parameter("touch_links",TOUCH_LINKS)
+      && node->get_parameter("retreat_distance",RETREAT_DISTANCE)
+      && node->get_parameter("approach_distance",APPROACH_DISTANCE))
   {
     BOX_SIZE = Vector3(l,w,h);
     BOX_PLACE_TF.setOrigin(Vector3(x,y,z));
 
-    // parsing touch links list
-    for(int32_t i =0 ; i < list.size();i++)
-    {
-    	if(list[i].getType() == XmlRpc::XmlRpcValue::TypeString)
-    	{
-    		TOUCH_LINKS.push_back(static_cast<std::string>(list[i]));
-    	}
-    	else
-    	{
-    		ROS_ERROR_STREAM("touch links list contains invalid data.  Provide an array of strings 'touch_links:{link_a,link_b,link_c ..}'");
-    	}
-    }
-
     // building geometric primitive for target
-    shape_msgs::SolidPrimitive shape;
-    shape.type = shape_msgs::SolidPrimitive::BOX;
+    shape_msgs::msg::SolidPrimitive shape;
+    shape.type = shape_msgs::msg::SolidPrimitive::BOX;
     shape.dimensions.resize(3);
     shape.dimensions[0] = BOX_SIZE.getX();
     shape.dimensions[1] = BOX_SIZE.getY();
     shape.dimensions[2] = BOX_SIZE.getZ();
 
     // setting pose of object relative to tcp
-    tf::poseTFToMsg(tf::Transform::getIdentity(),TCP_TO_BOX_POSE);
+    TCP_TO_BOX_POSE = tf2::transformToPoseMsg(tf2::Transform::getIdentity());
     TCP_TO_BOX_POSE.position.x = 0;
     TCP_TO_BOX_POSE.position.y = 0;
     TCP_TO_BOX_POSE.position.z = 0.5f* BOX_SIZE.getZ();
 
     // creating visual object
     MARKER_MESSAGE.header.frame_id = TCP_LINK_NAME;
-    MARKER_MESSAGE.type = visualization_msgs::Marker::CUBE;
+    MARKER_MESSAGE.type = visualization_msgs::msg::Marker::CUBE;
     MARKER_MESSAGE.pose = TCP_TO_BOX_POSE;
     MARKER_MESSAGE.id = 0;
     MARKER_MESSAGE.color.r = 0;
     MARKER_MESSAGE.color.g = 0;
     MARKER_MESSAGE.color.b = 1;
     MARKER_MESSAGE.color.a = 0.5f;
-    MARKER_MESSAGE.lifetime = ros::Duration(100); // persists forever
+    MARKER_MESSAGE.lifetime = rclcpp::Duration::from_seconds(0); // persists forever
     MARKER_MESSAGE.frame_locked = true;
     MARKER_MESSAGE.scale.x = shape.dimensions[0];
     MARKER_MESSAGE.scale.y = shape.dimensions[1];

@@ -11,10 +11,11 @@
 
 namespace collision_avoidance_pick_and_place
 {
-void PickAndPlace::set_attached_object(bool attach, const geometry_msgs::Pose &pose,moveit_msgs::RobotState &robot_state)
+void PickAndPlaceApp::set_attached_object(bool attach, const geometry_msgs::msg::Pose &pose,
+                                       moveit_msgs::msg::RobotState &robot_state)
 {
   // get robot state
-  robot_state::RobotStatePtr current_state= move_group_ptr->getCurrentState();
+/*  robot_state::RobotStatePtr current_state= move_group_ptr->getCurrentState();
 
   if(attach)
   {
@@ -46,7 +47,7 @@ void PickAndPlace::set_attached_object(bool attach, const geometry_msgs::Pose &p
   }
 
   // save robot state data
-  robot_state::robotStateToRobotStateMsg(*current_state,robot_state);
+  robot_state::robotStateToRobotStateMsg(*current_state,robot_state);*/
 }
 
 }
