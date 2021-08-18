@@ -2,7 +2,7 @@
 \mainpage
 \htmlinclude manifest.html
 
-\b robot_config 
+\b robot_workcell_support 
 
 <!-- 
 Provide an overview of your package.
