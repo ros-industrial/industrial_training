@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>pick_and_place_application</name>
+  <version>0.0.0</version>
+  <description>
+     The pick_and_place_application package
+  </description>
+
+  <maintainer email="jnicho@swri.org">jnicho</maintainer> -->
+  <author email="jnicho@swri.org">jnicho</author>
+  <license>BSD</license>
+
+  <url type="website">http://ros.org/wiki/pick_and_place_application</url>
+  
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  
+  <build_depend>builtin_interfaces</build_depend>
+  <build_depend>rosidl_default_generators</build_depend>
+  <build_depend>rclcpp</build_depend>
+  <build_depend>moveit_msgs</build_depend>
+  <build_depend>shape_msgs</build_depend>
+  <build_depend>pick_and_place_msgs</build_depend>
+  <build_depend>geometry_msgs</build_depend>
+  <build_depend>moveit_common</build_depend>
+  <build_depend>moveit_ros_planning_interface</build_depend>
+  
+  <exec_depend>builtin_interfaces</exec_depend>
+  <exec_depend>rosidl_default_runtime</exec_depend>
+  <exec_depend>controller_manager</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>warehouse_ros_mongo</exec_depend>
+  <exec_depend>tf2_ros</exec_depend>
+  <exec_depend>rviz2</exec_depend>
+  
+  <!-- <build_depend>robot_io</build_depend>
+  <build_depend>object_manipulation_msgs</build_depend>
+  <build_depend>actionlib</build_depend>
+  <build_depend>industrial_robot_client</build_depend>
+  <build_depend>industrial_robot_simulator</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>shape_msgs</build_depend>
+  <build_depend>pcl_ros</build_depend>
+  <build_depend>pcl_msgs</build_depend>
+  <build_depend>tf_conversions</build_depend>
+  <build_depend>message_generation</build_depend>
+
+  <run_depend>roscpp</run_depend>
+  <run_depend>moveit_msgs</run_depend>
+  <run_depend>moveit_ros_manipulation</run_depend>
+  <run_depend>moveit_ros_move_group</run_depend>
+  <run_depend>moveit_ros_planning_interface</run_depend>
+  <run_depend>robot_io</run_depend>
+  <run_depend>object_manipulation_msgs</run_depend>
+  <run_depend>actionlib</run_depend>
+  <run_depend>industrial_robot_client</run_depend>
+  <run_depend>industrial_robot_simulator</run_depend>
+  <run_depend>std_msgs</run_depend>
+  <run_depend>shape_msgs</run_depend>
+  <run_depend>pcl_ros</run_depend>
+  <run_depend>pcl_msgs</run_depend>
+  <run_depend>tf_conversions</run_depend>
+  <run_depend>message_runtime</run_depend> -->
+  
+  <member_of_group>rosidl_interface_packages</member_of_group>
+
+  <export>
+  	<build_type>ament_cmake</build_type>
+  </export>
+
+</package>
