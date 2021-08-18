@@ -13,13 +13,13 @@
     - The "setPoseTarget" method allows you to set a "pose" as your target
         to move the robot.
 */
-void collision_avoidance_pick_and_place::PickAndPlace::pickup_box(std::vector<geometry_msgs::Pose>& pick_poses,const geometry_msgs::Pose& box_pose)
+void collision_avoidance_pick_and_place::PickAndPlaceApp::pickup_box(std::vector<geometry_msgs::msg::Pose>& pick_poses,const geometry_msgs::msg::Pose& box_pose)
 {
-    //ROS_ERROR_STREAM("pickup_box is not implemented yet.  Aborting."); exit(1);
+    //RCLCPP_ERROR_STREAM(node,"pickup_box is not implemented yet.  Aborting."); exit(1);
 
     // task variables
     bool success;
-
+    //std::shared_ptr<moveit_cpp::PlanningComponent> planning_component = std::make_shared(cfg.ARM_GROUP_NAME. move_group_ptr);
 
     /* Fill Code:
      * Goal:
@@ -31,10 +31,11 @@ void collision_avoidance_pick_and_place::PickAndPlace::pickup_box(std::vector<ge
      * - The WRIST_LINK_NAME field in the "cfg" configuration member contains
      *  the name for the arm's wrist link.
      */
-    move_group_ptr->setEndEffector(cfg.WRIST_LINK_NAME);
+
+    //planning_component.setEndEffector(cfg.WRIST_LINK_NAME);
 
     // set allowed planning time
-    move_group_ptr->setPlanningTime(60.0f);
+    //move_group_ptr->setPlanningTime(60.0f);
 
 
     /* Fill Code:
@@ -47,19 +48,19 @@ void collision_avoidance_pick_and_place::PickAndPlace::pickup_box(std::vector<ge
      * - The WORLD_FRAME_ID in the "cfg" configuration member contains the name
      * 	for the reference frame.
      */
-    move_group_ptr->setPoseReferenceFrame(cfg.WORLD_FRAME_ID);
+    //move_group_ptr->setPoseReferenceFrame(cfg.WORLD_FRAME_ID);
 
     // move the robot to each wrist pick pose
     for(unsigned int i = 0; i < pick_poses.size(); i++)
     {
-      moveit_msgs::RobotState robot_state;
+      moveit_msgs::msg::RobotState robot_state;
 
     /* Inspect Code:
      * Goal:
      * - Look in the "set_attached_object()" method to understand
      * 	how to attach a payload using moveit.
      */
-    set_attached_object(false,geometry_msgs::Pose(),robot_state);
+    set_attached_object(false,geometry_msgs::msg::Pose(),robot_state);
 
 
     /* Inspect Code:
@@ -67,17 +68,18 @@ void collision_avoidance_pick_and_place::PickAndPlace::pickup_box(std::vector<ge
      * - Look in the "create_motion_plan()" method to observe how an
      * 	entire moveit motion plan is created.
      */
-    moveit::planning_interface::MoveGroupInterface::Plan plan;
-    success = create_motion_plan(pick_poses[i],robot_state,plan) && move_group_ptr->execute(plan);
+    moveit_cpp::PlanningComponent::PlanSolution plan_solution;
+    success = create_motion_plan(pick_poses[i],robot_state,plan_solution) &&
+        moveit_cpp->execute(cfg.ARM_GROUP_NAME, plan_solution.trajectory, true);
 
     // verifying move completion
     if(success)
     {
-      ROS_INFO_STREAM("Pick Move " << i <<" Succeeded");
+      RCLCPP_INFO_STREAM(node->get_logger(),"Pick Move " << i <<" Succeeded");
     }
     else
     {
-      ROS_ERROR_STREAM("Pick Move " << i <<" Failed");
+      RCLCPP_ERROR_STREAM(node->get_logger(),"Pick Move " << i <<" Failed");
       set_gripper(false);
       exit(1);
     }

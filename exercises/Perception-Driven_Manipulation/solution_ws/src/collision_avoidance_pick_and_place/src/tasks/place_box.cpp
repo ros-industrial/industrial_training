@@ -8,10 +8,10 @@
     - Use the methods seen so far such as "move", "sendGoal", "waitForResult" whenever needed.
 */
 
-void collision_avoidance_pick_and_place::PickAndPlace::place_box(std::vector<geometry_msgs::Pose>& place_poses,
-        const geometry_msgs::Pose& box_pose)
+void collision_avoidance_pick_and_place::PickAndPlaceApp::place_box(std::vector<geometry_msgs::msg::Pose>& place_poses,
+        const geometry_msgs::msg::Pose& box_pose)
 {
-  //ROS_ERROR_STREAM("place_box is not implemented yet.  Aborting."); exit(1);
+  //RCLCPP_ERROR_STREAM(node,"place_box is not implemented yet.  Aborting."); exit(1);
 
   // task variables
   bool success;
@@ -22,16 +22,16 @@ void collision_avoidance_pick_and_place::PickAndPlace::place_box(std::vector<geo
    * Hints:
    * - Use the "setEndEffectorLink" and "setPoseReferenceFrame" methods of "move_group_ptr"
    */
-  move_group_ptr->setEndEffectorLink(cfg.WRIST_LINK_NAME);
-  move_group_ptr->setPoseReferenceFrame(cfg.WORLD_FRAME_ID);
+  //moveit_cpp_ptr->setEndEffectorLink(cfg.WRIST_LINK_NAME);
+  //moveit_cpp_ptr->setPoseReferenceFrame(cfg.WORLD_FRAME_ID);
 
   // set allowed planning time
-  move_group_ptr->setPlanningTime(60.0f);
+  //moveit_cpp_ptr->setPlanningTime(60.0f);
 
   // move the robot to each wrist place pose
   for(unsigned int i = 0; i < place_poses.size(); i++)
   {
-    moveit_msgs::RobotState robot_state;
+    moveit_msgs::msg::RobotState robot_state;
     if(i==0 || i == 1)
     {
       // attaching box
@@ -42,21 +42,22 @@ void collision_avoidance_pick_and_place::PickAndPlace::place_box(std::vector<geo
     else
     {
       // detaching box
-      set_attached_object(false,geometry_msgs::Pose(),robot_state);
+      set_attached_object(false,geometry_msgs::msg::Pose(),robot_state);
       show_box(false);
     }
 
     // create motion plan
-    moveit::planning_interface::MoveGroupInterface::Plan plan;
-    success = create_motion_plan(place_poses[i],robot_state,plan) && move_group_ptr->execute(plan);
+    moveit_cpp::PlanningComponent::PlanSolution plan_solution;
+    success = create_motion_plan(place_poses[i], robot_state,plan_solution)
+        && moveit_cpp->execute(cfg.ARM_GROUP_NAME, plan_solution.trajectory, true);
 
     if(success)
     {
-      ROS_INFO_STREAM("Place Move " << i <<" Succeeded");
+      RCLCPP_INFO_STREAM(node->get_logger(),"Place Move " << i <<" Succeeded");
     }
     else
     {
-      ROS_ERROR_STREAM("Place Move " << i <<" Failed");
+      RCLCPP_ERROR_STREAM(node->get_logger(),"Place Move " << i <<" Failed");
       set_gripper(false);
       exit(1);
     }

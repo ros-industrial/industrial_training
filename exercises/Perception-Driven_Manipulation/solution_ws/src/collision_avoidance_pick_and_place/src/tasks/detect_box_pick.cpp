@@ -1,4 +1,5 @@
 #include <collision_avoidance_pick_and_place/pick_and_place.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 
 /* DETECTING BOX PICK POSE
   Goal:
@@ -6,26 +7,26 @@
         * this transform is published by the kinect AR-tag perception node
     - Save the pose into 'box_pose'.
 */
-geometry_msgs::Pose collision_avoidance_pick_and_place::PickAndPlace::detect_box_pick()
+geometry_msgs::msg::Pose collision_avoidance_pick_and_place::PickAndPlaceApp::detect_box_pick()
 {
-  //ROS_ERROR_STREAM("detect_box_pick is not implemented yet.  Aborting."); exit(1);
+  using RequestType = pick_and_place_msgs::srv::GetTargetPose::Request;
+  using ResponseType = pick_and_place_msgs::srv::GetTargetPose::Response;
+
+  //RCLCPP_ERROR_STREAM(node,"detect_box_pick is not implemented yet.  Aborting."); exit(1);
 
   // creating shape for recognition
-  shape_msgs::SolidPrimitive shape;
-  shape.type = shape_msgs::SolidPrimitive::BOX;
+  shape_msgs::msg::SolidPrimitive shape;
+  shape.type = shape_msgs::msg::SolidPrimitive::BOX;
   shape.dimensions.resize(3);
   shape.dimensions[0] = cfg.BOX_SIZE.getX();
   shape.dimensions[1] = cfg.BOX_SIZE.getY();
   shape.dimensions[2] = cfg.BOX_SIZE.getZ();
 
   // creating request object
-  collision_avoidance_pick_and_place::GetTargetPose srv;
-  srv.request.shape = shape;
-  srv.request.world_frame_id = cfg.WORLD_FRAME_ID;
-  srv.request.ar_tag_frame_id = cfg.AR_TAG_FRAME_ID;
-  geometry_msgs::Pose place_pose;
-  tf::poseTFToMsg(cfg.BOX_PLACE_TF,place_pose);
-  srv.request.remove_at_poses.push_back(place_pose);
+  RequestType::SharedPtr req = std::make_shared<RequestType>();
+  req->shape = shape;
+  req->world_frame_id = cfg.WORLD_FRAME_ID;
+  req->ar_tag_frame_id = cfg.AR_TAG_FRAME_ID;
 
   /* Fill Code:
    * Goal:
@@ -36,31 +37,32 @@ geometry_msgs::Pose collision_avoidance_pick_and_place::PickAndPlace::detect_box
    * - Assign the target_pose in the response to the box_pose variable in
    * 	order to save the results.
    */
-  geometry_msgs::Pose box_pose;
-  if(target_recognition_client.call(srv))
+  geometry_msgs::msg::Pose box_pose;
+  std::shared_future<ResponseType::SharedPtr> response_fut = target_recognition_client->async_send_request(req);
+  std::future_status st = response_fut.wait_for(
+      rclcpp::Duration::from_seconds(20.0).to_chrono<std::chrono::seconds>());
+  if(st == std::future_status ::ready)
   {
-    if(srv.response.succeeded)
+    ResponseType::SharedPtr response = response_fut.get();
+    if(response->succeeded)
     {
-      box_pose = srv.response.target_pose;
-      ROS_INFO_STREAM("target recognition succeeded");
+      box_pose = response->target_pose;
+      RCLCPP_INFO_STREAM(node->get_logger(),"target recognition succeeded");
     }
     else
     {
-      ROS_ERROR_STREAM("target recognition failed");
+      RCLCPP_ERROR_STREAM(node->get_logger(),"target recognition failed");
       exit(0);
-
     }
   }
   else
   {
-    ROS_ERROR_STREAM("Service call for target recognition failed with response '"<<
-                    (srv.response.succeeded ?"SUCCESS":"FAILURE")
-                    <<"', exiting");
+    RCLCPP_ERROR_STREAM(node->get_logger(),"Service call for target recognition failed with response timed out");
     exit(0);
   }
 
   // updating box marker for visualization in rviz
-  visualization_msgs::Marker marker = cfg.MARKER_MESSAGE;
+  visualization_msgs::msg::Marker marker = cfg.MARKER_MESSAGE;
   cfg.MARKER_MESSAGE.header.frame_id = cfg.WORLD_FRAME_ID;
   cfg.MARKER_MESSAGE.pose = box_pose;
   cfg.MARKER_MESSAGE.pose.position.z = box_pose.position.z - 0.5f*cfg.BOX_SIZE.z();

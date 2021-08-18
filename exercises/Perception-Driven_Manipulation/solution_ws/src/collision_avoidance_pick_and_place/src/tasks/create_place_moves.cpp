@@ -1,4 +1,6 @@
 #include <collision_avoidance_pick_and_place/pick_and_place.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
+
 
 /*    CREATE PLACE MOVES
   Goal:
@@ -15,14 +17,14 @@
     - Use the "transform_from_tcp_to_wrist" function to populate the "wrist_place_poses" array.
 */
 
-std::vector<geometry_msgs::Pose> collision_avoidance_pick_and_place::PickAndPlace::create_place_moves()
+std::vector<geometry_msgs::msg::Pose> collision_avoidance_pick_and_place::PickAndPlaceApp::create_place_moves()
 {
   //ROS_ERROR_STREAM("create_place_moves is not implemented yet.  Aborting."); exit(1);
 
   // task variables
-  tf::Transform world_to_tcp_tf;
-  tf::StampedTransform tcp_to_wrist_tf;
-  std::vector<geometry_msgs::Pose> tcp_place_poses, wrist_place_poses;
+  tf2::Transform world_to_tcp_tf, tcp_to_wrist_tf;
+  geometry_msgs::msg::TransformStamped tcp_to_wrist_msg;
+  std::vector<geometry_msgs::msg::Pose> tcp_place_poses, wrist_place_poses;
 
 
   /* Fill Code:
@@ -43,7 +45,7 @@ std::vector<geometry_msgs::Pose> collision_avoidance_pick_and_place::PickAndPlac
    * - The quaternion value "tf::Quaternion(0.707, 0.707, 0, 0)" will point
    * 	the tcp's direction towards the box.
    */
-  world_to_tcp_tf.setRotation(tf::Quaternion(0.707, 0.707, 0, 0));
+  world_to_tcp_tf.setRotation(tf2::Quaternion(0.707, 0.707, 0, 0));
 
 
   /* Fill Code:
@@ -63,8 +65,11 @@ std::vector<geometry_msgs::Pose> collision_avoidance_pick_and_place::PickAndPlac
    * Hints:
    * - Use the "lookupTransform" method in the transform listener.
    * */
-  transform_listener_ptr->waitForTransform(cfg.TCP_LINK_NAME, cfg.WRIST_LINK_NAME, ros::Time(0.0f), ros::Duration(3.0f));
-  transform_listener_ptr->lookupTransform(cfg.TCP_LINK_NAME, cfg.WRIST_LINK_NAME, ros::Time(0), tcp_to_wrist_tf);
+  transform_buffer.waitForTransform(cfg.TCP_LINK_NAME, cfg.WRIST_LINK_NAME, rclcpp::Time(0.0f),
+                             rclcpp::Duration::from_seconds(3.0f), nullptr);
+  tcp_to_wrist_msg = transform_buffer.lookupTransform(cfg.TCP_LINK_NAME, cfg.WRIST_LINK_NAME, rclcpp::Time(0),
+                                              rclcpp::Duration::from_seconds(5.0) );
+  tf2::fromMsg(tcp_to_wrist_msg.transform, tcp_to_wrist_tf);
 
 
   /* Fill Code:
@@ -79,8 +84,8 @@ std::vector<geometry_msgs::Pose> collision_avoidance_pick_and_place::PickAndPlac
   wrist_place_poses = transform_from_tcp_to_wrist(tcp_to_wrist_tf, tcp_place_poses);
 
   // printing results
-  ROS_INFO_STREAM("tcp position at place: " << "[" << world_to_tcp_tf.getOrigin().getX() << ", " << world_to_tcp_tf.getOrigin().getY() << ", " << world_to_tcp_tf.getOrigin().getZ() << "]");
-  ROS_INFO_STREAM("wrist position at place: " << wrist_place_poses[1].position);
+  RCLCPP_INFO_STREAM(node->get_logger(), "tcp position at place: " << "[" << world_to_tcp_tf.getOrigin().getX() << ", " << world_to_tcp_tf.getOrigin().getY() << ", " << world_to_tcp_tf.getOrigin().getZ() << "]");
+  RCLCPP_INFO_STREAM(node->get_logger(), "wrist position at place: " << wrist_place_poses[1].position);
 
   return wrist_place_poses;
 }

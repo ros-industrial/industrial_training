@@ -12,32 +12,32 @@ using moveit::planning_interface::MoveItErrorCode;
     - Once the target is set you can call the "move" method in order to go to that target.
 */
 
-void collision_avoidance_pick_and_place::PickAndPlace::move_to_wait_position()
+void collision_avoidance_pick_and_place::PickAndPlaceApp::move_to_wait_position()
 {
   //ROS_ERROR_STREAM("move_to_wait_position is not implemented yet.  Aborting."); exit(1);
 
-  // task variables
+/*  // task variables
   MoveItErrorCode error; // saves the move result
 
-  /* Fill Code:
+   Fill Code:
    * Goal:
    * - Set robot wait target
    * Hints:
    * - Use the "setNamedTarget" method in the "move_group_ptr" object.
    * - Look in the "cfg.WAIT_POSE_NAME" object for the name of the target.
-   */
+
   move_group_ptr->setNamedTarget(cfg.WAIT_POSE_NAME);
 
   // set allowed planning time
   move_group_ptr->setPlanningTime(60.0f);
 
-  /* Fill Code:
+   Fill Code:
    * Goal:
    * - Move the robot
    * Hints:
    * - Use the "move" method in the "move_group_ptr" object and save the result
    *  in the "error" variable
-   */
+
   error = move_group_ptr->move();
   if(error == MoveItErrorCode::SUCCESS)
   {
@@ -47,7 +47,7 @@ void collision_avoidance_pick_and_place::PickAndPlace::move_to_wait_position()
   {
     ROS_ERROR_STREAM("Move " << cfg.WAIT_POSE_NAME<< " Failed");
     exit(1);
-  }
+  }*/
 }
 
 
