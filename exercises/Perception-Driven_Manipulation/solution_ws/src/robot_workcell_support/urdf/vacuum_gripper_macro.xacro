@@ -16,7 +16,7 @@
 				</geometry-->
 				<origin xyz="0 0 -0.048" rpy="0 0 0"/>
 				<geometry>
-					<mesh filename="package://robot_config/meshes/vacuum_gripper_single_suction_cup.STL" />
+					<mesh filename="package://robot_workcell_support/meshes/vacuum_gripper_single_suction_cup.STL" />
 				</geometry>
 				<material name="silver">
 					<color rgba="0.8 0.8 0.8 1"/>
