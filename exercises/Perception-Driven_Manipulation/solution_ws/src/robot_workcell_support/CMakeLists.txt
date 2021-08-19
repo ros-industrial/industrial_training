@@ -1,13 +1,17 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.5)
 project(robot_workcell_support)
 
-find_package(catkin REQUIRED COMPONENTS 
+find_package(ament_cmake REQUIRED)
+
+
+install(DIRECTORY
+ launch
+ meshes
+ urdf
+ rviz
+ DESTINATION share/${PROJECT_NAME}/
 )
 
-
-###################################
-## catkin specific configuration ##
-###################################
-catkin_package()
+ament_package()
 
 
