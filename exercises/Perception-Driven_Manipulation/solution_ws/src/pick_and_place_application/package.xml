@@ -14,8 +14,6 @@
   
   <buildtool_depend>ament_cmake</buildtool_depend>
   
-  <build_depend>builtin_interfaces</build_depend>
-  <build_depend>rosidl_default_generators</build_depend>
   <build_depend>rclcpp</build_depend>
   <build_depend>moveit_msgs</build_depend>
   <build_depend>shape_msgs</build_depend>
@@ -24,8 +22,6 @@
   <build_depend>moveit_common</build_depend>
   <build_depend>moveit_ros_planning_interface</build_depend>
   
-  <exec_depend>builtin_interfaces</exec_depend>
-  <exec_depend>rosidl_default_runtime</exec_depend>
   <exec_depend>controller_manager</exec_depend>
   <exec_depend>robot_state_publisher</exec_depend>
   <exec_depend>warehouse_ros_mongo</exec_depend>
@@ -61,7 +57,6 @@
   <run_depend>tf_conversions</run_depend>
   <run_depend>message_runtime</run_depend> -->
   
-  <member_of_group>rosidl_interface_packages</member_of_group>
 
   <export>
   	<build_type>ament_cmake</build_type>
