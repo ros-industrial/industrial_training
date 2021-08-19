@@ -1,6 +1,6 @@
 <launch>
 
-  <include file="$(find ur5_collision_avoidance_moveit_config)/launch/planning_context.launch">
+  <include file="$(find ur5_workcell_moveit2_config)/launch/planning_context.launch">
     <arg name="load_robot_description" value="true"/>
   </include>
 
@@ -12,14 +12,14 @@
   
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen" />
 
-  <include file="$(find ur5_collision_avoidance_moveit_config)/launch/move_group.launch">
+  <include file="$(find ur5_workcell_moveit2_config)/launch/move_group.launch">
     <arg name="allow_trajectory_execution" value="false"/>
   </include>
 
-  <include file="$(find ur5_collision_avoidance_moveit_config)/launch/moveit_rviz.launch">
+  <include file="$(find ur5_workcell_moveit2_config)/launch/moveit_rviz.launch">
     <arg name="config" value="true"/>
   </include>
 
-  <include file="$(find ur5_collision_avoidance_moveit_config)/launch/default_warehouse_db.launch" />
+  <include file="$(find ur5_workcell_moveit2_config)/launch/default_warehouse_db.launch" />
 
 </launch>

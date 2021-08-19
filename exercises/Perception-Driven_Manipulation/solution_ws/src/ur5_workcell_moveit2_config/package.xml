@@ -1,6 +1,6 @@
 <package>
 
-  <name>ur5_collision_avoidance_moveit_config</name>
+  <name>ur5_workcell_moveit2_config</name>
   <version>0.2.0</version>
   <description>
      An automatically generated package with all the configuration and launch files for using the ur5_collision_avoidance with the MoveIt Motion Planning Framework
