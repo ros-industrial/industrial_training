@@ -1,8 +1,6 @@
 <?xml version="1.0" ?>
 <robot name="ur5_workcell" xmlns:xacro="http://ros.org/wiki/xacro">
-    <xacro:include filename="$(find robot_workcell_support)/urdf/vacuum_gripper_macro.xacro"/>
-    <!-- xacro:include filename="$(find ur_description)/urdf/ur.urdf.xacro" /> -->
-    
+    <xacro:include filename="$(find robot_workcell_support)/urdf/vacuum_gripper_macro.xacro"/>    
     <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro"/>
     <xacro:include filename="$(find robot_workcell_support)/urdf/workspace_components.xacro"/>
     <xacro:include filename="$(find robot_workcell_support)/urdf/kinect_sensor_macro.xacro"/>
@@ -16,13 +14,10 @@
     <xacro:property name="attached_object_height" value="0.17"/>
     <xacro:property name="arm_prefix" value=""/>
 
-    <!-- instantiating robot arm and gripper -->
-    <!-- <xacro:ur5_robot prefix="" joint_limited="true"/> -->
-    
-    <!-- parameters -->
+    <!-- instantiating robot arm and gripper -->    
+    <!-- ur parameters -->
+    <xacro:arg name="prefix" default="${arm_prefix}"/><!-- Remove once PR https://github.com/UniversalRobots/Universal_Robots_ROS2_Driver/pull/149 is merged-->
     <xacro:arg name="ur_type" default="ur5"/>
-    <xacro:arg name="prefix" default=""/>
-    <xacro:arg name="joint_limit_params" default="$(find ur_description)/config/$(arg ur_type)/joint_limits.yaml"/>
     <xacro:arg name="joint_limit_params" default="$(find ur_description)/config/$(arg ur_type)/joint_limits.yaml"/>
     <xacro:arg name="kinematics_params" default="$(find ur_description)/config/$(arg ur_type)/default_kinematics.yaml"/>
     <xacro:arg name="physical_params" default="$(find ur_description)/config/$(arg ur_type)/physical_parameters.yaml"/>
@@ -34,12 +29,12 @@
 		<xacro:arg name="safety_k_position" default="20"/>
 		
 		<!-- ros2_control related parameters -->
-		<xacro:arg name="use_fake_hardware" default="false" />
+		<xacro:arg name="use_fake_hardware" default="true" />
 		<xacro:arg name="fake_sensor_commands" default="false" />
 
-   <!-- arm -->
+   <!-- ur arm instantiation -->
    <xacro:ur_robot
-     prefix=""
+     prefix="${arm_prefix}"
      joint_limits_parameters_file="$(arg joint_limit_params)"
      kinematics_parameters_file="$(arg kinematics_params)"
      physical_parameters_file="$(arg physical_params)"
@@ -115,8 +110,8 @@
     <!-- end of arm workcell joint definitions-->
 
     <!-- arm-gripper coupling joint definitions -->
-    <joint name="${arm_prefix}to_gripper" type="fixed">
-            <parent link="${arm_prefix}ee_link"/>
+    <joint name="${arm_prefix}wrist_to_gripper" type="fixed">
+            <parent link="${arm_prefix}tool0"/>
             <child link="${arm_prefix}gripper_frame"/>
             <origin xyz="0 0 0" rpy="-1.57 0 -1.57"/> <!-- 0 1.57 0 -->
     </joint>
