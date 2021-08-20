@@ -121,26 +121,37 @@ std::ostream& operator<<(std::ostream& os, const geometry_msgs::msg::Point pt)
   return os << "[" << pt.x << ", " << pt.y << ", " << pt.z << "]";
 }
 
+template <class T>
+bool loadParameter(rclcpp::Node::SharedPtr node, const std::string& param_name, T& param_val)
+{
+  if(!node->has_parameter(param_name))
+  {
+    RCLCPP_INFO(node->get_logger(),"The \"%s\" parameter was not found", param_name.c_str());
+    return false;
+  }
+  return node->get_parameter(param_name, param_val);
+}
+
 bool PickAndPlaceConfig::init(rclcpp::Node::SharedPtr node)
 {
   double w, l, h, x, y, z;
-  if(node->get_parameter("arm_group_name",ARM_GROUP_NAME)
-      && node->get_parameter("tcp_link_name",TCP_LINK_NAME)
-      && node->get_parameter("wrist_link_name",WRIST_LINK_NAME)
-      && node->get_parameter("attached_object_link",ATTACHED_OBJECT_LINK_NAME)
-      && node->get_parameter("world_frame_id",WORLD_FRAME_ID)
-      && node->get_parameter("home_pose_name",HOME_POSE_NAME)
-      && node->get_parameter("wait_pose_name",WAIT_POSE_NAME)
-      && node->get_parameter("ar_frame_id",AR_TAG_FRAME_ID)
-      && node->get_parameter("box_width",w)
-      && node->get_parameter("box_length",l)
-      && node->get_parameter("box_height",h)
-      && node->get_parameter("box_place_x",x)
-      && node->get_parameter("box_place_y",y)
-      && node->get_parameter("box_place_z",z)
-      && node->get_parameter("touch_links",TOUCH_LINKS)
-      && node->get_parameter("retreat_distance",RETREAT_DISTANCE)
-      && node->get_parameter("approach_distance",APPROACH_DISTANCE))
+  if(loadParameter(node, "arm_group_name",ARM_GROUP_NAME)
+      && loadParameter(node, "tcp_link_name",TCP_LINK_NAME)
+      && loadParameter(node, "wrist_link_name",WRIST_LINK_NAME)
+      && loadParameter(node, "attached_object_link",ATTACHED_OBJECT_LINK_NAME)
+      && loadParameter(node, "world_frame_id",WORLD_FRAME_ID)
+      && loadParameter(node, "home_pose_name",HOME_POSE_NAME)
+      && loadParameter(node, "wait_pose_name",WAIT_POSE_NAME)
+      && loadParameter(node, "ar_frame_id",AR_TAG_FRAME_ID)
+      && loadParameter(node, "box_width",w)
+      && loadParameter(node, "box_length",l)
+      && loadParameter(node, "box_height",h)
+      && loadParameter(node, "box_place_x",x)
+      && loadParameter(node, "box_place_y",y)
+      && loadParameter(node, "box_place_z",z)
+      && loadParameter(node, "touch_links",TOUCH_LINKS)
+      && loadParameter(node, "retreat_distance",RETREAT_DISTANCE)
+      && loadParameter(node, "approach_distance",APPROACH_DISTANCE))
   {
     BOX_SIZE = Vector3(l,w,h);
     BOX_PLACE_TF.setOrigin(Vector3(x,y,z));
