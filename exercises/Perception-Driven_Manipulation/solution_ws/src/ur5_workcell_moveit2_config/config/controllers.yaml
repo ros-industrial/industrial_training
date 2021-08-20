@@ -1,12 +1,16 @@
-controller_list:
-  - name: ""
-    action_ns: joint_trajectory_action
-    type: FollowJointTrajectory
-    joints:
-      - elbow_joint
-      - shoulder_lift_joint
-      - shoulder_pan_joint
-      - wrist_1_joint
-      - wrist_2_joint
-      - wrist_3_joint
+# moveit action clients to controllers 
+controller_names:
+  - manipulator_joint_trajectory_controller
+  
+manipulator_joint_trajectory_controller:
+  action_ns: follow_joint_trajectory
+  default: True
+  type: FollowJointTrajectory
+  joints:
+    - elbow_joint
+    - shoulder_lift_joint
+    - shoulder_pan_joint
+    - wrist_1_joint
+    - wrist_2_joint
+    - wrist_3_joint
 

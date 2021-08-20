@@ -1,0 +1,46 @@
+#controller_manager:
+#  update_rate: 100  # Hz
+#  controller_list:
+#    - name: manipulator_joint_trajectory_controller
+#      type: joint_trajectory_controller/JointTrajectoryController
+#    - name: joint_state_controller
+#      type: joint_state_controller/JointStateController 
+#  
+#manipulator_joint_trajectory_controller:
+#  command_interfaces:
+#    - position
+#  state_interfaces:
+#    - position
+#    - velocity
+#  joints:
+#    - elbow_joint
+#    - shoulder_lift_joint
+#    - shoulder_pan_joint
+#    - wrist_1_joint
+#    - wrist_2_joint
+#    - wrist_3_joint
+#     
+controller_manager:
+  ros__parameters:
+    update_rate: 100  # Hz
+    manipulator_joint_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+    joint_state_controller:
+      type: joint_state_controller/JointStateController 
+        
+# parameters for each controller listed under controller manager  
+manipulator_joint_trajectory_controller:
+  ros__parameters:
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    joints:
+      - elbow_joint
+      - shoulder_lift_joint
+      - shoulder_pan_joint
+      - wrist_1_joint
+      - wrist_2_joint
+      - wrist_3_joint
+    
