@@ -23,7 +23,7 @@ namespace pick_and_place_application
     }
     else
     {
-      RCLCPP_ERROR(node->get_logger(), "Parameters not found");
+      RCLCPP_ERROR(node->get_logger(), "Parameters failed to load");
       return false;
     }
 
