@@ -23,6 +23,7 @@ We will create a new catkin workspace, since this exercise does not overlap with
 #. Copy the template workspace layout and files:
 
    .. code-block:: bash
+
             cd $HOME
             git clone git@github.com:ros-industrial/industrial_training.git --single-branch --branch melodic --depth 1
             cp -r ~/industrial_training/exercises/python-pcl_ws ~
@@ -75,6 +76,7 @@ Now that we have converted several filters to C++ functions, we are ready to cal
 #. Open ``CMakeLists.txt`` in the **filter_call** package. Uncomment line 19 or wherever you find **# catkin_python_setup()** and save.
 
    .. code-block:: bash
+   
             cd filter_call
             gedit CMakeLists.txt
 
