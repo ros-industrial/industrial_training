@@ -76,9 +76,8 @@ Now that we have converted several filters to C++ functions, we are ready to cal
 #. Open ``CMakeLists.txt`` in the **filter_call** package. Uncomment line 19 or wherever you find **# catkin_python_setup()** and save.
 
    .. code-block:: bash
-   
-            cd filter_call
-            gedit CMakeLists.txt
+
+            gedit filter_call/CMakeLists.txt
 
 
    .. code-block:: cpp
