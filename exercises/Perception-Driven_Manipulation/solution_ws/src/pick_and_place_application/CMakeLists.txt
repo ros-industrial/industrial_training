@@ -15,6 +15,8 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(rclcpp_action REQUIRED)
 find_package(shape_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(pick_and_place_msgs REQUIRED)
@@ -62,13 +64,22 @@ ament_target_dependencies(pick_and_place_node
   pick_and_place_msgs
   moveit_common
   moveit_ros_planning_interface)
+  
+add_executable(fake_grasp_server_node
+  src/nodes/fake_grasp_action_server.cpp)
+ament_target_dependencies(fake_grasp_server_node
+  rclcpp
+  rclcpp_action
+  pick_and_place_msgs)
 
 #############
 ## Install ##
 #############
 
-install(TARGETS pick_and_place_node
-DESTINATION lib/${PROJECT_NAME})
+install(TARGETS 
+  pick_and_place_node
+  fake_grasp_server_node              
+  DESTINATION lib/${PROJECT_NAME})
   
 install(DIRECTORY
  launch
