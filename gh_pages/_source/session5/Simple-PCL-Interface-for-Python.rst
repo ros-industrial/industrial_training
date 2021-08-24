@@ -23,7 +23,8 @@ We will create a new catkin workspace, since this exercise does not overlap with
 #. Copy the template workspace layout and files:
 
    .. code-block:: bash
-
+            cd $HOME
+            git clone git@github.com:ros-industrial/industrial_training.git --single-branch --branch melodic --depth 1
             cp -r ~/industrial_training/exercises/python-pcl_ws ~
             cd ~/python-pcl_ws/
 
@@ -71,13 +72,14 @@ Now that we have converted several filters to C++ functions, we are ready to cal
 
             ls
 
-We will not be including ‘perception_msgs’ as a dependency as we will not be creating custom messages in this course. If you wish for a more in depth explanation including how to implement customer messages, here is a good `MIT resource <http://duckietown.mit.edu/media/pdfs/1rpRisFoCYUm0XT78j-nAYidlh-cDtLCdEbIaBCnx9ew.pdf>`__ on the steps taken.
-
-
 #. Open ``CMakeLists.txt`` in the **filter_call** package. Uncomment line 19 or wherever you find **# catkin_python_setup()** and save.
 
    .. code-block:: bash
+            cd filter_call
+            gedit CMakeLists.txt
 
+
+   .. code-block:: cpp
             catkin_python_setup()
 
 Creating setup.py
