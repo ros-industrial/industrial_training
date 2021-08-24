@@ -16,3 +16,8 @@ plan_request_params:
   planning_pipeline: ompl
   max_velocity_scaling_factor: 1.0
   max_acceleration_scaling_factor: 1.0
+  
+# octomap parameters (when used)
+octomap_frame: world_frame
+octomap_resolution: 0.01
+max_range: 5.0
