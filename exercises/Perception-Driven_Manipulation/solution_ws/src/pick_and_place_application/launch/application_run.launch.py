@@ -73,6 +73,7 @@ class MoveItConfigLoader:
         self.ompl_planning_file = 'ompl_planning.yaml'
         self.joint_limits_file = 'joint_limits.yaml'
         self.ros_controllers_yaml_file = 'ros_controllers.yaml'
+        self.sensors_yaml_file = 'sensors.yaml'
 
     def load_config(self):
         
@@ -84,6 +85,7 @@ class MoveItConfigLoader:
         OMPL_PLANNING_FILE_PATH = os.path.join(self.config_dir, self.ompl_planning_file)
         JOINT_LIMITS_FILE_PATH = os.path.join(self.config_dir, self.joint_limits_file)
         ROS_CONTROLLERS_FILE_PATH = os.path.join(self.config_dir, self.ros_controllers_yaml_file)
+        SENSORS_FILE_PATH = os.path.join(self.config_dir, self.sensors_yaml_file)
         
         # creating parameter dictionaries      
         urdf_file_content = xacro.process_file(self.xacro_file_path).toxml()  
@@ -112,8 +114,8 @@ class MoveItConfigLoader:
                       kinematics_yaml,
                       moveit_controllers,
                       ompl_planning_pipeline_config,
-                      joint_limits_yaml
-            ]
+                      joint_limits_yaml,
+                      sensors_yaml]
         
         # parsing ros controllers configuration
         ros_controllers_yaml_path = os.path.join(get_package_share_directory(self.moveit_pkg_name),
@@ -157,6 +159,7 @@ def launch_setup(context, *args, **kwargs):
         parameters= moveitcpp_parameters + [pick_and_place_parameters],
     )
     
+    # Trajectory controllers
     robot_description = moveit_config_parameters.robot_description
     ros2_controllers_yaml = moveit_config_parameters.ros_controller_manager_yaml_file
     ros2_control_node = Node(
@@ -179,14 +182,24 @@ def launch_setup(context, *args, **kwargs):
                 output="screen",
             )
         ]
+        
+    # grasp server
+    fake_grasp_server = Node(
+        package = 'pick_and_place_application',
+        executable = 'fake_grasp_server_node',
+        name= 'fake_grasp_server_node',
+        output = 'screen'
+        )
     
     return [pick_and_place_node, 
+            fake_grasp_server,
             ros2_control_node] + load_controllers_processes
 
 def generate_launch_description():
     
     return LaunchDescription([
-        launch.actions.DeclareLaunchArgument('moveit2_config_pkg', default_value = ['ur5_workcell_moveit2_config']),
+        launch.actions.DeclareLaunchArgument('moveit2_config_pkg',
+                                              default_value = ['ur5_workcell_moveit2_config']),
         launch.actions.DeclareLaunchArgument('xacro_file', default_value = [ os.path.join(get_package_share_directory('robot_workcell_support'),
                                                                                           'urdf','ur5_workcell.xacro')]),
         launch.actions.DeclareLaunchArgument('srdf_file', default_value = [os.path.join(get_package_share_directory('ur5_workcell_moveit2_config'),

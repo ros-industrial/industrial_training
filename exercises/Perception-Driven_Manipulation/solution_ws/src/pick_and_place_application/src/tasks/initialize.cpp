@@ -42,14 +42,20 @@ namespace pick_and_place_application
     // instantiate the moveit cpp object for motion planing
     moveit_cpp = std::make_shared<moveit_cpp::MoveItCpp>(node);
 
+    // initializing planning scene monitor
+    moveit_cpp->getPlanningSceneMonitor()->startSceneMonitor();
+    moveit_cpp->getPlanningSceneMonitor()->startWorldGeometryMonitor(); // allows updating the scene from sensor data, etc.
+    moveit_cpp->getPlanningSceneMonitor()->providePlanningSceneService();
+
     // waiting to establish connections
-    /*
-    while(ros::ok() &&
-        !application.grasp_action_client_ptr->waitForServer(ros::Duration(2.0f)))
+    while(rclcpp::ok() &&
+        !grasp_action_client->wait_for_action_server(
+        rclcpp::Duration::from_seconds(2.0).to_chrono<std::chrono::seconds>()))
     {
-      ROS_INFO_STREAM("Waiting for grasp action servers");
+      RCLCPP_INFO(node->get_logger(), "Waiting for grasp action server");
     }
 
+    /*
     if(ros::ok() && !application.target_recognition_client.waitForExistence(ros::Duration(2.0f)))
     {
       ROS_INFO_STREAM("Waiting for service'"<<application.cfg.TARGET_RECOGNITION_SERVICE<<"'");

@@ -81,7 +81,7 @@ public:
     HOME_POSE_NAME  = "home";
     WAIT_POSE_NAME  = "wait";
     AR_TAG_FRAME_ID    = "ar_frame";
-    GRASP_ACTION_NAME = "grasp_execution_action";
+    GRASP_ACTION_NAME = "do_grasp";
     BOX_SIZE        = tf2::Vector3(0.1f, 0.1f, 0.1f);
     BOX_PLACE_TF    = tf2::Transform(tf2::Quaternion::getIdentity(),
                                      tf2::Vector3(-0.8f,-0.2f,BOX_SIZE.getZ()));

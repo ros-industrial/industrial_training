@@ -69,8 +69,8 @@ int main(int argc,char** argv)
   // move back to the "clear" position
   application.move_to_wait_position();
 
-  rclcpp::shutdown();
   spin_thread.join();
+  rclcpp::shutdown();
 
   return 0;
 }
