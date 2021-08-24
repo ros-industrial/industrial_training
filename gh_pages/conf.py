@@ -18,14 +18,14 @@
 #
 from sphinx import version_info as sphinx_version_info
 import os
-import git
+# import git
 curr_path = os.path.abspath('.')
 # The try catch is need because of the subversion tool when it creates the master.
-try:
-  repo = git.Repo(curr_path)
-  current_branch = repo.active_branch.name
-except git.exc.InvalidGitRepositoryError:
-  current_branch = ''
+# try:
+#   repo = git.Repo(curr_path)
+#   current_branch = repo.active_branch.name
+# except git.exc.InvalidGitRepositoryError:
+#   current_branch = ''
 
 
 # -- General configuration ------------------------------------------------
@@ -127,7 +127,6 @@ html_context = {
     "display_github": True,
     "github_user": "ros-industrial",
     "github_repo": "industrial_training",
-    "github_version": current_branch,
     "conf_py_path": "gh_pages/",
     "source_suffix": source_suffix,
     "css_files": ['_static/override.css'],
@@ -135,4 +134,3 @@ html_context = {
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'IndustrialTrainingDocumentation'
-
