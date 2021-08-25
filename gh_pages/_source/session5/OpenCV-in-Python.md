@@ -671,7 +671,7 @@ The next node will subscribe to the `image` topic and execute a series of proces
 ### Challenge Exercises
 For a greater challenge, try the following suggestions to modify the operation of this image-processing example:
 
- 1. Modify the `image_pub` node to rotate the image by 10 degrees between each publishing step.  The following code can be used to rotate an image:
+ 1. Modify the `image_pub` node to rotate the image by **10 degrees** between each publishing step.  The following code can be used to rotate an image:
 
     ```python
     def rotateImg(img, angle):
