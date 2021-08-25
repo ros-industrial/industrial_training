@@ -264,7 +264,7 @@ Implement a Voxel Filter
 
    .. code-block:: bash
 
-            sudo chmod +x filter_call/scripts/filter_call.py
+            sudo chmod +x scripts/filter_call.py
 
 Viewing Results
 ^^^^^^^^^^^^^^^
