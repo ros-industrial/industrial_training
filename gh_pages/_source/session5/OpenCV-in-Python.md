@@ -666,7 +666,7 @@ The next node will subscribe to the `image` topic and execute a series of proces
            print "Found pump angle: {}".format(angle)
            ```
 
- 1. You're done!  Run the node as before.  The reported pump angle should be near 24 degrees.
+ 1. You're done!  Run the node as before.  The reported pump angle should be near **24 degrees**.
 
 ### Challenge Exercises
 For a greater challenge, try the following suggestions to modify the operation of this image-processing example:
