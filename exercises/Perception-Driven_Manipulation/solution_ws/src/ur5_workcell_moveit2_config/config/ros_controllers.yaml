@@ -43,4 +43,7 @@ manipulator_joint_trajectory_controller:
       - wrist_1_joint
       - wrist_2_joint
       - wrist_3_joint
+joint_state_controller:
+  ros__parameters:
+    type: joint_state_controller/JointStateController 
     
