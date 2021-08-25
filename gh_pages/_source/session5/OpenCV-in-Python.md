@@ -256,6 +256,12 @@ The next node will subscribe to the `image` topic and execute a series of proces
 
  1. As before, create a basic ROS python node (`detect_pump.py`) and set its executable permissions:
 
+    ```bash
+    cd ~/catkin_ws/src/detect_pump
+    touch nodes/detect_pump.py
+    gedit nodes/detect_pump.py
+    ```
+
     ```python
     #!/usr/bin/env python
     import rospy
@@ -317,9 +323,16 @@ The next node will subscribe to the `image` topic and execute a series of proces
     1. Run the new node and verify that it is subscribing to the topic as expected:
 
        ```bash
+       source ~/catkin_ws/devel/setup.bash
        rosrun detect_pump detect_pump.py
-       rosnode info /detect_pump
+       ```
+
+    1. See the nodes in action.
+
+       ```bash
+       source /opt/ros/melodic/setup.bash
        rqt_graph
+       # rosnode info /detect_pump
        ```
 
  1. Convert the incoming `Image` message to an OpenCV `Image` object and display it
