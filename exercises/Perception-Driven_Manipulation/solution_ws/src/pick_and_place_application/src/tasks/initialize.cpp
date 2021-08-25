@@ -34,7 +34,7 @@ namespace pick_and_place_application
     planning_scene_publisher = node->create_publisher<moveit_msgs::msg::PlanningScene>(cfg.PLANNING_SCENE_TOPIC,1);
 
     // target recognition client (perception)
-    target_recognition_client = node->create_client<pick_and_place_msgs::srv::GetTargetPose>(cfg.TARGET_RECOGNITION_SERVICE);
+    target_recognition_client = node->create_client<pick_and_place_msgs::srv::GetTargetPose>(cfg.GET_TARGET_POSE_SERVICE);
 
     // grasp action client (vacuum gripper)
     grasp_action_client = rclcpp_action::create_client<ExecuteGraspAction>(node, cfg.GRASP_ACTION_NAME);
@@ -44,6 +44,7 @@ namespace pick_and_place_application
 
     // initializing planning scene monitor
     moveit_cpp->getPlanningSceneMonitor()->startSceneMonitor();
+    moveit_cpp->getPlanningSceneMonitor()->startStateMonitor();
     moveit_cpp->getPlanningSceneMonitor()->startWorldGeometryMonitor(); // allows updating the scene from sensor data, etc.
     moveit_cpp->getPlanningSceneMonitor()->providePlanningSceneService();
 

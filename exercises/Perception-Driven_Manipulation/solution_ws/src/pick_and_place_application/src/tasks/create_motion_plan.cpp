@@ -33,6 +33,7 @@ bool PickAndPlaceApp::create_motion_plan(const geometry_msgs::msg::Pose &pose_ta
   // setting up planning configuration
   moveit_cpp::PlanningComponent planning_component(cfg.ARM_GROUP_NAME, moveit_cpp);
   moveit_cpp::PlanningComponent::PlanRequestParameters plan_parameters;
+  plan_parameters.planner_id = "RRTConnectkConfigDefault";
   plan_parameters.load(node);
   plan_parameters.planning_time = 60.0f;
   plan_parameters.planning_attempts = 1;
