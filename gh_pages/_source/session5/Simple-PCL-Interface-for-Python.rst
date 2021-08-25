@@ -387,7 +387,13 @@ Implement Pass-Through Filters
 
         }
 
-#. Save and build
+#. **Save your file**. Build ``python-pcl_ws`` workspace by running the following commands.
+
+   .. code-block:: bash
+
+            cd $HOME
+            cd ~python-pcl_ws
+            catkin build
 
 
    **Edit the Python Code**
