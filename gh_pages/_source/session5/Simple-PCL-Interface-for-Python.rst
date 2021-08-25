@@ -317,13 +317,13 @@ Implement a Voxel Filter
 Viewing Results
 ^^^^^^^^^^^^^^^
 
-#. In your terminal, run
+#. Open a new terminal, run
 
    .. code-block:: bash
 
             roscore
 
-#. Source a new terminal and run the C++ filter service node
+#. Open a new terminal and run the C++ filter service node
 
    .. code-block:: bash
 
@@ -331,7 +331,7 @@ Viewing Results
             source devel/setup.bash
             rosrun py_perception py_perception_node
 
-#. Source a new terminal and run the Python service client node. Note your file path may be different.
+#. Open a new terminal and run the Python service client node. Note your file path may be different.
 
    .. code-block:: bash
 
@@ -339,13 +339,13 @@ Viewing Results
             source devel/setup.bash
             rosrun filter_call filter_call.py _pcdfilename:=$PWD/src/table.pcd
 
-#. Source a new terminal and run the ``tf2_ros`` package to publish a static coordinate transform from the child frame to the world frame
+#. Open a new terminal and run the ``tf2_ros`` package to publish a static coordinate transform from the child frame to the world frame
 
    .. code-block:: bash
 
             rosrun tf2_ros static_transform_publisher 0 0 0 0 0 0 world_frame kinect_link
 
-#. Source a new terminal and run Rviz
+#. Open a new terminal and run Rviz
 
    .. code-block:: bash
 
