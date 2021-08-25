@@ -64,6 +64,11 @@ The first node will read in an image from a file and publish it as a ROS [Image]
 
  1. Create a new python script for our image-publisher node (`nodes/image_pub.py`).  Fill in the following template for a skeleton ROS python node:
 
+    ```bash
+    touch nodes/image_pub.py
+    gedit nodes/image_pub.py
+    ```
+
     ```python
     #!/usr/bin/env python
     import rospy
