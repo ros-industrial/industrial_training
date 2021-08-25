@@ -530,7 +530,7 @@ The next node will subscribe to the `image` topic and execute a series of proces
        plotCircles(drawImg, pumpCircles, (255,0,0))
        if (pumpCircles is None):
            raise Exception("No pump circles found!")
-       elif len(pumpCircles[0])<>1:
+       elif len(pumpCircles[0])>1:
            raise Exception("Wrong # of pump circles: found {} expected {}".format(len(pumpCircles[0]),1))
        else:
            pumpCircle = pumpCircles[0][0]
@@ -580,7 +580,7 @@ The next node will subscribe to the `image` topic and execute a series of proces
 
        ```python
        # determine primary axis, using largest contour
-       im2, contours, h = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+       contours, h = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
        maxC = max(contours, key=lambda c: cv2.contourArea(c))
        ```
 
