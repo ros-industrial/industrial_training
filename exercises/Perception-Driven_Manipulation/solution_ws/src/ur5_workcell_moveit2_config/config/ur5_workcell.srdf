@@ -17,7 +17,6 @@
         <link name="wrist_1_link" />
         <link name="wrist_2_link" />
         <link name="wrist_3_link" />
-        <link name="ee_link" />
         <joint name="shoulder_pan_joint" />
         <joint name="shoulder_lift_joint" />
         <joint name="elbow_joint" />
