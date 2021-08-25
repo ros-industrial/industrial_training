@@ -433,7 +433,7 @@ Implement Pass-Through Filters
    Within Rviz, compare PointCloud2 displays based on the ``/kinect/depth_registered/points`` (original camera data) and ``perception_passThrough`` (latest processing step) topics. Part of the original point cloud has been “clipped” out of the latest processing result.
 
 
-   When you are satisfied with the pass-through filter results, press Ctrl+C to kill the node. There is no need to close or kill the other terminals/nodes.
+   When you are satisfied with the pass-through filter results, press ``Ctrl+C`` to kill the node. There is no need to close or kill the other terminals/nodes.
 
 
 Plane Segmentation
@@ -442,7 +442,7 @@ Plane Segmentation
 This method is one of the most useful for any application where the object is on a flat surface. In order to isolate the objects on a table, you perform a plane fit to the points, which finds the points which comprise the table, and then subtract those points so that you are left with only points corresponding to the object(s) above the table. This is the most complicated PCL method we will be using and it is actually a combination of two: the RANSAC segmentation model, and the extract indices tool. An in depth example can be found on the `PCL Plane Model Segmentation Tutorial <http://pointclouds.org/documentation/tutorials/planar_segmentation.php#planar-segmentation>`__; otherwise you can copy the below code snippet.
 
 
-#. In ``py_perception_node.cpp``, update the switch statement in ``filterCallback`` to look as shown below:
+#. In ``py_perception_node.cpp``, update the switch statement in ``filterCallback`` on **line 191** to look as shown below:
 
    .. code-block:: c++
 
@@ -473,11 +473,15 @@ This method is one of the most useful for any application where the object is on
         }
 
 
-#. Save and build
+#. **Save your file**. Build ``python-pcl_ws`` workspace by running the following commands.
 
-   **Edit the Python Code**
+   .. code-block:: bash
 
-#. Copy paste the following code in ``filter_call.py``, after the passthrough filter section.  Keep care to maintain indents:
+        cd $HOME
+        cd ~python-pcl_ws
+        catkin build
+
+#. Copy paste the following code in ``filter_call.py``, after the passthrough filter section.  **Keep care to maintain indents**:
 
    .. code-block:: python
 
@@ -511,7 +515,7 @@ This method is one of the most useful for any application where the object is on
 
    #. When you are done viewing the results you can go back and change the ``setMaxIterations`` and ``setDistanceThreshold`` parameter values to control how tightly the plane-fit classifies data as inliers/outliers, and view the results again. Try using values of ``maxIterations=100`` and ``distThreshold=0.010``
 
-   #. When you are satisfied with the plane segmentation results, use Ctrl+C to kill the node. There is no need to close or kill the other terminals/nodes.
+   #. When you are satisfied with the plane segmentation results, use ``Ctrl+C`` to kill the node. There is no need to close or kill the other terminals/nodes.
 
 
 Euclidian Cluster Extraction
@@ -520,7 +524,7 @@ Euclidian Cluster Extraction
 This method is useful for any application where there are multiple objects. This is also a complicated PCL method. An in depth example can be found on the `PCL Euclidean Cluster Extraction Tutorial <http://pointclouds.org/documentation/tutorials/cluster_extraction.php#cluster-extraction>`__.
 
 
-#. In ``py_perception_node.cpp``, update the switch statement in ``filterCallback`` to look as shown below:
+#. In ``py_perception_node.cpp``, update the switch statement in ``filterCallback`` on **line 191**  to look as shown below:
 
    .. code-block:: c++
 
@@ -560,13 +564,16 @@ This method is useful for any application where there are multiple objects. This
         }
 
 
-#. Save and build
+#. **Save your file**. Build ``python-pcl_ws`` workspace by running the following commands.
+
+   .. code-block:: bash
+
+        cd $HOME
+        cd ~python-pcl_ws
+        catkin build
 
 
-   **Edit the Python Code**
-
-
-#. Copy paste the following code in ``filter_call.py`` after the plane segmentation section.  Keep care to maintain indents:
+#. Copy paste the following code in ``filter_call.py`` after the plane segmentation section.  **Keep care to maintain indents**:
 
    .. code-block:: python
 
