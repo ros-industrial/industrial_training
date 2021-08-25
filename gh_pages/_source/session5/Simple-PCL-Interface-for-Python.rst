@@ -391,8 +391,7 @@ Implement Pass-Through Filters
 
    .. code-block:: bash
 
-            cd $HOME
-            cd ~python-pcl_ws
+            cd ~/python-pcl_ws
             catkin build
 
 
@@ -477,8 +476,7 @@ This method is one of the most useful for any application where the object is on
 
    .. code-block:: bash
 
-        cd $HOME
-        cd ~python-pcl_ws
+        cd ~/python-pcl_ws
         catkin build
 
 #. Copy paste the following code in ``filter_call.py``, after the passthrough filter section.  **Keep care to maintain indents**:
@@ -568,8 +566,7 @@ This method is useful for any application where there are multiple objects. This
 
    .. code-block:: bash
 
-        cd $HOME
-        cd ~python-pcl_ws
+        cd ~/python-pcl_ws
         catkin build
 
 
