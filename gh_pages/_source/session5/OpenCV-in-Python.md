@@ -445,9 +445,6 @@ The next node will subscribe to the `image` topic and execute a series of proces
            drawImg = orig
            showImage(drawImg)
 
-
-
-
        def start_node():
            rospy.init_node('detect_pump')
            rospy.loginfo('detect_pump node started')
