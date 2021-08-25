@@ -36,6 +36,8 @@ This exercise uses a single package that can be placed in any catkin workspace. 
  1. Create a new `detect_pump` package to contain the new python nodes we'll be making:
 
     ```bash
+    cd $HOME
+    mkdir -p catkin_ws/src
     cd ~/catkin_ws/src
     catkin create pkg detect_pump --catkin-deps rospy cv_bridge
     ```
