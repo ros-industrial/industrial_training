@@ -60,7 +60,7 @@ Create a Python Package
 
 Now that we have converted several filters to C++ functions, we are ready to call it from a Python node.
 
-#. In the terminal, change the directory to your src folder. Create a new package called **filter_call** inside your python-pcl_ws:
+#. In the terminal, change the directory to your src folder. **Create a new package** called **filter_call** inside your python-pcl_ws:
 
    .. code-block:: bash
 
@@ -73,7 +73,7 @@ Now that we have converted several filters to C++ functions, we are ready to cal
 
             ls
 
-#. Open ``CMakeLists.txt`` in the **filter_call** package. Uncomment line 19 or wherever you find **# catkin_python_setup()** and save.
+#. Open ``CMakeLists.txt`` in the **filter_call** package. Uncomment **line 21** or wherever you find **# catkin_python_setup()** and save.
 
    .. code-block:: bash
 
@@ -131,7 +131,7 @@ As iterated before, we are creating a ROS C++ node to filter the point cloud whe
 Implement a Voxel Filter
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-#. In ``py_perception_node.cpp``, take notice of the function called ``filterCallBack`` (around line 170). This function will be the entry point for all service calls made by the Python client in order to run point cloud filtering operations.
+#. In ``py_perception_node.cpp``, take notice of the function called ``filterCallBack`` (around **line 170**). This function will be the entry point for all service calls made by the Python client in order to run point cloud filtering operations.
 
    .. code-block:: c++
 
@@ -185,7 +185,7 @@ Implement a Voxel Filter
         }
 
 
-#. Within ``main``, take notice of the lines starting at 244, this is where we load the parameters used by the various filters.
+#. Within ``main``, take notice of the lines starting at **line 244**, this is where we load the parameters used by the various filters.
 
    .. code-block:: c++
 
@@ -308,7 +308,7 @@ Implement a Voxel Filter
             
 
 
-#. We need to make the Python file executable. In your terminal:
+#. **Make** the Python file **executable**. In your terminal:
 
    .. code-block:: bash
 
@@ -317,13 +317,13 @@ Implement a Voxel Filter
 Viewing Results
 ^^^^^^^^^^^^^^^
 
-#. Open a new terminal, run
+#. **Open** a new terminal, run
 
    .. code-block:: bash
 
             roscore
 
-#. Open a new terminal and run the C++ filter service node
+#. **Open** a new terminal and run the C++ filter service node
 
    .. code-block:: bash
 
@@ -331,7 +331,7 @@ Viewing Results
             source devel/setup.bash
             rosrun py_perception py_perception_node
 
-#. Open a new terminal and run the Python service client node. Note your file path may be different.
+#. **Open** a new terminal and run the Python service client node. Note your file path may be different.
 
    .. code-block:: bash
 
@@ -339,13 +339,13 @@ Viewing Results
             source devel/setup.bash
             rosrun filter_call filter_call.py _pcdfilename:=$PWD/src/table.pcd
 
-#. Open a new terminal and run the ``tf2_ros`` package to publish a static coordinate transform from the child frame to the world frame
+#. **Open** a new terminal and run the ``tf2_ros`` package to publish a static coordinate transform from the child frame to the world frame
 
    .. code-block:: bash
 
             rosrun tf2_ros static_transform_publisher 0 0 0 0 0 0 world_frame kinect_link
 
-#. Open a new terminal and run Rviz
+#. **Open** a new terminal and run Rviz
 
    .. code-block:: bash
 
@@ -362,7 +362,7 @@ Viewing Results
 Implement Pass-Through Filters
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-#. In ``py_perception_node.cpp`` in the ``py_perception`` package, update the switch to look as shown below:
+#. In ``py_perception_node.cpp`` in the ``py_perception`` package, update the switch on **line 191** to look as shown below:
 
    .. code-block:: bash
 
