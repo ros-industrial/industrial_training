@@ -320,6 +320,39 @@ The next node will subscribe to the `image` topic and execute a series of proces
        * reference: [rospy.Subscriber](http://docs.ros.org/melodic/api/rospy/html/rospy.topics.Subscriber-class.html)
        * reference: [rospy.spin](http://docs.ros.org/melodic/api/rospy/html/rospy-module.html#spin)
 
+    1. The python code, `detect_pump.py`, should now look like this:
+
+       ```python
+       #!/usr/bin/env python
+       import rospy
+       from sensor_msgs.msg import Image
+
+       # known pump geometry
+       #  - units are pixels (of half-size image)
+       PUMP_DIAMETER = 360
+       PISTON_DIAMETER = 90
+       PISTON_COUNT = 7
+
+       def process_image(msg):
+           try:
+              pass
+           except Exception as err:
+               print err
+
+       def start_node():
+           rospy.init_node('detect_pump')
+           rospy.loginfo('detect_pump node started')
+
+           rospy.Subscriber("image", Image, process_image)
+           rospy.spin()
+
+       if __name__ == '__main__':
+           try:
+               start_node()
+           except rospy.ROSInterruptException:
+               pass
+       ````
+
     1. Run the new node and verify that it is subscribing to the topic as expected:
 
        ```bash
