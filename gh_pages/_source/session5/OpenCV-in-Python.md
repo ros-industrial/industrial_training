@@ -437,15 +437,15 @@ The next node will subscribe to the `image` topic and execute a series of proces
 
        def process_image(msg):
            try:
-              pass
+              bridge = CvBridge()
+              orig = bridge.imgmsg_to_cv2(msg, "bgr8")
            except Exception as err:
                print err
 
-           bridge = CvBridge()
-           orig = bridge.imgmsg_to_cv2(msg, "bgr8")
-
            drawImg = orig
            showImage(drawImg)
+
+
 
 
        def start_node():
