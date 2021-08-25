@@ -93,12 +93,25 @@ The first node will read in an image from a file and publish it as a ROS [Image]
  1. Build the package and run the image publisher:
 
     ```bash
+    cd ~/catkin_ws
     catkin build
-    roscore
-    rosrun detect_pump image_pump.py
     ```
 
     * You should see the "node started" message
+
+ 1. Open a new terminal and run the command below:
+
+     ```bash
+     roscore
+     ```
+
+1. Open a new terminal and run the command below:
+
+     ```bash
+     cd ~/catkin_ws
+     source devel/setup.bash
+     rosrun detect_pump image_pump.py
+     ```
 
  1. Read the image file to publish, using the filename provided on the command line
 
