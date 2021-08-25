@@ -565,7 +565,7 @@ The next node will subscribe to the `image` topic and execute a series of proces
 
        ```python
        drawImg = cv2.drawKeypoints(drawImg, blobs, (), (0,255,0), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
-       if len(blobs) <> PISTON_COUNT:
+       if len(blobs) != PISTON_COUNT:
            raise Exception("Wring # of pistons: found {} expected {}".format(len(blobs), PISTON_COUNT))
        pistonCenters = [(int(b.pt[0]),int(b.pt[1])) for b in blobs]
        ```
@@ -590,7 +590,7 @@ The next node will subscribe to the `image` topic and execute a series of proces
        boundRect = cv2.minAreaRect(maxC)
        ```
 
-    1. Copy these 3 helper functions to calculate the endpoints of the rectangle's major axis (above the `process_image` callback):
+    1. Copy these **3 helper functions** to calculate the endpoints of the rectangle's major axis (above the `process_image` callback):
 
        ```python
        import math
