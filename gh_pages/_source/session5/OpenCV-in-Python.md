@@ -539,7 +539,7 @@ The next node will subscribe to the `image` topic and execute a series of proces
     1. Run the node and see the detected circles.
 
        * Experiment with adjusting the `param2` input to `HoughCircles` to find a value that seems to work well.  This parameter represents the sensitivity of the detector; lower values detect more circles, but also will return more false-positives.
-       * Tru removing the `min/maxRadius` parameters or reducing the minimum distance between circles (4th parameter) to see what other circles are detected.
+       * Try removing the `min/maxRadius` parameters or reducing the minimum distance between circles (4th parameter) to see what other circles are detected.
        * I found that a value of `param2=7` seemed to work well
 
  1. Detect the piston sleeves, using blob detection.
