@@ -23,7 +23,7 @@
     <xacro:arg name="physical_params" default="$(find ur_description)/config/$(arg ur_type)/physical_parameters.yaml"/>
     <xacro:arg name="visual_params" default="$(find ur_description)/config/$(arg ur_type)/visual_parameters.yaml"/>
 		
-		<xacro:arg name="transmission_hw_interface" default="blah"/>
+		<xacro:arg name="transmission_hw_interface" default=""/>
 		<xacro:arg name="safety_limits" default="false"/>
 		<xacro:arg name="safety_pos_margin" default="0.15"/>
 		<xacro:arg name="safety_k_position" default="20"/>
@@ -31,6 +31,16 @@
 		<!-- ros2_control related parameters -->
 		<xacro:arg name="use_fake_hardware" default="true" />
 		<xacro:arg name="fake_sensor_commands" default="false" />
+		
+		<!-- ros2 fake_components/generic_system  initial joints -->
+		<xacro:arg name="initial_positions_file" default=""/>
+		<xacro:property name="initial_positions_file_" value="$(arg initial_positions_file)"/>
+		<xacro:if value="${initial_positions_file_ == ''}">
+		  <xacro:property name="initial_positions" value="${dict(shoulder_pan_joint=0,shoulder_lift_joint=-1.57,elbow_joint=0,wrist_1_joint=-1.57,wrist_2_joint=0.0,wrist_3_joint=0.0)}" />
+		</xacro:if>
+		<xacro:if value="${initial_positions_file_ != ''}">
+		  <xacro:property name="initial_positions" value="${load_yaml(initial_positions_file_)}"/>
+		</xacro:if>
 
    <!-- ur arm instantiation -->
    <xacro:ur_robot
@@ -44,7 +54,8 @@
      safety_pos_margin="$(arg safety_pos_margin)"
      safety_k_position="$(arg safety_k_position)"
      use_fake_hardware="$(arg use_fake_hardware)"
-     fake_sensor_commands="$(arg fake_sensor_commands)" />
+     fake_sensor_commands="$(arg fake_sensor_commands)"
+     initial_positions="${initial_positions}" />
     
     <!-- instantiating robot arm and gripper -->
     <xacro:vacuum_gripper_definition prefix="${arm_prefix}" gripper_adjustment="0.01"/>
@@ -115,5 +126,5 @@
             <child link="${arm_prefix}gripper_frame"/>
             <origin xyz="0 0 0" rpy="-1.57 0 -1.57"/> <!-- 0 1.57 0 -->
     </joint>
-    <!-- end of arm-gripper coupling joint definitions -->
+    <!-- end of arm-gripper coupling joint definitions -->  
 </robot>
