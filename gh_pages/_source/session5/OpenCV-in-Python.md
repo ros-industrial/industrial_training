@@ -110,7 +110,7 @@ The first node will read in an image from a file and publish it as a ROS [Image]
      ```bash
      cd ~/catkin_ws
      source devel/setup.bash
-     rosrun detect_pump image_pump.py
+     rosrun detect_pump image_pub.py
      ```
 
  1. Read the image file to publish, using the filename provided on the command line
