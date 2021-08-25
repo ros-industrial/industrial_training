@@ -286,7 +286,7 @@ Implement a Voxel Filter
 
                 # FROM THE SERVICE, ASSIGN POINTS
                 req.input_cloud = PointCloud2()
-            
+
                 # ERROR HANDLING
                 if req.pcdfilename == '':
                 raise Exception('No file parameter found')
@@ -401,7 +401,7 @@ Implement Pass-Through Filters
    .. code-block:: bash
 
             cd $HOME
-            gedit ~python-pcl_ws/src/filter_call/scripts/filter_call.py
+            gedit ~/python-pcl_ws/src/filter_call/scripts/filter_call.py
 
 
    .. code-block:: python
