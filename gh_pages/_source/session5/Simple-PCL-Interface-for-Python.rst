@@ -196,6 +196,7 @@ Implement a Voxel Filter
 
    .. code-block:: bash
 
+	    cd filter_call
             mkdir scripts
             touch scripts/filter_call.py
             gedit scripts/filter_call.py
