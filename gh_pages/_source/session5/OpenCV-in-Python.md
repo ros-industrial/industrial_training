@@ -213,7 +213,7 @@ The first node will read in an image from a file and publish it as a ROS [Image]
        rosnode info /image_pub
        ```
 
-    1. Inspect the published image using the standalone [image_view](http://wiki.ros.org/image_view#image_view.2BAC8-diamondback.image_view) node
+    1. Open a new terminal. Inspect the published image using the standalone [image_view](http://wiki.ros.org/image_view#image_view.2BAC8-diamondback.image_view) node
 
        ```bash
        rosrun image_view image_view
