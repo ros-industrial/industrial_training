@@ -396,10 +396,13 @@ Implement Pass-Through Filters
             catkin build
 
 
-   **Edit the Python Code**
+#. Open the python node, ``filter_call.py``, and copy paste the following code after the voxel grid, before the ``rospy.spin()``.  Keep care to maintain indents:
 
+   .. code-block:: bash
 
-#. Open the python node and copy paste the following code after the voxel grid, before the ``rospy.spin()``.  Keep care to maintain indents:
+            cd $HOME
+            gedit ~python-pcl_ws/src/filter_call/scripts/filter_call.py
+
 
    .. code-block:: python
 
