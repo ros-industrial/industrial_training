@@ -131,12 +131,35 @@ The first node will read in an image from a file and publish it as a ROS [Image]
        ```
        * Note the use of `rospy.myargv()` to strip out any ROS-specific command-line arguments.
 
-    1. In the `start_node` function, call the OpenCV [imread](https://docs.opencv.org/3.0-beta/modules/imgcodecs/doc/reading_and_writing_images.html#imread) function to read the image.  Then use [imshow](https://docs.opencv.org/3.0-beta/modules/highgui/doc/user_interface.html#imshow) to display it:
+    1. In the `start_node` function, call the OpenCV [imread](https://docs.opencv.org/3.0-beta/modules/imgcodecs/doc/reading_and_writing_images.html#imread) function to read the image.  Then use [imshow](https://docs.opencv.org/3.0-beta/modules/highgui/doc/user_interface.html#imshow) to display it by **2 seconds**:
 
        ```python
        img = cv2.imread(filename)
        cv2.imshow("image", img)
        cv2.waitKey(2000)
+       ```
+
+    1. The python code, `image_pub.py`, should now look like this:
+
+       ```python
+       #!/usr/bin/env python
+       import rospy
+       import sys
+       import cv2
+
+       def start_node(filename):
+           rospy.init_node('image_pub')
+           rospy.loginfo('image_pub node started')
+
+           img = cv2.imread(filename)
+           cv2.imshow("image", img)
+           cv2.waitKey(2000)
+
+       if __name__ == '__main__':
+           try:
+               start_node( rospy.myargv(argv=sys.argv)[1] )
+           except rospy.ROSInterruptException:
+               pass
        ```
 
     1. Run the node, with the specified image file:
@@ -147,6 +170,8 @@ The first node will read in an image from a file and publish it as a ROS [Image]
        * You should see the image displayed
        * Comment out the `imshow`/`waitKey` lines, as we won't need those any more
        * Note that you don't need to run `catkin build` after editing the python file, since no compile step is needed.
+
+
 
  1. Convert the image from OpenCV Image object to ROS Image message:
 
