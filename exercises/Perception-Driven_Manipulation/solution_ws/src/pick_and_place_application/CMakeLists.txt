@@ -81,6 +81,11 @@ install(TARGETS
   fake_grasp_server_node              
   DESTINATION lib/${PROJECT_NAME})
   
+install(PROGRAMS
+  src/nodes/fake_recognition_service.py
+  DESTINATION lib/${PROJECT_NAME}
+)
+  
 install(DIRECTORY
  launch
  config

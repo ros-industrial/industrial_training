@@ -23,6 +23,7 @@
 #include <pick_and_place_msgs/action/execute_grasp_move.hpp>
 
 #include <tf2_ros/transform_listener.h>
+#include <tf2_ros/create_timer_ros.h>
 
 #include <pick_and_place_application/pick_and_place_utilities.h>
 
@@ -40,10 +41,14 @@ namespace pick_and_place_application
 	// =============================== constructor =====================================
     PickAndPlaceApp(rclcpp::Node::SharedPtr node):
       node(node),
-      transform_buffer(node->get_clock()),
-      transform_listener(transform_buffer)
+      transform_buffer(node->get_clock())
     {
 
+      tf2_ros::CreateTimerInterface::SharedPtr timer_intf = std::make_shared<tf2_ros::CreateTimerROS>(
+          node->get_node_base_interface(), node->get_node_timers_interface());
+      transform_buffer.setCreateTimerInterface(timer_intf);
+      //transform_buffer.setUsingDedicatedThread(false);
+      transform_listener = std::make_shared<tf2_ros::TransformListener>(transform_buffer);
     }
 
 	// =============================== public members =====================================
@@ -57,7 +62,7 @@ namespace pick_and_place_application
 		moveit_cpp::MoveItCppPtr moveit_cpp;
 
 	  tf2_ros::Buffer transform_buffer;
-	  tf2_ros::TransformListener transform_listener;
+	  std::shared_ptr<tf2_ros::TransformListener> transform_listener;
 
 	// =============================== Task Functions ===============================
 		bool initialize();
