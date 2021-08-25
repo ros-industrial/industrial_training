@@ -58,11 +58,11 @@ std::vector<geometry_msgs::msg::Pose> pick_and_place_application::PickAndPlaceAp
    * - Use the "lookupTransform" method of tf_buffer to get the transform
    */
   transform_buffer.waitForTransform(cfg.TCP_LINK_NAME, cfg.WRIST_LINK_NAME,
-                                           rclcpp::Time(0),rclcpp::Duration::from_seconds(3.0),
-                                           nullptr);
+                                           node->get_clock()->now(),rclcpp::Duration::from_seconds(3.0),
+                                           [](const tf2_ros::TransformStampedFuture& ){});
 
   tcp_to_wrist_msg  = transform_buffer.lookupTransform(cfg.TCP_LINK_NAME, cfg.WRIST_LINK_NAME,
-                             rclcpp::Time(0), rclcpp::Duration::from_seconds(5.0));
+                                                       node->get_clock()->now(), rclcpp::Duration::from_seconds(5.0));
   tf2::fromMsg(tcp_to_wrist_msg.transform,tcp_to_wrist_tf);
 
   /* Fill Code:
