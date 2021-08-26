@@ -49,18 +49,27 @@ namespace pick_and_place_application
     moveit_cpp->getPlanningSceneMonitor()->providePlanningSceneService();
 
     // waiting to establish connections
-    while(rclcpp::ok() &&
-        !grasp_action_client->wait_for_action_server(
-        rclcpp::Duration::from_seconds(2.0).to_chrono<std::chrono::seconds>()))
+    if(rclcpp::ok() &&
+        grasp_action_client->wait_for_action_server(
+        rclcpp::Duration::from_seconds(10.0).to_chrono<std::chrono::seconds>()))
     {
-      RCLCPP_INFO(node->get_logger(), "Waiting for grasp action server");
+      RCLCPP_INFO(node->get_logger(), "Found grasp action server");
+    }
+    else
+    {
+      throw std::runtime_error("Failed to find server");
     }
 
-    /*
-    if(ros::ok() && !application.target_recognition_client.waitForExistence(ros::Duration(2.0f)))
+    if(rclcpp::ok() &&
+        target_recognition_client->wait_for_service(
+        rclcpp::Duration::from_seconds(10.0).to_chrono<std::chrono::seconds>()))
     {
-      ROS_INFO_STREAM("Waiting for service'"<<application.cfg.TARGET_RECOGNITION_SERVICE<<"'");
-    }*/
+      RCLCPP_INFO(node->get_logger(), "Found target detection server");
+    }
+    else
+    {
+      throw std::runtime_error("Failed to find server");
+    }
 
     return true;
 
