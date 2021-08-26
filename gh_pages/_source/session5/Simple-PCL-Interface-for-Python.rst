@@ -25,7 +25,7 @@ We will create a new catkin workspace, since this exercise does not overlap with
    .. code-block:: bash
 
             cd $HOME
-            git clone https://github.com/ros-industrial/industrial_training.git --single-branch --branch melodic --depth 1
+            git clone https://github.com/cardboardcode/industrial_training.git --single-branch --branch melodic --depth 1
             cp -r ~/industrial_training/exercises/python-pcl_ws ~
             cd ~/python-pcl_ws/
 
@@ -343,13 +343,15 @@ Viewing Results
 
    .. code-block:: bash
 
+            source /opt/ros/melodic/setup.bash
             rosrun tf2_ros static_transform_publisher 0 0 0 0 0 0 world_frame kinect_link
 
 #. **Open** a new terminal and run Rviz
 
    .. code-block:: bash
 
-            rosrun rviz rviz
+            source /opt/ros/melodic/setup.bash
+            rviz -d ~/python-pcl_ws/src/py_perception/rviz/exercise_simplepclinterface.rviz
 
 #. Add a new PointCloud2 in Rviz
 
