@@ -25,7 +25,7 @@ We will create a new catkin workspace, since this exercise does not overlap with
    .. code-block:: bash
 
             cd $HOME
-            git clone git@github.com:ros-industrial/industrial_training.git --single-branch --branch melodic --depth 1
+            git clone https://github.com/ros-industrial/industrial_training.git --single-branch --branch melodic --depth 1
             cp -r ~/industrial_training/exercises/python-pcl_ws ~
             cd ~/python-pcl_ws/
 
