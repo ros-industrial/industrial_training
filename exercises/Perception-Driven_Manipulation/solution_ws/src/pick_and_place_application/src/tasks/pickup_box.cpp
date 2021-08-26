@@ -53,14 +53,21 @@ void pick_and_place_application::PickAndPlaceApp::pickup_box(std::vector<geometr
     // move the robot to each wrist pick pose
     for(unsigned int i = 0; i < pick_poses.size(); i++)
     {
-      moveit_msgs::msg::RobotState robot_state;
+      moveit::core::RobotStatePtr robot_state = moveit_cpp->getCurrentState(2.0);
+      if(!robot_state)
+      {
+        RCLCPP_ERROR_STREAM(node->get_logger(),"Failed to get robot state");
+        exit(1);
+      }
+      moveit_msgs::msg::RobotState robot_state_msg;
+      moveit::core::robotStateToRobotStateMsg(*robot_state, robot_state_msg, true);
 
     /* Inspect Code:
      * Goal:
      * - Look in the "set_attached_object()" method to understand
      * 	how to attach a payload using moveit.
      */
-    set_attached_object(false,geometry_msgs::msg::Pose(),robot_state);
+    set_attached_object(false,geometry_msgs::msg::Pose(),robot_state_msg);
 
 
     /* Inspect Code:
@@ -69,7 +76,7 @@ void pick_and_place_application::PickAndPlaceApp::pickup_box(std::vector<geometr
      * 	entire moveit motion plan is created.
      */
     moveit_cpp::PlanningComponent::PlanSolution plan_solution;
-    success = create_motion_plan(pick_poses[i],robot_state,plan_solution) &&
+    success = create_motion_plan(pick_poses[i],robot_state_msg,plan_solution) &&
         moveit_cpp->execute(cfg.ARM_GROUP_NAME, plan_solution.trajectory, true);
 
     // verifying move completion
