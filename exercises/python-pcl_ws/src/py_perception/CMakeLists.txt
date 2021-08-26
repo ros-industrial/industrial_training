@@ -14,7 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
   tf
   pcl_ros
 )
-#find_package(PCL REQUIRED)
+find_package(PCL REQUIRED)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -109,7 +109,7 @@ catkin_package(
 # include_directories(include)
 include_directories(
   ${catkin_INCLUDE_DIRS}
-#  ${PCL_INCLUDE_DIRS}
+  ${PCL_INCLUDE_DIRS}
 )
 
 ## Declare a cpp library
@@ -127,7 +127,7 @@ include_directories(
 ## Specify libraries to link a library or executable target against
  target_link_libraries(py_perception_node
    ${catkin_LIBRARIES}
-#   ${PCL_LIBRARIES}
+   ${PCL_LIBRARIES}
  )
 
 #############
