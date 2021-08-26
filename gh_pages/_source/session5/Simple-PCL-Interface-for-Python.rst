@@ -289,13 +289,13 @@ Implement a Voxel Filter
 
                 # ERROR HANDLING
                 if req.pcdfilename == '':
-                raise Exception('No file parameter found')
+                    raise Exception('No file parameter found')
 
                 # PACKAGE THE FILTERED POINTCLOUD2 TO BE PUBLISHED
                 res_voxel = srvp(req)
                 print('response received')
                 if not res_voxel.success:
-                raise Exception('Unsuccessful voxel grid filter operation')
+                    raise Exception('Unsuccessful voxel grid filter operation')
 
                 # PUBLISH VOXEL FILTERED POINTCLOUD2
                 pub = rospy.Publisher('/perception_voxelGrid', PointCloud2, queue_size=1, latch=True)
