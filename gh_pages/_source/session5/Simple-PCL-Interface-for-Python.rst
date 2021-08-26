@@ -598,12 +598,7 @@ This method is useful for any application where there are multiple objects. This
         pub.publish(res_cluster.output_cloud)
         print("published: cluster extraction filter response")
 
-
-#. Save and run from the terminal, repeating steps outlined for the voxel filter.
-
-   #. When you are satisfied with the cluster extraction results, use ``Ctrl+C`` to kill the node. If you are done experimenting with this tutorial, you can kill the nodes running in the other terminals.
-
-   #. The python script, ``filter_call.py``, should now look like this:
+#. The python script, ``filter_call.py``, should now look like this:
 
       .. code-block:: python
 
@@ -714,6 +709,13 @@ This method is useful for any application where there are multiple objects. This
                    rospy.spin()
                except Exception as e:
                    print("Service call failed: %s" % str(e))
+
+
+#. Save and run from the terminal, repeating steps outlined for the voxel filter.
+
+   #. When you are satisfied with the cluster extraction results, use ``Ctrl+C`` to kill the node. If you are done experimenting with this tutorial, you can kill the nodes running in the other terminals.
+
+
 
 Future Study
 ^^^^^^^^^^^^
