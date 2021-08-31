@@ -31,24 +31,32 @@ void pick_and_place_application::PickAndPlaceApp::place_box(std::vector<geometry
   // move the robot to each wrist place pose
   for(unsigned int i = 0; i < place_poses.size(); i++)
   {
-    moveit_msgs::msg::RobotState robot_state;
+    moveit::core::RobotStatePtr robot_state = moveit_cpp->getCurrentState(2.0);
+    if(!robot_state)
+    {
+      RCLCPP_ERROR_STREAM(node->get_logger(),"Failed to get robot state");
+      throw std::runtime_error("Failed to place box");
+    }
+    moveit_msgs::msg::RobotState robot_state_msg;
+    moveit::core::robotStateToRobotStateMsg(*robot_state, robot_state_msg, true);
+
     if(i==0 || i == 1)
     {
       // attaching box
-      set_attached_object(true,box_pose,robot_state);
+      set_attached_object(true,box_pose,robot_state_msg);
       show_box(true);
 
     }
     else
     {
       // detaching box
-      set_attached_object(false,geometry_msgs::msg::Pose(),robot_state);
+      set_attached_object(false,geometry_msgs::msg::Pose(),robot_state_msg);
       show_box(false);
     }
 
     // create motion plan
     moveit_cpp::PlanningComponent::PlanSolution plan_solution;
-    success = create_motion_plan(place_poses[i], robot_state,plan_solution)
+    success = create_motion_plan(place_poses[i], robot_state_msg,plan_solution)
         && moveit_cpp->execute(cfg.ARM_GROUP_NAME, plan_solution.trajectory, true);
 
     if(success)
@@ -59,7 +67,7 @@ void pick_and_place_application::PickAndPlaceApp::place_box(std::vector<geometry
     {
       RCLCPP_ERROR_STREAM(node->get_logger(),"Place Move " << i <<" Failed");
       set_gripper(false);
-      exit(1);
+      throw std::runtime_error("Failed to place box");
     }
 
 
@@ -74,7 +82,6 @@ void pick_and_place_application::PickAndPlaceApp::place_box(std::vector<geometry
        *       boolean argument.
        */
       set_gripper(false);
-
     }
 
   }

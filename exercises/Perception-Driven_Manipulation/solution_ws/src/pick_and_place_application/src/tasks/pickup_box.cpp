@@ -88,7 +88,7 @@ void pick_and_place_application::PickAndPlaceApp::pickup_box(std::vector<geometr
     {
       RCLCPP_ERROR_STREAM(node->get_logger(),"Pick Move " << i <<" Failed");
       set_gripper(false);
-      exit(1);
+      throw std::runtime_error("Failed to pick up box");
     }
 
 

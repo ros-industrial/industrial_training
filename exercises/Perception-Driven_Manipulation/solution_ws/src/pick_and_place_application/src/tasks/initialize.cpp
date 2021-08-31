@@ -45,8 +45,8 @@ namespace pick_and_place_application
     // initializing planning scene monitor
     moveit_cpp->getPlanningSceneMonitor()->startSceneMonitor();
     moveit_cpp->getPlanningSceneMonitor()->startStateMonitor();
-    moveit_cpp->getPlanningSceneMonitor()->startWorldGeometryMonitor(); // allows updating the scene from sensor data, etc.
-    moveit_cpp->getPlanningSceneMonitor()->providePlanningSceneService();
+    //moveit_cpp->getPlanningSceneMonitor()->startWorldGeometryMonitor(); // allows updating the scene from sensor data, etc.
+    //moveit_cpp->getPlanningSceneMonitor()->providePlanningSceneService();
 
     // waiting to establish connections
     if(rclcpp::ok() &&
