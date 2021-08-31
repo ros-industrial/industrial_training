@@ -124,7 +124,7 @@
     <joint name="${arm_prefix}wrist_to_gripper" type="fixed">
             <parent link="${arm_prefix}tool0"/>
             <child link="${arm_prefix}gripper_frame"/>
-            <origin xyz="0 0 0" rpy="-1.57 0 -1.57"/> <!-- 0 1.57 0 -->
+            <origin xyz="0 0 0" rpy="0 0 0"/> <!-- 0 1.57 0 -->
     </joint>
     <!-- end of arm-gripper coupling joint definitions -->  
 </robot>

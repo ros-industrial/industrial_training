@@ -25,29 +25,42 @@ void pick_and_place_application::PickAndPlaceApp::move_to_wait_position()
    * Hints:
    * - Use the "setNamedTarget" method in the "move_group_ptr" object.
    * - Look in the "cfg.WAIT_POSE_NAME" object for the name of the target.
+   */
 
-  move_group_ptr->setNamedTarget(cfg.WAIT_POSE_NAME);
+  // setting up planning configuration
+  moveit_cpp::PlanningComponent planning_component(cfg.ARM_GROUP_NAME, moveit_cpp);
+  moveit_cpp::PlanningComponent::PlanRequestParameters plan_parameters;
+  plan_parameters.planner_id = "RRTConnectkConfigDefault";
+  plan_parameters.load(node);
+  plan_parameters.planning_time = 60.0f;
+  plan_parameters.planning_attempts = 1;
 
-  // set allowed planning time
-  move_group_ptr->setPlanningTime(60.0f);
+  planning_component.setGoal(cfg.WAIT_POSE_NAME);
 
+  /*
    Fill Code:
    * Goal:
    * - Move the robot
    * Hints:
    * - Use the "move" method in the "move_group_ptr" object and save the result
    *  in the "error" variable
+   */
 
-  error = move_group_ptr->move();
-  if(error == MoveItErrorCode::SUCCESS)
+  moveit_cpp::PlanningComponent::PlanSolution plan_solution = planning_component.plan();
+  if(plan_solution)
   {
-    ROS_INFO_STREAM("Move " << cfg.WAIT_POSE_NAME<< " Succeeded");
+    RCLCPP_INFO_STREAM(node->get_logger(), "Move " << cfg.WAIT_POSE_NAME<< " Succeeded");
   }
   else
   {
-    ROS_ERROR_STREAM("Move " << cfg.WAIT_POSE_NAME<< " Failed");
-    exit(1);
-  }*/
+    RCLCPP_INFO_STREAM(node->get_logger(),"Move " << cfg.WAIT_POSE_NAME<< " Failed");
+    throw std::runtime_error("Failed to plan move to wait position");
+  }
+
+  if(!moveit_cpp->execute(cfg.ARM_GROUP_NAME, plan_solution.trajectory, true))
+  {
+    throw std::runtime_error("Failed to execute trajectory to wait position");
+  }
 }
 
 

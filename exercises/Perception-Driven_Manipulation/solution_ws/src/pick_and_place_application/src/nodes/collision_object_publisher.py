@@ -2,8 +2,10 @@
 import argparse
 import sys
 import shlex
-import roslib; roslib.load_manifest('pick_and_place_application')
-import rospy
+import rclpy
+from rclpy.node import Node
+#import roslib; roslib.load_manifest('pick_and_place_application')
+#import rospy
 import tf
 import shape_msgs
 import moveit_msgs
