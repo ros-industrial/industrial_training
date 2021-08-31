@@ -18,8 +18,7 @@
 
   <run_depend>moveit_ros_move_group</run_depend>
   <run_depend>xacro</run_depend>
-  <!--<build_depend>robot_config</build_depend>-->
-  <!--<run_depend>robot_config</run_depend> -->
+  <run_depend>robot_workcell_support</run_depend>
 
   <export>
   	<build_type>ament_cmake</build_type>

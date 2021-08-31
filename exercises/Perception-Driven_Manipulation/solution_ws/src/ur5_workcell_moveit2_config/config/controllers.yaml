@@ -1,4 +1,4 @@
-# moveit action clients to controllers 
+# configuration for controllers managed by moveit
 controller_names:
   - manipulator_joint_trajectory_controller
   
