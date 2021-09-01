@@ -62,7 +62,6 @@ geometry_msgs::msg::Pose pick_and_place_application::PickAndPlaceApp::detect_box
   }
 
   // updating box marker for visualization in rviz
-  visualization_msgs::msg::Marker marker = cfg.MARKER_MESSAGE;
   cfg.MARKER_MESSAGE.header.frame_id = cfg.WORLD_FRAME_ID;
   cfg.MARKER_MESSAGE.pose = box_pose;
   cfg.MARKER_MESSAGE.pose.position.z = box_pose.position.z - 0.5f*cfg.BOX_SIZE.z();

@@ -16,6 +16,11 @@ void pick_and_place_application::PickAndPlaceApp::move_to_wait_position()
 {
   //ROS_ERROR_STREAM("move_to_wait_position is not implemented yet.  Aborting."); exit(1);
 
+  if(!moveit_cpp->getPlanningSceneMonitor()->requestPlanningSceneState())
+  {
+    throw std::runtime_error("Failed to get planning scene");
+  }
+
 /*  // task variables
   MoveItErrorCode error; // saves the move result
 
@@ -32,8 +37,8 @@ void pick_and_place_application::PickAndPlaceApp::move_to_wait_position()
   moveit_cpp::PlanningComponent::PlanRequestParameters plan_parameters;
   plan_parameters.planner_id = "RRTConnectkConfigDefault";
   plan_parameters.load(node);
-  plan_parameters.planning_time = 60.0f;
-  plan_parameters.planning_attempts = 1;
+  plan_parameters.planning_time = 20.0f;
+  plan_parameters.planning_attempts = 4;
 
   planning_component.setGoal(cfg.WAIT_POSE_NAME);
 

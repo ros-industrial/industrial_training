@@ -1,3 +1,4 @@
+#include <tf2_eigen/tf2_eigen.h>
 #include <pick_and_place_application/pick_and_place.h>
 
 /*    SET ATTACHED OBJECT
@@ -15,7 +16,7 @@ void PickAndPlaceApp::set_attached_object(bool attach, const geometry_msgs::msg:
                                        moveit_msgs::msg::RobotState &robot_state)
 {
   // get robot state
-/*  robot_state::RobotStatePtr current_state= move_group_ptr->getCurrentState();
+  moveit::core::RobotStatePtr current_state = moveit_cpp->getCurrentState(3.0);
 
   if(attach)
   {
@@ -26,10 +27,13 @@ void PickAndPlaceApp::set_attached_object(bool attach, const geometry_msgs::msg:
     shapes_array.push_back(shape);
 
     // constructing pose
-    tf::Transform attached_tf;
+/*    tf::Transform attached_tf;
     tf::poseMsgToTF(cfg.ATTACHED_OBJECT.primitive_poses[0],attached_tf);
     EigenSTL::vector_Isometry3d pose_array(1);
-    tf::transformTFToEigen(attached_tf,pose_array[0]);
+    tf::transformTFToEigen(attached_tf,pose_array[0]);*/
+
+    EigenSTL::vector_Isometry3d pose_array(1);
+    tf2::fromMsg(cfg.ATTACHED_OBJECT.primitive_poses[0], pose_array[0]);
 
     // attaching
     current_state->attachBody(cfg.ATTACHED_OBJECT_LINK_NAME,shapes_array,pose_array,cfg.TOUCH_LINKS,cfg.TCP_LINK_NAME);
@@ -47,7 +51,7 @@ void PickAndPlaceApp::set_attached_object(bool attach, const geometry_msgs::msg:
   }
 
   // save robot state data
-  robot_state::robotStateToRobotStateMsg(*current_state,robot_state);*/
+  moveit::core::robotStateToRobotStateMsg(*current_state,robot_state);
 }
 
 }
