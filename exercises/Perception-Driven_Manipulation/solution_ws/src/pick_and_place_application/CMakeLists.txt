@@ -17,11 +17,15 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_action REQUIRED)
+find_package(sensor_msgs REQUIRED)
 find_package(shape_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(pick_and_place_msgs REQUIRED)
+find_package(pcl_ros REQUIRED)
+find_package(pcl_conversions REQUIRED)
 find_package(moveit_common REQUIRED)
 find_package(moveit_ros_planning_interface REQUIRED)
+find_package(yaml-cpp REQUIRED)
 
 find_package(Boost REQUIRED COMPONENTS system)
 
@@ -42,9 +46,9 @@ include_directories(include)
 #add_dependencies(target_recognition_service ${PROJECT_NAME}_generate_messages_cpp)
 #target_link_libraries(target_recognition_service ${catkin_LIBRARIES})
 
-#add_executable(generate_cloud_node src/nodes/generate_point_cloud.cpp)
-#add_dependencies(generate_cloud_node ${PROJECT_NAME}_generate_messages_cpp)
-#target_link_libraries(generate_cloud_node ${catkin_LIBRARIES})
+add_executable(generate_cloud_node src/nodes/generate_point_cloud.cpp)
+ament_target_dependencies(generate_cloud_node rclcpp sensor_msgs tf2 tf2_ros pcl_ros)
+target_link_libraries(generate_cloud_node yaml-cpp)
 
 add_executable(pick_and_place_node 
 	src/nodes/pick_and_place_node.cpp
@@ -77,6 +81,7 @@ ament_target_dependencies(fake_grasp_server_node
 #############
 
 install(TARGETS 
+  generate_cloud_node
   pick_and_place_node
   fake_grasp_server_node              
   DESTINATION lib/${PROJECT_NAME})
