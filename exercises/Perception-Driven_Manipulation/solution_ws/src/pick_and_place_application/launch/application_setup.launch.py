@@ -57,16 +57,27 @@ def launch_setup(context, *args, **kwargs):
         name = 'fake_recognition_service',
         output = 'screen')
     
+    # fake obstacles cloud
+    #<remap from="/generated_cloud" to="/kinect/depth_registered/points"/>
+    cloud_yaml_file = os.path.join(get_package_share_directory('pick_and_place_application'),'config','ur5','fake_obstacles_cloud_description.yaml')
+    fake_obstacles_cloud_node = Node(
+        package = 'pick_and_place_application',
+        executable = 'generate_cloud_node',
+        name = 'fake_obstacles_cloud_node',
+        remappings = [('generated_cloud' ,'objects_cloud')],
+        parameters = [{'obstacles_cloud_description_file':cloud_yaml_file}],
+        output = 'screen')
+    
     rviz_config_file = os.path.join(get_package_share_directory('pick_and_place_application'), 'config', 'ur5', 'rviz_config.rviz')
     rviz_node = Node(
         package = 'rviz2',
         name = 'rviz2',
         executable = 'rviz2',
         output = 'log',
-        arguments = ['-d', rviz_config_file],
+        arguments = ['-d', rviz_config_file] + '--ros-args --log-level moveit:=error'.split(' '),
         parameters = moveit_config_parameters.rviz_parameters_list)     
     
-    launch_entities += [fake_ar_tag_transform_publisher, fake_grasp_server, fake_recognition_server, rviz_node]
+    launch_entities += [fake_ar_tag_transform_publisher, fake_grasp_server, fake_obstacles_cloud_node, fake_recognition_server, rviz_node]
     
     return launch_entities    
 
