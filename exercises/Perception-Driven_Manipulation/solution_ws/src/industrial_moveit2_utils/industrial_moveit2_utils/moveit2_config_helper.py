@@ -138,7 +138,8 @@ class MoveItConfigHelper:
             trajectory_execution_yaml,
             moveit_controllers,
             planning_scene_monitor_yaml,
-            joint_limits_yaml]
+            joint_limits_yaml,
+            sensors_yaml]
         
         rviz_parameters = [
             robot_description,
