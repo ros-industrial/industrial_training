@@ -30,13 +30,18 @@ bool PickAndPlaceApp::create_motion_plan(const geometry_msgs::msg::Pose &pose_ta
       position_tolerances,
       orientation_tolerances);
 
+  if(!moveit_cpp->getPlanningSceneMonitor()->requestPlanningSceneState())
+  {
+    throw std::runtime_error("Failed to get planning scene");
+  }
+
   // setting up planning configuration
   moveit_cpp::PlanningComponent planning_component(cfg.ARM_GROUP_NAME, moveit_cpp);
   moveit_cpp::PlanningComponent::PlanRequestParameters plan_parameters;
   plan_parameters.planner_id = "RRTConnectkConfigDefault";
   plan_parameters.load(node);
-  plan_parameters.planning_time = 60.0f;
-  plan_parameters.planning_attempts = 1;
+  plan_parameters.planning_time = 20.0;
+  plan_parameters.planning_attempts = 4;
 
   // set planning goal
   moveit::core::RobotState start_robot_state(moveit_cpp->getRobotModel());
