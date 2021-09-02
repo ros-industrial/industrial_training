@@ -1,3 +1,6 @@
+octomap_resolution: 0.02
+octomap_frame: world_frame
+max_range: 5.0
 sensors: 
   - point_cloud_octomap_updater
   

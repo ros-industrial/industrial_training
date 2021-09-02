@@ -4,7 +4,6 @@ project(ur5_workcell_moveit2_config)
 find_package(ament_cmake REQUIRED)
 
 install(DIRECTORY
- launch
  config
  DESTINATION share/${PROJECT_NAME}/
 )
