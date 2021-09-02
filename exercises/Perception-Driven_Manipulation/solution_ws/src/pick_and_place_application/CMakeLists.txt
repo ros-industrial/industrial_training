@@ -29,22 +29,10 @@ find_package(yaml-cpp REQUIRED)
 
 find_package(Boost REQUIRED COMPONENTS system)
 
-#######################################
-## Declare ROS messages and services ##
-#######################################
-#rosidl_generate_interfaces(pick_and_place_application
-#  srv/GetTargetPose.srv
-#  DEPENDENCIES builtin_interfaces shape_msgs geometry_msgs
-#)
-#ament_export_dependencies(rosidl_default_runtime)
-
 ###########
 ## Build ##
 ###########
 include_directories(include)
-#add_executable(target_recognition_service src/services/target_recognition_service.cpp)
-#add_dependencies(target_recognition_service ${PROJECT_NAME}_generate_messages_cpp)
-#target_link_libraries(target_recognition_service ${catkin_LIBRARIES})
 
 add_executable(generate_cloud_node src/nodes/generate_point_cloud.cpp)
 ament_target_dependencies(generate_cloud_node rclcpp sensor_msgs tf2 tf2_ros pcl_ros)
