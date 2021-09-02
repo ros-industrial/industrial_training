@@ -14,6 +14,7 @@ Panels:
         - /Obstacles Cloud1
         - /Marker1
         - /Marker1/Topic1
+        - /Axes1/Status1
       Splitter Ratio: 0.5
     Tree Height: 631
   - Class: rviz_common/Selection
@@ -443,7 +444,7 @@ Visualization Manager:
       Enabled: true
       Name: Marker
       Namespaces:
-        {}
+        "": true
       Topic:
         Depth: 5
         Durability Policy: Volatile
@@ -451,6 +452,13 @@ Visualization Manager:
         History Policy: Keep Last
         Reliability Policy: Reliable
         Value: /pick_and_place_marker
+      Value: true
+    - Class: rviz_default_plugins/Axes
+      Enabled: true
+      Length: 1
+      Name: Axes
+      Radius: 0.10000000149011612
+      Reference Frame: tcp_frame
       Value: true
   Enabled: true
   Global Options:
@@ -498,7 +506,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 2.836228609085083
+      Distance: 2.7551333904266357
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -513,10 +521,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.520396888256073
+      Pitch: 0.39539673924446106
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 2.865424156188965
+      Yaw: 3.450425386428833
     Saved: ~
 Window Geometry:
   Displays:

@@ -52,16 +52,11 @@ def launch_setup(context, *args, **kwargs):
     moveit_config_pkg_name = launch.substitutions.LaunchConfiguration('moveit2_config_pkg').perform(context)
     xacro_file_path = launch.substitutions.LaunchConfiguration('xacro_file').perform(context)
     srdf_file_path = launch.substitutions.LaunchConfiguration('srdf_file').perform(context)
-    
-    # parsing xacro arguments
-    use_sim_robot = launch.substitutions.LaunchConfiguration('use_sim_robot').perform(context)    
-    init_positions_file_path = launch.substitutions.LaunchConfiguration('initial_positions_file').perform(context)  
-    
+        
     # moveit parameters    
-    xacro_args = {'use_fake_hardware': use_sim_robot, 'initial_positions_file' : init_positions_file_path}
+    xacro_args = {}
     moveit_config_parameters = MoveItConfigHelper(moveit_config_pkg_name, xacro_file_path, xacro_args, srdf_file_path).load_config()
     moveitcpp_parameters = moveit_config_parameters.moveit_cpp_parameters_list    
-    robot_description = moveit_config_parameters.robot_description
     
     # pick and place configuration
     pick_and_place_parameters = load_yaml('pick_and_place_application', 'config/pick_and_place_parameters.yaml')    
