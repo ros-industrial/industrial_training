@@ -64,7 +64,7 @@ def launch_setup(context, *args, **kwargs):
     robot_description = moveit_config_parameters.robot_description
     
     # pick and place configuration
-    pick_and_place_parameters = load_yaml('pick_and_place_application', 'config/ur5/pick_and_place_parameters.yaml')    
+    pick_and_place_parameters = load_yaml('pick_and_place_application', 'config/pick_and_place_parameters.yaml')    
     
     # MoveItCpp demo executable
     pick_and_place_node = Node(
