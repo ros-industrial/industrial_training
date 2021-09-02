@@ -59,7 +59,7 @@ def launch_setup(context, *args, **kwargs):
     
     # fake obstacles cloud
     #<remap from="/generated_cloud" to="/kinect/depth_registered/points"/>
-    cloud_yaml_file = os.path.join(get_package_share_directory('pick_and_place_application'),'config','ur5','fake_obstacles_cloud_description.yaml')
+    cloud_yaml_file = os.path.join(get_package_share_directory('pick_and_place_application'),'config','fake_obstacles_cloud_description.yaml')
     fake_obstacles_cloud_node = Node(
         package = 'pick_and_place_application',
         executable = 'generate_cloud_node',
@@ -68,7 +68,7 @@ def launch_setup(context, *args, **kwargs):
         parameters = [{'obstacles_cloud_description_file':cloud_yaml_file}],
         output = 'screen')
     
-    rviz_config_file = os.path.join(get_package_share_directory('pick_and_place_application'), 'config', 'ur5', 'rviz_config.rviz')
+    rviz_config_file = os.path.join(get_package_share_directory('pick_and_place_application'), 'config', 'rviz_config.rviz')
     rviz_node = Node(
         package = 'rviz2',
         name = 'rviz2',
