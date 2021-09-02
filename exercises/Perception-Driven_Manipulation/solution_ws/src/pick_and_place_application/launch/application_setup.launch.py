@@ -74,10 +74,15 @@ def launch_setup(context, *args, **kwargs):
         name = 'rviz2',
         executable = 'rviz2',
         output = 'log',
-        arguments = ['-d', rviz_config_file] + '--ros-args --log-level moveit:=error'.split(' '),
+        arguments = ['-d', rviz_config_file] + '--ros-args --log-level error'.split(' '),
         parameters = moveit_config_parameters.rviz_parameters_list)     
     
-    launch_entities += [fake_ar_tag_transform_publisher, fake_grasp_server, fake_obstacles_cloud_node, fake_recognition_server, rviz_node]
+    launch_entities += [fake_ar_tag_transform_publisher,
+                         fake_grasp_server,
+                         fake_obstacles_cloud_node,
+                         fake_recognition_server,
+                         rviz_node,
+                         ]
     
     return launch_entities    
 
