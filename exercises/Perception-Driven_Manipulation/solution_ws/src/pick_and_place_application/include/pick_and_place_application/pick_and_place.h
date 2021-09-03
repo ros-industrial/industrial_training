@@ -12,7 +12,6 @@
 
 #include <moveit/move_group_interface/move_group_interface.h>
 #include <moveit_msgs/msg/planning_scene.hpp>
-//#include <moveit_msgs/GetMotionPlan.h>
 
 #include <moveit/planning_scene_monitor/planning_scene_monitor.h>
 #include <moveit/robot_model_loader/robot_model_loader.h>
@@ -67,30 +66,29 @@ namespace pick_and_place_application
 	// =============================== Task Functions ===============================
 		bool initialize();
 
-		void move_to_wait_position();
+		void moveToWaitPosition();
 
-		void set_gripper(bool do_grasp);
+		void actuateGripper(bool do_grasp);
 
-		void set_attached_object(bool attach,
+		void setAttachedObject(bool attach,
 				const geometry_msgs::msg::Pose &pose,moveit_msgs::msg::RobotState &robot_state);
 
-		void reset_world(bool refresh_octomap = true);
+		void resetWorld(bool do_perception = true);
 
-		geometry_msgs::msg::Pose detect_box_pick();
+		geometry_msgs::msg::Pose detectBox();
 
-		std::vector<geometry_msgs::msg::Pose> create_pick_moves(geometry_msgs::msg::Pose &box_pose);
+		std::vector<geometry_msgs::msg::Pose> computePickToolPoses(geometry_msgs::msg::Pose &box_pose);
 
-		std::vector<geometry_msgs::msg::Pose> create_place_moves();
+		std::vector<geometry_msgs::msg::Pose> computePlaceToolPoses();
 
-		void pickup_box(std::vector<geometry_msgs::msg::Pose>& pick_poses,const geometry_msgs::msg::Pose& box_pose);
+		void doBoxPickup(std::vector<geometry_msgs::msg::Pose>& pick_poses,const geometry_msgs::msg::Pose& box_pose);
 
-		void place_box(std::vector<geometry_msgs::msg::Pose>& place_poses,const geometry_msgs::msg::Pose& box_pose);
+		void doBoxPlace(std::vector<geometry_msgs::msg::Pose>& place_poses,const geometry_msgs::msg::Pose& box_pose);
 
-		bool create_motion_plan(const geometry_msgs::msg::Pose &pose_target,
-        const moveit_msgs::msg::RobotState &start_robot_state,
-        moveit_cpp::PlanningComponent::PlanSolution &plan);
+		bool doMotionPlanning(const geometry_msgs::msg::Pose &pose_target, const moveit_msgs::msg::RobotState &start_robot_state,
+				moveit_cpp::PlanningComponent::PlanSolution &plan);
 
-		void show_box(bool show=true)
+		void showBox(bool show=true)
 		{
 			// updating marker action
 			cfg.MARKER_MESSAGE.action =

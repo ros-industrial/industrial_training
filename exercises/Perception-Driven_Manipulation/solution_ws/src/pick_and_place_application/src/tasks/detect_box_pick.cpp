@@ -7,7 +7,7 @@
         * this transform is published by the kinect AR-tag perception node
     - Save the pose into 'box_pose'.
 */
-geometry_msgs::msg::Pose pick_and_place_application::PickAndPlaceApp::detect_box_pick()
+geometry_msgs::msg::Pose pick_and_place_application::PickAndPlaceApp::detectBox()
 {
   using RequestType = pick_and_place_msgs::srv::GetTargetPose::Request;
   using ResponseType = pick_and_place_msgs::srv::GetTargetPose::Response;
@@ -66,7 +66,7 @@ geometry_msgs::msg::Pose pick_and_place_application::PickAndPlaceApp::detect_box
   cfg.MARKER_MESSAGE.pose = box_pose;
   cfg.MARKER_MESSAGE.pose.position.z = box_pose.position.z - 0.5f*cfg.BOX_SIZE.z();
 
-  show_box(true);
+  showBox(true);
 
   return box_pose;
 }

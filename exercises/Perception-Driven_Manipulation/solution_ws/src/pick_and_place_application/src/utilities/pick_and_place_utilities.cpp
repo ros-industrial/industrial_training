@@ -44,7 +44,7 @@ namespace tf2
 }
 
 
-std::vector<geometry_msgs::msg::Pose> create_manipulation_poses(double retreat_dis,
+std::vector<geometry_msgs::msg::Pose> createManipulationPoses(double retreat_dis,
                                                                 double approach_dis,
                                                                 const tf2::Transform &target_tf)
 {
@@ -68,7 +68,7 @@ std::vector<geometry_msgs::msg::Pose> create_manipulation_poses(double retreat_d
   return poses;
 }
 
-std::vector<geometry_msgs::msg::Pose> transform_from_tcp_to_wrist(tf2::Transform tcp_to_wrist_tf,
+std::vector<geometry_msgs::msg::Pose> applyTransform(tf2::Transform tcp_to_wrist_tf,
                                                                   const std::vector<geometry_msgs::msg::Pose> tcp_poses)
 {
   // array for poses of the wrist
@@ -89,7 +89,7 @@ std::vector<geometry_msgs::msg::Pose> transform_from_tcp_to_wrist(tf2::Transform
   return wrist_poses;
 }
 
-moveit_msgs::msg::Constraints create_path_orientation_constraints(const geometry_msgs::msg::Pose &goal_pose,
+moveit_msgs::msg::Constraints createPathOrientationConstraints(const geometry_msgs::msg::Pose &goal_pose,
 		float x_tolerance,float y_tolerance,float z_tolerance,std::string link_name)
 {
 	moveit_msgs::msg::Constraints path_constraints = moveit_msgs::msg::Constraints();
@@ -137,7 +137,6 @@ bool PickAndPlaceConfig::init(rclcpp::Node::SharedPtr node)
   double w, l, h, x, y, z;
   if(loadParameter(node, "arm_group_name",ARM_GROUP_NAME)
       && loadParameter(node, "tcp_link_name",TCP_LINK_NAME)
-      && loadParameter(node, "wrist_link_name",WRIST_LINK_NAME)
       && loadParameter(node, "attached_object_link",ATTACHED_OBJECT_LINK_NAME)
       && loadParameter(node, "world_frame_id",WORLD_FRAME_ID)
       && loadParameter(node, "home_pose_name",HOME_POSE_NAME)
@@ -151,7 +150,10 @@ bool PickAndPlaceConfig::init(rclcpp::Node::SharedPtr node)
       && loadParameter(node, "box_place_z",z)
       && loadParameter(node, "touch_links",TOUCH_LINKS)
       && loadParameter(node, "retreat_distance",RETREAT_DISTANCE)
-      && loadParameter(node, "approach_distance",APPROACH_DISTANCE))
+      && loadParameter(node, "approach_distance",APPROACH_DISTANCE)
+	  && loadParameter(node, "planner_id",PLANNER_ID)
+	  && loadParameter(node, "planning_attempts",PLANNING_ATTEMPTS)
+	  && loadParameter(node, "planning_time",PLANNING_TIME))
   {
     BOX_SIZE = Vector3(l,w,h);
     BOX_PLACE_TF.setOrigin(Vector3(x,y,z));

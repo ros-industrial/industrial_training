@@ -23,16 +23,16 @@ namespace tf2
 }
 
 
-std::vector<geometry_msgs::msg::Pose> create_manipulation_poses(double retreat_dis,
+std::vector<geometry_msgs::msg::Pose> createManipulationPoses(double retreat_dis,
 		double approach_dis,const tf2::Transform &target_tf);
 
-std::vector<geometry_msgs::msg::Pose> transform_from_tcp_to_wrist(tf2::Transform tcp_to_wrist_tf,
+std::vector<geometry_msgs::msg::Pose> applyTransform(tf2::Transform tcp_to_wrist_tf,
 		const std::vector<geometry_msgs::msg::Pose> tcp_poses);
 
 std::ostream& operator<<(std::ostream& os, const tf2::Vector3 vec);
 std::ostream& operator<<(std::ostream& os, const geometry_msgs::msg::Point pt);
 
-moveit_msgs::msg::Constraints create_path_orientation_constraints(const geometry_msgs::msg::Pose &goal_pose,
+moveit_msgs::msg::Constraints createPathOrientationConstraints(const geometry_msgs::msg::Pose &goal_pose,
 		float x_tolerance,float y_tolerance,float z_tolerance,std::string link_name);
 
 
@@ -43,7 +43,6 @@ public:
 	// =============================== Parameters ===============================
   std::string ARM_GROUP_NAME;  // MoveIt Planning Group associated with the robot arm
   std::string TCP_LINK_NAME;   // Link / frame name for the suction gripper tool-tip
-  std::string WRIST_LINK_NAME; // Link / frame name for the robot wrist tool-flange
   std::string ATTACHED_OBJECT_LINK_NAME; // attached object link in robot
   std::string WORLD_FRAME_ID;  // Frame name for the fixed world reference frame
   std::string AR_TAG_FRAME_ID;    // Frame name for the "AR Tag" mounted to the target box
@@ -54,6 +53,9 @@ public:
   std::vector<std::string> TOUCH_LINKS; // List of links that the attached payload is allow to be in contact with
   double RETREAT_DISTANCE;     // Distance to back away from pick/place pose after grasp/release
   double APPROACH_DISTANCE;    // Distance to stand off from pick/place pose before grasp/release
+  std::string PLANNER_ID;
+  std::size_t PLANNING_ATTEMPTS;
+  double PLANNING_TIME; //seconds
 
   // =============================== Topic, services and action names ===============================
   std::string GRASP_ACTION_NAME;  // Action name used to control suction gripper
@@ -67,6 +69,8 @@ public:
   moveit_msgs::msg::CollisionObject ATTACHED_OBJECT; // attached object message
   geometry_msgs::msg::Pose TCP_TO_BOX_POSE;
 
+
+
   PickAndPlaceConfig()
   {
     ARM_GROUP_NAME  = "manipulator";
@@ -75,7 +79,6 @@ public:
     PLANNING_SCENE_TOPIC = "planning_scene";
     GET_TARGET_POSE_SERVICE = "get_target_pose";
     MOTION_PLAN_SERVICE = "plan_kinematic_path";
-    WRIST_LINK_NAME = "ee_link";
     ATTACHED_OBJECT_LINK_NAME = "attached_object_link";
     WORLD_FRAME_ID  = "world_frame";
     HOME_POSE_NAME  = "home";
@@ -88,6 +91,10 @@ public:
     TOUCH_LINKS = std::vector<std::string>();
     RETREAT_DISTANCE  = 0.05f;
     APPROACH_DISTANCE = 0.05f;
+
+    PLANNER_ID = "RRTConnect";
+    PLANNING_ATTEMPTS = 4;
+    PLANNING_TIME = 20.0; //seconds
   }
 
   bool init(rclcpp::Node::SharedPtr node);

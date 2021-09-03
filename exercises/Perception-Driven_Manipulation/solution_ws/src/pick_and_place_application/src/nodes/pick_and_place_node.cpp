@@ -45,29 +45,32 @@ int main(int argc,char** argv)
   /* Pick & Place Tasks                      */
   /* ========================================*/
 
+  // reset world
+  application.resetWorld(false);
+
   // move to a "clear" position
-  application.move_to_wait_position();
+  application.moveToWaitPosition();
 
   // turn off vacuum gripper
-  application.set_gripper(false);
+  application.actuateGripper(false);
 
   // get the box position and orientation
-  box_pose = application.detect_box_pick();
+  box_pose = application.detectBox();
 
   // build a sequence of poses to "pick" the box
-  pick_poses = application.create_pick_moves(box_pose);
+  pick_poses = application.computePickToolPoses(box_pose);
 
   // plan/execute the sequence of "pick" moves
-  application.pickup_box(pick_poses,box_pose);
+  application.doBoxPickup(pick_poses,box_pose);
 
   // build a sequence of poses to "place" the box
-  place_poses = application.create_place_moves();
+  place_poses = application.computePlaceToolPoses();
 
   // plan/execute the "place" moves
-  application.place_box(place_poses,box_pose);
+  application.doBoxPlace(place_poses,box_pose);
 
   // move back to the "clear" position
-  application.move_to_wait_position();
+  application.moveToWaitPosition();
 
   spin_thread.join();
   rclcpp::shutdown();
