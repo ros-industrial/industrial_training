@@ -13,24 +13,20 @@
 
 namespace pick_and_place_application
 {
-
-bool PickAndPlaceApp::doMotionPlanning(const geometry_msgs::msg::Pose &pose_target,
-    const moveit_msgs::msg::RobotState &start_robot_state_msg,
-    moveit_cpp::PlanningComponent::PlanSolution &plan_solution)
+bool PickAndPlaceApp::doMotionPlanning(const geometry_msgs::msg::Pose& pose_target,
+                                       const moveit_msgs::msg::RobotState& start_robot_state_msg,
+                                       moveit_cpp::PlanningComponent::PlanSolution& plan_solution)
 {
   // constructing motion plan goal constraints
-  std::vector<double> position_tolerances(3,0.01f);
-  std::vector<double> orientation_tolerances(3,0.01f);
+  std::vector<double> position_tolerances(3, 0.01f);
+  std::vector<double> orientation_tolerances(3, 0.01f);
   geometry_msgs::msg::PoseStamped p;
   p.header.frame_id = cfg.WORLD_FRAME_ID;
   p.pose = pose_target;
   moveit_msgs::msg::Constraints pose_goal = kinematic_constraints::constructGoalConstraints(
-      cfg.TCP_LINK_NAME,
-      p,
-      position_tolerances,
-      orientation_tolerances);
+      cfg.TCP_LINK_NAME, p, position_tolerances, orientation_tolerances);
 
-  if(!moveit_cpp->getPlanningSceneMonitor()->requestPlanningSceneState())
+  if (!moveit_cpp->getPlanningSceneMonitor()->requestPlanningSceneState())
   {
     throw std::runtime_error("Failed to get planning scene");
   }
@@ -47,11 +43,11 @@ bool PickAndPlaceApp::doMotionPlanning(const geometry_msgs::msg::Pose &pose_targ
   moveit::core::RobotState start_robot_state(moveit_cpp->getRobotModel());
   moveit::core::robotStateMsgToRobotState(start_robot_state_msg, start_robot_state);
   planning_component.setStartState(start_robot_state);
-  planning_component.setGoal({pose_goal});
+  planning_component.setGoal({ pose_goal });
 
   // planning for goal
   plan_solution = planning_component.plan(plan_parameters);
-  if(!plan_solution)
+  if (!plan_solution)
   {
     return false;
   }
@@ -59,8 +55,4 @@ bool PickAndPlaceApp::doMotionPlanning(const geometry_msgs::msg::Pose &pose_targ
   return true;
 }
 
-}
-
-
-
-
+}  // namespace pick_and_place_application

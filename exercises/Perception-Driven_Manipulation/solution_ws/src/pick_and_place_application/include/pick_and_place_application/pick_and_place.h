@@ -34,71 +34,66 @@ using ExecuteGraspActionClient = rclcpp_action::Client<ExecuteGraspAction>;
 
 namespace pick_and_place_application
 {
-	class PickAndPlaceApp
-	{
-	public:
-	// =============================== constructor =====================================
-    PickAndPlaceApp(rclcpp::Node::SharedPtr node):
-      node(node),
-      transform_buffer(node->get_clock())
-    {
+class PickAndPlaceApp
+{
+public:
+  // =============================== constructor =====================================
+  PickAndPlaceApp(rclcpp::Node::SharedPtr node) : node(node), transform_buffer(node->get_clock())
+  {
+    tf2_ros::CreateTimerInterface::SharedPtr timer_intf =
+        std::make_shared<tf2_ros::CreateTimerROS>(node->get_node_base_interface(), node->get_node_timers_interface());
+    transform_buffer.setCreateTimerInterface(timer_intf);
+    // transform_buffer.setUsingDedicatedThread(false);
+    transform_listener = std::make_shared<tf2_ros::TransformListener>(transform_buffer);
+  }
 
-      tf2_ros::CreateTimerInterface::SharedPtr timer_intf = std::make_shared<tf2_ros::CreateTimerROS>(
-          node->get_node_base_interface(), node->get_node_timers_interface());
-      transform_buffer.setCreateTimerInterface(timer_intf);
-      //transform_buffer.setUsingDedicatedThread(false);
-      transform_listener = std::make_shared<tf2_ros::TransformListener>(transform_buffer);
-    }
+  // =============================== public members =====================================
+  PickAndPlaceConfig cfg;
+  rclcpp::Node::SharedPtr node;
+  rclcpp::Publisher<visualization_msgs::msg::Marker>::SharedPtr marker_publisher;
+  rclcpp::Publisher<moveit_msgs::msg::PlanningScene>::SharedPtr planning_scene_publisher;
+  rclcpp::Client<pick_and_place_msgs::srv::GetTargetPose>::SharedPtr target_recognition_client;
 
-	// =============================== public members =====================================
-		PickAndPlaceConfig cfg;
-		rclcpp::Node::SharedPtr node;
-		rclcpp::Publisher<visualization_msgs::msg::Marker>::SharedPtr marker_publisher;
-		rclcpp::Publisher<moveit_msgs::msg::PlanningScene>::SharedPtr planning_scene_publisher;
-		rclcpp::Client<pick_and_place_msgs::srv::GetTargetPose>::SharedPtr target_recognition_client;
+  ExecuteGraspActionClient::SharedPtr grasp_action_client;
+  moveit_cpp::MoveItCppPtr moveit_cpp;
 
-		ExecuteGraspActionClient::SharedPtr grasp_action_client;
-		moveit_cpp::MoveItCppPtr moveit_cpp;
+  tf2_ros::Buffer transform_buffer;
+  std::shared_ptr<tf2_ros::TransformListener> transform_listener;
 
-	  tf2_ros::Buffer transform_buffer;
-	  std::shared_ptr<tf2_ros::TransformListener> transform_listener;
+  // =============================== Task Functions ===============================
+  bool initialize();
 
-	// =============================== Task Functions ===============================
-		bool initialize();
+  void moveToWaitPosition();
 
-		void moveToWaitPosition();
+  void actuateGripper(bool do_grasp);
 
-		void actuateGripper(bool do_grasp);
+  void setAttachedObject(bool attach, const geometry_msgs::msg::Pose& pose, moveit_msgs::msg::RobotState& robot_state);
 
-		void setAttachedObject(bool attach,
-				const geometry_msgs::msg::Pose &pose,moveit_msgs::msg::RobotState &robot_state);
+  void resetWorld(bool do_perception = true);
 
-		void resetWorld(bool do_perception = true);
+  geometry_msgs::msg::Pose detectBox();
 
-		geometry_msgs::msg::Pose detectBox();
+  std::vector<geometry_msgs::msg::Pose> computePickToolPoses(geometry_msgs::msg::Pose& box_pose);
 
-		std::vector<geometry_msgs::msg::Pose> computePickToolPoses(geometry_msgs::msg::Pose &box_pose);
+  std::vector<geometry_msgs::msg::Pose> computePlaceToolPoses();
 
-		std::vector<geometry_msgs::msg::Pose> computePlaceToolPoses();
+  void doBoxPickup(std::vector<geometry_msgs::msg::Pose>& pick_poses, const geometry_msgs::msg::Pose& box_pose);
 
-		void doBoxPickup(std::vector<geometry_msgs::msg::Pose>& pick_poses,const geometry_msgs::msg::Pose& box_pose);
+  void doBoxPlace(std::vector<geometry_msgs::msg::Pose>& place_poses, const geometry_msgs::msg::Pose& box_pose);
 
-		void doBoxPlace(std::vector<geometry_msgs::msg::Pose>& place_poses,const geometry_msgs::msg::Pose& box_pose);
+  bool doMotionPlanning(const geometry_msgs::msg::Pose& pose_target,
+                        const moveit_msgs::msg::RobotState& start_robot_state,
+                        moveit_cpp::PlanningComponent::PlanSolution& plan);
 
-		bool doMotionPlanning(const geometry_msgs::msg::Pose &pose_target, const moveit_msgs::msg::RobotState &start_robot_state,
-				moveit_cpp::PlanningComponent::PlanSolution &plan);
+  void showBox(bool show = true)
+  {
+    // updating marker action
+    cfg.MARKER_MESSAGE.action = show ? visualization_msgs::msg::Marker::ADD : visualization_msgs::msg::Marker::DELETE;
 
-		void showBox(bool show=true)
-		{
-			// updating marker action
-			cfg.MARKER_MESSAGE.action =
-					show ? visualization_msgs::msg::Marker::ADD : visualization_msgs::msg::Marker::DELETE;
-
-			// publish messages
-			marker_publisher->publish(cfg.MARKER_MESSAGE);
-		}
-
-	};
-}
+    // publish messages
+    marker_publisher->publish(cfg.MARKER_MESSAGE);
+  }
+};
+}  // namespace pick_and_place_application
 
 #endif /* PICK_AND_PLACE_H_ */

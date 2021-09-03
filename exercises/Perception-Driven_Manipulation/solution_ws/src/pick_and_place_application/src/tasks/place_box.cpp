@@ -9,63 +9,61 @@
 */
 
 void pick_and_place_application::PickAndPlaceApp::doBoxPlace(std::vector<geometry_msgs::msg::Pose>& place_poses,
-        const geometry_msgs::msg::Pose& box_pose)
+                                                             const geometry_msgs::msg::Pose& box_pose)
 {
-  //RCLCPP_ERROR_STREAM(node,"place_box is not implemented yet.  Aborting."); exit(1);
+  // RCLCPP_ERROR_STREAM(node,"place_box is not implemented yet.  Aborting."); exit(1);
 
   // task variables
   bool success;
 
   // move the robot to each wrist place pose
-  for(unsigned int i = 0; i < place_poses.size(); i++)
+  for (unsigned int i = 0; i < place_poses.size(); i++)
   {
     moveit::core::RobotStatePtr robot_state = moveit_cpp->getCurrentState(2.0);
-    if(!robot_state)
+    if (!robot_state)
     {
-      RCLCPP_ERROR_STREAM(node->get_logger(),"Failed to get robot state");
+      RCLCPP_ERROR_STREAM(node->get_logger(), "Failed to get robot state");
       throw std::runtime_error("Failed to place box");
     }
     moveit_msgs::msg::RobotState robot_state_msg;
     moveit::core::robotStateToRobotStateMsg(*robot_state, robot_state_msg, true);
 
-    if(i==0)
+    if (i == 0)
     {
       // attaching box
-      setAttachedObject(true,box_pose,robot_state_msg);
+      setAttachedObject(true, box_pose, robot_state_msg);
       showBox(true);
-
     }
-    else if(i == 1)
+    else if (i == 1)
     {
       // detaching box prior to place so that the place pose is not in collision
-      setAttachedObject(false,box_pose,robot_state_msg);
+      setAttachedObject(false, box_pose, robot_state_msg);
       showBox(true);
     }
     else
     {
       // detaching box
-      setAttachedObject(false,geometry_msgs::msg::Pose(),robot_state_msg);
+      setAttachedObject(false, geometry_msgs::msg::Pose(), robot_state_msg);
       showBox(false);
     }
 
     // create motion plan
     moveit_cpp::PlanningComponent::PlanSolution plan_solution;
-    success = doMotionPlanning(place_poses[i], robot_state_msg,plan_solution)
-        && moveit_cpp->execute(cfg.ARM_GROUP_NAME, plan_solution.trajectory, true);
+    success = doMotionPlanning(place_poses[i], robot_state_msg, plan_solution) &&
+              moveit_cpp->execute(cfg.ARM_GROUP_NAME, plan_solution.trajectory, true);
 
-    if(success)
+    if (success)
     {
-      RCLCPP_INFO_STREAM(node->get_logger(),"Place Move " << i <<" Succeeded");
+      RCLCPP_INFO_STREAM(node->get_logger(), "Place Move " << i << " Succeeded");
     }
     else
     {
-      RCLCPP_ERROR_STREAM(node->get_logger(),"Place Move " << i <<" Failed");
+      RCLCPP_ERROR_STREAM(node->get_logger(), "Place Move " << i << " Failed");
       actuateGripper(false);
       throw std::runtime_error("Failed to place box");
     }
 
-
-    if(i == 1)
+    if (i == 1)
     {
       /* Fill Code:
        * Goal:
@@ -77,9 +75,5 @@ void pick_and_place_application::PickAndPlaceApp::doBoxPlace(std::vector<geometr
        */
       actuateGripper(false);
     }
-
   }
 }
-
-
-

@@ -29,7 +29,6 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp/logging.hpp>
 #include <rclcpp_action/rclcpp_action.hpp>
@@ -47,37 +46,33 @@ static const std::string GRASP_ACTION_NAME = "do_grasp";
 class GraspActionServerWrapper
 {
 public:
-  GraspActionServerWrapper(rclcpp::Node::SharedPtr n) :
-    node_(n)
+  GraspActionServerWrapper(rclcpp::Node::SharedPtr n) : node_(n)
   {
     using namespace std::placeholders;
-    action_server_ = rclcpp_action::create_server<ExecuteGraspAction>(node_,
-                                                  GRASP_ACTION_NAME,
-                                                  std::bind(&GraspActionServerWrapper::goalCB, this, _1, _2),
-                                                  std::bind(&GraspActionServerWrapper::cancelCB, this, _1),
-                                                  std::bind(&GraspActionServerWrapper::acceptCB, this, _1));
+    action_server_ =
+        rclcpp_action::create_server<ExecuteGraspAction>(node_,
+                                                         GRASP_ACTION_NAME,
+                                                         std::bind(&GraspActionServerWrapper::goalCB, this, _1, _2),
+                                                         std::bind(&GraspActionServerWrapper::cancelCB, this, _1),
+                                                         std::bind(&GraspActionServerWrapper::acceptCB, this, _1));
 
     RCLCPP_INFO(node_->get_logger(), "Grasp execution action node started");
-
   }
 
-  ~GraspActionServerWrapper()
-  {
-  }
+  ~GraspActionServerWrapper() {}
 
 private:
-
   rclcpp_action::GoalResponse goalCB(const rclcpp_action::GoalUUID& uuid, ExecuteGraspAction::Goal::ConstSharedPtr goal)
   {
     (void)uuid;
     (void)goal;
-    RCLCPP_INFO(node_->get_logger(),"Received grasp action request");
+    RCLCPP_INFO(node_->get_logger(), "Received grasp action request");
     return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;
   }
 
   rclcpp_action::CancelResponse cancelCB(const std::shared_ptr<ExecuteGraspGH> goal_handle)
   {
-    RCLCPP_INFO(node_->get_logger(),"Canceling current grasp action");
+    RCLCPP_INFO(node_->get_logger(), "Canceling current grasp action");
     (void)goal_handle;
     return rclcpp_action::CancelResponse::ACCEPT;
   }
@@ -88,7 +83,7 @@ private:
     const auto goal = goal_handle->get_goal();
     ExecuteGraspAction::Result::SharedPtr result = std::make_shared<ExecuteGraspAction::Result>();
     result->success = true;
-    switch(goal->goal)
+    switch (goal->goal)
     {
       case ExecuteGraspAction::Goal::PRE_GRASP:
         RCLCPP_INFO(node_->get_logger(), "Pre-grasp command accepted");
@@ -121,23 +116,22 @@ private:
 
   rclcpp::Node::SharedPtr node_;
   ExecuteGraspActionServer::SharedPtr action_server_;
-
 };
 
 int main(int argc, char** argv)
 {
-	rclcpp::init(argc, argv);
-	rclcpp::NodeOptions node_options;
-	node_options.automatically_declare_parameters_from_overrides(true);
-	rclcpp::Node::SharedPtr node = rclcpp::Node::make_shared("fake_grasp_execution_node","", node_options);
+  rclcpp::init(argc, argv);
+  rclcpp::NodeOptions node_options;
+  node_options.automatically_declare_parameters_from_overrides(true);
+  rclcpp::Node::SharedPtr node = rclcpp::Node::make_shared("fake_grasp_execution_node", "", node_options);
 
   // spinning node in a separate thread
-  std::thread spin_thread([node](){
+  std::thread spin_thread([node]() {
     rclcpp::executors::MultiThreadedExecutor executor;
     executor.add_node(node);
     executor.spin();
   });
-  
+
   GraspActionServerWrapper action_server_wrapper(node);
 
   spin_thread.join();
@@ -145,7 +139,3 @@ int main(int argc, char** argv)
 
   return 0;
 }
-
-
-
-
