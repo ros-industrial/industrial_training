@@ -13,43 +13,43 @@
     - The "setPoseTarget" method allows you to set a "pose" as your target
         to move the robot.
 */
-void pick_and_place_application::PickAndPlaceApp::doBoxPickup(std::vector<geometry_msgs::msg::Pose>& pick_poses,const geometry_msgs::msg::Pose& box_pose)
+void pick_and_place_application::PickAndPlaceApp::doBoxPickup(std::vector<geometry_msgs::msg::Pose>& pick_poses,
+                                                              const geometry_msgs::msg::Pose& box_pose)
 {
-    //RCLCPP_ERROR_STREAM(node,"pickup_box is not implemented yet.  Aborting."); exit(1);
+  // RCLCPP_ERROR_STREAM(node,"pickup_box is not implemented yet.  Aborting."); exit(1);
 
-    // task variables
-    bool success;
+  // task variables
+  bool success;
 
-    /* Fill Code:
-     * Goal:
-     * - Set world frame as the reference
-     * - The target position is specified relative to this frame
-     * - If not specified, MoveIt will use the parent frame of the SRDF "Virtual Joint"
-     * Hints:
-     * - Use the "setPoseReferenceFrame" in the "move_group_ptr" object.
-     * - The WORLD_FRAME_ID in the "cfg" configuration member contains the name
-     * 	for the reference frame.
-     */
+  /* Fill Code:
+   * Goal:
+   * - Set world frame as the reference
+   * - The target position is specified relative to this frame
+   * - If not specified, MoveIt will use the parent frame of the SRDF "Virtual Joint"
+   * Hints:
+   * - Use the "setPoseReferenceFrame" in the "move_group_ptr" object.
+   * - The WORLD_FRAME_ID in the "cfg" configuration member contains the name
+   * 	for the reference frame.
+   */
 
-    // move the robot to each wrist pick pose
-    for(unsigned int i = 0; i < pick_poses.size(); i++)
+  // move the robot to each wrist pick pose
+  for (unsigned int i = 0; i < pick_poses.size(); i++)
+  {
+    moveit::core::RobotStatePtr robot_state = moveit_cpp->getCurrentState(2.0);
+    if (!robot_state)
     {
-      moveit::core::RobotStatePtr robot_state = moveit_cpp->getCurrentState(2.0);
-      if(!robot_state)
-      {
-        RCLCPP_ERROR_STREAM(node->get_logger(),"Failed to get robot state");
-        exit(1);
-      }
-      moveit_msgs::msg::RobotState robot_state_msg;
-      moveit::core::robotStateToRobotStateMsg(*robot_state, robot_state_msg, true);
+      RCLCPP_ERROR_STREAM(node->get_logger(), "Failed to get robot state");
+      exit(1);
+    }
+    moveit_msgs::msg::RobotState robot_state_msg;
+    moveit::core::robotStateToRobotStateMsg(*robot_state, robot_state_msg, true);
 
     /* Inspect Code:
      * Goal:
      * - Look in the "set_attached_object()" method to understand
      * 	how to attach a payload using moveit.
      */
-    setAttachedObject(false,geometry_msgs::msg::Pose(),robot_state_msg);
-
+    setAttachedObject(false, geometry_msgs::msg::Pose(), robot_state_msg);
 
     /* Inspect Code:
      * Goal:
@@ -57,25 +57,23 @@ void pick_and_place_application::PickAndPlaceApp::doBoxPickup(std::vector<geomet
      * 	entire moveit motion plan is created.
      */
     moveit_cpp::PlanningComponent::PlanSolution plan_solution;
-    success = doMotionPlanning(pick_poses[i],robot_state_msg,plan_solution) &&
-        moveit_cpp->execute(cfg.ARM_GROUP_NAME, plan_solution.trajectory, true);
+    success = doMotionPlanning(pick_poses[i], robot_state_msg, plan_solution) &&
+              moveit_cpp->execute(cfg.ARM_GROUP_NAME, plan_solution.trajectory, true);
 
     // verifying move completion
-    if(success)
+    if (success)
     {
-      RCLCPP_INFO_STREAM(node->get_logger(),"Pick Move " << i <<" Succeeded");
+      RCLCPP_INFO_STREAM(node->get_logger(), "Pick Move " << i << " Succeeded");
     }
     else
     {
-      RCLCPP_ERROR_STREAM(node->get_logger(),"Pick Move " << i <<" Failed");
+      RCLCPP_ERROR_STREAM(node->get_logger(), "Pick Move " << i << " Failed");
       actuateGripper(false);
       throw std::runtime_error("Failed to pick up box");
     }
 
-
-    if(i == 0)
+    if (i == 0)
     {
-
       /* Fill Code:
        * Goal:
        * - Turn on gripper suction after approach pose is reached.
@@ -85,10 +83,6 @@ void pick_and_place_application::PickAndPlaceApp::doBoxPickup(std::vector<geomet
        *   boolean argument.
        */
       actuateGripper(true);
-
     }
-
   }
-
 }
-

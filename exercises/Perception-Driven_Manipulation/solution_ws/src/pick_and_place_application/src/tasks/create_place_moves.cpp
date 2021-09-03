@@ -1,7 +1,6 @@
 #include <pick_and_place_application/pick_and_place.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 
-
 /*    CREATE PLACE MOVES
   Goal:
     - Set the pose of the tcp at the box place pose
@@ -19,13 +18,12 @@
 
 std::vector<geometry_msgs::msg::Pose> pick_and_place_application::PickAndPlaceApp::computePlaceToolPoses()
 {
-  //ROS_ERROR_STREAM("create_place_moves is not implemented yet.  Aborting."); exit(1);
+  // ROS_ERROR_STREAM("create_place_moves is not implemented yet.  Aborting."); exit(1);
 
   // task variables
   tf2::Transform tcp_at_box_tf, tcp_to_wrist_tf;
   geometry_msgs::msg::TransformStamped tcp_to_wrist_msg;
   std::vector<geometry_msgs::msg::Pose> tcp_place_poses, wrist_place_poses;
-
 
   /* Fill Code:
    * Objective:
@@ -47,7 +45,6 @@ std::vector<geometry_msgs::msg::Pose> pick_and_place_application::PickAndPlaceAp
    */
   tcp_at_box_tf.setRotation(cfg.BOX_PLACE_TF.getRotation() * tf2::Quaternion(0.707, 0.707, 0, 0));
 
-
   /* Fill Code:
    * Goal:
    * - Create place poses for tcp.   *
@@ -56,8 +53,7 @@ std::vector<geometry_msgs::msg::Pose> pick_and_place_application::PickAndPlaceAp
    * - Look in the "cfg" object to find the corresponding retreat and approach distance
    * 	values.
    */
- tcp_place_poses = createManipulationPoses(cfg.RETREAT_DISTANCE, cfg.APPROACH_DISTANCE, tcp_at_box_tf);
-
+  tcp_place_poses = createManipulationPoses(cfg.RETREAT_DISTANCE, cfg.APPROACH_DISTANCE, tcp_at_box_tf);
 
   /* Fill Code:
    * Goal:
@@ -70,9 +66,10 @@ std::vector<geometry_msgs::msg::Pose> pick_and_place_application::PickAndPlaceAp
    */
 
   // printing results
-  RCLCPP_INFO_STREAM(node->get_logger(), "tcp position at place: " << "[" << tcp_at_box_tf.getOrigin().getX() <<
-		  ", " << tcp_at_box_tf.getOrigin().getY() << ", " << tcp_at_box_tf.getOrigin().getZ() << "]");
+  RCLCPP_INFO_STREAM(node->get_logger(),
+                     "tcp position at place: "
+                         << "[" << tcp_at_box_tf.getOrigin().getX() << ", " << tcp_at_box_tf.getOrigin().getY() << ", "
+                         << tcp_at_box_tf.getOrigin().getZ() << "]");
 
   return tcp_place_poses;
 }
-
