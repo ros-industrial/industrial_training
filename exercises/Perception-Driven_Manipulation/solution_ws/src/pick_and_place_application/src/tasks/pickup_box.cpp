@@ -13,30 +13,12 @@
     - The "setPoseTarget" method allows you to set a "pose" as your target
         to move the robot.
 */
-void pick_and_place_application::PickAndPlaceApp::pickup_box(std::vector<geometry_msgs::msg::Pose>& pick_poses,const geometry_msgs::msg::Pose& box_pose)
+void pick_and_place_application::PickAndPlaceApp::doBoxPickup(std::vector<geometry_msgs::msg::Pose>& pick_poses,const geometry_msgs::msg::Pose& box_pose)
 {
     //RCLCPP_ERROR_STREAM(node,"pickup_box is not implemented yet.  Aborting."); exit(1);
 
     // task variables
     bool success;
-    //std::shared_ptr<moveit_cpp::PlanningComponent> planning_component = std::make_shared(cfg.ARM_GROUP_NAME. move_group_ptr);
-
-    /* Fill Code:
-     * Goal:
-     * - Set the wrist as the end-effector link
-     * - The robot will try to move this link to the specified pose
-     * - If not specified, moveit will use the last link in the arm group.
-     * Hints:
-     * - Use the "setEndEffectorLink" in the "move_group_ptr" object.
-     * - The WRIST_LINK_NAME field in the "cfg" configuration member contains
-     *  the name for the arm's wrist link.
-     */
-
-    //planning_component.setEndEffector(cfg.WRIST_LINK_NAME);
-
-    // set allowed planning time
-    //move_group_ptr->setPlanningTime(60.0f);
-
 
     /* Fill Code:
      * Goal:
@@ -48,7 +30,6 @@ void pick_and_place_application::PickAndPlaceApp::pickup_box(std::vector<geometr
      * - The WORLD_FRAME_ID in the "cfg" configuration member contains the name
      * 	for the reference frame.
      */
-    //move_group_ptr->setPoseReferenceFrame(cfg.WORLD_FRAME_ID);
 
     // move the robot to each wrist pick pose
     for(unsigned int i = 0; i < pick_poses.size(); i++)
@@ -67,7 +48,7 @@ void pick_and_place_application::PickAndPlaceApp::pickup_box(std::vector<geometr
      * - Look in the "set_attached_object()" method to understand
      * 	how to attach a payload using moveit.
      */
-    set_attached_object(false,geometry_msgs::msg::Pose(),robot_state_msg);
+    setAttachedObject(false,geometry_msgs::msg::Pose(),robot_state_msg);
 
 
     /* Inspect Code:
@@ -76,7 +57,7 @@ void pick_and_place_application::PickAndPlaceApp::pickup_box(std::vector<geometr
      * 	entire moveit motion plan is created.
      */
     moveit_cpp::PlanningComponent::PlanSolution plan_solution;
-    success = create_motion_plan(pick_poses[i],robot_state_msg,plan_solution) &&
+    success = doMotionPlanning(pick_poses[i],robot_state_msg,plan_solution) &&
         moveit_cpp->execute(cfg.ARM_GROUP_NAME, plan_solution.trajectory, true);
 
     // verifying move completion
@@ -87,7 +68,7 @@ void pick_and_place_application::PickAndPlaceApp::pickup_box(std::vector<geometr
     else
     {
       RCLCPP_ERROR_STREAM(node->get_logger(),"Pick Move " << i <<" Failed");
-      set_gripper(false);
+      actuateGripper(false);
       throw std::runtime_error("Failed to pick up box");
     }
 
@@ -103,7 +84,7 @@ void pick_and_place_application::PickAndPlaceApp::pickup_box(std::vector<geometr
        * - The input to the set_gripper method takes a "true" or "false"
        *   boolean argument.
        */
-      set_gripper(true);
+      actuateGripper(true);
 
     }
 

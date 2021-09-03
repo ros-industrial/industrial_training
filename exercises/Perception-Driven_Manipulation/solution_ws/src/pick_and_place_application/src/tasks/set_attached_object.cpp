@@ -12,7 +12,7 @@
 
 namespace pick_and_place_application
 {
-void PickAndPlaceApp::set_attached_object(bool attach, const geometry_msgs::msg::Pose &pose,
+void PickAndPlaceApp::setAttachedObject(bool attach, const geometry_msgs::msg::Pose &pose,
                                        moveit_msgs::msg::RobotState &robot_state)
 {
   // get robot state
@@ -27,11 +27,6 @@ void PickAndPlaceApp::set_attached_object(bool attach, const geometry_msgs::msg:
     shapes_array.push_back(shape);
 
     // constructing pose
-/*    tf::Transform attached_tf;
-    tf::poseMsgToTF(cfg.ATTACHED_OBJECT.primitive_poses[0],attached_tf);
-    EigenSTL::vector_Isometry3d pose_array(1);
-    tf::transformTFToEigen(attached_tf,pose_array[0]);*/
-
     EigenSTL::vector_Isometry3d pose_array(1);
     tf2::fromMsg(cfg.ATTACHED_OBJECT.primitive_poses[0], pose_array[0]);
 

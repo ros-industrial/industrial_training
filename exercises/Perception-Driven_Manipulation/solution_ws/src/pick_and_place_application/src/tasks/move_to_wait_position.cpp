@@ -12,7 +12,7 @@ using moveit::planning_interface::MoveItErrorCode;
     - Once the target is set you can call the "move" method in order to go to that target.
 */
 
-void pick_and_place_application::PickAndPlaceApp::move_to_wait_position()
+void pick_and_place_application::PickAndPlaceApp::moveToWaitPosition()
 {
   //ROS_ERROR_STREAM("move_to_wait_position is not implemented yet.  Aborting."); exit(1);
 

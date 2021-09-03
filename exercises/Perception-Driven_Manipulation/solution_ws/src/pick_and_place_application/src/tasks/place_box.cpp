@@ -8,25 +8,13 @@
     - Use the methods seen so far such as "move", "sendGoal", "waitForResult" whenever needed.
 */
 
-void pick_and_place_application::PickAndPlaceApp::place_box(std::vector<geometry_msgs::msg::Pose>& place_poses,
+void pick_and_place_application::PickAndPlaceApp::doBoxPlace(std::vector<geometry_msgs::msg::Pose>& place_poses,
         const geometry_msgs::msg::Pose& box_pose)
 {
   //RCLCPP_ERROR_STREAM(node,"place_box is not implemented yet.  Aborting."); exit(1);
 
   // task variables
   bool success;
-
-  /* Fill Code:
-   * Goal:
-   * - Set the ReferenceFrame and EndEffectorLink
-   * Hints:
-   * - Use the "setEndEffectorLink" and "setPoseReferenceFrame" methods of "move_group_ptr"
-   */
-  //moveit_cpp_ptr->setEndEffectorLink(cfg.WRIST_LINK_NAME);
-  //moveit_cpp_ptr->setPoseReferenceFrame(cfg.WORLD_FRAME_ID);
-
-  // set allowed planning time
-  //moveit_cpp_ptr->setPlanningTime(60.0f);
 
   // move the robot to each wrist place pose
   for(unsigned int i = 0; i < place_poses.size(); i++)
@@ -40,23 +28,29 @@ void pick_and_place_application::PickAndPlaceApp::place_box(std::vector<geometry
     moveit_msgs::msg::RobotState robot_state_msg;
     moveit::core::robotStateToRobotStateMsg(*robot_state, robot_state_msg, true);
 
-    if(i==0 || i == 1)
+    if(i==0)
     {
       // attaching box
-      set_attached_object(true,box_pose,robot_state_msg);
-      show_box(true);
+      setAttachedObject(true,box_pose,robot_state_msg);
+      showBox(true);
 
+    }
+    else if(i == 1)
+    {
+      // detaching box prior to place so that the place pose is not in collision
+      setAttachedObject(false,box_pose,robot_state_msg);
+      showBox(true);
     }
     else
     {
       // detaching box
-      set_attached_object(false,geometry_msgs::msg::Pose(),robot_state_msg);
-      show_box(false);
+      setAttachedObject(false,geometry_msgs::msg::Pose(),robot_state_msg);
+      showBox(false);
     }
 
     // create motion plan
     moveit_cpp::PlanningComponent::PlanSolution plan_solution;
-    success = create_motion_plan(place_poses[i], robot_state_msg,plan_solution)
+    success = doMotionPlanning(place_poses[i], robot_state_msg,plan_solution)
         && moveit_cpp->execute(cfg.ARM_GROUP_NAME, plan_solution.trajectory, true);
 
     if(success)
@@ -66,7 +60,7 @@ void pick_and_place_application::PickAndPlaceApp::place_box(std::vector<geometry
     else
     {
       RCLCPP_ERROR_STREAM(node->get_logger(),"Place Move " << i <<" Failed");
-      set_gripper(false);
+      actuateGripper(false);
       throw std::runtime_error("Failed to place box");
     }
 
@@ -81,7 +75,7 @@ void pick_and_place_application::PickAndPlaceApp::place_box(std::vector<geometry
        * - The input to the set_gripper method takes a "true" or "false"
        *       boolean argument.
        */
-      set_gripper(false);
+      actuateGripper(false);
     }
 
   }

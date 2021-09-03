@@ -7,7 +7,7 @@
     - Use the grasp action client to send an grasp request to the grasp server.
     - Confirm that the gripper was successfully opened or closed and exit on error
 */
-void pick_and_place_application::PickAndPlaceApp::set_gripper(bool do_grasp)
+void pick_and_place_application::PickAndPlaceApp::actuateGripper(bool do_grasp)
 {
   using GraspGoalType = pick_and_place_msgs::action::ExecuteGraspMove::Goal;
   using GraspGoalHandle = rclcpp_action::ClientGoalHandle<pick_and_place_msgs::action::ExecuteGraspMove>;

@@ -4,20 +4,23 @@
   Goal:
   Hints:
 */
-void pick_and_place_application::PickAndPlaceApp::reset_world(bool refresh_octomap)
+void pick_and_place_application::PickAndPlaceApp::resetWorld(bool do_perception)
 {
 
   // detach box if one is attached
-  moveit_msgs::msg::RobotState robot_state;
-  set_attached_object(false,geometry_msgs::msg::Pose(),robot_state);
+  moveit_msgs::msg::RobotState robot_state_msg;
+  setAttachedObject(false,geometry_msgs::msg::Pose(),robot_state_msg);
+
+  // getting state from environment
+  moveit_cpp->getCurrentState(1.0);
 
   // get new sensor snapshot
-  if(refresh_octomap)
+  if(do_perception)
   {
-    detect_box_pick();
+    detectBox();
   }
 
-  show_box(false);
+  showBox(false);
 }
 
 

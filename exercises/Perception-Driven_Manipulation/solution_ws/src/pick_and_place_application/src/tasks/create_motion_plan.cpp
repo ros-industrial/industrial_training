@@ -14,7 +14,7 @@
 namespace pick_and_place_application
 {
 
-bool PickAndPlaceApp::create_motion_plan(const geometry_msgs::msg::Pose &pose_target,
+bool PickAndPlaceApp::doMotionPlanning(const geometry_msgs::msg::Pose &pose_target,
     const moveit_msgs::msg::RobotState &start_robot_state_msg,
     moveit_cpp::PlanningComponent::PlanSolution &plan_solution)
 {
@@ -25,7 +25,7 @@ bool PickAndPlaceApp::create_motion_plan(const geometry_msgs::msg::Pose &pose_ta
   p.header.frame_id = cfg.WORLD_FRAME_ID;
   p.pose = pose_target;
   moveit_msgs::msg::Constraints pose_goal = kinematic_constraints::constructGoalConstraints(
-      cfg.WRIST_LINK_NAME,
+      cfg.TCP_LINK_NAME,
       p,
       position_tolerances,
       orientation_tolerances);
@@ -38,10 +38,10 @@ bool PickAndPlaceApp::create_motion_plan(const geometry_msgs::msg::Pose &pose_ta
   // setting up planning configuration
   moveit_cpp::PlanningComponent planning_component(cfg.ARM_GROUP_NAME, moveit_cpp);
   moveit_cpp::PlanningComponent::PlanRequestParameters plan_parameters;
-  plan_parameters.planner_id = "RRTConnectkConfigDefault";
   plan_parameters.load(node);
-  plan_parameters.planning_time = 20.0;
-  plan_parameters.planning_attempts = 4;
+  plan_parameters.planner_id = cfg.PLANNER_ID;
+  plan_parameters.planning_time = cfg.PLANNING_TIME;
+  plan_parameters.planning_attempts = cfg.PLANNING_ATTEMPTS;
 
   // set planning goal
   moveit::core::RobotState start_robot_state(moveit_cpp->getRobotModel());
