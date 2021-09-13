@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <robot name="ur5_collision_avoidance" xmlns:xacro="http://ros.org/wiki/xacro">
     <xacro:include filename="$(find robot_config)/urdf/vacuum_gripper_macro.xacro"/>
-    <xacro:include filename="$(find ur_description)/urdf/ur5.urdf.xacro" />
+    <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro" />
     <xacro:include filename="$(find robot_config)/urdf/workspace_components.xacro"/>
     <xacro:include filename="$(find robot_config)/urdf/kinect_sensor_macro.xacro"/>
 
@@ -15,7 +15,29 @@
     <xacro:property name="arm_prefix" value=""/>
 
     <!-- instantiating arm and gripper -->
-    <xacro:ur5_robot prefix="" joint_limited="true"/>
+       <!-- parameters -->
+    <xacro:arg name="ur_type" default="ur5"/>
+    <xacro:arg name="joint_limit_params" default="$(find ur_description)/config/$(arg ur_type)/joint_limits.yaml"/>
+    <xacro:arg name="kinematics_params" default="$(find ur_description)/config/$(arg ur_type)/default_kinematics.yaml"/>
+    <xacro:arg name="physical_params" default="$(find ur_description)/config/$(arg ur_type)/physical_parameters.yaml"/>
+    <xacro:arg name="visual_params" default="$(find ur_description)/config/$(arg ur_type)/visual_parameters.yaml"/>
+    <xacro:arg name="transmission_hw_interface" default="hardware_interface/PositionJointInterface"/>
+    <xacro:arg name="safety_limits" default="false"/>
+    <xacro:arg name="safety_pos_margin" default="0.15"/>
+    <xacro:arg name="safety_k_position" default="20"/>
+
+    <xacro:ur_robot
+     prefix=""
+     joint_limits_parameters_file="$(arg joint_limit_params)"
+     kinematics_parameters_file="$(arg kinematics_params)"
+     physical_parameters_file="$(arg physical_params)"
+     visual_parameters_file="$(arg visual_params)"
+     transmission_hw_interface="$(arg transmission_hw_interface)"
+     safety_limits="$(arg safety_limits)"
+     safety_pos_margin="$(arg safety_pos_margin)"
+     safety_k_position="$(arg safety_k_position)"/>
+    
+    <!-- instantiating arm and gripper -->
     <xacro:vacuum_gripper_definition prefix="${arm_prefix}" gripper_adjustment="0.01"/>
 
     <!-- instantiating workcell definitions -->
@@ -79,10 +101,10 @@
     <!-- end of arm workcell joint definitions-->
 
     <!-- arm-gripper coupling joint definitions -->
-    <joint name="${arm_prefix}to_gripper" type="fixed">
-            <parent link="${arm_prefix}ee_link"/>
+    <joint name="${arm_prefix}wrist_to_gripper" type="fixed">
+            <parent link="${arm_prefix}tool0"/>
             <child link="${arm_prefix}gripper_frame"/>
-            <origin xyz="0 0 0" rpy="-1.57 0 -1.57"/> <!-- 0 1.57 0 -->
+            <origin xyz="0 0 0" rpy="0 0 0"/> <!-- 0 1.57 0 -->
     </joint>
     <!-- end of arm-gripper coupling joint definitions -->
 </robot>
