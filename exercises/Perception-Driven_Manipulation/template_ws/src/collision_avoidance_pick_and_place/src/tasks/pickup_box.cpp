@@ -20,19 +20,6 @@ void collision_avoidance_pick_and_place::PickAndPlace::pickup_box(std::vector<ge
     // task variables
     bool success;
 
-
-    /* Fill Code:
-     * Goal:
-     * - Set the wrist as the end-effector link
-     * - The robot will try to move this link to the specified pose
-     * - If not specified, moveit will use the last link in the arm group.
-     * Hints:
-     * - Use the "setEndEffectorLink" in the "move_group_ptr" object.
-     * - The WRIST_LINK_NAME field in the "cfg" configuration member contains
-     *  the name for the arm's wrist link.
-     */
-    /* ========  ENTER CODE HERE ======== */
-
     // set allowed planning time
     move_group_ptr->setPlanningTime(60.0f);
 
