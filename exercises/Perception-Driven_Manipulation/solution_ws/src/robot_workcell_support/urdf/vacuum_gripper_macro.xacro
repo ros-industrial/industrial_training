@@ -41,11 +41,6 @@
 					<color rgba="1 1 1 0.5"/>
 				</material>
 			</visual>
-			<collision>								
-				<geometry>
-					<sphere radius="0.005"/>
-				</geometry>
-			</collision>
 		</link>	
 		<joint name="${prefix}gripper_to_palm" type="fixed">
 			<parent link="${prefix}gripper_frame"/>

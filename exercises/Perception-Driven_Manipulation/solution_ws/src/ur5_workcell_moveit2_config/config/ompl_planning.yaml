@@ -69,8 +69,8 @@ planner_configs:
     extended_fmt: 1  # activate the extended FMT*: adding new samples if planner does not finish successfully. default: 1
   BFMT:
     type: geometric::BFMT
-    num_samples: 50  # number of states that the planner should sample. default: 1000
-    radius_multiplier: 1.0  # multiplier used for the nearest neighbors search radius. default: 1.0
+    num_samples: 100  # number of states that the planner should sample. default: 1000
+    radius_multiplier: 2.0  # multiplier used for the nearest neighbors search radius. default: 1.0
     nearest_k: 1  # use the Knearest strategy. default: 1
     balanced: 1  # exploration strategy: balanced true expands one tree every iteration. False will select the tree with lowest maximum cost to go. default: 1
     optimality: 0  # termination strategy: optimality true finishes when the best possible path is found. Otherwise, the algorithm will finish when the first feasible path is found. default: 1

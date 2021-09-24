@@ -9,38 +9,8 @@
     <!--JOINTS: When a joint is specified, the child link of that joint (which will always exist) is automatically included-->
     <!--CHAINS: When a chain is specified, all the links along the chain (including endpoints) are included in the group. Additionally, all the joints that are parents to included links are also included. This means that joints along the chain and the parent joint of the base link are included in the group-->
     <!--SUBGROUPS: Groups can also be formed by referencing to already defined group names-->
-    <!--<group name="manipulator">
-        <link name="base_link" />
-        <link name="shoulder_link" />
-        <link name="upper_arm_link" />
-        <link name="forearm_link" />
-        <link name="wrist_1_link" />
-        <link name="wrist_2_link" />
-        <link name="wrist_3_link" />
-        <joint name="shoulder_pan_joint" />
-        <joint name="shoulder_lift_joint" />
-        <joint name="elbow_joint" />
-        <joint name="wrist_2_joint" />
-        <joint name="wrist_1_joint" />
-        <joint name="wrist_3_joint" />
-    </group>-->
+
     <group name="manipulator">
-        <!--<link name="base_link" />
-        <link name="shoulder_link" />
-        <link name="upper_arm_link" />
-        <link name="forearm_link" />
-        <link name="wrist_1_link" />
-        <link name="wrist_2_link" />
-        <link name="wrist_3_link" />
-        <joint name="shoulder_pan_joint" />
-        <joint name="shoulder_lift_joint" />
-        <joint name="elbow_joint" />
-        <joint name="wrist_2_joint" />
-        <joint name="wrist_1_joint" />
-        <joint name="wrist_3_joint" />
-        <link name="gripper_frame" />
-        <link name="gripper_body" />
-        <link name="tcp_frame" />-->
         <chain base_link="base_link" tip_link="tcp_frame" />
     </group>
     

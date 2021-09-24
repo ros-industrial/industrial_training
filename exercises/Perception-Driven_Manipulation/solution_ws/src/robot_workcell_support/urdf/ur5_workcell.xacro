@@ -23,24 +23,25 @@
     <xacro:arg name="physical_params" default="$(find ur_description)/config/$(arg ur_type)/physical_parameters.yaml"/>
     <xacro:arg name="visual_params" default="$(find ur_description)/config/$(arg ur_type)/visual_parameters.yaml"/>
 		
-		<xacro:arg name="transmission_hw_interface" default=""/>
-		<xacro:arg name="safety_limits" default="false"/>
-		<xacro:arg name="safety_pos_margin" default="0.15"/>
-		<xacro:arg name="safety_k_position" default="20"/>
-		
-		<!-- ros2_control related parameters -->
-		<xacro:arg name="use_fake_hardware" default="true" />
-		<xacro:arg name="fake_sensor_commands" default="false" />
-		
-		<!-- ros2 fake_components/generic_system  initial joints -->
-		<xacro:arg name="initial_positions_file" default=""/>
-		<xacro:property name="initial_positions_file_" value="$(arg initial_positions_file)"/>
-		<xacro:if value="${initial_positions_file_ == ''}">
-		  <xacro:property name="initial_positions" value="${dict(shoulder_pan_joint=0,shoulder_lift_joint=-1.57,elbow_joint=0,wrist_1_joint=-1.57,wrist_2_joint=0.0,wrist_3_joint=0.0)}" />
-		</xacro:if>
-		<xacro:if value="${initial_positions_file_ != ''}">
-		  <xacro:property name="initial_positions" value="${load_yaml(initial_positions_file_)}"/>
-		</xacro:if>
+	<xacro:arg name="transmission_hw_interface" default=""/>
+	<xacro:arg name="safety_limits" default="false"/>
+	<xacro:arg name="safety_pos_margin" default="0.15"/>
+	<xacro:arg name="safety_k_position" default="20"/>
+	
+	<!-- ros2_control related parameters -->
+	<xacro:arg name="use_fake_hardware" default="true" />
+	<xacro:arg name="fake_sensor_commands" default="false" />
+	<xacro:arg name="robot_ip" default="10.0.1.186"/>
+	
+	<!-- ros2 fake_components/generic_system  initial joints -->
+	<xacro:arg name="initial_positions_file" default=""/>
+	<xacro:property name="initial_positions_file_" value="$(arg initial_positions_file)"/>
+	<xacro:if value="${initial_positions_file_ == ''}">
+	  <xacro:property name="initial_positions" value="${dict(shoulder_pan_joint=0,shoulder_lift_joint=-1.57,elbow_joint=0,wrist_1_joint=-1.57,wrist_2_joint=0.0,wrist_3_joint=0.0)}" />
+	</xacro:if>
+	<xacro:if value="${initial_positions_file_ != ''}">
+	  <xacro:property name="initial_positions" value="${load_yaml(initial_positions_file_)}"/>
+	</xacro:if>
 
    <!-- ur arm instantiation -->
    <xacro:ur_robot
