@@ -182,7 +182,7 @@ class MoveItConfigHelper:
         move_group_node = Node(
             package="moveit_ros_move_group",
             executable="move_group",
-            output="screen",
+            output="log",
             parameters = moveit_config_parameters.move_group_parameters_list,
         )
         
