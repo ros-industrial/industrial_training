@@ -52,9 +52,10 @@ def launch_setup(context, *args, **kwargs):
     moveit_config_pkg_name = launch.substitutions.LaunchConfiguration('moveit2_config_pkg').perform(context)
     xacro_file_path = launch.substitutions.LaunchConfiguration('xacro_file').perform(context)
     srdf_file_path = launch.substitutions.LaunchConfiguration('srdf_file').perform(context)
+    ur_type = launch.substitutions.LaunchConfiguration('ur_type').perform(context)
         
     # moveit parameters    
-    xacro_args = {}
+    xacro_args = {'ur_type' : ur_type}
     moveit_config_parameters = MoveItConfigHelper(moveit_config_pkg_name, xacro_file_path, xacro_args, srdf_file_path).load_config()
     moveitcpp_parameters = moveit_config_parameters.moveit_cpp_parameters_list    
     
@@ -83,10 +84,10 @@ def generate_launch_description():
                                               default_value = ['ur5_workcell_moveit2_config']),
         launch.actions.DeclareLaunchArgument('xacro_file', default_value = [ os.path.join(get_package_share_directory('robot_workcell_support'),
                                                                                           'urdf','ur5_workcell.xacro')]),
-        launch.actions.DeclareLaunchArgument('initial_positions_file',
-                                             default_value = [ os.path.join(get_package_share_directory('ur5_workcell_moveit2_config'), 'config', 'initial_positions.yaml')]),
         launch.actions.DeclareLaunchArgument('srdf_file', default_value = [os.path.join(get_package_share_directory('ur5_workcell_moveit2_config'),
                                                                                           'config','ur5_workcell.srdf')]),
-        launch.actions.DeclareLaunchArgument('use_sim_robot', default_value = ['True']),
+        launch.actions.DeclareLaunchArgument('ur_type',
+                                             default_value = 'ur5',
+                                             description = 'Type/series of used UR robot. Choices=[\'ur3\', \'ur3e\', \'ur5\', \'ur5e\', \'ur10\', \'ur10e\', \'ur16e\']'),
         OpaqueFunction(function = launch_setup)
         ])
