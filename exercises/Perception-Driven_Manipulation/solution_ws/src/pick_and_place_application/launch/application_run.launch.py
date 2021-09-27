@@ -68,7 +68,7 @@ def launch_setup(context, *args, **kwargs):
         package="pick_and_place_application",
         #prefix='xterm -e gdb -ex run --args',
         executable="pick_and_place_node",
-        arguments = '--ros-args --log-level moveit:=error --log-level moveit_ros:=error --log-level ompl:=error'.split(' '),
+        arguments = '--ros-args --log-level info'.split(' '),
         parameters= moveitcpp_parameters + [pick_and_place_parameters],
     )    
     
