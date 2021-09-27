@@ -1,4 +1,4 @@
-<package>
+<package format="2">
 
   <name>ur5_workcell_moveit2_config</name>
   <version>0.2.0</version>
@@ -13,15 +13,16 @@
   <url type="website">http://moveit.ros.org/</url>
   <url type="bugtracker">https://github.com/ros-planning/moveit_setup_assistant/issues</url>
   <url type="repository">https://github.com/ros-planning/moveit_setup_assistant</url>
-  
+
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <run_depend>moveit_ros_move_group</run_depend>
-  <run_depend>xacro</run_depend>
-  <run_depend>robot_workcell_support</run_depend>
+  <exec_depend>moveit_ros_move_group</exec_depend>
+  <exec_depend>moveit_planners_ompl</exec_depend>
+  <exec_depend>xacro</exec_depend>
+  <exec_depend>robot_workcell_support</exec_depend>
 
   <export>
   	<build_type>ament_cmake</build_type>
   </export>
-  
+
 </package>
