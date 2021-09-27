@@ -70,7 +70,7 @@ So far we haven't used the request field, `base_frame`, for anything. In this ex
    {
      ...
      request->base_frame = base_frame;
-     RCLCPP_INFO_STREAM("Requesting pose in base frame: " << base_frame);
+     RCLCPP_INFO_STREAM(get_logger(), "Requesting pose in base frame: " << base_frame);
      ...
    }
 

@@ -34,6 +34,7 @@ Specifically, you will need to:
        ```
        cd ~/ros2_ws/src
        git clone -b ros2 https://github.com/jdlangs/universal_robot.git
+       cd ~/ros2_ws
        colcon build
        source ~/ros2_ws/install/setup.bash
        ```
@@ -130,6 +131,12 @@ Specifically, you will need to:
                 output='screen',
             )
         ])
+    ```
+
+ 1. Add the urdf folder to the installation rule in your `CMakeLists.txt` so it gets installed where the launch file expects it to be.
+
+    ``` cmake
+    install(DIRECTORY launch urdf DESTINATION share/${PROJECT_NAME}/)
     ```
 
  1. Rebuild your workspace and check the updated URDF in RViz, using the launch file you just created:
