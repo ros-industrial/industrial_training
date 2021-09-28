@@ -36,7 +36,7 @@ Your goal is to create your first ROS subscriber:
    1. Add the package to the list of dependencies of the _vision_node_ target:
 
       ``` cmake
-      ament_target_dependencies(vision_node PUBLIC rclcpp fake_ar_publisher)
+      ament_target_dependencies(vision_node rclcpp fake_ar_publisher)
       ```
 
 1. Add a dependency in your package's `package.xml`:

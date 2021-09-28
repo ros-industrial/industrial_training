@@ -105,7 +105,7 @@ Your goal is to create a more intricate system of nodes:
       rosidl_target_interfaces(vision_node ${PROJECT_NAME} "rosidl_typesupport_cpp")
       ```
 
-1. NOW! you have a service defined in you package and you can attempt to _build_ the code to generate the service:
+1. Now you have a service defined in you package and you can attempt to _build_ the code to generate the service:
    
    ```
    colcon build
