@@ -1,8 +1,5 @@
 <launch>
 
-  <!-- specify the planning pipeline -->
-  <arg name="pipeline" default="ompl" />
-
   <!-- By default, we do not start a database (it can be large) -->
   <arg name="db" default="false" />
   <!-- Allow user to specify database location -->
@@ -11,11 +8,8 @@
   <!-- By default, we are not in debug mode -->
   <arg name="debug" default="false" />
 
-  <!-- By default, we will load or override the robot_description -->
-  <arg name="load_robot_description" default="true"/>
-
-  <!-- Set execution mode for fake execution controllers -->
-  <arg name="execution_type" default="interpolate" />
+  <!-- By default, we won't load or override the robot_description -->
+  <arg name="load_robot_description" default="false"/>
 
   <!--
   By default, hide joint_state_publisher's GUI
@@ -26,17 +20,31 @@
   This corresponds to moving around the real robot without the use of MoveIt.
   -->
   <arg name="use_gui" default="false" />
-  <arg name="use_rviz" default="true" />
+
+  <!-- Gazebo specific options -->
+  <arg name="gazebo_gui" default="true"/>
+  <arg name="paused" default="false"/>
+  <!-- By default, use the urdf location provided from the package -->
+  <arg name="urdf_path" default="$(find robot_config)/urdf/ur5_collision_avoidance.xacro"/>
+
+  <!-- launch the gazebo simulator and spawn the robot -->
+  <include file="$(find ur5_collision_avoidance_moveit_config)/launch/gazebo.launch" >
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="gazebo_gui" value="$(arg gazebo_gui)"/>
+    <arg name="urdf_path" value="$(arg urdf_path)"/>
+  </include>
 
   <!-- If needed, broadcast static tf for robot root -->
-
+  
 
   <!-- We do not have a robot connected, so publish fake joint states -->
   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" unless="$(arg use_gui)">
     <rosparam param="source_list">[move_group/fake_controller_joint_states]</rosparam>
+    <rosparam param="source_list">[/joint_states]</rosparam>
   </node>
   <node name="joint_state_publisher" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" if="$(arg use_gui)">
     <rosparam param="source_list">[move_group/fake_controller_joint_states]</rosparam>
+    <rosparam param="source_list">[/joint_states]</rosparam>
   </node>
 
   <!-- Given the published joint states, publish tf for the robot links -->
@@ -45,16 +53,14 @@
   <!-- Run the main MoveIt executable without trajectory execution (we do not have controllers configured by default) -->
   <include file="$(find ur5_collision_avoidance_moveit_config)/launch/move_group.launch">
     <arg name="allow_trajectory_execution" value="true"/>
-    <arg name="fake_execution" value="true"/>
-    <arg name="execution_type" value="$(arg execution_type)"/>
+    <arg name="fake_execution" value="false"/>
     <arg name="info" value="true"/>
     <arg name="debug" value="$(arg debug)"/>
-    <arg name="pipeline" value="$(arg pipeline)"/>
     <arg name="load_robot_description" value="$(arg load_robot_description)"/>
   </include>
 
   <!-- Run Rviz and load the default config to see the state of the move_group node -->
-  <include file="$(find ur5_collision_avoidance_moveit_config)/launch/moveit_rviz.launch" if="$(arg use_rviz)">
+  <include file="$(find ur5_collision_avoidance_moveit_config)/launch/moveit_rviz.launch">
     <arg name="rviz_config" value="$(find ur5_collision_avoidance_moveit_config)/launch/moveit.rviz"/>
     <arg name="debug" value="$(arg debug)"/>
   </include>
