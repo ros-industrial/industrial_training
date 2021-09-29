@@ -1,5 +1,5 @@
 # Initialize ROS
->In this exercise, we'll initialize the ros components that our application needs in order to communicate to MoveIt! and other parts of the system.
+>In this exercise, we will initialize the ros components that our application needs in order to communicate with MoveIt! and other parts of the system.
 
 ## Locate Exercise Source File
 
@@ -7,14 +7,14 @@
   * In the main program, locate the function call to `application.initRos()`. 
   * Go to the source file for that function located in the `plan_and_run/src/tasks/init_ros.cpp`.
      * _Alternatively, in QTCreator, click on any part of the function and press "F2" to bring up that file._
-  * Comment out the first line containing the `ROS_ERROR_STREAM ...` entry so that the function doesn't quit immediately.
+  * Comment out the first line containing the `ROS_ERROR_STREAM ...` entry so that the function does not quit immediately.
 
 ## Complete Code
 
- * Observe how the ros Publisher `marker_publisher_` variable is initialized.  The node uses it to publish a `visualization_msgs::!MarkerArray` message for visualizing the trajectory in RViz.
+ * Observe how the ros Publisher `marker_publisher_` variable is initialized. The node uses it to publish a `visualization_msgs::!MarkerArray` message for visualizing the trajectory in RViz.
  * Initialize the `moveit_run_path_client_ptr_` action client with the `ExecuteTrajectoryAction`  type.
 
- * Find comment block that starts with `/*  Fill Code:` and complete as described.
+ * Find comment block that starts with `/*  Fill Code:` and complete as per described.
 
  * Replace every instance of `[ COMPLETE HERE ]` accordingly.
 

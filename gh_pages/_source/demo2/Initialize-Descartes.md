@@ -1,5 +1,5 @@
 # Initialize Descartes
->This exercise consists of setting up the Descartes Robot Model and Path Planner that our node will use to plan a path from a semi-constrained trajectory of the tool.
+>This exercise consists in setting up the Descartes Robot Model and Path Planner that our node will use to plan a path from a semi-constrained trajectory of the tool.
 
 ## Locate Exercise Source File
 
@@ -7,13 +7,13 @@
   * In the main program, locate the function call to `application.initDescartes()`. 
   * Go to the source file for that function located in the `plan_and_run/src/tasks/init_descartes.cpp`.
      * Alternatively, in QTCreator, you can click in any part of the function and press "F2" to bring up that file.
-  * Comment out the first line containing the `ROS_ERROR_STREAM( ...` entry so that the function doesn't quit immediately.
+  * Comment out the first line containing the `ROS_ERROR_STREAM( ...` entry so that the function does not quit immediately.
 
 ## Complete Code
 
- * Invoke the [descartes_core::RobotModel::initialize()](http://docs.ros.org/indigo/api/descartes_planner/html/classdescartes__planner_1_1DensePlanner.html#af6e9db3c1dec85046fc836136cf7b0fb) method in order to properly initialize the robot.
+ * Invoke the [descartes_core::RobotModel::initialize()](http://docs.ros.org/indigo/api/descartes_planner/html/classdescartes__planner_1_1DensePlanner.html#af6e9db3c1dec85046fc836136cf7b0fb) method in order to initialize the robot properly.
  * Similarly, initialize the Descartes planner by passing the `robot_model_` variable into the `descartes_core::!DensePlanner::initialize()` method.
- * Find comment block that starts with `/*  Fill Code:` and complete as described.
+ * Find the comment block that starts with `/*  Fill Code:` and complete as per described.
 
  * Replace every instance of `[ COMPLETE HERE ]` accordingly.
 

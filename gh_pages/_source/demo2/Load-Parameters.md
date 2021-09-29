@@ -1,12 +1,12 @@
 # Load Parameters
->In this exercise, we'll load some ROS parameters to initialize important variables within our program.
+>In this exercise, we will load some ROS parameters to initialize important variables within our program.
 
 ## Locate Exercise Source File
 
   * Go to the main application source file located in `plan_and_run/src/plan_and_run_node.cpp`.
   * In the main program, locate the function call to `application.loadParameters()`. 
   * Go to the source file for that function located in the `plan_and_run/src/tasks/load_parameters.cpp`. Alternatively, in Eclipse you can click in any part of the function and press "F2" to bring up that file.
-  * Comment out the first line containing the `ROS_ERROR_STREAM ...` entry so that the function doesn't quit immediately.
+  * Comment out the first line containing the `ROS_ERROR_STREAM ...` entry so that the function does not quit immediately.
 
 ## Complete Code
 

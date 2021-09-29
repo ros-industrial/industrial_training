@@ -1,5 +1,5 @@
 # Run a Robot Path
->In this exercise, we'll convert our Descartes path into a MoveIt! trajectory and then send it to the robot.
+>In this exercise, we will convert our Descartes path into a MoveIt! trajectory and then send it to the robot.
 
 ## Locate Exercise Source File
 
@@ -7,11 +7,11 @@
   * In the main program, locate the function call to `application.runPath()`. 
   * Go to the source file for that function located in the `plan_and_run/src/tasks/run_path.cpp`.
      * Alternatively, in QTCreator, click on any part of the function and press "F2" to bring up that file.
-  * Comment out the first line containing the `ROS_ERROR_STREAM( ...` entry so that the function doesn't quit immediately.
+  * Comment out the first line containing the `ROS_ERROR_STREAM( ...` entry so that the function does not quit immediately.
 
 ## Complete Code
 
- * Find comment block that starts with `/*  Fill Code:` and complete as described.
+ * Find comment block that starts with `/*  Fill Code:` and complete as per described.
 
  * Replace every instance of `[ COMPLETE HERE ]` accordingly.
 

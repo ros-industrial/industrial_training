@@ -1,12 +1,12 @@
 # Plan a Robot Path
->In this exercise, we'll pass our trajectory to the Descartes planner in order to plan a robot path.
+>In this exercise, we will pass our trajectory to the Descartes planner in order to plan a robot path.
 
 ## Locate Exercise Source File
 
   * Go to the main application source file located in `plan_and_run/src/plan_and_run_node.cpp`.
   * In the main program, locate the function call to `application.planPath()`. 
   * Go to the source file for that function located in the `plan_and_run/src/tasks/plan_path.cpp`. Alternatively, in Eclipse you can click in any part of the function and press "F2" to bring up that file.
-  * Comment out the first line containing the `ROS_ERROR_STREAM( ...` entry so that the function doesn't quit immediately.
+  * Comment out the first line containing the `ROS_ERROR_STREAM( ...` entry so that the function does not quit immediately.
 
 ## Complete Code
 
