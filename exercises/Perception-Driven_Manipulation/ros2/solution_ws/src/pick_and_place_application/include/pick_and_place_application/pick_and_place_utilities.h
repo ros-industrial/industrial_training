@@ -37,15 +37,19 @@ moveit_msgs::msg::Constraints createPathOrientationConstraints(const geometry_ms
                                                                float z_tolerance,
                                                                std::string link_name);
 
+/**
+ * @class PickAndPlaceConfig
+ * @details Contains the configuration parameters for the pick and place application
+ */
 class PickAndPlaceConfig
 {
 public:
   // =============================== Parameters ===============================
   std::string ARM_GROUP_NAME;             // MoveIt Planning Group associated with the robot arm
-  std::string TCP_LINK_NAME;              // Link / frame name for the suction gripper tool-tip
-  std::string ATTACHED_OBJECT_LINK_NAME;  // attached object link in robot
+  std::string TCP_LINK_NAME;              // Name of the gripper tool-tip link
+  std::string ATTACHED_OBJECT_LINK_NAME;  // Name of the object to be attached to the robot TCP
   std::string WORLD_FRAME_ID;             // Frame name for the fixed world reference frame
-  std::string AR_TAG_FRAME_ID;            // Frame name for the "AR Tag" mounted to the target box
+  std::string AR_TAG_FRAME_ID;            // Frame name for the "AR Tag" pasted on the box
   std::string HOME_POSE_NAME;             // Named pose for robot Home position (set in SRDF)
   std::string WAIT_POSE_NAME;             // Named pose for robot WAIT position (set in SRDF)
   tf2::Vector3 BOX_SIZE;                  // Size of the target box
@@ -61,12 +65,12 @@ public:
   std::string GRASP_ACTION_NAME;        // Action name used to control suction gripper
   std::string MARKER_TOPIC;             // Topic for publishing visualization of attached object.
   std::string PLANNING_SCENE_TOPIC;     // Topic for publishing the planning scene
-  std::string GET_TARGET_POSE_SERVICE;  // service for requesting box pick pose
-  std::string MOTION_PLAN_SERVICE;      // service for requesting moveit for a motion plan
+  std::string GET_TARGET_POSE_SERVICE;  // Service for requesting box pick pose
+  std::string MOTION_PLAN_SERVICE;      // Service for requesting Moveit for a motion plan
 
   // =============================== Messages and variables ===============================
-  visualization_msgs::msg::Marker MARKER_MESSAGE;     // visual representation of target object
-  moveit_msgs::msg::CollisionObject ATTACHED_OBJECT;  // attached object message
+  visualization_msgs::msg::Marker MARKER_MESSAGE;     // Visual representation of target object
+  moveit_msgs::msg::CollisionObject ATTACHED_OBJECT;  // Attached object message
   geometry_msgs::msg::Pose TCP_TO_BOX_POSE;
 
   PickAndPlaceConfig()

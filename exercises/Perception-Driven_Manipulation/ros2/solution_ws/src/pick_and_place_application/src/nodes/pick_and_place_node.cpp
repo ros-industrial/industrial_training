@@ -3,6 +3,7 @@
 
 using namespace pick_and_place_application;
 
+// create a logger to print messages into the terminal
 static const rclcpp::Logger LOGGER = rclcpp::get_logger("pick_and_place_node");
 
 // =============================== Main Thread ===============================
@@ -15,8 +16,7 @@ int main(int argc, char** argv)
   /*	INITIALIZING ROS NODE
       Goal:
       - Observe all steps needed to properly initialize a ros node.
-      - Look into the 'cfg' member of PickAndPlace to take notice of the parameters that
-        are available for the rest of the program. */
+      - Take notice of how the node's spin() method is invoked from within a thread.  This avoids locking the application.
   /* =========================================================================================*/
 
   RCLCPP_INFO(LOGGER, "Initialize node");
@@ -36,10 +36,7 @@ int main(int argc, char** argv)
   PickAndPlaceApp application(node);
 
   // initializing application
-  if (!application.initialize())
-  {
-    return false;
-  }
+  application.initialize();
 
   /* ========================================*/
   /* Pick & Place Tasks                      */

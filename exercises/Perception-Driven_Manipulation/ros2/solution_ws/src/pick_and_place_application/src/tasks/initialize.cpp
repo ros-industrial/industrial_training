@@ -9,12 +9,13 @@
 
 /* INITIALIZE
   Goal:
-    - Loads node parameters and initializes ROS2 interfaces (actions, subscribers, publishers, services)
+    - Understand how parameters get loaded into the application with the application specific "cfg.init()" method.
+    - Understand how to initialize the various ROS2 interfaces (actions, subscribers, publishers, services) used by this application.
 */
 
 namespace pick_and_place_application
 {
-bool PickAndPlaceApp::initialize()
+void PickAndPlaceApp::initialize()
 {
   // reading parameters
   if (this->cfg.init(node))
@@ -24,7 +25,7 @@ bool PickAndPlaceApp::initialize()
   else
   {
     RCLCPP_ERROR(node->get_logger(), "Parameters failed to load");
-    return false;
+    throw std::runtime_error("Parameter lookup failure");
   }
 
   // marker publisher
@@ -41,12 +42,6 @@ bool PickAndPlaceApp::initialize()
 
   // instantiate the moveit cpp object for motion planing
   moveit_cpp = std::make_shared<moveit_cpp::MoveItCpp>(node);
-
-  // initializing planning scene monitor
-  moveit_cpp->getPlanningSceneMonitor()->startSceneMonitor();
-  moveit_cpp->getPlanningSceneMonitor()->startStateMonitor();
-  // moveit_cpp->getPlanningSceneMonitor()->startWorldGeometryMonitor(); // allows updating the scene from sensor data,
-  // etc. moveit_cpp->getPlanningSceneMonitor()->providePlanningSceneService();
 
   // waiting to establish connections
   if (rclcpp::ok() && grasp_action_client->wait_for_action_server(
@@ -68,7 +63,5 @@ bool PickAndPlaceApp::initialize()
   {
     throw std::runtime_error("Failed to find server");
   }
-
-  return true;
 }
 }  // namespace pick_and_place_application

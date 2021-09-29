@@ -61,7 +61,7 @@ public:
   std::shared_ptr<tf2_ros::TransformListener> transform_listener;
 
   // =============================== Task Functions ===============================
-  bool initialize();
+  void initialize();
 
   void moveToWaitPosition();
 

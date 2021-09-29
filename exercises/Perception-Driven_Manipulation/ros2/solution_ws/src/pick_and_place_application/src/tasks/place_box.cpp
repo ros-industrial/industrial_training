@@ -2,8 +2,8 @@
 
 /* MOVE ARM THROUGH PLACE POSES
   Goal:
-    - Move the robot through the entire place motion.
-    - Open gripper after reaching the release pose.
+    - Move the robot through the place locations.
+    - Open gripper after reaching the release location.
   Hints:
     - Use the methods seen so far such as "move", "sendGoal", "waitForResult" whenever needed.
 */
@@ -49,9 +49,19 @@ void pick_and_place_application::PickAndPlaceApp::doBoxPlace(std::vector<geometr
 
     // create motion plan
     moveit_cpp::PlanningComponent::PlanSolution plan_solution;
-    success = doMotionPlanning(place_poses[i], robot_state_msg, plan_solution) &&
-              moveit_cpp->execute(cfg.ARM_GROUP_NAME, plan_solution.trajectory, true);
+    if(!doMotionPlanning(place_poses[i], robot_state_msg, plan_solution))
+    {
+      throw std::runtime_error("Failed to plan trajectory to place location");
+    }
 
+    /* Fill Code:
+     * Goal:
+     * - Execute the planned trajectory
+     * Hints:
+     * - Use the "moveit_cpp->execute(...)" method to execute the trajectory on the robot
+     */
+    success = false;
+    success = moveit_cpp->execute(cfg.ARM_GROUP_NAME, plan_solution.trajectory, true);
     if (success)
     {
       RCLCPP_INFO_STREAM(node->get_logger(), "Place Move " << i << " Succeeded");

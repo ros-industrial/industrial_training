@@ -2,17 +2,15 @@
 
 /* MOVE ARM THROUGH PICK POSES
   Goal:
-    - Use the "move_group" object to set the wrist as the end-effector link
-    - Use the "move_group" object to set the planning reference frame.
-    - Move the robot through the pick motion.
-    - Close the gripper when appropriate.
+    - Get the current robot state to plan a trajectory to the pick position
+    - Attach the box to the TCP
+    - Execute the trajectory
 
   Hints:
-    - The "move_group" interface has useful methods such as "setEndEffectorLink"
+    - The "moveit::core::robotStateToRobotStateMsg" function converts the robot_state object into a message
         and "setPoseReferenceFrame" that can be used to prepare the robot for planning.
-    - The "setPoseTarget" method allows you to set a "pose" as your target
-        to move the robot.
 */
+
 void pick_and_place_application::PickAndPlaceApp::doBoxPickup(std::vector<geometry_msgs::msg::Pose>& pick_poses,
                                                               const geometry_msgs::msg::Pose& box_pose)
 {
@@ -21,21 +19,20 @@ void pick_and_place_application::PickAndPlaceApp::doBoxPickup(std::vector<geomet
   // task variables
   bool success;
 
-  /* Fill Code:
-   * Goal:
-   * - Set world frame as the reference
-   * - The target position is specified relative to this frame
-   * - If not specified, MoveIt will use the parent frame of the SRDF "Virtual Joint"
-   * Hints:
-   * - Use the "setPoseReferenceFrame" in the "move_group_ptr" object.
-   * - The WORLD_FRAME_ID in the "cfg" configuration member contains the name
-   * 	for the reference frame.
-   */
 
   // move the robot to each wrist pick pose
   for (unsigned int i = 0; i < pick_poses.size(); i++)
   {
-    moveit::core::RobotStatePtr robot_state = moveit_cpp->getCurrentState(2.0);
+    /* Fill Code:
+     * Goal:
+     * - Get the current robot state before planning for a move
+     * - Check that the robot state is valid.
+     * Hints:
+     * - Use the "moveit_cpp->getCurrentState(...)" method to get the current state from the environment.
+     * - It is possible to evaluate the "robot_state" object inside an if statement.
+     */
+    moveit::core::RobotStatePtr robot_state = nullptr;
+    robot_state = moveit_cpp->getCurrentState(2.0);
     if (!robot_state)
     {
       RCLCPP_ERROR_STREAM(node->get_logger(), "Failed to get robot state");
@@ -46,19 +43,29 @@ void pick_and_place_application::PickAndPlaceApp::doBoxPickup(std::vector<geomet
 
     /* Inspect Code:
      * Goal:
-     * - Look in the "set_attached_object()" method to understand
-     * 	how to attach a payload using moveit.
+     * - Look in the "setAttachedObject()" method to understand how to attach/detach a payload using MoveIt.
      */
     setAttachedObject(false, geometry_msgs::msg::Pose(), robot_state_msg);
 
     /* Inspect Code:
      * Goal:
-     * - Look in the "create_motion_plan()" method to observe how an
-     * 	entire moveit motion plan is created.
+     * - Look in the "doMotionPlanning()" method to observe how an
+     * 	  entire MoveIt motion plan is produced.
      */
     moveit_cpp::PlanningComponent::PlanSolution plan_solution;
-    success = doMotionPlanning(pick_poses[i], robot_state_msg, plan_solution) &&
-              moveit_cpp->execute(cfg.ARM_GROUP_NAME, plan_solution.trajectory, true);
+    if(!doMotionPlanning(pick_poses[i], robot_state_msg, plan_solution))
+    {
+      throw std::runtime_error("Failed to plan trajectory to pick location");
+    }
+
+    /* Fill Code:
+     * Goal:
+     * - Execute the planned trajectory
+     * Hints:
+     * - Use the "moveit_cpp->execute(...)" method to execute the trajectory on the robot
+     */
+    success = false;
+    success = moveit_cpp->execute(cfg.ARM_GROUP_NAME, plan_solution.trajectory, true);
 
     // verifying move completion
     if (success)
@@ -76,10 +83,10 @@ void pick_and_place_application::PickAndPlaceApp::doBoxPickup(std::vector<geomet
     {
       /* Fill Code:
        * Goal:
-       * - Turn on gripper suction after approach pose is reached.
+       * - Turn on gripper suction after the approach position is reached.
        * Hints:
-       * - Call the "set_gripper" function to turn on suction.
-       * - The input to the set_gripper method takes a "true" or "false"
+       * - Call the "actuateGripper" function to turn on suction.
+       * - The input to the actuateGripper method takes a "true" or "false"
        *   boolean argument.
        */
       actuateGripper(true);
