@@ -4,7 +4,7 @@ Create Pick Moves
   The gripper moves through three poses in order to do a pick: approach,
   target and retreat. In this exercise, we will use the box pick transform to
   create the pick poses for the :abbr:`TCP (Tool Center Point)` coordinate
-  frame and then transform them to the arm's wrist coordinate frame.
+  frame and then transform them into the arm's wrist coordinate frame.
 
 
 Locate Function
@@ -37,7 +37,7 @@ Complete Code
 * The ``create_manipulation_poses()`` uses the values of the approach and
   retreat distances in order to create the corresponding poses at the desired
   target.
-* Since MoveIt! plans the robot path for the arm's wrist, it is necessary to
+* Since MoveIt! plans the robot path for the wrist of the arm, it is necessary to
   convert all the pick poses to the wrist coordinate frame.
 * The |lookupTransform()|_ method can provide the pose of a target relative to
   another pose.
@@ -68,7 +68,7 @@ Build Code and Run
 
     roslaunch collision_avoidance_pick_and_place ur5_pick_and_place.launch
 
-* The tcp and wrist position at the pick will be printed in the terminal. You
+* The TCP and wrist positions at the pick will be printed in the terminal. You
   should see something like this:
 
   .. code-block:: text

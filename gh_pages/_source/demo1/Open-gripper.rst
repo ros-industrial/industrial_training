@@ -40,8 +40,8 @@ Complete Code
     grasp_goal.goal = object_manipulation_msgs::GraspHandPostureExecutionGoal::RELEASE;
     grasp_goal.goal = object_manipulation_msgs::GraspHandPostureExecutionGoal::PRE_GRASP;
 
-* Once the grasp flag has been set you can send the goal through the grasp
-  action client
+* Once the grasp flag has been set, you can send the goal through the grasp
+  action client. 
 
 
 Build Code and Run
@@ -69,8 +69,8 @@ Build Code and Run
 
     roslaunch collision_avoidance_pick_and_place ur5_pick_and_place.launch
 
-* If the task succeeds you will see something like the following in the
-  terminal (below). The robot will not move, only gripper I/O is triggered:
+* If the task succeeds you will see something like the below in the
+  terminal. The robot will not move, only gripper I/O is triggered:
 
   .. code-block:: text
 

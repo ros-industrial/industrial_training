@@ -4,7 +4,7 @@ Create Place Moves
   The gripper moves through three poses in order to place the box: Approach,
   place and retreat. In this exercise, we will create these place poses for
   the :abbr:`TCP (Tool Center Point)` coordinate frame and then transform them
-  to the arm's wrist coordinate frame.
+  into the arm's wrist coordinate frame.
 
 
 Locate Function
@@ -34,12 +34,12 @@ Complete Code
     */
     /* ========  ENTER CODE HERE ======== */
 
-* The box's position at the place location is saved in the global variable
+* The position of the box at the place location is saved in the global variable
   ``cfg.BOX_PLACE_TF``.
 * The ``create_manipulation_poses()`` uses the values of the approach and
   retreat distances in order to create the corresponding poses at the desired
   target.
-* Since MoveIt! plans the robot path for the arm's wrist, it is necessary to
+* Since MoveIt! plans the robot path for the wrist of the arm, it is necessary to
   convert all the place poses to the wrist coordinate frame.
 * The |lookupTransform()|_ method can provide the pose of a target relative
   to another pose.
@@ -70,8 +70,8 @@ Build Code and Run
 
     roslaunch collision_avoidance_pick_and_place ur5_pick_and_place.launch
 
-* The tcp and wrist position at the place location will be printed on the
-  terminal. You should see something like:
+* The TCP and wrist positions at the place location will be printed on the
+  terminal. You should see something like this:
 
   .. code-block:: text
 

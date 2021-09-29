@@ -1,9 +1,10 @@
 Place Box
 =========
 
-  In this exercise, we will move the robot through the place motions while
-  avoiding obstacles with an attached payload. In addition, the gripper must
-  be opened or close at the appropriate time in order to complete the task.
+  In this exercise, we will move the robot through the pick and place motions 
+  while avoiding obstacles with an attached payload. In addition, the gripper 
+  must be opened or closed at the appropriate time in order to complete the 
+  task.
 
 
 Locate Function

@@ -3,7 +3,7 @@ Move Arm to Wait Position
 
   The ``MoveGroup`` class in MoveIt! allows us to move the robot in various
   ways.  With ``MoveGroup`` it is possible to move to a desired joint
-  position, cartesian goal or a predefined pose created with the Setup
+  position, Cartesian goal or a predefined pose created with the Setup
   Assistant.  In this exercise, we will move the robot to a predefined joint
   pose.
 
@@ -70,8 +70,8 @@ Build Code and Run
 
     roslaunch collision_avoidance_pick_and_place ur5_pick_and_place.launch
 
-* If the robot is not already in the wait position, it should move to the wait
-  position. In the terminal, you will see something like the following message:
+* If the robot is not already in the wait position, it should move to it. 
+In the terminal, you should see something like this:
 
   .. code-block:: text
 
