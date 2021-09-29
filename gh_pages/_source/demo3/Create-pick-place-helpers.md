@@ -23,7 +23,7 @@ In order to simplify the scripting of the pick and place operation, helper funct
 
   * Open trajopt_pick_and_place_constructor.cpp
   * Find every line that begins with the comment "''Fill Code: ''" and read the description.  Then, replace every instance of the comment  "''ENTER CODE HERE''"
- with the appropriate line of code
+ with the appropriate line of code. 
 ```
 /* Fill Code:
      .
@@ -37,6 +37,6 @@ You may find Sections 3.5 and 3.6 helpful in completing this exercise. Additiona
 
 ## Build Code and Run
 
-The code can be run by using the same launch file as before. This time the robot should pathplan when the perception service completes
+The code can be run by using the same launch file as before. This time the robot should pathplan when the perception service completes. 
 
 ```roslaunch pick_and_place pick_and_place.launch```

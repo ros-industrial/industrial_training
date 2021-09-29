@@ -10,17 +10,17 @@ The perception node is launched. This registers a new service with ```roscore```
 1) Service pulls latest point cloud from the 3D sensor
 2) Point cloud is cropped to exclude areas outside of the work cell
 3) RANSAC plane segmentation is used to remove the work table from the point cloud
-4) Euclidean clster extraction is used to cluster the remaining points 
+4) Euclidean cluster extraction is used to cluster the remaining points 
 5) Outliers are removed
-6) The largest cluster is taken as the pick object (additional logic could be added here to support multiple pick objects in view)
+6) The largest cluster is taken as the pick object (additional logic could be added here to support multiple pick objects in sight)
 7) RANSAC plane segmentations is used to find the top of the box
-8) The centroid of these points is calcuated
+8) The centroid of these points is calculated
 9) The service returns this pose
 
 ## Explore processing_node.launch
-Open processing_node.launch in demo3_perception/launch. This file launches the perception node. Note the standalone flag which can be set to true for testing the perception without the rest of the system.
+Open processing_node.launch in demo3_perception/launch. This file launches the perception node. Note the standalone flag which can be set to true to test the perception without the rest of the system.
 
-Additionally, it defines adds some associated rosparams to the parameter server. Explore these parameters. While the given values should work in simulation, it is likely that some of the PCL filter parameters will need to be changed when moving to real hardware. Here are some of them associated with the ROS setup.
+Additionally, it adds some associated rosparams to the parameter server. Explore these parameters. While the given values should work in simulation, it is likely that some of the PCL filter parameters will have to be changed when moving to real hardware. Here are some of them associated with the ROS setup:
 
 * cloud_debug: true means intermediate point clouds will be published for debugging
 * cloud_topic: Topic from which the service pulls the point cloud
@@ -47,17 +47,17 @@ geometry_msgs/Point max_pt
 ``` 
 ## Explore perception_node architecture
 
-In order for a RIS service to be registered on roscore, it must be advertised similarly to a node. This is done with ```nh.advertiseService(args)```. While this is often done the main(), for our use case this is done in the constructor of the PerceptionPipeline class. The service function is then a member of that class. Creating a pipeline class has several advantages.
+For a ROS service to be registered on roscore, it must be advertised similarly to a node. This is done with ```nh.advertiseService(args)```. Although this is often done in the main() function, for our use case this is done in the constructor of the PerceptionPipeline class. The service function is then a member of that class. Creating a pipeline class has several advantages.
 
-* It allows us to create ROS publishers as class members that are also maintained between service calls. We are using this for debugging in our case by publishing the intermediate point clouds.
-* It allows us to read parameters and store them in class members that are maintained between service calls, reducing processing time.
-* It allows us to instatiate multiple instances of the same pipeline.
+* It allows to create ROS publishers as class members that are also maintained between service calls. We are using this for debugging in our case by publishing the intermediate point clouds.
+* It allows to read parameters and store them in class members that are maintained between service calls, reducing processing time.
+* It allows to instantiate multiple instances of the same pipeline.
 
 ## Complete Code
 
-  * A template had been provided with some of the setup complete
+  * A template has been provided with some of the setup complete
   * Find every line that begins with the comment "''Fill Code: ''" and read the description.  Then, replace every instance of the comment  "''ENTER CODE HERE''"
- with the appropriate line of code
+ with the appropriate line of code:
 
 ```
 /* Fill Code:
@@ -68,9 +68,9 @@ In order for a RIS service to be registered on roscore, it must be advertised si
 //ENTER CODE HERE: Brief Description
 ```
 
-  * The '''find_pick_client''' object in your programs can use the '''call()''' method to send a request to a ros service.
+  * The '''find_pick_client''' object in your program can use the '''call()''' method to send a request to a ROS service.
 
-  * The ros service that receives the call will process the sensor data and return the pose for the box pick in the service structure member '''srv.response.target_pose'''.
+  * The ROS service that receives the call will process the sensor data and return the pose for the box pick in the service structure member '''srv.response.target_pose'''.
 
 
 ## Build Code and Run
@@ -85,17 +85,17 @@ Build -> Build Project
 catkin build
 ```
 
-  * Run your node with the launch file used before which calls the processing_node.launch. While you could call that launch file directly, the environment would not be loaded, and there would be no point cloud to process.
+  * Run your node with the launch file which calls the processing_node.launch that you used previously. Although you could call that launch file directly, the environment would not load, and there would be no point cloud to process.
 ```
 roslaunch pick_and_place pick_and_place.launch
 ```
-  * test_bed_core_node will call your service automatically. However, you can also test your code from the command line by calling ```rosservice call /find_pick``` when a point cloud is is being published on the cloud_topic (/cloud by default).
+  * test_bed_core_node will call your service automatically. However, you can also test your code from the command line by calling ```rosservice call /find_pick``` when a point cloud is being published on the cloud_topic (/cloud by default).
 
-  * Some errors and warnings will be present when the template code is run. As the correct code is filled, these will disappear until a fully defined Pose message is returned from the service.
+  * Some errors and warnings will pop up when you run the template code. As the correct code is filled, they will disappear until a fully defined Pose message is returned from the service.
 
 ## Additional exploration (optional)
 
-You may notice that this service does not run terribly quickly. Aside from publishing the clouds for debugging, intermediate copies of the point cloud are made that simplify the demonstration but hurt performance. Additionally, PCL has a wide variety of filters available and the solution given here is just one of many possible. Use the included timing functions to explore changes that can speed processing.
+You may notice that this service is not quick to run. Aside from publishing the clouds for debugging, intermediate copies of the point cloud are made that simplify the demonstration but hinder performance. Additionally, PCL has a wide variety of filters available and the solution given here is just one out of many possibilities. Use the included timing functions to explore changes that can speed up processing.
 
 
 ## API References

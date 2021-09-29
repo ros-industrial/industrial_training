@@ -1,6 +1,6 @@
 # Setting up a Schunk Gripper
  
-For this tutorial, we will use a Schunk WSG050 gripper. We will communicate with this gripper via Ethernet TCP/IP. However, the ROS driver hides most of the details of this interface, allowing us to control it without indepth knowledge of TCP/IP. Further, it is worth noting that there are at least 2 community supported ROS drivers that provide different interfaces. We will demonstrate only the first one.
+For this tutorial, we will use a Schunk WSG050 gripper. We will communicate with this gripper via Ethernet TCP/IP. However, the ROS driver hides most of the details of this interface, allowing us to control it without in-depth knowledge of TCP/IP. Further, it is worth noting that there are at least 2 community supported ROS drivers that provide different interfaces. We will demonstrate only the first one.
  
 * https://github.com/ipa320/ipa325_wsg50.git
 * https://github.com/nalt/wsg50-ros-pkgS
@@ -15,14 +15,14 @@ Note that this tutorial is more advanced than some of the previous tutorials. Wh
     * subnet: 255.255.0.0
  
 ## Clone the driver package into your workspace
-Like many community ROS package, there is not a debian release for this driver. Therefore you will need to clone the source of the package into the src space of your workspace.
+Like many community ROS packages, there is no debian release for this driver. Therefore you will need to clone the source of the package into the src space of your workspace.
 ```
 git clone https://github.com/ipa320/ipa325_wsg50.git
 ```
  
 ## Create Example node
 ### Edit Build Information
-Next we will create a C++ example. First we need to add an executable to the CMakeLists.txt
+Next you will create a C++ example. First you need to add an executable to the CMakeLists.txt
  
 ```
 add_executable(gripper_interface_node src/gripper_interface_node.cpp) 
@@ -34,7 +34,7 @@ Additionally, you will need to add a dependency on the ipa325_wsg50 by adding it
 * find_package(catkin REQUIRED COMPONENTS [all_of your other packages] ipa325_wsg50)
 * catkin_package( CATKIN_DEPENDS [all of your other packages] ipa325_wsg50)
  
-Finally, you need to add the following line to your package.xml file
+Finally, you will need to add the following line to your package.xml file
  
 ```
  <depend>ipa325_wsg50</depend> 
@@ -86,7 +86,7 @@ int main (int argc, char **argv)
     ROS_INFO("Homing finished: %s",state.toString().c_str());
   }
   else
-    ROS_INFO("Homing did not finish before the time out.");
+    ROS_INFO("Homing did not finish before timeOut.");
  
   ROS_INFO("Grasping Part...");
   ipa325_wsg50::WSG50GraspPartGoal grasp_goal;
@@ -101,15 +101,15 @@ int main (int argc, char **argv)
     ROS_INFO("Grasp finished: %s",state.toString().c_str());
   }
   else
-    ROS_INFO("Grasp did not finish before the time out.");
+    ROS_INFO("Grasp did not finish before timeOut.");
  
   ROS_INFO("Releasing Part...");
 ```
  
 ## Test Example
-To test this example, first launch the launch file that was included with the ROS driver (`wsg50.launch`).  Then start the C++ example. Verifiy that it is working - opening and closing the Schunk gripper.
+To test this example, first launch the launch file that was included with the ROS driver (`wsg50.launch`).  Then start the C++ example. Verify that it is working - opening and closing the Schunk gripper.
  
-You can now take this code and add it to `test_bed_core_node.cpp` at the appropriate times in order to pick and place the box. While some headers should go at the top, the majority of the code should go in the execution section at the bottom. Look for 
+You can now take this code and add it to `test_bed_core_node.cpp` at appropriate times in order to pick and place the box. While some headers should go to the top, the majority of the code should go within the execution section at the bottom. Look for:
 ```
 // Put gripper code here
 // End gripper code here

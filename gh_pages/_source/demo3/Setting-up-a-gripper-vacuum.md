@@ -17,17 +17,17 @@ Note that this tutorial is more advanced than some of the previous tutorials. Wh
 
 
 ## Hardware setup
-***Important Note:*** These instructions are for a specific setup. Use them only as guidelines. Consult the documentation for your hardware before attempting 
+***Important Note:*** These instructions are for a specific setup. Use them only as guidelines. Check your hardware documentation ahead of any attempt. 
 ### Wire the solenoid valve
-The solenoid input needs to be wired to one of the digital outputs of the gpio module.
+The solenoid input needs to be wired to one of the digital outputs of the GPIO module.
 
 ### Wire the GPIO module.
-This gpio module needs needs external power. Wire in a DC source between 15-36V to the DC+ and DC- ports of the gpio module.
+This GPIO module needs external power. Wire in a DC source ranging in 15-36V to the DC+ and DC- ports of the GPIO module.
 
-Additionally, the digital outputs need a dc source wired in as well. Wire in a DC source between 5.5-35V to the EXC+ and RTN ports of gpio module
+Additionally, the digital outputs need a DC source wired in as well. Wire in a DC source ranging in 5.5-35V to the EXC+ and RTN ports of the gpio module. 
 
 ## Make Modbus interface
-The gpio module being used for this tutorial communicates using Modbus. While this tutorial will not cover the details of Modbus, we can use ROS to communicate with it without an indepth knowledge of Modbus.
+The GPIO module being used for this tutorial communicates using Modbus. While this tutorial will not cover the details of Modbus, we can use ROS to communicate with it without an in-depth knowledge of Modbus.
 
 ### Clone the Modbus package into your workspace
 
@@ -36,9 +36,9 @@ git clone https://github.com/HumaRobotics/modbus.git
 ```
 
 ### Create Modbus Interface node
-Next we need to create the node that will send the commands to the gpio module. This is simply modified from the example given in the package cloned above. To do this, create a python node in the pick_and_place/src directory (`touch my_node.py`). Make sure that it is executable (either using `chmod +x filename` or by right clicking on the file)
+Next we need to create the node that will send the commands to the GPIO module. This is simply modified from the example given in the package cloned above. To do this, create a python node in the pick_and_place/src directory (`touch my_node.py`). Make sure that it is executable (either using `chmod +x filename` or by right-clicking on the file)
 
-Next copy in the code below. Note that the registers are from the documentation for this module.
+Next, copy in the code below. Note that the registers are from the documentation of this module.
 ```
 #!/usr/bin/env python
 ########################################################################### 
@@ -164,9 +164,9 @@ int main (int argc, char **argv)
 ```
 
 ### Test Example
-To test this example, first start a roscore and the Python modbus interface node. Then start the C++ example. Verifiy that it is working - switching the IO on and off every second. If the solenoid is wired correctly, you will likely be able to hear it triggering. 
+To test this example, first start a roscore and the Python modbus interface node. Then start the C++ example. Verify that it is working - switching the IO on and off every second. If the solenoid is wired correctly, you will likely be able to hear it triggering. 
 
-You can now take this code and add it to `test_bed_core_node.cpp` at the appropriate times in order to pick and place the box. While some headers should go at the top, the majority of the code should go in the execution section at the bottom. Look for 
+You can now take this code and add it to `test_bed_core_node.cpp` at appropriate times in order to pick and place the box. While some headers should go to the top, the majority of the code should go within the execution section at the bottom. Look for:
 ```
 // Put gripper code here
 // End gripper code here
