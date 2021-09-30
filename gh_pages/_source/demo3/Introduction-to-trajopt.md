@@ -85,7 +85,7 @@ These are the conditions that must be satisfied by the optimizer. Failure to mee
 
 ## Performance
 
-There are several things that you can do to speeden up the trajopt optimization.
+There are several things that you can do to help speed up the trajopt optimization.
 
 1) Be sure to build your project in Release mode. Using the command line this is `catkin build --cmake-args -DCMAKE_BUILD_TYPE=Release"`. In Qt Creator, the build type option is under the projects tab.
 

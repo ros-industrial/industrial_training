@@ -104,7 +104,7 @@ roslaunch plan_and_run demo_run.launch
 
    **Notes**
 
-   * Make sure you can `ping` the robot and that no obstacle within its range.
+   * Make sure you can `ping` the robot and that no obstacle is within its range.
 
  1. In a terminal, run the setup launch file as follows:
 
