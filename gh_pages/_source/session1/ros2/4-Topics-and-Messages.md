@@ -72,7 +72,7 @@ Your goal is to create your first ROS subscriber:
 
 1. In a new terminal, enter `ros2 run rqt_plot rqt_plot`.
 
-   1. Once the window opens, type `/ar_pose_marker/pose/pose/position/x` in the "Topic:" field and click the "+" button. You should see the X value be plotted.
+   1. Once the window opens, type `/ar_pose_marker/pose/pose/position/x` in the "Topic:" field and click the "+" button. You should see the X value be plotted. If you can't see the X value, try changing the axes on your graph.
 
    1. Type `/ar_pose_marker/pose/pose/position/y` in the topic field, and click on the add button.  You will now see both the x and y values being graphed.
 
