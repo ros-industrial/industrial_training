@@ -14,7 +14,7 @@
 void pick_and_place_application::PickAndPlaceApp::doBoxPickup(std::vector<geometry_msgs::msg::Pose>& pick_poses,
                                                               const geometry_msgs::msg::Pose& box_pose)
 {
-  // RCLCPP_ERROR_STREAM(node,"pickup_box is not implemented yet.  Aborting."); exit(1);
+  // RCLCPP_ERROR_STREAM(node->get_logger(),"pickup_box is not implemented yet.  Aborting."); exit(1);
 
   // task variables
   bool success;

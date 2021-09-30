@@ -13,7 +13,7 @@
 
 std::vector<geometry_msgs::msg::Pose> pick_and_place_application::PickAndPlaceApp::computePlaceToolPoses()
 {
-  // RCLCPP_ERROR_STREAM(node->get_logger(), "create_place_moves is not implemented yet.  Aborting."); exit(1);
+  RCLCPP_ERROR_STREAM(node->get_logger(), "create_place_moves is not implemented yet.  Aborting."); exit(1);
 
   // task variables
   tf2::Transform tcp_at_box_tf, tcp_to_wrist_tf;
@@ -24,21 +24,21 @@ std::vector<geometry_msgs::msg::Pose> pick_and_place_application::PickAndPlaceAp
    * Objective:
    * - Compute the TCP pose at the box place location
    * Hints:
-   * - Use the "setOrigin" method to set the position of "world_to_tcp_tf"
+   * - Use the "setOrigin" method to set the position of "tcp_at_box_tf"
    * 	using cfg.BOX_PLACE_TF.
    * - cfg.BOX_PLACE_TF is a tf::Transform object so it provides a getOrigin() method.
    */
-  tcp_at_box_tf.setOrigin(cfg.BOX_PLACE_TF.getOrigin());
+  // UNCOMMENT AND COMPLETE:  tcp_at_box_tf.setOrigin(...);
 
   /* Fill Code:
    * Goal:
    * - Reorient the tool so that the tcp points towards the box.
    * Hints:
-   * - Use the "setRotation" to set the orientation of "world_to_tcp_tf".
+   * - Use the "setRotation" to set the orientation of "tcp_at_box_tf".
    * - The quaternion value "tf::Quaternion(0.707, 0.707, 0, 0)" will point
    * 	the tcp's direction towards the box.
    */
-  tcp_at_box_tf.setRotation(cfg.BOX_PLACE_TF.getRotation() * tf2::Quaternion(0.707, 0.707, 0, 0));
+  // UNCOMMENT AND COMPLETE:  tcp_at_box_tf.setRotation(cfg.BOX_PLACE_TF.getRotation() * ...);
 
   /* Fill Code:
    * Goal:
@@ -47,7 +47,7 @@ std::vector<geometry_msgs::msg::Pose> pick_and_place_application::PickAndPlaceAp
    * - Use the "create_manipulation_poses" and save results to "tcp_place_poses".
    * - The RETREAT_DISTANCE and APPROACH_DISTANCE values were populated from a configuration yaml file passed to the executable in the launch file.
    */
-  tcp_place_poses = createManipulationPoses(cfg.RETREAT_DISTANCE, cfg.APPROACH_DISTANCE, tcp_at_box_tf);
+  // UNCOMMENT AND COMPLETE:  tcp_place_poses = createManipulationPoses(..., ..., tcp_at_box_tf);
 
   // printing results
   RCLCPP_INFO_STREAM(node->get_logger(),

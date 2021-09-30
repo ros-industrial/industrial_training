@@ -24,7 +24,7 @@ std::vector<geometry_msgs::msg::Pose> pick_and_place_application::PickAndPlaceAp
    * Objective:
    * - Compute the TCP pose at the box place location
    * Hints:
-   * - Use the "setOrigin" method to set the position of "world_to_tcp_tf"
+   * - Use the "setOrigin" method to set the position of "tcp_at_box_tf"
    * 	using cfg.BOX_PLACE_TF.
    * - cfg.BOX_PLACE_TF is a tf::Transform object so it provides a getOrigin() method.
    */
@@ -34,7 +34,7 @@ std::vector<geometry_msgs::msg::Pose> pick_and_place_application::PickAndPlaceAp
    * Goal:
    * - Reorient the tool so that the tcp points towards the box.
    * Hints:
-   * - Use the "setRotation" to set the orientation of "world_to_tcp_tf".
+   * - Use the "setRotation" to set the orientation of "tcp_at_box_tf".
    * - The quaternion value "tf::Quaternion(0.707, 0.707, 0, 0)" will point
    * 	the tcp's direction towards the box.
    */

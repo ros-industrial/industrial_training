@@ -11,7 +11,8 @@ void pick_and_place_application::PickAndPlaceApp::actuateGripper(bool do_grasp)
 {
   using GraspGoalType = pick_and_place_msgs::action::ExecuteGraspMove::Goal;
   using GraspGoalHandle = rclcpp_action::ClientGoalHandle<pick_and_place_msgs::action::ExecuteGraspMove>;
-  // RCLCPP_ERROR_STREAM(node,"set_gripper is not implemented yet.  Aborting."); exit(1);
+  
+  RCLCPP_ERROR_STREAM(node->get_logger(),"set_gripper is not implemented yet.  Aborting."); exit(1);
 
   // task variables
   GraspGoalType grasp_goal;
@@ -29,7 +30,7 @@ void pick_and_place_application::PickAndPlaceApp::actuateGripper(bool do_grasp)
    * - Use the "async_send_goal" method of the "grasp_action_client"
    * to send the goal to the server.
    */
-  std::shared_future<GraspGoalHandle::SharedPtr> goal_fut = grasp_action_client->async_send_goal(grasp_goal);
+  // UNCOMMENT AND COMPLETE: std::shared_future<GraspGoalHandle::SharedPtr> goal_fut = grasp_action_client->async_send_goal(...);
 
 
   /* Fill Code:
@@ -42,7 +43,7 @@ void pick_and_place_application::PickAndPlaceApp::actuateGripper(bool do_grasp)
    * - Save the output of wait for in the status variable
    */
   std::future_status status = std::future_status::deferred;
-  status = goal_fut.wait_for(std::chrono::duration<double>(4));
+  // UNCOMMENT AND COMPLETE: status = goal_fut.wait_for(...);
 
   if (status == std::future_status::ready)
   {

@@ -14,7 +14,7 @@ using moveit::planning_interface::MoveItErrorCode;
 
 void pick_and_place_application::PickAndPlaceApp::moveToWaitPosition()
 {
-  // RCLCPP_ERROR(node->get_logger(),"move_to_wait_position is not implemented yet.  Aborting."); exit(1);
+  RCLCPP_ERROR(node->get_logger(),"move_to_wait_position is not implemented yet.  Aborting."); exit(1);
 
   if (!moveit_cpp->getPlanningSceneMonitor()->requestPlanningSceneState())
   {
@@ -29,7 +29,7 @@ void pick_and_place_application::PickAndPlaceApp::moveToWaitPosition()
   plan_parameters.planning_time = 20.0f;
   plan_parameters.planning_attempts = 4;
 
-  /*  // task variables
+  /*
 
      Fill Code:
      * Goal:
@@ -38,7 +38,7 @@ void pick_and_place_application::PickAndPlaceApp::moveToWaitPosition()
      * - Use the "setNamedTarget" method in the "move_group_ptr" object.
      * - The "WAIT_POSE_NAME" variable is a member of the "cfg" object.
      */
-  planning_component.setGoal(cfg.WAIT_POSE_NAME);
+  // UNCOMMENT AND COMPLETE: planning_component.setGoal(...);
 
   // now plan the trajectory
   moveit_cpp::PlanningComponent::PlanSolution plan_solution = planning_component.plan();
@@ -62,7 +62,7 @@ void pick_and_place_application::PickAndPlaceApp::moveToWaitPosition()
    */
 
   bool succeeded = false;
-  succeeded = moveit_cpp->execute(cfg.ARM_GROUP_NAME, plan_solution.trajectory, true);
+  // UNCOMMENT AND COMPLETE: succeeded = moveit_cpp->execute(..., ..., true);
 
   // check if the execution succeeded
   if (!succeeded)

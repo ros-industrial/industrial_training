@@ -29,7 +29,7 @@ pick_and_place_application::PickAndPlaceApp::computePickToolPoses(geometry_msgs:
    */
   box_tf = tf2::poseMsgToTransform(box_pose);
   tf2::Vector3 box_position(box_pose.position.x, box_pose.position.y, box_pose.position.z);
-  // uncomment and complete: tcp_at_box_tf.setOrigin(...);
+  // UNCOMMENT AND COMPLETE: tcp_at_box_tf.setOrigin(...);
 
   /* Setting tcp orientation
    * Inverting the approach direction so that the tcp points towards the box instead of

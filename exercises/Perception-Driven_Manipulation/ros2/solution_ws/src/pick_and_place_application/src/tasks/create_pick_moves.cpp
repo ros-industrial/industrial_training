@@ -25,7 +25,7 @@ pick_and_place_application::PickAndPlaceApp::computePickToolPoses(geometry_msgs:
    * Goal:
    * - Compute the TCP pose at the box pick location.
    * Hints:
-   * - Use the "setOrigin" to set the position of "world_to_tcp_tf".
+   * - Use the "setOrigin" to set the position of "tcp_at_box_tf".
    */
   box_tf = tf2::poseMsgToTransform(box_pose);
   tf2::Vector3 box_position(box_pose.position.x, box_pose.position.y, box_pose.position.z);

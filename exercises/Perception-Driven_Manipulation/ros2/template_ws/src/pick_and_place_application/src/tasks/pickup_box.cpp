@@ -14,7 +14,7 @@
 void pick_and_place_application::PickAndPlaceApp::doBoxPickup(std::vector<geometry_msgs::msg::Pose>& pick_poses,
                                                               const geometry_msgs::msg::Pose& box_pose)
 {
-  // RCLCPP_ERROR_STREAM(node,"pickup_box is not implemented yet.  Aborting."); exit(1);
+  RCLCPP_ERROR_STREAM(node->get_logger(),"pickup_box is not implemented yet.  Aborting."); exit(1);
 
   // task variables
   bool success;
@@ -32,7 +32,7 @@ void pick_and_place_application::PickAndPlaceApp::doBoxPickup(std::vector<geomet
      * - It is possible to evaluate the "robot_state" object inside an if statement.
      */
     moveit::core::RobotStatePtr robot_state = nullptr;
-    robot_state = moveit_cpp->getCurrentState(2.0);
+    // UNCOMMENT AND COMPLETE: robot_state = moveit_cpp->...;
     if (!robot_state)
     {
       RCLCPP_ERROR_STREAM(node->get_logger(), "Failed to get robot state");
@@ -63,9 +63,10 @@ void pick_and_place_application::PickAndPlaceApp::doBoxPickup(std::vector<geomet
      * - Execute the planned trajectory
      * Hints:
      * - Use the "moveit_cpp->execute(...)" method to execute the trajectory on the robot
+     * - You'll need to pass the arm group name and trajectory
      */
     success = false;
-    success = moveit_cpp->execute(cfg.ARM_GROUP_NAME, plan_solution.trajectory, true);
+    // UNCOMMENT AND COMPLETE: success = moveit_cpp->execute(..., ..., true);
 
     // verifying move completion
     if (success)
@@ -89,7 +90,7 @@ void pick_and_place_application::PickAndPlaceApp::doBoxPickup(std::vector<geomet
        * - The input to the actuateGripper method takes a "true" or "false"
        *   boolean argument.
        */
-      actuateGripper(true);
+      // UNCOMMENT AND COMPLETE: actuateGripper(...);
     }
   }
 }
