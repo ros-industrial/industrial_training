@@ -1,0 +1,24 @@
+# The name of this file shouldn't be changed, or else the Setup Assistant won't detect it
+sensors:
+  - sensor_plugin: occupancy_map_monitor/PointCloudOctomapUpdater
+    sensor_frame: world_frame
+    point_cloud_topic: /filtered_cloud
+    max_range: 5.0
+    frame_subsample: 1
+    point_subsample: 1
+    padding_offset: 0.02
+    padding_scale: 1.0
+    # filtered_cloud_topic: octomap_cloud # enable when need to republish process cloud from move_group
+#  - far_clipping_plane_distance: 5.0
+#    filtered_cloud_topic: filtered_cloud
+#    image_topic: /head_mount_kinect/depth_registered/image_raw
+#    max_range: 5.0
+#    max_update_rate: 1.0
+#    near_clipping_plane_distance: 0.3
+#    padding_offset: 0.03
+#    padding_scale: 4.0
+#    point_cloud_topic: /head_mount_kinect/depth_registered/points
+#    point_subsample: 1
+#    queue_size: 5
+#    sensor_plugin: occupancy_map_monitor/DepthImageOctomapUpdater
+#    shadow_threshold: 0.2
