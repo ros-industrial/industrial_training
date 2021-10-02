@@ -32,8 +32,10 @@ Specifically, you will need to:
     1. Clone the repository from [GitHub](https://github.com/jdlangs/universal_robot) into your workspace:
 
        ```
-       cd ~/ros2_ws/src
-       git clone -b ros2 https://github.com/jdlangs/universal_robot.git
+       cd ~/ros2_ws/src       
+       git clone -b master https://github.com/UniversalRobots/Universal_Robots_Client_Library.git
+       git clone -b main https://github.com/UniversalRobots/Universal_Robots_ROS2_Driver.git
+       git clone -b ros2 https://github.com/destogl/ur_msgs.git
        cd ~/ros2_ws
        colcon build
        source ~/ros2_ws/install/setup.bash
@@ -44,7 +46,7 @@ Specifically, you will need to:
  1. Locate the xacro file that implements the UR5 macro and include it in your newly renamed `workcell.xacro` file.  Add this include line near the top of your `workcell.xacro` file, beneath the `<robot>` tag:
 
     ``` xml
-    <xacro:include filename="$(find ur_description)/urdf/ur5.urdf.xacro" />
+    <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro"/>
     ```
 
     >If you explore the UR5 definition file, or just about any other file that defines a Xacro macro, you’ll find a lot of uses of `${prefix}` in element names. Xacro evaluates anything inside a “${}” at run-time. It can do basic math, and it can look up variables that come to it via properties (ala-global variables) or macro parameters. Most macros will take a “prefix” parameter to allow a user to create multiple instances of said macro. It’s the mechanism by which we can make the eventual URDF element names unique, otherwise we’d get duplicate link names and URDF would complain.
@@ -52,7 +54,24 @@ Specifically, you will need to:
  1. Including the `ur5.urdf.xacro` file does not actually create a UR5 robot in our URDF model.  It defines a macro, but we still need to call the macro to create the robot links and joints.  _Note the use of the `prefix` tag, as discussed above._
 
     ``` xml
-    <xacro:ur5_robot prefix="" joint_limited="true"/>
+    <!-- ur arm instantiation -->
+    <xacro:arg name="prefix" default=""/>
+    <xacro:arg name="ur_type" default="ur5"/>
+    <xacro:arg name="joint_limit_params" default="$(find ur_description)/config/$(arg ur_type)/joint_limits.yaml"/>
+    <xacro:arg name="kinematics_params" default="$(find ur_description)/config/$(arg ur_type)/default_kinematics.yaml"/>
+    <xacro:arg name="physical_params" default="$(find ur_description)/config/$(arg ur_type)/physical_parameters.yaml"/>
+    <xacro:arg name="visual_params" default="$(find ur_description)/config/$(arg ur_type)/visual_parameters.yaml"/>
+    <!-- ros2_control related parameters -->
+    <xacro:arg name="use_fake_hardware" default="true" />
+    <xacro:arg name="fake_sensor_commands" default="true" />
+    <xacro:ur_robot
+	    prefix=""
+	    joint_limits_parameters_file="$(arg joint_limit_params)"
+	    kinematics_parameters_file="$(arg kinematics_params)"
+	    physical_parameters_file="$(arg physical_params)"
+	    visual_parameters_file="$(arg visual_params)"
+        use_fake_hardware="$(arg use_fake_hardware)"
+        fake_sensor_commands="$(arg fake_sensor_commands)" />
     ```
 
     >Macros in Xacro are just fancy wrappers around copy-paste. You make a macro and it gets turned into a chunk of links and joints. You still have to connect the rest of your world to that macro’s results. This means you have to look at the macro and see what the base link is and what the end link is. Hopefully your macro follows a standard, like the ROS-Industrial one, that says that base links are named “base_link” and the last link is called “tool0”.
