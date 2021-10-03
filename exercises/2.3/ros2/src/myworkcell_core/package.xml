@@ -3,7 +3,7 @@
 <package format="3">
   <name>myworkcell_core</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
+  <description>core scan-n-plan application node</description>
   <maintainer email="me@rosindustrial.com">ROS-Industrial</maintainer>
   <license>TODO: License declaration</license>
   <member_of_group>rosidl_interface_packages</member_of_group>

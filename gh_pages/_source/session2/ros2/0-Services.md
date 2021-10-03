@@ -21,7 +21,7 @@ Your goal is to create a more intricate system of nodes:
 1. Update the vision node to include a service server
 
 1. Create a new node which will eventually run the Scan-N-Plan App
-   * First, we'll create the new node (myworkcell_core) as a service client.  Later, we will expand from there 
+   * First, we'll create the new node (myworkcell_core) with only a simple service client.  We will later add more code to build up the full application control node.
 
 ## Scan-N-Plan Application: Guidance
 
@@ -55,7 +55,7 @@ Your goal is to create a more intricate system of nodes:
    bool success
    ```
 
-   * _An explicit member of the response that indicates success or failure is usually good practice with services, often along with a string member that can provide error information when a failure does happen._
+   * _It is good practice to include a response field that explicitly indicates success or failure of the service call.  Services often also include a string field that can provide a more detailed description of the error to the calling client._
 
 1. Edit the package's `CMakeLists.txt` and `package.xml` to add dependencies on key packages:
 
@@ -120,24 +120,10 @@ Your goal is to create a more intricate system of nodes:
    ``` c++
     #include <myworkcell_core/srv/localize_part.hpp>
    ```
+   
+   * _Note the slightly different naming convention used for the Service Definition (`LocalizePart`) and generated header file (`localize_part.hpp`).
 
-1. Add a member variable named `server_` near the other `Localizer` class member variables:
-
-   ``` c++
-   rclcpp::Service<myworkcell_core::srv::LocalizePart>::SharedPtr server_;
-   ```
-
-1. In the `Localizer` class constructor, advertise your service to the ROS master:
-
-   ``` c++
-   server_ = this->create_service<myworkcell_core::srv::LocalizePart>(
-     "localize_part",
-     std::bind(&Localizer::localizePart, this, std::placeholders::_1, std::placeholders::_2));
-   ```
-
-   _Note the use of `std::bind` again to create a function object that the service will use a callback. The use of two `std::placeholders` arguments indicates the callback will have two arguments when it is called._
-
-1. The `create_service` command above referenced a service callback named `localizePart`. Create an empty function with this name in the `Localizer` class. Remember that your request and response types were defined in the `LocalizePart.srv` file. The arguments to the boolean function are the request and response type, with the general structure of `Package::ServiceName::Request` or `Package::ServiceName::Response`. 
+1. In the `Localizer` class, create a callback method named `localizePart`. Remember that your request and response types were defined in the `LocalizePart.srv` file. The arguments to the callback function are the request and response type, with the general structure of `Package::ServiceName::Request::SharedPtr` or `Package::ServiceName::Response::SharedPtr`. 
 
    ``` c++
    void localizePart(myworkcell_core::srv::LocalizePart::Request::SharedPtr req,
@@ -168,9 +154,25 @@ Your goal is to create a more intricate system of nodes:
    }
    ```
 
-1. You should comment out the `RCLCPP_INFO` call in your `visionCallback` function, to avoid cluttering the screen with useless info.
+1. Now we need to create the server object that interfaces between this callback function and other ROS nodes.  Add a `roscpp::Service` member variable named `server_` near the other `Localizer` class member variables:
 
-1. Build the updated `vision_node`, to make sure there are no compile errors.
+   ``` c++
+   rclcpp::Service<myworkcell_core::srv::LocalizePart>::SharedPtr server_;
+   ```
+
+1. In the `Localizer` class constructor, initialize the server object:
+
+   ``` c++
+   server_ = this->create_service<myworkcell_core::srv::LocalizePart>(
+     "localize_part",
+     std::bind(&Localizer::localizePart, this, std::placeholders::_1, std::placeholders::_2));
+   ```
+
+   _Note the use of `std::bind` again to reference a callback function that is a method of a class object. The use of two `std::placeholders` arguments indicates the callback will have two arguments when it is called._
+
+1. You should also comment out the `RCLCPP_INFO` call in your `visionCallback` function, to avoid cluttering the screen with useless info.
+
+1. Build the updated `vision_node`, to make sure there are no compile errors.  You may see a warning about unused `Service::req` input... this is expected, since we haven't yet used the request data in our callback function.
 
 ### Service Client
 
@@ -196,7 +198,7 @@ Your goal is to create a more intricate system of nodes:
    }
    ```
 
-1. We will be using a cpp class "ScanNPlan" to contain the functionality of the myworkcell_node.  Create a skeleton structure of this class, with an empty constructor and a private area for some internal/private variables.
+1. Following best-practice guidance, we will create a new `ScanNPlan` class (derived from `rclcpp::Node`) to contain the functionality of our new node.  Create a skeleton structure of this class, with an empty constructor and a private area for some internal/private variables.
 
    ``` c++
    class ScanNPlan : public rclcpp::Node
@@ -213,7 +215,7 @@ Your goal is to create a more intricate system of nodes:
    };
    ```
 
-1. Within your new ScanNPlan class, define a ROS Client as a private member variable of the class.  Initialize the Client in the ScanNPlan constructor, using the same service name as defined earlier ("localize_part"). Create a void function within the ScanNPlan class named `start`, with no arguments. This will eventually contain most of our application workflow.
+1. Within your new ScanNPlan class, define a ROS Service Client as a private member variable of the class.  This client object will allow us to connect to the vision node's Service Server.  Initialize the Client in the ScanNPlan constructor.  Both the service type (in the variable declaration) and the service name (in the object constructor) should match what we set up in the vision_node server earlier.
 
    ``` c++
    class ScanNPlan : public rclcpp::Node
@@ -224,14 +226,25 @@ Your goal is to create a more intricate system of nodes:
        vision_client_ = this->create_client<myworkcell_core::srv::LocalizePart>("localize_part");
      }
 
+   private:
+     // Planning components
+     rclcpp::Client<myworkcell_core::srv::LocalizePart>::SharedPtr vision_client_;
+   };
+   ```
+
+1. Create a void function within the ScanNPlan class named `start`, with no arguments. This will eventually contain most of our application workflow.
+
+   ``` c++
+   class ScanNPlan : public rclcpp::Node
+   {
+   public:
+     ...
+
      void start()
      {
        RCLCPP_INFO(get_logger(), "Attempting to localize part");
      }
-
-   private:
-     // Planning components
-     rclcpp::Client<myworkcell_core::srv::LocalizePart>::SharedPtr vision_client_;
+     ...
    };
    ```
 
@@ -283,7 +296,7 @@ Your goal is to create a more intricate system of nodes:
    The `async_send_request` function is used on the `vision_client_` object to initiate the service call. Notice that it doesn't return a response object, but instead, something called a `future`. This is because the function immediately returns after sending the request and does not wait for a response from the server. It is our responsibility to wait for the response to arrive, which will be known by the future object becoming 'complete'.
 
 
-1. Now add the code that will wait until the service response arrives and then prints the response:
+1. Now add the code that will wait until the service response arrives and then prints the response.  This is a bit complex, because we are turning the _asynchronous_ ROS2 service call into a _synchronous_ blocking call.
 
    ``` c++
    void start()
@@ -321,9 +334,9 @@ Your goal is to create a more intricate system of nodes:
    }
    ```
 
-   * Note that the waiting function is a form of spinning, the same as the `rclcpp::spin` function used in the _vision_node_. This is because under the hood, the service response is arriving on a topic and a callback needs to run inside the `Client` class to received the response message.
-   * _Important_: Spinning a node is exclusive, so you can't use the `spin_until_future_complete` function if the main function is already spinning the node. This would be the case if you were trying to call a service from inside a callback, for example. The ROS2 defaults are that only one callback can run at a time, so this scenario leads to deadlock because if you try to wait for the response inside a callback, the response callback will never be run. There are ways around this limitation but it is beyond the scope of this material.
-   * An alternative to waiting for the future is to provide a callback along with the service request which will run when the response arrives. For some program designs this might make more sense and this technique can be seen in the official ROS2 examples.
+   * Note that the waiting function is a form of spinning, the same as the `rclcpp::spin` function used in the _vision_node_. This spin function allows the backend ROS code to run, listening for the incoming service response and managing other node-maintenance tasks.
+   * _Important_: You can trigger deadlocks if you call ros "spin" functions simultaneously in multiple places.  For example, you may need a more complex "spin" design if you are attempting to wait for a service response inside a subscriber's callback function.  There are ways around this limitation but it is beyond the scope of this material.
+   * An alternative to the synchronous wait shown above is to provide a callback function along with the service request.  For some applications, this asynchronous design might make more sense.
 
 1. Now back in `myworkcell_node`'s `main` function, instantiate an object of the `ScanNPlan` class and call the object's `start` function.
  
@@ -364,3 +377,6 @@ Your goal is to create a more intricate system of nodes:
    ros2 run myworkcell_core vision_node
    ros2 run myworkcell_core myworkcell_node
    ```
+   
+   * If you get errors that the ros2 commands can't find certain shared objects or executables, try re-sourcing the setup file (`source ~/ros2_ws/install/setup.bash`).  This is required since we added a new service-definition and a new node.
+   * The values reported by the localization service should match the values published by the fake_ar_publisher node that you observed earlier (through `ros2 topic echo` or `rqt_plot`).

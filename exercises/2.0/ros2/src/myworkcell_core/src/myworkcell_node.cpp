@@ -37,7 +37,7 @@ public:
       return;
     }
 
-    RCLCPP_INFO(this->get_logger(), "Part Localized:  x: %f, y: %f, z: %f",
+    RCLCPP_INFO(this->get_logger(), "Part Localized: x: %f, y: %f, z: %f",
         response->pose.position.x,
         response->pose.position.y,
         response->pose.position.z);

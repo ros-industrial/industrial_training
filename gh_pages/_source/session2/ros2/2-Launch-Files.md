@@ -32,8 +32,9 @@ You may also choose to launch `myworkcell_core` node with the others or keep it 
    ``` bash
    cd ~/ros2_ws/src
    ros2 pkg create myworkcell_support --dependencies myworkcell_core
-   cd ~/ros2_ws
-   colcon build
+   
+   <run colcon build in your build terminal>
+
    source ~/ros2_ws/install/setup.bash
    ```
 
@@ -70,7 +71,7 @@ You may also choose to launch `myworkcell_core` node with the others or keep it 
    ),
    ```
 
-   * There are other options you can set for these `Node` actions; `name`, `package`, and `executable` are the required ones.
+   * There are other options you can set for these `Node` actions, but `name`, `package`, and `executable` are the most common ones.
  
 5. Try to run the launch file:
 
@@ -89,28 +90,28 @@ You may also choose to launch `myworkcell_core` node with the others or keep it 
 1. Now build the workspace to install the launch file and try to run it again:
 
    ``` bash
-   colcon build
    ros2 launch myworkcell_support workcell.launch.py
    ```
 
    _Note: Both nodes were automatically started. Press _Ctrl+C_ to close all nodes started by the launch file._
 
-1. Notice that none of the usual messages were printed to the console window.  Launch files will suppress console output below the **ERROR** severity level by default. To restore normal text output, add the `output='screen'` argument to each of the nodes in your launch files:
+1. The expected behavior is that you should see none of the usual messages printed to the console window.  Launch files will suppress console output below the **ERROR** severity level by default. To restore normal text output, add the `output='screen'` argument to each of the nodes in your launch file (see below).  _Current versions of ROS do not seem to follow this behavior, though, and output INFO/WARN messages to screen regardless of `output` setting._
 
    ``` py
    launch_ros.actions.Node(
        name='fake_ar_publisher_node',
        package='fake_ar_publisher',
        executable='fake_ar_publisher_node',
-       output='screen',
    ),
    launch_ros.actions.Node(
        name='vision_node',
        package='myworkcell_core',
        executable='vision_node',
-       output='screen',
    ),
    ```
 
-   * Without the `output='screen'` argument the logging statements are redirected to a log file for each launch file run.
+   * Even without the `output='screen'` argument, the logging statements are still broadcast to any ROS nodes that listen to the global `/rosout` topic and captured in a log file.
    * _Important_: Remember that `ros2` works on the launch file in the `install/` directory and so you won't see the new behavior without running `colcon build` again to reinstall the file. To avoid having to do this for every change during development, you can run `colcon build` with a `--symlink-install` option which will install a link to the file in the `src/` directory so any changes will be seen immediately.
+   
+## Challenge Exercise
+* ROS2 also supports [XML] and YAML launch files.  Review the example [here](https://docs.ros.org/en/foxy/How-To-Guides/Launch-file-different-formats.html) and try to recreate the launch file we just made in XML or YAML instead.

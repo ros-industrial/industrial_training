@@ -8,8 +8,8 @@ The basis of ROS communication is that multiple executables called nodes are run
 [Create a Package](https://index.ros.org/doc/ros2/Tutorials/Creating-Your-First-ROS2-Package)
 
 ## Further Information and Resources
-[Package.xml Format](https://ros.org/reps/rep-0149.html#data-representation)
-[Understanding Nodes](https://index.ros.org/doc/ros2/Tutorials/Understanding-ROS2-Nodes)
+* [Package.xml Format](https://ros.org/reps/rep-0149.html#data-representation)
+* [Understanding Nodes](https://index.ros.org/doc/ros2/Tutorials/Understanding-ROS2-Nodes)
 
 ## Scan-N-Plan Application: Problem Statement
 We've installed ROS, created a workspace, and even built a few times. Now we want to create our own package and our own node to do what we want to do.
@@ -24,7 +24,7 @@ Your goal is to create your first ROS node:
 
 ### Create a Package
 1. cd into the workspace src directory
-   _Note: Remember that all packages should be created inside a workspace src directory._
+   * _Remember that all packages should be created inside a workspace src directory._
 
    ```
    cd ~/ros2_ws/src
@@ -46,7 +46,7 @@ Your goal is to create your first ROS node:
 
    ```
    cd myworkcell_core
-   gedit package.xml
+   gedit package.xml &
    ```
 
    _If you forget to add a dependency when creating a package, you can add additional dependencies in the _package.xml_ file._
@@ -57,6 +57,7 @@ Your goal is to create your first ROS node:
 
 ### Create a Node
 1. In the package folder, create the file _src/vision_node.cpp_ (using _gedit_).
+  * Make sure you know the difference between the _workspace_ `src` directory and the myworkcell_core _package_ `src` directory.  This node source-file should live at: `~/ros2_ws/src/myworkcell_core/src/vision_node.cpp`.
 
 1. Add the ROS C++ header (include rclcpp.hpp).
 
@@ -81,7 +82,7 @@ Your goal is to create your first ROS node:
    }
    ```
 
-1. Initialize your ROS node (within the main).
+1. Initialize the ROS CPP middleware interface (must be called once per process).
 
    ``` c++
    /**
@@ -161,29 +162,29 @@ Your goal is to create your first ROS node:
    * To use a different logging level, replace INFO in `RCLCPP_INFO` or `RCLCPP_INFO_STREAM` with the appropriate level.
    * Use `RCLCPP_INFO` for printf-style logging, and `RCLCPP_INFO_STREAM` for cout-style logging.
 
-1. Now that you have created the source code for the node, we need to add instructions for building it into an executable program. In the package folder, edit the _CMakeLists.txt_ file using _gedit_. Browse through the example rules, and add an executable(_add_executable_), node named vision_node, with the source file _vision_node.cpp_. Also within the _CMakeLists.txt_, make sure your new vision_node gets linked to the required dependencies.
+1. Now that you have created the source code for the node, we need to add instructions for building it into an executable program. In the package folder, edit the _CMakeLists.txt_ file using _gedit_. Define an executable node named vision_node (_add_executable_), with the source file _vision_node.cpp_. Also within the _CMakeLists.txt_, make sure your new vision_node gets linked to the required dependencies.
 
    ``` cmake
    add_executable(vision_node src/vision_node.cpp)
    ament_target_dependencies(vision_node rclcpp)
    ```
 
-   These lines should be place after the section labeled `# find dependencies`. The flow of a _CMakeLists.txt_ file is almost always to first find all dependencies the current project requires, then to declare the _targets_ the current project is creating, and finally to specify extra information such as how to test the targets and things that projects making use of this one need to know. Note that the term "project" is used here in the context of CMake. Each ROS package acts as a separate CMake project (notice the `project(myworkcell_core)`) line at the very top of the file). 
+   These lines should be place after the section labeled `# find dependencies` and before the `ament_package()` call. The flow of a _CMakeLists.txt_ file is almost always to first find all dependencies the current project requires, then to declare the _targets_ the current project is creating, and finally to specify extra information such as how to test the targets and things that projects making use of this one need to know. Note that the term "project" is used here in the context of CMake. Each ROS package acts as a separate CMake project (notice the `project(myworkcell_core)`) line at the very top of the file). 
 
-   _Note: You're allowed to spread most of the CMakeLists rules across multiple lines, which is often required when a target contains many source files or has many dependencies._
+  * See [ament_cmake documentation](https://docs.ros.org/en/foxy/How-To-Guides/Ament-CMake-Documentation.html) for more details on common ROS2 CMakeLists rules.
+  * _You're allowed to spread most of the CMakeLists rules across multiple lines, which is often required when a target contains many source files or has many dependencies._
 
 1. We've now told CMake about the _vision_node_ executable and how to build it, but to actually run it, the file must be *installed* along with all the other workspace outputs. Typically, the installation location will be the `install/` directory alongside the `src/` directory. Add the following lines to declare an installation rule for the _vision_node_ executable:
 
    ``` cmake
-   # Mark executables and/or libraries for installation
+   # Mark executables for installation
    install(TARGETS vision_node
-       ARCHIVE DESTINATION lib/${PROJECT_NAME}
-       LIBRARY DESTINATION lib/${PROJECT_NAME}
-       RUNTIME DESTINATION lib/${PROJECT_NAME}
-   )
+       DESTINATION lib/${PROJECT_NAME})
    ```
+   
+   * _ROS2 installs both executable programs and libraries into the `lib` directory_
 
-1. Build your program (node), by running `colcon build` in a terminal window
+1. Build your program (node), by running `colcon build` in your build terminal window
 
    * _Remember that you must run `colcon build` from the `ros2_ws` directory._
    * This will build all of the programs, libraries, etc. in _myworkcell_core_
@@ -193,13 +194,7 @@ Your goal is to create your first ROS node:
 
 1. Open a terminal to run your node.
 
-   * In a previous exercise, we added a line to our _.bashrc_ to automatically source `install/setup.bash` in new terminal windows
-   * This will automatically export the results of the build into your new terminal session.
-   * If you're reusing an existing terminal, you'll need to manually source the setup files (since we added a new node):
-
-     ```
-     source ~/ros2_ws/install/setup.bash
-     ```
+   * Remember to run `source ~/ros2_ws/install/setup.bash` in this new terminal
 
 1. Run your node.
 
