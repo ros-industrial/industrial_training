@@ -75,6 +75,7 @@ of ROS1 and ROS2 material. Some of the exercises refer to the outputs of the ROS
 sessions 1 & 2. Please see the :doc:`legacy material <_source/legacy>` page if you need to refer to
 them.
 
+- :doc:`3.0a - Intro to ROS1 <_source/session3/ros2/0a-Intro-to-ROS1>`
 - :doc:`3.0 - Intro to URDF <_source/session3/ros2/0-Intro-to-URDF>`
 - :doc:`3.1 - Workcell XACRO <_source/session3/ros2/1-Workcell-XACRO>`
 - :doc:`3.2 - Transforms using TF <_source/session3/ros2/2-Coordinate-Transforms-using-TF>`
@@ -160,9 +161,10 @@ Session 7 - ROS2 Topics
 
 .. toctree::
     :hidden:
-    :caption: ROS-Industrial Basics
+    :caption: ROS-Industrial Basics (ROS2)
     :maxdepth: 1
 
+    3.0a - Intro to ROS1 <_source/session3/ros2/0a-Intro-to-ROS1>
     3.0 - Intro to URDF <_source/session3/ros2/0-Intro-to-URDF>
     3.1 - Workcell XACRO <_source/session3/ros2/1-Workcell-XACRO>
     3.2 - Transforms using TF <_source/session3/ros2/2-Coordinate-Transforms-using-TF>
