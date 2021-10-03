@@ -13,7 +13,7 @@ In a terminal enter:
 
   roslaunch collision_avoidance_pick_and_place ur5_setup.launch
 
-Rviz will display all the workcell components including the robot in its default position; at this point your system is ready. However, no motion will take place until we run the pick and place node.
+Rviz will display all the workcell components including the robot in its default position; at this stage your system is ready. However, no motion will take place until we run the pick and place node.
 
 
 Setup for real sensor and simulated robot

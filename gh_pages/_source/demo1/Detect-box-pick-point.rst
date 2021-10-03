@@ -67,7 +67,7 @@ Build Code and Run
     roslaunch collision_avoidance_pick_and_place ur5_pick_and_place.launch
 
 * A blue box and voxel grid obstacles will be displayed in rviz. In the
-  terminal you should see a message like the following:
+  terminal you should see something like this:
 
   .. code-block:: text
 

@@ -1,5 +1,5 @@
 # Application Structure
->In this exercise, we'll take a look at all the packages and files that will be used during the completion of these exercises.
+>In this exercise, we will take a look at all the packages and files that will be used during the completion of the next exercices.
 
 ## Acquire and initialize the Workspace
 
@@ -44,10 +44,10 @@ cd ~/descartes_ws/src
 ls -la
 ```
 
- * `plan_and_run` :           Contains the source code for the `plan_and_run` application.  You'll be completing the exercises by editing source files in this package
- * `ur5_demo_moveit_config` : Contains support files for planning and execution robot motions with Moveit.  This package was generated with the Moveit Setup Assistant
- * `ur5_demo_support` :       Provides the robot definition as a URDF file.  This URDF is loaded at run time by our `plan_and_run` application.
- * `ur5_demo_descartes` :     Provides a custom Descartes Robot Model for the UR5 arm.  It uses a Inverse-Kinematics closed form solution; which is significantly faster than the numerical approach used by the **MoveitStateAdapter**.
+ * `plan_and_run` :           Contains the source code for the `plan_and_run` application.  You will be completing the exercises by editing source files in this package. 
+ * `ur5_demo_moveit_config` : Contains support files for planning and execution robot motions with Moveit. This package was generated with the Moveit Setup Assistant. 
+ * `ur5_demo_support` :       Provides the robot definition as a URDF file.  This URDF is loaded at runtime by our `plan_and_run` application.
+ * `ur5_demo_descartes` :     Provides a custom Descartes Robot Model for the UR5 arm.  It uses an Inverse-Kinematics closed form solution, which is significantly faster than the numerical approach used by the **MoveitStateAdapter**.
 
 ## The `plan_and_run` package
 
@@ -59,7 +59,7 @@ ls -la
  * `src` :     Application source files. 
   * `src/demo_application.cpp` : A class source file that contains the application implementation code.
   * `src/plan_and_run.cpp`     : The application main access point. It invokes all the tasks in the application and wraps them inside the "`main`" routine.
-  * `src/tasks`                : A directory that contains all of the source files that you'll be editing or completing as you make progress through the exercises.
+  * `src/tasks`                : A directory that contains every source file that you will be editing or completing as you progress through the exercises.
  * `include` : Header files
   * `include/plan_and_run/demo_application.h` : Defines the application skeleton and provides a number of global variables for passing data at various points in the exercises.
  * `launch`: Launch files needed to run the application
@@ -69,7 +69,7 @@ ls -la
 
 ## Main Application Source File
 
- In the "`plan_and_run/src/plan_and_run_node.cpp`" you'll find the following code:
+ In the "`plan_and_run/src/plan_and_run_node.cpp`" you will find the following code:
 
 ``` c++
 int main(int argc,char** argv)
@@ -112,12 +112,12 @@ int main(int argc,char** argv)
 }
 ```
 
-  In short, this program will run through each exercise by calling the corresponding function from the `application` object.  For instance, in order to initialize Descartes the program calls `application.initDescartes()`.  Thus each exercise consists of editing the source file where that exercise is implemented, so for `application.initDescartes()` you'll be editing the `plan_and_run/src/tasks/init_descartes.src` source file.
+  In short, this program will run through each exercise by calling the corresponding function from the `application` object.  For instance, in order to initialize Descartes the program calls `application.initDescartes()`.  Thus each exercise consists in editing the source file where that exercise is implemented, so for `application.initDescartes()` you will be editing the `plan_and_run/src/tasks/init_descartes.src` source file.
 
 
 ## The DemoApplication Class
 
-  In the header file "`plan_and_run/include/plan_and_run/demo_application.h`" you'll find the definition for the application's main class along with several support constructs. Some of the important components to take notice of are as follows:
+  In the header file "`plan_and_run/include/plan_and_run/demo_application.h`" you will find the definition for the main class of the application along with several support constructs. Some of the important components to take notice of are as follows:
 
   * Program Variables: Contain hard coded values that are used at various points in the application.
 
@@ -141,7 +141,7 @@ typedef std::vector<descartes_core::TrajectoryPtPtr> DescartesTrajectory;
 ```
 
 
- * **DemoConfiguration Data Structure**:  Provides variables whose values are initialize at run-time from corresponding ros parameters.
+ * **DemoConfiguration Data Structure**:  Provides variables which values are initialized at run-time from corresponding ros parameters.
 
 ``` c++
 struct DemoConfiguration
@@ -156,7 +156,7 @@ struct DemoConfiguration
   /* Trajectory Generation Members:
    *  Used to control the attributes (points, shape, size, etc) of the robot trajectory.
    *  */
-  double time_delay;              /* Time step between consecutive points in the robot path */
+  double time_delay;              /* Timestep between consecutive points in the robot path */
   double foci_distance;           /* Controls the size of the curve */
   double radius;                  /* Controls the radius of the sphere on which the curve is projected */
   int num_points;                 /* Number of points per curve */
@@ -245,7 +245,7 @@ protected:
 ```
 
 ## Application Launch File
- This file starts our application as a ROS node and loads up the necessary parameters into the ROS parameter server. Observe how this is done by opening the "`plan_and_run/launch/demo_run.launch`" file:
+ This file starts our application as a ROS node and loads up the necessary parameters into the ROS parameter server. Check how this is done by opening the "`plan_and_run/launch/demo_run.launch`" file:
 
 ``` xml
 <launch>
@@ -266,11 +266,11 @@ protected:
 </launch>
 ```
 
- * Some of the important parameters are explained as follows:
-  * group_name: A namespace that points to the list of links in the robot that are included in the arm's kinematic chain (base to end-of-tooling links).  This list is defined in the `ur5_demo_moveit_config` package.
+ * Some of the important parameters are explained below:
+  * group_name: A namespace that points to the list of links in the robot that are included in the kinematic chain of the arm (base to end-of-tooling links).  This list is defined in the `ur5_demo_moveit_config` package.
   * tip_link: Name of the last link in the kinematic chain, usually the tool link.
   * base_link: Name for the base link of the robot.
   * world_frame: The absolute coordinate frame of reference for all the objects defined in the planning environment.
- * The parameters under the "`trajectory`" namespace are used to generate the trajectory that is fed into the Descartes planner.
-  * trajectory/seed_pose: This is of particular importance because it is used to indicate preferred start and end joint configurations of the robot when planning the path.  If a ''seed_pose'' wasn't specified then planning would take longer since multiple start and end joint configurations would have to be taken into account, leading to multiple path solutions that result from combining several start and end poses. 
+ * The parameters under the "`trajectory`" namespace are used to generate the trajectory that is fed to the Descartes planner.
+  * trajectory/seed_pose: This is of particular importance because it is used to indicate the preferred start and end joint configurations of the robot when planning the path.  If a ''seed_pose'' were not specified then planning would take longer since multiple start and end joint configurations would have to be taken into account, leading to multiple path solutions that result from combining several start and end poses. 
  

@@ -1,11 +1,11 @@
 Inspect the ``pick_and_place_exercise`` Package
 ===============================================
 
-  In this exercise, we will get familiar with all the files that you'll be
-  interacting with throughout these exercises.
+  In this exercise, we will get familiar with all the files that you will be
+  interacting with throughout the next exercises.
 
 
-Acquire and initialize the Workspace
+Acquire and initialize Workspace
 ------------------------------------
 
 .. code-block:: shell
@@ -21,7 +21,7 @@ Acquire and initialize the Workspace
 Download debian dependencies
 ----------------------------
 
-.. note:: Make sure you have installed and configured the `rosdep tool <http://wiki.ros.org/rosdep>`_.
+.. note:: Make sure you installed and configured the `rosdep tool <http://wiki.ros.org/rosdep>`_.
 
 Then, run the following command from the :file:`src` directory of your workspace:
 

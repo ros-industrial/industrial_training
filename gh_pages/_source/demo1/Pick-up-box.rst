@@ -4,7 +4,7 @@ Pick Up Box
   In this exercise, we will move the robot through the pick motion while
   avoiding obstacles in the environment. This will be accomplished by
   planning for each pose and closing or opening the vacuum gripper when
-  apropriate. Also, we will demonstrate how to create a motion plan that
+  appropriate. Also, we will demonstrate how to create a motion plan that
   MoveIt! can understand and solve.
 
 
@@ -68,8 +68,8 @@ Build Code and Run
     roslaunch collision_avoidance_pick_and_place ur5_pick_and_place.launch
 
 * The robot should go through the pick moves (approach, pick and retreat) in
-  addition to the moves from the previous exercises. In the terminal you will
-  see something like:
+  addition to the moves from the previous exercises. In the terminal you should
+  see something like this:
 
   .. code-block:: text
 

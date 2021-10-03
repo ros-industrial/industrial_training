@@ -1,5 +1,5 @@
 # Package Setup
-In this exercise, we'll build our package dependencies and configure the package for the Qt Creator IDE. 
+In this exercise, we will build our package dependencies and configure the package for the Qt Creator IDE. 
 
 
 ## Import Workspace into QT
