@@ -1,0 +1,6 @@
+# moveit trajectory execution configuration
+moveit_manage_controllers: true
+trajectory_execution:
+  allowed_execution_duration_scaling: 1.2
+  allowed_goal_duration_margin: 0.5
+  allowed_start_tolerance: 0.01

@@ -1,0 +1,15 @@
+- git:
+    local-name: Universal_Robots_ROS_Driver
+    uri: https://github.com/UniversalRobots/Universal_Robots_ROS_Driver.git
+    version: 54e24c03f07e1a3c6c92569dcb24e51cc013b976
+- git:
+    local-name: universal_robot
+    uri: https://github.com/ros-industrial/universal_robot.git
+    version: melodic-devel-staging
+- git:
+    local-name: ur_msgs
+    uri: https://github.com/ros-industrial/ur_msgs.git
+    version: melodic-devel
+
+
+

@@ -1,0 +1,4 @@
+-t 1 -s 0.4 0.04 0.6 -p -0.9 -0.30 0.3 -f world_frame -o 0 -i object1
+-t 1 -s 0.4 0.04 0.6 -p -0.9 0.15 0.3 -f world_frame -o 0 -i object2
+-t 1 -s 0.4 0.5	 0.04 -p -0.9 -0.08 0.6 -f world_frame -o 0 -i object3
+-t 1 -s 0.04 0.5 0.6 -p -1.1 -0.10 0.3 -f world_frame -o 0 -i object4
