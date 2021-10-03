@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<launch>
+    <!-- ar tag detection node -->
+    <arg name="marker_size" default="15.4" />
+    <arg name="max_new_marker_error" default="0.08" />
+    <arg name="max_track_error" default="0.2" />
+    <arg name="cam_image_topic" default="/kinect/depth_registered/points" />
+    <arg name="cam_info_topic" default="/kinect/rgb/camera_info" />
+    <arg name="output_frame" default="world_frame" />
+    <arg name="node_output" default="log" />
+    <node name="ar_track_alvar" pkg="ar_track_alvar" type="individualMarkers" respawn="false" output="$(arg node_output)" args="$(arg marker_size) $(arg max_new_marker_error) $(arg max_track_error) $(arg cam_image_topic) $(arg cam_info_topic) $(arg output_frame)" />
+</launch>

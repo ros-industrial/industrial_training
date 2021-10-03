@@ -1,0 +1,50 @@
+<?xml version="1.0" ?><launch>
+  <!-- The planning and execution components of MoveIt! configured to run -->
+  <!-- using the ROS-Industrial interface. -->
+ 
+  <!-- the "sim" argument controls whether we connect to a Simulated or Real robot -->
+  <!--  - if sim=false, a robot_ip argument is required -->
+  <arg name="sim" default="true" />
+  <arg name="robot_ip" unless="$(arg sim)" />
+
+  <arg name="prefix" default="" />
+  <arg name="min_payload" default="0.0" />
+  <arg name="max_payload" default="5.0" />
+ 
+  <!-- load the robot_description parameter before launching ROS-I nodes -->
+  <include file="$(find ur5_collision_avoidance_moveit_config)/launch/planning_context.launch" >
+    <arg name="load_robot_description" value="true" />
+  </include>
+
+  <!-- run the robot simulator and action interface nodes -->
+  <group if="$(arg sim)">
+    <include file="$(find industrial_robot_simulator)/launch/robot_interface_simulator.launch" />
+    <rosparam param="initial_joint_state">[1.158, -0.953, 1.906, -1.912, -1.765, 0.0]</rosparam>
+
+    <!-- publish the robot state (tf transforms) -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+  </group>
+
+  <!-- run the "real robot" interface nodes -->
+  <!--   - this typically includes: robot_state, motion_interface, and joint_trajectory_action nodes -->
+  <!--   - replace these calls with appropriate robot-specific calls or launch files -->
+  <group unless="$(arg sim)">
+	  <remap from="/follow_joint_trajectory/status" to="/joint_trajectory_action/status" />
+    <remap from="/follow_joint_trajectory/feedback" to="/joint_trajectory_action/feedback" />
+    <remap from="/follow_joint_trajectory/result" to="/joint_trajectory_action/result" />
+    <remap from="/follow_joint_trajectory/goal" to="/joint_trajectory_action/goal" />
+    <remap from="/follow_joint_trajectory/cancel" to="/joint_trajectory_action/cancel" />
+
+    <include file="$(find ur_modern_driver)/launch/ur_common.launch">
+      <arg name="prefix" value="$(arg prefix)" />
+      <arg name="robot_ip" value="$(arg robot_ip)" />
+      <arg name="min_payload" value="$(arg min_payload)" />
+      <arg name="max_payload" value="$(arg max_payload)" />
+    </include>  
+
+    <param name="move_group/trajectory_execution/execution_duration_monitoring" value="false"/>
+  </group>
+
+
+  <rosparam command="load" file="$(find ur5_collision_avoidance_moveit_config)/config/joint_names.yaml"/>
+</launch>
