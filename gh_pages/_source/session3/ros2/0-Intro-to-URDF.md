@@ -88,7 +88,7 @@ Your goal is to describe a workcell that features:
 
    1. It helps to visualize your URDF as you add links, to verify things look as expected. Run the following commands in separate terminals:
 
-      1. `ros2 run robot_state_publisher robot_state_publisher urdf/workcell.urdf`
+      1. `ros2 run robot_state_publisher robot_state_publisher ~/ros2_ws/src/myworkcell_support/urdf/workcell.urdf`
 
       1. `rviz2`
 
