@@ -182,7 +182,8 @@ Your goal is to create your first ROS node:
        DESTINATION lib/${PROJECT_NAME})
    ```
    
-   * _ROS2 installs both executable programs and libraries into the `lib` directory_
+   * _ROS2 installs executables into a package-named subdir in the `lib` directory._
+   * _A different set of `install` rules are needed if your project builds libraries, which are installed in bot the root `lib` and `bin` directories._
 
 1. Build your program (node), by running `colcon build` in your build terminal window
 
