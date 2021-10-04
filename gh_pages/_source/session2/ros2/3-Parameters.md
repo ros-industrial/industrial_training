@@ -49,11 +49,9 @@ So far we haven't used the request field, `base_frame`, for anything. In this ex
 1. In the main function, after creating the node but before calling `start`, create a temporary string object, `std::string base_frame;`, and then use `get_parameter` to load the parameter `"base_frame"`.
 
    ``` c++
-   std::string base_frame;
-   app->get_parameter("base_frame", base_frame);
+   std::string base_frame = app->get_parameter("base_frame").as_string();
    ```
 
-   * Note we didn't do any checking that the parameter exists or has the right type. This because the `declare_parameter` function provides these guarantees.
    * The `declare_parameter` function actually returns the parameter value as well, so if you want to declare and get a parameter in the same place, you can do it with one line.
 
 1. Also prior to calling `start`, insert a call to sleep for a few seconds. Without this, the service will be called immediately when the node starts and if the nodes all start together, there is a good chance the _vision_node_ won't have received any data from the _fake_ar_publisher_ yet:
@@ -96,15 +94,15 @@ So far we haven't used the request field, `base_frame`, for anything. In this ex
 
    * Note that the `parameters` arguments provides the names and values to use as a _list of dictionaries_.
 
-6. Try it out by running the system.
+6. Try it out by re-building and running the system.
 
    ```
-   colcon build
-   ros2 launch myworkcell_support workcell.launch
+   ros2 launch myworkcell_support workcell.launch.py
    ```
 
     * Press _Ctrl+C_ to kill the running nodes
     * Edit the launch file to change the base_frame parameter value (e.g. to "test2")
     * Re-launch workcell.launch.py, and observe that the "request frame" has changed
+         - If you didn't build with the `--symlink-install` option, you will need to re-build after editing the launch file, to copy the updates into the "install" directory.
          - The response frame doesn't change, because we haven't updated vision_node (yet) to handle the request frame.  Vision_node always returns the same frame (for now).
     * Set the base_frame back to "world"

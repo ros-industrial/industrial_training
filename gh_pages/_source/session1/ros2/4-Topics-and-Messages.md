@@ -45,20 +45,9 @@ Your goal is to create your first ROS subscriber:
    <depend>fake_ar_publisher</depend>
    ```
 
-1. `cd` into your workspace
+### Inspect the Message Type
 
-   ```
-   cd ~/ros2_ws
-   ```
-
-1. Build your package and source the setup file to activate the changes in the current terminal.
-
-   ```
-   colcon build
-   source ~/ros2_ws/install/setup.bash
-   ```
-
-1. In a terminal, enter `ros2 interface list`.  You will notice that, included in the list, is `fake_ar_publisher/msg/ARMarker`.  If you want to see only the messages in a package, type `ros2 interface package <package_name>`
+1. In a terminal, enter `ros2 interface package fake_ar_publisher`.  You will see all new ROS message types defined in that package. Only a single new type is defined: `fake_ar_publisher/msg/ARMarker`.
 
 1. Type `ros2 interface show fake_ar_publisher/msg/ARMarker`.  The terminal will return the types and names of the fields in the message.
 
@@ -69,12 +58,24 @@ Your goal is to create your first ROS subscriber:
 1. In another terminal, enter `ros2 topic list`.  You should see `/ar_pose_marker` among the topics listed. Entering `ros2 topic type /ar_pose_marker` will return the type of the message.
 
 1. Enter `ros2 topic echo /ar_pose_marker`. The terminal will show the fields for each message as they come in, separated by a `---` line.  Press Ctrl+C to exit.
+  * It may look like the messages are static, but they are actually just continually publishing the same values.
+  
+1. Experiment with other `ros2 topic` commands to learn more about this topic:
+
+   ```
+   ros2 topic info /ar_pose_marker
+   ros2 topic info -v /ar_pose_marker
+   ros2 topic hz /ar_pose_marker
+   ros2 topic bw /ar_pose_marker
+   ```
 
 1. In a new terminal, enter `ros2 run rqt_plot rqt_plot`.
 
    1. Once the window opens, type `/ar_pose_marker/pose/pose/position/x` in the "Topic:" field and click the "+" button. You should see the X value be plotted. If you can't see the X value, try changing the axes on your graph.
 
    1. Type `/ar_pose_marker/pose/pose/position/y` in the topic field, and click on the add button.  You will now see both the x and y values being graphed.
+
+     * the plot doesn't look very interesting, since the simulated values are constant.  Use the plot tools to zoom out until you see both X & Y values plotted.  Can you use the plot data to estimate the XYZ position published by fake_ar_publisher?
 
    1. Close the window
 
@@ -92,7 +93,7 @@ We will now expand on the simple hello-world node created in _vision_node.cpp_ t
    #include <fake_ar_publisher/msg/ar_marker.hpp>
    ```
 
-1. Add code above the `main` function that creates a node that subscribes a topic of a type published by the _fake_ar_publisher_. 
+1. Add code above the `main` function that creates a new Node Class that subscribes to a topic of a type published by the _fake_ar_publisher_. The recommended ROS2 architecture is to create a class object for each Node.  This allows you to easily restructure your code later to assign either one or multiple nodes to a single process.
 
    ``` c++
    class Localizer : public rclcpp::Node
@@ -122,11 +123,13 @@ We will now expand on the simple hello-world node created in _vision_node.cpp_ t
 
    The important lines to understand here are:
 
-   1. `class Localizer : public rclcpp::Node`: This indicates any created `Localizer` object will be an independent ROS node. Creating a class that inherits from `rclcpp::Node` is the preferred style because it helps encapsulate all ROS information in a single location.
-   1. `ar_sub_ = this->create_subscription<fake_ar_publisher::msg::ARMarker>(`: A subscription with a particular associated type is created and stored in a member variable of the class.
+   1. `class Localizer : public rclcpp::Node`: This indicates any created `Localizer` object will be an independent ROS node.
+   1. `ar_sub_ = this->create_subscription<...>(...)`: A subscriber object is created and stored in a member variable of the class.
+   1. `<fake_ar_publisher::msg::ARMarker>` : The expected message type of the subscribed topic.
    1. `"ar_pose_marker",`: The topic name the subscription is associated with.
    1. `rclcpp::QoS(1),`: ROS2 has many options for controlling the _quality of service_ for communication between nodes, specified using the `QoS` type. Most options have defaults which are typically fine for normal use but a value is required to indicate the number of received messages to buffer, which is set as `1` here.
-   1. `void visionCallback(fake_ar_publisher::msg::ARMarker::SharedPtr msg)`: This is the function (callback) that will run anytime a new message is received on the topic. The callback for a subscription must have a signature of this form, with a single argument that contains the received message. Note that the subscription is not passed a function pointer to this function directly but is instead given a callable object created using `std::bind`. This is done because as a member function of a class, `visionCallback` must be bound to a `Localizer` object in order to be callable, i.e., the `this` pointer. (Don't worry if the call to `std::bind` seems cryptic; the large majority of your subscriptions will be of this form and you can simply copy-paste the syntax).
+   1. `std::bind(&Localizer::visionCallback, this, std::placeholders::_1)`: This tells the subscriber object what function to call when new topic messages are received.  Note that the subscriber object is not passed a function pointer to the callback method directly, but instead uses `std::bind`. This is done because as a member function of a class, `visionCallback` must be bound to an instance of a `Localizer` object (i.e., the `this` pointer). Don't worry if the call to `std::bind` seems cryptic; the large majority of your subscriptions will be of this form and you can simply copy-paste the syntax.
+   1. `void visionCallback(fake_ar_publisher::msg::ARMarker::SharedPtr msg)`: This is the callback function that will run anytime a new message is received on the topic. The callback for a subscription must have a signature of this form, with a single argument that contains the received message.  This particular callback function saves a copy of the last-received message and prints its value to the console.  This will help us for early debugging, but will later be replaced.
 
 1. Add the code that will connect the callback to the topic (within `main()`)
 

@@ -47,6 +47,8 @@ Linux Fundamentals
 Session 1 - ROS Concepts and Fundamentals (ROS2)
 ------------------------------------------------
 
+:download:`Slides <_downloads/slides/ROS-I Basic Developers Training (ROS2) - Session 1.pdf>`
+
 - :doc:`1.0 - ROS Setup <_source/session1/ros2/0-ROS-Setup>`
 - :doc:`1.1 - Create a Workspace <_source/session1/ros2/1-Create-ROS-Workspace>`
 - :doc:`1.2 - Installing Packages <_source/session1/ros2/2-Installing-Existing-Packages>`
@@ -57,6 +59,8 @@ For equivalent ROS1 content, see the :doc:`Legacy Material <_source/legacy>` pag
 
 Session 2 - Basic ROS Applications (ROS2)
 -----------------------------------------
+
+:download:`Slides <_downloads/slides/ROS-I Basic Developers Training (ROS2) - Session 2.pdf>`
 
 - :doc:`2.0 - Services <_source/session2/ros2/0-Services>`
 - :doc:`2.1 - Actions <_source/session2/ros2/1-Actions>`

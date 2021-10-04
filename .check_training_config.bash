@@ -87,7 +87,7 @@ function check_debs() {
   check_deb ros-$ROS_RELEASE-desktop
   check_deb ros-$ROS_RELEASE-perception
   check_deb ros-$ROS_RELEASE-moveit
-  disable_deb ros-$ROS_RELEASE-industrial-core
+  check_deb ros-$ROS_RELEASE-industrial-core
   disable_deb ros-$ROS_RELEASE-openni-launch
   disable_deb ros-$ROS_RELEASE-openni-camera
   disable_deb ros-$ROS_RELEASE-openni2-launch
@@ -97,6 +97,7 @@ function check_debs() {
   check_deb python3-colcon-core
   check_deb python3-colcon-ros
   check_deb ros-$ROS2_RELEASE-desktop
+  check_deb ros-$ROS2_RELEASE-moveit
 }
 
 function check_bashrc() {

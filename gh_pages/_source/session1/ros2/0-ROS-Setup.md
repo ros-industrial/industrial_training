@@ -15,12 +15,12 @@ In order to start programming in ROS, you should know how to install ROS on a ne
 We believe we have a good installation of ROS but let's test it to make sure.
 
 ## Scan-N-Plan Application: Guidance
-### Setup ~/.bashrc
+### Check Environment
 1. If you are ever having problems finding or using your ROS packages make sure that you have your environment properly setup. A good way to check is to ensure that environment variables that ROS sets are present:
 
    ```
-   printenv | grep ROS
-   printenv | grep AMENT
+   env | grep ROS
+   env | grep AMENT
    ```
 
 1. If they are not then you might need to 'source' some setup.*sh files.
@@ -29,10 +29,19 @@ We believe we have a good installation of ROS but let's test it to make sure.
    source /opt/ros/foxy/setup.bash
    ```
 
-1. In a "bare" ROS install, you will need to run this command on every new shell you open to have access to the ROS commands.  One of the setup steps in a _typical_ ROS install is to add that command to the end of your `~/.bashrc` file, which is run automatically in every new terminal window.  Check that your `.bashrc` file has already been configured to source the ROS-foxy `setup.bash` script:
+1. Now repeat the check from above and verify that the environment variables are now present.
+
+1. This process allows you to install several ROS distributions (even ROS1 and ROS2) side-by-side on the same computer and switch between them by sourcing the distribution-specific `setup.bash` file.  Your training PC also has a ROS1 "noetic" distribution installed.  Try activating that distribution in the same terminal window you used above and observe how the environment variables change.
 
    ```
-   tail ~/.bashrc
+   source /opt/ros/noetic/setup.bash
+   env | grep ROS
    ```
 
-This process allows you to install several ROS distributions (even ROS1 and ROS2) on the same computer and switch between them by sourcing the distribution-specific `setup.bash` file.
+1. If you switch back to the "foxy" ROS2 distribution, you'll notice that your environment is stil polluted with some variables from the ROS1 "noetic" distribution.  To prevent confusion, it can be helpful to always start with a fresh terminal window rather than switching between distributions in the same terminal window.
+
+In a "bare" ROS install, you will need to run the "source" command on **every** new shell you open to have access to the ROS commands.  If your project only uses a single distribution, it can be helpful to configure our `~/.bashrc` file to automatically source this setup file for each new terminal window.  See [here](https://docs.ros.org/en/foxy/Tutorials/Configuring-ROS2-Environment.html#add-sourcing-to-your-shell-startup-script) for details.  Since this class uses content in both ROS1 and ROS2, we have not configured this auto-sourcing behavior for your training PC.
+
+1. Open a new terminal window and source the ROS2 "foxy" distribution.  Experiment with terminal windows, sourcing, and checking your environment until you are comfortable with this concept.
+
+**Remember to source the appropriate `setup` script in every new terminal window you open.  Forgetting this step is a common error among new ROS users.**

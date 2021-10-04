@@ -41,7 +41,7 @@ public:
       return;
     }
 
-    RCLCPP_INFO(this->get_logger(), "Part Localized:  x: %f, y: %f, z: %f",
+    RCLCPP_INFO(this->get_logger(), "Part Localized: x: %f, y: %f, z: %f",
         response->pose.position.x,
         response->pose.position.y,
         response->pose.position.z);
@@ -60,8 +60,7 @@ int main(int argc, char **argv)
   // Create the ScanNPlan node
   auto app = std::make_shared<ScanNPlan>();
 
-  std::string base_frame;
-  app->get_parameter("base_frame", base_frame);
+  std::string base_frame = app->get_parameter("base_frame").as_string();
 
   //Wait for the vision node to receive data
   rclcpp::sleep_for(std::chrono::seconds(2));

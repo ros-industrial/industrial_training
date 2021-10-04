@@ -1,3 +1,6 @@
+/**
+**  Simple ROS Node
+**/
 #include <rclcpp/rclcpp.hpp>
 #include <fake_ar_publisher/msg/ar_marker.hpp>
 

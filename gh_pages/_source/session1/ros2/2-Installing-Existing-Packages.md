@@ -33,6 +33,7 @@ Your goal is to have access to both of these packages' resources within your pac
 1. Open a terminal window. Use the `ros2 pkg` command to search for a package.
 
    ```
+   ros2 pkg --help
    ros2 pkg prefix nav_2d_msgs
    ```
 
@@ -47,11 +48,13 @@ Your goal is to have access to both of these packages' resources within your pac
    apt install ros-foxy-nav-2d-msgs
    ```
 
-   * Note that dashes are used for the APT package name even though the ROS name uses underscores.
+   * Note the naming convention for the APT package name:
+     * ROS APT packages follow this naming pattern: `ros-<distro>-<package>`.
+     * underscores ("_") in the package name are replaced with dashes ("-").
    * The program will say it cannot install the package, and suggests that we must run the program as root.
    * Try pressing the _TAB_ key while typing the package name.
      * The system will try to automatically complete the package name, if possible.
-     * Frequent use of the TAB key will help speed up entry of many typed commands.
+     * Frequent use of the TAB key will help speed up entry of many typed commands and provide early detection of typing errors or environment-setup issues.
 
 
 1. Install using _sudo_.
@@ -70,6 +73,7 @@ Your goal is to have access to both of these packages' resources within your pac
    ros2 pkg prefix nav_2d_msgs
    ```
 
+   * Linux Tip: use the up/down arrow keys to scroll through previous command history, to avoid re-typing common commands.
    * This time, you will see a directory output of _/opt/ros/foxy_.
 
 
@@ -87,9 +91,9 @@ Your goal is to have access to both of these packages' resources within your pac
 1. Identify the source repository for the desired package:
    1. Go to [github](http://github.com/search).
    1. Search for fake_ar_publisher.
-   1. Click on this repository, and look to the right for the _Clone or Download_, then copy to clipboard.
+   1. Click on this repository, and look to the right for the _Code_ link, then copy the URL listed under _Clone_ to the clipboard.
 
-1. Clone the _fake_ar_publisher_ [repository](https://github.com/ros-industrial/fake_ar_publisher.git) into the workspace's _src_ directory.
+1. Open a new terminal and clone the _fake_ar_publisher_ [repository](https://github.com/ros-industrial/fake_ar_publisher.git) into the workspace's _src_ directory.
 
    ```
    cd ~/ros2_ws/src
@@ -100,24 +104,33 @@ Your goal is to have access to both of these packages' resources within your pac
    * _Git commands are outside of the scope of this class, but there are good tutorials available [here](https://help.github.com/articles/git-and-github-learning-resources/)_
    * _Specifying the correct branch name with the `-b` is important since repositories often contain multiple incompatible versions on different branches_.
 
-1. Build the new package using `colcon build` inside _~/ros2_ws/_
-
-1. Once the build completes, the contents of the workspace have changed and the setup.bash file must be re-sourced in order to see the new package.
-
-   * In the previous exercise, we added a line to our `~/.bashrc` file to automatically re-source the setup files in each new terminal.
-   * This is sufficient for most development activities, but you may sometimes need to re-execute the `source` command in your current terminal (e.g. when adding new packages):
-
-     ```
-     source ~/ros2_ws/install/setup.bash
-     ```
-
-1. Once the build completes, explore the _build_ and _install_ directories to see what files were created.
-
-1. Use _ros2 pkg_ to verify the new packages are visible to ROS.
+1. Use `ros2 pkg prefix` to see if this package is visible from ROS:
 
    ```
    ros2 pkg prefix fake_ar_publisher
    ```
- 
-   * This is a helpful command to troubleshoot problems with a ROS workspace.
-   * If ROS can't find your package, try re-building the workspace and then re-sourcing the workspace's `setup.bash` file.
+   
+   * You may see an error ("ros2: command not found").  Remember that none of the ROS commands are visible until you've sourced the base ROS distro `setup.bash` file (either directly, or chained through your development workspace's `setup.bash`).
+   
+   * Even after you've sourced the appropriate `setup.bash` file, the package is still not visible.  Packages you download as source must first be built before they're visible to ROS.
+
+1. Switch back to your "build terminal" and build the new package using `colcon build`
+
+   * remember this command must be run from your workspace root (_~/ros2_ws/_)
+
+1. Once the build completes, explore the _build_ and _install_ directories to see what files were created.
+
+1. Switch back to your 2nd terminal and again use `ros2 pkg prefix` to see if ROS can find the package.
+
+   * This is a helpful command to troubleshoot problems with a ROS workspace.  If this command can't find your package, other nodes can't either.
+   * The package is still not visible to ROS.  Even if you've previously sourced the `setup.bash` file in this terminal, you must re-source the setup file after adding new packages to the terminal.  You don't need to re-source the file after small changes (like recompiling code edits).
+
+1. Re-run the source command to make the new package visible to ROS, then verify that ROS can see it using the `ros2 pkg prefix` command:
+
+   ```
+   source ~/ros2_ws/install/setup.bash
+   ros2 pkg prefix fake_ar_publisher
+   ```
+   
+   * remember to use TAB while typing.  This can be an even quicker test than using the `ros2 pkg prefix` command.
+
