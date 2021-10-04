@@ -3,16 +3,15 @@
 
 /* DETECTING BOX PICK POSE
   Goal:
-    - Find the box's position in the world frame using the transform listener.
-        * this transform is published by the kinect AR-tag perception node
-    - Save the pose into 'box_pose'.
+    - Get the box location in the world frame by calling the target recognition service.
+    - Return the box pose.
 */
 geometry_msgs::msg::Pose pick_and_place_application::PickAndPlaceApp::detectBox()
 {
   using RequestType = pick_and_place_msgs::srv::GetTargetPose::Request;
   using ResponseType = pick_and_place_msgs::srv::GetTargetPose::Response;
 
-  // RCLCPP_ERROR_STREAM(node,"detect_box_pick is not implemented yet.  Aborting."); exit(1);
+  // RCLCPP_ERROR_STREAM(node->get_logger(),"detect_box_pick is not implemented yet.  Aborting."); exit(1);
 
   // creating shape for recognition
   shape_msgs::msg::SolidPrimitive shape;
@@ -30,34 +29,38 @@ geometry_msgs::msg::Pose pick_and_place_application::PickAndPlaceApp::detectBox(
 
   /* Fill Code:
    * Goal:
-   * - Call target recognition service and save results.
+   * - Call target recognition service and save the result.
    * Hint:
-   * - Use the service response member to access the
-   * 	detected pose "srv.response.target_pose".
-   * - Assign the target_pose in the response to the box_pose variable in
-   * 	order to save the results.
+   * - Observe how to check that the service response is ready.
+   * - See to access the target_pose in the response in order to copy it into box_pose variable.
    */
   geometry_msgs::msg::Pose box_pose;
-  std::shared_future<ResponseType::SharedPtr> response_fut = target_recognition_client->async_send_request(req);
+
+  // send request asynchronously
+  std::shared_future<ResponseType::SharedPtr> response_fut;
+  response_fut = target_recognition_client->async_send_request(req);
+
+  // now wait for result using the "wait_for" method of the future object
   std::future_status st = response_fut.wait_for(rclcpp::Duration::from_seconds(20.0).to_chrono<std::chrono::seconds>());
   if (st == std::future_status ::ready)
   {
     ResponseType::SharedPtr response = response_fut.get();
     if (response->succeeded)
     {
+      // save target pose into the box pose variable
       box_pose = response->target_pose;
       RCLCPP_INFO_STREAM(node->get_logger(), "target recognition succeeded");
     }
     else
     {
-      RCLCPP_ERROR_STREAM(node->get_logger(), "target recognition failed");
-      exit(0);
+      RCLCPP_ERROR_STREAM(node->get_logger(), "Target recognition failed");
+      throw std::runtime_error("Service call failure");
     }
   }
   else
   {
     RCLCPP_ERROR_STREAM(node->get_logger(), "Service call for target recognition failed with response timed out");
-    exit(0);
+    throw std::runtime_error("Service call failure");
   }
 
   // updating box marker for visualization in rviz

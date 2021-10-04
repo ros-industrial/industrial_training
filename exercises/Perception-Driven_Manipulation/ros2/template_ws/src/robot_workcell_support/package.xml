@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>robot_workcell_support</name>
+  <version>0.0.0</version>
+  <description>
+     The robot_workcell_support package
+  </description>
+
+  <maintainer email="jnicho@swri.org">jnicho</maintainer> -->
+  <author email="jnicho@swri.org">jnicho</author>
+  <license>BSD</license>
+  <url type="website">http://ros.org/wiki/robot_workcell_support</url>
+
+  <!-- The *_depend tags are used to specify dependencies -->
+  <!-- Dependencies can be catkin packages or system dependencies -->
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <exec_depend>urdf</exec_depend>
+  <exec_depend>xacro</exec_depend>
+  <exec_depend>moveit_msgs</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+
+</package>
