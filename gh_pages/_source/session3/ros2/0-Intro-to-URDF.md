@@ -28,7 +28,7 @@ Your goal is to describe a workcell that features:
 1. A frame (geometry optional) called `camera_frame` that is oriented such that its Z axis is flipped relative to the Z axis of `world`
 
 ## Scan-N-Plan Application: Guidance
-*Note: If you have not completed the previous tutorials, copy myworkcell_core and myworkcell_support packages from ~/industrial-training/exercises/2.3/src and git clone https://github.com/ros-industrial/fake_ar_publisher.git into your current workspace src folder. 
+> _Note: If you have not completed the previous tutorials, copy myworkcell_core and myworkcell_support packages from ~/industrial-training/exercises/2.3/src and git clone https://github.com/ros-industrial/fake_ar_publisher.git into your current workspace src folder._
 
 1. It’s customary to put describing files that aren’t code into their own “support” package. URDFs typically go into their own subfolder ''urdf/''. See the [abb_irb2400_support](https://github.com/ros-industrial/abb/tree/kinetic-devel/abb_irb2400_support) package. Add a `urdf` sub-folder to your application support package.
 1. Create a new `workcell.urdf` file inside the `myworkcell_support/urdf/` folder and insert the following XML skeleton:
@@ -86,10 +86,20 @@ Your goal is to describe a workcell that features:
       </joint>
       ```
 
+ 1. Add the urdf folder to the installation rule in your `CMakeLists.txt` so it gets installed where the launch file expects it to be.
+
+    ``` cmake
+    install(DIRECTORY launch urdf DESTINATION share/${PROJECT_NAME}/)
+    ```
+
    1. It helps to visualize your URDF as you add links, to verify things look as expected. Run the following commands in separate terminals:
 
-      1. `ros2 run robot_state_publisher robot_state_publisher ~/ros2_ws/src/myworkcell_support/urdf/workcell.urdf`
+      ```
+      ros2 run robot_state_publisher robot_state_publisher --ros-args -p robot_description:="`cat ~/ros2_ws/src/myworkcell_support/urdf/workcell.urdf`"
+      <in a separate terminal>
+      rviz2
+      ```
 
-      1. `rviz2`
-
-      Inside RViz add a _RobotModel_ display and a _TF_ display using the button in the lower left. Expand the settings for the added _RobotModel_ display and select `/robot_description` for the field labeled _Description Topic_. Also make sure in the _Global Options_ that _Fixed Frame_ is set to `world`.
+      _Note the syntax used to specify a starting parameter value to the node (`--ros-args -p param_name:=param_value`).  Also the use of `cat file.urdf` to pass the file contents as a string._
+      
+   1. The default RViz setup only shows a minimal amount of info.  You can add various Display elements to customize the display to show exactly what is needed.  Inside RViz add a _RobotModel_ display and a _TF_ display using the button in the lower left. Expand the settings for the added _RobotModel_ display and select `/robot_description` for the field labeled _Description Topic_. Also make sure in the _Global Options_ that _Fixed Frame_ is set to `world`.  Consider saving this configuration (File -> Save Config) to the default RViz config file, so you don't need to repeat these setup steps again later.

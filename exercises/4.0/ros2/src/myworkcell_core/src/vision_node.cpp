@@ -1,3 +1,6 @@
+/**
+**  Simple ROS Node
+**/
 #include <rclcpp/rclcpp.hpp>
 #include <tf2_ros/buffer.h>
 #include <tf2_ros/transform_listener.h>
@@ -34,7 +37,7 @@ public:
   }
 
   void localizePart(myworkcell_core::srv::LocalizePart::Request::SharedPtr req,
-                  myworkcell_core::srv::LocalizePart::Response::SharedPtr res)
+                    myworkcell_core::srv::LocalizePart::Response::SharedPtr res)
   {
     // Read last message
     fake_ar_publisher::msg::ARMarker::SharedPtr p = last_msg_;

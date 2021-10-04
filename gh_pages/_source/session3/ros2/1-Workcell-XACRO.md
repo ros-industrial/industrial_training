@@ -122,15 +122,9 @@ Specifically, you will need to:
         ])
     ```
 
- 1. Add the urdf folder to the installation rule in your `CMakeLists.txt` so it gets installed where the launch file expects it to be.
-
-    ``` cmake
-    install(DIRECTORY launch urdf DESTINATION share/${PROJECT_NAME}/)
-    ```
-
  1. Rebuild your workspace and check the updated URDF in RViz, using the launch file you just created:
 
     `ros2 launch myworkcell_support urdf.launch.py`
 
-    * Set the 'Fixed Frame' to 'world' and add the RobotModel and TF displays to the tree view on the left, to show the robot and some transforms.
+    * If you didn't save your RViz config last time, you may need to repeat the configuration steps: set the 'Fixed Frame' to 'world' and add the RobotModel and TF displays to the tree view on the left.
     * Try moving the joint sliders in the separate GUI window that appears to see the UR5 robot move.

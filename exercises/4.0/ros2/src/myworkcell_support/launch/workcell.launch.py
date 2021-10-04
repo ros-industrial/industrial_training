@@ -27,24 +27,15 @@ def load_yaml(file_path):
     except EnvironmentError: # parent of IOError, OSError *and* WindowsError where available
         return None
 
-def run_xacro(xacro_file):
-    """Run xacro and output a file in the same directory with the same name, w/o a .xacro suffix"""
-    urdf_file, ext = os.path.splitext(xacro_file)
-    if ext != '.xacro':
-        raise RuntimeError(f'Input file to xacro must have a .xacro extension, got {xacro_file}')
-    os.system(f'xacro {xacro_file} -o {urdf_file}')
-    return urdf_file
-
 def generate_launch_description():
     xacro_file = get_package_file('myworkcell_support', 'urdf/workcell.urdf.xacro')
-    urdf_file = run_xacro(xacro_file)
     srdf_file = get_package_file('myworkcell_moveit_config', 'config/myworkcell.srdf')
     kinematics_file = get_package_file('myworkcell_moveit_config', 'config/kinematics.yaml')
     ompl_config_file = get_package_file('myworkcell_moveit_config', 'config/ompl_planning.yaml')
     joint_limits_file = get_package_file('myworkcell_moveit_config','config/joint_limits.yaml')
     moveit_controllers_file = get_package_file('myworkcell_moveit_config', 'config/controllers.yaml')
 
-    robot_description = load_file(urdf_file)
+    robot_description = xacro.process_file(xacro_file).toprettyxml(indent='  ')
     robot_description_semantic = load_file(srdf_file)
     kinematics_config = load_yaml(kinematics_file)
     ompl_config = load_yaml(ompl_config_file)

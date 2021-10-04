@@ -19,7 +19,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(myworkcell_core REQUIRED)
 
-install(DIRECTORY launch urdf DESTINATION share/${PROJECT_NAME})
+install(DIRECTORY launch urdf DESTINATION share/${PROJECT_NAME}/)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

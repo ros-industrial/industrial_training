@@ -1,16 +1,16 @@
 ﻿# Build a MoveIt! Package
 >In this exercise, we will create a MoveIt! package for an industrial robot. This package creates the configuration and launch files required to use a robot with the MoveIt! Motion-Control nodes. In general, the MoveIt! package does not contain any C++ code.
 
->IMPORTANT: This exercise requires running MoveIt in ROS1, as MoveIt2 does not have full feature parity yet. The final section of this exercise demonstrates the process of building a MoveIt2 package using the output created in ROS1. If you don't have a ROS1 version of a workspace, you may create one using the solutions provided in the `exercises/` folder of this repository.
+> **_IMPORTANT: This exercise requires a mix of ROS1 and ROS2 environments. Be careful what ROS environment is sourced in each terminal.  The "MoveIt Setup Assistant" is not yet available in ROS2, so we run the ROS1 version.  But it outputs a ROS1-compatible package, so we need to adapt the output for ROS2._**
 
 ## Motivation
-MoveIt! is a free-space motion planning framework for ROS. It’s an incredibly useful and easy-to-use tool for planning motions between two points in space without colliding with anything. Under the hood MoveIt is quite complicated, but unlike most ROS libraries, it has a really nice GUI Wizard to get you going.
+MoveIt! is a free-space motion planning framework for ROS. It’s an incredibly useful and easy-to-use tool for planning motions between two points in space without colliding with anything. Under the hood MoveIt is quite complicated, but (unlike most ROS libraries) it has a really nice GUI Wizard to get you started.
 
 ## Reference Example
 [Using MoveIt with ROS-I](http://wiki.ros.org/Industrial/Tutorials/Create_a_MoveIt_Pkg_for_an_Industrial_Robot)
 
 ## Further Information and Resources
-[MoveIt’s Standard Wizard Guide](http://docs.ros.org/kinetic/api/moveit_tutorials/html/doc/setup_assistant/setup_assistant_tutorial.html)
+[MoveIt Setup Assistant Tutorial](http://moveit2_tutorials.picknik.ai/doc/setup_assistant/setup_assistant_tutorial.html)
 
 ## Scan-N-Plan Application: Problem Statement
 In this exercise, you will generate a MoveIt package for the UR5 workcell you built in a previous step. This process will mostly involve running the MoveIt! Setup Assistant. At the end of the exercise you should have the following:
@@ -21,13 +21,30 @@ In this exercise, you will generate a MoveIt package for the UR5 workcell you bu
 
 ## Scan-N-Plan Application: Guidance
 
+### Create a Base Package using the Setup Assistant
+
+1. Open a NEW terminal and setup a ROS1 workspace to run the MoveIt Setup Assistant.  Put copies of the required URDF packages (`ur_description`, `myworkcell_support`) inside this ROS1 workspace, to make them visible to the Setup Assistant:
+
+   ```
+   mkdir -p ~/ros1_ws/src
+   cp -r ~/industrial_training/exercises/3.3/ros1/src/ur_description ~/ros1_ws/src
+   cp -r ~/industrial_training/exercises/3.3/ros1/src/myworkcell_support ~/ros1_ws/src
+   
+   <edit ~/ros1_ws/src/myworkcell_support/package.xml & CMakeLists.txt and remove all references to myworkcell_core>
+   
+   cd ~/ros1_ws/
+   source /opt/ros/noetic/setup.bash
+   catkin build
+   source ~/ros1_ws/devel/setup.bash
+   ```
+
  1. Start the MoveIt! Setup Assistant (don't forget auto-complete with tab):
 
     ```
     roslaunch moveit_setup_assistant setup_assistant.launch
     ```
 
- 1. Select "Create New MoveIt Configuration Package", select the `workcell.xacro` you created previously, then "Load File".
+ 1. Select "Create New MoveIt Configuration Package", select the `workcell.xacro` in ROS1 workspace's _myworkcell_support_ package, then "Load File".
 
  1. Work your way through the tabs on the left from the top down.
 
@@ -44,139 +61,34 @@ In this exercise, you will generate a MoveIt package for the UR5 workcell you bu
     1. Add a planning group called `manipulator` that names the kinematic chain between `base_link` and `tool0`. Note: Follow [ROS naming guidelines/requirements](http://wiki.ros.org/ROS/Patterns/Conventions) and don't use any whitespace, anywhere.
 
        a. Set the kinematics solver to `KDLKinematicsPlugin`
+       a. Set the default OMPL planner to `RRTConnect`
 
     1. Create a few named positions (e.g. "home", "allZeros", etc.) to test with motion-planning.
 
     1. Don't worry about adding end effectors/grippers or passive joints for this exercise.
+    
+    1. In the "ROS Controllers" tab, use the "Auto Add FollowJointsTrajectory" button to define a basic _FollowJointTrajectory_ controller for the entire UR5 arm.
+    
+    1. Skip the Simulation and 3D Perception tabs.
 
     1. Enter author / maintainer info.
 
        _Yes, it's required, but doesn't have to be valid_
 
     1. Generate a new package and name it `myworkcell_moveit_config`.
-       * make sure to create the package inside your `catkin_ws/src` directory
+       * make sure to create the package inside your `ros1_ws/src` directory
 
- The outcome of these steps will be a new package that contains a large number of launch and configuration files. At this point, it's possible to do motion planning, but not to execute the plan on any robot.  To try out your new configuration:
+## Create ROS2 Package from Setup Assistant Output
 
-    catkin build
-    source ~/catkin_ws/devel/setup.bash
-    roslaunch myworkcell_moveit_config demo.launch
+ The outcome of the Setup Assistant is a new ROS1 package that contains a large number of launch and configuration files.  We need to add a few files to customize this general-purpose package for our application and convert it to work with ROS2, where the setup assistant is not yet available.
+ 
+ > _Note: The world of MoveIt is continually evolving in ROS2; this is currently just one way to get a ROS2 package going and is not presented as the "correct" way._
 
-> Don't worry about learning how to use RViz to move the robot; that's what we'll cover in the next session!
-
-## Using MoveIt! with Physical Hardware
-
-** Note: If you plan to convert this package directly to a ROS2 package, you may skip ahead to the next section. **
-
-MoveIt!'s setup assistant generates a suite of files that, upon launch:
-
- * Loads your workspace description to the parameter server.
- * Starts a node `move_group` that offers a suite of ROS services & actions for doing kinematics, motion planning, and more.
- * An internal simulator that publishes the last planned path on a loop for other tools (like RViz) to visualize.
-
-Essentially, MoveIt can publish a ROS message that defines a trajectory (joint positions over time), but it doesn't know how to pass that trajectory to your hardware.
-
-To do this, we need to define a few extra files.
-
- 1. Create a `controllers.yaml` file (`myworkcell_moveit_config/config/controllers.yaml`) with the following contents:
+ 1. Create a new empty package inside your **ROS2** workspace:
 
     ```
-    controller_list:
-      - name: ""
-        action_ns: joint_trajectory_action
-        type: FollowJointTrajectory
-        joints: [shoulder_pan_joint, shoulder_lift_joint, elbow_joint, wrist_1_joint, wrist_2_joint, wrist_3_joint]
-     ```
-
- 1. Create the `joint_names.yaml` file (`myworkcell_moveit_config/config/joint_names.yaml`):
-
-    ```
-    controller_joint_names: [shoulder_pan_joint, shoulder_lift_joint, elbow_joint, wrist_1_joint, wrist_2_joint, wrist_3_joint]
-    ```
-
- 1. Fill in the existing, but blank, controller_manager launch file (`myworkcell_moveit_config/launch/myworkcell_moveit_controller_manager.launch.xml`):
-
-    ``` xml
-    <launch>
-      <arg name="moveit_controller_manager"
-           default="moveit_simple_controller_manager/MoveItSimpleControllerManager"/>
-      <param name="moveit_controller_manager"
-             value="$(arg moveit_controller_manager)"/>
-
-      <rosparam file="$(find myworkcell_moveit_config)/config/controllers.yaml"/>
-    </launch>
-    ```
-
- 1. Create a new `myworkcell_planning_execution.launch` (in `myworkcell_moveit_config/launch`):
-
-    ``` xml
-    <launch>
-      <!-- The planning and execution components of MoveIt! configured to run -->
-      <!-- using the ROS-Industrial interface. -->
-
-      <!-- Non-standard joint names:
-           - Create a file [robot_moveit_config]/config/joint_names.yaml
-               controller_joint_names: [joint_1, joint_2, ... joint_N]
-           - Update with joint names for your robot (in order expected by rbt controller)
-           - and uncomment the following line: -->
-      <rosparam command="load" file="$(find myworkcell_moveit_config)/config/joint_names.yaml"/>
-
-      <!-- the "sim" argument controls whether we connect to a Simulated or Real robot -->
-      <!--  - if sim=false, a robot_ip argument is required -->
-      <arg name="sim" default="true" />
-      <arg name="robot_ip" unless="$(arg sim)" />
-
-      <!-- load the robot_description parameter before launching ROS-I nodes -->
-      <include file="$(find myworkcell_moveit_config)/launch/planning_context.launch" >
-       <arg name="load_robot_description" value="true" />
-      </include>
-
-      <!-- run the robot simulator and action interface nodes -->
-      <group if="$(arg sim)">
-        <include file="$(find industrial_robot_simulator)/launch/robot_interface_simulator.launch" />
-
-        <!-- publish the robot state (tf transforms) -->
-        <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
-      </group>
-
-      <!-- run the "real robot" interface nodes -->
-      <!--   - this typically includes: robot_state, motion_interface, and joint_trajectory_action nodes -->
-      <!--   - replace these calls with appropriate robot-specific calls or launch files -->
-      <group unless="$(arg sim)">
-        <remap from="follow_joint_trajectory" to="joint_trajectory_action"/>
-        <include file="$(find ur_modern_driver)/launch/ur_common.launch" >
-          <arg name="robot_ip" value="$(arg robot_ip)"/>
-          <arg name="min_payload" value="0.0"/>
-          <arg name="max_payload" value="5.0"/>
-        </include>
-      </group>
-
-      <include file="$(find myworkcell_moveit_config)/launch/move_group.launch">
-        <arg name="publish_monitored_planning_scene" value="true" />
-      </include>
-
-      <include file="$(find myworkcell_moveit_config)/launch/moveit_rviz.launch">
-        <arg name="config" value="true"/>
-      </include>
-
-    </launch>
-    ```
-
- 1. Now let's test the new launch files we created:
-
-    ```
-    roslaunch myworkcell_moveit_config myworkcell_planning_execution.launch
-    ```
-
-## Creating a ROS2 package
-
-The MoveIt package created using the setup assistant in ROS1 can have pieces reused in a ROS2 system with MoveIt2, where the setup assistant is not yet available. The following steps will set up a ROS2 equivalent of the MoveIt config package you just created for ROS1. Note that the world of MoveIt is continually evolving in ROS2; this is currently just one way to get a ROS2 package going and is not presented as the "correct" way.
-
- 1. In a new terminal, source your `ros2_ws` setup file and create a new empty package:
-
-    ```
-    . ~/ros_ws/install/setup.bash
-    cd ~/ros_ws/src
+    source ~/ros2_ws/install/setup.bash
+    cd ~/ros2_ws/src
     ros2 pkg create myworkcell_moveit_config --dependencies myworkcell_support
     ```
 
@@ -184,14 +96,12 @@ The MoveIt package created using the setup assistant in ROS1 can have pieces reu
 
     ```
     myworkcell.srdf
-    kinematics.yaml
     joint_limits.yaml
+    kinematics.yaml
     ompl_planning.yaml
-    controllers.yaml
-    ros_controllers.yaml
     ```
 
- 1. Open the `config/ompl_planning.yaml` file in a text editor and add the following lines at the bottom:
+ 1. Open the ROS2 `config/ompl_planning.yaml` file in a text editor and add the following lines at the bottom:
 
     ```
     planning_plugin: 'ompl_interface/OMPLPlanner'
@@ -204,7 +114,7 @@ The MoveIt package created using the setup assistant in ROS1 can have pieces reu
     start_state_max_bounds_error: 0.1
     ```
 
- 1. Open the `config/controllers.yaml` and replace the content with the following:
+ 1. Create a new `controllers.yaml` file in the ROS2 MoveIt package's `config` directory:
 
     ```
     controller_names:
@@ -225,7 +135,7 @@ The MoveIt package created using the setup assistant in ROS1 can have pieces reu
 
     This file will configure MoveIt to use a controller for joint trajectory execution provided by `ros_control`.
 
- 1. Open the file `config/ros_controllers.yaml` and replace the content with the following:
+ 1. Create a new `ros_controllers.yaml` file in the ROS2 MoveIt package's `config` directory:
 
     ```
     controller_manager:
@@ -265,7 +175,7 @@ The MoveIt package created using the setup assistant in ROS1 can have pieces reu
 
     These parameters configure the controller nodes at startup.
 
- 1. Create a new directory `launch/`, and a new launch file, `myworkcell_planning_execution.launch.py` inside which will act as a single location to start up all components needed for both planning and execution.
+ 1. Create a new `launch` directory inside the ROS2 moveit package, and a new launch file, `myworkcell_planning_execution.launch.py` inside that directory.  This launch file will act as a single location to start up all components needed for both motion planning and execution.
 
     ```
     import os
@@ -409,7 +319,7 @@ The MoveIt package created using the setup assistant in ROS1 can have pieces reu
         )
     ```
 
-    The bulk of the complexity here is finding and loading all the required parameters using the same helper functions we've used in previous launch files. This launch file defines four nodes to start with the most important one being the move group node. Note that RViz is also started as node, which is optional in general but started here so it can also receive the same parameters as the move group node.
+    The bulk of the complexity here is finding and loading all the required parameters using the same helper functions we've used in previous launch files. This launch file defines four nodes to start with the most important one being the `move_group` node. Note that RViz is also started as node, which allows us to initialize it with the same parameters as the move_group node.
 
  1. Open the new package's `CMakeLists.txt` file and add an installation rule for the `config/` and `launch/` directories underneath the calls to `find_package`:
 
@@ -417,11 +327,11 @@ The MoveIt package created using the setup assistant in ROS1 can have pieces reu
     install(DIRECTORY config launch DESTINATION share/${PROJECT_NAME})
     ```
 
- 1. Rebuild the workspace:
+ 1. Rebuild the workspace (`colcon build`) and test a launch file to see if the new package loads without errors:
 
     ```
-    cd ~/ros2_ws
-    colcon build
+    source ~/ros2_ws/install/setup.bash
+    ros2 launch myworkcell_moveit_config myworkcell_planning_execution.launch.py
     ```
 
-    Remember any change to the configuration or launch files requires a rebuild to take effect unless the `--symlink-install` option is used with `colcon build`.
+> _Don't worry too much about how to use RViz.  We'll work through that in the next exercise._
