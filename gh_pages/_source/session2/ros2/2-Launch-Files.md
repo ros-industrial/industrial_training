@@ -16,7 +16,7 @@ The ROS architecture encourages engineers to use ''nodes'' as a fundamental unit
 In this exercise, you will:
 1. Create a new package, `myworkcell_support`.
 1. Create a directory in this package called `launch`.
-1. Create a file inside this directory called `workcell.launch` that:
+1. Create a file inside this directory called `workcell.launch.py` that:
    1. Launches `fake_ar_publisher`
    1. Launches `vision_node`
 
@@ -102,11 +102,13 @@ You may also choose to launch `myworkcell_core` node with the others or keep it 
        name='fake_ar_publisher_node',
        package='fake_ar_publisher',
        executable='fake_ar_publisher_node',
+       output='screen',
    ),
    launch_ros.actions.Node(
        name='vision_node',
        package='myworkcell_core',
        executable='vision_node',
+       output='screen',
    ),
    ```
 
