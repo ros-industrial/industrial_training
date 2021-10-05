@@ -1,4 +1,8 @@
 #! /bin/bash
+
+# auto-detect if we're running in AWS.  Set IS_AWS before calling this script to override (IS_AWS=1 script.bash)
+IS_AWS=${IS_AWS:-"$(expr "`head -c 3 /sys/hypervisor/uuid 2>/dev/null`" == "ec2" )" }
+
 sudo apt update -y
 sudo apt upgrade -y
 sudo apt install -y curl gnupg2 lsb-release git meld build-essential libfontconfig1 mesa-common-dev libglu1-mesa-dev
@@ -28,6 +32,7 @@ sudo apt install -y pcl-tools
 
 # ROS2 install
 sudo apt install -y ros-foxy-desktop ros-foxy-moveit
+sudo apt install -y ros-foxy-ros1-bridge ros-foxy-roscpp-tutorials ros-foxy-ros2-control ros-foxy-ros2-controllers ros-foxy-xacro ros-foxy-joint-state-publisher-gui
 sudo apt install -y python3-colcon-common-extensions python3-argcomplete
 
 # rosdep setup
@@ -37,8 +42,26 @@ rosdep update
 
 # Install Qt Creator with ROS plugin
 # NOTE: no way (yet?) to do headless QT IFW install.  Do this last, but will require user action
-QTFILE=qtcreator-ros-bionic-latest-online-installer.run
-wget -q https://qtcreator-ros.datasys.swri.edu/downloads/installers/bionic/$QTFILE
-chmod u+x $QTFILE
-./$QTFILE
-rm $QTFILE
+if [[ $DISPLAY ]]; then
+  QTFILE=qtcreator-ros-bionic-latest-online-installer.run
+  wget -q https://qtcreator-ros.datasys.swri.edu/downloads/installers/bionic/$QTFILE
+  chmod u+x $QTFILE
+  ./$QTFILE
+  rm $QTFILE
+else
+  echo "***SKIPPED QTCREATOR (headless)***"
+fi
+
+# disable screen power-off timer
+gsettings set org.gnome.desktop.session idle-delay 0
+
+if [ $IS_AWS -eq 1 ]; then
+  sudo apt install -y gnome-terminal gedit
+  gsettings set org.gnome.shell favorite-apps "['firefox.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'org.gnome.gedit.desktop']"
+
+  # replace PS1 prompt var with "ROS Distro" prompt
+  sed -E -i 's/^(\s*)(PS1=.*cloud9_prompt_user.*)$/\1#\2\n\1PS1=\'\''\\[\\e[01;32m\\]ROS$ROS_VERSION(\\[\\e[00;02;37m\\]${ROS_DISTRO:-\\[\\e[00;31m\\]NONE}\\[\\e[00;01;32m\\])\\[\\e[00m\\]:\\[\\e[01;34m\\]\\w\\[\\e[00m\\]\$ '\''/' ~/.bashrc
+
+  # disable terminal auto-sourcing
+  sed -E -i 's/^([^#].*source \/opt\/ros\/.*\/setup\..*)$/#\1/' ~/.bashrc
+fi
