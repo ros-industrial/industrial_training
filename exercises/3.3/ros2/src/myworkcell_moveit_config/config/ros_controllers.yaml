@@ -5,8 +5,8 @@ controller_manager:
       type: joint_trajectory_controller/JointTrajectoryController
     joint_state_controller:
       type: joint_state_controller/JointStateController
-        
-# parameters for each controller listed under controller manager  
+
+# parameters for each controller listed under controller manager
 manipulator_joint_trajectory_controller:
   ros__parameters:
     command_interfaces:
@@ -27,6 +27,7 @@ manipulator_joint_trajectory_controller:
     constraints:
       stopped_velocity_tolerance: 0.0
       goal_time: 0.0
+
 joint_state_controller:
   ros__parameters:
-    type: joint_state_controller/JointStateController 
+    type: joint_state_controller/JointStateController
