@@ -24,7 +24,6 @@ find_package(tf2_geometry_msgs REQUIRED)
 
 find_package(moveit_msgs REQUIRED)
 find_package(moveit_ros_planning_interface REQUIRED)
-find_package(Boost REQUIRED COMPONENTS system)
 
 # Interface generation dependencies
 find_package(geometry_msgs REQUIRED)
@@ -40,20 +39,17 @@ add_executable(vision_node src/vision_node.cpp)
 ament_target_dependencies(vision_node rclcpp fake_ar_publisher tf2_ros tf2_geometry_msgs)
 rosidl_target_interfaces(vision_node ${PROJECT_NAME} "rosidl_typesupport_cpp")
 
-# The myworkcell_node executable
+# The myworkcell_node executable (Uses MoveItCpp)
 add_executable(myworkcell_node src/myworkcell_node.cpp)
 ament_target_dependencies(myworkcell_node
   rclcpp
   moveit_msgs
   moveit_ros_planning_interface
 )
-target_link_libraries(myworkcell_node Boost::system)
 rosidl_target_interfaces(myworkcell_node ${PROJECT_NAME} "rosidl_typesupport_cpp")
 
 # Mark executables and/or libraries for installation
 install(TARGETS vision_node myworkcell_node
-    ARCHIVE DESTINATION lib/${PROJECT_NAME}
-    LIBRARY DESTINATION lib/${PROJECT_NAME}
     RUNTIME DESTINATION lib/${PROJECT_NAME}
 )
 

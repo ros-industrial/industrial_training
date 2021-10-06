@@ -1,7 +1,8 @@
 import os
 import yaml
-import launch
-import launch_ros
+import xacro
+from launch import LaunchDescription
+from launch_ros.actions import Node
 from ament_index_python import get_package_share_directory
 
 def get_package_file(package, file_path):
@@ -41,7 +42,8 @@ def generate_launch_description():
     srdf_file = get_package_file('myworkcell_moveit_config', 'config/myworkcell.srdf')
     kinematics_file = get_package_file('myworkcell_moveit_config', 'config/kinematics.yaml')
     ompl_config_file = get_package_file('myworkcell_moveit_config', 'config/ompl_planning.yaml')
-    controllers_file = get_package_file('myworkcell_moveit_config', 'config/controllers.yaml')
+    moveit_controllers_file = get_package_file('myworkcell_moveit_config', 'config/controllers.yaml')
+    ros_controllers_file = get_package_file('myworkcell_moveit_config', 'config/ros_controllers.yaml')
 
     robot_description = load_file(urdf_file)
     robot_description_semantic = load_file(srdf_file)
@@ -49,7 +51,7 @@ def generate_launch_description():
     ompl_config = load_yaml(ompl_config_file)
 
     moveit_controllers = {
-        'moveit_simple_controller_manager' : load_yaml(controllers_file),
+        'moveit_simple_controller_manager' : load_yaml(moveit_controllers_file),
         'moveit_controller_manager': 'moveit_simple_controller_manager/MoveItSimpleControllerManager'
     }
     trajectory_execution = {
@@ -65,57 +67,73 @@ def generate_launch_description():
         'publish_transforms_updates': True
     }
 
-    return launch.LaunchDescription([
-        launch_ros.actions.Node(
-            #name='move_group_node',
-            package='moveit_ros_move_group',
-            executable='move_group',
-            output='screen',
-            parameters=[
-                {
-                    'robot_description': robot_description,
-                    'robot_description_semantic': robot_description_semantic,
-                    'robot_description_kinematics': kinematics_config,
-                    'ompl': ompl_config,
-                },
-                moveit_controllers,
-                trajectory_execution,
-                planning_scene_monitor_config,
-            ],
-        ),
-        launch_ros.actions.Node(
-            name='robot_state_publisher',
-            package='robot_state_publisher',
-            executable='robot_state_publisher',
-            output='screen',
-            parameters=[
-                {'robot_description': robot_description}
-            ]
-        ),
-        launch_ros.actions.Node(
-            package='fake_joint_driver',
-            executable='fake_joint_driver_node',
-            output='screen',
-            parameters=[
-                {
-                    'robot_description': robot_description,
-                    'controller_name': 'fake_joint_trajectory_controller'
-                },
-                get_package_file("myworkcell_moveit_config", "config/fake_controllers.yaml"),
-            ],
-        ),
-        launch_ros.actions.Node(
-            name='rviz',
-            package='rviz2',
-            executable='rviz2',
-            output='screen',
-            parameters=[
-                {
-                    'robot_description': robot_description,
-                    'robot_description_semantic': robot_description_semantic,
-                    'robot_description_kinematics': kinematics_config,
-                    'ompl': ompl_config,
-                }
-            ],
-        )
-    ])
+    # MoveIt node
+    move_group_node = Node(
+        package='moveit_ros_move_group',
+        executable='move_group',
+        output='screen',
+        parameters=[
+            {
+                'robot_description': robot_description,
+                'robot_description_semantic': robot_description_semantic,
+                'robot_description_kinematics': kinematics_config,
+                'ompl': ompl_config,
+                'planning_pipelines': ['ompl'],
+            },
+            moveit_controllers,
+            trajectory_execution,
+            planning_scene_monitor_config,
+        ],
+    )
+    # TF information
+    robot_state_publisher = Node(
+        name='robot_state_publisher',
+        package='robot_state_publisher',
+        executable='robot_state_publisher',
+        output='screen',
+        parameters=[
+            {'robot_description': robot_description}
+        ]
+    )
+    # Visualization (parameters needed for MoveIt display plugin)
+    rviz = Node(
+        name='rviz',
+        package='rviz2',
+        executable='rviz2',
+        output='screen',
+        parameters=[
+            {
+                'robot_description': robot_description,
+                'robot_description_semantic': robot_description_semantic,
+                'robot_description_kinematics': kinematics_config,
+            }
+        ],
+    )
+    # Controller manager for realtime interactions
+    ros2_control_node = Node(
+        package="controller_manager",
+        executable="ros2_control_node",
+        parameters= [
+            {'robot_description': robot_description},
+            ros_controllers_file
+        ],
+        output="screen",
+    )
+    # Startup up ROS2 controllers (will exit immediately)
+    controller_names = ['manipulator_joint_trajectory_controller', 'joint_state_controller']
+    spawn_controllers = [
+        Node(
+            package="controller_manager",
+            executable="spawner.py",
+            arguments=[controller],
+            output="screen")
+        for controller in controller_names
+    ]
+
+    return LaunchDescription([
+        move_group_node,
+        robot_state_publisher,
+        ros2_control_node,
+        rviz,
+        ] + spawn_controllers
+    )

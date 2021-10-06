@@ -1,35 +1,33 @@
-# MoveIt-specific simulation settings
-moveit_sim_hw_interface:
-  joint_model_group: controllers_initial_group_
-  joint_model_group_pose: controllers_initial_pose_
-# Settings for ros_control control loop
-generic_hw_control_loop:
-  loop_hz: 300
-  cycle_time_error_threshold: 0.01
-# Settings for ros_control hardware interface
-hardware_interface:
-  joints:
-    - shoulder_pan_joint
-    - shoulder_lift_joint
-    - elbow_joint
-    - wrist_1_joint
-    - wrist_2_joint
-    - wrist_3_joint
-  sim_control_mode: 1  # 0: position, 1: velocity
-# Publish all joint states
-# Creates the /joint_states topic necessary in ROS
-joint_state_controller:
-  type: joint_state_controller/JointStateController
-  publish_rate: 50
-controller_list:
-  - name: manipulator_controller
-    action_ns: follow_joint_trajectory
-    default: True
-    type: FollowJointTrajectory
+controller_manager:
+  ros__parameters:
+    update_rate: 600  # Hz
+    manipulator_joint_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+    joint_state_controller:
+      type: joint_state_controller/JointStateController
+
+# parameters for each controller listed under controller manager
+manipulator_joint_trajectory_controller:
+  ros__parameters:
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
     joints:
-      - shoulder_pan_joint
-      - shoulder_lift_joint
       - elbow_joint
+      - shoulder_lift_joint
+      - shoulder_pan_joint
       - wrist_1_joint
       - wrist_2_joint
       - wrist_3_joint
+    state_publish_rate: 100.0
+    action_monitor_rate: 20.0
+    allow_partial_joints_goal: false
+    constraints:
+      stopped_velocity_tolerance: 0.0
+      goal_time: 0.0
+
+joint_state_controller:
+  ros__parameters:
+    type: joint_state_controller/JointStateController
