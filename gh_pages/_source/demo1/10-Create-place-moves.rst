@@ -3,15 +3,14 @@ Create Place Moves
 
   The gripper moves through three poses in order to place the box: Approach,
   place and retreat. In this exercise, we will create these place poses for
-  the :abbr:`TCP (Tool Center Point)` coordinate frame and then transform them
-  into the arm's wrist coordinate frame.
+  the :abbr:`TCP (Tool Center Point)` coordinate frame.
 
 
 Locate Function
 ---------------
 
 * In the main program , locate the function call to
-  ``application.create_place_moves()``.
+  ``application.computePlaceToolPoses()``.
 * Go to the source file of that function by clicking in any part of the
   function and pressing :kbd:`F2` in QtCreator.
 * Remove the first line containing the following ``ROS_ERROR_STREAM ...`` so
@@ -36,14 +35,10 @@ Complete Code
 
 * The position of the box at the place location is saved in the global variable
   ``cfg.BOX_PLACE_TF``.
-* The ``create_manipulation_poses()`` uses the values of the approach and
+* |setOrigin()| and |setRotation()| methods enable the modification of the place transform.
+* The ``createManipulationPoses()`` uses the values of the approach and
   retreat distances in order to create the corresponding poses at the desired
   target.
-* Since MoveIt! plans the robot path for the wrist of the arm, it is necessary to
-  convert all the place poses to the wrist coordinate frame.
-* The |lookupTransform()|_ method can provide the pose of a target relative
-  to another pose.
-
 
 Build Code and Run
 ------------------
@@ -56,43 +51,41 @@ Build Code and Run
 
     .. code-block:: shell
 
-      catkin build collision_avoidance_pick_and_place
+      colcon build --packages-select pick_and_place_application
 
 * Run the supporting nodes with the launch file:
 
   .. code-block:: shell
 
-    roslaunch collision_avoidance_pick_and_place ur5_setup.launch
+    ros2 launch pick_and_place_application application_setup.launch.py
 
 * In another terminal, run your node with the launch file:
 
   .. code-block:: shell
 
-    roslaunch collision_avoidance_pick_and_place ur5_pick_and_place.launch
+    ros2 launch pick_and_place_application application_run.launch.py
 
 * The TCP and wrist positions at the place location will be printed on the
   terminal. You should see something like this:
 
   .. code-block:: text
 
-    [ INFO] [1400556479.404133995]: Execution completed: SUCCEEDED
-    [ INFO] [1400556479.404574973]: Pick Move 2 Succeeded
-    [ INFO] [1400556479.404866351]: tcp position at place: [-0.4, 0.6, 0.17]
-    [ INFO] [1400556479.404934796]: wrist position at place: x: -0.422
-    y: 0.6
-    z: 0.3
-
-    [ERROR] [1400556479.404981729]: place_box is not implemented yet.  Aborting.
+    [INFO] [1400556479.404574973] [pick_and_place_node]: Pick Move 2 Succeeded
+    [INFO] [1400556479.404866351] [pick_and_place_node]: tcp position at place: [-0.4, 0.6, 0.17]
+    [ERROR] [1400556479.404981729] [pick_and_place_node]: doBoxPlace is not implemented yet.  Aborting.
 
 
 API References
 --------------
 
-* |lookupTransform()|
+* |setOrigin()|
 
-* `TF Transforms and other useful data types <http://wiki.ros.org/tf/Overview/Data%20Types>`_
+* |setRotation()|
 
+.. |setOrigin()| replace:: `setOrigin()`_
 
-.. |lookupTransform()| replace:: `lookupTransform()`_
+.. _setOrigin(): https://docs.ros2.org/foxy/api/tf2/classtf2_1_1Transform.html#ab25fd855dccd651af1a9450ceebe0f00
 
-.. _lookupTransform(): http://docs.ros.org/melodic/api/tf/html/c++/classtf_1_1Transformer.html#a14536fe915c0c702534409c15714aa2f
+.. |setRotation()| replace:: `setRotation()`_
+
+.. _setRotation(): https://docs.ros2.org/foxy/api/tf2/classtf2_1_1Transform.html#a1f0d28192f417d4ecde72f88ab5d06a6

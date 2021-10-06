@@ -11,7 +11,7 @@ Locate Function
 ---------------
 
 * In the main program, locate the function call to
-  ``application.detect_box_pick()``.
+  ``application.detectBox()``.
 * Go to the source file of that function by clicking in any part of the
   function and pressing :kbd:`F2` in QtCreator.
 * Remove the first line containing the following ``ROS_ERROR_STREAM ...`` so
@@ -35,10 +35,10 @@ Complete Code
     /* ========  ENTER CODE HERE ======== */
 
 * The ``target_recognition_client`` object in your programs can use the
-  ``call()`` method to send a request to a ROS service.
-* The ROS service that receives the call will process the sensor data and
-  return the pose for the box pick in the service structure member
-  ``srv.response.target_pose``.
+  ``async_send_request()`` method to send a request to a ROS service.
+* The ROS service that receives the request will process the sensor data and
+  return the pose for the box pick. This response can be retrieved by calling ``get()``
+  on ``response_fut``. The pose can then be accessed with ``response->target_pose``.
 
 
 Build Code and Run
@@ -52,32 +52,31 @@ Build Code and Run
 
     .. code-block:: shell
 
-      catkin build collision_avoidance_pick_and_place
+      colcon build --packages-select pick_and_place_application
 
 * Run the supporting nodes with the launch file:
 
   .. code-block:: shell
 
-    roslaunch collision_avoidance_pick_and_place ur5_setup.launch
+    ros2 launch pick_and_place_application application_setup.launch.py
 
 * In another terminal, run your node with the launch file:
 
   .. code-block:: shell
 
-    roslaunch collision_avoidance_pick_and_place ur5_pick_and_place.launch
+    ros2 launch pick_and_place_application application_run.launch.py
 
 * A blue box and voxel grid obstacles will be displayed in rviz. In the
   terminal you should see something like this:
 
   .. code-block:: text
 
-    [ INFO] [1400554224.057842127]: Move wait Succeeded
-    [ INFO] [1400554224.311158465]: Gripper opened
-    [ INFO] [1400554224.648747043]: target recognition succeeded
-    [ERROR] [1400554224.649055043]: create_pick_moves is not implemented yet.  Aborting.
-
+    [INFO] [1400554224.057842127] [pick_and_place_node]: Move wait Succeeded
+    [INFO] [1400554224.311158465] [pick_and_place_node]: Gripper opened
+    [INFO] [1400554224.648747043] [pick_and_place_node]: target recognition succeeded
+    [ERROR] [1400554224.649055043] [pick_and_place_node]: computePickToolPoses is not implemented yet.  Aborting.
 
 API References
 --------------
 
-* `call() <http://docs.ros.org/melodic/api/roscpp/html/classros_1_1ServiceClient.html#a8a0c9be49046998a830df625babd396f>`_
+* `async_send_request() <https://docs.ros2.org/foxy/api/rclcpp/classrclcpp_1_1Client.html#a7567297f43b72f96e8ec57fa7ff2f4e1>`_

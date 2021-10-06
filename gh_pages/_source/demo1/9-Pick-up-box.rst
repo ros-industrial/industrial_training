@@ -12,7 +12,7 @@ Locate Function
 ---------------
 
 * In the main program, locate the function call to
-  ``application.pickup_box()``.
+  ``application.doBoxPickup()``.
 * Go to the source file of that function by clicking in any part of the
   function and pressing :kbd:`F2` in QtCreator.
 * Remove the first line containing the following ``ROS_ERROR_STREAM ...`` so
@@ -35,11 +35,11 @@ Complete Code
     */
     /* ========  ENTER CODE HERE ======== */
 
-* Inspect the ``set_attached_object`` method to understand how to manipulate a
-  ``robot_state`` object which will then be used to construct a motion plan.
-* Inspect the ``create_motion_plan`` method to see how an entire motion plan
+* Inspect the ``setAttachedObject`` method to understand how to manipulate a
+  ``RobotState`` object which will then be used to construct a motion plan.
+* Inspect the ``doMotionPlanning`` method to see how an entire motion plan
   request is defined and sent.
-* The |execute()|_ method sends a motion plan to the robot.
+* The |execute()| method sends a motion plan to the robot.
 
 
 Build Code and Run
@@ -53,19 +53,19 @@ Build Code and Run
 
     .. code-block:: shell
 
-      catkin build collision_avoidance_pick_and_place
+      colcon build --packages-select pick_and_place_application
 
 * Run the supporting nodes with the launch file:
 
   .. code-block:: shell
 
-    roslaunch collision_avoidance_pick_and_place ur5_setup.launch
+    ros2 launch pick_and_place_application application_setup.launch.py
 
 * In another terminal, run your node with the launch file:
 
   .. code-block:: shell
 
-    roslaunch collision_avoidance_pick_and_place ur5_pick_and_place.launch
+    ros2 launch pick_and_place_application application_run.launch.py
 
 * The robot should go through the pick moves (approach, pick and retreat) in
   addition to the moves from the previous exercises. In the terminal you should
@@ -73,19 +73,18 @@ Build Code and Run
 
   .. code-block:: text
 
-    [ INFO] [1400555978.404435764]: Execution completed: SUCCEEDED
-    [ INFO] [1400555978.404919764]: Pick Move 2 Succeeded
-    [ERROR] [1400555978.405061541]: create_place_moves is not implemented yet.  Aborting.
+    [INFO] [1400555978.404919764] [pick_and_place_node]: Pick Move 2 Succeeded
+    [ERROR] [1400555978.405061541] [pick_and_place_node]: computePlaceToolPoses is not implemented yet.  Aborting.
 
 
 API References
 --------------
 
-* |execute()|_
+* `MoveItCpp class reference <https://docs.ros.org/en/api/moveit_ros_planning/html/classmoveit__cpp_1_1MoveItCpp.html>`_
 
-* `MoveGroupInterface class <http://docs.ros.org/melodic/api/moveit_ros_planning_interface/html/classmoveit_1_1planning__interface_1_1MoveGroupInterface.html>`_
+* |execute()|
 
 
 .. |execute()| replace:: `execute()`_
 
-.. _execute(): http://docs.ros.org/melodic/api/moveit_ros_planning_interface/html/classmoveit_1_1planning__interface_1_1MoveGroupInterface.html#add236df4ab9ba7b7011ec53f8aa9c026
+.. _execute(): https://docs.ros.org/en/api/moveit_ros_planning/html/classmoveit__cpp_1_1MoveItCpp.html#a5ca934bc472fc16cb8ca62c5263448cd

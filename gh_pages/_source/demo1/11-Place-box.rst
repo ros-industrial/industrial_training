@@ -10,7 +10,7 @@ Place Box
 Locate Function
 ---------------
 
-* In the main program, locate the function call to ``application.place_box()``.
+* In the main program, locate the function call to ``application.doBoxPlace()``.
 * Go to the source file of that function by clicking in any part of the
   function and pressing :kbd:`F2` in QtCreator.
 * Remove the first line containing the following ``ROS_ERROR_STREAM ...`` so
@@ -33,7 +33,7 @@ Complete Code
     */
     /* ========  ENTER CODE HERE ======== */
 
-* The |execute()|_ method sends a motion plan to the robot.
+* The |execute()| method sends a motion plan to the robot.
 
 
 Build Code and Run
@@ -47,19 +47,19 @@ Build Code and Run
 
     .. code-block:: shell
 
-      catkin build collision_avoidance_pick_and_place
+      colcon build --packages-select pick_and_place_application
 
 * Run the supporting nodes with the launch file:
 
   .. code-block:: shell
 
-    roslaunch collision_avoidance_pick_and_place ur5_setup.launch
+    ros2 launch pick_and_place_application application_setup.launch.py
 
 * In another terminal, run your node with the launch file:
 
   .. code-block:: shell
 
-    roslaunch collision_avoidance_pick_and_place ur5_pick_and_place.launch
+    ros2 launch pick_and_place_application application_run.launch.py
 
 * At this point your exercise is complete and the robot should move through
   the pick and place motions and then back to the wait pose. Congratulations!
@@ -68,11 +68,11 @@ Build Code and Run
 API References
 --------------
 
-* |execute()|_
+* `MoveItCpp class reference <https://docs.ros.org/en/api/moveit_ros_planning/html/classmoveit__cpp_1_1MoveItCpp.html>`_
 
-* `MoveGroupInterface class <http://docs.ros.org/melodic/api/moveit_ros_planning_interface/html/classmoveit_1_1planning__interface_1_1MoveGroupInterface.html>`_
+* |execute()|_
 
 
 .. |execute()| replace:: `execute()`_
 
-.. _execute(): http://docs.ros.org/melodic/api/moveit_ros_planning_interface/html/classmoveit_1_1planning__interface_1_1MoveGroupInterface.html#add236df4ab9ba7b7011ec53f8aa9c026
+.. _execute(): https://docs.ros.org/en/api/moveit_ros_planning/html/classmoveit__cpp_1_1MoveItCpp.html#a5ca934bc472fc16cb8ca62c5263448cd
