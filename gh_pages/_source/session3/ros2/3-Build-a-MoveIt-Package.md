@@ -66,6 +66,8 @@ In this exercise, you will generate a MoveIt package for the UR5 workcell you bu
 
 ## Using MoveIt! with Physical Hardware
 
+** Note: If you plan to convert this package directly to a ROS2 package, you may skip ahead to the next section. **
+
 MoveIt!'s setup assistant generates a suite of files that, upon launch:
 
  * Loads your workspace description to the parameter server.
