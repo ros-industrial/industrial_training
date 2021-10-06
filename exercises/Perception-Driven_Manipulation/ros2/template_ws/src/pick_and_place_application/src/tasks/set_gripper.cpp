@@ -12,7 +12,7 @@ void pick_and_place_application::PickAndPlaceApp::actuateGripper(bool do_grasp)
   using GraspGoalType = pick_and_place_msgs::action::ExecuteGraspMove::Goal;
   using GraspGoalHandle = rclcpp_action::ClientGoalHandle<pick_and_place_msgs::action::ExecuteGraspMove>;
   
-  RCLCPP_ERROR_STREAM(node->get_logger(),"set_gripper is not implemented yet.  Aborting."); exit(1);
+  RCLCPP_ERROR_STREAM(node->get_logger(),"actuateGripper is not implemented yet.  Aborting."); exit(1);
 
   // task variables
   GraspGoalType grasp_goal;
