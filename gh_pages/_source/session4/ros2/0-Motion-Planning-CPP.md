@@ -15,13 +15,72 @@ Now that we’ve got a working MoveIt! configuration for your workcell and we’
 ## Scan-N-Plan Application: Problem Statement
 In this exercise, your goal is to modify the `myworkcell_core` node to:
 
+ 1. Use the MoveItCpp API to enable planning and execution of the robot from within your C++ program.
  1. Move the robot’s tool frame to the center of the part location as reported by the service call to your vision node.
 
 ## Scan-N-Plan Application: Guidance
 
-### Using MoveGroupInterface
+### MoveItCpp
 
- 1. Edit your `myworkcell_node.cpp` file. In the `ScanNPlan` class's `start` method, use the response from the `LocalizePart` service to initialize a new `move_target` variable:
+ For this exercise we will use MoveIt's *MoveItCpp* API, which lets us directly call into the MoveIt libraries from our C++ application. This API is new in MoveIt2. The previous method of the *MoveGroupInterface* API, which calls a separate move group node through ROS services and actions is still available, though it's not the recommended interface.
+
+ 1. Add dependencies on the MoveIt packages `moveit_msgs` and `moveit_ros_planning_interface` to `myworkcell_core/CMakeLists.txt`:
+
+    ```
+    find_package(moveit_msgs REQUIRED)
+    find_package(moveit_ros_planning_interface REQUIRED)
+
+    ...
+
+    ament_target_dependencies(myworkcell_node
+      rclcpp
+      moveit_msgs
+      moveit_ros_planning_interface
+    )
+    ```
+
+    and to `package.xml`:
+
+    ```
+    <depend>moveit_msgs</depend>
+    <depend>moveit_ros_planning_interface</depend>
+    ```
+
+ 1. Open `myworkcell_core/src/myworkcell_node.cpp`. We'll first add the needed MoveItCpp objects as new class members of the node. Add the following lines in the `private` section of the `ScanNPlan` node:
+
+    ```c++
+    moveit_cpp::MoveItCppPtr moveit_cpp_;
+    moveit_cpp::PlanningComponentPtr planning_component_;
+    moveit_cpp::PlanningComponent::PlanRequestParameters plan_parameters_;
+    ```
+
+ 1. Add the required includes for these objects at the top of the file:
+
+    ```c++
+    #include <moveit/moveit_cpp/moveit_cpp.h>
+    #include <moveit/moveit_cpp/planning_component.h>
+    ```
+
+ 1. Create a new `setup()` function inside `ScanNPlan` after the constructor and above `start`. We'll use this function to initialize the MoveIt objects after the node has started.
+
+    ```c++
+    // MoveIt setup
+    void setup()
+    {
+      // Instantiate moveit_cpp
+      moveit_cpp_ = std::make_shared<moveit_cpp::MoveItCpp>(this->shared_from_this());
+
+      // Planning component associated with a single motion group
+      planning_component_ = std::make_shared<moveit_cpp::PlanningComponent>("manipulator", moveit_cpp_);
+
+      // Parameters set on this node
+      plan_parameters_.load(this->shared_from_this());
+    }
+    ```
+
+### Planning
+
+ 1. In the `ScanNPlan` class's `start` method, use the response from the `LocalizePart` service to initialize a new `move_target` variable:
 
     ``` c++
     geometry_msgs::msg::PoseStamped move_target;
@@ -29,49 +88,47 @@ In this exercise, your goal is to modify the `myworkcell_core` node to:
     move_target.pose = response->pose;
     ```
 
-    * make sure to place this code _after_ the call to the vision_node's service.
+    * Make sure to place this code _after_ the call to the vision_node's service.
+    * You may need to provide another include for this datatype: `#include <geometry_msgs/msg/pose_stamped.hpp>`.
 
- 1. Create a `MoveGroupInterface` object which will be used for performing the motion planning
+ 1. We'll use the `PlanningComponent` object to plan to this target, but it needs additional information about where the robot will start from and which part of the robot should move to the target. Add the following lines to get the current robot state and the name of end effector link:
 
-     1. Add these lines in the `start` function:
+    ```c++
+    // getting current state of robot from environment
+    if (!moveit_cpp_->getPlanningSceneMonitor()->requestPlanningSceneState())
+    {
+      RCLCPP_ERROR(this->get_logger(), "Failed to get planning scene");
+      return;
+    }
+    moveit::core::RobotStatePtr start_robot_state = moveit_cpp_->getCurrentState(2.0);
 
-        ```
-        moveit::planning_interface::MoveGroupInterface move_group(
-            this->shared_from_this(),
-            "manipulator");
+    // Set motion goal of end effector link
+    std::string ee_link = moveit_cpp_->getRobotModel()->getJointModelGroup(
+        planning_component_->getPlanningGroupName())->getLinkModelNames().back();
+    ```
 
-        move_group.setPoseTarget(move_target);
-        move_group.move();
-        ```
+ 1. Now we can add the main functionality, the calls to plan and execute:
 
-     1. Add required dependencies in your `CMakeLists.txt`:
+    ```c++
+    planning_component_->setStartState(*start_robot_state);
+    planning_component_->setGoal(move_target, ee_link);
 
-        ```
-        find_package(moveit_msgs REQUIRED)
-        find_package(moveit_ros_planning_interface REQUIRED)
+    // Now we can plan!
+    moveit_cpp::PlanningComponent::PlanSolution plan_solution = planning_component_->plan(plan_parameters_);
+    if (!plan_solution)
+    {
+      RCLCPP_ERROR(this->get_logger(),"Failed to plan");
+      return;
+    }
 
-        ...
-
-        ament_target_dependencies(myworkcell_node
-          rclcpp
-          moveit_msgs
-          moveit_ros_planning_interface
-        )
-        target_link_libraries(myworkcell_node Boost::system)
-        ```
-
-        and in `package.xml`:
-
-        ```
-        <depend>moveit_msgs</depend>
-        <depend>moveit_ros_planning_interface</depend>
-        ```
-
-     1. Add includes at the top of file for the needed MoveIt components:
-
-        ```
-        #include <moveit/move_group_interface/move_group_interface.h>
-        ```
+    // If planning succeeded, execute the returned trajectory
+    bool success = moveit_cpp_->execute("manipulator", plan_solution.trajectory, true);
+    if (!success)
+    {
+      RCLCPP_ERROR_STREAM(this->get_logger(), "Failed to execute trajectory");
+      return;
+    }
+    ```
 
  1. Currently, MoveIt2 uses many parameters that are not declared ahead of time. To enable this, we have to construct our ROS2 node with an option to automatically declare parameters when they are set in a launch file. Modify the `ScanNPlan` constructor to start with the following:
 
@@ -88,7 +145,7 @@ In this exercise, your goal is to modify the `myworkcell_core` node to:
 
 ### Execution
 
- 1. The `move` command is all that's needed to get your manipulator to move (with the right parameters) but some support when running MoveIt to have it function properly. Inside the `main` function, insert the following lines before you call `app->start`:
+ 1. The `plan` and `execute` functions are all that's needed to get your manipulator to move (with the right parameters) but some support when running MoveIt is needed to have it function properly. Inside the `main` function, insert the following lines before you call `app->start`:
 
     ```
     // Start spinning in a background thread so MoveIt internals can execute
@@ -98,6 +155,9 @@ In this exercise, your goal is to modify the `myworkcell_core` node to:
         rclcpp::spin(app);
       }
     };
+
+    // Perform MoveIt initialization
+    app->setup();
     ```
 
     This lets ROS process callbacks in a separate worker thread while the main thread remains available for us to define our application logic. This implies we can no longer call any spin functions in the main thread now. Replace the call to `spin_until_future_complete` in the `start` function with a function to simply wait for the future to be ready:
@@ -114,8 +174,9 @@ In this exercise, your goal is to modify the `myworkcell_core` node to:
     ```
     import os
     import yaml
-    import launch
-    import launch_ros
+    import xacro
+    from launch import LaunchDescription
+    from launch_ros.actions import Node
     from ament_index_python import get_package_share_directory
 
     def get_package_file(package, file_path):
@@ -148,31 +209,67 @@ In this exercise, your goal is to modify the `myworkcell_core` node to:
         os.system(f'xacro {xacro_file} -o {urdf_file}')
         return urdf_file
 
-
     def generate_launch_description():
         xacro_file = get_package_file('myworkcell_support', 'urdf/workcell.urdf.xacro')
         urdf_file = run_xacro(xacro_file)
         srdf_file = get_package_file('myworkcell_moveit_config', 'config/myworkcell.srdf')
         kinematics_file = get_package_file('myworkcell_moveit_config', 'config/kinematics.yaml')
+        ompl_config_file = get_package_file('myworkcell_moveit_config', 'config/ompl_planning.yaml')
+        joint_limits_file = get_package_file('myworkcell_moveit_config','config/joint_limits.yaml')
+        moveit_controllers_file = get_package_file('myworkcell_moveit_config', 'config/controllers.yaml')
 
         robot_description = load_file(urdf_file)
         robot_description_semantic = load_file(srdf_file)
         kinematics_config = load_yaml(kinematics_file)
+        ompl_config = load_yaml(ompl_config_file)
+        joint_limits_config = load_yaml(joint_limits_file)
 
-        return launch.LaunchDescription([
-            launch_ros.actions.Node(
-                name='fake_ar_publisher_node',
-                package='fake_ar_publisher',
-                executable='fake_ar_publisher_node',
-                output='screen',
-            ),
-            launch_ros.actions.Node(
-                name='vision_node',
-                package='myworkcell_core',
-                executable='vision_node',
-                output='screen',
-            ),
-            launch_ros.actions.Node(
+        # Setting up MoveitCpp configuration parameters
+        moveit_controllers = {
+            'moveit_simple_controller_manager' : load_yaml(moveit_controllers_file),
+            'moveit_controller_manager': 'moveit_simple_controller_manager/MoveItSimpleControllerManager'
+        }
+        trajectory_execution = {
+            'moveit_manage_controllers': True,
+            'trajectory_execution.allowed_execution_duration_scaling': 1.2,
+            'trajectory_execution.allowed_goal_duration_margin': 0.5,
+            'trajectory_execution.allowed_start_tolerance': 0.01
+        }
+        planning_scene_monitor_config = {
+            'publish_planning_scene': True,
+            'publish_geometry_updates': True,
+            'publish_state_updates': True,
+            'publish_transforms_updates': True
+        }
+
+        moveit_cpp_config = yaml.load("""
+            planning_scene_monitor_options:
+              name: "planning_scene_monitor"
+              robot_description: "robot_description"
+              joint_state_topic: "/joint_states"
+              attached_collision_object_topic: "/moveit_cpp/planning_scene_monitor"
+              publish_planning_scene_topic: "/moveit_cpp/publish_planning_scene"
+              monitored_planning_scene_topic: "/moveit_cpp/monitored_planning_scene"
+              wait_for_initial_state_timeout: 10.0
+
+            planning_pipelines:
+              #namespace: "moveit_cpp"  # optional, default is ~
+              pipeline_names: ["ompl"]
+
+            plan_request_params:
+              planning_time: 10.0
+              planning_attempts: 3
+              planning_pipeline: ompl
+              max_velocity_scaling_factor: 0.5
+              max_acceleration_scaling_factor: 0.5
+
+            # octomap parameters (when used)
+            octomap_frame: world
+            octomap_resolution: 0.01
+            max_range: 5.0""")
+
+        return LaunchDescription([
+            Node(
                 name='myworkcell_node',
                 package='myworkcell_core',
                 executable='myworkcell_node',
@@ -183,8 +280,27 @@ In this exercise, your goal is to modify the `myworkcell_core` node to:
                         'robot_description': robot_description,
                         'robot_description_semantic': robot_description_semantic,
                         'robot_description_kinematics': kinematics_config,
+                        'robot_description_planning' : joint_limits_config,
+                        'planning_pipelines': ['ompl'],
+                        'ompl': ompl_config
                     },
+                    moveit_cpp_config,
+                    moveit_controllers,
+                    trajectory_execution,
+                    planning_scene_monitor_config,
                 ],
+            ),
+            Node(
+                name='fake_ar_publisher_node',
+                package='fake_ar_publisher',
+                executable='fake_ar_publisher_node',
+                output='screen',
+            ),
+            Node(
+                name='vision_node',
+                package='myworkcell_core',
+                executable='vision_node',
+                output='screen',
             ),
         ])
     ```
