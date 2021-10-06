@@ -73,14 +73,12 @@ public:
     }
     moveit::core::RobotStatePtr start_robot_state = moveit_cpp_->getCurrentState(2.0);
 
-    // setting start robot state
-    planning_component_->setStartState(*start_robot_state);
-
     // Set motion goal of end effector link
     std::string ee_link = moveit_cpp_->getRobotModel()->getJointModelGroup(
         planning_component_->getPlanningGroupName())->getLinkModelNames().back();
-
     RCLCPP_INFO(this->get_logger(), "Setting move target pose for tip link \"%s\"", ee_link.c_str());
+    
+    planning_component_->setStartState(*start_robot_state);
     planning_component_->setGoal(move_target, ee_link);
 
     // Now we can plan!
