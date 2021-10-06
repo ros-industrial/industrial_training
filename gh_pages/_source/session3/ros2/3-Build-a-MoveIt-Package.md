@@ -66,6 +66,8 @@ In this exercise, you will generate a MoveIt package for the UR5 workcell you bu
 
 ## Using MoveIt! with Physical Hardware
 
+** Note: If you plan to convert this package directly to a ROS2 package, you may skip ahead to the next section. **
+
 MoveIt!'s setup assistant generates a suite of files that, upon launch:
 
  * Loads your workspace description to the parameter server.
@@ -168,7 +170,7 @@ To do this, we need to define a few extra files.
 
 ## Creating a ROS2 package
 
-The MoveIt package created using the setup assistant in ROS1 can be significantly reused in a ROS2 system with MoveIt2, where the setup assistant is not yet available. The following steps will set up a ROS2 equivalent of the MoveIt config package you just created for ROS1. Note that the world of MoveIt is continually evolving in ROS2; this is currently just one way to get a ROS2 package going and is not presented as the "correct" way.
+The MoveIt package created using the setup assistant in ROS1 can have pieces reused in a ROS2 system with MoveIt2, where the setup assistant is not yet available. The following steps will set up a ROS2 equivalent of the MoveIt config package you just created for ROS1. Note that the world of MoveIt is continually evolving in ROS2; this is currently just one way to get a ROS2 package going and is not presented as the "correct" way.
 
  1. In a new terminal, source your `ros2_ws` setup file and create a new empty package:
 
@@ -178,10 +180,15 @@ The MoveIt package created using the setup assistant in ROS1 can be significantl
     ros2 pkg create myworkcell_moveit_config --dependencies myworkcell_support
     ```
 
- 1. Copy the `config/` subdirectory from the ROS1 MoveIt config package into the new empty ROS2 package:
+ 1. Create an empty `config/` subdirectory inside the new package and copy the following files from the `config/` subdirectory of the ROS1 MoveIt config package:
 
     ```
-    cp -r ~/catkin_ws/src/myworkcell_moveit_config/config ~/ros2_ws/src/myworkcell_moveit_config/
+    myworkcell.srdf
+    kinematics.yaml
+    joint_limits.yaml
+    ompl_planning.yaml
+    controllers.yaml
+    ros_controllers.yaml
     ```
 
  1. Open the `config/ompl_planning.yaml` file in a text editor and add the following lines at the bottom:
@@ -194,40 +201,16 @@ The MoveIt package created using the setup assistant in ROS1 can be significantl
         default_planner_request_adapters/FixStartStateBounds
         default_planner_request_adapters/FixStartStateCollision
         default_planner_request_adapters/FixStartStatePathConstraints
+    start_state_max_bounds_error: 0.1
     ```
-
-    Also place quotes around the value of the `longest_valid_segment_fraction` option if it doesn't have them already. E.g., `longest_valid_segment_fraction: "0.005"`.
-
- 1. Open the `config/fake_controllers.yaml` file and replace its contents with these lines:
-
-    ```
-    fake_joint_trajectory_controller:
-      ros__parameters:
-        joints:
-          - shoulder_pan_joint
-          - shoulder_lift_joint
-          - elbow_joint
-          - wrist_1_joint
-          - wrist_2_joint
-          - wrist_3_joint
-        write_op_modes:
-          - shoulder_pan_joint
-          - shoulder_lift_joint
-          - elbow_joint
-          - wrist_1_joint
-          - wrist_2_joint
-          - wrist_3_joint
-    ```
-
-    This step allows for plans created by MoveIt2 to be executed, but only by an instance of a "fake_joint_trajectory_controller". This will be our stand-in for a physical robot later on in the training.
 
  1. Open the `config/controllers.yaml` and replace the content with the following:
 
     ```
     controller_names:
-      - fake_joint_trajectory_controller
+      - manipulator_joint_trajectory_controller
 
-    fake_joint_trajectory_controller:
+    manipulator_joint_trajectory_controller:
       action_ns: follow_joint_trajectory
       type: FollowJointTrajectory
       default: true
@@ -240,13 +223,56 @@ The MoveIt package created using the setup assistant in ROS1 can be significantl
         - wrist_3_joint
     ```
 
- 1. Create a new launch file, `launch/myworkcell_planning_execution.launch.py` which will act as a single location to start up all components needed for both planning and execution.
+    This file will configure MoveIt to use a controller for joint trajectory execution provided by `ros_control`.
+
+ 1. Open the file `config/ros_controllers.yaml` and replace the content with the following:
+
+    ```
+    controller_manager:
+      ros__parameters:
+        update_rate: 600  # Hz
+        manipulator_joint_trajectory_controller:
+          type: joint_trajectory_controller/JointTrajectoryController
+        joint_state_controller:
+          type: joint_state_controller/JointStateController
+
+    # parameters for each controller listed under controller manager
+    manipulator_joint_trajectory_controller:
+      ros__parameters:
+        command_interfaces:
+          - position
+        state_interfaces:
+          - position
+          - velocity
+        joints:
+          - elbow_joint
+          - shoulder_lift_joint
+          - shoulder_pan_joint
+          - wrist_1_joint
+          - wrist_2_joint
+          - wrist_3_joint
+        state_publish_rate: 100.0
+        action_monitor_rate: 20.0
+        allow_partial_joints_goal: false
+        constraints:
+          stopped_velocity_tolerance: 0.0
+          goal_time: 0.0
+
+    joint_state_controller:
+      ros__parameters:
+        type: joint_state_controller/JointStateController
+    ```
+
+    These parameters configure the controller nodes at startup.
+
+ 1. Create a new directory `launch/`, and a new launch file, `myworkcell_planning_execution.launch.py` inside which will act as a single location to start up all components needed for both planning and execution.
 
     ```
     import os
     import yaml
-    import launch
-    import launch_ros
+    import xacro
+    from launch import LaunchDescription
+    from launch_ros.actions import Node
     from ament_index_python import get_package_share_directory
 
     def get_package_file(package, file_path):
@@ -286,7 +312,8 @@ The MoveIt package created using the setup assistant in ROS1 can be significantl
         srdf_file = get_package_file('myworkcell_moveit_config', 'config/myworkcell.srdf')
         kinematics_file = get_package_file('myworkcell_moveit_config', 'config/kinematics.yaml')
         ompl_config_file = get_package_file('myworkcell_moveit_config', 'config/ompl_planning.yaml')
-        controllers_file = get_package_file('myworkcell_moveit_config', 'config/controllers.yaml')
+        moveit_controllers_file = get_package_file('myworkcell_moveit_config', 'config/controllers.yaml')
+        ros_controllers_file = get_package_file('myworkcell_moveit_config', 'config/ros_controllers.yaml')
 
         robot_description = load_file(urdf_file)
         robot_description_semantic = load_file(srdf_file)
@@ -294,7 +321,7 @@ The MoveIt package created using the setup assistant in ROS1 can be significantl
         ompl_config = load_yaml(ompl_config_file)
 
         moveit_controllers = {
-            'moveit_simple_controller_manager' : load_yaml(controllers_file),
+            'moveit_simple_controller_manager' : load_yaml(moveit_controllers_file),
             'moveit_controller_manager': 'moveit_simple_controller_manager/MoveItSimpleControllerManager'
         }
         trajectory_execution = {
@@ -310,63 +337,79 @@ The MoveIt package created using the setup assistant in ROS1 can be significantl
             'publish_transforms_updates': True
         }
 
-        return launch.LaunchDescription([
-            launch_ros.actions.Node(
-                #name='move_group_node',
-                package='moveit_ros_move_group',
-                executable='move_group',
-                output='screen',
-                parameters=[
-                    {
-                        'robot_description': robot_description,
-                        'robot_description_semantic': robot_description_semantic,
-                        'robot_description_kinematics': kinematics_config,
-                        'ompl': ompl_config,
-                    },
-                    moveit_controllers,
-                    trajectory_execution,
-                    planning_scene_monitor_config,
-                ],
-            ),
-            launch_ros.actions.Node(
-                name='robot_state_publisher',
-                package='robot_state_publisher',
-                executable='robot_state_publisher',
-                output='screen',
-                parameters=[
-                    {'robot_description': robot_description}
-                ]
-            ),
-            launch_ros.actions.Node(
-                package='fake_joint_driver',
-                executable='fake_joint_driver_node',
-                output='screen',
-                parameters=[
-                    {
-                        'robot_description': robot_description,
-                        'controller_name': 'fake_joint_trajectory_controller'
-                    },
-                    get_package_file("myworkcell_moveit_config", "config/fake_controllers.yaml"),
-                ],
-            ),
-            launch_ros.actions.Node(
-                name='rviz',
-                package='rviz2',
-                executable='rviz2',
-                output='screen',
-                parameters=[
-                    {
-                        'robot_description': robot_description,
-                        'robot_description_semantic': robot_description_semantic,
-                        'robot_description_kinematics': kinematics_config,
-                        'ompl': ompl_config,
-                    }
-                ],
-            )
-        ])
+        # MoveIt node
+        move_group_node = Node(
+            package='moveit_ros_move_group',
+            executable='move_group',
+            output='screen',
+            parameters=[
+                {
+                    'robot_description': robot_description,
+                    'robot_description_semantic': robot_description_semantic,
+                    'robot_description_kinematics': kinematics_config,
+                    'ompl': ompl_config,
+                    'planning_pipelines': ['ompl'],
+                },
+                moveit_controllers,
+                trajectory_execution,
+                planning_scene_monitor_config,
+            ],
+        )
+        # TF information
+        robot_state_publisher = Node(
+            name='robot_state_publisher',
+            package='robot_state_publisher',
+            executable='robot_state_publisher',
+            output='screen',
+            parameters=[
+                {'robot_description': robot_description}
+            ]
+        )
+        # Visualization (parameters needed for MoveIt display plugin)
+        rviz = Node(
+            name='rviz',
+            package='rviz2',
+            executable='rviz2',
+            output='screen',
+            parameters=[
+                {
+                    'robot_description': robot_description,
+                    'robot_description_semantic': robot_description_semantic,
+                    'robot_description_kinematics': kinematics_config,
+                }
+            ],
+        )
+        # Controller manager for realtime interactions
+        ros2_control_node = Node(
+            package="controller_manager",
+            executable="ros2_control_node",
+            parameters= [
+                {'robot_description': robot_description},
+                ros_controllers_file
+            ],
+            output="screen",
+        )
+        # Startup up ROS2 controllers (will exit immediately)
+        controller_names = ['manipulator_joint_trajectory_controller', 'joint_state_controller']
+        spawn_controllers = [
+            Node(
+                package="controller_manager",
+                executable="spawner.py",
+                arguments=[controller],
+                output="screen")
+            for controller in controller_names
+        ]
+
+        return LaunchDescription([
+            move_group_node,
+            robot_state_publisher,
+            ros2_control_node,
+            rviz,
+            ] + spawn_controllers
+        )
     ```
 
-    The bulk of the complexity here is finding and loading all the required parameters using the same helper functions we've used in previous launch files. This launch file defines four nodes to start with the most important one being the move group node. Note that RViz is also started as node, which is purely optional.
+    The bulk of the complexity here is finding and loading all the required parameters using the same helper functions we've used in previous launch files. This launch file defines four nodes to start with the most important one being the move group node. Note that RViz is also started as node, which is optional in general but started here so it can also receive the same parameters as the move group node.
 
  1. Open the new package's `CMakeLists.txt` file and add an installation rule for the `config/` and `launch/` directories underneath the calls to `find_package`:
 
@@ -380,3 +423,5 @@ The MoveIt package created using the setup assistant in ROS1 can be significantl
     cd ~/ros2_ws
     colcon build
     ```
+
+    Remember any change to the configuration or launch files requires a rebuild to take effect unless the `--symlink-install` option is used with `colcon build`.

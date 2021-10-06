@@ -84,7 +84,7 @@ them.
 - :doc:`3.1 - Workcell XACRO <_source/session3/ros2/1-Workcell-XACRO>`
 - :doc:`3.2 - Transforms using TF <_source/session3/ros2/2-Coordinate-Transforms-using-TF>`
 - :doc:`3.3 - Build a MoveIt Package <_source/session3/ros2/3-Build-a-MoveIt-Package>`
-- :doc:`3.4 - Motion Planning using RViz <_source/session3/ros1/4-Motion-Planning-RVIZ>`
+- :doc:`3.4 - Motion Planning using RViz <_source/session3/ros2/4-Motion-Planning-RVIZ>`
 
 Session 4 - Descartes and Perception
 ------------------------------------
@@ -173,7 +173,7 @@ Session 7 - ROS2 Topics
     3.1 - Workcell XACRO <_source/session3/ros2/1-Workcell-XACRO>
     3.2 - Transforms using TF <_source/session3/ros2/2-Coordinate-Transforms-using-TF>
     3.3 - Build a MoveIt Package <_source/session3/ros2/3-Build-a-MoveIt-Package>
-    3.4 - Motion Planning using RViz <_source/session3/ros1/4-Motion-Planning-RVIZ>
+    3.4 - Motion Planning using RViz <_source/session3/ros2/4-Motion-Planning-RVIZ>
     4.0 - Motion Planning using C++ <_source/session4/ros2/0-Motion-Planning-CPP>
     4.1 - Intro to Descartes <_source/session4/ros1/1-Descartes-Path-Planning>
     4.2 - Intro to Perception <_source/session4/ros1/2-Introduction-to-Perception>
