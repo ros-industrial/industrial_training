@@ -1,7 +1,8 @@
 import os
-import yaml
 import launch
 import launch_ros
+import xacro
+
 from ament_index_python import get_package_share_directory
 
 def get_package_file(package, file_path):
@@ -10,33 +11,9 @@ def get_package_file(package, file_path):
     absolute_file_path = os.path.join(package_path, file_path)
     return absolute_file_path
 
-def load_file(file_path):
-    """Load the contents of a file into a string"""
-    try:
-        with open(file_path, 'r') as file:
-            return file.read()
-    except EnvironmentError: # parent of IOError, OSError *and* WindowsError where available
-        return None
-
-def load_yaml(file_path):
-    """Load a yaml file into a dictionary"""
-    try:
-        with open(file_path, 'r') as file:
-            return yaml.safe_load(file)
-    except EnvironmentError: # parent of IOError, OSError *and* WindowsError where available
-        return None
-
-def run_xacro(xacro_file):
-    """Run xacro and output a file in the same directory with the same name, w/o a .xacro suffix"""
-    urdf_file, ext = os.path.splitext(xacro_file)
-    if ext != '.xacro':
-        raise RuntimeError(f'Input file to xacro must have a .xacro extension, got {xacro_file}')
-    os.system(f'xacro {xacro_file} -o {urdf_file}')
-    return urdf_file
-
 def generate_launch_description():
     xacro_file = get_package_file('myworkcell_support', 'urdf/workcell.urdf.xacro')
-    urdf_file = run_xacro(xacro_file)
+    urdf = xacro.process_file(xacro_file).toprettyxml(indent='  ')
 
     return launch.LaunchDescription([
         launch_ros.actions.Node(
@@ -44,7 +21,7 @@ def generate_launch_description():
             package='robot_state_publisher',
             executable='robot_state_publisher',
             output='screen',
-            arguments=[urdf_file],
+            parameters=[{'robot_description': urdf}],
         ),
         launch_ros.actions.Node(
             name='joint_state_publisher_gui',
