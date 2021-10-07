@@ -79,48 +79,47 @@ Specifically, you will need to:
     </joint>
     ```
 
- 1. Create a new `urdf.launch.py` file (in the `myworkcell_support` package) to load the URDF model and (optionally) display it in rviz. The launch file starts with several utility functions that are useful for assisting the launch process. This particular file uses `get_package_file` to get the path of the `workcell.urdf.xacro` file you've created, and `run_xacro` to send it to the `xacro` program, generating a plain URDF file. This URDF file is then passed to a `robot_state_publisher` node as an argument just as was done manually in the previous exercise.
+ 1. Create a new `urdf.launch.py` file (in the `myworkcell_support` package) to load the URDF model and (optionally) display it in rviz. The launch file starts with several utility functions that are useful for assisting the launch process. This particular file uses `get_package_file` to get the path of the `workcell.urdf.xacro` file you've created, and `xacro.process_file` to generate the URDF as a string object. This URDF string is then passed to a `robot_state_publisher` node as a parameter just as was done manually in the previous exercise.
 
     ```py
-import os
-import launch
-import launch_ros
-import xacro
-
-from ament_index_python import get_package_share_directory
-
-def get_package_file(package, file_path):
-    """Get the location of a file installed in an ament package"""
-    package_path = get_package_share_directory(package)
-    absolute_file_path = os.path.join(package_path, file_path)
-    return absolute_file_path
-
-def generate_launch_description():
-    xacro_file = get_package_file('myworkcell_support', 'urdf/workcell.urdf.xacro')
-    urdf = xacro.process_file(xacro_file).toprettyxml(indent='  ')
-
-    return launch.LaunchDescription([
-        launch_ros.actions.Node(
-            name='robot_state_publisher',
-            package='robot_state_publisher',
-            executable='robot_state_publisher',
-            output='screen',
-            parameters=[{'robot_description': urdf}],
-        ),
-        launch_ros.actions.Node(
-            name='joint_state_publisher_gui',
-            package='joint_state_publisher_gui',
-            executable='joint_state_publisher_gui',
-            output='screen',
-        ),
-        launch_ros.actions.Node(
-            name='rviz',
-            package='rviz2',
-            executable='rviz2',
-            output='screen',
-        )
-    ])
+    import os
+    import launch
+    import launch_ros
+    import xacro
     
+    from ament_index_python import get_package_share_directory
+    
+    def get_package_file(package, file_path):
+        """Get the location of a file installed in an ament package"""
+        package_path = get_package_share_directory(package)
+        absolute_file_path = os.path.join(package_path, file_path)
+        return absolute_file_path
+    
+    def generate_launch_description():
+        xacro_file = get_package_file('myworkcell_support', 'urdf/workcell.urdf.xacro')
+        urdf = xacro.process_file(xacro_file).toprettyxml(indent='  ')
+    
+        return launch.LaunchDescription([
+            launch_ros.actions.Node(
+                name='robot_state_publisher',
+                package='robot_state_publisher',
+                executable='robot_state_publisher',
+                output='screen',
+                parameters=[{'robot_description': urdf}],
+            ),
+            launch_ros.actions.Node(
+                name='joint_state_publisher_gui',
+                package='joint_state_publisher_gui',
+                executable='joint_state_publisher_gui',
+                output='screen',
+            ),
+            launch_ros.actions.Node(
+                name='rviz',
+                package='rviz2',
+                executable='rviz2',
+                output='screen',
+            )
+        ])
     ```
 
  1. Add the urdf folder to the installation rule in your `CMakeLists.txt` so it gets installed where the launch file expects it to be.
