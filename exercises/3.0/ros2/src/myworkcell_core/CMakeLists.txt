@@ -39,12 +39,9 @@ add_executable(myworkcell_node src/myworkcell_node.cpp)
 ament_target_dependencies(myworkcell_node rclcpp)
 rosidl_target_interfaces(myworkcell_node ${PROJECT_NAME} "rosidl_typesupport_cpp")
 
-# Mark executables and/or libraries for installation
+# Mark executables for installation
 install(TARGETS vision_node myworkcell_node
-    ARCHIVE DESTINATION lib/${PROJECT_NAME}
-    LIBRARY DESTINATION lib/${PROJECT_NAME}
-    RUNTIME DESTINATION lib/${PROJECT_NAME}
-)
+    DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

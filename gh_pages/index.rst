@@ -72,7 +72,7 @@ For equivalent ROS1 content, see the :doc:`Legacy Material <_source/legacy>` pag
 Session 3 - Motion Control of Manipulators
 ------------------------------------------
 
-:download:`Slides <_downloads/slides/ROS-I Basic Developers Training - Session 3.pdf>`
+:download:`Slides <_downloads/slides/ROS-I Basic Developers Training (ROS2) - Session 3.pdf>`
 
 *Note*: Due to evolving status of motion planning in ROS2, these exercises are currently a mixture
 of ROS1 and ROS2 material. Some of the exercises refer to the outputs of the ROS1 versions of
@@ -89,7 +89,7 @@ them.
 Session 4 - Descartes and Perception
 ------------------------------------
 
-:download:`Slides <_downloads/slides/ROS-I Basic Developers Training - Session 4.pdf>`
+:download:`Slides <_downloads/slides/ROS-I Basic Developers Training (ROS2) - Session 4.pdf>`
 
 - :doc:`4.0 - Motion Planning using C++ <_source/session4/ros2/0-Motion-Planning-CPP>`
 - :doc:`4.1 - Intro to Descartes <_source/session4/ros1/1-Descartes-Path-Planning>`

@@ -15,9 +15,16 @@ public:
   {
     RCLCPP_INFO(get_logger(), "Attempting to localize part");
 
+    // Wait for service to be available
+    if (!vision_client_->wait_for_service(std::chrono::seconds(5))) {
+      RCLCPP_ERROR(get_logger(), "Unable to find localize_part service. Start vision_node first.");
+      return;
+    }
+
     // Create a request for the LocalizePart service call
     auto request = std::make_shared<myworkcell_core::srv::LocalizePart::Request>();
     request->base_frame = base_frame;
+    RCLCPP_INFO_STREAM(get_logger(), "Requesting pose in base frame: " << base_frame);
 
     auto future = vision_client_->async_send_request(request);
 
@@ -34,7 +41,7 @@ public:
       return;
     }
 
-    RCLCPP_INFO(this->get_logger(), "Part Localized:  x: %f, y: %f, z: %f",
+    RCLCPP_INFO(this->get_logger(), "Part Localized: x: %f, y: %f, z: %f",
         response->pose.position.x,
         response->pose.position.y,
         response->pose.position.z);
@@ -53,8 +60,7 @@ int main(int argc, char **argv)
   // Create the ScanNPlan node
   auto app = std::make_shared<ScanNPlan>();
 
-  std::string base_frame;
-  app->get_parameter("base_frame", base_frame);
+  std::string base_frame = app->get_parameter("base_frame").as_string();
 
   //Wait for the vision node to receive data
   rclcpp::sleep_for(std::chrono::seconds(2));

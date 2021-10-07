@@ -6,10 +6,10 @@
 Now that we’ve got a working MoveIt! configuration for your workcell and we’ve played a bit in RViz with the planning tools, let’s perform planning and motion in code. This exercise will introduce you to the basic C++ interface for interacting with the MoveIt! node in your own program. There are lots of ways to use MoveIt!, but for simple applications this is the most straight forward.
 
 ## Reference Example
-[Move Group Interface tutorial](http://docs.ros.org/melodic/api/moveit_tutorials/html/doc/move_group_interface/move_group_interface_tutorial.html#setup)
+[MoveIt-Cpp tutorial](http://moveit2_tutorials.picknik.ai/doc/moveit_cpp/moveitcpp_tutorial.html)
 
 ## 3. Further Information and Resources
- * [MoveIt! Tutorials](http://docs.ros.org/kinetic/api/moveit_tutorials/html/)
+ * [MoveIt! Tutorials](http://moveit2_tutorials.picknik.ai/)
  * [MoveIt! home-page](http://moveit.ros.org/)
 
 ## Scan-N-Plan Application: Problem Statement
@@ -22,7 +22,7 @@ In this exercise, your goal is to modify the `myworkcell_core` node to:
 
 ### MoveItCpp
 
- For this exercise we will use MoveIt's *MoveItCpp* API, which lets us directly call into the MoveIt libraries from our C++ application. This API is new in MoveIt2. The previous method of the *MoveGroupInterface* API, which calls a separate move group node through ROS services and actions is still available, though it's not the recommended interface.
+ For this exercise we will use MoveIt's *MoveItCpp* API, which lets us directly call into the MoveIt libraries from our C++ application. This API is new in ROS2. ROS1 used a similar *MoveGroupInterface* API (still available in ROS2), which uses ROS services and actions to send commands to a standalone MoveIt node.
 
  1. Add dependencies on the MoveIt packages `moveit_msgs` and `moveit_ros_planning_interface` to `myworkcell_core/CMakeLists.txt`:
 
@@ -32,11 +32,7 @@ In this exercise, your goal is to modify the `myworkcell_core` node to:
 
     ...
 
-    ament_target_dependencies(myworkcell_node
-      rclcpp
-      moveit_msgs
-      moveit_ros_planning_interface
-    )
+    ament_target_dependencies(myworkcell_node rclcpp moveit_msgs moveit_ros_planning_interface )
     ```
 
     and to `package.xml`:
@@ -145,22 +141,18 @@ In this exercise, your goal is to modify the `myworkcell_core` node to:
 
 ### Execution
 
- 1. The `plan` and `execute` functions are all that's needed to get your manipulator to move (with the right parameters) but some support when running MoveIt is needed to have it function properly. Inside the `main` function, insert the following lines before you call `app->start`:
+ 1. The `plan` and `execute` functions are all that's needed to get your manipulator to move (with the right parameters) but we need to tweak the ROS "spin" behavior to allow those functions to run properly.  Inside the `main` function, insert the following lines before you call `app->start`:
 
     ```
     // Start spinning in a background thread so MoveIt internals can execute
-    std::thread worker{
-      [app]()
-      {
-        rclcpp::spin(app);
-      }
-    };
+    std::thread worker{ [app]() { rclcpp::spin(app); } };
+
 
     // Perform MoveIt initialization
     app->setup();
     ```
 
-    This lets ROS process callbacks in a separate worker thread while the main thread remains available for us to define our application logic. This implies we can no longer call any spin functions in the main thread now. Replace the call to `spin_until_future_complete` in the `start` function with a function to simply wait for the future to be ready:
+    This lets ROS process callbacks in a separate worker thread while the main thread remains available for us to define our application logic.  This implies we can no longer call any spin functions in the main thread now. Replace the call to `spin_until_future_complete` in the `start` function with a function to simply wait for the future to be ready:
 
     ```diff
     -if (rclcpp::spin_until_future_complete(this->get_node_base_interface(), future) != rclcpp::executor::FutureReturnCode::SUCCESS)
@@ -201,24 +193,15 @@ In this exercise, your goal is to modify the `myworkcell_core` node to:
         except EnvironmentError: # parent of IOError, OSError *and* WindowsError where available
             return None
 
-    def run_xacro(xacro_file):
-        """Run xacro and output a file in the same directory with the same name, w/o a .xacro suffix"""
-        urdf_file, ext = os.path.splitext(xacro_file)
-        if ext != '.xacro':
-            raise RuntimeError(f'Input file to xacro must have a .xacro extension, got {xacro_file}')
-        os.system(f'xacro {xacro_file} -o {urdf_file}')
-        return urdf_file
-
     def generate_launch_description():
         xacro_file = get_package_file('myworkcell_support', 'urdf/workcell.urdf.xacro')
-        urdf_file = run_xacro(xacro_file)
         srdf_file = get_package_file('myworkcell_moveit_config', 'config/myworkcell.srdf')
         kinematics_file = get_package_file('myworkcell_moveit_config', 'config/kinematics.yaml')
         ompl_config_file = get_package_file('myworkcell_moveit_config', 'config/ompl_planning.yaml')
         joint_limits_file = get_package_file('myworkcell_moveit_config','config/joint_limits.yaml')
         moveit_controllers_file = get_package_file('myworkcell_moveit_config', 'config/controllers.yaml')
 
-        robot_description = load_file(urdf_file)
+        robot_description = xacro.process_file(xacro_file).toprettyxml(indent='  ')
         robot_description_semantic = load_file(srdf_file)
         kinematics_config = load_yaml(kinematics_file)
         ompl_config = load_yaml(ompl_config_file)
@@ -312,6 +295,7 @@ In this exercise, your goal is to modify the `myworkcell_core` node to:
 
     ``` bash
     colcon build
+ 
     ros2 launch myworkcell_moveit_config myworkcell_planning_execution.launch.py
     ros2 launch myworkcell_support workcell.launch.py
     ```

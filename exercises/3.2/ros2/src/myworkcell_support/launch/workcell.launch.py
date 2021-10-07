@@ -20,6 +20,6 @@ def generate_launch_description():
             package='myworkcell_core',
             executable='myworkcell_node',
             output='screen',
-            parameters=[{'base_frame': 'table'}],
+            parameters=[{'base_frame': 'world'}],
         )
     ])

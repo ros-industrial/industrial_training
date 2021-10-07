@@ -21,7 +21,6 @@ find_package(rclcpp REQUIRED)
 find_package(fake_ar_publisher REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
-
 find_package(moveit_msgs REQUIRED)
 find_package(moveit_ros_planning_interface REQUIRED)
 
@@ -39,19 +38,14 @@ add_executable(vision_node src/vision_node.cpp)
 ament_target_dependencies(vision_node rclcpp fake_ar_publisher tf2_ros tf2_geometry_msgs)
 rosidl_target_interfaces(vision_node ${PROJECT_NAME} "rosidl_typesupport_cpp")
 
-# The myworkcell_node executable (Uses MoveItCpp)
+# The myworkcell_node executable
 add_executable(myworkcell_node src/myworkcell_node.cpp)
-ament_target_dependencies(myworkcell_node
-  rclcpp
-  moveit_msgs
-  moveit_ros_planning_interface
-)
+ament_target_dependencies(myworkcell_node rclcpp moveit_msgs moveit_ros_planning_interface)
 rosidl_target_interfaces(myworkcell_node ${PROJECT_NAME} "rosidl_typesupport_cpp")
 
-# Mark executables and/or libraries for installation
+# Mark executables for installation
 install(TARGETS vision_node myworkcell_node
-    RUNTIME DESTINATION lib/${PROJECT_NAME}
-)
+    DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

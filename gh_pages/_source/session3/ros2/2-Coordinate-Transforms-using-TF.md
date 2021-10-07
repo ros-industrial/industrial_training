@@ -7,12 +7,12 @@ TF is a fundamental tool that allows for the lookup the transformation between a
 
 
 ## Reference Example
-[ROS TF2 Listener Tutorial](http://wiki.ros.org/tf2/Tutorials/Writing%20a%20tf2%20listener%20%28C%2B%2B%29) - ROS1 but the functionality is almost identical
+[ROS TF2 Listener Tutorial](https://docs.ros.org/en/foxy/Tutorials/Tf2/Writing-A-Tf2-Listener-Cpp.html)
 
 ## Further Information and Resources
  * [Wiki Documentation](http://wiki.ros.org/tf2) - ROS1 version
- * [TF2 Tutorials](http://wiki.ros.org/tf2/Tutorials) - ROS1 version
- * [TF2 Buffer API](http://docs.ros2.org/foxy/api/tf2_ros/classtf2__ros_1_1Buffer.html) - ROS2 version
+ * [TF2 Tutorials](https://docs.ros.org/en/foxy/Tutorials/Tf2/Tf2-Main.html)
+ * [TF2 Buffer API](http://docs.ros2.org/foxy/api/tf2_ros/classtf2__ros_1_1Buffer.html)
 
 ## Scan-N-Plan Application: Problem Statement
 The part pose information returned by our (simulated) camera is given in the optical reference frame of the camera itself. For the robot to do something with this data, we need to transform the data into the robot’s reference frame.
@@ -75,8 +75,8 @@ Specifically, edit the service callback inside the vision_node to transform the 
            target_pose_from_cam, req->base_frame);
        ```
 
-      - Note: The buffer looks up the transformation between the camera frame and the base frame at the specific time when the message was first generated, which is also recorded in the header of the message.
-      - There are many other _Stamped_ versions messages besides `PoseStamped`. Most of them can also be transformed to different coordinate system using the same method.
+       - Note: The buffer looks up the transformation between the camera frame and the base frame at the specific time when the message was first generated, which is also recorded in the header of the message.
+       - There are many other _Stamped_ versions messages besides `PoseStamped`. Most of them can also be transformed to different coordinate system using the same method.
 
     1. Return the transformed pose in the service response. 
 
@@ -89,6 +89,8 @@ Specifically, edit the service callback inside the vision_node to transform the 
 
     ```
     colcon build
+    
+    <in separate terminals>
     ros2 launch myworkcell_support urdf.launch.py
     ros2 launch myworkcell_support workcell.launch.py
     ```
