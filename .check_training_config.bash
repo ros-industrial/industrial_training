@@ -82,10 +82,12 @@ function check_debs() {
   check_deb mesa-common-dev
   check_deb libglu1-mesa-dev
   check_deb pcl-tools
-  echo "Checking ROS1 packages:"
+  check_deb python3-argcomplete
+   echo "Checking ROS1 packages:"
   check_deb python3-catkin-tools
   check_deb ros-$ROS_RELEASE-desktop
   check_deb ros-$ROS_RELEASE-perception
+  check_deb ros-$ROS_RELEASE-urdf-tutorial
   check_deb ros-$ROS_RELEASE-moveit
   check_deb ros-$ROS_RELEASE-industrial-core
   disable_deb ros-$ROS_RELEASE-openni-launch
@@ -96,8 +98,14 @@ function check_debs() {
   check_deb python3-colcon-bash
   check_deb python3-colcon-core
   check_deb python3-colcon-ros
+  check_deb python3-colcon-common-extensions
   check_deb ros-$ROS2_RELEASE-desktop
   check_deb ros-$ROS2_RELEASE-moveit
+  check_deb ros-$ROS2_RELEASE-ros1-bridge
+  check_deb ros-$ROS2_RELEASE-ros2-control
+  check_deb ros-$ROS2_RELEASE-ros2-controllers
+  check_deb ros-$ROS2_RELEASE-xacro
+  check_deb ros-$ROS2_RELEASE-joint-state-publisher-gui
 }
 
 function check_bashrc() {

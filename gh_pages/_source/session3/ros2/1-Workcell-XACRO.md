@@ -42,7 +42,7 @@ Specifically, you will need to:
 
     > Inspect the UR-provided xacro files at `~/ros2_ws/src/Universal_Robots_ROS2_Driver/ur_description/urdf`.  In particular, compare `ur_macro.xacro` with `ur.urdf.xacro`.  This is a common design pattern: one xacro file defines a macro that can be called to generate a component of the workcell, while a different xacro file _calls_ that macro to actually create the final URDF model.
 
- 1. Locate the xacro file that defines the "ur_robot" macro and include it in your newly renamed `workcell.xacro` file.  Add this include line near the top of your `workcell.xacro` file, beneath the `<robot>` tag:
+ 1. Locate the xacro file that defines the "ur_robot" macro and include it in your newly renamed `workcell.urdf.xacro` file.  Add this include line near the top of your `workcell.urdf.xacro` file, beneath the `<robot>` tag:
 
     ``` xml
     <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro"/>

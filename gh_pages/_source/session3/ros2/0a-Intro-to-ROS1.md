@@ -26,7 +26,7 @@ This exercise is not part of the main "Scan-N-Plan" application.  It helps gain 
 1. ROS1 nodes and workspaces exist separately from ROS2.  Open a NEW terminal and create a workspace to store ROS1 packages:
 
    ```
-   mkdir -p ~/ros1_ws
+   mkdir -p ~/ros1_ws/src
    cd ~/ros1_ws
    source /opt/ros/noetic/setup.bash
    catkin init
