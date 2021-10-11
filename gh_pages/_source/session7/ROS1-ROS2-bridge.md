@@ -40,8 +40,8 @@ procedure is somewhat involved.
 
 1.  Source and build exercise from the top workspace directory.
     ```
-    . /opt/ros/noetic/setup.bash
-    cd ~/catkin_ws/src
+    source /opt/ros/noetic/setup.bash
+    cd ~/catkin_ws
     catkin build    
     ```
 
@@ -239,7 +239,7 @@ as follows to use all four services we previously mapped.
 1.  Build the ROS2 workspace
     ```
     cd ~/colcon_ws
-    . /opt/ros/foxy/setup.bash
+    source /opt/ros/foxy/setup.bash
     colcon build
     ```
 
@@ -262,8 +262,8 @@ as follows to use all four services we previously mapped.
 1.  Source ROS1 and ROS2 setup bash files. This is one of the only times you'll want to mix setup
     files from different ROS distributions.
     ```
-    . ~/catkin_ws/devel/setup.bash
-    . ~/colcon_ws/install/setup.bash
+    source ~/catkin_ws/devel/setup.bash
+    source ~/colcon_ws/install/setup.bash
     ```
 
     You should see a warning about the `ROS_DISTRO` variable being previously set to a different
@@ -276,6 +276,7 @@ as follows to use all four services we previously mapped.
 1.  Build the bridge. This may take a while since it is creating mappings between all known message
     and service types.
     ```
+    cd ~/ros1_bridge_ws
     colcon build --packages-select ros1_bridge --cmake-force-configure --cmake-args -DBUILD_TESTING=FALSE
     ```
 
@@ -291,8 +292,10 @@ as follows to use all four services we previously mapped.
 
 ### Run the ROS1 nodes
 
-1.  In another sourced terminal, run the following launch file.
+1.  Open a new terminal, source your ROS2 workspace, and run the following launch file.
     ```
+    cd ~/catkin_ws
+    source devel/setup.bash
     roslaunch myworkcell_support ros2_setup.launch
     ```
 
@@ -316,7 +319,7 @@ as follows to use all four services we previously mapped.
     ros2 run ros1_bridge dynamic_bridge --bridge-all-topics
     ```
 
-    An alternative to the `dynamic_bridge` would be to use the `parameter_bridge` to define the topic mappings between ROS and ROS2. We are using `--bridge_all_topics` argument to ensure the `dynamic_bridge` will force a connnection to be made, even
+    We are using `--bridge_all_topics` argument to ensure the `dynamic_bridge` will force a connnection to be made, even
     for topics not used in the ROS2 C++ code. This allows a ROS2 terminal to view all of the ROS topics. For example, a mapped message topic (like `ar_marker pose`) would not be bridged otherwise since there is not a ROS2 subscriber in in the C++ code.
 
 ### Run the ROS2 nodes
@@ -355,7 +358,7 @@ information by subscribing to the `ar_marker_pose` topic from the terminal.
 
 Open a new terminal and source to the ROS2 workspace
 ```
-. ~/colcon_ws/install/setup.bash
+source ~/colcon_ws/install/setup.bash
 ```
 
 List the available ROS2 topics. You should see `ar_marker_pose` among the options.
@@ -363,7 +366,7 @@ List the available ROS2 topics. You should see `ar_marker_pose` among the option
 ros2 topic list
 
 ```
-Echo to the topic in your terminal
+Print the topic's messages in your terminal
 ```
 ros2 topic echo /ar_marker_pose
 ```
