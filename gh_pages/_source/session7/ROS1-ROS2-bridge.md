@@ -6,8 +6,8 @@ This is a system integration exercise to demonstrate operation of the ROS1-ROS2 
 bridge. Using the bridge does not require anything different when developing either ROS1 or ROS2
 software, so much of the required code is written in a template. 
 
-This demo is an example of a system where a ROS2 application needs to call a planner that only
-exists as a ROS1 package. Specifically, this demo is calling the Descartes motion planner,
+In this exercise, the ROS1 ARMarker message, which is the goal destination for the robot, must be communicated to the ROS2 application. Then, the ROS2 application needs to call a planner that only
+exists as a ROS1 package. Specifically, this exercise is calling the Descartes motion planner,
 as seen in exercise 4.1. On the ROS1 side, services are provided to generate motion plans and to
 execute them. In order to use these custom services, the bridge needs to be compiled from source 
 with the message definitions in the build environment, which is the bulk of the complexity in this 
@@ -15,12 +15,12 @@ exercise.
 
 ## Building the Demo
 
-This exercise uses the ROS1 bridge to call ROS nodes from ROS2 nodes and therefore the build
+This exercise uses the ROS1 bridge to call ROS1 nodes from ROS2 nodes and therefore the build
 procedure is somewhat involved.
 
-### Create a ROS workspace for exercise 4.1
+### Create a ROS1 workspace for exercise 4.1
 
-1.  Create a catkin workspace for the exercise 4.1 ROS packages and dependencies.
+1.  Create a catkin workspace for the exercise 4.1 ROS1 packages and dependencies.
     ```
     mkdir -p ~/catkin_ws/src
     cd ~/catkin_ws/src
@@ -47,7 +47,7 @@ procedure is somewhat involved.
 
 ### Create the ROS2 workspace
 
-1.  Create a colcon workspace for the exercise 7.2 ROS packages and dependencies. We will copy a
+1.  Create a colcon workspace for the exercise 7.2 ROS1 packages and dependencies. We will copy a
 template with part of the exercise created for you.
     ```
     mkdir -p ~/colcon_ws/src
@@ -57,9 +57,7 @@ template with part of the exercise created for you.
     cp ~/industrial_training/exercises/7.2/template_ws/src ~/colcon_ws/src
     ```
 
-1.  Add the message mapping parameters to the blank file `message_mappings.yaml` inside the package 
-`myworkcell_msgs`. This will map 4 services that we plan on using in our ROS2 node `myworkcell_core/src/myworkcell_core.cpp` package. These are necessary to call the planner in ROS1 and command the robot to execute the trajectory.
-Additionally, we will map one publisher/subscriber message called `ARMarker`.
+1.  Open the blank file located at `~/colcon_ws/src/demo/myworkcell_msgs/message_mappings.yaml`. Add the message mapping parameters to the blank file. This will map 4 services that we plan on using in our ROS2 node (`~/colcon_ws/src/demo/myworkcell_core/src/myworkcell_core.cpp`). These are necessary to call the planner in ROS1 and command the robot to execute the trajectory. Additionally, we will map one publisher/subscriber message called `ARMarker`.
 The final contents of the file should be as follows:
     ```
     -
@@ -89,53 +87,40 @@ The final contents of the file should be as follows:
       ros2_message_name: 'ARMarker'
     ```
 
-1.  Add the definitions and declarations for the services that will be communicated over the bridge.
+1.  Open the ScanNPlan node file file located at `~/colcon_ws/src/demo/myworkcell_msgs/message_mappings.yaml`. Add the definitions and declarations for the services that will be communicated over the bridge when calling the ROS1 planner.
     ```C++
     ScanNPlan(const rclcpp::NodeOptions & options):
     rclcpp::Node(NODE_NAME, options)
-    {
-      //***FILL CODE HERE IN CONSTRUCTOR FOR SERVICES
-      vision_client_ = this->create_client<myworkcell_msgs::srv::LocalizePart>("localize_part");
-      cartesian_client_ = this->create_client<myworkcell_msgs::srv::PlanCartesianPath>("plan_path");
-      move_client_ = this->create_client<myworkcell_msgs::srv::MoveToPose>("move_to_pose");
-      exec_traj_client_ = this->create_client<myworkcell_msgs::srv::ExecuteTrajectory>("execute_trajectory");
-    }
-
-    ~ScanNPlan()
-    {
-    
-    }
-
-    bool start(const std::string& base_frame)
-    {
-      //***FILL CODE HERE TO CALL THE ROS SERVICES OVER THE BRIDGE
-    }
-
-    //***FILL CODE HERE TO DECLARE SERVICES
-    rclcpp::Client<myworkcell_msgs::srv::LocalizePart>::SharedPtr vision_client_;
-    rclcpp::Client<myworkcell_msgs::srv::PlanCartesianPath>::SharedPtr cartesian_client_;
-    rclcpp::Client<myworkcell_msgs::srv::MoveToPose>::SharedPtr move_client_;
-    rclcpp::Client<myworkcell_msgs::srv::ExecuteTrajectory>::SharedPtr exec_traj_client_;
+      {
+        //***FILL CODE HERE IN CONSTRUCTOR FOR SERVICES
+        vision_client_ = this->create_client<myworkcell_msgs::srv::LocalizePart>("localize_part");
+        cartesian_client_ = this->create_client<myworkcell_msgs::srv::PlanCartesianPath>("plan_path");
+        move_client_ = this->create_client<myworkcell_msgs::srv::MoveToPose>("move_to_pose");
+        exec_traj_client_ = this->create_client<myworkcell_msgs::srv::ExecuteTrajectory>("execute_trajectory");
+      }
+  
+      ~ScanNPlan()
+      {
+      
+      }
+  
+      bool start(const std::string& base_frame)
+      {
+        //***FILL CODE HERE TO CALL THE ROS SERVICES OVER THE BRIDGE
+      }
+  
+      //***FILL CODE HERE TO DECLARE SERVICES
+      rclcpp::Client<myworkcell_msgs::srv::LocalizePart>::SharedPtr vision_client_;
+      rclcpp::Client<myworkcell_msgs::srv::PlanCartesianPath>::SharedPtr cartesian_client_;
+      rclcpp::Client<myworkcell_msgs::srv::MoveToPose>::SharedPtr move_client_;
+      rclcpp::Client<myworkcell_msgs::srv::ExecuteTrajectory>::SharedPtr exec_traj_client_;
+    };
     ```
 
-1.  Add a `start()` method that will call the service servers from ROS. The final class from this step
-    and the previous should look like below. 
+1.  Add a `start()` method that will call the service servers from ROS. The final start method should appear
+as follows to use all four services we previously mapped.
+
     ```C++
-    ScanNPlan(const rclcpp::NodeOptions & options):
-    rclcpp::Node(NODE_NAME, options)
-    {
-      //***FILL CODE HERE IN CONSTRUCTOR FOR SERVICES
-      vision_client_ = this->create_client<myworkcell_msgs::srv::LocalizePart>("localize_part");
-      cartesian_client_ = this->create_client<myworkcell_msgs::srv::PlanCartesianPath>("plan_path");
-      move_client_ = this->create_client<myworkcell_msgs::srv::MoveToPose>("move_to_pose");
-      exec_traj_client_ = this->create_client<myworkcell_msgs::srv::ExecuteTrajectory>("execute_trajectory");
-    }
-
-    ~ScanNPlan()
-    {
-      
-    }
-
     bool start(const std::string& base_frame)
     {
       //***FILL CODE HERE TO CALL THE ROS SERVICES OVER THE BRIDGE
@@ -218,12 +203,6 @@ The final contents of the file should be as follows:
       std::cout<<"Trajectory execution complete"<<std::endl;
       return true;
     }
-
-    //***FILL CODE HERE TO DECLARE SERVICES
-    rclcpp::Client<myworkcell_msgs::srv::LocalizePart>::SharedPtr vision_client_;
-    rclcpp::Client<myworkcell_msgs::srv::PlanCartesianPath>::SharedPtr cartesian_client_;
-    rclcpp::Client<myworkcell_msgs::srv::MoveToPose>::SharedPtr move_client_;
-    rclcpp::Client<myworkcell_msgs::srv::ExecuteTrajectory>::SharedPtr exec_traj_client_;
     ```
 
 1.  Add a main method that starts ROS2 and calls the `start()` method after instantiation.
@@ -301,7 +280,7 @@ The final contents of the file should be as follows:
 ---
 ## Run the Demo
 
-### Run the ROS nodes
+### Run the ROS1 nodes
 
 1.  In another sourced terminal, run the following launch file.
     ```
