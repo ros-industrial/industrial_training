@@ -23,38 +23,38 @@ procedure is somewhat involved.
 1.  Create a catkin workspace for the exercise 4.1 ROS1 packages and dependencies.
     ```
     mkdir -p ~/catkin_ws/src
-    cd ~/catkin_ws/src
     ```
 
-1.  Create a symlink to exercise 4.1 in the training repo.
+1.  Copy Exercise 4.1 in the training repo.
     ```
-    cd ~/catkin_ws/src
-    ln -s ~/industrial_training/exercises/4.1/ros1/src demo
+    cp -r ~/industrial_training/exercises/4.1/ros1/src ~/catkin_ws/src
     ```
 
 1.  Clone additional dependencies.
     ```
+    cd ~/catkin_ws/src
     git clone --branch melodic-devel https://github.com/ros-industrial-consortium/descartes.git
     git clone --branch kinetic-devel https://github.com/ros-industrial/universal_robot.git
     git clone --branch master https://github.com/ros-industrial/fake_ar_publisher.git
     ```
 
-1.  Source and build exercise
+1.  Source and build exercise from the top workspace directory.
     ```
     . /opt/ros/noetic/setup.bash
+    cd ~/catkin_ws/src
     catkin build    
     ```
 
 ### Create the ROS2 workspace
 
-1.  Create a colcon workspace for the exercise 7.2 ROS1 packages and dependencies. We will copy a
+1.  In a new terminal, create a colcon workspace for the exercise 7.2 ROS1 packages and dependencies. We will copy a
 template with part of the exercise created for you.
     ```
     mkdir -p ~/colcon_ws/src
     cd ~/colcon_ws/src
     ```
     ```
-    cp ~/industrial_training/exercises/7.2/template_ws/src ~/colcon_ws/src
+    cp -r ~/industrial_training/exercises/7.2/template_ws/src ~/colcon_ws/src/demo
     ```
 
 1.  Open the blank file located at `~/colcon_ws/src/demo/myworkcell_msgs/message_mappings.yaml`. Add the message mapping parameters to the blank file. This will map 4 services that we plan on using in our ROS2 node (`~/colcon_ws/src/demo/myworkcell_core/src/myworkcell_core.cpp`). These are necessary to call the planner in ROS1 and command the robot to execute the trajectory. Additionally, we will map one publisher/subscriber message called `ARMarker`.
@@ -87,10 +87,13 @@ The final contents of the file should be as follows:
       ros2_message_name: 'ARMarker'
     ```
 
-1.  Open the ScanNPlan node file file located at `~/colcon_ws/src/demo/myworkcell_msgs/message_mappings.yaml`. Add the definitions and declarations for the services that will be communicated over the bridge when calling the ROS1 planner.
+1.  Open the ScanNPlan node file file located at `~/colcon_ws/src/demo/myworkcell_core/src/myworkcell_core.cpp`. Add the definitions and declarations for the services that will be communicated over the bridge when calling the ROS1 planner.
     ```C++
-    ScanNPlan(const rclcpp::NodeOptions & options):
-    rclcpp::Node(NODE_NAME, options)
+    class ScanNPlan: public rclcpp::Node
+    {
+    public:
+      ScanNPlan(const rclcpp::NodeOptions & options):
+      rclcpp::Node(NODE_NAME, options)
       {
         //***FILL CODE HERE IN CONSTRUCTOR FOR SERVICES
         vision_client_ = this->create_client<myworkcell_msgs::srv::LocalizePart>("localize_part");
@@ -121,88 +124,88 @@ The final contents of the file should be as follows:
 as follows to use all four services we previously mapped.
 
     ```C++
-    bool start(const std::string& base_frame)
-    {
-      //***FILL CODE HERE TO CALL THE ROS SERVICES OVER THE BRIDGE
-      using namespace myworkcell_msgs::srv;
-
-      // waiting for services
-      std::vector<rclcpp::ClientBase* > clients = {vision_client_.get(),
-                                                   cartesian_client_.get() ,
-                                                   move_client_.get(),
-                                                   exec_traj_client_.get()};
-      if(std::all_of(clients.begin(), clients.end(),[](rclcpp::ClientBase* c){
-        std::cout<<"Waiting for client "<< c->get_service_name()<<std::endl;
-        return c->wait_for_service(std::chrono::seconds(WAIT_SERVICE_PERIOD));
-      }))
+      bool start(const std::string& base_frame)
       {
-        std::cout<<"Found all services"<<std::endl;
-      }
-      else
-      {
-        RCLCPP_ERROR(this->get_logger(), "The service was not found");
-        return false;
-      }
+        //***FILL CODE HERE TO CALL THE ROS SERVICES OVER THE BRIDGE
+        using namespace myworkcell_msgs::srv;
   
-      // sending localization request
-      LocalizePart::Request::SharedPtr req = std::make_shared<LocalizePart::Request>();
-      req->base_frame = base_frame;
-      std::cout<<"Requesting pose in base frame: "<< base_frame << std::endl;
-      //RCLCPP_INFO(this->get_logger(),"Requesting pose in base frame: %s", base_frame.c_str()); // TODO: enable this when   printing to console works again
-  
-      std::shared_future<LocalizePart::Response::SharedPtr> result_future = vision_client_->async_send_request(req);
-      if(rclcpp::spin_until_future_complete(this->get_node_base_interface(),result_future) !=   rclcpp::executor::FutureReturnCode::SUCCESS)
-      {
-        RCLCPP_ERROR(this->get_logger(), "Localize service call failed");
-        return false;
+        // waiting for services
+        std::vector<rclcpp::ClientBase* > clients = {vision_client_.get(),
+                                                     cartesian_client_.get() ,
+                                                     move_client_.get(),
+                                                     exec_traj_client_.get()};
+        if(std::all_of(clients.begin(), clients.end(),[](rclcpp::ClientBase* c){
+          std::cout<<"Waiting for client "<< c->get_service_name()<<std::endl;
+          return c->wait_for_service(std::chrono::seconds(WAIT_SERVICE_PERIOD));
+        }))
+        {
+          std::cout<<"Found all services"<<std::endl;
+        }
+        else
+        {
+          RCLCPP_ERROR(this->get_logger(), "The service was not found");
+          return false;
+        }
+    
+        // sending localization request
+        LocalizePart::Request::SharedPtr req = std::make_shared<LocalizePart::Request>();
+        req->base_frame = base_frame;
+        std::cout<<"Requesting pose in base frame: "<< base_frame << std::endl;
+        //RCLCPP_INFO(this->get_logger(),"Requesting pose in base frame: %s", base_frame.c_str()); // TODO: enable this when     printing to console works again
+    
+        std::shared_future<LocalizePart::Response::SharedPtr> result_future = vision_client_->async_send_request(req);
+        if(rclcpp::spin_until_future_complete(this->get_node_base_interface(),result_future) !=     rclcpp::executor::FutureReturnCode::SUCCESS)
+        {
+          RCLCPP_ERROR(this->get_logger(), "Localize service call failed");
+          return false;
+        }
+    
+        if(!result_future.get()->succeeded)
+        {
+          RCLCPP_ERROR(this->get_logger(), "Could not localize part");
+          return false;
+        }
+    
+        // getting response
+        LocalizePart::Response::SharedPtr res = result_future.get();
+        std::cout<<"Part localized"<<std::endl;
+        geometry_msgs::msg::Pose move_target = res->pose;
+    
+        // moving to pose
+        MoveToPose::Request::SharedPtr move_req = std::make_shared<MoveToPose::Request>();
+        move_req->pose.header.frame_id = base_frame;
+        move_req->pose.pose = move_target;
+        std::shared_future<MoveToPose_Response::SharedPtr> move_future = move_client_->async_send_request(move_req);
+        if(rclcpp::spin_until_future_complete(this->get_node_base_interface(),move_future) !=     rclcpp::executor::FutureReturnCode::SUCCESS)
+        {
+          RCLCPP_ERROR(this->get_logger(),"Failed to move to target");
+          return false;
+        }
+    
+        // planning cartesian path
+        PlanCartesianPath_Request::SharedPtr plan_req = std::make_shared<PlanCartesianPath::Request>();
+        plan_req->pose = move_target;
+        std::cout<<"Planning trajectory"<<std::endl;
+        std::shared_future<PlanCartesianPath_Response::SharedPtr> plan_future = cartesian_client_->async_send_request(plan_req);
+        if(rclcpp::spin_until_future_complete(this->get_node_base_interface(),plan_future) !=     rclcpp::executor::FutureReturnCode::SUCCESS)
+        {
+          RCLCPP_ERROR(this->get_logger(),"Could not plan for path");
+          return false;
+        }
+    
+        // executing
+        ExecuteTrajectory::Request::SharedPtr exec_req = std::make_shared<ExecuteTrajectory::Request>();
+        exec_req->trajectory = plan_future.get()->trajectory;
+        std::cout<<"Executing trajectory"<<std::endl;
+        std::shared_future<ExecuteTrajectory::Response::SharedPtr> exec_future = exec_traj_client_->async_send_request(exec_req);
+        if(rclcpp::spin_until_future_complete(this->get_node_base_interface(), exec_future) !=     rclcpp::executor::FutureReturnCode::SUCCESS)
+        {
+          RCLCPP_ERROR(this->get_logger(),"Failed to execute trajectory");
+          return false;
+        }
+        std::cout<<"Trajectory execution complete"<<std::endl;
+        return true;
       }
-  
-      if(!result_future.get()->succeeded)
-      {
-        RCLCPP_ERROR(this->get_logger(), "Could not localize part");
-        return false;
-      }
-  
-      // getting response
-      LocalizePart::Response::SharedPtr res = result_future.get();
-      std::cout<<"Part localized"<<std::endl;
-      geometry_msgs::msg::Pose move_target = res->pose;
-  
-      // moving to pose
-      MoveToPose::Request::SharedPtr move_req = std::make_shared<MoveToPose::Request>();
-      move_req->pose.header.frame_id = base_frame;
-      move_req->pose.pose = move_target;
-      std::shared_future<MoveToPose_Response::SharedPtr> move_future = move_client_->async_send_request(move_req);
-      if(rclcpp::spin_until_future_complete(this->get_node_base_interface(),move_future) !=   rclcpp::executor::FutureReturnCode::SUCCESS)
-      {
-        RCLCPP_ERROR(this->get_logger(),"Failed to move to target");
-        return false;
-      }
-  
-      // planning cartesian path
-      PlanCartesianPath_Request::SharedPtr plan_req = std::make_shared<PlanCartesianPath::Request>();
-      plan_req->pose = move_target;
-      std::cout<<"Planning trajectory"<<std::endl;
-      std::shared_future<PlanCartesianPath_Response::SharedPtr> plan_future = cartesian_client_->async_send_request(plan_req);
-      if(rclcpp::spin_until_future_complete(this->get_node_base_interface(),plan_future) !=   rclcpp::executor::FutureReturnCode::SUCCESS)
-      {
-        RCLCPP_ERROR(this->get_logger(),"Could not plan for path");
-        return false;
-      }
-  
-      // executing
-      ExecuteTrajectory::Request::SharedPtr exec_req = std::make_shared<ExecuteTrajectory::Request>();
-      exec_req->trajectory = plan_future.get()->trajectory;
-      std::cout<<"Executing trajectory"<<std::endl;
-      std::shared_future<ExecuteTrajectory::Response::SharedPtr> exec_future = exec_traj_client_->async_send_request(exec_req);
-      if(rclcpp::spin_until_future_complete(this->get_node_base_interface(), exec_future) !=   rclcpp::executor::FutureReturnCode::SUCCESS)
-      {
-        RCLCPP_ERROR(this->get_logger(),"Failed to execute trajectory");
-        return false;
-      }
-      std::cout<<"Trajectory execution complete"<<std::endl;
-      return true;
-    }
     ```
 
 1.  Add a main method that starts ROS2 and calls the `start()` method after instantiation.
@@ -233,10 +236,16 @@ as follows to use all four services we previously mapped.
       return 0;
     }
     ```
+1.  Build the ROS2 workspace
+    ```
+    cd ~/colcon_ws
+    . /opt/ros/foxy/setup.bash
+    colcon build
+    ```
 
 ### Build the ROS1 Bridge 
 
-1.  Create the ros1_bridge workspace. We build the bridge in a separate workspace because it needs
+1.  Open a new terminal. Create the ros1_bridge workspace. We build the bridge in a separate workspace because it needs
     to see both ROS1 and ROS2 packages in its environment and we want to make sure our application
     workspaces only see the packages from the distribution they are in.
     ```
