@@ -19,9 +19,11 @@ endif()
 find_package(ament_cmake REQUIRED)
 
 # find the ROS message code generators
+find_package(builtin_interfaces REQUIRED)	
 find_package(rosidl_default_generators REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(trajectory_msgs REQUIRED)
+#find_package(rosidl_default_generators REQUIRED)
 
 # declare the service files to generate code for
 set(srv_files
@@ -33,8 +35,14 @@ set(srv_files
 
 rosidl_generate_interfaces(${PROJECT_NAME}
    ${srv_files}
-   DEPENDENCIES geometry_msgs trajectory_msgs
+   "msg/ARMarker.msg"
+   DEPENDENCIES geometry_msgs trajectory_msgs builtin_interfaces
 )
+
+#rosidl_generate_interfaces(new_msg
+#  "msg/ARMarker.msg"
+#  DEPENDENCIES builtin_interfaces
+#)
 
 ament_export_dependencies(rosidl_default_runtime)
 ament_package()

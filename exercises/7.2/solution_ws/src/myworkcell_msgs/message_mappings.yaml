@@ -13,3 +13,13 @@
   ros1_service_name: 'ExecuteTrajectory'
   ros2_package_name: 'myworkcell_msgs'
   ros2_service_name: 'ExecuteTrajectory'
+-
+  ros1_package_name: 'myworkcell_core'
+  ros1_service_name: 'LocalizePart'
+  ros2_package_name: 'myworkcell_msgs'
+  ros2_service_name: 'LocalizePart' 
+-
+  ros1_package_name: 'fake_ar_publisher'
+  ros1_message_name: 'ARMarker'
+  ros2_package_name: 'myworkcell_msgs'
+  ros2_message_name: 'ARMarker'
