@@ -58,7 +58,7 @@ Build Code and Run
     .. code-block:: shell
 
       cd ~/perception_driven_ws
-      colcon build --packages-select pick_and_place_application
+      colcon build
       source install/setup.bash
 
 * Run the supporting nodes with the launch file:

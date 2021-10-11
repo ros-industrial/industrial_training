@@ -53,7 +53,7 @@ Build Code and Run
 
     .. code-block:: shell
 
-      colcon build --packages-select pick_and_place_application
+      colcon build
 
 * Run the supporting nodes with the launch file:
 
