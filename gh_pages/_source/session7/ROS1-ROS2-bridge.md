@@ -20,19 +20,19 @@ procedure is somewhat involved.
 
 ### Create a ROS workspace for exercise 4.1
 
-1.  Create a catkin workspace for the exercise 4.1 ROS packages and dependencies
+1.  Create a catkin workspace for the exercise 4.1 ROS packages and dependencies.
     ```
     mkdir -p ~/catkin_ws/src
     cd ~/catkin_ws/src
     ```
 
-1.  Create a symlink to exercise 4.1 in the training repo
+1.  Create a symlink to exercise 4.1 in the training repo.
     ```
     cd ~/catkin_ws/src
     ln -s ~/industrial_training/exercises/4.1/ros1/src demo
     ```
 
-1.  Clone additional dependencies
+1.  Clone additional dependencies.
     ```
     git clone --branch melodic-devel https://github.com/ros-industrial-consortium/descartes.git
     git clone --branch kinetic-devel https://github.com/ros-industrial/universal_robot.git
@@ -57,7 +57,10 @@ template with part of the exercise created for you.
     cp ~/industrial_training/exercises/7.2/template_ws/src ~/colcon_ws/src
     ```
 
-1.  Add the message mapping parameters to the `message_mappings.yaml`.
+1.  Add the message mapping parameters to the blank file `message_mappings.yaml` inside the package 
+`myworkcell_msgs`. This will map 4 services that we plan on using in our ROS2 node `myworkcell_core/src/myworkcell_core.cpp` package. These are necessary to call the planner in ROS1 and command the robot to execute the trajectory.
+Additionally, we will map one publisher/subscriber message called `ARMarker`.
+The final contents of the file should be as follows:
     ```
     -
       ros1_package_name: 'myworkcell_core'
@@ -86,7 +89,7 @@ template with part of the exercise created for you.
       ros2_message_name: 'ARMarker'
     ```
 
-1.  Add the definitions and declarations for the services that will be communicated over the bridge
+1.  Add the definitions and declarations for the services that will be communicated over the bridge.
     ```C++
     ScanNPlan(const rclcpp::NodeOptions & options):
     rclcpp::Node(NODE_NAME, options)
@@ -223,7 +226,7 @@ template with part of the exercise created for you.
     rclcpp::Client<myworkcell_msgs::srv::ExecuteTrajectory>::SharedPtr exec_traj_client_;
     ```
 
-1.  Add a main method that starts ROS2 and calls the `start()` method after instantiation
+1.  Add a main method that starts ROS2 and calls the `start()` method after instantiation.
     ```C++
     int main(int argc, char** argv)
     {
@@ -263,7 +266,7 @@ template with part of the exercise created for you.
     ```
 
 1.  Clone the ROS1 bridge into your ROS2 workspace, selecting the branch that matches your ROS
-    release
+    release.
     ```
     git clone -b foxy https://github.com/ros2/ros1_bridge.git
     ```
@@ -277,7 +280,7 @@ template with part of the exercise created for you.
 
     You should see a warning about the `ROS_DISTRO` variable being previously set to a different
     value.  Now the environment contains references to both distributions which can be verified by
-    observing the CMake path:
+    observing the CMake path.
     ```
     echo $CMAKE_PREFIX_PATH | tr ':' '\n'
     ```
@@ -288,7 +291,7 @@ template with part of the exercise created for you.
     colcon build --packages-select ros1_bridge --cmake-force-configure --cmake-args -DBUILD_TESTING=FALSE
     ```
 
-1.  List the mapped message and service pairs
+1.  List the mapped message and service pairs.
     ```
     source install/local_setup.bash
     ros2 run ros1_bridge dynamic_bridge --print-pairs
@@ -309,23 +312,24 @@ template with part of the exercise created for you.
 
 ### Run the ROS1 bridge
 
-1.  In your ros1_bridge_ws ROS2 workspace, source the workspace if you haven't
+1.  In your ros1_bridge_ws ROS2 workspace, source the workspace if you have not already.
     ```
     cd ~/ros1_bridge_ws
     source install/setup.bash
     ```
 
-1.  Export the _ROS_MASTER_URI_ environment variable
+1.  Export the _ROS_MASTER_URI_ environment variable.
     ```
     export ROS_MASTER_URI=http://localhost:11311
     ```
 
-1.  Run the bridge
+1.  Run the bridge.
     ```
     ros2 run ros1_bridge dynamic_bridge --bridge-all-topics
     ```
 
-    An alternative to the `dynamic_bridge` would be to use the `parameter_bridge` to define the topic matchings between ROS and ROS2. We are using `--bridge_all_topics` argument to ensure the `dynamic_bridge` will force the connnection to be made so a ROS2 terminal can view all of the ROS topics. A mapped message topic (like `ar_marker pose`) would not be bridged otherwise since there is not a ROS2 subscriber in in the C++ code.
+    An alternative to the `dynamic_bridge` would be to use the `parameter_bridge` to define the topic mappings between ROS and ROS2. We are using `--bridge_all_topics` argument to ensure the `dynamic_bridge` will force a connnection to be made, even
+    for topics not used in the ROS2 C++ code. This allows a ROS2 terminal to view all of the ROS topics. For example, a mapped message topic (like `ar_marker pose`) would not be bridged otherwise since there is not a ROS2 subscriber in in the C++ code.
 
 ### Run the ROS2 nodes
 
