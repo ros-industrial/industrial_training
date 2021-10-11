@@ -9,7 +9,7 @@ Locate Function
 ---------------
 
 * In the main program, locate the function call to
-  ``application.set_gripper()``.
+  ``application.actuateGripper()``.
 * Go to the source file of that function by clicking in any part of the
   function and pressing :kbd:`F2` in QtCreator.
 * Remove the first line containing the following ``ROS_ERROR_STREAM ...`` so
@@ -36,9 +36,9 @@ Complete Code
 
   .. code-block:: cpp
 
-    grasp_goal.goal = object_manipulation_msgs::GraspHandPostureExecutionGoal::GRASP;
-    grasp_goal.goal = object_manipulation_msgs::GraspHandPostureExecutionGoal::RELEASE;
-    grasp_goal.goal = object_manipulation_msgs::GraspHandPostureExecutionGoal::PRE_GRASP;
+    grasp_goal.goal = pick_and_place_msgs::action::ExecuteGraspMove::Goal::GRASP;
+    grasp_goal.goal = pick_and_place_msgs::action::ExecuteGraspMove::Goal::RELEASE;
+    grasp_goal.goal = pick_and_place_msgs::action::ExecuteGraspMove::Goal::PRE_GRASP;
 
 * Once the grasp flag has been set, you can send the goal through the grasp
   action client. 
@@ -55,31 +55,33 @@ Build Code and Run
 
     .. code-block:: shell
 
-      catkin build collision_avoidance_pick_and_place
+      cd ~/perception_driven_ws
+      colcon build
 
 * Run the supporting nodes with the launch file:
 
   .. code-block:: shell
 
-    roslaunch collision_avoidance_pick_and_place ur5_setup.launch
+    ros2 launch pick_and_place_application application_setup.launch.py
 
 * In another terminal, run your node with the launch file:
 
   .. code-block:: shell
 
-    roslaunch collision_avoidance_pick_and_place ur5_pick_and_place.launch
+    ros2 launch pick_and_place_application application_run.launch.py
 
 * If the task succeeds you will see something like the below in the
   terminal. The robot will not move, only gripper I/O is triggered:
 
   .. code-block:: text
 
-    [ INFO] [1400553290.464877904]: Move wait Succeeded
-    [ INFO] [1400553290.720864559]: Gripper opened
-    [ERROR] [1400553290.720985315]: detect_box_pick is not implemented yet.  Aborting.
+    [INFO] [1400553290.464877904] [pick_and_place_node]: Move wait Succeeded
+    [INFO] [1400553290.720864559] [pick_and_place_node]: Gripper opened
+    [ERROR] [1400553290.720985315] [pick_and_place_node]: detectBox is not implemented yet.  Aborting.
 
 
 API References
 --------------
 
-* `sendGoal() <http://docs.ros.org/melodic/api/actionlib/html/classactionlib_1_1SimpleActionClient.html#ae6a2e6904495e7c20c59e96af0d86801>`_
+* `async_send_goal() <https://docs.ros2.org/foxy/api/rclcpp_action/classrclcpp__action_1_1Client.html#ae0cf05dc5dee2a1c5d590569b64cba08>`_
+* `wait_for() <https://en.cppreference.com/w/cpp/thread/shared_future/wait_for>`_

@@ -13,13 +13,13 @@ Open the file :file:`pick_and_place_utilities.h` in the following directory:
 
 .. code-block::
 
-  [workspace source directory]/collision_avoidance_pick_and_place/include/collision_avoidance_pick_and_place/
+  [workspace source directory]/pick_and_place_application/include/pick_and_place_application/
 
-The C++ class ``pick_and_place_config`` defines public global variables used
+The C++ class ``PickAndPlaceConfig`` defines public global variables used
 in various parts of the program. These variables are listed below:
 
-.. literalinclude:: /../exercises/Perception-Driven_Manipulation/template_ws/src/collision_avoidance_pick_and_place/include/collision_avoidance_pick_and_place/pick_and_place_utilities.h
-  :start-after: pick_and_place_config()
+.. literalinclude:: /../exercises/Perception-Driven_Manipulation/ros2/template_ws/src/pick_and_place_application/include/pick_and_place_application/pick_and_place_utilities.h 
+  :start-after: PickAndPlaceConfig()
   :lines: 2-
   :dedent: 4
   :end-before: }
@@ -41,9 +41,9 @@ Node Initialization
 
 In the :file:`pick_and_place_node.cpp` file, the following block of code in
 the ``main`` function initializes the ``PickAndPlace`` application class and
-its main ROS and MoveIt! components.
+its main ROS components.
 
-.. literalinclude:: /../exercises/Perception-Driven_Manipulation/template_ws/src/collision_avoidance_pick_and_place/src/nodes/pick_and_place_node.cpp
-  :start-at: int main(int argc,char** argv)
-  :end-at: new GraspActionClient
+.. literalinclude:: /../exercises/Perception-Driven_Manipulation/ros2/template_ws/src/pick_and_place_application/src/nodes/pick_and_place_node.cpp
+  :start-at: int main(int argc, char** argv)
+  :end-before: /* ========================================*/
   :language: cpp

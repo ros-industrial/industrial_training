@@ -14,7 +14,7 @@ using moveit::planning_interface::MoveItErrorCode;
 
 void pick_and_place_application::PickAndPlaceApp::moveToWaitPosition()
 {
-  RCLCPP_ERROR(node->get_logger(),"move_to_wait_position is not implemented yet.  Aborting."); exit(1);
+  RCLCPP_ERROR(node->get_logger(),"moveToWaitPosition is not implemented yet.  Aborting."); exit(1);
 
   if (!moveit_cpp->getPlanningSceneMonitor()->requestPlanningSceneState())
   {
@@ -35,7 +35,7 @@ void pick_and_place_application::PickAndPlaceApp::moveToWaitPosition()
      * Goal:
      * - Set robot wait target
      * Hints:
-     * - Use the "setNamedTarget" method in the "move_group_ptr" object.
+     * - Use the "setGoal" method in the "planning_component" object.
      * - The "WAIT_POSE_NAME" variable is a member of the "cfg" object.
      */
   // UNCOMMENT AND COMPLETE: planning_component.setGoal(...);

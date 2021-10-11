@@ -11,7 +11,7 @@ geometry_msgs::msg::Pose pick_and_place_application::PickAndPlaceApp::detectBox(
   using RequestType = pick_and_place_msgs::srv::GetTargetPose::Request;
   using ResponseType = pick_and_place_msgs::srv::GetTargetPose::Response;
 
-  RCLCPP_ERROR_STREAM(node->get_logger(),"detect_box_pick is not implemented yet.  Aborting."); exit(1);
+  RCLCPP_ERROR_STREAM(node->get_logger(),"detectBox is not implemented yet.  Aborting."); exit(1);
 
   // creating shape for recognition
   shape_msgs::msg::SolidPrimitive shape;

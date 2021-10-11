@@ -8,13 +8,13 @@
 
   Hints:
     - You can manipulate the "world_to_tcp_tf" transform through the "setOrigin" and "setRotation".
-    - Look into the "create_manipulation_poses" function and observe how each pick pose is created.
+    - Look into the "createManipulationPoses" function and observe how each pick pose is created.
 */
 
 std::vector<geometry_msgs::msg::Pose>
 pick_and_place_application::PickAndPlaceApp::computePickToolPoses(geometry_msgs::msg::Pose& box_pose)
 {
-  RCLCPP_ERROR_STREAM(node->get_logger(), "create_pick_moves is not implemented yet.  Aborting."); exit(1);
+  RCLCPP_ERROR_STREAM(node->get_logger(), "computePickToolPoses is not implemented yet.  Aborting."); exit(1);
 
   // transforms relative to world
   tf2::Transform tcp_at_box_tf;  // transform of tcp at box pick location relative to world
