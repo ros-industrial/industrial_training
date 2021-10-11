@@ -59,22 +59,23 @@ Build Code and Run
 
       cd ~/perception_driven_ws
       colcon build
-      source install/setup.bash
 
-* Run the supporting nodes with the launch file:
+* In a new fresh terminal, launch the supporting nodes:
 
   .. code-block:: shell
 
+    source ~/perception_driven_ws/install/setup.bash
     ros2 launch pick_and_place_application application_setup.launch.py
 
-* In another terminal, run your node with the launch file:
+* In another fresh terminal, launch the application node:
 
   .. code-block:: shell
 
+    source ~/perception_driven_ws/install/setup.bash
     ros2 launch pick_and_place_application application_run.launch.py
 
 * If the robot is not already in the wait position, it should move to it.
- 
+
 In the terminal, you should see something like this:
 
 .. code-block:: text

@@ -43,7 +43,7 @@ Build your workspace
 Source the workspace
 --------------------
 
-Run the following command from your workspace parent directory
+In a new terminal (where you didn't build the workspace), run the following command from your workspace parent directory to enable the ROS tools to see the new packages
 
 .. code-block:: shell
 
