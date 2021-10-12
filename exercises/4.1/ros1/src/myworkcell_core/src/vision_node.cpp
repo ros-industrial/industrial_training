@@ -41,6 +41,7 @@ public:
           target_pose_from_cam, req.base_frame);
 
       res.pose = target_pose_from_req.pose;
+      res.succeeded = true;
       return true;
     }
 
