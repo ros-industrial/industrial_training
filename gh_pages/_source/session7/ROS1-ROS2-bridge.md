@@ -3,12 +3,12 @@
 ## Introduction
 
 This is a system integration exercise to demonstrate operation of the ROS1-ROS2 topic and service
-bridge. Using the bridge does not require anything different when developing either ROS1 or ROS2
-software, so much of the required code is written in a template. 
+bridge. Using the bridge does not require new techniques when developing either ROS1 or ROS2
+software, so much of the required code is provided to you in a template workspace (`~/industrial_training/exercises/7.2/template_ws/src`). Instead, we will focus on developing code that interfaces with the `ros1_bridge` package.
 
-In this exercise, the ROS1 ARMarker message, which is the goal destination for the robot, must be communicated to the ROS2 application. Then, the ROS2 application needs to call a planner that only
-exists as a ROS1 package. Specifically, this exercise is calling the Descartes motion planner,
-as seen in exercise 4.1. On the ROS1 side, services are provided to generate motion plans and to
+In this exercise, the ROS1 `ARMarker` message, which is the goal destination for the robot, must be communicated to the ROS2 application. Then, the ROS2 application needs to use service clients to call a planner that only
+exists as a ROS1 package. Specifically, this exercise calls the Descartes motion planner
+as seen in Exercise 4.1. On the ROS1 side, service servers are provided to generate motion plans and to
 execute them. In order to use these custom services, the bridge needs to be compiled from source 
 with the message definitions in the build environment, which is the bulk of the complexity in this 
 exercise.
@@ -20,14 +20,14 @@ procedure is somewhat involved.
 
 ### Create a ROS1 workspace for exercise 4.1
 
-1.  Create a catkin workspace for the exercise 4.1 ROS1 packages and dependencies.
+1.  Open a new terminal. Create a catkin workspace for the exercise 4.1 ROS1 packages and dependencies.
     ```
     mkdir -p ~/catkin_ws/src
     ```
 
 1.  Copy Exercise 4.1 in the training repo.
     ```
-    cp -r ~/industrial_training/exercises/4.1/ros1/src ~/catkin_ws/src
+    cp -r ~/industrial_training/exercises/4.1/ros1/src ~/catkin_ws/src/demo
     ```
 
 1.  Clone additional dependencies.
@@ -57,8 +57,12 @@ template with part of the exercise created for you.
     cp -r ~/industrial_training/exercises/7.2/template_ws/src ~/colcon_ws/src/demo
     ```
 
-1.  Open the blank file located at `~/colcon_ws/src/demo/myworkcell_msgs/message_mappings.yaml`. Add the message mapping parameters to the blank file. This will map 4 services that we plan on using in our ROS2 node (`~/colcon_ws/src/demo/myworkcell_core/src/myworkcell_core.cpp`). These are necessary to call the planner in ROS1 and command the robot to execute the trajectory. Additionally, we will map one publisher/subscriber message called `ARMarker`.
-The final contents of the file should be as follows:
+1.  Open the blank file located at the following directory:
+    ```
+    gedit ~/colcon_ws/src/demo/myworkcell_msgs/message_mappings.yaml
+    ```
+    Add the message mapping parameters to the blank file. This will map four services that we plan on using in our ROS2 node (`~/  colcon_ws/src/demo/myworkcell_core/src/myworkcell_core.cpp`). These are necessary to call the planner in ROS1 and command the robot to execute the trajectory. Additionally, we will map one publisher/subscriber message called `ARMarker`,
+    but the ROS2 C++ code will not require this message. We will use it in the terminal in the later section called "Communicate a Publisher/subscriber topic over the bridge." The final contents of the YAML file should be as follows:
     ```
     -
       ros1_package_name: 'myworkcell_core'
@@ -87,7 +91,15 @@ The final contents of the file should be as follows:
       ros2_message_name: 'ARMarker'
     ```
 
-1.  Open the ScanNPlan node file file located at `~/colcon_ws/src/demo/myworkcell_core/src/myworkcell_core.cpp`. Add the definitions and declarations for the services that will be communicated over the bridge when calling the ROS1 planner.
+    Save and close the file `~/colcon_ws/src/demo/myworkcell_msgs/message_mappings.yaml`.
+
+1.  Open the ScanNPlan node file file at the following directory:
+    ```
+    gedit ~/colcon_ws/src/demo/myworkcell_core/src/myworkcell_core.cpp
+    ```
+    
+    Add the definitions and declarations for the services that will be communicated over the bridge when calling the ROS1 planner.
+
     ```C++
     class ScanNPlan: public rclcpp::Node
     {
@@ -120,7 +132,7 @@ The final contents of the file should be as follows:
     };
     ```
 
-1.  Add a `start()` method that will call the service servers from ROS. The final start method should appear
+1.  Add a `start()` method that will call the service servers from ROS1. The final start method should appear
 as follows to use all four services we previously mapped.
 
     ```C++
@@ -236,6 +248,8 @@ as follows to use all four services we previously mapped.
       return 0;
     }
     ```
+    Save and close the file `~/colcon_ws/src/demo/myworkcell_core/src/myworkcell_core.cpp`.
+
 1.  Build the ROS2 workspace
     ```
     cd ~/colcon_ws
@@ -285,21 +299,35 @@ as follows to use all four services we previously mapped.
     source install/local_setup.bash
     ros2 run ros1_bridge dynamic_bridge --print-pairs
     ```
-    This should list the custom `myworkcell_msgs(ROS2) <-> myworkcell_core` mapped services
+    This should list the custom mapped services.
+
+    >- `'myworkcell_msgs/srv/ExecuteTrajectory' (ROS 2) <=> 'myworkcell_core/ExecuteTrajectory' (ROS 1)`
+    >- `'myworkcell_msgs/srv/LocalizePart' (ROS 2) <=> 'myworkcell_core/LocalizePart' (ROS 1)`
+    >- `'myworkcell_msgs/srv/MoveToPose' (ROS 2) <=> 'myworkcell_core/MoveToPose' (ROS 1)`
+    >- `'myworkcell_msgs/srv/PlanCartesianPath' (ROS 2) <=> 'myworkcell_core/PlanCartesianPath' (ROS 1)`
+
+    The command should also list the custom mapped topic message. 
+    
+    >`'myworkcell_msgs/msg/ARMarker' (ROS 2) <=> 'fake_ar_publisher/ARMarker' (ROS 1)`
+    
+    If you struggle to verify this information in the lengthy terminal output, use `grep` to simplify the terminal output.
+    ```
+    ros2 run ros1_bridge dynamic_bridge --print-pairs | grep myworkcell
+    ```
 
 ---
 ## Run the Demo
 
 ### Run the ROS1 nodes
 
-1.  Open a new terminal, source your ROS2 workspace, and run the following launch file.
+1.  Open a new terminal, source your ROS1 workspace, and run the following launch file.
     ```
     cd ~/catkin_ws
     source devel/setup.bash
     roslaunch myworkcell_support ros2_setup.launch
     ```
 
-    This will launch the motion planning and motion execution nodes is ROS.  Rviz will come up as well.
+    This will launch the motion planning and motion execution nodes is ROS1. Rviz will come up as well.
 
 ### Run the ROS1 bridge
 
@@ -320,7 +348,7 @@ as follows to use all four services we previously mapped.
     ```
 
     We are using `--bridge_all_topics` argument to ensure the `dynamic_bridge` will force a connnection to be made, even
-    for topics not used in the ROS2 C++ code. This allows a ROS2 terminal to view all of the ROS topics. For example, a mapped message topic (like `ar_marker pose`) would not be bridged otherwise since there is not a ROS2 subscriber in in the C++ code.
+    for topics not used in the ROS2 C++ code. This allows a ROS2 terminal to view all of the ROS1 topics. For example, without the `--bridge_all_topics` argument, a mapped message topic like `ar_pose_marker` would not be bridged since there is not a ROS2 subscriber in in the C++ code.
 
 ### Run the ROS2 nodes
 
@@ -336,47 +364,50 @@ as follows to use all four services we previously mapped.
     ```
     If the program succeeds you should see the following output:
 
-    > [myworkcell_node-2] Got base_frame parameter world  
-    > [myworkcell_node-2] Waiting for client /localize_part  
-    > [myworkcell_node-2] Waiting for client /plan_path  
-    > [myworkcell_node-2] Waiting for client /move_to_pose  
-    > [myworkcell_node-2] Waiting for client /execute_trajectory  
-    > [myworkcell_node-2] Found all services  
-    > [myworkcell_node-2] Requesting pose in base frame: world  
-    > [myworkcell_node-2] Part localized  
-    > [myworkcell_node-2] Planning trajectory  
-    > [myworkcell_node-2] Executing trajectory  
-    > [myworkcell_node-2] Trajectory execution complete  
+    > `[INFO] [myworkcell_node-1]: process started with pid [522184]`
+    > `[myworkcell_node-1] Got base_frame parameter world`
+    > `[myworkcell_node-1] Waiting for client /localize_part`
+    > `[myworkcell_node-1] Waiting for client /plan_path`
+    > `[myworkcell_node-1] Waiting for client /move_to_pose`
+    > `[myworkcell_node-1] Waiting for client /execute_trajectory`
+    > `[myworkcell_node-1] Found all services`
+    > `[myworkcell_node-1] Requesting pose in base frame: world`
+    > `[myworkcell_node-1] Part localized`
+    > `[myworkcell_node-1] Planning trajectory`
+    > `[myworkcell_node-1] Executing trajectory`
+    > `[myworkcell_node-1] Trajectory execution complete`
+    > `[INFO] [myworkcell_node-1]: process has finished cleanly [pid 522184]`
 
     You should also see the robot moving accordingly in the Rviz window.
 
 ### Communicate a Publisher/subscriber topic over the bridge:
 
-The information for the AR Marker is already communicated over the bridge using the ROS1 Service 
+The information for the ARMarker message is already communicated over the bridge using the ROS1 Service 
 Server `localize_part`. However, we will practice using a custom topic message to confirm the
-information by subscribing to the `ar_marker_pose` topic from the terminal.
+information by subscribing to the `ar_pose_marker` topic from the terminal.
 
 Open a new terminal and source to the ROS2 workspace
 ```
 source ~/colcon_ws/install/setup.bash
 ```
 
-List the available ROS2 topics. You should see `ar_marker_pose` among the options.
+List the available ROS2 topics. You should see `ar_pose_marker` among the options.
 ```
 ros2 topic list
 
 ```
 Print the topic's messages in your terminal
 ```
-ros2 topic echo /ar_marker_pose
+ros2 topic echo /ar_pose_marker
 ```
 
-You should see the marker goal pose, that was used for motion planning in the previous section, displayed in the terminal.
+Displayed in the terminal, you should see the marker goal pose that was used for motion
+planning in the previous section called "Run the ROS2 nodes."
 
----
+<!-- ---
 ## Issues:
   * **Problem**: The application only runs successfully once, the next run will fail due to a tf
     lookup operation in the vision_node.  This likely happens due to the bridge removing the
     bridging for all `/tf` topics after the application ends.
 
-   * **Solution**: Restart the `ros1_bridge` and then the `workcell.launch.py` application.
+   * **Solution**: Restart the `ros1_bridge` and then the `workcell.launch.py` application. -->
