@@ -45,6 +45,22 @@ procedure is somewhat involved.
     catkin build    
     ```
 
+    From the above steps, the ROS1 catkin workspace is being provided without requiring edits. Take note of the
+    critical components that will be communicated over the bridge. 
+    
+    There is an `ARMarker` topic message (directory `~/catkin_ws/src/fake_ar_publisher/msg`) published by the node within `fake_ar_publisher.cpp` (directory `~/catkin_ws/src/fake_ar_publisher/src`). 
+    
+    Additionally, there are service messages (directory `~/catkin_ws/src/demo/myworkcell_core/srv`), and the service servers will be adverstized by nodes (directory `~/catkin_ws/src/demo/myworkcell_core/src/`).
+
+    > Service message `LocalizePart`      advertised by node within `vision_node.cpp`
+    
+    > Service message `PlanCartesianPath` advertised by node within `descartes_node.cpp`
+    
+    > Service message `ExecuteTrajectory` advertised by node within `move_robot.cpp`
+    
+    > Service message `MoveToPose`        advertised by node within `move_robot.cpp`
+
+
 ### Create the ROS2 workspace
 
 1.  In a new terminal, create a colcon workspace for the exercise 7.2 ROS1 packages and dependencies. We will copy a
@@ -250,7 +266,7 @@ as follows to use all four services we previously mapped.
     ```
     Save and close the file `~/colcon_ws/src/demo/myworkcell_core/src/myworkcell_core.cpp`.
 
-1.  Build the ROS2 workspace
+1.  Build the ROS2 workspace.
     ```
     cd ~/colcon_ws
     source /opt/ros/foxy/setup.bash
@@ -352,13 +368,13 @@ as follows to use all four services we previously mapped.
 
 ### Run the ROS2 nodes
 
-1.  Open a new terminal and source your ROS2 workspace
+1.  Open a new terminal and source your ROS2 workspace.
     ```
     cd ~/colcon_ws
     source install/setup.bash
     ```
 
-1.  Run the python launch file that starts the ROS2 nodes for this application
+1.  Run the python launch file that starts the ROS2 nodes for this application.
     ```
     ros2 launch myworkcell_core workcell.launch.py
     ```
@@ -382,11 +398,9 @@ as follows to use all four services we previously mapped.
 
 ### Communicate a Publisher/subscriber topic over the bridge:
 
-The information for the ARMarker message is already communicated over the bridge using the ROS1 Service 
-Server `localize_part`. However, we will practice using a custom topic message to confirm the
-information by subscribing to the `ar_pose_marker` topic from the terminal.
+The information for the ARMarker message is already communicated over the bridge using the ROS1 Service Server `localize_part`. However, we will practice using a custom topic message to confirm the information by subscribing to the `ar_pose_marker` topic from the terminal.
 
-Open a new terminal and source to the ROS2 workspace
+Open a new terminal and source to the ROS2 workspace.
 ```
 source ~/colcon_ws/install/setup.bash
 ```
@@ -396,7 +410,7 @@ List the available ROS2 topics. You should see `ar_pose_marker` among the option
 ros2 topic list
 
 ```
-Print the topic's messages in your terminal
+Print the topic's messages in your terminal.
 ```
 ros2 topic echo /ar_pose_marker
 ```
