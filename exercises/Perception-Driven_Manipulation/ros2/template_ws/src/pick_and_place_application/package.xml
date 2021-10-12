@@ -34,6 +34,7 @@
   <exec_depend>warehouse_ros_mongo</exec_depend>
   <exec_depend>tf2_ros</exec_depend>
   <exec_depend>rviz2</exec_depend>  
+  <exec_depend>moveit_ros_perception</exec_depend> 
   <exec_depend>moveit_ros_move_group</exec_depend>
   <exec_depend>moveit_ros_occupancy_map_monitor</exec_depend>
   <exec_depend>moveit_ros_visualization</exec_depend>
