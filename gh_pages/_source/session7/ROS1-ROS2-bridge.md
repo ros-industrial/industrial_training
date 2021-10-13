@@ -18,21 +18,21 @@ exercise.
 This exercise uses the ROS1 bridge to call ROS1 nodes from ROS2 nodes and therefore the build
 procedure is somewhat involved.
 
-### Create a ROS1 workspace for exercise 4.1
+### Create a ROS1 workspace from Exercise 4.1
 
 1.  Open a new terminal. Create a catkin workspace for the exercise 4.1 ROS1 packages and dependencies.
     ```
-    mkdir -p ~/catkin_ws/src
+    mkdir -p ~/catkin_ws_to_bridge/src
     ```
 
 1.  Copy Exercise 4.1 in the training repo.
     ```
-    cp -r ~/industrial_training/exercises/4.1/ros1/src ~/catkin_ws/src/demo
+    cp -r ~/industrial_training/exercises/4.1/ros1/src ~/catkin_ws_to_bridge/src/demo
     ```
 
 1.  Clone additional dependencies.
     ```
-    cd ~/catkin_ws/src
+    cd ~/catkin_ws_to_bridge/src
     git clone --branch melodic-devel https://github.com/ros-industrial-consortium/descartes.git
     git clone --branch kinetic-devel https://github.com/ros-industrial/universal_robot.git
     git clone --branch master https://github.com/ros-industrial/fake_ar_publisher.git
@@ -41,16 +41,16 @@ procedure is somewhat involved.
 1.  Source and build exercise from the top workspace directory.
     ```
     source /opt/ros/noetic/setup.bash
-    cd ~/catkin_ws
+    cd ~/catkin_ws_to_bridge
     catkin build    
     ```
 
     From the above steps, the ROS1 catkin workspace is being provided without requiring edits. Take note of the
     critical components that will be communicated over the bridge. 
     
-    There is an `ARMarker` topic message (directory `~/catkin_ws/src/fake_ar_publisher/msg`) published by the node within `fake_ar_publisher.cpp` (directory `~/catkin_ws/src/fake_ar_publisher/src`). 
+    There is an `ARMarker` topic message (directory `~/catkin_ws_to_bridge/src/fake_ar_publisher/msg`) published by the node within `fake_ar_publisher.cpp` (directory `~/catkin_ws_to_bridge/src/fake_ar_publisher/src`). 
     
-    Additionally, there are service messages (directory `~/catkin_ws/src/demo/myworkcell_core/srv`), and the service servers will be adverstized by nodes (directory `~/catkin_ws/src/demo/myworkcell_core/src/`).
+    Additionally, there are service messages (directory `~/catkin_ws_to_bridge/src/demo/myworkcell_core/srv`), and the service servers will be adverstized by nodes (directory `~/catkin_ws_to_bridge/src/demo/myworkcell_core/src/`).
 
     > Service message `LocalizePart`      advertised by node within `vision_node.cpp`
     
@@ -77,7 +77,7 @@ template with part of the exercise created for you.
     ```
     gedit ~/colcon_ws/src/demo/myworkcell_msgs/message_mappings.yaml
     ```
-    Add the message mapping parameters to the blank file. This will map four services that we plan on using in our ROS2 node (`~/  colcon_ws/src/demo/myworkcell_core/src/myworkcell_core.cpp`). These are necessary to call the planner in ROS1 and command the robot to execute the trajectory. Additionally, we will map one publisher/subscriber message called `ARMarker`,
+    Add the message mapping parameters to the blank file. This will map four services that we plan on using in our ROS2 node (`~/colcon_ws/src/demo/myworkcell_core/src/myworkcell_core.cpp`). These are necessary to call the planner in ROS1 and command the robot to execute the trajectory. Additionally, we will map one publisher/subscriber message called `ARMarker`,
     but the ROS2 C++ code will not require this message. We will use it in the terminal in the later section called "Communicate a Publisher/subscriber topic over the bridge." The final contents of the YAML file should be as follows:
     ```
     -
@@ -236,7 +236,7 @@ as follows to use all four services we previously mapped.
       }
     ```
 
-1.  Add a main method that starts ROS2 and calls the `start()` method after instantiation.
+1.  Add a main method that starts ROS2 and calls the `start()` method after instantiation of the `ScanNPlan` class.
     ```C++
     int main(int argc, char** argv)
     {
@@ -275,8 +275,17 @@ as follows to use all four services we previously mapped.
 
 ### Build the ROS1 Bridge 
 
+If you have `ros2_control` installed, you may encounter a known error while building the `ros1_bridge` ([#329](https://github.com/ros2/ros1_bridge/issues/329)). This can be avoided by purging `controller_manager_msgs` from the `foxy` installation. 
+
+```
+sudo apt purge ros-foxy-controller-manager-msgs --autoremove
+```
+
+At the end of Exercise 7.2, the last instruction will remind you to reinstall `ros2_control` so the package can be used during other demos and exercises. 
+
+
 1.  Open a new terminal. Create the ros1_bridge workspace. We build the bridge in a separate workspace because it needs
-    to see both ROS1 and ROS2 packages in its environment and we want to make sure our application
+    to see both ROS1 and ROS2 packages in its environment, and we want to make sure our application
     workspaces only see the packages from the distribution they are in.
     ```
     mkdir -p ~/ros1_bridge_ws/src
@@ -292,7 +301,7 @@ as follows to use all four services we previously mapped.
 1.  Source ROS1 and ROS2 setup bash files. This is one of the only times you'll want to mix setup
     files from different ROS distributions.
     ```
-    source ~/catkin_ws/devel/setup.bash
+    source ~/catkin_ws_to_bridge/devel/setup.bash
     source ~/colcon_ws/install/setup.bash
     ```
 
@@ -338,7 +347,7 @@ as follows to use all four services we previously mapped.
 
 1.  Open a new terminal, source your ROS1 workspace, and run the following launch file.
     ```
-    cd ~/catkin_ws
+    cd ~/catkin_ws_to_bridge
     source devel/setup.bash
     roslaunch myworkcell_support ros2_setup.launch
     ```
@@ -347,9 +356,11 @@ as follows to use all four services we previously mapped.
 
 ### Run the ROS1 bridge
 
-1.  In your ros1_bridge_ws ROS2 workspace, source the workspace if you have not already.
+1.  In your ros1_bridge_ws ROS2 workspace, source the ROS1, ROS2, and bridge workspaces if you have not already.
     ```
     cd ~/ros1_bridge_ws
+    source ~/catkin_ws_to_bridge/devel/setup.bash
+    source ~/colcon_ws/install/setup.bash
     source install/setup.bash
     ```
 
@@ -363,8 +374,8 @@ as follows to use all four services we previously mapped.
     ros2 run ros1_bridge dynamic_bridge --bridge-all-topics
     ```
 
-    We are using `--bridge_all_topics` argument to ensure the `dynamic_bridge` will force a connnection to be made, even
-    for topics not used in the ROS2 C++ code. This allows a ROS2 terminal to view all of the ROS1 topics. For example, without the `--bridge_all_topics` argument, a mapped message topic like `ar_pose_marker` would not be bridged since there is not a ROS2 subscriber in in the C++ code.
+    We are using `--bridge-all-topics` argument to ensure the `dynamic_bridge` will force a connnection to be made, even
+    for topics not used in the ROS2 C++ code. This allows a ROS2 terminal to view all of the ROS1 topics. For example, without the `--bridge-all-topics` argument, a mapped message topic like `ar_pose_marker` would not be bridged since there is not a ROS2 subscriber in in the C++ code.
 
 ### Run the ROS2 nodes
 
@@ -416,7 +427,13 @@ ros2 topic echo /ar_pose_marker
 ```
 
 Displayed in the terminal, you should see the marker goal pose that was used for motion
-planning in the previous section called "Run the ROS2 nodes."
+planning. The ROS2 workspace called the planner in the previous section called "Run the ROS2 nodes."
+
+-- ---
+REMINDER: If purging `controller_manager_msgs` from the `foxy` installation was required to complete Exercise 7.2, reinstall `ros2_control` so the package can be used during other demos and exercises. 
+```
+sudo apt install ros-foxy-ros2-control
+```
 
 <!-- ---
 ## Issues:
