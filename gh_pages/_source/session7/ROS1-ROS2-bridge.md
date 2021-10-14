@@ -312,7 +312,7 @@ At the end of Exercise 7.2, the last instruction will remind you to reinstall `r
     echo $CMAKE_PREFIX_PATH | tr ':' '\n'
     ```
 
-1.  Build the bridge. This may take a while since it is creating mappings between all known message
+1.  Build the bridge. This may take a while (~30 min) since it is creating mappings between all known message
     and service types.
     ```
     cd ~/ros1_bridge_ws
