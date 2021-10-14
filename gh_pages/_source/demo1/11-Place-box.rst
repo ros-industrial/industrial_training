@@ -13,7 +13,7 @@ Locate Function
 * In the main program, locate the function call to ``application.doBoxPlace()``.
 * Go to the source file of that function by clicking in any part of the
   function and pressing :kbd:`F2` in QtCreator.
-* Remove the first line containing the following ``ROS_ERROR_STREAM ...`` so
+* Remove the first line containing the following ``RCLCPP_ERROR_STREAM ...`` so
   that the program runs.
 
 
@@ -21,7 +21,7 @@ Complete Code
 -------------
 
 * Find every line that begins with the comment ``Fill Code:`` and read the
-  description. Then, replace every instance of the comment ``ENTER CODE HERE``
+  description. Then, replace every instance of the comment ``UNCOMMENT AND COMPLETE``
   with the appropriate line of code.
 
   .. code-block:: cpp
@@ -31,7 +31,7 @@ Complete Code
         .
         .
     */
-    /* ========  ENTER CODE HERE ======== */
+    /* UNCOMMENT AND COMPLETE: ... */
 
 * The |execute()| method sends a motion plan to the robot.
 
@@ -49,7 +49,7 @@ Build Code and Run
 
       colcon build
 
-* Run the supporting nodes with the launch file:
+* Run the supporting nodes with the launch file (only if needed):
 
   .. code-block:: shell
 

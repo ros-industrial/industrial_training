@@ -69,14 +69,14 @@ planner_configs:
     extended_fmt: 1  # activate the extended FMT*: adding new samples if planner does not finish successfully. default: 1
   BFMT:
     type: geometric::BFMT
-    num_samples: 100  # number of states that the planner should sample. default: 1000
-    radius_multiplier: 2.0  # multiplier used for the nearest neighbors search radius. default: 1.0
-    nearest_k: 1  # use the Knearest strategy. default: 1
+    num_samples: 30  # number of states that the planner should sample. default: 1000
+    radius_multiplier: 100.0  # multiplier used for the nearest neighbors search radius. default: 1.0
+    nearest_k: 0  # use the Knearest strategy. default: 1
     balanced: 1  # exploration strategy: balanced true expands one tree every iteration. False will select the tree with lowest maximum cost to go. default: 1
     optimality: 0  # termination strategy: optimality true finishes when the best possible path is found. Otherwise, the algorithm will finish when the first feasible path is found. default: 1
-    heuristics: 1  # activates cost to go heuristics. default: 1
-    cache_cc: 1  # use the collision checking cache. default: 1
-    extended_fmt: 1  # Activates the extended FMT*: adding new samples if planner does not finish successfully. default: 1
+    heuristics: 0  # activates cost to go heuristics. default: 1
+    cache_cc: 0  # use the collision checking cache. default: 1
+    extended_fmt: 0  # Activates the extended FMT*: adding new samples if planner does not finish successfully. default: 1
   PDST:
     type: geometric::PDST
   STRIDE:
@@ -153,7 +153,7 @@ manipulator:
     - LazyPRMstar
     - SPARS
     - SPARStwo
-  projection_evaluator: joints(shoulder_pan_joint,shoulder_lift_joint, elbow_joint)
+  projection_evaluator: joints(shoulder_pan_joint,shoulder_lift_joint)
   longest_valid_segment_fraction: 0.001
     
 vacuum_gripper:

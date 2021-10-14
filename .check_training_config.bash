@@ -83,6 +83,7 @@ function check_debs() {
   check_deb libglu1-mesa-dev
   check_deb pcl-tools
   check_deb python3-argcomplete
+  check_deb python3-vcstool
    echo "Checking ROS1 packages:"
   check_deb python3-catkin-tools
   check_deb ros-$ROS_RELEASE-desktop

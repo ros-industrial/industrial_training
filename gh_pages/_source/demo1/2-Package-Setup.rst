@@ -65,6 +65,8 @@ select ``colcon`` as the build system, and provide the path to your ``perception
 directory as the workspace path. Click :guilabel:`Next` and :guilabel:`Finish` to 
 complete the setup.
 
+Rebuild the workspace inside of QTCreator, to create the metadata required for IDE code completion.
+
 
 Open the Main Thread Source File
 --------------------------------

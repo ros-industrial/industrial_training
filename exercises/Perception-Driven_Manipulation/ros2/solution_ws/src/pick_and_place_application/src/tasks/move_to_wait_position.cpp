@@ -24,10 +24,10 @@ void pick_and_place_application::PickAndPlaceApp::moveToWaitPosition()
   // setting up planning configuration
   moveit_cpp::PlanningComponent planning_component(cfg.ARM_GROUP_NAME, moveit_cpp);
   moveit_cpp::PlanningComponent::PlanRequestParameters plan_parameters;
-  plan_parameters.planner_id = "RRTConnectkConfigDefault";
   plan_parameters.load(node);
-  plan_parameters.planning_time = 20.0f;
-  plan_parameters.planning_attempts = 4;
+  plan_parameters.planner_id = cfg.PLANNER_ID;
+  plan_parameters.planning_time = cfg.PLANNING_TIME;
+  plan_parameters.planning_attempts = cfg.PLANNING_ATTEMPTS;
 
   /*
 
@@ -35,13 +35,12 @@ void pick_and_place_application::PickAndPlaceApp::moveToWaitPosition()
      * Goal:
      * - Set robot wait target
      * Hints:
-     * - Use the "setGoal" method in the "planning_component" object.
      * - The "WAIT_POSE_NAME" variable is a member of the "cfg" object.
      */
   planning_component.setGoal(cfg.WAIT_POSE_NAME);
 
   // now plan the trajectory
-  moveit_cpp::PlanningComponent::PlanSolution plan_solution = planning_component.plan();
+  moveit_cpp::PlanningComponent::PlanSolution plan_solution = planning_component.plan(plan_parameters);
   if (plan_solution)
   {
     RCLCPP_INFO_STREAM(node->get_logger(), "Move " << cfg.WAIT_POSE_NAME << " Succeeded");
@@ -57,8 +56,8 @@ void pick_and_place_application::PickAndPlaceApp::moveToWaitPosition()
    * Goal:
    * - Execute the trajectory on the robot
    * Hints:
-   * - Use the "execute" method in the "moveit_cpp" object and save the result
-   *  in the "succeeded" variable
+   * - The "execute" method takes 3 parameters: planning group name, trajectory, and blocking.
+   * - The robot trajectory is the primary result of the "plan()" call above, along with other data.
    */
 
   bool succeeded = false;

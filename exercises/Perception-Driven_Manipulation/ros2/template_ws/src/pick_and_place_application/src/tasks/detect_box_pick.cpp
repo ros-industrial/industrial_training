@@ -31,8 +31,7 @@ geometry_msgs::msg::Pose pick_and_place_application::PickAndPlaceApp::detectBox(
    * Goal:
    * - Call target recognition service and save the result.
    * Hint:
-   * - Observe how to check that the service response is ready.
-   * - See to access the target_pose in the response in order to copy it into box_pose variable.
+   * - use the service client to send the request object to the service server
    */
   geometry_msgs::msg::Pose box_pose;
 
