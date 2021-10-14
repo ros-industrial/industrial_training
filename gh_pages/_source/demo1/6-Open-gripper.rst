@@ -12,7 +12,7 @@ Locate Function
   ``application.actuateGripper()``.
 * Go to the source file of that function by clicking in any part of the
   function and pressing :kbd:`F2` in QtCreator.
-* Remove the first line containing the following ``ROS_ERROR_STREAM ...`` so
+* Remove the first line containing the following ``RCLCPP_ERROR_STREAM ...`` so
   that the program runs.
 
 
@@ -20,7 +20,7 @@ Complete Code
 -------------
 
 * Find every line that begins with the comment ``Fill Code:`` and read the
-  description. Then, replace every instance of the comment ``ENTER CODE HERE``
+  description. Then, replace every instance of the comment ``UNCOMMENT AND COMPLETE``
   with the appropriate line of code.
 
   .. code-block:: cpp
@@ -30,7 +30,7 @@ Complete Code
         .
         .
     */
-    /* ========  ENTER CODE HERE ======== */
+    /* UNCOMMENT AND COMPLETE: ... */
 
 * The ``grasp_goal.goal`` property can take on three possible values:
 
@@ -58,7 +58,7 @@ Build Code and Run
       cd ~/perception_driven_ws
       colcon build
 
-* Run the supporting nodes with the launch file:
+* Run the supporting nodes with the launch file (only if needed):
 
   .. code-block:: shell
 
@@ -85,3 +85,5 @@ API References
 
 * `async_send_goal() <https://docs.ros2.org/foxy/api/rclcpp_action/classrclcpp__action_1_1Client.html#ae0cf05dc5dee2a1c5d590569b64cba08>`_
 * `wait_for() <https://en.cppreference.com/w/cpp/thread/shared_future/wait_for>`_
+* `std::chrono::duration <https://en.cppreference.com/w/cpp/chrono/duration>` _
+

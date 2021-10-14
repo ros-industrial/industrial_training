@@ -5,7 +5,7 @@ Move Arm to Wait Position
   ways.  With a ``PlanningComponent`` object, it is possible to 
   create motion plans to move to a desired joint position, Cartesian goal or a 
   predefined pose created with the Setup Assistant. Then we can use a 
-  ``MoveItCpp`` obect to execute that plan. In this exercise, we 
+  ``MoveItCpp`` object to execute that plan. In this exercise, we 
   will move the robot to a predefined joint pose.
 
 Locate Function
@@ -21,7 +21,7 @@ Locate Function
 
     [workspace source directory]/pick_and_place_application/src/tasks/move_to_wait_position.cpp
 
-* Remove the first line containing the following ``ROS_ERROR_STREAM ...`` so
+* Remove the first line containing the following ``RCLCPP_ERROR ...`` so
   that the program runs.
 
 
@@ -29,7 +29,7 @@ Complete Code
 -------------
 
 * Find every line that begins with the comment ``Fill Code:`` and read the
-  description. Then, replace every instance of the comment ``ENTER CODE HERE``
+  description. Then, replace every instance of the comment ``UNCOMMENT AND COMPLETE``
   with the appropriate line of code.
 
   .. code-block:: cpp
@@ -39,7 +39,7 @@ Complete Code
         .
         .
     */
-    /* ========  ENTER CODE HERE ======== */
+    /* UNCOMMENT AND COMPLETE: ... */
 
 * The name of the predefined "wait" pose was saved in the global variable
   ``cfg.WAIT_POSE_NAME`` during initialization.
@@ -60,14 +60,14 @@ Build Code and Run
       cd ~/perception_driven_ws
       colcon build
 
-* In a new fresh terminal, launch the supporting nodes:
+* In a terminal, launch the supporting nodes:
 
   .. code-block:: shell
 
     source ~/perception_driven_ws/install/setup.bash
     ros2 launch pick_and_place_application application_setup.launch.py
 
-* In another fresh terminal, launch the application node:
+* In another terminal, launch the application node:
 
   .. code-block:: shell
 

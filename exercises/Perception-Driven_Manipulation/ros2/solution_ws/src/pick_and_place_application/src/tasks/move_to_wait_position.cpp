@@ -35,7 +35,6 @@ void pick_and_place_application::PickAndPlaceApp::moveToWaitPosition()
      * Goal:
      * - Set robot wait target
      * Hints:
-     * - Use the "setGoal" method in the "planning_component" object.
      * - The "WAIT_POSE_NAME" variable is a member of the "cfg" object.
      */
   planning_component.setGoal(cfg.WAIT_POSE_NAME);
@@ -57,8 +56,8 @@ void pick_and_place_application::PickAndPlaceApp::moveToWaitPosition()
    * Goal:
    * - Execute the trajectory on the robot
    * Hints:
-   * - Use the "execute" method in the "moveit_cpp" object and save the result
-   *  in the "succeeded" variable
+   * - The "execute" method takes 3 parameters: planning group name, trajectory, and blocking.
+   * - The robot trajectory is the primary result of the "plan()" call above, along with other data.
    */
 
   bool succeeded = false;

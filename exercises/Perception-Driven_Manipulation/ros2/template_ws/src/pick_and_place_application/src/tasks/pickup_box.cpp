@@ -29,7 +29,7 @@ void pick_and_place_application::PickAndPlaceApp::doBoxPickup(std::vector<geomet
      * - Check that the robot state is valid.
      * Hints:
      * - Use the "moveit_cpp->getCurrentState(...)" method to get the current state from the environment.
-     * - It is possible to evaluate the "robot_state" object inside an if statement.
+     * - getCurrentState takes a timeout input parameter.  A timeout of ~2 seconds is probably fine.
      */
     moveit::core::RobotStatePtr robot_state = nullptr;
     // UNCOMMENT AND COMPLETE: robot_state = moveit_cpp->...;

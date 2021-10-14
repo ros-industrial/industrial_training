@@ -5,7 +5,7 @@ IS_AWS=${IS_AWS:-"$(expr "`head -c 3 /sys/hypervisor/uuid 2>/dev/null`" == "ec2"
 
 sudo apt update -y
 sudo apt upgrade -y
-sudo apt install -y curl gnupg2 lsb-release git meld build-essential libfontconfig1 mesa-common-dev libglu1-mesa-dev
+sudo apt install -y curl gnupg2 lsb-release git meld build-essential libfontconfig1 mesa-common-dev libglu1-mesa-dev python3-vcstool
 
 cd $HOME
 
@@ -63,4 +63,7 @@ if [ $IS_AWS -eq 1 ]; then
 
   # disable terminal auto-sourcing
   sed -E -i 's/^([^#].*source \/opt\/ros\/.*\/setup\..*)$/#\1/' ~/.bashrc
+
+  # enable bash auto-completion
+  echo "[[ -e /etc/profile.d/bash_completion.sh ]] && source /etc/profile.d/bash_completion.sh" >> ~/.bashrc
 fi

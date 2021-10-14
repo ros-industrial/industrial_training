@@ -15,7 +15,7 @@ Locate Function
   ``application.doBoxPickup()``.
 * Go to the source file of that function by clicking in any part of the
   function and pressing :kbd:`F2` in QtCreator.
-* Remove the first line containing the following ``ROS_ERROR_STREAM ...`` so
+* Remove the first line containing the following ``RCLCPP_ERROR_STREAM ...`` so
   that the program runs.
 
 
@@ -23,7 +23,7 @@ Complete Code
 -------------
 
 * Find every line that begins with the comment ``Fill Code:`` and read the
-  description. Then, replace every instance of the comment ``ENTER CODE HERE``
+  description. Then, replace every instance of the comment ``UNCOMMENT AND COMPLETE``
   with the appropriate line of code.
 
   .. code-block:: cpp
@@ -33,7 +33,7 @@ Complete Code
         .
         .
     */
-    /* ========  ENTER CODE HERE ======== */
+    /* UNCOMMENT AND COMPLETE: ... */
 
 * Inspect the ``setAttachedObject`` method to understand how to manipulate a
   ``RobotState`` object which will then be used to construct a motion plan.

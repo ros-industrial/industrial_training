@@ -29,7 +29,7 @@ void pick_and_place_application::PickAndPlaceApp::doBoxPickup(std::vector<geomet
      * - Check that the robot state is valid.
      * Hints:
      * - Use the "moveit_cpp->getCurrentState(...)" method to get the current state from the environment.
-     * - It is possible to evaluate the "robot_state" object inside an if statement.
+     * - getCurrentState takes a timeout input parameter.  A timeout of ~2 seconds is probably fine.
      */
     moveit::core::RobotStatePtr robot_state = nullptr;
     robot_state = moveit_cpp->getCurrentState(2.0);
@@ -63,6 +63,7 @@ void pick_and_place_application::PickAndPlaceApp::doBoxPickup(std::vector<geomet
      * - Execute the planned trajectory
      * Hints:
      * - Use the "moveit_cpp->execute(...)" method to execute the trajectory on the robot
+     * - You'll need to pass the arm group name and trajectory
      */
     success = false;
     success = moveit_cpp->execute(cfg.ARM_GROUP_NAME, plan_solution.trajectory, true);

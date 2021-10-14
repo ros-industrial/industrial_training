@@ -38,9 +38,9 @@ void pick_and_place_application::PickAndPlaceApp::actuateGripper(bool do_grasp)
    * - Confirm that a valid result was sent by the action server.
    * Hints:
    * - Use the "wait_for" method of the goal_fut future object to wait for completion.
-   * - Give "wait_for" a timeout value of 4 seconds
-   * - The "wait_for" method takes an argument of the "std::chrono::duration<double>(4)" type.
-   * - Save the output of wait for in the status variable
+   * - 4 seconds is a reasonable timeout to wait for the gripper action result
+   * - "wait_for" uses std::chrono::duration to specify the timeout
+   * - look up std::chrono::seconds or std::chrono_literals to specify the time
    */
   std::future_status status = std::future_status::deferred;
   // UNCOMMENT AND COMPLETE: status = goal_fut.wait_for(...);
