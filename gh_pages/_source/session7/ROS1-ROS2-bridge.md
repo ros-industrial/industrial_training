@@ -356,11 +356,9 @@ At the end of Exercise 7.2, the last instruction will remind you to reinstall `r
 
 ### Run the ROS1 bridge
 
-1.  In your ros1_bridge_ws ROS2 workspace, source the ROS1, ROS2, and bridge workspaces if you have not already.
+1.  In your ros1_bridge_ws ROS2 workspace, source the workspace if you have not already.
     ```
     cd ~/ros1_bridge_ws
-    source ~/catkin_ws_to_bridge/devel/setup.bash
-    source ~/colcon_ws/install/setup.bash
     source install/setup.bash
     ```
 
