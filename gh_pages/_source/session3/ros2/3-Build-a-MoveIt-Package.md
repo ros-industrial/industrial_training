@@ -335,3 +335,6 @@ In this exercise, you will generate a MoveIt package for the UR5 workcell you bu
     ```
 
 > _Don't worry too much about how to use RViz.  We'll work through that in the next exercise._
+
+## Challenge Exercises
+* Imagine you have misrepresented your robot and need to add an additional joint. Would it be faster to make minor edits to all configuration files or to re-do the MoveIt package creation process? Try each method and compare.

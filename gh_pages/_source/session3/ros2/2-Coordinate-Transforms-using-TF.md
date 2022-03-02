@@ -96,3 +96,6 @@ Specifically, edit the service callback inside the vision_node to transform the 
     ```
 
  1. Change the "base_frame" parameter in `workcell.launch.py` (e.g. to "table"), relaunch the file, and note the different pose result.  Change the "base_frame" parameter back to "world" when you're done.
+
+## Challenge Exercises
+* Try creating a second service to return the transformation from the camera to the table. 
