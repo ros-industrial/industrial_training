@@ -129,4 +129,3 @@ This exercise is not part of the main "Scan-N-Plan" application.  It helps gain 
 * Use a ROS2 publisher and a ROS1 subscriber (opposite direction).
 * Use [command-line args](http://wiki.ros.org/Remapping%20Arguments) to remap the ROS1 topic instead of the ROS2 topic.
 * Create a pair of launch files to automatically restart the ROS1 and ROS2 nodes.  There is no good way to automatically start both ROS1 and ROS2 nodes from a single unified launch file.
-
