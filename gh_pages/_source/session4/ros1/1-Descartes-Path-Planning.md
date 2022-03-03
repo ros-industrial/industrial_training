@@ -35,23 +35,29 @@ Left to you are the details of:
  1. Translating those paths into something Descartes can understand.
 
 ### Setup workspace
- 1. Clone the Descartes repository into your workspace src/ directory.
+ 1. Clone the Descartes repository into your ROS1 workspace src/ directory.
      
     ```bash
     cd ~/catkin_ws/src
     git clone -b melodic-devel https://github.com/ros-industrial-consortium/descartes.git
     ```
 
- 1. Copy over the `ur5_demo_descartes` package into your workspace src/ directory.
+ 1. Clone the Universal Robot repository into your workspace src/ directory
+   ```bash
+   git clone https://github.com/ros-industrial/universal_robot.git
+   ```
+
+ 1. Copy over the `ur5_demo_descartes` and the ROS1 version of `myworkcell_support` packages into your workspace src/ directory.
 
     ```bash
-    cp -r ~/industrial_training/exercises/4.1/src/ur5_demo_descartes .
+    cp -r ~/industrial_training/exercises/4.1/ros1/src/ur5_demo_descartes .
+    cp -r ~/industrial_training/exercises/4.1/ros1/src/myworkcell_support .
     ```
 
  1. Copy over the `descartes_node_unfinished.cpp` into your core package's src/ folder and rename it `descartes_node.cpp`.
 
     ```bash
-    cp ~/industrial_training/exercises/4.1/src/descartes_node_unfinished.cpp myworkcell_core/src/descartes_node.cpp
+    cp ~/industrial_training/exercises/4.1/ros1/src/descartes_node_unfinished.cpp myworkcell_core/src/descartes_node.cpp
     ```
 
  1. Add dependencies for the following packages in the `CMakeLists.txt` & `package.xml` files, as in previous exercises.
