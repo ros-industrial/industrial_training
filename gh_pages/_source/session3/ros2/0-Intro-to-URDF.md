@@ -103,3 +103,6 @@ Your goal is to describe a workcell that features:
       _Note the syntax used to specify a starting parameter value to the node (`--ros-args -p param_name:=param_value`).  Also the use of `cat file.urdf` to pass the file contents as a string._
       
    1. The default RViz setup only shows a minimal amount of info.  You can add various Display elements to customize the display to show exactly what is needed.  Inside RViz add a _RobotModel_ display and a _TF_ display using the button in the lower left. Expand the settings for the added _RobotModel_ display and select `/robot_description` for the field labeled _Description Topic_. Also make sure in the _Global Options_ that _Fixed Frame_ is set to `world`.  Consider saving this configuration (File -> Save Config) to the default RViz config file, so you don't need to repeat these setup steps again later.
+
+## Challenge Exercise
+* Try adding legs to the table. How does this affect the collision geometry?

@@ -128,3 +128,6 @@ Specifically, you will need to:
 
     * If you didn't save your RViz config last time, you may need to repeat the configuration steps: set the 'Fixed Frame' to 'world' and add the RobotModel and TF displays to the tree view on the left.
     * Try moving the joint sliders in the separate GUI window that appears to see the UR5 robot move.
+
+## Challenge Exercise
+* Try adding another instance of the robot model in the scene in a different position and orienatation. 

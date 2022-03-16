@@ -81,7 +81,7 @@ You may also choose to launch `myworkcell_core` node with the others or keep it 
 
    You should see an error that the launch file was not found. This is because it only exists in the `src/` directory, and the `ros2` tool will only work with files in the `install/` directory. Therefore, the launch file must be _installed_.
 
-1. Add an installation rule to `CMakeLists.txt`, after the `find_package` section, and before the `BUILD_TESTING` section:
+1. Add an installation rule to `CMakeLists.txt` in your `myworkcell_support` package, after the `find_package` section, and before the `BUILD_TESTING` section:
 
    ``` cmake
    install(DIRECTORY launch DESTINATION share/${PROJECT_NAME}/)

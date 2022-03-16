@@ -106,3 +106,6 @@ So far we haven't used the request field, `base_frame`, for anything. In this ex
          - If you didn't build with the `--symlink-install` option, you will need to re-build after editing the launch file, to copy the updates into the "install" directory.
          - The response frame doesn't change, because we haven't updated vision_node (yet) to handle the request frame.  Vision_node always returns the same frame (for now).
     * Set the base_frame back to "world"
+
+## Challenge Exercise
+* Imagine a human is cooporating with the robot in this scenario. Try adding a new parameter for the human-operational frame.

@@ -1,6 +1,7 @@
 # Motion Planning using RViz
 > In this exercise, we will (finally) learn how to use the MoveIt! RViz plugin to plan and execute motion on a simulated robot. We will explore the different options and constraints associated with both MoveIt! and the RViz plugin.
 
+
 ## Launch the Planning Environment
 
  1. Source your ROS2 workspace.
