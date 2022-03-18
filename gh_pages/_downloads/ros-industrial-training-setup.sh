@@ -54,8 +54,17 @@ fi
 gsettings set org.gnome.desktop.session idle-delay 0
 
 if [ $IS_AWS -eq 1 ]; then
+  # setup firefox shortcuts
+  xdg-icon-resource install --novendor --context apps --size 256 ~/industrial_training/gh_pages/_downloads/web_shortcuts/ros-i.png
+  xdg-icon-resource install --novendor --context apps --size 128 ~/industrial_training/gh_pages/_downloads/web_shortcuts/rosorg.png
+  xdg-icon-resource install --novendor --context apps --size 128 ~/industrial_training/gh_pages/_downloads/web_shortcuts/ros2.png
+
+  sudo desktop-file-install ~/industrial_training/gh_pages/_downloads/web_shortcuts/ros-i.desktop
+  sudo desktop-file-install ~/industrial_training/gh_pages/_downloads/web_shortcuts/rosorg.desktop
+  sudo desktop-file-install ~/industrial_training/gh_pages/_downloads/web_shortcuts/ros2.desktop
+
   sudo apt install -y gnome-terminal gedit
-  gsettings set org.gnome.shell favorite-apps "['firefox.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'org.gnome.gedit.desktop', 'QtProject-qtcreator-ros-latest.desktop']"
+  gsettings set org.gnome.shell favorite-apps "['firefox.desktop', 'ros-i.desktop', 'ros2.desktop', 'rosorg.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'org.gnome.gedit.desktop', 'QtProject-qtcreator-ros-latest.desktop']"
   gsettings set org.gnome.desktop.wm.preferences button-layout ":minimize,maximize,close"
 
   # replace PS1 prompt var with "ROS Distro" prompt
