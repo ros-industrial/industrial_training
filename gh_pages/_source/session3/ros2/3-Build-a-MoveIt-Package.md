@@ -23,11 +23,11 @@ In this exercise, you will generate a MoveIt package for the UR5 workcell you bu
 
 ### Create a Base Package using the Setup Assistant
 
-1. Open a NEW terminal and setup a ROS1 workspace to run the MoveIt Setup Assistant.  Put copies of the required URDF packages (`ur_description`, `myworkcell_support`) inside this ROS1 workspace, to make them visible to the Setup Assistant:
+1. Open a NEW terminal and setup your ROS1 workspace to run the MoveIt Setup Assistant.  Put copies of the required URDF packages (`ur_description`, `myworkcell_support`) inside this ROS1 workspace, to make them visible to the Setup Assistant:
 
    ```
-   mkdir -p ~/ros1_ws/src
-   cp -r ~/industrial_training/exercises/3.3/ros1/src/ur_description ~/ros1_ws/src
+   cd ~/ros1_ws/src
+   git clone https://github.com/ros-industrial/universal_robot.git
    cp -r ~/industrial_training/exercises/3.3/ros1/src/myworkcell_support ~/ros1_ws/src
    
    <edit ~/ros1_ws/src/myworkcell_support/package.xml & CMakeLists.txt and remove all references to myworkcell_core>
