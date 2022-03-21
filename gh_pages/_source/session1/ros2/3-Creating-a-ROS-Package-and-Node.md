@@ -68,13 +68,9 @@ Your goal is to create your first ROS node:
    #include <rclcpp/rclcpp.hpp>
    ```
 
-1. Add a main function (typical in c++ programs).
+1. Add a main function (typical in c++ programs). The rest of our code will go inside this function.
 
    ``` c++
-   /**
-   **  Simple ROS Node
-   **/
-   #include <rclcpp/rclcpp.hpp>
 
    int main(int argc, char* argv[])
    {
@@ -85,59 +81,35 @@ Your goal is to create your first ROS node:
 1. Initialize the ROS CPP middleware interface (must be called once per process).
 
    ``` c++
-   /**
-   **  Simple ROS Node
-   **/
-   #include <rclcpp/rclcpp.hpp>
-
-   int main(int argc, char* argv[])
-   {
-     // This must be called before anything else ROS-related
-     rclcpp::init(argc, argv);
-   }
+   // This must be called before anything else ROS-related
+   rclcpp::init(argc, argv);
    ```
 
 1. Create a ROS node instance.
 
    ``` c++
-   /**
-   **  Simple ROS Node
-   **/
-   #include <rclcpp/rclcpp.hpp>
-
-   int main(int argc, char* argv[])
-   {
-     // This must be called before anything else ROS-related
-     rclcpp::init(argc, argv);
-
-     // Create a ROS node
-     auto node = std::make_shared<rclcpp::Node>("vision_node");
-   }
+   auto node = std::make_shared<rclcpp::Node>("vision_node");
    ```
 
 1. Print a "Hello World" message using ROS print tools.
 
    ``` c++
-   /**
-   **  Simple ROS Node
-   **/
-   #include <rclcpp/rclcpp.hpp>
-
-   int main(int argc, char* argv[])
-   {
-     // This must be called before anything else ROS-related
-     rclcpp::init(argc, argv);
-
-     // Create a ROS node
-     auto node = std::make_shared<rclcpp::Node>("vision_node");
-
-     RCLCPP_INFO(node->get_logger(), "Hello, World!");
-   }
+   RCLCPP_INFO(node->get_logger(), "Hello, World!");
    ```
 
 1. Do not exit the program automatically - keep the node alive.
 
    ``` c++
+   // Don't exit the program.
+   rclcpp::spin(node);
+   ```
+
+   The complete code should look like this:
+
+   ``` c++
+   /**
+   **  Simple ROS Node
+   **/
    #include <rclcpp/rclcpp.hpp>
 
    int main(int argc, char* argv[])
@@ -174,7 +146,7 @@ Your goal is to create your first ROS node:
   * See [ament_cmake documentation](https://docs.ros.org/en/foxy/How-To-Guides/Ament-CMake-Documentation.html) for more details on common ROS2 CMakeLists rules.
   * _You're allowed to spread most of the CMakeLists rules across multiple lines, which is often required when a target contains many source files or has many dependencies._
 
-1. We've now told CMake about the _vision_node_ executable and how to build it, but to actually run it, the file must be *installed* along with all the other workspace outputs. Typically, the installation location will be the `install/` directory alongside the `src/` directory. Add the following lines to declare an installation rule for the _vision_node_ executable:
+1. We've now told CMake about the _vision_node_ executable and how to build it, but to actually run it, the file must be *installed* along with all the other workspace outputs. Typically, the installation location will be the `install/` directory alongside the `src/` directory. Add the following lines after `ament_target_dependencies` but before `ament_package` into your CMakeLists.txt to declare an installation rule for the _vision_node_ executable:
 
    ``` cmake
    # Mark executables for installation

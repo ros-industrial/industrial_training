@@ -48,12 +48,15 @@ This exercise is not part of the main "Scan-N-Plan" application.  It helps gain 
    * You can use tab-completion in ROS1 just like you do in ROS2.
    * You will get an error message "Failed to contact master" when trying to run the ROS1 node.  Every ROS1 system needs a running master node.  Use Ctrl-C to cancel the running node.
    
-1. Start a master node using `roscore`.  Then open a new terminal window, source the ROS1 environment, and re-run the test node.
+1. Start a master node using `roscore`.
 
    ```
    roscore
-   
-   <in a new terminal window>
+   ```
+
+   Then open a new terminal window, source the ROS1 environment, and re-run the test node.
+
+   ```
    source ~/ros1_ws/devel/setup.bash
    rosrun roscpp_tutorials babbler
    ```
@@ -67,12 +70,15 @@ This exercise is not part of the main "Scan-N-Plan" application.  It helps gain 
    rosnode info /babbler
    ```
    
-1. Close the babbler node and launch another demo node that has parameter support.  Experiment with setting parameter values to the ROS1 parameter server.
+1. Close the babbler node and launch another demo node that has parameter support.
 
    ```
    rosrun turtlesim turtlesim_node
+   ```
    
-   <in a separate terminal window>
+   In another terminal, experiment with setting parameter values to the ROS1 parameter server.
+
+   ```
    rosparam list
    rosparam set /turtlesim/background_g 255
    ```
@@ -84,8 +90,11 @@ This exercise is not part of the main "Scan-N-Plan" application.  It helps gain 
  
     ```
     roslaunch roscpp_tutorials talker_listener.launch
-    
-    <in a 2nd ROS1 terminal>
+    ```
+
+    In a 2nd ROS1 terminal, vizualize the systems nodes with rqt_graph.
+
+    ```
     rosrun rqt_graph rqt_graph
     ```
     
