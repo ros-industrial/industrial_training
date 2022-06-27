@@ -176,7 +176,7 @@ Your goal is to create a more intricate system of nodes:
 
 ### Service Client
 
-1. Create a new node (inside the same `myworkcell_core` package), named `myworkcell_node.cpp`.  This will eventually be our main "application node", that controls the sequence of actions in our Scan & Plan task.  The first action we'll implement is to request the position of the AR target from the Vision Node's `LocalizePart` service we created above.
+1. Create a new node (inside the `myworkcell_core/src` directory), named `myworkcell_node.cpp`.  This will eventually be our main "application node", that controls the sequence of actions in our Scan & Plan task.  The first action we'll implement is to request the position of the AR target from the Vision Node's `LocalizePart` service we created above.
 
 1. Be sure to include the standard ros header as well as the header for the `LocalizePart` service:
 

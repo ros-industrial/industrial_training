@@ -35,23 +35,21 @@ Left to you are the details of:
  1. Translating those paths into something Descartes can understand.
 
 ### Setup workspace
- 1. Clone the Descartes repository into your ROS1 workspace src/ directory.
+ 1. Clone ROS1 versions of the Descartes and fake_ar_publisher repositories into your ROS1 workspace src/ directory. (Descartes does not currently have a ROS2 version).
      
     ```bash
-    cd ~/catkin_ws/src
+    cd ~/ros1_ws/src
     git clone -b melodic-devel https://github.com/ros-industrial-consortium/descartes.git
+    git clone -b master https://github.com/ros-industrial/fake_ar_publisher.git
     ```
 
- 1. Clone the Universal Robot repository into your workspace src/ directory
-   ```bash
-   git clone https://github.com/ros-industrial/universal_robot.git
-   ```
-
- 1. Copy over the `ur5_demo_descartes` and the ROS1 version of `myworkcell_support` packages into your workspace src/ directory.
+ 1. Copy over ROS 1 code to prep the workspace for completion of this exercise.
 
     ```bash
-    cp -r ~/industrial_training/exercises/4.1/ros1/src/ur5_demo_descartes .
-    cp -r ~/industrial_training/exercises/4.1/ros1/src/myworkcell_support .
+    cp -r ~/industrial_training/exercises/4.1/ros1/src/ur5_demo_descartes ~/ros1_ws/src
+    cp -r ~/industrial_training/exercises/4.1/ros1/src/myworkcell_moveit_config ~/ros1_ws/src
+    cp -r ~/industrial_training/exercises/4.0/ros1/src/myworkcell_support ~/ros1_ws/src
+    cp -r ~/industrial_training/exercises/4.0/ros1/src/myworkcell_core ~/ros1_ws/src
     ```
 
  1. Copy over the `descartes_node_unfinished.cpp` into your core package's src/ folder and rename it `descartes_node.cpp`.
@@ -160,27 +158,30 @@ With the Descartes node completed, we now want to invoke its logic by adding a n
     ROS_INFO("Done");
     ```
 
- 1. Build the project, to make sure there are no errors in the new `descartes_node`
+ 1. Build the project to make sure there are no new errors
 
 ### Test Full Application
 
  1. Create a new `setup.launch` file (in `workcell_support` package) that brings up everything except your workcell_node:
 
     ``` xml
-    <include file="$(find myworkcell_moveit_config)/launch/myworkcell_planning_execution.launch"/>
-    <node name="fake_ar_publisher" pkg="fake_ar_publisher" type="fake_ar_publisher_node" />
-    <node name="vision_node" type="vision_node" pkg="myworkcell_core" output="screen"/>
-    <node name="descartes_node" type="descartes_node" pkg="myworkcell_core" output="screen"/>
+    <?xml version="1.0" ?>
+    <launch>
+      <include file="$(find myworkcell_moveit_config)/launch/myworkcell_planning_execution.launch"/>
+      <node name="fake_ar_publisher" pkg="fake_ar_publisher" type="fake_ar_publisher_node" />
+      <node name="vision_node" type="vision_node" pkg="myworkcell_core" output="screen"/>
+      <node name="descartes_node" type="descartes_node" pkg="myworkcell_core" output="screen"/>
+    </launch>
     ```
 
- 1. Run the new setup file, then your main workcell node:
+ 1. Run the new setup file, then your main workcell node. Don't forget to `source ~/ros1_ws/devel/setup.bash` in each terminal.
 
     ``` bash
     roslaunch myworkcell_support setup.launch
     rosrun myworkcell_core myworkcell_node
     ```
 
-    It's difficult to see what's happening with the rviz planning-loop always running.  Disable this loop animation in rviz (Displays -> Planned Path -> Loop Animation), then rerun `myworkcell_node`.
+    It's difficult to see what's happening with the rviz planning-loop always running.  Disable this loop animation in rviz (Displays -> MotionPlanning -> Planned Path -> Loop Animation), then rerun `myworkcell_node`.
 
 ### Hints and Help
 
@@ -189,4 +190,4 @@ Hints:
  * In `makeDescartesTrajectorty(...)` we need to convert the relative tool poses into world coordinates using the “ref” pose.
  * In `makeTolerancedCartesianPoint(...)` consider the following documentation for specific implementations of common joint trajectory points:
    * <http://docs.ros.org/indigo/api/descartes_trajectory/html/>
- * For additional help, review the completed reference code at `~/industrial_training/exercises/4.1/src`
+ * For additional help, review the completed reference code at `~/industrial_training/exercises/4.1/ros1/src`

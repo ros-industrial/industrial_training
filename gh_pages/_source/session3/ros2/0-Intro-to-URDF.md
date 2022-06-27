@@ -92,16 +92,20 @@ Your goal is to describe a workcell that features:
     install(DIRECTORY launch urdf DESTINATION share/${PROJECT_NAME}/)
     ```
 
-   1. It helps to visualize your URDF as you add links, to verify things look as expected. Run the following commands in separate terminals:
+   1. It helps to visualize your URDF as you add links, to verify things look as expected. Run a node that publishes the robot state based on your URDF.
 
       ```
       ros2 run robot_state_publisher robot_state_publisher --ros-args -p robot_description:="`cat ~/ros2_ws/src/myworkcell_support/urdf/workcell.urdf`"
-      <in a separate terminal>
-      rviz2
       ```
 
       _Note the syntax used to specify a starting parameter value to the node (`--ros-args -p param_name:=param_value`).  Also the use of `cat file.urdf` to pass the file contents as a string._
       
+      Now run the visualization tool Rviz in a separate terminal.
+
+      ```
+      rviz2
+      ```
+
    1. The default RViz setup only shows a minimal amount of info.  You can add various Display elements to customize the display to show exactly what is needed.  Inside RViz add a _RobotModel_ display and a _TF_ display using the button in the lower left. Expand the settings for the added _RobotModel_ display and select `/robot_description` for the field labeled _Description Topic_. Also make sure in the _Global Options_ that _Fixed Frame_ is set to `world`.  Consider saving this configuration (File -> Save Config) to the default RViz config file, so you don't need to repeat these setup steps again later.
 
 ## Challenge Exercise

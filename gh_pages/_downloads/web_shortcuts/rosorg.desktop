@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.0
+Name=ROS.org
+Exec=firefox https://ros.org
+Icon=rosorg
+Terminal=false
+Type=Application
+Categories=Network;WebBrowser;
