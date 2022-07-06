@@ -35,7 +35,8 @@ C++
 ***
 
 - `MIT Introduction to C++ <http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-096-introduction-to-c-january-iap-2011/assignments/>`_
-- `Bruce Eckel Thinking in C++ <http://mindview.net/Books/TICPP/ThinkingInCPP2e.html>`_
+- `Bruce Eckel Thinking in C++ Vol. 1 <http://vergil.chemistry.gatech.edu/resources/programming/pdf/TIC2Vone.pdf>`_
+- `Bruce Eckel Thinking in C++ Vol. 2 <https://web.mit.edu/merolish/ticpp/TicV2.html>`_
 
 Linux Fundamentals
 ******************
@@ -142,7 +143,8 @@ Session 7 - ROS2 Topics
     PC Setup <_source/setup/PC-Setup---ROS>
 
     MIT Introduction to C++ <http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-096-introduction-to-c-january-iap-2011/assignments/>
-    Bruce Eckel Thinking in C++ <http://mindview.net/Books/TICPP/ThinkingInCPP2e.html>
+    Bruce Eckel Thinking in C++ Vol. 1 <http://vergil.chemistry.gatech.edu/resources/programming/pdf/TIC2Vone.pdf>
+    Bruce Eckel Thinking in C++ Vol. 2 <https://web.mit.edu/merolish/ticpp/TicV2.html>
 
     0.1 - Intro to Ubuntu GUI <_source/prerequisites/Navigating-the-Ubuntu-GUI>
     0.2 - The Linux File System <_source/prerequisites/Exploring-the-Linux-File-System>
