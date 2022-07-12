@@ -346,7 +346,7 @@ Your goal is to create a more intricate system of nodes:
    app->start();
    ```
 
-1. Edit the package's `CMakeLists.txt` to build the new node (executable), with its associated dependencies.  Add the following rules to the appropriate sections, directly under the matching rules for `vision_node`:
+1. Edit the package's `CMakeLists.txt` to build the new node (executable), with its associated dependencies. Add the following rules to the appropriate sections, directly under the matching rules for `vision_node`:
 
    ``` cmake
    add_executable(myworkcell_node src/myworkcell_node.cpp)
@@ -354,7 +354,7 @@ Your goal is to create a more intricate system of nodes:
    rosidl_target_interfaces(myworkcell_node ${PROJECT_NAME} "rosidl_typesupport_cpp")
    ``` 
 
-   Also add `myworkcell_node` to the existing call to `install` along with `vision_node`:
+   Be sure to remove the `PUBLIC` keyword from `ament_target_dependencies()`. It conflicts with other CMake calls made under the hood. Also add `myworkcell_node` to the existing call to `install` along with `vision_node`:
 
    ``` cmake
    install(TARGETS vision_node myworkcell_node

@@ -9,8 +9,8 @@ repositories:
     version: foxy
   ur_msgs:
     type: git
-    url: https://github.com/destogl/ur_msgs.git
-    version: ros2
+    url: https://github.com/ros-industrial/ur_msgs.git
+    version: foxy
   perception_pcl:
     type: git
     url: https://github.com/ros-perception/perception_pcl.git
