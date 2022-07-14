@@ -37,6 +37,7 @@ Specifically, you will need to:
        git clone -b master https://github.com/UniversalRobots/Universal_Robots_Client_Library.git
        sudo apt install ros-foxy-ur-msgs
        cd ~/ros2_ws
+       rosdep update
        rosdep install --ignore-src --from-paths src -y -r
        colcon build
        ```
