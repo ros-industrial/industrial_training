@@ -35,7 +35,7 @@ Specifically, you will need to:
        cd ~/ros2_ws/src
        git clone -b foxy https://github.com/UniversalRobots/Universal_Robots_ROS2_Driver.git
        git clone -b master https://github.com/UniversalRobots/Universal_Robots_Client_Library.git
-       git clone -b ros2 https://github.com/destogl/ur_msgs.git
+       sudo apt install ros-foxy-ur-msgs
        cd ~/ros2_ws
        colcon build
        ```
