@@ -11,7 +11,7 @@ Application Variables
 
 Open the file :file:`pick_and_place_utilities.h` in the following directory:
 
-.. code-block:: bash
+.. code-block:: cpp
 
   [workspace source directory]/pick_and_place_application/include/pick_and_place_application/
 
