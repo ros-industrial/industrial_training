@@ -19,7 +19,7 @@ We will create a new catkin workspace, since this exercise does not overlap with
 
     .. code-block:: bash
 
-			source /opt/ros/melodic/setup.bash
+			source /opt/ros/noetic/setup.bash
 
 #. Copy the template workspace layout and files:
 

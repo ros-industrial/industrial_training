@@ -1,6 +1,7 @@
 #request
 sensor_msgs/PointCloud2 input_cloud
 string topic
+#if empty, use data present in input_cloud
 string pcdfilename
 
 # Removes objects outside a defined grid pattern x,y,z

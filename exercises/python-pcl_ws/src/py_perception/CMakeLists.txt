@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(py_perception)
-add_definitions(-std=c++11)
+add_definitions(-std=c++14)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
@@ -14,6 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
   tf
   pcl_ros
 )
+find_package(Python REQUIRED COMPONENTS Development)
 #find_package(PCL REQUIRED)
 
 ## System dependencies are found with CMake's conventions
@@ -128,6 +129,7 @@ include_directories(
  target_link_libraries(py_perception_node
    ${catkin_LIBRARIES}
 #   ${PCL_LIBRARIES}
+   Python::Module
  )
 
 #############

@@ -1,16 +1,20 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(lesson_perception)
-add_definitions(-std=c++11)
+project(py_perception)
+add_definitions(-std=c++14)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
+  rospy
   sensor_msgs
+  std_msgs
   message_generation
+  visualization_msgs
   tf
   pcl_ros
 )
+find_package(Python REQUIRED COMPONENTS Development)
 #find_package(PCL REQUIRED)
 
 ## System dependencies are found with CMake's conventions
@@ -69,7 +73,8 @@ find_package(catkin REQUIRED COMPONENTS
 # Generate added messages and services with any dependencies listed here
  generate_messages(
    DEPENDENCIES
-    sensor_msgs
+   sensor_msgs
+   visualization_msgs
  )
 
 ###################################
@@ -83,11 +88,14 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES lesson_perception
+#  LIBRARIES py_perception
   CATKIN_DEPENDS
     roscpp
+    rospy
     sensor_msgs
+    std_msgs
     message_runtime
+    visualization_msgs
     tf
     pcl_ros
 #  DEPENDS system_lib
@@ -106,7 +114,7 @@ include_directories(
 )
 
 ## Declare a cpp library
-# add_library(lesson_perception
+# add_library(py_perception
 #   src/${PROJECT_NAME}/lesson_perception.cpp
 # )
 
@@ -121,6 +129,7 @@ include_directories(
  target_link_libraries(py_perception_node
    ${catkin_LIBRARIES}
 #   ${PCL_LIBRARIES}
+   Python::Module
  )
 
 #############

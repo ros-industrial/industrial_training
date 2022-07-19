@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>lesson_perception</name>
+  <name>py_perception</name>
   <version>0.0.0</version>
-  <description>The lesson_perception package</description>
+  <description>The py_perception package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag --> 
   <!-- Example:  -->
@@ -43,7 +43,12 @@
   <depend>roscpp</depend>
   <depend>sensor_msgs</depend>
   <depend>tf</depend>
+  <depend>pcl_conversions</depend>
+  <depend>pcl_msgs</depend>
   <depend>pcl_ros</depend>
+  <depend>visualization_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>rospy</depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>

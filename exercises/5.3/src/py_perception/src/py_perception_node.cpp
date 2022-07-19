@@ -4,7 +4,7 @@
 #include <tf/transform_listener.h>
 #include <tf/transform_broadcaster.h>
 #include <sensor_msgs/PointCloud2.h> //hydro
-#include <lesson_perception/FilterCloud.h>
+#include <py_perception/FilterCloud.h>
 
 // PCL specific includes
 #include <pcl_conversions/pcl_conversions.h> //hydro
@@ -95,7 +95,7 @@ pcl::PointCloud<pcl::PointXYZ>::Ptr planeSegmentation(const pcl::PointCloud<pcl:
   seg.setOptimizeCoefficients (true);
   seg.setModelType (pcl::SACMODEL_PLANE);
   seg.setMethodType (pcl::SAC_RANSAC);
-  seg.setMaxIterations (200);
+  seg.setMaxIterations (100);
   seg.setDistanceThreshold (0.01); //keep as 1cm
   // Segment the largest planar component from the cropped cloud
   seg.setInputCloud (cropped_cloud);
@@ -165,10 +165,10 @@ clusterExtraction(const pcl::PointCloud<pcl::PointXYZ>::ConstPtr &input_cloud)
    * ========================================*/
 
 /* ========================================
- * Fill Code: FILTER CALLBACK
+ * Fill Code: SERVICE
  * ========================================*/
-bool filterCallback(lesson_perception::FilterCloud::Request& request,
-                    lesson_perception::FilterCloud::Response& response)
+bool filterCallback(py_perception::FilterCloud::Request& request,
+                    py_perception::FilterCloud::Response& response)
 {
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
   pcl::PointCloud<pcl::PointXYZ>::Ptr filtered_cloud (new pcl::PointCloud<pcl::PointXYZ>);
@@ -176,46 +176,44 @@ bool filterCallback(lesson_perception::FilterCloud::Request& request,
   if (request.pcdfilename.empty())
   {
     pcl::fromROSMsg(request.input_cloud, *cloud);
-    ROS_INFO_STREAM("cloud size: " << cloud->size());
+    ROS_INFO_STREAM("cloud size: " <<cloud->size());
+    if (cloud->empty())
+    {
+      ROS_ERROR("input cloud empty");
+      response.success = false;
+      return false;
+    }
   }
   else
   {
     pcl::io::loadPCDFile(request.pcdfilename, *cloud);
   }
 
-  if (cloud->empty())
-  {
-    ROS_ERROR("input cloud empty");
-    response.success = false;
-    return false;
-  }
-
   switch (request.operation)
   {
 
-    case lesson_perception::FilterCloud::Request::VOXELGRID :
+    case py_perception::FilterCloud::Request::VOXELGRID :
     {
       filtered_cloud = voxelGrid(cloud, 0.01);
       break;
     }
-    case lesson_perception::FilterCloud::Request::PASSTHROUGH :
+    case py_perception::FilterCloud::Request::PASSTHROUGH :
     {
       filtered_cloud = passThrough(cloud);
       break;
     }
-    case lesson_perception::FilterCloud::Request::PLANESEGMENTATION :
+    case py_perception::FilterCloud::Request::PLANESEGMENTATION :
     {
       filtered_cloud = planeSegmentation(cloud);
       break;
     }
-    case lesson_perception::FilterCloud::Request::CLUSTEREXTRACTION :
+    case py_perception::FilterCloud::Request::CLUSTEREXTRACTION :
     {
       std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> temp =clusterExtraction(cloud);
       if (temp.size()>0)
       {
         filtered_cloud = temp[0];
       }
-      //filtered_cloud = clusterExtraction(cloud)[0];
       break;
     }
     default :
@@ -224,7 +222,7 @@ bool filterCallback(lesson_perception::FilterCloud::Request& request,
       return false;
     }
 
-   }
+  }
 
 /*
  * SETUP RESPONSE

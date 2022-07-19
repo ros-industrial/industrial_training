@@ -1,22 +1,24 @@
 #!/usr/bin/env python
 
 import rospy
-import lesson_perception.srv
+import py_perception.srv
 from sensor_msgs.msg import PointCloud2
 
 if __name__ == '__main__':
-    rospy.init_node('filter_cloud', anonymous=True)
-    rospy.wait_for_service('filter_cloud')
     try:
+        rospy.init_node('filter_cloud', anonymous=True)
+        rospy.wait_for_service('filter_cloud')
+
         # =======================
         # VOXEL GRID FILTER
         # =======================
 
-        srvp = rospy.ServiceProxy('filter_cloud', lesson_perception.srv.FilterCloud)
-        req = lesson_perception.srv.FilterCloudRequest()
+        srvp = rospy.ServiceProxy('filter_cloud', py_perception.srv.FilterCloud)
+        req = py_perception.srv.FilterCloudRequest()
         req.pcdfilename = rospy.get_param('~pcdfilename', '')
-        req.operation = lesson_perception.srv.FilterCloudRequest.VOXELGRID
-        # FROM THE SERVICE, ASSIGN POINTS
+        req.operation = py_perception.srv.FilterCloudRequest.VOXELGRID
+
+        # FROM THE SERVICE, ASSIGN POINTS 
         req.input_cloud = PointCloud2()
 
         # ERROR HANDLING
@@ -38,10 +40,10 @@ if __name__ == '__main__':
         # PASSTHROUGH FILTER
         # =======================
 
-        srvp = rospy.ServiceProxy('filter_cloud', lesson_perception.srv.FilterCloud)
-        req = lesson_perception.srv.FilterCloudRequest()
+        srvp = rospy.ServiceProxy('filter_cloud', py_perception.srv.FilterCloud)
+        req = py_perception.srv.FilterCloudRequest()
         req.pcdfilename = ''
-        req.operation = lesson_perception.srv.FilterCloudRequest.PASSTHROUGH
+        req.operation = py_perception.srv.FilterCloudRequest.PASSTHROUGH
         # FROM THE SERVICE, ASSIGN POINTS
         req.input_cloud = res_voxel.output_cloud
 
@@ -60,10 +62,10 @@ if __name__ == '__main__':
         # PLANE SEGMENTATION
         # =======================
 
-        srvp = rospy.ServiceProxy('filter_cloud', lesson_perception.srv.FilterCloud)
-        req = lesson_perception.srv.FilterCloudRequest()
+        srvp = rospy.ServiceProxy('filter_cloud', py_perception.srv.FilterCloud)
+        req = py_perception.srv.FilterCloudRequest()
         req.pcdfilename = ''
-        req.operation = lesson_perception.srv.FilterCloudRequest.PLANESEGMENTATION
+        req.operation = py_perception.srv.FilterCloudRequest.PLANESEGMENTATION
         # FROM THE SERVICE, ASSIGN POINTS
         req.input_cloud = res_pass.output_cloud
 
@@ -82,10 +84,10 @@ if __name__ == '__main__':
         # CLUSTER EXTRACTION
         # =======================
 
-        srvp = rospy.ServiceProxy('filter_cloud', lesson_perception.srv.FilterCloud)
-        req = lesson_perception.srv.FilterCloudRequest()
+        srvp = rospy.ServiceProxy('filter_cloud', py_perception.srv.FilterCloud)
+        req = py_perception.srv.FilterCloudRequest()
         req.pcdfilename = ''
-        req.operation = lesson_perception.srv.FilterCloudRequest.CLUSTEREXTRACTION
+        req.operation = py_perception.srv.FilterCloudRequest.CLUSTEREXTRACTION
         # FROM THE SERVICE, ASSIGN POINTS
         req.input_cloud = res_seg.output_cloud
 
