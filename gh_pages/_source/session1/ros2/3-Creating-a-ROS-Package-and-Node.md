@@ -134,7 +134,7 @@ Your goal is to create your first ROS node:
    * To use a different logging level, replace INFO in `RCLCPP_INFO` or `RCLCPP_INFO_STREAM` with the appropriate level.
    * Use `RCLCPP_INFO` for printf-style logging, and `RCLCPP_INFO_STREAM` for cout-style logging.
 
-   `rclcpp::spin(node)` instructs the ROS2 [executor instance](https://docs.ros.org/en/rolling/Concepts/About-Executors.html) to poll the middleware layer and maps the request to a callback function. Without it, your subscribers and service servers won't know about any potential clients. Don't worry if some of this language doesn't yet make sense, we'll cover topics and services in the next sections.
+   `rclcpp::spin(node)` instructs the ROS2 [executor instance](https://docs.ros.org/en/rolling/Concepts/About-Executors.html) to tell your node about any activity on subscribed topics or requested service connections. Without it, your callback functions won't ever run. Don't worry if some of this language doesn't yet make sense, we'll cover topics and services in the next sections.
 
 1. Now that you have created the source code for the node, we need to add instructions for building it into an executable program. In the package folder, edit the _CMakeLists.txt_ file using _gedit_. Define an executable node named vision_node (_add_executable_), with the source file _vision_node.cpp_. Also within the _CMakeLists.txt_, make sure your new vision_node gets linked to the required dependencies.
 
