@@ -5,7 +5,7 @@ IS_AWS=${IS_AWS:-"$(expr "`head -c 3 /sys/hypervisor/uuid 2>/dev/null`" == "ec2"
 
 sudo apt update -y
 sudo apt upgrade -y
-sudo apt install -y curl gcc make gnupg2 lsb-release git meld build-essential libfontconfig1 mesa-common-dev libglu1-mesa-dev python3-vcstool
+sudo apt install -y curl gcc make gnupg2 lsb-release git meld build-essential libfontconfig1 mesa-common-dev libglu1-mesa-dev
 
 cd $HOME
 
@@ -24,7 +24,7 @@ sudo apt update -y
 
 # ROS1 install
 sudo apt install -y ros-noetic-desktop
-sudo apt install -y python3-wstool python3-catkin-tools
+sudo apt install -y python3-wstool python3-vcstool python3-catkin-tools
 sudo apt install -y ros-noetic-perception ros-noetic-urdf-tutorial ros-noetic-moveit
 sudo apt install -y ros-noetic-openni-camera ros-noetic-openni-launch ros-noetic-openni2-camera ros-noetic-openni2-launch
 sudo apt install -y ros-noetic-industrial-core
