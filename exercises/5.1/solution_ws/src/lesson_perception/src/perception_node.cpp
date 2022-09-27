@@ -82,7 +82,7 @@ class PerceptionNode : public rclcpp::Node
              */
             rclcpp::Subscription<sensor_msgs::msg::PointCloud2>::SharedPtr cloud_subscriber_ =
                 this->create_subscription<sensor_msgs::msg::PointCloud2>(
-                cloud_topic, 10, std::bind(&PerceptionNode::cloud_callback, this, _1));
+                    cloud_topic, 10, std::bind(&PerceptionNode::cloud_callback, this, std::placeholders::_1));
 
             /*
              * SETUP TF
