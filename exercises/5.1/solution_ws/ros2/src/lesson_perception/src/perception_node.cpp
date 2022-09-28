@@ -3,6 +3,7 @@
 #include <tf2_ros/transform_listener.h>
 #include <tf2_ros/transform_broadcaster.h>
 #include <sensor_msgs/msg/point_cloud2.hpp> //hydro
+#include <rclcpp/qos.hpp>
 
 // PCL specific includes
 #include <pcl_conversions/pcl_conversions.h> //hydro
@@ -26,11 +27,15 @@ class PerceptionNode : public rclcpp::Node
 {
     public:
         PerceptionNode()
-        : Node("perception_node", rclcpp::NodeOptions().automatically_declare_parameters_from_overrides(true))
+        : Node("perception_node", rclcpp::NodeOptions()
+                                          .allow_undeclared_parameters(true)
+                                          .automatically_declare_parameters_from_overrides(true))
         {
             /*
              * SETUP PUBLISHERS
              */
+            RCLCPP_INFO(this->get_logger(), "Setting up publishers");
+
             object_publisher_ =
                 this->create_publisher<sensor_msgs::msg::PointCloud2>("object_cluster", 1);
             cluster_publisher_ =
@@ -45,7 +50,25 @@ class PerceptionNode : public rclcpp::Node
                 z_filter_max_param, plane_max_iter_param, plane_dist_thresh_param, cluster_tol_param,
                 cluster_min_size_param, cluster_max_size_param;
 
-            this->get_parameter_or("cloud_topic", cloud_topic_param, rclcpp::Parameter("", "kinect/depth_registered/points"));
+//            this->declare_parameter("cloud_topic");
+//            this->declare_parameter("world_frame");
+//            this->declare_parameter("camera_frame");
+//            this->declare_parameter("voxel_leaf_size");
+//            this->declare_parameter("x_filter_min");
+//            this->declare_parameter("x_filter_max");
+//            this->declare_parameter("y_filter_min");
+//            this->declare_parameter("y_filter_max");
+//            this->declare_parameter("z_filter_min");
+//            this->declare_parameter("z_filter_max");
+//            this->declare_parameter("plane_max_iterations");
+//            this->declare_parameter("plane_distance_threshold");
+//            this->declare_parameter("cluster_tolerance");
+//            this->declare_parameter("cluster_min_size");
+//            this->declare_parameter("cluster_max_size");
+
+            RCLCPP_INFO(this->get_logger(), "Getting parameters");
+
+            this->get_parameter_or("cloud_topic", cloud_topic_param, rclcpp::Parameter("", "/kinect/depth_registered/points"));
             this->get_parameter_or("world_frame", world_frame_param, rclcpp::Parameter("", "kinect_link"));
             this->get_parameter_or("camera_frame", camera_frame_param, rclcpp::Parameter("", "kinect_link"));
             this->get_parameter_or("voxel_leaf_size", voxel_leaf_size_param, rclcpp::Parameter("", 0.002));
@@ -80,9 +103,11 @@ class PerceptionNode : public rclcpp::Node
             /*
              * SETUP SUBSCRIBER
              */
-            rclcpp::Subscription<sensor_msgs::msg::PointCloud2>::SharedPtr cloud_subscriber_ =
+            RCLCPP_INFO(this->get_logger(), "Setting up subscriber");
+
+            cloud_subscriber_ =
                 this->create_subscription<sensor_msgs::msg::PointCloud2>(
-                    cloud_topic, 10, std::bind(&PerceptionNode::cloud_callback, this, std::placeholders::_1));
+                    cloud_topic, 1, std::bind(&PerceptionNode::cloud_callback, this, std::placeholders::_1));
 
             /*
              * SETUP TF
@@ -206,7 +231,7 @@ class PerceptionNode : public rclcpp::Node
             // Get the points associated with the planar surface
             extract.filter (*cloud_plane);
             RCLCPP_INFO(this->get_logger(),
-                        "PointCloud2 representing the planar component: '%s' data points.", std::to_string(cloud_plane->points.size()));
+                        "PointCloud2 representing the planar component: '%ul' data points.", cloud_plane->points.size());
 
             // Remove the planar inliers, extract the rest
             extract.setNegative (true);

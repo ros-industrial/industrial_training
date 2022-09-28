@@ -2,14 +2,14 @@ from launch import LaunchDescription
 from launch_ros.actions import Node
 
 def generate_launch_description():
-    ld = LaunchDescription()
-    perception_node = Node(
+    return LaunchDescription([
+        Node(
             package='lesson_perception',
-            executable='processing_node',
-            name='processing_node',
+            executable='perception_node',
+            name='perception_node',
             output='screen',
             parameters=[
-                {"cloud_topic": "kinect/depth_registered/points"},
+                {"cloud_topic": "/kinect/depth_registered/points"},
                 {"world_frame": "world_frame"},
                 {"camera_frame": "kinect_link"},
                 {"voxel_leaf_size": 0.001}, #mm
@@ -26,6 +26,4 @@ def generate_launch_description():
                 {"cluster_max_size": 500000}
             ]
         )
-    ld.add(perception_node)
-
-    return ld
+     ])

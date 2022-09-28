@@ -33,7 +33,8 @@ add_executable(perception_node src/perception_node.cpp)
 ament_target_dependencies(perception_node rclcpp tf2_ros tf2 tf2_eigen sensor_msgs pcl_ros)
 
 add_executable(pcd_to_pointcloud src/pcd_to_pointcloud.cpp)
-ament_target_dependencies(pcd_to_pointcloud rclcpp sensor_msgs pcl_ros)
+ament_target_dependencies(pcd_to_pointcloud pcl_conversions rclcpp sensor_msgs)
+target_link_libraries(pcd_to_pointcloud ${PCL_LIBRARIES})
 
 install(TARGETS
     perception_node
