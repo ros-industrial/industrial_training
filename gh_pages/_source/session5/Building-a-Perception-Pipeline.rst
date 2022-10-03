@@ -193,6 +193,7 @@ Implement Pass-through Filters
    Here we are setting our filters for the x, y, and z axes as well as the limits for each.
 
    .. code-block:: c++
+
       pcl::PointCloud<pcl::PointXYZ> xf_cloud, yf_cloud, zf_cloud;
       pcl::PassThrough<pcl::PointXYZ> pass_x;
       pass_x.setInputCloud(cloud_voxel_filtered);
@@ -259,6 +260,7 @@ Plane Segmentation
    First, we set up a few new point clouds.
 
    .. code-block:: c++
+
       pcl::PointCloud<pcl::PointXYZ>::Ptr cropped_cloud(new pcl::PointCloud<pcl::PointXYZ>(xyz_filtered_cloud));
       pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_f (new pcl::PointCloud<pcl::PointXYZ>);
       pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered (new pcl::PointCloud<pcl::PointXYZ>);
@@ -409,7 +411,7 @@ Euclidean Cluster Extraction
 #. When you are satisfied with the cluster extraction results, use Ctrl+C to kill the node. There is no need to close or kill the other terminals/nodes.
 
 Create a CropBox Filter (Optional)
-^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 #. Change code
 
