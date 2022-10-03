@@ -119,7 +119,7 @@ class PerceptionNode : public rclcpp::Node
 
 
             /* ========================================
-             * Fill Code: CROPBOX
+             * Fill Code: CROPBOX (Optional)
              * ========================================*/
 
 

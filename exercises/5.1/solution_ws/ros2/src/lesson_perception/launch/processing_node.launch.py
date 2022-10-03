@@ -22,7 +22,7 @@ def generate_launch_description():
                 {"plane_max_iterations": 100},
                 {"plane_distance_threshold": 0.03},
                 {"cluster_tolerance": 0.02},
-                {"cluster_min_size": 300},
+                {"cluster_min_size": 1},
                 {"cluster_max_size": 10000}
             ]
         )

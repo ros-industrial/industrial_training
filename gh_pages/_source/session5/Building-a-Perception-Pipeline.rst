@@ -51,7 +51,7 @@ Most of the infrastructure for a ros node has already been completed for you; th
 
 #. Headers:
 
-   * You will have to uncomment the PCL related headers as you go.
+   * We have provided several headers for the various libraries and packages you will need.
 
 #. int main():
 
@@ -67,7 +67,7 @@ Most of the infrastructure for a ros node has already been completed for you; th
 
 #. Launch file:
 
-   * A launch file has been provided for you. The parameters within it will need to be edited throughout the exercise. 
+   * A launch file has been provided for you. The parameters within it will need to be edited later in the exercise. 
 
 #. Set up parameters:
 
@@ -99,11 +99,10 @@ The task of filling in the middle section containing the perception algorithms i
 
 Implement Voxel Filter
 ^^^^^^^^^^^^^^^^^^^^^^
-#. Uncomment the `voxel_grid` include header, near the top of the file.
 
 #. Change code:
     
-   The first step in most point cloud processing pipelines is the voxel filter. This filter not only helps to downsample your points, but also eliminates any NAN values so that any further filtering or processing is done on real values. See  `PCL Voxel Filter Tutorial <http://pointclouds.org/documentation/tutorials/voxel_grid.php#voxelgrid>`_ for hints, otherwise you can copy the below code snippet.
+   The first step in most point cloud processing pipelines is the voxel filter. This filter not only helps to downsample your points, but also eliminates any NAN values so that any further filtering or processing is done on real values. See  `PCL Voxel Filter Tutorial <https://pcl.readthedocs.io/projects/tutorials/en/latest/voxel_grid.html>`_ for more in-depth explanations of the code.
   
    Within ``perception_node.cpp``, find section
 
@@ -113,7 +112,7 @@ Implement Voxel Filter
        * Fill Code: VOXEL GRID
        * ========================================*/
 
-   Copy and paste the following beneath that banner.
+   Copy and paste the following code beneath that banner.
 
    .. code-block:: c++
 
@@ -134,7 +133,7 @@ Implement Voxel Filter
        * Fill Code: UPDATE AS NECESSARY
        * ========================================*/
 
-   Uncomment ``pcl::toROSMsg``, and replace ``*cloud_ptr`` with ``*cloud_voxel_filtered``
+   Replace ``*cloud_ptr`` with ``*cloud_voxel_filtered`` in the call to ``publishPointCloud(...)`` to publish your new filtered point cloud. Take a look at the function and see how we converted our point cloud to a ROS message in order to publish it.
 
    .. Note:: For each type of filter we will create a new publisher. It is often useful to view the results of multiple filters at once in Rviz and just toggle different clouds.
 
@@ -152,7 +151,7 @@ Viewing Results
    .. code-block:: bash
 
       ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 world_frame kinect_link
-      ros2 run lesson_perception pcd_to_pointcloud --ros-args -p filename:=/home/tcappellari/industrial_training/exercises/5.1/solution_ws/ros2/src/lesson_perception/config/table.pcd -p tf_frame:=kinect_link -p topic:=/kinect/depth_registered/points
+      ros2 run lesson_perception pcd_to_pointcloud --ros-args -p filename:=~/table.pcd -p tf_frame:=kinect_link -p topic:=/kinect/depth_registered/points
       ros2 run rviz2 rviz2
       ros2 launch lesson_perception processing_node.launch.py
 
@@ -165,7 +164,7 @@ Viewing Results
 
 #. When you are done viewing the results, try changing the voxel filter size from 0.002 to 0.100 and view the results again.  Reset the filter to 0.002 when done.
 
-   * To see the results of this change, use Ctrl+C to kill the perception node, re-build, and re-run the perception node.
+   * To see the results of this change, use Ctrl+C to kill the perception node, re-build, and re-run the perception node. If you'd like, you can create a new parameter for the voxel filter size. Editing the parameter's default value in the launch file will save you some time as you won't need to re-build before re-launching it!
 
   .. Note:: You do not need to stop any of the other nodes (rviz, pcd_to_pointcloud, etc).
 
@@ -176,11 +175,10 @@ Viewing Results
 
 Implement Pass-through Filters
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-#. As before, uncomment the PassThrough filter include-header near the top of the file.
 
 #. Change code:
 
-   The next set of useful filtering to get the region of interest, is a series of pass-through filters. These filters crop your point cloud down to a volume of space (if you use x y and z filter). At this point you should apply a series of pass-through filters, one for each the x, y, and z directions. See `PCL Pass-Through Filter Tutorial <http://pointclouds.org/documentation/tutorials/passthrough.php#passthrough>`_ for hints, or use code below.
+   The next set of useful filtering to get the region of interest, is a series of pass-through filters. These filters crop your point cloud down to a volume of space (if you use x y and z filter). At this point you should apply a series of pass-through filters, one for each the x, y, and z directions. See `PCL Pass-Through Filter Tutorial <https://pcl.readthedocs.io/projects/tutorials/en/latest/passthrough.html>`_ for hints, or use code below.
     
    Within perception_node.cpp, find section
 
@@ -190,7 +188,9 @@ Implement Pass-through Filters
        * Fill Code: PASSTHROUGH FILTER(S)
        * ========================================*/
 
-   Copy and paste the following beneath that banner.
+   Copy and paste the following code beneath that banner.
+
+   Here we are setting our filters for the x, y, and z axes as well as the limits for each.
 
    .. code-block:: c++
       pcl::PointCloud<pcl::PointXYZ> xf_cloud, yf_cloud, zf_cloud;
@@ -236,7 +236,7 @@ Implement Pass-through Filters
    .. image:: /_static/zf_cloud.png
 
 
-  .. Note:: Try modifying the X/Y/Z FilterLimits (e.g. +/- 0.5), re-build, and re-run.  Observe the effects in rviz.  When complete, reset the limits to +/- 1.0.
+  .. Note:: Try modifying the X/Y/Z FilterLimits (e.g. +/- 0.5), re-build, and re-run (again, if you make these into parameters and set them in the launch file, re-building will not be necessary).  Observe the effects in rviz.  When complete, reset the limits to +/- 1.0.
 
 #. When you are satisfied with the pass-through filter results, press Ctrl+C to kill the node. There is no need to close or kill the other terminals/nodes.
 
@@ -244,7 +244,7 @@ Plane Segmentation
 ^^^^^^^^^^^^^^^^^^
 #. Change code
 
-   This method is one of the most useful for any application where the object is on a flat surface. In order to isolate the objects on a table, you perform a plane fit to the points, which finds the points which comprise the table, and then subtract those points so that you are left with only points corresponding to the object(s) above the table. This is the most complicated PCL method we will be using and it is actually a combination of two: the RANSAC segmentation model, and the extract indices tool. An in depth example can be found on the `PCL Plane Model Segmentation Tutorial <http://pointclouds.org/documentation/tutorials/planar_segmentation.php#planar-segmentation>`_; otherwise you can copy the below code snippet.
+   This method is one of the most useful for any application where the object is on a flat surface. In order to isolate the objects on a table, you perform a plane fit to the points, which finds the points which comprise the table, and then subtract those points so that you are left with only points corresponding to the object(s) above the table. This is the most complicated PCL method we will be using and it is actually a combination of two: the RANSAC segmentation model, and the extract indices tool. An in depth example can be found on the `PCL Plane Model Segmentation Tutorial <https://pcl.readthedocs.io/projects/tutorials/en/latest/planar_segmentation.html>`_; otherwise you can copy the below code snippet.
 
    Within perception_node.cpp, find section:
 
@@ -254,14 +254,20 @@ Plane Segmentation
        * Fill Code: PLANE SEGEMENTATION
        * ========================================*/
 
-   Copy and paste the following beneath that banner.
+   Copy and paste the following code beneath that banner.
+
+   First, we set up a few new point clouds.
 
    .. code-block:: c++
       pcl::PointCloud<pcl::PointXYZ>::Ptr cropped_cloud(new pcl::PointCloud<pcl::PointXYZ>(xyz_filtered_cloud));
       pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_f (new pcl::PointCloud<pcl::PointXYZ>);
       pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered (new pcl::PointCloud<pcl::PointXYZ>);
       pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_plane (new pcl::PointCloud<pcl::PointXYZ> ());
-      // Create the segmentation object for the planar model and set all the parameters
+
+   Next we create the segmentation object for the planar model and set the parameters.
+
+   .. code-block:: c++
+
       pcl::SACSegmentation<pcl::PointXYZ> seg;
       pcl::PointIndices::Ptr inliers (new pcl::PointIndices);
       pcl::ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients);
@@ -270,7 +276,11 @@ Plane Segmentation
       seg.setMethodType (pcl::SAC_RANSAC);
       seg.setMaxIterations (200);
       seg.setDistanceThreshold (0.004);
-      // Segment the largest planar component from the cropped cloud
+
+   Now we can segment the largest planar component from the cropped point cloud.
+
+   .. code-block:: c++
+
       seg.setInputCloud (cropped_cloud);
       seg.segment (*inliers, *coefficients);
       if (inliers->indices.size () == 0)
@@ -306,7 +316,6 @@ Plane Segmentation
 #. Find where you previously published the last point cloud and now publish your plane-fit outliers result (``*cloud_f``) to your newly made topic. 
 
 #. Compile and run, as in previous steps.
-    Did you forget to uncomment the new headers used in this step?
 
 #. Evaluate Results
 
@@ -323,7 +332,7 @@ Euclidean Cluster Extraction
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #. Change code
 
-   This method is useful for any application where there are multiple objects. This is also a complicated PCL method.
+   This method is useful for any application where there are multiple objects. This is also a complicated PCL method. A more in-depth explanation of the code can be found at `PCL Euclidean Cluster Extraction Tutorial <https://pcl.readthedocs.io/en/latest/cluster_extraction.html>`_.
 
    Within perception_node.cpp, find section
 
@@ -333,9 +342,9 @@ Euclidean Cluster Extraction
        * Fill Code: EUCLIDEAN CLUSTER EXTRACTION 
        * ========================================*/
 
-   Follow along with the PCL tutorial, insert code in this section.
+   Copy and paste the following code beneath the banner.
 
-   Copy and paste the following beneath the banner.
+   First we create a KdTree object to use as the search method of our cluster extraction.
 
    .. code-block:: c++
 
@@ -344,30 +353,46 @@ Euclidean Cluster Extraction
       *cloud_filtered = *cloud_f;
       tree->setInputCloud (cloud_filtered);
 
+   Next we create a vector of PointIndices that will save the indices of our detected clusters. Here, we will also set the tolerance, minimum cluster size, and maximum cluster size for our search.
+
+   .. code-block:: c++
+
       std::vector<pcl::PointIndices> cluster_indices;
       pcl::EuclideanClusterExtraction<pcl::PointXYZ> ec;
-      ec.setClusterTolerance (0.01); // 2cm
-      ec.setMinClusterSize (300);
-      ec.setMaxClusterSize (10000);
+      ec.setClusterTolerance (cluster_tol);
+      ec.setMinClusterSize (cluster_min_size);
+      ec.setMaxClusterSize (cluster_max_size);
       ec.setSearchMethod (tree);
       ec.setInputCloud (cloud_filtered);
       ec.extract (cluster_indices);
 
       std::vector<sensor_msgs::msg::PointCloud2::SharedPtr> pc2_clusters;
       std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr > clusters;
-      for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin (); it != cluster_indices.end (); ++it)
+
+   Now we can begin looping through our extracted clusters and separate them out of our vector of PointIndices in order to create a new point clouds.
+
+   .. code-block:: c++
+
+      int j = 0;
+      for (const auto& cluster : cluster_indices)
       {
           pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_cluster (new pcl::PointCloud<pcl::PointXYZ>);
-          for (std::vector<int>::const_iterator pit = it->indices.begin (); pit != it->indices.end (); pit++)
-              cloud_cluster->points.push_back(cloud_filtered->points[*pit]);
+
+          for (const auto& idx : cluster.indices) {
+              cloud_cluster->points.push_back((*cloud_filtered)[idx]);
+          }
+
           cloud_cluster->width = cloud_cluster->points.size ();
           cloud_cluster->height = 1;
           cloud_cluster->is_dense = true;
-          std::cout << "Cluster has " << cloud_cluster->points.size() << " points.\n";
+          RCLCPP_INFO(this->get_logger(), "Cluster has '%ul' points", cloud_cluster->points.size());
           clusters.push_back(cloud_cluster);
           sensor_msgs::msg::PointCloud2::SharedPtr tempROSMsg(new sensor_msgs::msg::PointCloud2);
           pcl::toROSMsg(*cloud_cluster, *tempROSMsg);
           pc2_clusters.push_back(tempROSMsg);
+
+          j++;
+
       }
 
 #. Find where the publishers are created and make a new one called ``euclidean_publisher_`` that publishes to the topic "euclidean_cluster".
@@ -388,7 +413,7 @@ Create a CropBox Filter (Optional)
 
 #. Change code
 
-   This method is similar to the pass-through filter from Sub-Task 2, but instead of using three pass-through filters in series, you can use one CropBox filter. Documentation on the CropBox filter and necessary header file can be found `here <http://docs.pointclouds.org/trunk/classpcl_1_1_crop_box.html>`__.
+   This method is similar to the pass-through filter from Sub-Task 2, but instead of using three pass-through filters in series, you can use one CropBox filter. Documentation on the CropBox filter and necessary header file can be found `here <https://pointclouds.org/documentation/classpcl_1_1_crop_box.html>`__.
 
    Within perception_node.cpp, find section
 
@@ -440,7 +465,7 @@ Create a CropBox Filter (Optional)
       pcl::PointCloud<pcl::PointXYZ>::Ptr cropped_cloud(new pcl::PointCloud<pcl::PointXYZ>(xyz_filtered_cloud));
 
 
-#. Find the ``pcl::toROSMsg`` call where you populated the message for the passthrough filter output. Replace the current cloud with the new filtered results (``xyz_filtered_cloud``).
+#. Find where you publish your filtered clouds and replace the cloud for the passthrough filter with your new filtered results (``xyz_filtered_cloud``).
 
 #. Compile and run, as in previous steps
 
