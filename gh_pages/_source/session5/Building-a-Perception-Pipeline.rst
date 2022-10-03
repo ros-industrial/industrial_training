@@ -44,6 +44,7 @@ We will create a new workspace, since this exercise does not overlap with the pr
 #. Import the new workspace into your QTCreator IDE (if using QTCreator):
 
    * In QTCreator: `File -> New File or Project -> Other Project -> ROS Workspace -> ~/perception_ws`
+   * Don't forget to check the ROS distro and the build system!
 
 Intro (Review Existing Code)
 ----------------------------
@@ -415,7 +416,7 @@ Create a CropBox Filter (Optional)
 
 #. Change code
 
-   This method is similar to the pass-through filter from Sub-Task 2, but instead of using three pass-through filters in series, you can use one CropBox filter. Documentation on the CropBox filter and necessary header file can be found `here <https://pointclouds.org/documentation/classpcl_1_1_crop_box.html>`__.
+   This method is similar to the pass-through filter from Sub-Task 2, but instead of using three pass-through filters in series, you can use one CropBox filter. Documentation on the CropBox filter and necessary header file can be found `here <https://pointclouds.org/documentation/classpcl_1_1_crop_box.html>`_.
 
    Within perception_node.cpp, find section
 
@@ -481,7 +482,7 @@ Create a Statistical Outlier Removal
 
 #. Change code
 
-   This method does not necessarily add complexity or information to our end result, but it is often useful. A tutorial can be found `here <http://pointclouds.org/documentation/tutorials/statistical_outlier.php#statistical-outlier-removal>`__.
+   This method does not necessarily add complexity or information to our end result, but it is often useful. A tutorial can be found `here <https://pcl.readthedocs.io/projects/tutorials/en/latest/statistical_outlier.html>`_.
 
    Within perception_node.cpp, find section
 
@@ -549,6 +550,8 @@ While this is not a filter method, it demonstrates how to publish the results of
        * BROADCAST TRANSFORM 
        * ========================================*/
 
+   You can follow along with the `ROS Tutorial <https://docs.ros.org/en/galactic/Tutorials/Intermediate/Tf2/Writing-A-Tf2-Broadcaster-Cpp.html>`_. 
+
    You'll notice that we have already created a ``tf2_ros::Buffer`` and a ``tf2_ros::TransformListener`` for you in the initialization of our class. Create a transform using these:
 
    .. code-block:: c++
@@ -588,7 +591,7 @@ When using sensor data for collision detection, it is sometimes necessary to exc
 
 #. Change code
 
-   This method is similar to the plane segmentation from Sub-Task 3, but instead of segmenting out a plane, you can segment and remove a prism. Documentation on the PCL Polygonal Segmentation can be found `here <http://docs.pointclouds.org/1.7.0/classpcl_1_1_convex_hull.html>`__ and `here <http://docs.pointclouds.org/trunk/classpcl_1_1_extract_polygonal_prism_data.html>`__. The goal in this sub-task is to remove the points that correspond to a known object (e.g. the box we detected earlier). This particular filter is applied to the entire point cloud (original sensor data), but only after we've already completed the processing steps to identify the position/orientation of the box.
+   This method is similar to the plane segmentation from Sub-Task 3, but instead of segmenting out a plane, you can segment and remove a prism. Documentation on the PCL Polygonal Segmentation can be found `here <https://pcl.readthedocs.io/projects/tutorials/en/latest/hull_2d.html>`_. The goal in this sub-task is to remove the points that correspond to a known object (e.g. the box we detected earlier). This particular filter is applied to the entire point cloud (original sensor data), but only after we've already completed the processing steps to identify the position/orientation of the box.
 
    Within perception_node.cpp, add ``#include <tf_conversions/tf_eigen.h>`` and find section
 
