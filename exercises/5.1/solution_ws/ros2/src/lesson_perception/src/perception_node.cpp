@@ -7,7 +7,7 @@
 
 // PCL specific includes
 #include <pcl_conversions/pcl_conversions.h>
-#include "pcl_ros/transforms.hpp"
+#include <pcl_ros/transforms.hpp>
 
 #include <pcl/filters/voxel_grid.h>
 #include <pcl/filters/passthrough.h>
@@ -20,7 +20,7 @@
 #include <pcl/filters/statistical_outlier_removal.h>
 #include <tf2/convert.h>
 #include <tf2_eigen/tf2_eigen.h>
-#include "tf2/LinearMath/Quaternion.h"
+#include <tf2/LinearMath/Quaternion.h>
 #include <pcl/segmentation/extract_polygonal_prism_data.h>
 
 class PerceptionNode : public rclcpp::Node
@@ -32,7 +32,7 @@ class PerceptionNode : public rclcpp::Node
                                           .automatically_declare_parameters_from_overrides(true))
         {
             /*
-             * SETUP PUBLISHERS
+             * SET UP PUBLISHERS
              */
             RCLCPP_INFO(this->get_logger(), "Setting up publishers");
 
@@ -93,7 +93,7 @@ class PerceptionNode : public rclcpp::Node
             cluster_max_size = cluster_max_size_param.as_int();
 
             /*
-             * SETUP SUBSCRIBER
+             * SET UP SUBSCRIBER
              */
             RCLCPP_INFO(this->get_logger(), "Setting up subscriber");
 
@@ -102,7 +102,7 @@ class PerceptionNode : public rclcpp::Node
                     cloud_topic, 1, std::bind(&PerceptionNode::cloud_callback, this, std::placeholders::_1));
 
             /*
-             * SETUP TF
+             * SET UP TF
              */
             tf_buffer_ = std::make_unique<tf2_ros::Buffer>(this->get_clock());
             tf_listener_ = std::make_shared<tf2_ros::TransformListener>(*tf_buffer_);
@@ -375,7 +375,8 @@ class PerceptionNode : public rclcpp::Node
         }
 
         void publishPointCloud(rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr publisher,
-                               pcl::PointCloud<pcl::PointXYZ> point_cloud) {
+                               pcl::PointCloud<pcl::PointXYZ> point_cloud)
+        {
 
             sensor_msgs::msg::PointCloud2::SharedPtr pc2_cloud(new sensor_msgs::msg::PointCloud2);
             pcl::toROSMsg(point_cloud, *pc2_cloud);
@@ -430,7 +431,8 @@ int main(int argc, char *argv[])
      * INITIALIZE ROS NODE
      */
     rclcpp::init(argc, argv);
-    rclcpp::spin(std::make_shared<PerceptionNode>());
+    auto node = std::make_shared<PerceptionNode>();
+    rclcpp::spin(node);
     rclcpp::shutdown();
     return 0;
 }

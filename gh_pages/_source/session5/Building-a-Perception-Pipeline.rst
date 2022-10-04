@@ -165,7 +165,7 @@ Viewing Results
 
 #. When you are done viewing the results, try changing the voxel filter size from 0.002 to 0.100 and view the results again.  Reset the filter to 0.002 when done.
 
-   * To see the results of this change, use Ctrl+C to kill the perception node, re-build, and re-run the perception node. If you'd like, you can create a new parameter for the voxel filter size. Editing the parameter's default value in the launch file will save you some time as you won't need to re-build before re-launching it!
+   * To see the results of this change, use Ctrl+C to kill the perception node, re-build, and re-run the perception node. If you'd like, you can create a new parameter for the voxel filter size to make editing the parameter much easier.
 
   .. Note:: You do not need to stop any of the other nodes (rviz, pcd_to_pointcloud, etc).
 
@@ -238,7 +238,7 @@ Implement Pass-through Filters
    .. image:: /_static/zf_cloud.png
 
 
-  .. Note:: Try modifying the X/Y/Z FilterLimits (e.g. +/- 0.5), re-build, and re-run (again, if you make these into parameters and set them in the launch file, re-building will not be necessary).  Observe the effects in rviz.  When complete, reset the limits to +/- 1.0.
+  .. Note:: Try modifying the X/Y/Z FilterLimits (e.g. +/- 0.5), re-build, and re-run.  Observe the effects in rviz.  When complete, reset the limits to +/- 1.0.
 
 #. When you are satisfied with the pass-through filter results, press Ctrl+C to kill the node. There is no need to close or kill the other terminals/nodes.
 
@@ -747,6 +747,4 @@ While this is not a filter method, it is useful when using PCL or other percepti
 
    When you are satisfied with the results, go to each terminal and *CTRL-C*.
 
-   ..Note:: Now that you can change the parameters from the launch file, editing them there before launching means you don't need to re-build before re-running it! (Don't forget to source your workspace though!)
-
-   We're all done! So it's best to make sure everything is wrapped up and closed.
+   You're all done! So it's best to make sure everything is wrapped up and closed.
