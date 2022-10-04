@@ -9,7 +9,7 @@
 #include <rclcpp/rclcpp.hpp>
 #include <sensor_msgs/msg/point_cloud2.hpp>
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
   rclcpp::init(argc, argv);
   rclcpp::Node::SharedPtr node = std::make_shared<rclcpp::Node>("pcd_to_pointcloud");
@@ -27,9 +27,9 @@ int main(int argc, char **argv)
   std::string tf_frame = tf_frame_param.as_string();
   std::string topic = topic_param.as_string();
 
-  pcl::PointCloud<pcl::PointXYZ> cloud;
+  pcl::PointCloud<pcl::PointXYZRGB> cloud;
 
-  if (pcl::io::loadPCDFile<pcl::PointXYZ>(filename.c_str(), cloud) < 0)
+  if (pcl::io::loadPCDFile<pcl::PointXYZRGB>(filename.c_str(), cloud) < 0)
   {
     RCLCPP_ERROR_STREAM(node->get_logger(), "Could not open file `" << filename << "`");
   }
