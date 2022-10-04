@@ -7,226 +7,121 @@ In this exercise, we will fill in the appropriate pieces of code to build a perc
 Prepare New Workspace:
 ----------------------
 
-We will create a new catkin workspace, since this exercise does not overlap with the previous ScanNPlan exercises.
+We will create a new ROS 2 workspace, since this exercise does not overlap with the previous ScanNPlan exercises.
 
-#. Disable automatic sourcing of your previous catkin workspace:
-
-   #. ``gedit ~/.bashrc``
-
-   #. Comment out the line of your ``.bashrc`` file which sources the previous workspace
-
-      .. code-block:: bash
-
-               source /opt/ros/noetic/setup.bash
-               # source ~/catkin_ws/devel/setup.bash
+#. Disable automatic sourcing of your previous workspace (if you have any) in your ``.bashrc``.
 
 #. Copy the template workspace layout and files:
 
    .. code-block:: bash
 
-            cp -r ~/industrial_training/exercises/python-pcl_ws ~
-            cd ~/python-pcl_ws/
+            mkdir ~/python_pcl_ws
+            cp -r ~/industrial_training/exercises/5.3/template_ws/ros2/src ~/python_pcl_ws
+            cd ~/python_pcl_ws/
 
 #. Initialize and Build this new workspace
 
    .. code-block:: bash
 
-            catkin init
-            catkin build
+            colcon build
 
 
 #. Source the workspace
 
    .. code-block:: bash
 
-            source ~/python-pcl_ws/devel/setup.bash
+            source ~/python-pcl_ws/install/setup.bash
 
-#. Download the PointCloud file and place the file in your workspace's **src** directory :
+#. Download the PointCloud file and place the file in your home directory :
 
    .. code-block:: bash
    
-      cp -r ~/industrial_training/exercises/4.2/table.pcd src/
+      cp -r ~/industrial_training/exercises/4.2/table.pcd ~
 
 
 Intro (Review Existing Code)
 ----------------------------
 
-Most of the infrastructure for a ROS node has already been completed for you; the focus of this exercise is the perception algorithms/pipeline. The ``CMakelists.txt`` and ``package.xml`` are complete and a source file has been provided. At this time we will explore the source code that has been provided in the ``py_perception_node.cpp`` file. This tutorial has been modified from training `Exercise 5.1 Building a Perception Pipeline <http://ros-industrial.github.io/industrial_training/_source/session5/Building-a-Perception-Pipeline.html>`__ and as such the C++ code has already been set up. Open the ``perception_node.cpp`` file and review the filtering functions.
+Most of the infrastructure for a ROS 2 node has already been completed for you; the focus of this exercise is the perception algorithms/pipeline and the use of a pure Python ROS package. There are two packages provided for you: ``py_perception`` and ``filter_call``. 
 
-Create a Python Package
-^^^^^^^^^^^^^^^^^^^^^^^
+At this time we will explore the source code that has been provided in the ``py_perception_node.cpp`` file. This tutorial has been modified from training `Exercise 5.1 Building a Perception Pipeline <http://ros-industrial.github.io/industrial_training/_source/session5/Building-a-Perception-Pipeline.html>`__ and as such the C++ code has already been set up. Open the ``perception_node.cpp`` file and review the filtering functions.
+
+.. Note:: For an extra challenge, after completing exercise 5.1, try adding the missing filters into our new ``py_perception_node`` here. 
+
+Using a Python Package
+^^^^^^^^^^^^^^^^^^^^^^
 
 Now that we have converted several filters to C++ functions, we are ready to call it from a Python node.
 
-#. In the terminal, change the directory to your src folder. Create a new package inside your python-pcl_ws:
-
-   .. code-block:: bash
-
-            cd ~/python-pcl_ws/src/
-            catkin create pkg filter_call --catkin-deps rospy
-
-#. Check that your package was created:
-
-   .. code-block:: bash
-
-            ls 
+Take a look at the ``filter_call`` package and note the differences in structure between a pure Python package and a C++ package. 
 
 We will not be including ‘perception_msgs’ as a dependency as we will not be creating custom messages in this course. If you wish for a more in depth explanation including how to implement customer messages, here is a good `MIT resource <http://duckietown.mit.edu/media/pdfs/1rpRisFoCYUm0XT78j-nAYidlh-cDtLCdEbIaBCnx9ew.pdf>`__ on the steps taken.
 
-#. Create a directory for a python module with the same name as the ROS package
+Notice that instead of a ``CMakeLists.txt`` file we have ``setup.cfg`` and ``setup.py``. The ``setup.py`` file functions similarly to a ``CMakeLists.txt`` and ``setup.cfg`` tells the package where our scripts will be installed. In order for this folder to be accessed by any other python script, the ``__init__.py`` file must exist. In this example, it is located at ``filter_call/filter_call/__init__.py``. ``filter_call/filter_call`` is also where our scripts will live.
 
-   .. code-block:: bash
-
-            mkdir -p filter_call/include/filter_call
-
-#. Open filter_call's ``CMakeLists.txt``. Uncomment line 19 or wherever you find **# catkin_python_setup()** and save.
-
-   .. code-block:: bash
-
-            catkin_python_setup()
-
-Creating setup.py
-^^^^^^^^^^^^^^^^^
-
-The ``setup.py`` file makes your python module available to the entire workspace and subsequent packages.  By default, this isn’t created by the ``catkin_create_pkg`` command.
-
-#. In your terminal type
-
-   .. code-block:: bash
-
-            gedit filter_call/setup.py
-
-#. Copy and paste the following to the ``setup.py`` file
-
-   .. code-block:: python
-
-            ## ! DO NOT MANUALLY INVOKE THIS setup.py, USE CATKIN INSTEAD
-            from distutils.core import setup
-            from catkin_pkg.python_setup import generate_distutils_setup
-            # fetch values from package.xml
-            setup_args = generate_distutils_setup(
-            packages=[''],
-            package_dir={'': 'include'},
-            )
-            setup(**setup_args)
-
-
-   Change ``packages = [ . . . ],`` to your list of strings of the name of the folders inside your *include* folder.  By convention, this will be the same name as the package, or ``filter_call`` . The configures ``filter_call/include/filter_call`` as a python module available to the whole workspace.
-
-#. Save and close the file.
-
-    In order for this folder to be accessed by any other python script, the ``__init__.py`` file must exist.
-
-#. Create one in the terminal by typing:
-
-   .. code-block:: bash
-
-            touch filter_call/include/filter_call/__init__.py
 
 Publishing the Point Cloud
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-As iterated before, we are creating a ROS C++ node to filter the point cloud when requested by a Python node running a service request for each filtering operation, resulting in a new, aggregated point cloud.  Let’s start with modifying our C++ code to publish in a manner supportive to python. Remember, the C++ code is already done so all you need to do is write your python script and view the results in Rviz.
+As mentioned above, we are creating a ROS 2 C++ node to filter the point cloud when requested by a Python node running a service request for each filtering operation, resulting in a new, aggregated point cloud.  Let’s start by modifying our C++ code to publish in a manner supportive to Python. 
 
 Implement a Voxel Filter
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-#. In ``py_perception_node.cpp``, take notice of the function called ``filterCallBack`` (around line 170). This function will be the entry point for all service calls made by the Python client in order to run point cloud filtering operations.
+#. In ``py_perception_node.cpp``, take notice of the function called ``filterCallBack``. This function will be the entry point for all service calls made by the Python client in order to run point cloud filtering operations.
 
    .. code-block:: c++
 
-        bool filterCallback(py_perception::FilterCloud::Request& request,
-                            py_perception::FilterCloud::Response& response)
-        {
-          pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
-          pcl::PointCloud<pcl::PointXYZ>::Ptr filtered_cloud (new pcl::PointCloud<pcl::PointXYZ>);
-
-          if (request.pcdfilename.empty())
+      void filterCallback(py_perception::srv::FilterCloud::Request::SharedPtr request,
+                              py_perception::srv::FilterCloud::Response::SharedPtr response)
           {
-            pcl::fromROSMsg(request.input_cloud, *cloud);
-            ROS_INFO_STREAM("cloud size: " << cloud->size());
+              pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
+              pcl::PointCloud<pcl::PointXYZ>::Ptr filtered_cloud (new pcl::PointCloud<pcl::PointXYZ>);
+              if (request->pcdfilename.empty())
+              {
+                  pcl::fromROSMsg(request->input_cloud, *cloud);
+                  RCLCPP_INFO(this->get_logger(), "cloud size: '%ul'", cloud->size());
+                  if (cloud->empty())
+                  {
+                      RCLCPP_ERROR(this->get_logger(), "input cloud empty");
+                      response->success = false;
+                      return;
+                  }
+              }
+              else
+              {
+                  pcl::io::loadPCDFile(request->pcdfilename, *cloud);
+              }
+              switch (request->operation)
+              {
+                  case py_perception::srv::FilterCloud::Request::VOXELGRID :
+                  {
+                      filtered_cloud = voxelGrid(cloud, 0.01);
+                      break;
+                  }
+                  default :
+                  {
+                      RCLCPP_ERROR(this->get_logger(), "no point cloud found");
+                      response->success = false;
+                      return;
+                  }
+              }
+              /*
+               * SETUP RESPONSE
+               */
+              pcl::toROSMsg(*filtered_cloud, response->output_cloud);
+              response->output_cloud.header = request->input_cloud.header;
+              response->output_cloud.header.frame_id = "kinect_link";
+              response->success = true;
           }
-          else
-          {
-            pcl::io::loadPCDFile(request.pcdfilename, *cloud);
-          }
-
-          if (cloud->empty())
-          {
-            ROS_ERROR("input cloud empty");
-            response.success = false;
-            return false;
-          }
-
-          switch (request.operation)
-          {
-
-            case py_perception::FilterCloud::Request::VOXELGRID :
-            {
-              filtered_cloud = voxelGrid(cloud, 0.01);
-              break;
-            }
-            default :
-            {
-              ROS_ERROR("No valid request found");
-              return false;
-            }
-
-           }
-
-        /*
-         * SETUP RESPONSE
-         */
-          pcl::toROSMsg(*filtered_cloud, response.output_cloud);
-          response.output_cloud.header=request.input_cloud.header;
-          response.output_cloud.header.frame_id="kinect_link";
-          response.success = true;
-          return true;
-        }
 
 
-#. Within ``main``, take notice of the lines starting at 244, this is where we load the parameters used by the various filters. 
+#. Now that we have the framework for the filtering on the server side, let's start setting up the client side. Find and open the script ``filter_call.py`` in your ``filter_call`` package.
 
-   .. code-block:: c++
-
-            priv_nh_.param<double>("leaf_size", leaf_size_, 0.0f); 
-   Build the package and go into the **filter_call** package now
-
-#. Now that we have the framework for the filtering, open your terminal. Make sure you are in the outer ``filter_call`` directory. Create a ``scripts`` folder fo hold the python node we're creating.
-
-   .. code-block:: bash
-
-            mkdir scripts
-            touch scripts/filter_call.py
-
-#. Copy and paste the following code at the top of ``filter_call.py`` to import necessary libraries:
-
-   .. code-block:: python
-
-            #!/usr/bin/env python
-
-            import rospy
-            import py_perception.srv
-            from sensor_msgs.msg import PointCloud2
-
-#. We will create an ``if`` statement that contains the ``main`` function that is called when the node is run from the command line. Paste the following after the import statements:
-
-   .. code-block:: python
-
-        if __name__ == '__main__':
-            try:
-                rospy.init_node('filter_cloud', anonymous=True)
-                rospy.wait_for_service('filter_cloud')
-               
-                rospy.spin()
-            except Exception as e:
-                print("Service call failed: %s" % str(e))
-   #. The ``rospy.init_node`` function initializes the node and gives it a name
-   #. The ``rospy.wait_for_service`` waits for the ``filter_cloud`` service.
-   #. The ``rospy.spin`` is the Python counterpart of the ``roscpp::spin()`` function in C++.
+#. Examine the provided code and functions in the script. Take note of some similarities and differences between how the Python node is set up versus a C++ node. 
 
 
-#. Call the service to apply a Voxel Grid filter. Copy and paste the following inside the ``try`` block in the line following the ``rospy.wait_for_service`` function:
+#. Call the service to apply a Voxel Grid filter. Find the the function for applying a voxel grid filter and insert the following code below the banner
 
    .. code-block:: python
    
@@ -234,76 +129,89 @@ Implement a Voxel Filter
         # VOXEL GRID FILTER
         # =======================
         
-        srvp = rospy.ServiceProxy('filter_cloud', py_perception.srv.FilterCloud)
-        req = py_perception.srv.FilterCloudRequest()
-        req.pcdfilename = rospy.get_param('~pcdfilename', '')
-        req.operation = py_perception.srv.FilterCloudRequest.VOXELGRID
+   #. We first create a service request of type FilterCloud and populate it with the necessary information:
 
-        # FROM THE SERVICE, ASSIGN POINTS
-        req.input_cloud = PointCloud2()
+      .. code-block:: python
 
-        # ERROR HANDLING
-        if req.pcdfilename == '':
-            raise Exception('No file parameter found')
+           req = FilterCloud.Request()
+           req.pcdfilename = self.pcdfilename
+           req.operation = py_perception.srv.FilterCloud.Request.VOXELGRID
+           req.input_cloud = PointCloud2()
 
-        # PACKAGE THE FILTERED POINTCLOUD2 TO BE PUBLISHED
-        res_voxel = srvp(req)
-        print('response received')
-        if not res_voxel.success:
-            raise Exception('Unsuccessful voxel grid filter operation')
+           # ERROR HANDLING
+           if req.pcdfilename == '':
+               raise Exception('No file parameter found')
 
-        # PUBLISH VOXEL FILTERED POINTCLOUD2
-        pub = rospy.Publisher('/perception_voxelGrid', PointCloud2, queue_size=1, latch=True)
-        pub.publish(res_voxel.output_cloud)
-        print("published: voxel grid filter response")
+   #. Next we can send a request to the server node and wait for a response:
+
+      .. code-block:: python
+
+           future = self.client.call_async(req)
+           rclpy.spin_until_future_complete(self, future)
+           res_voxel = future.result()
+           if not res_voxel.success:
+               raise Exception('Unsuccessful voxel grid filter operation')
+
+   #. Finally, we publish our new filtered point cloud:
+
+      .. code-block::python
+
+           self.voxel_pub.publish(res_voxel.output_cloud)
+           self.last_cloud = res_voxel
+           self.get_logger().info("published: voxel grid filter response")
 
 
-#. We need to make the Python file executable. In your terminal:
+#. Before running our new node, we need to make the Python file executable. In your terminal:
 
    .. code-block:: bash
 
             sudo chmod +x scripts/filter_call.py
 
+   then open ``setup.bash`` and modify ``entry_points`` to read
+
+   .. code-block:: python
+
+         entry_points={
+           'console_scripts': [
+               'filter_call = filter_call.filter_call:main'
+           ],
+
+#. Re-build and re-source your workspace.
+
+
 Viewing Results
 ^^^^^^^^^^^^^^^
 
-#. In your terminal, run
+#. In your terminal, source a new terminal and run the C++ filter service node
 
    .. code-block:: bash
 
-            roscore
-
-#. Source a new terminal and run the C++ filter service node
-
-   .. code-block:: bash
-
-            rosrun py_perception py_perception_node
-
-#. Source a new terminal and run the Python service client node. Note your file path may be different.
-
-   .. code-block:: bash
-
-            rosrun filter_call filter_call.py _pcdfilename:=${HOME}/python-pcl_ws/src/table.pcd
+            ros2 run py_perception perception_node
 
 #. Source a new terminal and run the ``tf2_ros`` package to publish a static coordinate transform from the child frame to the world frame
 
    .. code-block:: bash
    
-            rosrun tf2_ros static_transform_publisher 0 0 0 0 0 0 world_frame kinect_link
+            ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 world_frame kinect_link
+
+#. Source a new terminal and run the Python service client node. Note your file path may be different.
+
+   .. code-block:: bash
+
+            ros2 run filter_call filter_call --ros-args -p pcdfilename:=/home/tcappellari/table.pcd
 
 #. Source a new terminal and run Rviz
 
    .. code-block:: bash
 
-            rosrun rviz rviz
+            ros2 run rviz2 rviz2
 
 #. Add a new PointCloud2 in Rviz
 
 #. In global options, change the fixed frame to **kinect_link** or **world_frame**, and in the PointCloud 2, select your topic to be '/perception_voxelGrid'
 
-   .. Note::
+#. You should be able to see your filtered point cloud in Rviz.
 
-        You may need to uncheck and recheck the PointCloud2.
 
 Implement Pass-Through Filters
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -312,25 +220,24 @@ Implement Pass-Through Filters
 
    .. code-block:: bash
 
-        switch (request.operation)
+        switch (request->operation)
         {
-
-          case py_perception::FilterCloud::Request::VOXELGRID :
-          {
-            filtered_cloud = voxelGrid(cloud, 0.01);
-            break;
-          }
-          case py_perception::FilterCloud::Request::PASSTHROUGH :
-          {
-            filtered_cloud = passThrough(cloud);
-            break;
-          }
-          default :
-          {
-            ROS_ERROR("No valid request found");
-            return false;
-          }
-
+            case py_perception::srv::FilterCloud::Request::VOXELGRID :
+            {
+                filtered_cloud = voxelGrid(cloud, 0.01);
+                break;
+            }
+            case py_perception::srv::FilterCloud::Request::PASSTHROUGH :
+            {
+                filtered_cloud = passThrough(cloud);
+                break;
+            }
+            default :
+            {
+                RCLCPP_ERROR(this->get_logger(), "no point cloud found");
+                response->success = false;
+                return;
+            }
         }
 
 #. Save and build
@@ -339,7 +246,7 @@ Implement Pass-Through Filters
    **Edit the Python Code**
 
 
-#. Open the python node and copy paste the following code after the voxel grid, before the ``rospy.spin()``.  Keep care to maintain indents:
+#. Open the python node and copy paste the following code inside the ``passthrough_filter`` function under the banner.  Keep care to maintain indents:
 
    .. code-block:: python
 
@@ -347,66 +254,75 @@ Implement Pass-Through Filters
         # PASSTHROUGH FILTER
         # =======================
 
-        srvp = rospy.ServiceProxy('filter_cloud', py_perception.srv.FilterCloud)
-        req = py_perception.srv.FilterCloudRequest()
-        req.pcdfilename = ''
-        req.operation = py_perception.srv.FilterCloudRequest.PASSTHROUGH
-        # FROM THE SERVICE, ASSIGN POINTS
-        req.input_cloud = res_voxel.output_cloud
+   #. Again, we need to first create and populate our FilterCloud service request:
 
-        # PACKAGE THE FILTERED POINTCLOUD2 TO BE PUBLISHED
-        res_pass = srvp(req)
-        print('response received')
-        if not res_voxel.success:
-            raise Exception('Unsuccessful pass through filter operation')
+      .. code-block:: python
 
-        # PUBLISH PASSTHROUGH FILTERED POINTCLOUD2
-        pub = rospy.Publisher('/perception_passThrough', PointCloud2, queue_size=1, latch=True)
-        pub.publish(res_pass.output_cloud)
-        print("published: pass through filter response")
+            req = FilterCloud.Request()
+            req.pcdfilename = ''
+            req.operation = py_perception.srv.FilterCloud.Request.PASSTHROUGH
+            req.input_cloud = self.last_cloud.output_cloud
+
+   #. Next we call the server and wait for a response:
+
+      .. code-block:: python
+
+           future = self.client.call_async(req)
+           rclpy.spin_until_future_complete(self, future)
+           res_pass = future.result()
+           if not res_pass.success:
+               raise Exception('Unsuccessful passthrough filter operation')
+
+   #. Finally we publish our result:
+
+      .. code-block:: python
+
+           self.pass_pub.publish(res_pass.output_cloud)
+           self.last_cloud = res_pass
+           self.get_logger().info("published: passthrough filter response")
 
 #. Save and run from the terminal, repeating steps outlined for the voxel filter.
 
-   Within Rviz, compare PointCloud2 displays based on the ``/kinect/depth_registered/points`` (original camera data) and ``perception_passThrough`` (latest processing step) topics. Part of the original point cloud has been “clipped” out of the latest processing result.
-
+   Within Rviz, compare PointCloud2 displays based on the the previous voxel grid filter and your new point cloud.
 
    When you are satisfied with the pass-through filter results, press Ctrl+C to kill the node. There is no need to close or kill the other terminals/nodes.
+
+.. Note:: Did you forget to create a new publisher for the passthrough filter? And did you remember to call ``pasthrough_filter()``? Try taking a look at where we create ``voxel_pub`` and call ``voxel_filter()`` for help.
 
 
 Plane Segmentation
 ^^^^^^^^^^^^^^^^^^
 
-This method is one of the most useful for any application where the object is on a flat surface. In order to isolate the objects on a table, you perform a plane fit to the points, which finds the points which comprise the table, and then subtract those points so that you are left with only points corresponding to the object(s) above the table. This is the most complicated PCL method we will be using and it is actually a combination of two: the RANSAC segmentation model, and the extract indices tool. An in depth example can be found on the `PCL Plane Model Segmentation Tutorial <http://pointclouds.org/documentation/tutorials/planar_segmentation.php#planar-segmentation>`__; otherwise you can copy the below code snippet.
+This method is one of the most useful for any application where the object is on a flat surface. In order to isolate the objects on a table, you perform a plane fit to the points, which finds the points which comprise the table, and then subtract those points so that you are left with only points corresponding to the object(s) above the table. This is the most complicated PCL method we will be using and it is actually a combination of two: the RANSAC segmentation model, and the extract indices tool. An in depth example can be found on the `PCL Plane Model Segmentation Tutorial <https://pcl.readthedocs.io/projects/tutorials/en/latest/planar_segmentation.html>`__; otherwise you can copy the below code snippet.
 
 
 #. In ``py_perception_node.cpp``, update the switch statement in ``filterCallback`` to look as shown below:
 
    .. code-block:: c++
 
-        switch (request.operation)
+        switch (request->operation)
         {
-
-          case py_perception::FilterCloud::Request::VOXELGRID :
-          {
-            filtered_cloud = voxelGrid(cloud, 0.01);
-            break;
-          }
-          case py_perception::FilterCloud::Request::PASSTHROUGH :
-          {
-            filtered_cloud = passThrough(cloud);
-            break;
-          }
-          case py_perception::FilterCloud::Request::PLANESEGMENTATION :
-          {
-            filtered_cloud = planeSegmentation(cloud);
-            break;
-          }
-          default :
-          {
-            ROS_ERROR("No valid request found");
-            return false;
-          }
-
+            case py_perception::srv::FilterCloud::Request::VOXELGRID :
+            {
+                filtered_cloud = voxelGrid(cloud, 0.01);
+                break;
+            }
+            case py_perception::srv::FilterCloud::Request::PASSTHROUGH :
+            {
+                filtered_cloud = passThrough(cloud);
+                break;
+            }
+            case py_perception::srv::FilterCloud::Request::PLANESEGMENTATION :
+            {
+                filtered_cloud = planeSegmentation(cloud);
+                break;
+            }
+            default :
+            {
+                RCLCPP_ERROR(this->get_logger(), "no point cloud found");
+                response->success = false;
+                return;
+            }
         }
 
 
@@ -414,7 +330,7 @@ This method is one of the most useful for any application where the object is on
 
    **Edit the Python Code**
 
-#. Copy paste the following code in ``filter_call.py``, after the passthrough filter section.  Keep care to maintain indents:
+#. Open the python node and copy paste the following code inside the ``plane_segmentation`` function under the banner.  Keep care to maintain indents:
 
    .. code-block:: python
 
@@ -422,29 +338,37 @@ This method is one of the most useful for any application where the object is on
         # PLANE SEGMENTATION
         # =======================
 
-        srvp = rospy.ServiceProxy('filter_cloud', py_perception.srv.FilterCloud)
-        req = py_perception.srv.FilterCloudRequest()
-        req.pcdfilename = ''
-        req.operation = py_perception.srv.FilterCloudRequest.PLANESEGMENTATION
-        # FROM THE SERVICE, ASSIGN POINTS
-        req.input_cloud = res_pass.output_cloud
+   #. Again, we need to first create and populate our FilterCloud service request:
 
-        # PACKAGE THE FILTERED POINTCLOUD2 TO BE PUBLISHED
-        res_seg = srvp(req)
-        print('response received')
-        if not res_voxel.success:
-            raise Exception('Unsuccessful plane segmentation operation')
+      .. code-block:: python
 
-        # PUBLISH PLANESEGMENTATION FILTERED POINTCLOUD2
-        pub = rospy.Publisher('/perception_planeSegmentation', PointCloud2, queue_size=1, latch=True)
-        pub.publish(res_seg.output_cloud)
-        print("published: plane segmentation filter response")
+           req = FilterCloud.Request()
+           req.pcdfilename = ''
+           req.operation = py_perception.srv.FilterCloud.Request.PLANESEGMENTATION
+           req.input_cloud = self.last_cloud.output_cloud
+
+   #. Next we call the server and wait for a response:
+
+      .. code-block:: python
+
+           future = self.client.call_async(req)
+           rclpy.spin_until_future_complete(self, future)
+           res_seg = future.result()
+           if not res_seg.success:
+               raise Exception('Unsuccessful plane segmentation operation')
+
+   #. Finally we publish our result:
+
+      .. code-block:: python
+
+           self.plane_pub.publish(res_seg.output_cloud)
+           self.last_cloud = res_seg
+           self.get_logger().info("published: plane segmentation filter response")
 
 
-#. Save and run from the terminal, repeating steps outlined for the voxel filter.
+#. Save and run from the terminal, repeating steps outlined above.
 
-   Within Rviz, compare PointCloud2 displays based on the ``/kinect/depth_registered/points`` (original camera data) and ``perception_planeSegmentation`` (latest processing step) topics. Only points lying above the table plane remain in the latest processing result.
-
+   Within Rviz, compare PointCloud2 displays based on your previous filters and your new one.
 
    #. When you are done viewing the results you can go back and change the ``setMaxIterations`` and ``setDistanceThreshold`` parameter values to control how tightly the plane-fit classifies data as inliers/outliers, and view the results again. Try using values of ``maxIterations=100`` and ``distThreshold=0.010``
 
@@ -454,46 +378,41 @@ This method is one of the most useful for any application where the object is on
 Euclidian Cluster Extraction
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This method is useful for any application where there are multiple objects. This is also a complicated PCL method. An in depth example can be found on the `PCL Euclidean Cluster Extration Tutorial <http://pointclouds.org/documentation/tutorials/cluster_extraction.php#cluster-extraction>`__.
+This method is useful for any application where there are multiple objects. This is also a complicated PCL method. An in depth example can be found on the `PCL Euclidean Cluster Extration Tutorial <https://pcl.readthedocs.io/en/latest/cluster_extraction.html>`_.
 
 
 #. In ``py_perception_node.cpp``, update the switch statement in ``filterCallback`` to look as shown below:
 
    .. code-block:: c++
 
-        switch (request.operation)
+        switch (request->operation)
         {
-
-          case py_perception::FilterCloud::Request::VOXELGRID :
-          {
-            filtered_cloud = voxelGrid(cloud, 0.01);
-            break;
-          }
-          case py_perception::FilterCloud::Request::PASSTHROUGH :
-          {
-            filtered_cloud = passThrough(cloud);
-            break;
-          }
-          case py_perception::FilterCloud::Request::PLANESEGMENTATION :
-          {
-            filtered_cloud = planeSegmentation(cloud);
-            break;
-          }
-          case py_perception::FilterCloud::Request::CLUSTEREXTRACTION :
-          {
-            std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> temp =clusterExtraction(cloud);
-            if (temp.size()>0)
+            case py_perception::srv::FilterCloud::Request::VOXELGRID :
             {
-              filtered_cloud = temp[0];
+                filtered_cloud = voxelGrid(cloud, 0.01);
+                break;
             }
-            break;
-          }
-          default :
-          {
-            ROS_ERROR("No valid request found");
-            return false;
-          }
-
+            case py_perception::srv::FilterCloud::Request::PASSTHROUGH :
+            {
+                filtered_cloud = passThrough(cloud);
+                break;
+            }
+            case py_perception::srv::FilterCloud::Request::PLANESEGMENTATION :
+            {
+                filtered_cloud = planeSegmentation(cloud);
+                break;
+            }
+            case py_perception::srv::FilterCloud::Request::CLUSTEREXTRACTION :
+            {
+                filtered_cloud = clusterExtraction(cloud).at(0);
+                break;
+            }
+            default :
+            {
+                RCLCPP_ERROR(this->get_logger(), "no point cloud found");
+                response->success = false;
+                return;
+            }
         }
 
 
@@ -503,7 +422,7 @@ This method is useful for any application where there are multiple objects. This
    **Edit the Python Code**
 
 
-#. Copy paste the following code in ``filter_call.py`` after the plane segmentation section.  Keep care to maintain indents:
+#. Open the python node and copy paste the following code inside the ``plane_segmentation`` function under the banner.  Keep care to maintain indents:
 
    .. code-block:: python
 
@@ -511,26 +430,37 @@ This method is useful for any application where there are multiple objects. This
         # CLUSTER EXTRACTION
         # =======================
 
-        srvp = rospy.ServiceProxy('filter_cloud', py_perception.srv.FilterCloud)
-        req = py_perception.srv.FilterCloudRequest()
-        req.pcdfilename = ''
-        req.operation = py_perception.srv.FilterCloudRequest.CLUSTEREXTRACTION
-        # FROM THE SERVICE, ASSIGN POINTS
-        req.input_cloud = res_seg.output_cloud
+   #. Again, we need to first create and populate our FilterCloud service request:
 
-        # PACKAGE THE FILTERED POINTCLOUD2 TO BE PUBLISHED
-        res_cluster = srvp(req)
-        print('response received')
-        if not res_voxel.success:
-            raise Exception('Unsuccessful cluster extraction operation')
+      .. code-block:: python
 
-        # PUBLISH CLUSTEREXTRACTION FILTERED POINTCLOUD2
-        pub = rospy.Publisher('/perception_clusterExtraction', PointCloud2, queue_size=1, latch=True)
-        pub.publish(res_cluster.output_cloud)
-        print("published: cluster extraction filter response")
+           req = FilterCloud.Request()
+           req.pcdfilename = ''
+           req.operation = py_perception.srv.FilterCloud.Request.CLUSTEREXTRACTION
+           req.input_cloud = self.last_cloud.output_cloud
+
+   #. Next we call the server and wait for a response:
+
+      .. code-block:: python
+
+           future = self.client.call_async(req)
+           rclpy.spin_until_future_complete(self, future)
+           res_cluster = future.result()
+           if not res_cluster.success:
+               raise Exception('Unsuccessful cluster extraction operation')
+
+   #. Finally we publish our result:
+
+      .. code-block:: python
+
+           self.cluster_pub.publish(res_cluster.output_cloud)
+           self.last_cloud = res_cluster
+           self.get_logger().info("published: cluster extraction filter response")
 
 
-#. Save and run from the terminal, repeating steps outlined for the voxel filter.
+#. Save and run from the terminal, repeating steps outlined above.
+
+   Within Rviz, compare PointCloud2 displays based on your previous filters and your new one.
 
    #. When you are satisfied with the cluster extraction results, use Ctrl+C to kill the node. If you are done experimenting with this tutorial, you can kill the nodes running in the other terminals.
 

@@ -1,23 +1,12 @@
 #request
 sensor_msgs/PointCloud2 input_cloud
 string topic
-#if empty, use data present in input_cloud
 string pcdfilename
-
-# Removes objects outside a defined grid pattern x,y,z
-byte VOXELGRID=0
-
-# Removes the objects based on volume of space
-byte PASSTHROUGH=1
-
-# Issolate objects located along the largest flat surface (floor)
-byte PLANESEGMENTATION=2
-
-# Determine clusters based on pcd density to identify multiple objects
-byte CLUSTEREXTRACTION=3
-
-# Operation to be performed
-byte operation
+uint8 VOXELGRID=0
+uint8 PASSTHROUGH=1
+uint8 PLANESEGMENTATION=2
+uint8 CLUSTEREXTRACTION=3
+uint8 operation
 
 ---
 #response
