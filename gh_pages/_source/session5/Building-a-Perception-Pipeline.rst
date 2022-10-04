@@ -158,7 +158,7 @@ Viewing Results
 
 #. View results
     
-   Within Rviz, add 2 *PointCloud2* Displays subscribed to the topics "voxel_cluster" and "kinect/depth_registered/points". What you see will be the results of the voxel filter overlaid on the original point cloud.
+   Within Rviz, add two *PointCloud2* Displays subscribed to the topics "voxel_cluster" and "kinect/depth_registered/points". What you see will be the results of the voxel filter overlaid on the original point cloud.
 
    .. image:: /_static/cloud_voxel_filtered.png
 
