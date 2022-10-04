@@ -10,16 +10,17 @@ We will create a new workspace, since this exercise does not overlap with the pr
 
       .. Note:: This means you'll need to manually source the setup file from your new catkin workspace in each new terminal window.
 
-	#. Source ROS 2 into your environment
+#. Source ROS 2 into your environment
 
     .. code-block:: bash
 
-			source /opt/ros/noetic/setup.bash
+			source /opt/ros/foxy/setup.bash
 
 #. Copy the template workspace layout and files:
 
    .. code-block:: bash
 
+      mkdir ~/perception_ws
       cp -r ~/industrial_training/exercises/5.1/template_ws ~/perception_ws
       cd ~/perception_ws/
 
@@ -221,8 +222,6 @@ Implement Pass-through Filters
 #. Find where the publishers are created and make a new one called ``passthrough_publisher_`` that publishes to the topic "passthrough_cluster".
 
 #. Find where you previously published the last point cloud and now publish your final Passthrough Filter result (``zf_cloud``) to your newly made topic. 
-
-   .. Note:: You will need to make another ``PointCloud2`` message like ``pc2_cloud`` and populate it using ``pcl::toROSMsg`` like before in order to publish your new cloud.  
 
 #. Re-build and restart your node.
 
