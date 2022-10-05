@@ -196,7 +196,7 @@ Implement Pass-through Filters
 
    .. code-block:: c++
 
-      pcl::PointCloud<pcl::PointXYZ> xf_cloud, yf_cloud, zf_cloud;
+      pcl::PointCloud<pcl::PointXYZ> xf_cloud, yf_cloud, xyz_filtered_cloud;
       pcl::PassThrough<pcl::PointXYZ> pass_x;
       pass_x.setInputCloud(cloud_voxel_filtered);
       pass_x.setFilterFieldName("x");
@@ -215,13 +215,13 @@ Implement Pass-through Filters
       pass_z.setInputCloud(yf_cloud_ptr);
       pass_z.setFilterFieldName("z");
       pass_z.setFilterLimits(-1.0, 1.0);
-      pass_z.filter(zf_cloud);
+      pass_z.filter(xyz_filtered_cloud);
 
    *You can change the filter limit values to see different results.*
 
 #. Find where the publishers are created and make a new one called ``passthrough_publisher_`` that publishes to the topic "passthrough_cluster".
 
-#. Find where you previously published the last point cloud and now publish your final Passthrough Filter result (``zf_cloud``) to your newly made topic. 
+#. Find where you previously published the last point cloud and now publish your final Passthrough Filter result (``xyz_filtered_cloud``) to your newly made topic. 
 
 #. Re-build and restart your node.
 
