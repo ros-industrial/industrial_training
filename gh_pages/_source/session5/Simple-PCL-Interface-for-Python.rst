@@ -56,7 +56,7 @@ Now that we have converted several filters to C++ functions, we are ready to cal
 
 Take a look at the ``filter_call`` package and note the differences in structure between a pure Python package and a C++ package. 
 
-We will not be including ‘perception_msgs’ as a dependency as we will not be creating custom messages in this course. If you wish for a more in depth explanation including how to implement customer messages, here is a good `MIT resource <http://duckietown.mit.edu/media/pdfs/1rpRisFoCYUm0XT78j-nAYidlh-cDtLCdEbIaBCnx9ew.pdf>`__ on the steps taken.
+We will not be including ‘perception_msgs’ as a dependency as we will not be creating custom messages in this course. If you wish for a more in depth explanation including how to implement custom messages, `MIT has a resource <http://duckietown.mit.edu/media/pdfs/1rpRisFoCYUm0XT78j-nAYidlh-cDtLCdEbIaBCnx9ew.pdf>`__ on the steps taken.
 
 Notice that instead of a ``CMakeLists.txt`` file we have ``setup.cfg`` and ``setup.py``. The ``setup.py`` file functions similarly to a ``CMakeLists.txt`` and ``setup.cfg`` tells the package where our scripts will be installed. In order for this folder to be accessed by any other python script, the ``__init__.py`` file must exist. In this example, it is located at ``filter_call/filter_call/__init__.py``. ``filter_call/filter_call`` is also where our scripts will live.
 
