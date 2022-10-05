@@ -157,7 +157,7 @@ Implement a Voxel Filter
 
    #. Finally, we publish our new filtered point cloud:
 
-      .. code-block::python
+      .. code-block:: python
 
            self.voxel_pub.publish(res_voxel.output_cloud)
            self.last_cloud = res_voxel
