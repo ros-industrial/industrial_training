@@ -142,6 +142,7 @@ Implement a Voxel Filter
            # ERROR HANDLING
            if req.pcdfilename == '':
                self.get_logger().error('No file parameter found')
+               return
 
    #. Next we can send a request to the server node and wait for a response:
 
@@ -152,6 +153,7 @@ Implement a Voxel Filter
            res_voxel = future.result()
            if not res_voxel.success:
                self.get_logger().error('Unsuccessful voxel grid filter operation')
+               return
 
    #. Finally, we publish our new filtered point cloud:
 
@@ -273,6 +275,7 @@ Implement Pass-Through Filters
            res_pass = future.result()
            if not res_pass.success:
                self.get_logger().error('Unsuccessful passthrough filter operation')
+               return
 
    #. Finally we publish our result:
 
@@ -339,6 +342,7 @@ This method is one of the most useful for any application where the object is on
            res_seg = future.result()
            if not res_seg.success:
                self.get_logger().error('Unsuccessful plane segmentation operation')
+               return
 
    #. Finally we publish our result:
 
@@ -407,6 +411,7 @@ This method is useful for any application where there are multiple objects. This
            res_cluster = future.result()
            if not res_cluster.success:
                self.get_logger().error('Unsuccessful cluster extraction operation')
+               return
 
    #. Finally we publish our result:
 

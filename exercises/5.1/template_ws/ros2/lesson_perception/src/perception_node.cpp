@@ -161,7 +161,7 @@ class PerceptionNode : public rclcpp::Node
              * Fill Code: UPDATE AS NECESSARY
              * ========================================*/
 
-            this->publishPointCloud(voxel_grid_publisher_, *cloud);
+            this->publishPointCloud(voxel_grid_publisher_, cloud);
 
         }
 

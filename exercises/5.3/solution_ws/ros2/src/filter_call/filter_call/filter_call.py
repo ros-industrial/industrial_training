@@ -46,6 +46,7 @@ class FilterNode(Node):
         # ERROR HANDLING
         if req.pcdfilename == '':
             self.get_logger().error('No file parameter found')
+            return
 
         # PACKAGE THE FILTERED POINTCLOUD2 TO BE PUBLISHED
         future = self.client.call_async(req)
@@ -53,6 +54,7 @@ class FilterNode(Node):
         res_voxel = future.result()
         if not res_voxel.success:
             self.get_logger().error('Unsuccessful voxel grid filter operation')
+            return
 
         # PUBLISH VOXEL FILTERED POINTCLOUD2
         self.voxel_pub.publish(res_voxel.output_cloud)
@@ -75,6 +77,7 @@ class FilterNode(Node):
         res_pass = future.result()
         if not res_pass.success:
             self.get_logger().error('Unsuccessful passthrough filter operation')
+            return
 
         # PUBLISH PASSTHROUGH FILTERED POINTCLOUD2
         self.pass_pub.publish(res_pass.output_cloud)
@@ -97,6 +100,7 @@ class FilterNode(Node):
         res_seg = future.result()
         if not res_seg.success:
             self.get_logger().error('Unsuccessful plane segmentation operation')
+            return
 
         # PUBLISH PLANESEGMENTATION FILTERED POINTCLOUD2
         self.plane_pub.publish(res_seg.output_cloud)
@@ -119,6 +123,7 @@ class FilterNode(Node):
         res_cluster = future.result()
         if not res_cluster.success:
             self.get_logger().error('Unsuccessful cluster extraction operation')
+            return
 
         # PUBLISH CLUSTEREXTRACTION FILTERED POINTCLOUD2
         self.cluster_pub.publish(res_cluster.output_cloud)
