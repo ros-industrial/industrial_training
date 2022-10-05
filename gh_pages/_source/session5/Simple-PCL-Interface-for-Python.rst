@@ -23,6 +23,7 @@ We will create a new ROS 2 workspace, since this exercise does not overlap with 
 
    .. code-block:: bash
 
+            source /opt/ros/foxy/setup.bash
             colcon build
 
 
@@ -36,7 +37,7 @@ We will create a new ROS 2 workspace, since this exercise does not overlap with 
 
    .. code-block:: bash
    
-      cp -r ~/industrial_training/exercises/4.2/table.pcd ~
+            cp -r ~/industrial_training/exercises/4.2/table.pcd ~
 
 
 Intro (Review Existing Code)
@@ -140,7 +141,7 @@ Implement a Voxel Filter
 
            # ERROR HANDLING
            if req.pcdfilename == '':
-               raise Exception('No file parameter found')
+               self.get_logger().error('No file parameter found')
 
    #. Next we can send a request to the server node and wait for a response:
 
@@ -150,7 +151,7 @@ Implement a Voxel Filter
            rclpy.spin_until_future_complete(self, future)
            res_voxel = future.result()
            if not res_voxel.success:
-               raise Exception('Unsuccessful voxel grid filter operation')
+               self.get_logger().error('Unsuccessful voxel grid filter operation')
 
    #. Finally, we publish our new filtered point cloud:
 
@@ -216,7 +217,7 @@ Viewing Results
 Implement Pass-Through Filters
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-#. In ``py_perception_node.cpp`` in the ``py_perception`` package, update the switch to look as shown below:
+#. In ``py_perception_node.cpp`` in the ``py_perception`` package, update the switch to also take a ``PASSTHROUGH`` option like below:
 
    .. code-block:: bash
 
@@ -271,7 +272,7 @@ Implement Pass-Through Filters
            rclpy.spin_until_future_complete(self, future)
            res_pass = future.result()
            if not res_pass.success:
-               raise Exception('Unsuccessful passthrough filter operation')
+               self.get_logger().error('Unsuccessful passthrough filter operation')
 
    #. Finally we publish our result:
 
@@ -296,34 +297,16 @@ Plane Segmentation
 This method is one of the most useful for any application where the object is on a flat surface. In order to isolate the objects on a table, you perform a plane fit to the points, which finds the points which comprise the table, and then subtract those points so that you are left with only points corresponding to the object(s) above the table. This is the most complicated PCL method we will be using and it is actually a combination of two: the RANSAC segmentation model, and the extract indices tool. An in depth example can be found on the `PCL Plane Model Segmentation Tutorial <https://pcl.readthedocs.io/projects/tutorials/en/latest/planar_segmentation.html>`__; otherwise you can copy the below code snippet.
 
 
-#. In ``py_perception_node.cpp``, update the switch statement in ``filterCallback`` to look as shown below:
+#. In ``py_perception_node.cpp``, update the switch statement in ``filterCallback`` to also take a ``PLANESEGMENTATION`` option:
 
    .. code-block:: c++
 
-        switch (request->operation)
-        {
-            case py_perception::srv::FilterCloud::Request::VOXELGRID :
-            {
-                filtered_cloud = voxelGrid(cloud, 0.01);
-                break;
-            }
-            case py_perception::srv::FilterCloud::Request::PASSTHROUGH :
-            {
-                filtered_cloud = passThrough(cloud);
-                break;
-            }
             case py_perception::srv::FilterCloud::Request::PLANESEGMENTATION :
             {
                 filtered_cloud = planeSegmentation(cloud);
                 break;
             }
-            default :
-            {
-                RCLCPP_ERROR(this->get_logger(), "no point cloud found");
-                response->success = false;
-                return;
-            }
-        }
+
 
 
 #. Save and build
@@ -355,7 +338,7 @@ This method is one of the most useful for any application where the object is on
            rclpy.spin_until_future_complete(self, future)
            res_seg = future.result()
            if not res_seg.success:
-               raise Exception('Unsuccessful plane segmentation operation')
+               self.get_logger().error('Unsuccessful plane segmentation operation')
 
    #. Finally we publish our result:
 
@@ -381,39 +364,15 @@ Euclidian Cluster Extraction
 This method is useful for any application where there are multiple objects. This is also a complicated PCL method. An in depth example can be found on the `PCL Euclidean Cluster Extration Tutorial <https://pcl.readthedocs.io/en/latest/cluster_extraction.html>`_.
 
 
-#. In ``py_perception_node.cpp``, update the switch statement in ``filterCallback`` to look as shown below:
+#. In ``py_perception_node.cpp``, update the switch statement in ``filterCallback`` to to also take a ``CLUSTEREXTRACTION`` option:
 
    .. code-block:: c++
 
-        switch (request->operation)
-        {
-            case py_perception::srv::FilterCloud::Request::VOXELGRID :
-            {
-                filtered_cloud = voxelGrid(cloud, 0.01);
-                break;
-            }
-            case py_perception::srv::FilterCloud::Request::PASSTHROUGH :
-            {
-                filtered_cloud = passThrough(cloud);
-                break;
-            }
-            case py_perception::srv::FilterCloud::Request::PLANESEGMENTATION :
-            {
-                filtered_cloud = planeSegmentation(cloud);
-                break;
-            }
             case py_perception::srv::FilterCloud::Request::CLUSTEREXTRACTION :
             {
                 filtered_cloud = clusterExtraction(cloud).at(0);
                 break;
             }
-            default :
-            {
-                RCLCPP_ERROR(this->get_logger(), "no point cloud found");
-                response->success = false;
-                return;
-            }
-        }
 
 
 #. Save and build
@@ -447,7 +406,7 @@ This method is useful for any application where there are multiple objects. This
            rclpy.spin_until_future_complete(self, future)
            res_cluster = future.result()
            if not res_cluster.success:
-               raise Exception('Unsuccessful cluster extraction operation')
+               self.get_logger().error('Unsuccessful cluster extraction operation')
 
    #. Finally we publish our result:
 
@@ -468,6 +427,6 @@ This method is useful for any application where there are multiple objects. This
 Future Study
 ^^^^^^^^^^^^
 
-The student is encouraged to convert `Exercise 5.1 <http://ros-industrial.github.io/industrial_training/_source/session5/Building-a-Perception-Pipeline.html>`__ into callable functions and further refine the filtering operations.
+For an extra challenge, you can convert the remaining filters from Exercise 5.1 into callable functions and add options to call them in your service and Python node.
 
-Furthermore, for simplicity, the python code was repeated for each filtering instance. The student is encouraged to create a loop to handle the publishing instead of repeating large chunks of code.  The student can also leverage the full functionality of the parameter handling instead of just using defaults, can set those from python.  There are several more filtering operations not outlined here, if the student wants practice creating those function calls.
+Additionally, the Python code was repeated for each filtering intance for simplicity. Another option is to create a loop or function to replace the repeated chunks of code. Feel free to play around with these options to better refine your code.

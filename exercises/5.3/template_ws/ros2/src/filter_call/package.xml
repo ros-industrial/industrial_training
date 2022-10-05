@@ -4,6 +4,8 @@
   <name>filter_call</name>
   <version>0.0.0</version>
   <description>The filter call package</description>
+  <author email="cgomez@swri.org">cgomez</author>
+  <author email="tiffany.cappellari@swri.org">tcappellari</author>
   <maintainer email="tiffany.cappellari@swri.org">tcappellari</maintainer>
   <license>BSD</license>
 

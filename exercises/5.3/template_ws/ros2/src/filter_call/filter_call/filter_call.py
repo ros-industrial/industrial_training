@@ -22,6 +22,9 @@ class FilterNode(Node):
         # PUBLISHERS
         self.voxel_pub = self.create_publisher(PointCloud2, '/perception_voxelGrid', 1)
 
+        self.call_filters()
+
+    def call_filters(self):
         while rclpy.ok():
             self.voxel_filter()
 

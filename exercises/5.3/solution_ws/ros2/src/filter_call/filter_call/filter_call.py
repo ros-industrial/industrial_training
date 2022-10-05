@@ -8,7 +8,7 @@ from sensor_msgs.msg import PointCloud2
 
 class FilterNode(Node):
     def __init__(self):
-        super().__init__('filter_cloud', allow_undeclared_parameters = False,
+        super().__init__('filter_cloud', allow_undeclared_parameters = True,
                          automatically_declare_parameters_from_overrides = True)
         self.client = self.create_client(FilterCloud, 'filter_cloud')
         while not self.client.wait_for_service(timeout_sec=1.0):
@@ -23,6 +23,9 @@ class FilterNode(Node):
         self.plane_pub = self.create_publisher(PointCloud2, '/perception_planeSegmentation', 1)
         self.cluster_pub = self.create_publisher(PointCloud2, '/perception_clusterExtraction', 1)
 
+        self.call_filters()
+
+    def call_filters(self):
         while rclpy.ok():
             self.voxel_filter()
             self.passthrough_filter()
@@ -42,14 +45,14 @@ class FilterNode(Node):
 
         # ERROR HANDLING
         if req.pcdfilename == '':
-            raise Exception('No file parameter found')
+            self.get_logger().error('No file parameter found')
 
         # PACKAGE THE FILTERED POINTCLOUD2 TO BE PUBLISHED
         future = self.client.call_async(req)
         rclpy.spin_until_future_complete(self, future)
         res_voxel = future.result()
         if not res_voxel.success:
-            raise Exception('Unsuccessful voxel grid filter operation')
+            self.get_logger().error('Unsuccessful voxel grid filter operation')
 
         # PUBLISH VOXEL FILTERED POINTCLOUD2
         self.voxel_pub.publish(res_voxel.output_cloud)
@@ -71,7 +74,7 @@ class FilterNode(Node):
         rclpy.spin_until_future_complete(self, future)
         res_pass = future.result()
         if not res_pass.success:
-            raise Exception('Unsuccessful passthrough filter operation')
+            self.get_logger().error('Unsuccessful passthrough filter operation')
 
         # PUBLISH PASSTHROUGH FILTERED POINTCLOUD2
         self.pass_pub.publish(res_pass.output_cloud)
@@ -93,7 +96,7 @@ class FilterNode(Node):
         rclpy.spin_until_future_complete(self, future)
         res_seg = future.result()
         if not res_seg.success:
-            raise Exception('Unsuccessful plane segmentation operation')
+            self.get_logger().error('Unsuccessful plane segmentation operation')
 
         # PUBLISH PLANESEGMENTATION FILTERED POINTCLOUD2
         self.plane_pub.publish(res_seg.output_cloud)
@@ -115,7 +118,7 @@ class FilterNode(Node):
         rclpy.spin_until_future_complete(self, future)
         res_cluster = future.result()
         if not res_cluster.success:
-            raise Exception('Unsuccessful cluster extraction operation')
+            self.get_logger().error('Unsuccessful cluster extraction operation')
 
         # PUBLISH CLUSTEREXTRACTION FILTERED POINTCLOUD2
         self.cluster_pub.publish(res_cluster.output_cloud)
