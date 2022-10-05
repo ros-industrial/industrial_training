@@ -122,7 +122,7 @@ Implement a Voxel Filter
 #. Examine the provided code and functions in the script. Take note of some similarities and differences between how the Python node is set up versus a C++ node. 
 
 
-#. Call the service to apply a Voxel Grid filter. Find the the function for applying a voxel grid filter and insert the following code below the banner
+#. Call the service to apply a Voxel Grid filter. Find the function for applying a voxel grid filter and insert the following code below the banner
 
    .. code-block:: python
    
