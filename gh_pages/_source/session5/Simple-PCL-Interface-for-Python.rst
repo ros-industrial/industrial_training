@@ -164,13 +164,7 @@ Implement a Voxel Filter
            self.get_logger().info("published: voxel grid filter response")
 
 
-#. Before running our new node, we need to make the Python file executable. In your terminal:
-
-   .. code-block:: bash
-
-            sudo chmod +x scripts/filter_call.py
-
-   then open ``setup.bash`` and modify ``entry_points`` to read
+#. Before running our new node, we need to make the Python file executable. Open ``setup.py`` and modify ``entry_points`` to read
 
    .. code-block:: python
 
