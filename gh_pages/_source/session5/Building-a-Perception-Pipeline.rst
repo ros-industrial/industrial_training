@@ -135,7 +135,7 @@ Implement Voxel Filter
        * Fill Code: UPDATE AS NECESSARY
        * ========================================*/
 
-   Replace ``*cloud_ptr`` with ``*cloud_voxel_filtered`` in the call to ``publishPointCloud(...)`` to publish your new filtered point cloud. Take a look at the function and see how we converted our point cloud to a ROS message in order to publish it.
+   Replace ``cloud`` with ``*cloud_voxel_filtered`` in the call to ``publishPointCloud(...)`` to publish your new filtered point cloud. Take a look at the function and see how we converted our point cloud to a ROS message in order to publish it.
 
    .. Note:: For each type of filter we will create a new publisher. It is often useful to view the results of multiple filters at once in Rviz and just toggle different clouds.
 

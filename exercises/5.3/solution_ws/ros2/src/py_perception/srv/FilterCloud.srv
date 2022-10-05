@@ -1,0 +1,14 @@
+#request
+sensor_msgs/PointCloud2 input_cloud
+string topic
+string pcdfilename
+uint8 VOXELGRID=0
+uint8 PASSTHROUGH=1
+uint8 PLANESEGMENTATION=2
+uint8 CLUSTEREXTRACTION=3
+uint8 operation
+
+---
+#response
+sensor_msgs/PointCloud2 output_cloud
+bool success
