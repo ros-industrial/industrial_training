@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(lesson_perception)
+project(py_perception)
 add_definitions(-std=c++14)
 
 # Default to C99
@@ -26,23 +26,20 @@ find_package(pcl_ros REQUIRED)
 find_package(pcl_conversions REQUIRED)
 find_package(tf2_eigen REQUIRED)
 find_package(PCL REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
 
-add_executable(perception_node src/perception_node.cpp)
+rosidl_generate_interfaces(${PROJECT_NAME}
+  "srv/FilterCloud.srv"
+  DEPENDENCIES sensor_msgs
+)
+
+add_executable(perception_node src/py_perception_node.cpp)
 ament_target_dependencies(perception_node rclcpp tf2_ros tf2 tf2_eigen sensor_msgs pcl_ros)
-
-add_executable(pcd_to_pointcloud src/pcd_to_pointcloud.cpp)
-ament_target_dependencies(pcd_to_pointcloud pcl_conversions rclcpp sensor_msgs)
-target_link_libraries(pcd_to_pointcloud ${PCL_LIBRARIES})
+rosidl_target_interfaces(perception_node ${PROJECT_NAME} "rosidl_typesupport_cpp")
 
 install(TARGETS
     perception_node
-    pcd_to_pointcloud
     DESTINATION lib/${PROJECT_NAME}
-)
-
-install(DIRECTORY
-    launch
-    DESTINATION share/${PROJECT_NAME}
 )
 
 if(BUILD_TESTING)
