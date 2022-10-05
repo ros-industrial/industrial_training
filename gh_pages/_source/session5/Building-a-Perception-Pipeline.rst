@@ -8,7 +8,7 @@ We will create a new workspace, since this exercise does not overlap with the pr
 
 #. Disable automatic sourcing of your previous workspace in your ``.bashrc`` if you had any:
 
-      .. Note:: This means you'll need to manually source the setup file from your new catkin workspace in each new terminal window.
+      .. Note:: This means you'll need to manually source the setup file from your new colcon workspace in each new terminal window.
 
 #. Source ROS 2 into your environment
 
