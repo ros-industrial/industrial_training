@@ -592,7 +592,7 @@ When using sensor data for collision detection, it is sometimes necessary to exc
 
    This method is similar to the plane segmentation from Sub-Task 3, but instead of segmenting out a plane, you can segment and remove a prism. Documentation on the PCL Polygonal Segmentation can be found `here <https://pcl.readthedocs.io/projects/tutorials/en/latest/hull_2d.html>`_. The goal in this sub-task is to remove the points that correspond to a known object (e.g. the box we detected earlier). This particular filter is applied to the entire point cloud (original sensor data), but only after we've already completed the processing steps to identify the position/orientation of the box.
 
-   Within perception_node.cpp, add ``#include <tf_conversions/tf_eigen.h>`` and find section
+   Within perception_node.cpp find section
 
    .. code-block:: c++
 
