@@ -361,9 +361,9 @@ Euclidean Cluster Extraction
 
       std::vector<pcl::PointIndices> cluster_indices;
       pcl::EuclideanClusterExtraction<pcl::PointXYZ> ec;
-      ec.setClusterTolerance (cluster_tol);
-      ec.setMinClusterSize (cluster_min_size);
-      ec.setMaxClusterSize (cluster_max_size);
+      ec.setClusterTolerance (0.01);
+      ec.setMinClusterSize (1);
+      ec.setMaxClusterSize (10000);
       ec.setSearchMethod (tree);
       ec.setInputCloud (cloud_filtered);
       ec.extract (cluster_indices);
