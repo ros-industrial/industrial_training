@@ -20,8 +20,8 @@ We will create a new workspace, since this exercise does not overlap with the pr
 
    .. code-block:: bash
 
-      mkdir ~/perception_ws
-      cp -r ~/industrial_training/exercises/5.1/template_ws ~/perception_ws
+      mkdir -p ~/perception_ws/src
+      cp -r ~/industrial_training/exercises/5.1/template_ws/ros2/lesson_perception ~/perception_ws/src
       cd ~/perception_ws/
 
  #. Initialize and Build this new workspace
