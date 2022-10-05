@@ -32,21 +32,25 @@ class FilterNode(Node):
         # =======================
         # VOXEL GRID FILTER
         # =======================
+        pass
 
     def passthrough_filter(self):
         # =======================
         # PASSTHROUGH FILTER
         # =======================
+        pass
 
     def plane_segmentation(self):
         # =======================
         # PLANE SEGMENTATION
         # =======================
+        pass
 
     def cluster_extraction(self):
         # =======================
         # CLUSTER EXTRACTION
         # =======================
+        pass
 
 
 def main(args=None):
