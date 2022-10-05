@@ -31,7 +31,7 @@ We will create a new ROS 2 workspace, since this exercise does not overlap with 
 
    .. code-block:: bash
 
-            source ~/python-pcl_ws/install/setup.bash
+            source ~/python_pcl_ws/install/setup.bash
 
 #. Download the PointCloud file and place the file in your home directory :
 
