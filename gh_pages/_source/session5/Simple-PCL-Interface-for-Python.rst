@@ -201,7 +201,7 @@ Viewing Results
 
    .. code-block:: bash
 
-            ros2 run filter_call filter_call --ros-args -p pcdfilename:=/home/tcappellari/table.pcd
+            ros2 run filter_call filter_call --ros-args -p pcdfilename:=~/table.pcd
 
 #. Source a new terminal and run Rviz
 
