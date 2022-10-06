@@ -2,6 +2,7 @@
 
 import rclpy
 from rclpy.node import Node
+import time
 import py_perception.srv
 from py_perception.srv import FilterCloud
 from sensor_msgs.msg import PointCloud2
@@ -31,6 +32,7 @@ class FilterNode(Node):
             self.passthrough_filter()
             self.plane_segmentation()
             self.cluster_extraction()
+            time.sleep(3.0)
 
     def voxel_filter(self):
         # =======================
@@ -133,8 +135,7 @@ class FilterNode(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    node = FilterNode()
-    rclpy.spin(node)
+    rclpy.spin(FilterNode())
     rclpy.shutdown()
 
 if __name__ == '__main__':

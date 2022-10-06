@@ -3,6 +3,7 @@
 import rclpy
 from rclpy.node import Node
 import py_perception.srv
+import time
 from py_perception.srv import FilterCloud
 from sensor_msgs.msg import PointCloud2
 
@@ -27,6 +28,8 @@ class FilterNode(Node):
     def call_filters(self):
         while rclpy.ok():
             self.voxel_filter()
+
+            time.sleep(3.0) # sleep for 3 seconds
 
     def voxel_filter(self):
         # =======================
@@ -55,8 +58,7 @@ class FilterNode(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    node = FilterNode()
-    rclpy.spin(node)
+    rclpy.spin(FilterNode())
     rclpy.shutdown()
 
 if __name__ == '__main__':
