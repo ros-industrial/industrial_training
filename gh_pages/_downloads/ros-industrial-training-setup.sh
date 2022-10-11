@@ -34,6 +34,7 @@ sudo apt install -y pcl-tools
 sudo apt install -y ros-foxy-desktop ros-foxy-moveit
 sudo apt install -y ros-foxy-ros1-bridge ros-foxy-ros2-control ros-foxy-ros2-controllers ros-foxy-xacro ros-foxy-joint-state-publisher-gui
 sudo apt install -y python3-colcon-common-extensions python3-argcomplete
+sudo apt install -y ros-foxy-pcl-ros
 
 # rosdep setup
 sudo apt install python3-rosdep
