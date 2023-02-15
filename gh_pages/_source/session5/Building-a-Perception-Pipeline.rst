@@ -12,7 +12,7 @@ We will create a new workspace, since this exercise does not overlap with the pr
 
 #. Source ROS 2 into your environment
 
-    .. code-block:: bash
+   .. code-block:: bash
 
 			source /opt/ros/foxy/setup.bash
 
@@ -24,21 +24,21 @@ We will create a new workspace, since this exercise does not overlap with the pr
       cp -r ~/industrial_training/exercises/5.1/template_ws/ros2/lesson_perception ~/perception_ws/src
       cd ~/perception_ws/
 
- #. Initialize and Build this new workspace
+#. Initialize and Build this new workspace
 
-    .. code-block:: bash
+   .. code-block:: bash
 
 			colcon build
 
- #. Source the workspace
+#. Source the workspace
 
-    .. code-block:: bash
+   .. code-block:: bash
 
       source ~/perception_ws/install/setup.bash
 
 #. Copy the PointCloud file from prior Exercise 4.2 to your home directory (~):
 
-    .. code-block:: bash
+   .. code-block:: bash
 
       cp ~/industrial_training/exercises/4.2/table.pcd ~
 
@@ -49,7 +49,7 @@ We will create a new workspace, since this exercise does not overlap with the pr
 
 Intro (Review Existing Code)
 ----------------------------
-Most of the infrastructure for a ros node has already been completed for you; the focus of this exercise is the perception algorithms/pipleline. The `CMakelists.txt` and `package.xml` are complete and an executable has been provided. You could run the executable as is, but you would get errors. At this time we will explore the source code that has been provided - browse the provided `perception_node.cpp` file. The following are highlights of what is included.
+Most of the infrastructure for a ROS node has already been completed for you; the focus of this exercise is the perception algorithms/pipleline. The `CMakelists.txt` and `package.xml` are complete and an executable has been provided. You could run the executable as is, but you would get errors. At this time we will explore the source code that has been provided - browse the provided `perception_node.cpp` file. The following are highlights of what is included.
 
 #. Headers:
 
