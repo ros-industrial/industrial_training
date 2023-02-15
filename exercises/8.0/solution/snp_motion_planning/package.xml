@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>snp_motion_planning</name>
+  <version>0.1.0</version>
+  <description>SNP Motion Planning</description>
+  <maintainer email="michael.ripperger@swri.org">Michael Ripperger</maintainer>
+  <license>Apache 2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <depend>rclcpp</depend>
+  <depend>snp_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>tesseract_command_language</depend>
+  <depend>tesseract_monitoring</depend>
+  <depend>tesseract_support</depend>
+  <depend>tesseract_urdf</depend>
+  <depend>tesseract_kinematics</depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

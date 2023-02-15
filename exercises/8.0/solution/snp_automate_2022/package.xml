@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>snp_automate_2022</name>
+  <version>0.1.0</version>
+  <description>This is the bringup package for launch the ros2 components of the workshop</description>
+
+  <maintainer email="levi.armstrong@swri.org">Levi Armstrong</maintainer>
+  <license>Apache 2.0</license>
+  <author>Levi Armstrong</author>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <build_depend>ros_industrial_cmake_boilerplate</build_depend>
+
+  <exec_depend>snp_tpp</exec_depend>
+  <exec_depend>snp_application</exec_depend>
+  <exec_depend>industrial_reconstruction</exec_depend>
+  <exec_depend>joint_state_publisher</exec_depend>
+  <exec_depend>joint_state_publisher_gui</exec_depend>
+  <exec_depend>xacro</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>rviz2</exec_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

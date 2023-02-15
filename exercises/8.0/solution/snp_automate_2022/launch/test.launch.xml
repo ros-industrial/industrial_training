@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="robot_description" default="$(command 'xacro $(find-pkg-share snp_automate_2022)/urdf/workcell.xacro')"/>
+  <arg name="robot_description_semantic" default="$(command 'cat $(find-pkg-share snp_automate_2022)/config/workcell.srdf')"/>
+  <arg name="use_gui" default="true"/>
+  <arg name="rviz" default="true"/>
+  <arg name="rviz_config" default="$(find-pkg-share snp_automate_2022)/config/rviz_base_config.rviz" if="$(var rviz)"/>
+
+  <node pkg="joint_state_publisher" exec="joint_state_publisher">
+    <param name="source_list" value="[robot_joint_states]"/>
+  </node>
+
+  <group if="$(var use_gui)">
+    <node pkg="joint_state_publisher_gui" exec="joint_state_publisher_gui" name="joint_state_publisher_gui" output="screen">
+      <remap from="/joint_states" to="/robot_joint_states"/>
+    </node>
+  </group>
+
+  <node pkg="robot_state_publisher" exec="robot_state_publisher" output="screen">
+    <param name="robot_description" value="$(var robot_description)"/>
+  </node>
+
+  <group if="$(var rviz)">
+    <node pkg="rviz2" exec="rviz2" args="-d $(var rviz_config)">
+      <param name="robot_description" value="$(var robot_description)"/>
+      <param name="robot_description_semantic" value="$(var robot_description_semantic)"/>
+    </node>
+  </group>
+
+</launch>

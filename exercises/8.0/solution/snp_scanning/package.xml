@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>snp_scanning</name>
+  <version>0.1.0</version>
+  <description>SNP scanning package</description>
+  <maintainer email="tyler.marr@swri.org">Tyler Marr</maintainer>
+  <license>BSD</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>industrial_reconstruction_msgs</depend>
+  <depend>std_srvs</depend>
+  <depend>rclcpp</depend>
+  <depend>ros_industrial_cmake_boilerplate</depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

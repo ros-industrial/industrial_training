@@ -1,0 +1,20 @@
+- git:
+    local-name: boost_plugin_loader
+    uri: https://github.com/tesseract-robotics/boost_plugin_loader.git
+    version: 2fb0c0db829f6b10fb769e89697e4678fd58ea09
+- git:
+    local-name: noether
+    uri: https://github.com/marip8/noether.git
+    version: cffcca5e47b3da0eafef2fbcf2a68de881784b46
+- git:
+    local-name: industrial_reconstruction
+    uri: https://github.com/ros-industrial/industrial_reconstruction.git
+    version: 2cf137d2941be6425bc4908e70c0cc1a2fc34c63
+- git:
+    local-name: rviz_polygon_selection_tool
+    uri: https://github.com/marip8/rviz_polygon_selection_tool.git
+    version: 17f6fb2860e73e010ec14a340057b51d5294df38
+- git:
+    local-name: tesseract_ros2
+    uri: https://github.com/collinthornton/tesseract_ros2.git
+    version: 0f8e97b1f12ea4643e06f3fdf62fa35f249334f6

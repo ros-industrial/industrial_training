@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="sim_vision" default="True"/>
+  <arg name="sim_robot" default="True"/>
+  <arg name="mesh_file" default="$(find-pkg-share snp_automate_2022)/meshes/part_scan.ply"/>
+  <arg name="scan_trajectory_file" default="$(find-pkg-share snp_automate_2022)/config/scan_traj.yaml"/>
+  <arg name="verbose" default="True"/>
+  <arg name="touch_links" default="[table, base_link, floor]"/>
+  <arg name="robot_description" default="$(command 'xacro $(find-pkg-share snp_automate_2022)/urdf/workcell.xacro')"/>
+  <arg name="robot_description_semantic" default="$(command 'cat $(find-pkg-share snp_automate_2022)/config/workcell.srdf')"/>
+
+  <!-- URDF, Rviz -->
+  <include file="$(find-pkg-share snp_automate_2022)/launch/test.launch.xml">
+    <arg name="robot_description" value="$(var robot_description)"/>
+    <arg name="robot_description_semantic" value="$(var robot_description_semantic)"/>
+    <arg name="rviz" value="False"/>
+    <arg name="use_gui" value="$(var sim_robot)"/>
+  </include>
+
+  <node pkg="rviz2" exec="rviz2" args="-d $(find-pkg-share snp_automate_2022)/config/app.rviz">
+    <param name="mesh_file" value="/tmp/results_mesh.ply"/>
+    <param name="motion_group" value="manipulator"/>
+    <param name="reference_frame" value="base_link"/>
+    <param name="tcp_frame" value="sand_tcp"/>
+    <param name="camera_frame" value="camera_color_optical_frame"/>
+    <param name="scan_trajectory_file" value="$(var scan_trajectory_file)"/>
+    <param name="robot_description" value="$(var robot_description)"/>
+    <param name="robot_description_semantic" value="$(var robot_description_semantic)"/>
+  </node>
+
+  <!-- Launch Calibration Node and Mutable Transform Publisher Node  -->
+  <!--<include file="$(find-pkg-share r2_apps)/launch/hand_eye_launch.py"/>-->
+
+  <!-- Launch Open3d Interface Node -->
+  <group unless="$(var sim_vision)">
+    <node pkg="industrial_reconstruction" exec="industrial_reconstruction">
+      <param name="depth_image_topic" value="/camera/aligned_depth_to_color/image_raw"/>
+      <param name="color_image_topic" value="/camera/color/image_raw"/>
+      <param name="camera_info_topic" value="/camera/color/camera_info"/>
+      <param name="cache_count" value="1"/>
+      <param name="slop" value="0.05"/>
+    </node>
+    <include file="$(find-pkg-share realsense2_camera)/launch/rs_launch.py">
+      <arg name="align_depth" value="true"/>
+      <arg name="enable_pointcloud" value="true"/>
+      <arg name="color_width" value="640"/>
+      <arg name="color_height" value="360"/>
+      <arg name="color_fps" value="90.0"/>
+    </include>
+  </group>
+
+  <!-- Launch Open3d Interface Node (Sim) -->
+  <group if="$(var sim_vision)">
+    <node pkg="snp_scanning" exec="open3d_sim_node">
+      <param name="mesh_file" value="$(var mesh_file)"/>
+    </node>
+  </group>
+
+  <!-- Launch Toolpath Planning Node -->
+  <node pkg="snp_tpp" exec="snp_tpp_app"/>
+
+  <!-- Launch Motion Planning Node -->
+  <include file="$(find-pkg-share snp_motion_planning)/launch/planning_server.launch.xml">
+    <arg name="robot_description" value="$(var robot_description)"/>
+    <arg name="robot_description_semantic" value="$(var robot_description_semantic)"/>
+    <arg name="verbose" value="$(var verbose)"/>
+    <arg name="touch_links" value="$(var touch_links)"/>
+  </include>
+
+  <!-- Launch Motion Execution Node -->
+  <node pkg="snp_motion_execution" exec="snp_motion_execution_node"/>
+
+  <group unless="$(var sim_robot)">
+    <!-- [[Motoman Driver Goes Here]] -->
+  </group>
+  <group if="$(var sim_robot)">
+    <node pkg="snp_motion_execution" exec="snp_motion_execution_simulator_node"/>
+  </group>
+</launch>
+
+

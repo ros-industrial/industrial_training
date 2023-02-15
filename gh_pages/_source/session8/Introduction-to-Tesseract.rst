@@ -6,9 +6,9 @@ Prepare New Workspace:
 ----------------------
 We will create a new workspace, since this exercise does not overlap with the previous exercises.
 
-#. Disable automatic sourcing of your previous workspace in your ``.bashrc`` if you had any:
+#. Disable automatic sourcing of your previous workspace in your ``.bashrc`` if you had any.
 
-      .. Note:: This means you'll need to manually source the setup file from your new colcon workspace in each new terminal window.
+    .. Note:: This means you'll need to manually source the setup file from your new colcon workspace in each new terminal window.
 
 #. Source ROS 2 into your environment
 
@@ -16,12 +16,14 @@ We will create a new workspace, since this exercise does not overlap with the pr
 
 		source /opt/ros/foxy/setup.bash
 
+	.. Note:: If you are using a VM provided by us, please skip to step 6 as a directory called ``tesseract_ws`` should already exist with the dependencies have already installed for you.
+
 #. Copy the template workspace layout and files:
 
     .. code-block:: bash
 
     	mkdir -p ~/tesseract_ws/src
-    	cp -r ~/industrial_training/exercises/8.1/template_ws/ros2 ~/tesseract_ws/src
+    	cp -r ~/industrial_training/exercises/8.0/template ~/tesseract_ws/src
     	cd ~/tesseract_ws/
 
 #. Install ``taskflow`` from the ROS-I PPA
@@ -31,10 +33,10 @@ We will create a new workspace, since this exercise does not overlap with the pr
 		sudo apt-get update
 		sudo apt-get install taskflow
 
-#. Install the ROS 2 dependencies
+#. Install the ROS 2 dependencies (this may take a while)
 	.. code-block:: bash
 
-		cd tesseract_ws
+		cd ~/tesseract_ws
 		vcs import < src/dependencies_tesseract.repos
 		vcs import < src/dependencies.repos
 		vcs import src < src/snp_automate_2022/dependencies.repos
@@ -44,7 +46,8 @@ We will create a new workspace, since this exercise does not overlap with the pr
 
     .. code-block:: bash
 
-		colcon build
+		cd ~/tesseract_ws
+		colcon build --cmake-args -DTESSERACT_BUILD_FCL=OFF
 
 #. Source the workspace
 
@@ -59,7 +62,7 @@ We will create a new workspace, since this exercise does not overlap with the pr
 
 Intro (Review Existing Code)
 ----------------------------
-Most of the infrastructure for a ROS node has already been completed for you; the focus of this exercise are Tesseract planner profiles and taskflow generators. You will notice that many files and packages are already provided for you. You could run the application as is, but you would get errors. At this time we will explore the source code that has been provided. The following are highlights of what is included.
+Most of the infrastructure for a ROS node has already been completed for you; the focus of this exercise are Tesseract planner profiles and taskflow generators. You will notice that many files and packages are already provided for you. You could run the application as is, but you may get errors. At this time we will explore the source code that has been provided. The following are highlights of what is included.
 
 #. ``snp_automate_2022/config/worcell_plugins.yaml``:
 	* This file contains all of the kinematic plugins and contact manager plugins for our application. A kinematic plugin configuration file like this is required to use Tesseract. Take a look at ``workcell.srdf`` to see how it gets incorporated into the project.
@@ -81,7 +84,17 @@ Currently, only the Simple Planner is set up. Try running the application and se
 
 	.. code-block:: bash
 
-		ros2 launch snp_automate_2022 start.launch.xml
+	   ros2 launch snp_automate_2022 start.launch.xml
+
+You should see an Rviz window appear with a robot on a table. Click `Get Detailed Scan` to see a model of our work surface appear on the table. Use the `Polygon Selection Tool` at the top to select a region on the work surface. 
+
+Find the `snp_tpp_app` window that should also have appeared when you launched the application. We can use this to select different tool path planners and modifiers. Add ``ROISelectionMeshModifier`` and ``PlaneSlicerRasterPlanner``. You should see more options appear on the screen after. Feel free to play around with these and see how they affect your tool path plan. For the `Tool Path Modifier` we recommend adding ``SnakeOrganizationModifier`` and ``RasterOrganizationModifier``.
+
+After making changes on the `snp_tpp_app` return to Rviz and click `Generate Tool Path Plan`. You should now see waypoints appear in your selected region. When you are satisfied with the waypoints, click `Generate Motion Plan` (this may take a few minutes) and then `Execute Motion Plan` once a plan has been found. 
+
+There should also be a `joint_state_publisher_gui` on your screen. Feel free to play around with it as well to create different start states.
+
+.. Note:: If the application fails to create a motion plan, try playing around with the settings in `snp_tpp_app`. You may need to change the line and point spacing.
 
 Implement the Descartes Planner Profile
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
