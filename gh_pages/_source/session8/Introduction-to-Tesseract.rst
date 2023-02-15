@@ -188,7 +188,7 @@ Implement the Descartes Planner Profile
 
       ros2 launch snp_automate_2022 start.launch.xml
 
-   How does the motion plan look? Does it fail to plan often? Does the motion look smooth? In your ``/tmp`` directory you should now also have a file titled ``TODO``. This will contian a visual representation of your taskflow. Take a look at the taskflow for our current motion planning pipeline.
+   How does the motion plan look? Does it fail to plan often? Does the motion look smooth? In your ``/tmp`` directory you should now also have a ``.dot`` file beginning with ``RASTER``. This will contian a visual representation of your taskflow. Take a look at the taskflow for our current motion planning pipeline.
 
 Implement the TrajOpt Planner Profiles
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -270,11 +270,11 @@ Implement the TrajOpt Planner Profiles
 	  int trajopt_collision =
 	      graph->addNode(std::make_unique<tesseract_planning::DiscreteContactCheckTaskGenerator>(), true);
    
-   Now that we have created nodes for our TrajOpt planner, we need to add them into our taskflow graph. Look at the end of the same method and notice the edges that currently exist and recall what ``TODO`` looked like from the previous section. The simple collision planner is currently connected only to ``time_param``. We will need to replace that line to also connect it to ``trajopt``. Find the line
+   Now that we have created nodes for our TrajOpt planner, we need to add them into our taskflow graph. Look at the end of the same method and notice the edges that currently exist and recall what your ``.dot`` graph looked like from the previous section. The simple collision planner is currently connected only to ``time_param``. We will need to replace that line to also connect it to ``trajopt``. Find the line
 
    .. code-block:: c++
 
-      graph->addEdges(simple_collision, { time_param });
+      graph->addEdges(simple_collision, { tesseract_planning::GraphTaskflow::ERROR_NODE, time_param });
 
    and replace it with
 
@@ -293,7 +293,7 @@ Implement the TrajOpt Planner Profiles
 
 #. Run the application:
 
-   Now try running the application again and notice how our robot's motion plan has changed. Also take a look at ``TODO`` again to see the changes we have made to our taskflow. Don't forget to build and source your workspace!
+   Now try running the application again and notice how our robot's motion plan has changed. Also take a look at your ``.dot`` graph again to see the changes we have made to our taskflow. Don't forget to build and source your workspace!
 
 Implement the OMPL Planner Profile
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -377,6 +377,6 @@ Implement the OMPL Planner Profile
 
 #. Run the application:
 
-   Now try running the full application again with our completed motion planning pipeline. How has the plan changed since step one? Also take a look at our completed taskflow graph in ``TODO`` again and notice the new taskflow. Try playing around with changing some of the edges and see how the motion plan changes.
+   Now try running the full application again with our completed motion planning pipeline. How has the plan changed since step one? Also take a look at our completed taskflow graph again and notice the new taskflow. Try playing around with changing some of the edges and see how the motion plan changes.
 
 Congratulations! You have completed using Tesseract to create a motion plan for a "scan and plan" application!
