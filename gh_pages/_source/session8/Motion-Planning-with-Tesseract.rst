@@ -70,15 +70,15 @@ Most of the infrastructure for a ROS node has already been completed for you; th
 #. ``snp_motion_planning/src/planner_profiles.hpp``:
 	* This file contains the planner profiles used to create our motion plan. Currently, only the Simple Planner profile is populated. This is one of the main files we will be editing in our exercise.
 
-#. ``snp_motion_planning/src/planner_server.hpp``:
-	* This is where our custom planner profiles will be used by our application. Take a look at the ``createProgram()`` method. This method takes the toolpath rasters and connects them with transitions and the starting and ending freespace to create our motion plan's waypoints.
+#. ``snp_motion_planning/src/planner_server.cpp``:
+	* This is where our custom planner profiles will be used by our application. Take a look at the ``createProgram()`` method. This method takes in the toolpath rasters and constructs motion plan requests in a manner usable by Tesseract. These motions include freespace motions, transition motions, and raster (process) motions. The order that they are added is the same order that they will be returned in.
 
 #. ``snp_motion_planning/src/taskflow_generators.hpp``:
-	* This file creates taskflow graphs for planning transition and freespace motions using our planners. This is another main file we will be editing.
+	* This file creates taskflow graphs for planning transition, raster, and freespace motions using our planners. This is another main file we will be editing.
 
 Fill in the Code
 ----------------
-The planner profiles tell Tesseract which motion planner we would like to use as well as any special configurations required to use each one. These configurations can range from timeout limits to specific pose sampling. For this exercise, we will be implementing the profiles for Descartes, OMPL, and TrajOpt. 
+The planner profiles tell Tesseract how to use a given motion planner with specific configurations. These configurations can range from timeout limits to specific pose sampling. For this exercise, we will be implementing the profiles for Descartes, OMPL, and TrajOpt. 
 
 Currently, only the Simple Planner is set up. Try running the application and see how the motion plan performs.
 
@@ -88,9 +88,9 @@ Currently, only the Simple Planner is set up. Try running the application and se
 
 You should see an Rviz window appear with a robot on a table. Click `Get Detailed Scan` to see a model of our work surface appear on the table. Use the `Polygon Selection Tool` at the top to select a region on the work surface. 
 
-Find the `snp_tpp_app` window that should also have appeared when you launched the application. We can use this to select different tool path planners and modifiers. Add ``ROISelectionMeshModifier`` and ``PlaneSlicerRasterPlanner``. You should see more options appear on the screen after. Feel free to play around with these and see how they affect your tool path plan. For the `Tool Path Modifier` we recommend adding ``SnakeOrganizationModifier`` and ``RasterOrganizationModifier``.
+Find the `snp_tpp_app` window that should also have appeared when you launched the application. We can use this to select different tool path planners and modifiers. Add ``ROISelectionMeshModifier`` and ``PlaneSlicerRasterPlanner``. You should see more options appear on the screen after. Feel free to play around with these and see how they affect your tool path plan. For the `Tool Path Modifier` we recommend adding ``SnakeOrganizationModifier``.
 
-After making changes on the `snp_tpp_app` return to Rviz and click `Generate Tool Path Plan`. You should now see waypoints appear in your selected region. When you are satisfied with the waypoints, click `Generate Motion Plan` (this may take a few minutes) and then `Execute Motion Plan` once a plan has been found. 
+After making changes on the `snp_tpp_app` return to Rviz and click `Generate Tool Path Plan`. You should now see waypoints appear in your selected region. When you are satisfied with the waypoints, click `Generate Motion Plan` (this may take a few minutes). 
 
 There should also be a `joint_state_publisher_gui` on your screen. Feel free to play around with it as well to create different start states.
 
@@ -121,7 +121,8 @@ Implement the Descartes Planner Profile
 	  	profile->enable_collision = true;
 	  	profile->enable_edge_collision = false;
 
-   Now we will also specify our state and edge evaluators. The state evaluator is a function that takes in a Descartes problem and returns a state that we can then evaluate. A few things we may choose to evaluate are whether or not the state is valid, the cost of the state, and any biases we may want to give it. The edge evaluator works similarly but evaluates adjacent states. 
+   Now we will also specify our state and edge evaluators. The state evaluator looks at a given state and gives the state both a cost and a pass or fail. A few things we may choose to evaluate are whether or not the state is valid, the cost of the state, and any biases we may want to give it. The edge evaluator works similarly but evaluates a transition between states. 
+
    Copy and past the following below the previous block:
 
    .. code-block:: c++
@@ -139,7 +140,8 @@ Implement the Descartes Planner Profile
       		};
       	profile->vertex_evaluator = nullptr;
 
-   Finally, we set the ``target_pose_sampler`` which takes a given function for sampling. In our example, we specify our pose sampling to allow any rotation along the z-axis as it will not impact our final results.
+   Finally, we set the ``target_pose_sampler`` which takes a given function for sampling. In our example, we specify our pose sampling to allow any rotation along the z-axis as it will not impact our final results. Note that Descartes can only work in discrete space so we are only sampling at increments of 10 degrees around the z-axis.
+
    Copy and past the following below the previous block:
 
    .. code-block:: c++
@@ -241,7 +243,7 @@ Implement the Descartes Planner Profile
 
       ros2 launch snp_automate_2022 start.launch.xml
 
-   How does the motion plan look? Does it fail to plan often? Does the motion look smooth? In your ``/tmp`` directory you should now also have a ``.dot`` file beginning with ``RASTER``. This will contian a visual representation of your taskflow. Take a look at the taskflow for our current motion planning pipeline.
+   How does the motion plan look? Does it fail to plan often? Does the motion look smooth? 
 
    Notice that this implementation in the taskflow uses Descartes to resample all waypoints and solves for that single raster again after a global Descartes has already been run. We will fix this later.
 
@@ -258,9 +260,9 @@ Implement the TrajOpt Planner Profiles
        * Fill Code: TRAJOPT PLAN
        * ==========================*/
 
-   TrajOpt is a planner that creates a nonlinear problem to solve until it converges on a solution. As this planner does not have any knowledge of time, it only looks at adjacent states while planning. There are three different TrajOpt planning methods: plan, composite, and solver. In this application we will be implementing the plan and composite profiles.
+   TrajOpt is a planner that creates a nonlinear optimization problem to solve until it converges on a solution. As this planner does not have any knowledge of time, it only looks at adjacent states while planning. There are three different TrajOpt planning methods: plan, composite, and solver. In this application we will be implementing the plan and composite profiles.
 
-   We will begin by filling out the plan profile. This method is focused at the waypoint level by adding costs and constraints to cartesian waypoints. Below the above block copy and paste the following code
+   We will begin by filling out the plan profile which focuses on how individual waypoints are handled. Below the above block copy and paste the following code
 
    .. code-block:: c++
 
@@ -299,7 +301,7 @@ Implement the TrajOpt Planner Profiles
 
 	  return profile;
 
-   Notice that the composite profile takes more parameters into account than the plan profile. Unlike the plan profile, the composite profile can also add constraints on velocity, acceleration, and jerk across a collection of waypoints rather than only looking at single waypoints at a time.
+   Notice that the composite profile takes more parameters into account than the plan profile. Unlike the plan profile, which only looks at one waypoint at a time, the composite profile looks at the whole motion. You can add costs on velocity, acceleration, and jerk as well as specify how collision checking is to be handled.
 
 #. Add the planners to the planning server:
    
@@ -314,7 +316,7 @@ Implement the TrajOpt Planner Profiles
 
 #. Add the planners to the taskflow:
 
-   Return to ``taskflow_generators.hpp``. As Trajopt will be used for both the transition and freespace planning taskflows, we will need to modify the ``ctor()`` method in both ``FreespaceMotionPipelineTask`` and ``TransitionMotionPipelineTask``.
+   Return to ``taskflow_generators.hpp``. As Trajopt will be used for both the transition and freespace planning taskflows, we will need to modify the ``ctor()`` method in ``FreespaceMotionPipelineTask``, ``TransitionMotionPipelineTask``, and ``CartesianMotionPipelineTask``.
 
    Within ``FreespaceMotionPipelineTask`` add the following to create a new node
 
@@ -344,7 +346,7 @@ Implement the TrajOpt Planner Profiles
 
 #. Run the application:
 
-   Now try running the application again and notice how our robot's motion plan has changed. Also take a look at your ``.dot`` graph again to see the changes we have made to our taskflow. Don't forget to build and source your workspace!
+   Now try running the application again and notice how our robot's motion plan has changed. Don't forget to build and source your workspace!
 
 Implement the OMPL Planner Profile
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -400,7 +402,7 @@ Implement the OMPL Planner Profile
 
 #. Add the planner to the taskflow:
    
-   Go back to ``taskflow_generators.hpp``. Now we need to include our OMPL profile in our motion planning taskflow. Our OMPL planner will be used with TrajOpt in our freespace taskflow. First, let's create our node for OMPL. Within ``FreespaceMotionPipelineTask`` add
+   Go back to ``taskflow_generators.hpp``. Now we need to include our OMPL profile in our motion planning taskflow. Our freepsace taskflow will find a solution using OMPL and then improve that solution using TrajOpt. First, let's create our node for OMPL. Within ``FreespaceMotionPipelineTask`` add
 
    .. code:: c++
 
@@ -424,8 +426,10 @@ Implement the OMPL Planner Profile
 
    * Remove TrajOpt and see how Descartes and OMPL perform without it.
 
-   * Remove time parametization
-
    * Remove post-collision checking
+
+      - You should also allow collisions in your planning profiles if you try this
+
+   * Change the profiles of Descartes, OMPL, and TrajOpt
 
 Congratulations! You have completed using Tesseract to create a motion plan for a "scan and plan" application!
