@@ -20,7 +20,7 @@ typename tesseract_planning::DescartesDefaultPlanProfile<FloatType>::Ptr createD
 
   // Use the default state and edge evaluators
   profile->state_evaluator = nullptr;
-  profile->edge_evaluator = [](const tesseract_planning::DescartesProblem<FloatType>& prob) ->
+  profile->edge_evaluator = [](const tesseract_planning::DescartesProblem<FloatType> & /*prob*/) ->
       typename descartes_light::EdgeEvaluator<FloatType>::Ptr {
         auto eval = std::make_shared<descartes_light::CompoundEdgeEvaluator<FloatType>>();
 
@@ -50,15 +50,16 @@ tesseract_planning::OMPLDefaultPlanProfile::Ptr createOMPLProfile()
   // OMPL freespace and transition profiles
   // Create the RRT parameters
   auto n = static_cast<Eigen::Index>(std::thread::hardware_concurrency());
-  auto range = Eigen::VectorXd::LinSpaced(n, 0.005, 0.15);
+  auto range = Eigen::VectorXd::LinSpaced(n, 0.05, 0.5);
 
   // Add as many planners as available threads so mulitple OMPL plans can happen in parallel
   auto profile = std::make_shared<tesseract_planning::OMPLDefaultPlanProfile>();
-  profile->planning_time = 10.0;
+  profile->planning_time = 20.0;
+  profile->planners.clear();
   profile->planners.reserve(static_cast<std::size_t>(n));
   for (Eigen::Index i = 0; i < n; ++i)
   {
-    auto rrt = std::make_shared<tesseract_planning::RRTConfigurator>();
+    auto rrt = std::make_shared<tesseract_planning::RRTConnectConfigurator>();
     rrt->range = range(i);
     profile->planners.push_back(rrt);
   }
@@ -78,8 +79,10 @@ std::shared_ptr<tesseract_planning::TrajOptDefaultCompositeProfile> createTrajOp
 {
   // TrajOpt profiles
   auto profile = std::make_shared<tesseract_planning::TrajOptDefaultCompositeProfile>();
-  profile->smooth_velocities = false;
+  profile->smooth_velocities = true;
 
+  profile->smooth_accelerations = true;
+  profile->smooth_jerks = false;
   profile->acceleration_coeff = Eigen::VectorXd::Constant(6, 1, 10.0);
   profile->jerk_coeff = Eigen::VectorXd::Constant(6, 1, 20.0);
 

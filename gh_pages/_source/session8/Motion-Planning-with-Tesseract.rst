@@ -71,7 +71,7 @@ Most of the infrastructure for a ROS node has already been completed for you; th
 	* This file contains the planner profiles used to create our motion plan. Currently, only the Simple Planner profile is populated. This is one of the main files we will be editing in our exercise.
 
 #. ``snp_motion_planning/src/planner_server.hpp``:
-	* This is where our custom planner profiles will be used by our application. Take a look at the ``createProgram`` method. This method takes the toolpath rasters and connects them with transitions and the starting and ending freespace to create our motion plan's waypoints.
+	* This is where our custom planner profiles will be used by our application. Take a look at the ``createProgram()`` method. This method takes the toolpath rasters and connects them with transitions and the starting and ending freespace to create our motion plan's waypoints.
 
 #. ``snp_motion_planning/src/taskflow_generators.hpp``:
 	* This file creates taskflow graphs for planning transition and freespace motions using our planners. This is another main file we will be editing.
@@ -113,7 +113,8 @@ Implement the Descartes Planner Profile
    Copy and paste the following:
 
    .. code-block:: c++
-   		auto profile = std::make_shared<tesseract_planning::DescartesDefaultPlanProfile<FloatType>>();
+
+   	auto profile = std::make_shared<tesseract_planning::DescartesDefaultPlanProfile<FloatType>>();
   		profile->num_threads = static_cast<int>(std::thread::hardware_concurrency());
 	  	profile->use_redundant_joint_solutions = false;
 	  	profile->allow_collision = false;
@@ -124,6 +125,7 @@ Implement the Descartes Planner Profile
    Copy and past the following below the previous block:
 
    .. code-block:: c++
+
 	  	// Use the default state and edge evaluators
   		profile->state_evaluator = nullptr;
   		profile->edge_evaluator = [](const tesseract_planning::DescartesProblem<FloatType>& prob) ->
@@ -161,21 +163,72 @@ Implement the Descartes Planner Profile
 
    .. code-block:: c++
 
-   	  pd->addProfile<tesseract_planning::DescartesPlanProfile<float>>(
+   	profile_dict_->addProfile<tesseract_planning::DescartesPlanProfile<float>>(
           tesseract_planning::profile_ns::DESCARTES_DEFAULT_NAMESPACE, PROFILE, createDescartesPlanProfile<float>());
 
    This line adds your new custom planning profile to the planning server for our motion plan.
 
 #. Add the planner to the taskflow:
    
-   Navigate to ``snp_motion_planning/taskflow_generators.hpp`` and find the method ``createRasterTaskflow()``. Replace the contents with the following
+   Navigate to ``snp_motion_planning/taskflow_generators.hpp`` and find the method ``ctor()`` within the class ``CartesianMotionPipelineTask``. Find the following block inside
 
    .. code-block:: c++
 
-      return std::make_unique<tesseract_planning::RasterGlobalTaskflow>(
-	      tesseract_planning::createDescartesOnlyGenerator(), createFreespaceTaskflow(), createTransitionTaskflow(),
-	      tesseract_planning::createCartesianGenerator());
-   
+      /* ========================================
+       * Fill Code: CREATE CUSTOM PLANNER NODES
+       * ========================================*/
+
+   Below the block add the following
+
+   .. code-block:: c++
+
+      boost::uuids::uuid descartes_planner_task =
+            addNode(std::make_unique<tesseract_planning::DescartesMotionPlannerTask>(output_keys_[0], output_keys_[0],
+            false));
+
+   Now we have created nodes for our planner. Find 
+
+   .. code-block:: c++
+
+      /* =======================
+       * Fill Code: EDIT EDGES
+       * =======================*/
+
+   in the same method and fill in the code to add edges between our nodes. Will need to replace 
+
+   .. code-block:: c++
+
+      addEdges(min_length_task, { contact_check_task });
+
+   with
+
+   .. code-block:: c++
+
+      addEdges(min_length_task, { descartes_planner_task })
+
+   and then add the line
+
+   .. code-block:: c++
+
+      addEdges(descartes_planner_task, { error_task, contact_check_task });
+
+   Because we want Descartes to be run globally over the entire motion, we need to create a new global raster pipeline. Toward the bottom of the file find
+
+   .. code-block:: c++
+
+      /* =========================================
+       * Fill Code: CUSTOM GLOBAL RASTER PIPELINE
+       * =========================================*/
+
+   Under it add the following line
+
+   .. code-block:: c++
+
+      using CustomGlobalRasterGlobalPipeline =
+          tesseract_planning::RasterGlobalPipelineTask<tesseract_planning::SimpleMotionPipelineTask,
+                                                       tesseract_planning::DescartesGlobalMotionPipelineTask,
+                                                       CustomRasterPipeline>;
+
    We have now added Descartes to our raster taskflow. 
 
    .. Note:: Pay attention to how the graph's edges and vertices are connected. We have already included post-collision checking for the simple planner and time parameterization. Play around with removing one or both of those and observe how your motion plan changes. 
@@ -189,6 +242,8 @@ Implement the Descartes Planner Profile
       ros2 launch snp_automate_2022 start.launch.xml
 
    How does the motion plan look? Does it fail to plan often? Does the motion look smooth? In your ``/tmp`` directory you should now also have a ``.dot`` file beginning with ``RASTER``. This will contian a visual representation of your taskflow. Take a look at the taskflow for our current motion planning pipeline.
+
+   Notice that this implementation in the taskflow uses Descartes to resample all waypoints and solves for that single raster again after a global Descartes has already been run. We will fix this later.
 
 Implement the TrajOpt Planner Profiles
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -210,9 +265,9 @@ Implement the TrajOpt Planner Profiles
    .. code-block:: c++
 
       auto profile = std::make_shared<tesseract_planning::TrajOptDefaultPlanProfile>();
-	  profile->cartesian_coeff = Eigen::VectorXd::Constant(6, 1, 5.0);
-	  profile->cartesian_coeff(5) = 0.0;
-	  return profile;
+	   profile->cartesian_coeff = Eigen::VectorXd::Constant(6, 1, 5.0);
+	   profile->cartesian_coeff(5) = 0.0;
+	   return profile;
 
    This method adds a vector of cost constraints on the cartesian axes of the waypoints in order to make certain motions more or less expensive than others. Here, we have costs in all directions except around the z-axis as rotation in the z-axis will not affect our outcomes. 
 
@@ -248,48 +303,44 @@ Implement the TrajOpt Planner Profiles
 
 #. Add the planners to the planning server:
    
-   Go back to ``planning_server.cpp`` and add our new custom profiles to the server
+   Go back to ``planning_server.cpp`` and add our two new custom profiles to the server
 
    .. code-block:: c++
 
-      pd->addProfile<tesseract_planning::TrajOptPlanProfile>(tesseract_planning::profile_ns::TRAJOPT_DEFAULT_NAMESPACE,
-                                                             PROFILE, createTrajOptToolZFreePlanProfile());
-      pd->addProfile<tesseract_planning::TrajOptCompositeProfile>(
+      profile_dict_->addProfile<tesseract_planning::TrajOptPlanProfile>(
+          tesseract_planning::profile_ns::TRAJOPT_DEFAULT_NAMESPACE, PROFILE, createTrajOptToolZFreePlanProfile());
+      profile_dict_->addProfile<tesseract_planning::TrajOptCompositeProfile>(
           tesseract_planning::profile_ns::TRAJOPT_DEFAULT_NAMESPACE, PROFILE, createTrajOptProfile());
 
 #. Add the planners to the taskflow:
 
-   Return to ``taskflow_generators.hpp``. As Trajopt will be used for both the transition and freespace planning taskflows, we will need to modify both ``createTransitionTaskflow()`` and ``createFreespaceTaskflow()``.
+   Return to ``taskflow_generators.hpp``. As Trajopt will be used for both the transition and freespace planning taskflows, we will need to modify the ``ctor()`` method in both ``FreespaceMotionPipelineTask`` and ``TransitionMotionPipelineTask``.
 
-   Within ``createTransitionTaskflow()`` add the following
+   Within ``FreespaceMotionPipelineTask`` add the following to create a new node
 
    .. code-block:: c++
 
-      auto trajopt_planner = std::make_shared<tesseract_planning::TrajOptMotionPlanner>();
-	  int trajopt = graph->addNode(std::make_unique<tesseract_planning::MotionPlannerTaskGenerator>(trajopt_planner), true);
-	  int trajopt_collision =
-	      graph->addNode(std::make_unique<tesseract_planning::DiscreteContactCheckTaskGenerator>(), true);
+      // Setup TrajOpt
+      boost::uuids::uuid trajopt_planner_task = addNode(
+         std::make_unique<tesseract_planning::TrajOptMotionPlannerTask>(output_keys_[0], output_keys_[0], false));
+
+   Now we need to connect our node through edges. Find where the edges are created and add the following line
+
+   .. code-block:: c++
+
+      addEdges(trajopt_planner_task, { error_task, contact_check_task });
+
+   You will also need to modify the edge connecting ``min_length_task`` to ``contact_check_task`` and instead have it connect to our new ``trajopt_planner_task``.
    
-   Now that we have created nodes for our TrajOpt planner, we need to add them into our taskflow graph. Look at the end of the same method and notice the edges that currently exist and recall what your ``.dot`` graph looked like from the previous section. The simple collision planner is currently connected only to ``time_param``. We will need to replace that line to also connect it to ``trajopt``. Find the line
+   Now navigate down to ``TransitionMotionPipelineTask``. You will need to add the same line as before to create the TrajOpt node. For the edges, change ``min_length_task`` to again connect to ``trajopt_planner_task`` and then add the following line to conenct ``trajopt_planner_task`` to ``error_task`` and ``contact_check_task``.
 
-   .. code-block:: c++
+   ..code-block:: c++
 
-      graph->addEdges(simple_collision, { tesseract_planning::GraphTaskflow::ERROR_NODE, time_param });
+     addEdges(trajopt_planner_task, { error_task, contact_check_task });
 
-   and replace it with
+   Scroll down to ``CartesianMotionPipelineTask`` and make the same changes to add the TrajOpt node and edges. For the edges, we again want ``min_length_task`` connected to ``trajopt_planner_task`` and ``trajopt_planner_task`` connected to both ``error_task`` and ``contact_check_task``. Additionally, you shoud edit the edge from ``descartes_planner_task`` to go to ``trajopt_planner_task`` instead of ``contact_check_task``.
 
-   .. code-block:: c++
-
-      graph->addEdges(simple_collision, { trajopt, time_param });
-
-   Additionally, we need to connect ``trajopt`` to ``trajopt_collision`` and a built-in error node. ``trajopt_collision`` will in turn also be connected to the error node as well as ``time_param``.
-
-   .. code-block:: c++
-
-      graph->addEdges(trajopt, { tesseract_planning::GraphTaskflow::ERROR_NODE, trajopt_collision });
-  	  graph->addEdges(trajopt_collision, { tesseract_planning::GraphTaskflow::ERROR_NODE, time_param });
-
-   Now we have succesfully added TrajOpt to our transition taskflow! We will need to do the same for the freespace taskflow. Follow the same steps to modify ``createFreespaceTaskflow()``.
+   Now our TrajOpt planners are connected to our taskflow!
 
 #. Run the application:
 
@@ -323,15 +374,14 @@ Implement the OMPL Planner Profile
 
       auto profile = std::make_shared<tesseract_planning::OMPLDefaultPlanProfile>();
       profile->planning_time = 10.0;
-  	  profile->planners.reserve(static_cast<std::size_t>(n));
-	  for (Eigen::Index i = 0; i < n; ++i)
-	  {
-	    auto rrt_connect = std::make_shared<tesseract_planning::RRTConnectConfigurator>();
-	    rrt_connect->range = range(i);
-	    profile->planners.push_back(rrt_connect);
-	  }
-
-	  return profile;
+  	   profile->planners.reserve(static_cast<std::size_t>(n));
+	   for (Eigen::Index i = 0; i < n; ++i)
+	   {
+	     auto rrt_connect = std::make_shared<tesseract_planning::RRTConnectConfigurator>();
+	     rrt_connect->range = range(i);
+	     profile->planners.push_back(rrt_connect);
+	   }
+	   return profile;
 
    There are many different OMPL planners available to experiment with. Feel free to play around with a few and observe how your application's motion plan changes (don't forget to include your chosen planner(s) in the header!).
 
@@ -343,40 +393,39 @@ Implement the OMPL Planner Profile
 
    .. code-block:: c++
 
-      pd->addProfile<tesseract_planning::OMPLPlanProfile>(tesseract_planning::profile_ns::OMPL_DEFAULT_NAMESPACE,
-                                                          PROFILE, createOMPLProfile());
+      profile_dict_->addProfile<tesseract_planning::OMPLPlanProfile>(
+          tesseract_planning::profile_ns::OMPL_DEFAULT_NAMESPACE, PROFILE, createOMPLProfile());
 
    Now we have added our new OMPL planning profile to the planning server.
 
 #. Add the planner to the taskflow:
    
-   Go back to ``taskflow_generators.hpp``. Now we need to include our OMPL profile in our motion planning taskflow. Our OMPL planner will be used with TrajOpt in our freespace taskflow. First, let's create our nodes for OMPL.
+   Go back to ``taskflow_generators.hpp``. Now we need to include our OMPL profile in our motion planning taskflow. Our OMPL planner will be used with TrajOpt in our freespace taskflow. First, let's create our node for OMPL. Within ``FreespaceMotionPipelineTask`` add
 
    .. code:: c++
 
-      auto ompl_planner = std::make_shared<tesseract_planning::OMPLMotionPlanner>();
-	  int ompl = graph->addNode(std::make_unique<tesseract_planning::MotionPlannerTaskGenerator>(ompl_planner), true);
-	  auto ompl_trajopt_planner = std::make_shared<tesseract_planning::TrajOptMotionPlanner>();
-	  int ompl_trajopt =
-	      graph->addNode(std::make_unique<tesseract_planning::MotionPlannerTaskGenerator>(ompl_trajopt_planner), true);
-	  int ompl_collision = graph->addNode(std::make_unique<tesseract_planning::DiscreteContactCheckTaskGenerator>(), true);
+      // Setup OMPL
+      boost::uuids::uuid ompl_planner_task =
+         addNode(std::make_unique<tesseract_planning::OMPLMotionPlannerTask>(output_keys_[0], output_keys_[0]));
   
-   Now we need to change our graph edges to incorporate these new nodes. Make the following changes to the graph:
+   Now we need to change our graph edges to incorporate these new nodes. Make the following changes to the edges:
 
-   * The ``trajopt`` node will connect to both ``ompl`` and ``trajopt_collision`` and not the error node. 
+   * ``min_length_task`` will connect to ``ompl_planner_task``
 
-   * The ``trajopt_collision`` node will connect to ``ompl`` and ``time_param`` and not the error node.
-
-   * ``ompl`` will connect to the error node and ``ompl_trajopt``.
-
-   * ``ompl_trajopt`` will connect to the error node and ``ompl_collision``.
-
-   * ``ompl_collision`` will connect to the error node and ``time_param``.
+   * ``ompl_planner_task`` will connect to ``error_task`` and ``trajopt_planner_task``
 
    This taskflow now means OMPL will first find planning solutions and then TrajOpt will smooth out the trajectory.
 
+   Now lets return to ``CartesianMotionPipelineTask`` and remove Descartes. Comment out where you created the Descartes node and where you connected ``descartes_planner_task`` to ``error_task`` and ``trajopt_planner_task``. Have ``min_length_task`` connect to ``trajopt_planner_task`` instead of your Descartes node. 
+
 #. Run the application:
 
-   Now try running the full application again with our completed motion planning pipeline. How has the plan changed since step one? Also take a look at our completed taskflow graph again and notice the new taskflow. Try playing around with changing some of the edges and see how the motion plan changes.
+   Now try running the full application again with our completed motion planning pipeline. How has the plan changed since step one? Also take a look at our completed taskflow graph again and notice the new taskflow. Try playing around with changing some of the edges and see how the motion plan changes. Here are a few things you could try:
+
+   * Remove TrajOpt and see how Descartes and OMPL perform without it.
+
+   * Remove time parametization
+
+   * Remove post-collision checking
 
 Congratulations! You have completed using Tesseract to create a motion plan for a "scan and plan" application!

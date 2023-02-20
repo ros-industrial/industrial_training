@@ -2,25 +2,33 @@
 #include "taskflow_generators.hpp"
 
 #include <rclcpp/rclcpp.hpp>
-#include <tesseract_process_managers/core/process_planning_server.h>
-#include <tesseract_motion_planners/default_planner_namespaces.h>
-#include <tesseract_process_managers/task_profiles/check_input_profile.h>
-#include <tesseract_process_managers/task_profiles/seed_min_length_profile.h>
-#include <tesseract_process_managers/task_profiles/interative_spline_parameterization_profile.h>
+#include <tesseract_time_parameterization/iterative_spline_parameterization.h>
 #include <tesseract_monitoring/environment_monitor.h>
 #include <tesseract_monitoring/environment_monitor_interface.h>
 #include <tesseract_rosutils/plotting.h>
 #include <tesseract_geometry/mesh_parser.h>
-#include <tesseract_command_language/command_language.h>
-#include <tesseract_command_language/utils/utils.h>
 #include <tesseract_rosutils/utils.h>
 #include <snp_msgs/srv/generate_motion_plan.hpp>
 #include <tf2_eigen/tf2_eigen.h>
+
+#include <tesseract_motion_planners/core/utils.h>
+#include <tesseract_motion_planners/interface_utils.h>
+#include <tesseract_command_language/composite_instruction.h>
+#include <tesseract_command_language/state_waypoint.h>
+#include <tesseract_command_language/cartesian_waypoint.h>
+#include <tesseract_command_language/joint_waypoint.h>
+#include <tesseract_command_language/move_instruction.h>
+#include <tesseract_command_language/profile_dictionary.h>
+#include <tesseract_command_language/utils.h>
+
+#include <tesseract_task_composer/profiles/min_length_profile.h>
+#include <tesseract_task_composer/profiles/interative_spline_parameterization_profile.h>
 
 static const std::string TRANSITION_PLANNER = "TRANSITION";
 static const std::string FREESPACE_PLANNER = "FREESPACE";
 static const std::string RASTER_PLANNER = "RASTER";
 static const std::string PROFILE = "SNPD";
+static const std::string PROFILE2 = "SNPD_FREESPACE";
 static const std::string PLANNING_SERVICE = "create_motion_plan";
 static const std::string TESSERACT_MONITOR_NAMESPACE = "snp_environment";
 static const double MAX_TCP_SPEED = 0.25;  // m/s
@@ -85,8 +93,10 @@ static tesseract_environment::Commands createScanAdditionCommands(const std::str
   cmds.push_back(std::make_shared<tesseract_environment::AddLinkCommand>(link, joint, true));
   std::transform(touch_links.begin(), touch_links.end(), std::back_inserter(cmds),
                  [&link](const std::string& touch_link) {
-                   return std::make_shared<tesseract_environment::AddAllowedCollisionCommand>(
-                       touch_link, link.getName(), "USER_DEFINED");
+                   tesseract_common::AllowedCollisionMatrix acm;
+                   acm.addAllowedCollision(touch_link, link.getName(), "USER_DEFINED");
+                   return std::make_shared<tesseract_environment::ModifyAllowedCollisionsCommand>(
+                       acm, tesseract_environment::ModifyAllowedCollisionsType::ADD);
                  });
 
   return cmds;
@@ -100,7 +110,6 @@ public:
     , verbose_(get<bool>(node_, "verbose"))
     , touch_links_(get<std::vector<std::string>>(node_, "touch_links"))
     , env_(std::make_shared<tesseract_environment::Environment>())
-    , planning_server_(std::make_shared<tesseract_planning::ProcessPlanningServer>(env_))
   {
     {
       auto urdf_string = get<std::string>(node_, "robot_description");
@@ -115,35 +124,29 @@ public:
 
     // Create the environment monitor
     tesseract_monitor_ =
-        std::make_shared<tesseract_monitoring::EnvironmentMonitor>(node_, env_, TESSERACT_MONITOR_NAMESPACE);
-    tesseract_monitor_->startStateMonitor(tesseract_monitoring::DEFAULT_JOINT_STATES_TOPIC, false);
+        std::make_shared<tesseract_monitoring::ROSEnvironmentMonitor>(node_, env_, TESSERACT_MONITOR_NAMESPACE);
+    tesseract_monitor_->setEnvironmentPublishingFrequency(30.0);
+    tesseract_monitor_->startPublishingEnvironment();
+    tesseract_monitor_->startStateMonitor("/robot_joint_states", true);
 
-    // Register custom process planners
-    planning_server_->registerProcessPlanner(TRANSITION_PLANNER, createTransitionTaskflow());
-    planning_server_->registerProcessPlanner(FREESPACE_PLANNER, createFreespaceTaskflow());
-    planning_server_->registerProcessPlanner(RASTER_PLANNER, createRasterTaskflow());
-
+    profile_dict_ = std::make_shared<tesseract_planning::ProfileDictionary>();
     // Add custom profiles
     {
-      auto pd = planning_server_->getProfiles();
-      pd->addProfile<tesseract_planning::SimplePlannerPlanProfile>(
+      profile_dict_->addProfile<tesseract_planning::SimplePlannerPlanProfile>(
           tesseract_planning::profile_ns::SIMPLE_DEFAULT_NAMESPACE, PROFILE, createSimplePlannerProfile());
-      pd->addProfile<tesseract_planning::OMPLPlanProfile>(tesseract_planning::profile_ns::OMPL_DEFAULT_NAMESPACE,
-                                                          PROFILE, createOMPLProfile());
-      pd->addProfile<tesseract_planning::TrajOptPlanProfile>(tesseract_planning::profile_ns::TRAJOPT_DEFAULT_NAMESPACE,
-                                                             PROFILE, createTrajOptToolZFreePlanProfile());
-      pd->addProfile<tesseract_planning::TrajOptCompositeProfile>(
+      profile_dict_->addProfile<tesseract_planning::OMPLPlanProfile>(
+          tesseract_planning::profile_ns::OMPL_DEFAULT_NAMESPACE, PROFILE, createOMPLProfile());
+      profile_dict_->addProfile<tesseract_planning::TrajOptPlanProfile>(
+          tesseract_planning::profile_ns::TRAJOPT_DEFAULT_NAMESPACE, PROFILE, createTrajOptToolZFreePlanProfile());
+      profile_dict_->addProfile<tesseract_planning::TrajOptCompositeProfile>(
           tesseract_planning::profile_ns::TRAJOPT_DEFAULT_NAMESPACE, PROFILE, createTrajOptProfile());
-      pd->addProfile<tesseract_planning::DescartesPlanProfile<float>>(
+      profile_dict_->addProfile<tesseract_planning::DescartesPlanProfile<float>>(
           tesseract_planning::profile_ns::DESCARTES_DEFAULT_NAMESPACE, PROFILE, createDescartesPlanProfile<float>());
-      pd->addProfile<tesseract_planning::CheckInputProfile>(
-          tesseract_planning::profile_ns::CHECK_INPUT_DEFAULT_NAMESPACE, PROFILE,
-          std::make_shared<tesseract_planning::CheckInputProfile>());
-      pd->addProfile<tesseract_planning::SeedMinLengthProfile>(
-          tesseract_planning::profile_ns::SEED_MIN_LENGTH_DEFAULT_NAMESPACE, PROFILE,
-          std::make_shared<tesseract_planning::SeedMinLengthProfile>(5));
-      pd->addProfile<tesseract_planning::IterativeSplineParameterizationProfile>(
-          tesseract_planning::profile_ns::ITERATIVE_SPLINE_PARAMETERIZATION_DEFAULT_NAMESPACE, PROFILE,
+      profile_dict_->addProfile<tesseract_planning::MinLengthProfile>(
+          tesseract_planning::node_names::MIN_LENGTH_TASK_NAME, PROFILE,
+          std::make_shared<tesseract_planning::MinLengthProfile>(5));
+      profile_dict_->addProfile<tesseract_planning::IterativeSplineParameterizationProfile>(
+          tesseract_planning::node_names::ITERATIVE_SPLINE_PARAMETERIZATION_TASK_NAME, PROFILE,
           std::make_shared<tesseract_planning::IterativeSplineParameterizationProfile>());
     }
 
@@ -154,7 +157,7 @@ public:
   }
 
 private:
-  tesseract_planning::CompositeInstruction createProgram(const tesseract_planning::ManipulatorInfo& info,
+  tesseract_planning::CompositeInstruction createProgram(const tesseract_common::ManipulatorInfo& info,
                                                          const tesseract_common::Toolpath& raster_strips)
   {
     std::vector<std::string> joint_names = env_->getJointGroup(info.manipulator)->getJointNames();
@@ -164,9 +167,12 @@ private:
 
     // Perform a freespace move to the first waypoint
     tesseract_planning::StateWaypoint swp1(joint_names, env_->getCurrentJointValues(joint_names));
-    tesseract_planning::PlanInstruction start_instruction(swp1, tesseract_planning::PlanInstructionType::START,
-                                                          PROFILE);
-    program.setStartInstruction(start_instruction);
+
+    // Create object needed for move instruction
+    tesseract_planning::StateWaypointPoly swp1_poly{ swp1 };
+
+    tesseract_planning::MoveInstruction start_instruction(swp1_poly, tesseract_planning::MoveInstructionType::FREESPACE,
+                                                          PROFILE, info);
 
     for (std::size_t rs = 0; rs < raster_strips.size(); ++rs)
     {
@@ -174,11 +180,14 @@ private:
       {
         // Define from start composite instruction
         tesseract_planning::CartesianWaypoint wp1 = raster_strips[rs][0];
-        tesseract_planning::PlanInstruction plan_f0(wp1, tesseract_planning::PlanInstructionType::FREESPACE, PROFILE);
-        plan_f0.setDescription("from_start_plan");
+        tesseract_planning::CartesianWaypointPoly wp1_poly{ wp1 };
+        tesseract_planning::MoveInstruction move_f0(wp1_poly, tesseract_planning::MoveInstructionType::FREESPACE,
+                                                    PROFILE, info);
+        move_f0.setDescription("from_start_plan");
         tesseract_planning::CompositeInstruction from_start(PROFILE);
         from_start.setDescription("from_start");
-        from_start.push_back(plan_f0);
+        from_start.appendMoveInstruction(start_instruction);
+        from_start.appendMoveInstruction(move_f0);
         program.push_back(from_start);
       }
 
@@ -189,8 +198,9 @@ private:
       for (std::size_t i = 1; i < raster_strips[rs].size(); ++i)
       {
         tesseract_planning::CartesianWaypoint wp = raster_strips[rs][i];
-        raster_segment.push_back(
-            tesseract_planning::PlanInstruction(wp, tesseract_planning::PlanInstructionType::LINEAR, PROFILE));
+        tesseract_planning::CartesianWaypointPoly wp_poly{ wp };
+        raster_segment.appendMoveInstruction(tesseract_planning::MoveInstruction(
+            wp_poly, tesseract_planning::MoveInstructionType::LINEAR, PROFILE, info));
       }
       program.push_back(raster_segment);
 
@@ -198,25 +208,27 @@ private:
       {
         // Add transition
         tesseract_planning::CartesianWaypoint twp = raster_strips[rs + 1].front();
+        tesseract_planning::CartesianWaypointPoly twp_poly{ twp };
 
-        tesseract_planning::PlanInstruction transition_instruction1(
-            twp, tesseract_planning::PlanInstructionType::FREESPACE, PROFILE);
+        tesseract_planning::MoveInstruction transition_instruction1(
+            twp_poly, tesseract_planning::MoveInstructionType::FREESPACE, PROFILE, info);
         transition_instruction1.setDescription("Transition #" + std::to_string(rs + 1));
 
         tesseract_planning::CompositeInstruction transition(PROFILE);
         transition.setDescription("Transition #" + std::to_string(rs + 1));
-        transition.push_back(transition_instruction1);
+        transition.appendMoveInstruction(transition_instruction1);
 
         program.push_back(transition);
       }
       else
       {
         // Add to end instruction
-        tesseract_planning::PlanInstruction plan_f2(swp1, tesseract_planning::PlanInstructionType::FREESPACE, PROFILE);
+        tesseract_planning::MoveInstruction plan_f2(swp1_poly, tesseract_planning::MoveInstructionType::FREESPACE,
+                                                    PROFILE, info);
         plan_f2.setDescription("to_end_plan");
         tesseract_planning::CompositeInstruction to_end(PROFILE);
         to_end.setDescription("to_end");
-        to_end.push_back(plan_f2);
+        to_end.appendMoveInstruction(plan_f2);
         program.push_back(to_end);
       }
     }
@@ -288,34 +300,54 @@ private:
 
       // Create a manipulator info and program from the service request
       const std::string& base_frame = req->tool_paths.paths.at(0).segments.at(0).header.frame_id;
-      tesseract_planning::ManipulatorInfo manip_info(req->motion_group, base_frame, req->tcp_frame);
+      tesseract_common::ManipulatorInfo manip_info(req->motion_group, base_frame, req->tcp_frame);
 
-      tesseract_planning::ProcessPlanningRequest plan_req;
-      plan_req.name = RASTER_PLANNER;
-      plan_req.instructions = createProgram(manip_info, fromMsg(req->tool_paths));
-      plan_req.env_state = env_->getState();
-      plan_req.commands = createScanAdditionCommands(req->mesh_filename, req->mesh_frame, touch_links_);
+      // Set up composite instruction and environment
+      tesseract_planning::CompositeInstruction program = createProgram(manip_info, fromMsg(req->tool_paths));
+      tesseract_environment::Commands env_cmds =
+          createScanAdditionCommands(req->mesh_filename, req->mesh_frame, touch_links_);
+      tesseract_environment::Environment::Ptr planner_env = env_->clone();
+      planner_env->applyCommands(env_cmds);
 
+      // Set up task composer problem
+      tesseract_planning::TaskComposerDataStorage input_data;
+      input_data.setData("input_program", program);
+      tesseract_planning::TaskComposerProblem problem(planner_env, input_data);
+      tesseract_planning::TaskComposerInput input(problem, profile_dict_);
+      auto executor = std::make_unique<tesseract_planning::TaskflowTaskComposerExecutor>();
+
+      // Use custom pipeline
+      auto task = createGlobalRasterPipeline();
+
+      // Update log level for debugging
       auto log_level = console_bridge::getLogLevel();
       if (verbose_)
         console_bridge::setLogLevel(console_bridge::LogLevel::CONSOLE_BRIDGE_LOG_DEBUG);
 
-      tesseract_planning::ProcessPlanningFuture plan_result = planning_server_->run(plan_req);
-      plan_result.wait();
+      // Run problem
+      tesseract_planning::TaskComposerFuture::UPtr exec_fut = executor->run(*task, input);
+      exec_fut->wait();
 
       // Reset the log level
       console_bridge::setLogLevel(log_level);
 
-      if (!plan_result.interface->isSuccessful())
+      // Check for successful plan
+      if (!input.isSuccessful())
         throw std::runtime_error("Failed to create motion plan");
 
-      // Convert to joint trajectory
-      tesseract_common::JointTrajectory jt =
-          toJointTrajectory(plan_result.results->as<tesseract_planning::CompositeInstruction>());
-      tesseract_common::JointTrajectory tcp_velocity_scaled_jt = tcpSpeedLimiter(jt, MAX_TCP_SPEED, "tool0");
-      plotter_->plotTrajectory(tcp_velocity_scaled_jt, *env_->getStateSolver());
-      res->motion_plan = tesseract_rosutils::toMsg(tcp_velocity_scaled_jt, env_->getState());
+      // Get results of successful plan
+      tesseract_planning::CompositeInstruction program_results =
+          input.data_storage.getData("output_program").as<tesseract_planning::CompositeInstruction>();
 
+      // Convert to joint trajectory
+      tesseract_common::JointTrajectory jt = toJointTrajectory(program_results);
+      tesseract_common::JointTrajectory tcp_velocity_scaled_jt = tcpSpeedLimiter(jt, MAX_TCP_SPEED, "tool0");
+
+      // Send joint trajectory to Tesseract plotter widget
+      plotter_->plotTrajectory(tcp_velocity_scaled_jt, *env_->getStateSolver());
+
+      // Return results
+      res->motion_plan = tesseract_rosutils::toMsg(tcp_velocity_scaled_jt, env_->getState());
       res->message = "Succesfully planned motion";
       res->success = true;
     }
@@ -329,12 +361,13 @@ private:
   }
 
   rclcpp::Node::SharedPtr node_;
+
   const bool verbose_{ false };
   const std::vector<std::string> touch_links_;
   tesseract_environment::Environment::Ptr env_;
-  tesseract_planning::ProcessPlanningServer::Ptr planning_server_;
-  tesseract_monitoring::EnvironmentMonitor::Ptr tesseract_monitor_;
-  tesseract_rosutils::ROSPlotting::Ptr plotter_;
+  tesseract_planning::ProfileDictionary::Ptr profile_dict_;
+  tesseract_monitoring::ROSEnvironmentMonitor::Ptr tesseract_monitor_;
+  tesseract_rosutils::ROSPlottingPtr plotter_;
   rclcpp::Service<snp_msgs::srv::GenerateMotionPlan>::SharedPtr server_;
 };
 
@@ -343,6 +376,8 @@ int main(int argc, char** argv)
   rclcpp::init(argc, argv);
   rclcpp::Node::SharedPtr node = std::make_shared<rclcpp::Node>("snp_planning_server");
   auto server = std::make_shared<PlanningServer>(node);
-  rclcpp::spin(node);
+  rclcpp::executors::MultiThreadedExecutor executor;
+  executor.add_node(node);
+  executor.spin();
   rclcpp::shutdown();
 }

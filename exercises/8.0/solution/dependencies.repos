@@ -16,5 +16,5 @@
     version: 17f6fb2860e73e010ec14a340057b51d5294df38
 - git:
     local-name: tesseract_ros2
-    uri: https://github.com/collinthornton/tesseract_ros2.git
-    version: 0f8e97b1f12ea4643e06f3fdf62fa35f249334f6
+    uri: https://github.com/marrts/tesseract_ros2.git
+    version: 6ffdc6db622a8386895b55d0248c0cc1cb8bba89

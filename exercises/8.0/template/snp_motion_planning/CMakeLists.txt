@@ -22,14 +22,14 @@ endforeach()
 
 find_package(descartes_light REQUIRED)
 find_package(tesseract_command_language REQUIRED)
-find_package(tesseract_process_managers REQUIRED)
+find_package(tesseract_task_composer REQUIRED)
 find_package(tesseract_kinematics REQUIRED)
 find_package(LAPACK REQUIRED) # Requried for ikfast
 
 # Planning server
 add_executable(${PROJECT_NAME}_node src/planning_server.cpp)
 ament_target_dependencies(${PROJECT_NAME}_node ${ROS2_DEPS})
-target_link_libraries(${PROJECT_NAME}_node tesseract::tesseract_command_language tesseract::tesseract_process_managers)
+target_link_libraries(${PROJECT_NAME}_node tesseract::tesseract_command_language tesseract::tesseract_task_composer)
 
 # Plugin Library
 add_library(${PROJECT_NAME}_plugins SHARED src/motoman_hc10_ikfast_plugin.cpp)
