@@ -1,8 +1,0 @@
-- git:
-    local-name: motoman
-    uri: 'https://github.com/ben-greenberg/motoman.git'
-    version: 565d0babe0ac751d3b933c417fcbd7f5a9b853c2
-- git:
-    local-name: realsense-ros
-    uri: 'https://github.com/IntelRealSense/realsense-ros.git'
-    version: 442d6d9a19149cb9cb40ffb351593c3fa8b9eb9f

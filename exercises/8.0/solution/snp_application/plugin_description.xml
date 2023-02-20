@@ -1,7 +1,0 @@
-<library path="snp_application_panel">
-  <class name="snp/SNPApplication" type="::SNPPanel" base_class_type="rviz_common::Panel">
-    <description>
-      Scan N Plan application panel
-    </description>
-  </class>
-</library>
