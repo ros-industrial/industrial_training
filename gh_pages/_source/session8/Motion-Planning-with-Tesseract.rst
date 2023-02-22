@@ -206,7 +206,7 @@ Implement the Descartes Planner Profile
 
    .. code-block:: c++
 
-      addEdges(min_length_task, { descartes_planner_task })
+      addEdges(min_length_task, { descartes_planner_task });
 
    and then add the line
 
