@@ -252,7 +252,7 @@ Implement the TrajOpt Planner Profiles
        * Fill Code: TRAJOPT PLAN
        * ==========================*/
 
-   TrajOpt is a planner that creates a nonlinear optimization problem to solve until it converges on a solution. As this planner does not have any knowledge of time, it only looks at adjacent states while planning. There are three different TrajOpt planning methods: plan, composite, and solver. In this application we will be implementing the plan and composite profiles.
+   TrajOpt is a planner that creates a nonlinear optimization problem to solve until it converges on a solution. As this planner does not have any knowledge of time, it only looks at adjacent states while planning. There are three different profiles you can adjust to setup a TrajOpt planner: plan, composite, and solver. In this application we will be customizing the plan and composite profiles.
 
    We will begin by filling out the plan profile which focuses on how individual waypoints are handled. Below the above block replace the method's contents with the following code
 
