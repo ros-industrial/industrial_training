@@ -28,6 +28,7 @@ std::shared_ptr<tesseract_planning::TrajOptPlanProfile> createTrajOptToolZFreePl
   /* ==========================
    * Fill Code: TRAJOPT PLAN 
    * ==========================*/
+   return std::make_shared<tesseract_planning::TrajOptDefaultPlanProfile>();
 }
 
 std::shared_ptr<tesseract_planning::TrajOptDefaultCompositeProfile> createTrajOptProfile()
