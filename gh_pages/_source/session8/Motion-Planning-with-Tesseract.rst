@@ -23,7 +23,7 @@ We will create a new workspace, since this exercise does not overlap with the pr
     .. code-block:: bash
 
     	mkdir -p ~/tesseract_ws/src
-    	cp -r ~/industrial_training/exercises/8.0/template ~/tesseract_ws/src
+    	cp -r ~/industrial_training/exercises/8.0/template/. ~/tesseract_ws/src
     	cd ~/tesseract_ws/
 
 #. Install ``taskflow`` from the ROS-I PPA
@@ -37,8 +37,8 @@ We will create a new workspace, since this exercise does not overlap with the pr
 	.. code-block:: bash
 
 		cd ~/tesseract_ws
-		vcs import < src/dependencies_tesseract.repos
-		vcs import < src/dependencies.repos
+		vcs import src < src/dependencies_tesseract.repos
+		vcs import src < src/dependencies.repos
 		vcs import src < src/snp_automate_2022/dependencies.repos
 		rosdep install --from-paths src --ignore-src -r -y
 
@@ -92,7 +92,7 @@ Find the `snp_tpp_app` window that should also have appeared when you launched t
 
 After making changes on the `snp_tpp_app` return to Rviz and click `Generate Tool Path Plan`. You should now see waypoints appear in your selected region. When you are satisfied with the waypoints, click `Generate Motion Plan` (this may take a few minutes). 
 
-There should also be a `joint_state_publisher_gui` on your screen. Feel free to play around with it as well to create different start states.
+There should also be a `joint_state_publisher_gui` on your screen. Feel free to play around with it as well to create different start states. Note that the motion plan will fail if your start state is in collision.
 
 .. Note:: If the application fails to create a motion plan, try playing around with the settings in `snp_tpp_app`. You may need to change the line and point spacing.
 
@@ -214,15 +214,6 @@ Implement the Descartes Planner Profile
 
       addEdges(descartes_planner_task, { error_task, contact_check_task });
 
-   Because we want Descartes to be run globally over the entire motion, we need to create a new global raster pipeline. Toward the bottom of the file notice the line
-
-   .. code-block:: c++
-
-      using CustomGlobalRasterGlobalPipeline =
-          tesseract_planning::RasterGlobalPipelineTask<tesseract_planning::SimpleMotionPipelineTask,
-                                                       tesseract_planning::DescartesGlobalMotionPipelineTask,
-                                                       CustomRasterPipeline>;
-
    We have now added Descartes to our raster taskflow. 
 
    .. Note:: Pay attention to how the graph's edges and vertices are connected. We have already included post-collision checking for the simple planner and time parameterization. Play around with removing one or both of those and observe how your motion plan changes. 
@@ -339,6 +330,8 @@ Implement the TrajOpt Planner Profiles
 #. Run the application:
 
    Now try running the application again and notice how our robot's motion plan has changed. Don't forget to build and source your workspace!
+
+   Note that it still might fail frequently since there is nothing to generate good freespace or tranistion motion seeds.
 
 Implement the OMPL Planner Profile
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
