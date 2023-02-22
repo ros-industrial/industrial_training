@@ -70,7 +70,7 @@ Most of the infrastructure for a ROS node has already been completed for you; th
 #. ``snp_motion_planning/src/planner_profiles.hpp``:
 	* This file contains the planner profiles used to create our motion plan. Currently, only the Simple Planner profile is fully populated. This is one of the main files we will be editing in our exercise.
 
-#. ``snp_motion_planning/src/planner_server.cpp``:
+#. ``snp_motion_planning/src/planning_server.cpp``:
 	* This is where our custom planner profiles will be used by our application. Take a look at the ``createProgram()`` method. This method takes in the toolpath rasters and constructs motion plan requests in a manner usable by Tesseract. These motions include freespace motions, transition motions, and raster (process) motions. The order that they are added is the same order that they will be returned in.
 
 #. ``snp_motion_planning/src/taskflow_generators.hpp``:
