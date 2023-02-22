@@ -22,6 +22,7 @@ tesseract_planning::OMPLDefaultPlanProfile::Ptr createOMPLProfile()
   /* =======================
    * Fill Code: OMPL 
    * =======================*/
+    return std::make_shared<tesseract_planning::OMPLDefaultPlanProfile>();
 }
 
 std::shared_ptr<tesseract_planning::TrajOptPlanProfile> createTrajOptToolZFreePlanProfile()
