@@ -16,15 +16,15 @@ We will create a new workspace, since this exercise does not overlap with the pr
 
 		source /opt/ros/foxy/setup.bash
 
-	.. Note:: If you are using a VM provided by us, please skip to step 6 as a directory called ``tesseract_ws`` should already exist with the dependencies have already installed for you.
+.. Note:: If you are using a VM provided by us, please skip to step 6 as a directory called ``tesseract_ws`` should already exist with the dependencies have already installed for you.
 
 #. Copy the template workspace layout and files:
 
-    .. code-block:: bash
+	.. code-block:: bash
 
-    	mkdir -p ~/tesseract_ws/src
-    	cp -r ~/industrial_training/exercises/8.0/template/. ~/tesseract_ws/src
-    	cd ~/tesseract_ws/
+		mkdir -p ~/tesseract_ws/src
+		cp -r ~/industrial_training/exercises/8.0/template/. ~/tesseract_ws/src
+		cd ~/tesseract_ws/
 
 #. Install ``taskflow`` from the ROS-I PPA
 	.. code-block:: bash
@@ -44,16 +44,16 @@ We will create a new workspace, since this exercise does not overlap with the pr
 
 #. Initialize and Build this new workspace (this may take a little while)
 
-    .. code-block:: bash
+    	.. code-block:: bash
 
 		cd ~/tesseract_ws
 		colcon build --cmake-args -DTESSERACT_BUILD_FCL=OFF
 
 #. Source the workspace
 
-    .. code-block:: bash
+    	.. code-block:: bash
 
-    	source ~/tesseract_ws/install/setup.bash
+    		source ~/tesseract_ws/install/setup.bash
 
 #. Import the new workspace into your QTCreator IDE (if using QTCreator):
 
@@ -84,7 +84,7 @@ Currently, only the Simple Planner is set up. Try running the application and se
 
 	.. code-block:: bash
 
-	   ros2 launch snp_automate_2022 start.launch.xml
+		ros2 launch snp_automate_2022 start.launch.xml
 
 You should see an Rviz window appear with a robot on a table. Click `Get Detailed Scan` to see a model of our work surface appear on the table. Use the `Polygon Selection Tool` at the top to select a region on the work surface. 
 
@@ -115,11 +115,11 @@ Implement the Descartes Planner Profile
    .. code-block:: c++
 
    	auto profile = std::make_shared<tesseract_planning::DescartesDefaultPlanProfile<FloatType>>();
-  		profile->num_threads = static_cast<int>(std::thread::hardware_concurrency());
-	  	profile->use_redundant_joint_solutions = false;
-	  	profile->allow_collision = false;
-	  	profile->enable_collision = true;
-	  	profile->enable_edge_collision = false;
+	profile->num_threads = static_cast<int>(std::thread::hardware_concurrency());
+	profile->use_redundant_joint_solutions = false;
+	profile->allow_collision = false;
+	profile->enable_collision = true;
+	profile->enable_edge_collision = false;
 
    Now we will also specify our state and edge evaluators. The state evaluator looks at a given state and gives the state both a cost and a pass or fail. A few things we may choose to evaluate are whether or not the state is valid, the cost of the state, and any biases we may want to give it. The edge evaluator works similarly but evaluates a transition between states. 
 
@@ -127,17 +127,17 @@ Implement the Descartes Planner Profile
 
    .. code-block:: c++
 
-	  	// Use the default state and edge evaluators
-  		profile->state_evaluator = nullptr;
-  		profile->edge_evaluator = [](const tesseract_planning::DescartesProblem<FloatType>& prob) ->
-      		typename descartes_light::EdgeEvaluator<FloatType>::Ptr {
-        		auto eval = std::make_shared<descartes_light::CompoundEdgeEvaluator<FloatType>>();
+	// Use the default state and edge evaluators
+	profile->state_evaluator = nullptr;
+	profile->edge_evaluator = [](const tesseract_planning::DescartesProblem<FloatType>& prob) ->
+	typename descartes_light::EdgeEvaluator<FloatType>::Ptr {
+		auto eval = std::make_shared<descartes_light::CompoundEdgeEvaluator<FloatType>>();
 
-        		// Nominal Euclidean distance
-        		eval->evaluators.push_back(std::make_shared<descartes_light::EuclideanDistanceEdgeEvaluator<FloatType>>());
+		// Nominal Euclidean distance
+		eval->evaluators.push_back(std::make_shared<descartes_light::EuclideanDistanceEdgeEvaluator<FloatType>>());
 
-        		return eval;
-      		};
+		return eval;
+	};
       	profile->vertex_evaluator = nullptr;
 
    Finally, we set the ``target_pose_sampler`` which takes a given function for sampling. In our example, we specify our pose sampling to allow any rotation along the z-axis as it will not impact our final results. Note that Descartes can only work in discrete space so we are only sampling at increments of 10 degrees around the z-axis.
@@ -145,11 +145,11 @@ Implement the Descartes Planner Profile
    Copy and past the following below the previous block:
 
    .. code-block:: c++
-  		
-  		profile->target_pose_sampler =
-      		std::bind(tesseract_planning::sampleToolZAxis, std::placeholders::_1, 10.0 * M_PI / 180.0);
 
-  		return profile;
+	profile->target_pose_sampler =
+	std::bind(tesseract_planning::sampleToolZAxis, std::placeholders::_1, 10.0 * M_PI / 180.0);
+
+	return profile;
 
 #. Add the planner to the planning server:
    
@@ -249,10 +249,10 @@ Implement the TrajOpt Planner Profiles
 
    .. code-block:: c++
 
-      auto profile = std::make_shared<tesseract_planning::TrajOptDefaultPlanProfile>();
-	   profile->cartesian_coeff = Eigen::VectorXd::Constant(6, 1, 5.0);
-	   profile->cartesian_coeff(5) = 0.0;
-	   return profile;
+	auto profile = std::make_shared<tesseract_planning::TrajOptDefaultPlanProfile>();
+	profile->cartesian_coeff = Eigen::VectorXd::Constant(6, 1, 5.0);
+	profile->cartesian_coeff(5) = 0.0;
+	return profile;
 
    This method adds a vector of cost constraints on the cartesian axes of the waypoints in order to make certain motions more or less expensive than others. Here, we have costs in all directions except around the z-axis as rotation in the z-axis will not affect our outcomes. 
 
@@ -268,21 +268,21 @@ Implement the TrajOpt Planner Profiles
 
    .. code-block:: c++
 
-      auto profile = std::make_shared<tesseract_planning::TrajOptDefaultCompositeProfile>();
-  	   profile->smooth_velocities = false;
+	auto profile = std::make_shared<tesseract_planning::TrajOptDefaultCompositeProfile>();
+	profile->smooth_velocities = false;
 
-	   profile->acceleration_coeff = Eigen::VectorXd::Constant(6, 1, 10.0);
-	   profile->jerk_coeff = Eigen::VectorXd::Constant(6, 1, 20.0);
+	profile->acceleration_coeff = Eigen::VectorXd::Constant(6, 1, 10.0);
+	profile->jerk_coeff = Eigen::VectorXd::Constant(6, 1, 20.0);
 
-	   profile->collision_cost_config.enabled = true;
-	   profile->collision_cost_config.type = trajopt::CollisionEvaluatorType::DISCRETE_CONTINUOUS;
-	   profile->collision_cost_config.safety_margin = 0.010;
-	   profile->collision_cost_config.safety_margin_buffer = 0.010;
-	   profile->collision_cost_config.coeff = 10.0;
+	profile->collision_cost_config.enabled = true;
+	profile->collision_cost_config.type = trajopt::CollisionEvaluatorType::DISCRETE_CONTINUOUS;
+	profile->collision_cost_config.safety_margin = 0.010;
+	profile->collision_cost_config.safety_margin_buffer = 0.010;
+	profile->collision_cost_config.coeff = 10.0;
 
-	   profile->collision_constraint_config.enabled = false;
+	profile->collision_constraint_config.enabled = false;
 
-	   return profile;
+	return profile;
 
    Notice that the composite profile takes more parameters into account than the plan profile. Unlike the plan profile, which only looks at one waypoint at a time, the composite profile looks at the whole motion. You can add costs on velocity, acceleration, and jerk as well as specify how collision checking is to be handled.
 
@@ -359,16 +359,16 @@ Implement the OMPL Planner Profile
 
    .. code-block:: c++
 
-      auto profile = std::make_shared<tesseract_planning::OMPLDefaultPlanProfile>();
-      profile->planning_time = 10.0;
-  	   profile->planners.reserve(static_cast<std::size_t>(n));
+	auto profile = std::make_shared<tesseract_planning::OMPLDefaultPlanProfile>();
+	profile->planning_time = 10.0;
+	   profile->planners.reserve(static_cast<std::size_t>(n));
 	   for (Eigen::Index i = 0; i < n; ++i)
 	   {
 	     auto rrt_connect = std::make_shared<tesseract_planning::RRTConnectConfigurator>();
 	     rrt_connect->range = range(i);
 	     profile->planners.push_back(rrt_connect);
 	   }
-	   return profile;
+	return profile;
 
    There are many different OMPL planners available to experiment with. Feel free to play around with a few and observe how your application's motion plan changes (don't forget to include your chosen planner(s) in the header!).
 
