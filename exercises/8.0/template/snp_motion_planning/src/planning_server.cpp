@@ -2,7 +2,6 @@
 #include "taskflow_generators.hpp"
 
 #include <rclcpp/rclcpp.hpp>
-#include <tesseract_time_parameterization/iterative_spline_parameterization.h>
 #include <tesseract_monitoring/environment_monitor.h>
 #include <tesseract_monitoring/environment_monitor_interface.h>
 #include <tesseract_rosutils/plotting.h>
