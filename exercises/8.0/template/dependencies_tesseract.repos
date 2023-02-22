@@ -1,0 +1,36 @@
+- git:
+    local-name: Qt-Advanced-Docking-System
+    uri: https://github.com/Levi-Armstrong/Qt-Advanced-Docking-System.git
+    version: e28bc8e17308ff0ea256c87d44eb566ab9e2b9c1
+- git:
+    local-name: ros_industrial_cmake_boilerplate
+    uri: https://github.com/ros-industrial/ros_industrial_cmake_boilerplate.git
+    version: 0.2.16
+- git:
+    local-name: tesseract
+    uri: https://github.com/ros-industrial-consortium/tesseract.git
+    version: 0.14.0
+- git:
+    local-name: trajopt
+    uri: https://github.com/ros-industrial-consortium/trajopt_ros.git
+    version: 0.3.1
+- git:
+    local-name: tesseract_planning
+    uri: https://github.com/marrts/tesseract_planning.git
+    version: 5ea869d089af18b515a01f5fa76434c03b6b4ece
+- git:
+    local-name: tesseract_qt
+    uri: https://github.com/tesseract-robotics/tesseract_qt.git
+    version: b0dc09764de7a4e67bd2cace3da36e09d84fc704
+- git:
+    local-name: descartes_light
+    uri: https://github.com/swri-robotics/descartes_light.git
+    version: fbb74ebe679ba21cf1a49d4f7b5e353da75f0549
+- git:
+    local-name: opw_kinematics
+    uri: https://github.com/Jmeyer1292/opw_kinematics.git
+    version: 0.4.5
+- git:
+    local-name: ifopt
+    uri: https://github.com/ethz-adrl/ifopt.git
+    version: 2.1.3

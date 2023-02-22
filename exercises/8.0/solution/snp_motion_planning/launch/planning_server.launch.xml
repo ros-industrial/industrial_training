@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<launch>
+  <arg name="robot_description"/>
+  <arg name="robot_description_semantic"/>
+  <arg name="verbose" default="False"/>
+  <arg name="touch_links" default="[]"/>
+
+  <node pkg="snp_motion_planning" exec="snp_motion_planning_node" output="screen">
+    <param name="robot_description" value="$(var robot_description)"/>
+    <param name="robot_description_semantic" value="$(var robot_description_semantic)"/>
+    <param name="verbose" value="$(var verbose)"/>
+    <param name="touch_links" value="$(var touch_links)"/>
+  </node>
+
+</launch>

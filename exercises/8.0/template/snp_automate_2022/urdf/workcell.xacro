@@ -1,0 +1,168 @@
+<?xml version="1.0" ?>
+<robot name="motoman_hc10" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:include filename="$(find motoman_hc10_support)/urdf/hc10dt_macro.xacro" />
+  <xacro:motoman_hc10dt prefix=""/>
+
+  <xacro:property name="dt_flange_width" value="0.040"/>
+
+  <!-- Add World -->
+  <material name="light_gray">
+    <color rgba="0.7 0.7 0.7 1"/>
+  </material>
+
+  <material name="dark_gray">
+    <color rgba="0.3 0.3 0.3 1"/>
+  </material>
+  
+  <link name="world"/>
+
+  <!-- Add Floor -->
+  <xacro:property name="length" value="9.0"/>
+  <xacro:property name="width" value="6.0"/>
+  <link name="floor">
+    <visual>
+      <origin xyz="0 -${width/10} 0.001" rpy="0 0 0"/>
+      <geometry>
+        <box size="${length} ${width} 0.001"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 -${width/10} 0.001" rpy="0 0 0"/>
+      <geometry>
+        <box size="${length} ${width} 0.001"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="world_to_floor" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="world"/>
+    <child link="floor"/>
+  </joint>
+
+  <!-- Add table -->
+  <link name="table">
+    <visual>
+      <geometry>
+        <mesh filename="package://snp_automate_2022/meshes/visual/steel_table.ply"/>
+      </geometry>
+      <material name="dark_gray"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://snp_automate_2022/meshes/collision/steel_table.ply"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin xyz="0 0 0.726" rpy="0 0 0"/>
+      <geometry>
+        <box size="1.9 0.95 0.05"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="floor_to_table" type="fixed">
+    <parent link="floor"/>
+    <child link="table"/>
+  </joint>
+
+  <joint name="table_to_base" type="fixed">
+    <parent link="table"/>
+    <child link="base_link"/>
+    <origin xyz="-0.61 0 0.723" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Create a frame representing the robot tool flange (behind the teach tool and nominal tool0 frame) for IKFast -->
+  <link name="tool_flange"/>
+  <joint name="tool0_to_tool_flange" type="fixed">
+    <parent link="tool0"/>
+    <child link="tool_flange"/>
+    <origin xyz="0.0 0.0 ${-dt_flange_width}" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Add End Effector Components -->
+  <link name="ee">
+    <visual>
+      <geometry>
+        <mesh filename="package://snp_automate_2022/meshes/visual/end_effector.stl"/>
+      </geometry>
+    </visual>
+    <collision name="compliance">
+      <geometry>
+        <mesh filename="package://snp_automate_2022/meshes/collision/afd310.ply"/>
+      </geometry>
+    </collision>
+    <collision name="spindle">
+      <geometry>
+        <mesh filename="package://snp_automate_2022/meshes/collision/rps100.ply"/>
+      </geometry>
+    </collision>
+    <collision name="backplate">
+      <geometry>
+        <mesh filename="package://snp_automate_2022/meshes/collision/backplate.ply"/>
+      </geometry>
+    </collision>
+    <collision name="frontplate">
+      <geometry>
+        <mesh filename="package://snp_automate_2022/meshes/collision/front.ply"/>
+      </geometry>
+    </collision>
+    <collision name="camera1">
+      <geometry>
+        <mesh filename="package://snp_automate_2022/meshes/collision/camera1.ply"/>
+      </geometry>
+    </collision>
+    <collision name="camera2">
+      <geometry>
+        <mesh filename="package://snp_automate_2022/meshes/collision/camera2.ply"/>
+      </geometry>
+    </collision>
+    <collision name="sidebracket1">
+      <geometry>
+        <mesh filename="package://snp_automate_2022/meshes/collision/bracket1.ply"/>
+      </geometry>
+    </collision>
+    <collision name="sidebracket2">
+      <geometry>
+        <mesh filename="package://snp_automate_2022/meshes/collision/bracket2.ply"/>
+      </geometry>
+    </collision>
+    <collision name="tcp">
+      <geometry>
+        <cylinder radius="${1.5 * 0.0254}" length="${2.0 * 0.0254}"/>
+      </geometry>
+      <origin xyz="${-0.263 + 1.5 * 0.0254} 0.0 0.083" rpy="0 ${radians(-90)} 0"/>
+    </collision>
+  </link>
+
+  <joint name="tool0_to_ee" type="fixed">
+    <parent link="tool0"/>
+    <child link="ee"/>
+  </joint>
+
+  <xacro:property name="camera_cal" value="${load_yaml('$(find snp_automate_2022)/config/camera_calibration.yaml')}" />
+
+  <link name="camera_color_optical_frame"/>
+  <joint name="tool0_to_camera" type="fixed">
+    <parent link="tool0"/>
+    <child link="camera_color_optical_frame"/>
+    <origin xyz="${camera_cal['camera_mount_to_camera_pos']['x']} ${camera_cal['camera_mount_to_camera_pos']['y']} ${camera_cal['camera_mount_to_camera_pos']['z']}"
+            rpy="${camera_cal['camera_mount_to_camera_rpy']['x']} ${camera_cal['camera_mount_to_camera_rpy']['y']} ${camera_cal['camera_mount_to_camera_rpy']['z']}" />
+  </joint>
+
+  <link name="cal_target_frame"/>
+  <joint name="target_mount_to_target" type="fixed">
+    <parent link="base_link"/>
+    <child link="cal_target_frame"/>
+    <origin xyz="${camera_cal['target_mount_to_target_pos']['x']} ${camera_cal['target_mount_to_target_pos']['y']} ${camera_cal['target_mount_to_target_pos']['z']}"
+            rpy="${camera_cal['target_mount_to_target_rpy']['x']} ${camera_cal['target_mount_to_target_rpy']['y']} ${camera_cal['target_mount_to_target_rpy']['z']}" />
+  </joint>
+
+  <!-- Add TCP -->
+  <link name="sand_tcp"/>
+  <joint name="sand_tcp_joint" type="fixed">
+    <parent link="tool_flange"/>
+    <child link="sand_tcp"/>
+    <origin xyz="-0.26261 0 ${0.08259 + dt_flange_width}" rpy="${radians(-90)} 0 ${radians(90)}"/>
+  </joint>
+
+</robot>
