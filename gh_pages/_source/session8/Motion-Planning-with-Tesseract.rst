@@ -308,7 +308,7 @@ Implement the TrajOpt Planner Profiles
 
 #. Add the planners to the taskflow:
 
-   Return to ``taskflow_generators.hpp``. As Trajopt will be used for both the transition and freespace planning taskflows, we will need to modify the ``ctor()`` method in ``FreespaceMotionPipelineTask``, ``TransitionMotionPipelineTask``, and ``CartesianMotionPipelineTask``.
+   Return to ``taskflow_generators.hpp``. As Trajopt will be used for transition, freespace, and process planning taskflows, we will need to modify the ``ctor()`` method in ``FreespaceMotionPipelineTask``, ``TransitionMotionPipelineTask``, and ``CartesianMotionPipelineTask``.
 
    Within ``FreespaceMotionPipelineTask`` add the following to create a new node
 
