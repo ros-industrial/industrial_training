@@ -14,6 +14,7 @@ typename tesseract_planning::DescartesDefaultPlanProfile<FloatType>::Ptr createD
   /* =======================
    * Fill Code: DESCARTES 
    * =======================*/
+   return std::make_shared<tesseract_planning::DescartesDefaultPlanProfile<float>>();
 }
 
 tesseract_planning::OMPLDefaultPlanProfile::Ptr createOMPLProfile()
