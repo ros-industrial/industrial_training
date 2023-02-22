@@ -21,7 +21,7 @@
 - git:
     local-name: tesseract_qt
     uri: https://github.com/tesseract-robotics/tesseract_qt.git
-    version: 0c47b534b26157d9dfd5358a01afe24c978c5ed9
+    version: b0dc09764de7a4e67bd2cace3da36e09d84fc704
 - git:
     local-name: descartes_light
     uri: https://github.com/swri-robotics/descartes_light.git
