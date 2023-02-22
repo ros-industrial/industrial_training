@@ -68,7 +68,7 @@ Most of the infrastructure for a ROS node has already been completed for you; th
 	* This file contains all of the kinematic plugins and contact manager plugins for our application. A kinematic plugin configuration file like this is required to use Tesseract. Take a look at ``workcell.srdf`` to see how it gets incorporated into the project.
 
 #. ``snp_motion_planning/src/planner_profiles.hpp``:
-	* This file contains the planner profiles used to create our motion plan. Currently, only the Simple Planner profile is populated. This is one of the main files we will be editing in our exercise.
+	* This file contains the planner profiles used to create our motion plan. Currently, only the Simple Planner profile is fully populated. This is one of the main files we will be editing in our exercise.
 
 #. ``snp_motion_planning/src/planner_server.cpp``:
 	* This is where our custom planner profiles will be used by our application. Take a look at the ``createProgram()`` method. This method takes in the toolpath rasters and constructs motion plan requests in a manner usable by Tesseract. These motions include freespace motions, transition motions, and raster (process) motions. The order that they are added is the same order that they will be returned in.
@@ -109,8 +109,8 @@ Implement the Descartes Planner Profile
        * Fill Code: DESCARTES 
        * =======================*/
 
-   We must fist set up some configurations we want our Descartes planner to follow. The following block specifies the number of threads we need for the planner, if we allow redundant joint solutions, and whether or not to allow collisions.
-   Copy and paste the following:
+   We will be replacing the current contents of the method. We must fist set up some configurations we want our Descartes planner to follow. The following block specifies the number of threads we need for the planner, if we allow redundant joint solutions, and whether or not to allow collisions.
+   Replace the contents with the following:
 
    .. code-block:: c++
 
@@ -153,7 +153,7 @@ Implement the Descartes Planner Profile
 
 #. Add the planner to the planning server:
    
-   Within ``snp_motion_planning/src/planner_profiles.hpp``, find the section
+   Within ``snp_motion_planning/src/planning_server.cpp``, find the section
 
    .. code-block:: c++
 
@@ -214,15 +214,7 @@ Implement the Descartes Planner Profile
 
       addEdges(descartes_planner_task, { error_task, contact_check_task });
 
-   Because we want Descartes to be run globally over the entire motion, we need to create a new global raster pipeline. Toward the bottom of the file find
-
-   .. code-block:: c++
-
-      /* =========================================
-       * Fill Code: CUSTOM GLOBAL RASTER PIPELINE
-       * =========================================*/
-
-   Under it add the following line
+   Because we want Descartes to be run globally over the entire motion, we need to create a new global raster pipeline. Toward the bottom of the file notice the line
 
    .. code-block:: c++
 
@@ -262,7 +254,7 @@ Implement the TrajOpt Planner Profiles
 
    TrajOpt is a planner that creates a nonlinear optimization problem to solve until it converges on a solution. As this planner does not have any knowledge of time, it only looks at adjacent states while planning. There are three different TrajOpt planning methods: plan, composite, and solver. In this application we will be implementing the plan and composite profiles.
 
-   We will begin by filling out the plan profile which focuses on how individual waypoints are handled. Below the above block copy and paste the following code
+   We will begin by filling out the plan profile which focuses on how individual waypoints are handled. Below the above block replace the method's contents with the following code
 
    .. code-block:: c++
 
@@ -281,25 +273,25 @@ Implement the TrajOpt Planner Profiles
       * Fill Code: TRAJOPT COMPOSITE
       * ==============================*/
 
-   Now we will create the TrajOpt composite profile. 
+   Now we will create the TrajOpt composite profile. Replace that method's code with the following
 
    .. code-block:: c++
 
       auto profile = std::make_shared<tesseract_planning::TrajOptDefaultCompositeProfile>();
-  	  profile->smooth_velocities = false;
+  	   profile->smooth_velocities = false;
 
-	  profile->acceleration_coeff = Eigen::VectorXd::Constant(6, 1, 10.0);
-	  profile->jerk_coeff = Eigen::VectorXd::Constant(6, 1, 20.0);
+	   profile->acceleration_coeff = Eigen::VectorXd::Constant(6, 1, 10.0);
+	   profile->jerk_coeff = Eigen::VectorXd::Constant(6, 1, 20.0);
 
-	  profile->collision_cost_config.enabled = true;
-	  profile->collision_cost_config.type = trajopt::CollisionEvaluatorType::DISCRETE_CONTINUOUS;
-	  profile->collision_cost_config.safety_margin = 0.010;
-	  profile->collision_cost_config.safety_margin_buffer = 0.010;
-	  profile->collision_cost_config.coeff = 10.0;
+	   profile->collision_cost_config.enabled = true;
+	   profile->collision_cost_config.type = trajopt::CollisionEvaluatorType::DISCRETE_CONTINUOUS;
+	   profile->collision_cost_config.safety_margin = 0.010;
+	   profile->collision_cost_config.safety_margin_buffer = 0.010;
+	   profile->collision_cost_config.coeff = 10.0;
 
-	  profile->collision_constraint_config.enabled = false;
+	   profile->collision_constraint_config.enabled = false;
 
-	  return profile;
+	   return profile;
 
    Notice that the composite profile takes more parameters into account than the plan profile. Unlike the plan profile, which only looks at one waypoint at a time, the composite profile looks at the whole motion. You can add costs on velocity, acceleration, and jerk as well as specify how collision checking is to be handled.
 
@@ -363,7 +355,7 @@ Implement the OMPL Planner Profile
 
    OMPL is a libarary containing several different planning algorithms. OMPL allows us to use as many different planners in parallel as we'd like until one has a result. For our implementation, we will choose to use only RRT Connect. 
 
-   Below the above block, copy and past the following
+   Below the above block, replace the current contents with the following
 
    .. code-block:: c++
 

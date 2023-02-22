@@ -133,9 +133,9 @@ public:
     // Add custom profiles
     {
       
-      /* ===========================
-       * Fill Code: CUSTOM PROFILES 
-       * ===========================*/
+      /* ========================================
+       * Fill Code: ADD CUSTOM PLANNER PROFILES 
+       * ========================================*/
 
       profile_dict_->addProfile<tesseract_planning::SimplePlannerPlanProfile>(
           tesseract_planning::profile_ns::SIMPLE_DEFAULT_NAMESPACE, PROFILE, createSimplePlannerProfile());

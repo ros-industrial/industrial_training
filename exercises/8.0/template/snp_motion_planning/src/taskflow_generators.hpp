@@ -307,10 +307,10 @@ protected:
 using CustomRasterPipeline = tesseract_planning::RasterMotionTask<snp_planning::FreespaceMotionPipelineTask,
                                                                   snp_planning::CartesianMotionPipelineTask,
                                                                   snp_planning::TransitionMotionPipelineTask>;
-
-/* =========================================
- * Fill Code: CUSTOM GLOBAL RASTER PIPELINE
- * =========================================*/
+using CustomGlobalRasterGlobalPipeline =
+          tesseract_planning::RasterGlobalPipelineTask<tesseract_planning::SimpleMotionPipelineTask,
+                                                       tesseract_planning::DescartesGlobalMotionPipelineTask,
+                                                       CustomRasterPipeline>;
 
 
 CustomGlobalRasterGlobalPipeline::UPtr createGlobalRasterPipeline()
