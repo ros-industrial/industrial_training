@@ -35,6 +35,7 @@ std::shared_ptr<tesseract_planning::TrajOptDefaultCompositeProfile> createTrajOp
   /* ==============================
    * Fill Code: TRAJOPT COMPOSITE 
    * ==============================*/
+   return std::make_shared<tesseract_planning::TrajOptDefaultCompositeProfile>();
 }
 
 std::shared_ptr<tesseract_planning::SimplePlannerLVSPlanProfile> createSimplePlannerProfile()
