@@ -32,7 +32,7 @@ In this exercise, you will generate a MoveIt package for the UR5 workcell you bu
    <edit ~/ros2_ws/src/myworkcell_support/package.xml & CMakeLists.txt and remove all references to myworkcell_core>
    
    cd ~/ros2_ws/
-   source /opt/ros/noetic/setup.bash
+   source /opt/ros/humble/setup.bash
    catkin build
    source ~/ros2_ws/devel/setup.bash
    ```
