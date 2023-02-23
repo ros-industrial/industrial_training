@@ -207,6 +207,7 @@ Session 7 - ROS2 Topics
     7.0 - ROS2 basics <_source/session7/ROS2-Basics>
     7.1 - ROS1 to ROS2 porting <_source/session7/ROS1-to-ROS2-porting>
     7.2 - Using the ROS1-ROS2 bridge <_source/session7/ROS1-ROS2-bridge>
+    8.0 - Motion Planning with Tesseract <_source/session8/Motion-Planning-with-Tesseract>
 
 .. toctree::
     :hidden:
