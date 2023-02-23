@@ -16,7 +16,7 @@ We will create a new workspace, since this exercise does not overlap with the pr
 
 		source /opt/ros/foxy/setup.bash
 
-.. Note:: If you are using a VM provided by us, please skip to step 6 as a directory called ``tesseract_ws`` should already exist with the dependencies have already installed for you.
+    .. Note:: If you are using a VM provided by us, please skip to step 6 as a directory called ``tesseract_ws`` should already exist with the dependencies have already installed for you.
 
 #. Copy the template workspace layout and files:
 
