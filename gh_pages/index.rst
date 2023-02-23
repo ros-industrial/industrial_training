@@ -140,7 +140,7 @@ Session 8 - Motion Planning
 
 :download:`Slides <_downloads/slides/ROS-I Advanced Developers Training - Motion Planning with Tesseract.pdf>`
 
-- :doc:`8.0 - ROS2 basics <_source/session8/Motion-Planning-with-Tesseract>`
+- :doc:`8.0 - Motion Planning with Tesseract <_source/session8/Motion-Planning-with-Tesseract>`
 
 .. toctree::
     :hidden:
