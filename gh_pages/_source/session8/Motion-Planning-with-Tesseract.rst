@@ -27,6 +27,7 @@ We will create a new workspace, since this exercise does not overlap with the pr
 		cd ~/tesseract_ws/
 
 #. Install ``taskflow`` from the ROS-I PPA
+
 	.. code-block:: bash
 
 		sudo add-apt-repository ppa:ros-industrial/ppa
@@ -34,6 +35,7 @@ We will create a new workspace, since this exercise does not overlap with the pr
 		sudo apt-get install taskflow
 
 #. Install the ROS 2 dependencies (this may take a while)
+
 	.. code-block:: bash
 
 		cd ~/tesseract_ws
