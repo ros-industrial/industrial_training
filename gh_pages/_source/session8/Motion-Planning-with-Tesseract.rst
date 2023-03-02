@@ -90,13 +90,15 @@ Currently, only the Simple Planner is set up. Try running the application and se
 
 You should see an Rviz window appear with a robot on a table. Click `Get Detailed Scan` to see a model of our work surface appear on the table. Use the `Polygon Selection Tool` at the top to select a region on the work surface. 
 
-Find the `snp_tpp_app` window that should also have appeared when you launched the application. We can use this to select different tool path planners and modifiers. Add ``ROISelectionMeshModifier`` and ``PlaneSlicerRasterPlanner``. You should see more options appear on the screen after. Feel free to play around with these and see how they affect your tool path plan. For the `Tool Path Modifier` we recommend adding ``SnakeOrganizationModifier``.
+Find the `snp_tpp_app` window that should also have appeared when you launched the application. We can use this to select different tool path planners and modifiers. Add ``ROISelectionMeshModifier`` and ``PlaneSlicerRasterPlanner``. You should see more options appear on the screen after. Feel free to play around with these and see how they affect your tool path plan. For the `Tool Path Modifier` we recommend adding ``SnakeOrganizationModifier`` and ``MovingAverageOrientationSmoothingModifier``.
 
 After making changes on the `snp_tpp_app` return to Rviz and click `Generate Tool Path Plan`. You should now see waypoints appear in your selected region. When you are satisfied with the waypoints, click `Generate Motion Plan` (this may take a few minutes). Before beginning the exercise, you'll notice that the motion plans will all fail.
 
 There should also be a `joint_state_publisher_gui` on your screen. Feel free to play around with it as well to create different start states. Note that the motion plan will fail if your start state is in collision.
 
-.. Note:: If the application fails to create a motion plan, try playing around with the settings in `snp_tpp_app`. You may need to change the line and point spacing.
+When a motion plan succeeds you will see a message saying ``perform motion planning completed!``. To see the motion plan play, navigate to the ``TesseractWorkbench`` panel at the bottom right of the Rviz screen and go to the ``Trajectory`` tab. Expand ``general`` and click on ``Trajectory Set``. A play button should appear at the bottom of the panel. You can click it to play through your motion plan. You can also expand the trajectory to see the various states the robot moves to during its motion. 
+
+.. Note:: If the application fails to create a motion plan, try playing around with the settings in `snp_tpp_app`. You may need to change the line and point spacing. 
 
 Implement the Descartes Planner Profile
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -232,7 +234,7 @@ Implement the Descartes Planner Profile
 
    Notice that this implementation in the taskflow uses Descartes to resample all waypoints and solves for that single raster again after a global Descartes has already been run. We will fix this later.
 
-   .. Note:: The default starting joint state is likely to be in collision. This will cause all motion plans to fail. Try changing ``joint_3_u`` to about 1.57 to avoid this.
+   .. Note:: The default starting joint state is likely to be in collision. This will cause all motion plans to fail. Try changing ``joint_3_u`` to about 1.57 to avoid this. If your selected region is too small and/or the waypoints are too far apart from each other, it may also fail to create a motion plan. We recommend lowering the point spacing to 0.010. 
 
    .. Note:: When re-building your workspace, you may find it useful to only build the package you've edited instead of the entire workspace. You can do this by using the ``--packages-select`` flag with ``colcon``. 
 
