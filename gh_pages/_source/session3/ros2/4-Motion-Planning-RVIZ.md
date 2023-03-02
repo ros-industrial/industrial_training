@@ -26,9 +26,11 @@
 
  1. For now, enable display of the _Show Robot Visual_ and _Query Goal State_, leaving _Show Robot Collision_ and _Query Start State_ disabled
 
- 1. Select the `Panel -> Trajectory Slider` menu option to display a trajectory-preview slider.
+ 1. Use the Panels dropdown next to File to display a trajectory preview slider by checking the _Motion Planning - Trajectory Slider_ box
  
     * _this slider allows for detailed review of the last planned trajectory_
+    * Check the _Context_ tab in the motion planning panel to ensure that _RRTConnect_ is selected.
+    * If you are struggling to find a motion plan, try increasing the planning time and/or planning attempts.
 
 ## Basic Motion
 
