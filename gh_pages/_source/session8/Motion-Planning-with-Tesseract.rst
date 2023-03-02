@@ -92,7 +92,7 @@ You should see an Rviz window appear with a robot on a table. Click `Get Detaile
 
 Find the `snp_tpp_app` window that should also have appeared when you launched the application. We can use this to select different tool path planners and modifiers. Add ``ROISelectionMeshModifier`` and ``PlaneSlicerRasterPlanner``. You should see more options appear on the screen after. Feel free to play around with these and see how they affect your tool path plan. For the `Tool Path Modifier` we recommend adding ``SnakeOrganizationModifier``.
 
-After making changes on the `snp_tpp_app` return to Rviz and click `Generate Tool Path Plan`. You should now see waypoints appear in your selected region. When you are satisfied with the waypoints, click `Generate Motion Plan` (this may take a few minutes). 
+After making changes on the `snp_tpp_app` return to Rviz and click `Generate Tool Path Plan`. You should now see waypoints appear in your selected region. When you are satisfied with the waypoints, click `Generate Motion Plan` (this may take a few minutes). Before beginning the exercise, you'll notice that the motion plans will all fail.
 
 There should also be a `joint_state_publisher_gui` on your screen. Feel free to play around with it as well to create different start states. Note that the motion plan will fail if your start state is in collision.
 
@@ -231,6 +231,10 @@ Implement the Descartes Planner Profile
    How does the motion plan look? Does it fail to plan often? Does the motion look smooth? 
 
    Notice that this implementation in the taskflow uses Descartes to resample all waypoints and solves for that single raster again after a global Descartes has already been run. We will fix this later.
+
+   .. Note:: The default starting joint state is likely to be in collision. This will cause all motion plans to fail. Try changing ``joint_3_u`` to about 1.57 to avoid this.
+
+   .. Note:: When re-building your workspace, you may find it useful to only build the package you've edited instead of the entire workspace. You can do this by using the ``--packages-select`` flag with ``colcon``. 
 
 Implement the TrajOpt Planner Profiles
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
