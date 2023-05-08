@@ -65,8 +65,8 @@ Session 2 - Basic ROS Applications (ROS2)
 
 - :doc:`2.0 - Services <_source/session2/ros2/0-Services>`
 .. - :doc:`2.1 - Actions <_source/session2/ros2/1-Actions>`
-- :doc:`2.2 - Launch Files <_source/session2/ros2/2-Launch-Files>`
-- :doc:`2.3 - Parameters <_source/session2/ros2/3-Parameters>`
+- :doc:`2.1 - Launch Files <_source/session2/ros2/2-Launch-Files>`
+- :doc:`2.2 - Parameters <_source/session2/ros2/3-Parameters>`
 
 For equivalent ROS1 content, see the :doc:`Legacy Material <_source/legacy>` page.
 
@@ -94,14 +94,14 @@ Session 4 - Descartes and Perception
 
 - :doc:`4.0 - Motion Planning using C++ <_source/session4/ros2/0-Motion-Planning-CPP>`
 .. - :doc:`4.1 - Intro to Descartes <_source/session4/ros1/1-Descartes-Path-Planning>`
-- :doc:`4.2 - Intro to Perception <_source/session4/ros1/2-Introduction-to-Perception>`
+- :doc:`4.1 - Intro to Perception <_source/session4/ros1/2-Introduction-to-Perception>`
 
 Application Demos
 -----------------
 
 - :doc:`Demo 1 - Perception-Driven Manipulation <_source/demo1/index>`
 .. - :doc:`Demo 2 - Descartes Planning and Execution <_source/demo2/index>`
-- :doc:`Demo 3 - Optimization Based Path Planning <_source/demo3/index>`
+- :doc:`Demo 2 - Optimization Based Path Planning <_source/demo3/index>`
 
 Advanced Topics
 ---------------
@@ -112,10 +112,10 @@ Session 5 - Path Planning and Perception
 :download:`Slides <_downloads/slides/ROS-I Advanced Developers Training - Session 5.pdf>`
 
 .. - :doc:`5.0 - Advanced Descartes Path Planning <_source/session5/Advanced-Descartes-Path-Planning>`
-- :doc:`5.1 - Building a Perception Pipeline <_source/session5/Building-a-Perception-Pipeline>`
+- :doc:`5.0 - Building a Perception Pipeline <_source/session5/Building-a-Perception-Pipeline>`
 .. - :doc:`5.2 - Introduction to STOMP <_source/session5/Introduction-to-STOMP>`
-- :doc:`5.3 - Simple PCL Interface for Python <_source/session5/Simple-PCL-Interface-for-Python>`
-- :doc:`5.4 - OpenCV Image Processing (Python) <_source/session5/OpenCV-in-Python>`
+- :doc:`5.1 - Simple PCL Interface for Python <_source/session5/Simple-PCL-Interface-for-Python>`
+- :doc:`5.2 - OpenCV Image Processing (Python) <_source/session5/OpenCV-in-Python>`
 
 Session 6 - ROS Tools
 ---------------------
@@ -124,7 +124,7 @@ Session 6 - ROS Tools
 
 - :doc:`6.0 - Documentation Generation <_source/session6/Documentation-Generation>`
 .. - :doc:`6.1 - Unit Testing <_source/session6/Unit-Testing>`
-- :doc:`6.2 - Using rqt tools for Analysis <_source/session6/Using-rqt-tools-for-analysis>`
+- :doc:`6.1 - Using rqt tools for Analysis <_source/session6/Using-rqt-tools-for-analysis>`
 .. - :doc:`6.3 - ROS Style Guide and ros_lint <_source/session6/Style-Guide-and-ros_lint>`
 .. - :doc:`6.4 - Introduction to ROS with Docker and Amazon Web Services (AWS) <_source/session6/Docker-AWS>`
 
@@ -181,8 +181,8 @@ Archives
     1.4 - Topics and Messages <_source/session1/ros2/4-Topics-and-Messages>
     2.0 - Services <_source/session2/ros2/0-Services>
     .. 2.1 - Actions <_source/session2/ros2/1-Actions>
-    2.2 - Launch Files <_source/session2/ros2/2-Launch-Files>
-    2.3 - Parameters <_source/session2/ros2/3-Parameters>
+    2.1 - Launch Files <_source/session2/ros2/2-Launch-Files>
+    2.2 - Parameters <_source/session2/ros2/3-Parameters>
 
 .. toctree::
     :hidden:
@@ -197,7 +197,7 @@ Archives
     3.4 - Motion Planning using RViz <_source/session3/ros2/4-Motion-Planning-RVIZ>
     4.0 - Motion Planning using C++ <_source/session4/ros2/0-Motion-Planning-CPP>
     .. 4.1 - Intro to Descartes <_source/session4/ros1/1-Descartes-Path-Planning>
-    4.2 - Intro to Perception <_source/session4/ros1/2-Introduction-to-Perception>
+    4.1 - Intro to Perception <_source/session4/ros1/2-Introduction-to-Perception>
 
 .. toctree::
     :hidden:
@@ -206,7 +206,7 @@ Archives
 
     Demo 1 - Perception-Driven Manipulation <_source/demo1/index>
     .. Demo 2 - Descartes Planning and Execution <_source/demo2/index>
-    Demo 3 - Optimization Based Path Planning <_source/demo3/index>
+    Demo 2 - Optimization Based Path Planning <_source/demo3/index>
 
 .. toctree::
     :hidden:
@@ -214,13 +214,13 @@ Archives
     :maxdepth: 1
 
     .. 5.0 - Advanced Descartes Path Planning <_source/session5/Advanced-Descartes-Path-Planning>
-    5.1 - Building a Perception Pipeline <_source/session5/Building-a-Perception-Pipeline>
+    5.0 - Building a Perception Pipeline <_source/session5/Building-a-Perception-Pipeline>
     .. 5.2 - Introduction to STOMP <_source/session5/Introduction-to-STOMP>
-    5.3 - Simple PCL Interface for Python <_source/session5/Simple-PCL-Interface-for-Python>
-    5.4 - OpenCV Image Processing (Python) <_source/session5/OpenCV-in-Python>
+    5.1 - Simple PCL Interface for Python <_source/session5/Simple-PCL-Interface-for-Python>
+    5.2 - OpenCV Image Processing (Python) <_source/session5/OpenCV-in-Python>
     6.0 - Documentation Generation <_source/session6/Documentation-Generation>
     .. 6.1 - Unit Testing <_source/session6/Unit-Testing>
-    6.2 - Using rqt tools for Analysis <_source/session6/Using-rqt-tools-for-analysis>
+    6.1 - Using rqt tools for Analysis <_source/session6/Using-rqt-tools-for-analysis>
     .. 6.3 - ROS Style Guide and ros_lint <_source/session6/Style-Guide-and-ros_lint>
     .. 6.4 - Introduction to ROS with Docker and Amazon Web Services (AWS) <_source/session6/Docker-AWS>
     7.0 - ROS2 basics <_source/session7/ROS2-Basics>
@@ -233,3 +233,20 @@ Archives
     :maxdepth: 1
 
 ..     Legacy Material (ROS1) <_source/legacy>
+
+.. toctree::
+    :hidden:
+    :caption: Archives
+    :maxdepth: 1
+
+    9.0 - Actions <_source/session2/ros2/1-Actions>
+    9.1 - Intro to Descartes <_source/session4/ros1/1-Descartes-Path-Planning>
+    ArchivedDemo - Descartes Planning and Execution <_source/demo2/index>
+    9.2 - Advanced Descartes Path Planning <_source/session5/Advanced-Descartes-Path-Planning>
+    9.3 - Introduction to STOMP <_source/session5/Introduction-to-STOMP>
+    9.4 - Unit Testing <_source/session6/Unit-Testing>
+    9.5 - ROS Style Guide and ros_lint <_source/session6/Style-Guide-and-ros_lint>
+    9.6 - Introduction to ROS with Docker and Amazon Web Services (AWS) <_source/session6/Docker-AWS>
+    Legacy Material (ROS1) <_source/legacy>
+
+
