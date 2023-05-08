@@ -142,6 +142,18 @@ Session 8 - Motion Planning
 
 - :doc:`8.0 - Motion Planning with Tesseract <_source/session8/Motion-Planning-with-Tesseract>`
 
+Archives
+--------
+- :doc:`2.1 - Actions <_source/session2/ros2/1-Actions>`
+- :doc:`4.1 - Intro to Descartes <_source/session4/ros1/1-Descartes-Path-Planning>`
+- :doc:`Demo 2 - Descartes Planning and Execution <_source/demo2/index>`
+- :doc:`5.0 - Advanced Descartes Path Planning <_source/session5/Advanced-Descartes-Path-Planning>`
+- :doc:`5.2 - Introduction to STOMP <_source/session5/Introduction-to-STOMP>`
+- :doc:`6.1 - Unit Testing <_source/session6/Unit-Testing>`
+- :doc:`6.3 - ROS Style Guide and ros_lint <_source/session6/Style-Guide-and-ros_lint>`
+- :doc:`6.4 - Introduction to ROS with Docker and Amazon Web Services (AWS) <_source/session6/Docker-AWS>`
+
+
 .. toctree::
     :hidden:
     :caption: Getting Started
