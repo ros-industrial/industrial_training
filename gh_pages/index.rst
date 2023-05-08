@@ -64,7 +64,7 @@ Session 2 - Basic ROS Applications (ROS2)
 :download:`Slides <_downloads/slides/ROS-I Basic Developers Training (ROS2) - Session 2.pdf>`
 
 - :doc:`2.0 - Services <_source/session2/ros2/0-Services>`
-- :doc:`2.1 - Actions <_source/session2/ros2/1-Actions>`
+.. - :doc:`2.1 - Actions <_source/session2/ros2/1-Actions>`
 - :doc:`2.2 - Launch Files <_source/session2/ros2/2-Launch-Files>`
 - :doc:`2.3 - Parameters <_source/session2/ros2/3-Parameters>`
 
@@ -93,14 +93,14 @@ Session 4 - Descartes and Perception
 :download:`Slides <_downloads/slides/ROS-I Basic Developers Training (ROS2) - Session 4.pdf>`
 
 - :doc:`4.0 - Motion Planning using C++ <_source/session4/ros2/0-Motion-Planning-CPP>`
-- :doc:`4.1 - Intro to Descartes <_source/session4/ros1/1-Descartes-Path-Planning>`
+.. - :doc:`4.1 - Intro to Descartes <_source/session4/ros1/1-Descartes-Path-Planning>`
 - :doc:`4.2 - Intro to Perception <_source/session4/ros1/2-Introduction-to-Perception>`
 
 Application Demos
 -----------------
 
 - :doc:`Demo 1 - Perception-Driven Manipulation <_source/demo1/index>`
-- :doc:`Demo 2 - Descartes Planning and Execution <_source/demo2/index>`
+.. - :doc:`Demo 2 - Descartes Planning and Execution <_source/demo2/index>`
 - :doc:`Demo 3 - Optimization Based Path Planning <_source/demo3/index>`
 
 Advanced Topics
@@ -111,9 +111,9 @@ Session 5 - Path Planning and Perception
 
 :download:`Slides <_downloads/slides/ROS-I Advanced Developers Training - Session 5.pdf>`
 
-- :doc:`5.0 - Advanced Descartes Path Planning <_source/session5/Advanced-Descartes-Path-Planning>`
+.. - :doc:`5.0 - Advanced Descartes Path Planning <_source/session5/Advanced-Descartes-Path-Planning>`
 - :doc:`5.1 - Building a Perception Pipeline <_source/session5/Building-a-Perception-Pipeline>`
-- :doc:`5.2 - Introduction to STOMP <_source/session5/Introduction-to-STOMP>`
+.. - :doc:`5.2 - Introduction to STOMP <_source/session5/Introduction-to-STOMP>`
 - :doc:`5.3 - Simple PCL Interface for Python <_source/session5/Simple-PCL-Interface-for-Python>`
 - :doc:`5.4 - OpenCV Image Processing (Python) <_source/session5/OpenCV-in-Python>`
 
@@ -123,9 +123,9 @@ Session 6 - ROS Tools
 :download:`Slides <_downloads/slides/ROS-I Advanced Developers Training - Session 5.pdf>`
 
 - :doc:`6.0 - Documentation Generation <_source/session6/Documentation-Generation>`
-- :doc:`6.1 - Unit Testing <_source/session6/Unit-Testing>`
+.. - :doc:`6.1 - Unit Testing <_source/session6/Unit-Testing>`
 - :doc:`6.2 - Using rqt tools for Analysis <_source/session6/Using-rqt-tools-for-analysis>`
-- :doc:`6.3 - ROS Style Guide and ros_lint <_source/session6/Style-Guide-and-ros_lint>`
+.. - :doc:`6.3 - ROS Style Guide and ros_lint <_source/session6/Style-Guide-and-ros_lint>`
 - :doc:`6.4 - Introduction to ROS with Docker and Amazon Web Services (AWS) <_source/session6/Docker-AWS>`
 
 Session 7 - ROS2 Topics
@@ -220,4 +220,4 @@ Session 8 - Motion Planning
     :hidden:
     :maxdepth: 1
 
-    Legacy Material (ROS1) <_source/legacy>
+..     Legacy Material (ROS1) <_source/legacy>
