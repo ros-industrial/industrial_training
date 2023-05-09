@@ -226,5 +226,3 @@ Archives
     9.5 - ROS Style Guide and ros_lint <_source/_archives/Style-Guide-and-ros_lint>
     9.6 - Introduction to ROS with Docker and Amazon Web Services (AWS) <_source/_archives/Docker-AWS>
     Legacy Material (ROS1) <_source/_archives/legacy>
-
-
