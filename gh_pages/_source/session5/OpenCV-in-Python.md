@@ -88,7 +88,7 @@ The first node will read in an image from a file and publish it as a ROS [Image]
     ```bash
     catkin build
     roscore
-    rosrun detect_pump image_pump.py
+    rosrun detect_pump image_pub.py
     ```
 
     * You should see the "node started" message
