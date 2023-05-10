@@ -136,14 +136,14 @@ Session 8 - Motion Planning
 
 Archives
 --------
-- :doc:`2.1 - Actions <_source/session2/ros2/1-Actions>`
-- :doc:`4.1 - Intro to Descartes <_source/session4/ros1/1-Descartes-Path-Planning>`
-- :doc:`Demo 2 - Descartes Planning and Execution <_source/demo2/index>`
-- :doc:`5.0 - Advanced Descartes Path Planning <_source/session5/Advanced-Descartes-Path-Planning>`
-- :doc:`5.2 - Introduction to STOMP <_source/session5/Introduction-to-STOMP>`
-- :doc:`6.1 - Unit Testing <_source/session6/Unit-Testing>`
-- :doc:`6.3 - ROS Style Guide and ros_lint <_source/session6/Style-Guide-and-ros_lint>`
-- :doc:`6.4 - Introduction to ROS with Docker and Amazon Web Services (AWS) <_source/session6/Docker-AWS>`
+- :doc:`2.1 - Actions <_source/_archives/1-Actions>`
+- :doc:`4.1 - Intro to Descartes <_source/_archives/1-Descartes-Path-Planning>`
+- :doc:`Demo 2 - Descartes Planning and Execution <_source/_archives/index>`
+- :doc:`5.0 - Advanced Descartes Path Planning <_source/_archives/Advanced-Descartes-Path-Planning>`
+- :doc:`5.2 - Introduction to STOMP <_source/_archives/Introduction-to-STOMP>`
+- :doc:`6.1 - Unit Testing <_source/_archives/Unit-Testing>`
+- :doc:`6.3 - ROS Style Guide and ros_lint <_source/_archives/Style-Guide-and-ros_lint>`
+- :doc:`6.4 - Introduction to ROS with Docker and Amazon Web Services (AWS) <_source/_archives/Docker-AWS>`
 
 
 .. toctree::
@@ -217,14 +217,12 @@ Archives
     :caption: Archives
     :maxdepth: 1
 
-    9.0 - Actions <_source/session2/ros2/1-Actions>
-    9.1 - Intro to Descartes <_source/session4/ros1/1-Descartes-Path-Planning>
-    ArchivedDemo - Descartes Planning and Execution <_source/demo2/index>
-    9.2 - Advanced Descartes Path Planning <_source/session5/Advanced-Descartes-Path-Planning>
-    9.3 - Introduction to STOMP <_source/session5/Introduction-to-STOMP>
-    9.4 - Unit Testing <_source/session6/Unit-Testing>
-    9.5 - ROS Style Guide and ros_lint <_source/session6/Style-Guide-and-ros_lint>
-    9.6 - Introduction to ROS with Docker and Amazon Web Services (AWS) <_source/session6/Docker-AWS>
-    Legacy Material (ROS1) <_source/legacy>
-
-
+    9.0 - Actions <_source/_archives/1-Actions>
+    9.1 - Intro to Descartes <_source/_archives/1-Descartes-Path-Planning>
+    ArchivedDemo - Descartes Planning and Execution <_source/_archives/index>
+    9.2 - Advanced Descartes Path Planning <_source/_archives/Advanced-Descartes-Path-Planning>
+    9.3 - Introduction to STOMP <_source/_archives/Introduction-to-STOMP>
+    9.4 - Unit Testing <_source/_archives/Unit-Testing>
+    9.5 - ROS Style Guide and ros_lint <_source/_archives/Style-Guide-and-ros_lint>
+    9.6 - Introduction to ROS with Docker and Amazon Web Services (AWS) <_source/_archives/Docker-AWS>
+    Legacy Material (ROS1) <_source/_archives/legacy>
