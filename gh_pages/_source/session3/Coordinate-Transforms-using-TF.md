@@ -29,8 +29,9 @@ Specifically, edit the service callback inside the vision_node to transform the 
  1. Add `tf2_ros::Buffer` and `tf2_ros::TransformListener` objects to the vision node (as class members variables). 
 
     ``` c++
-    #include <tf2/buffer.h>
-    #include <tf2/transform_listener.h>
+    #include <tf2_ros/buffer.h>
+    #include <tf2_ros/transform_listener.h>
+    #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
     ...
     tf2_ros::Buffer buffer_;
     tf2_ros::TransformListener listener_;
