@@ -41,3 +41,49 @@ After this step (or if you already have a working ROS environment), clone the tr
 The following is a quick check to ensure that the appropriate packages have been installed and the the `industrial_training` git repository is current.  Enter the following into the terminal:
 
 `~/industrial_training/.check_training_config.bash`
+
+## VS Code Integration
+[Visual Studio Code](https://code.visualstudio.com/download) is a useful editor for ROS-related files. Download the editor and install the C/C++ extension pack and the ROS extension pack. Both are authored by Microsoft. 
+
+After opening a workspace folder, navigate to the workspace settings (`Ctrl+shift+P -> "Preferences: Open workspace settings (JSON)"`). Add the key `"ros.distro": "<distro>"`. For example, 
+
+```
+{
+   "ros.distro": "foxy",
+}
+```
+
+Upon opening a C++ file, you should get a pop-up offering to configure the workspace settings. After accepting, you should have a file `.vscode/c_cpp_properties.json` similar to
+
+```
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c17",
+            "cppStandard": "gnu++14",
+            "intelliSenseMode": "linux-gcc-x64"
+        }
+    ],
+    "version": 4
+}
+```
+
+Add the appropriate ROS and user include paths to resolve IDE include errors. For example,
+
+```
+"includePath": [
+                "${workspaceFolder}/**",
+                "/opt/ros/foxy/include/**",
+                "/usr/include/**",
+            ],
+```
+
+where `foxy` can be changed to the appropriate distro.
+
+Now you're prepared to work on ROS projects in VS Code.
