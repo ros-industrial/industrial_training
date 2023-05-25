@@ -2,18 +2,29 @@
 
 ### Building and viewing locally:
 
-- Install Sphinx and dependencies (use of a python virtual environment encouraged):
+- (Recommended) Create a python virtual environment for Sphinx packages and dependencies:
 
-    pip3 install --user --upgrade pip
-    pip3 install --user Sphinx gitpython recommonmark
+    ```
+    cd <industrial_training root directory>
+    python3 -m venv/ venv/
+    source venv/bin/activate
+    ```
+
+- Install Sphinx and dependencies:
+    ```
+    pip3 install --upgrade pip
+    pip3 install Sphinx==6.2.1 gitpython recommonmark
+    ```
 
 - Build the html:
-
-   sphinx-build gh_pages/ build/
+    ```
+    sphinx-build gh_pages/ build/
+    ```
 
 - Start a local HTTP server:
-
+    ```
     cd build/
     python3 -m http.server
+    ```
 
-- Browse to `localhost:8000` in your browser to inspect the site
+- Browse to `localhost:8000` in your browser to inspect the site.
