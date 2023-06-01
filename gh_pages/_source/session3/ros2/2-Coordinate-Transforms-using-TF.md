@@ -49,7 +49,7 @@ Specifically, edit the service callback inside the vision_node to transform the 
     class Localizer : public rclcpp::Node
     {
     public:
-      Localizer() : Node("vision_node"), last_msg_{nullptr}, buffer_(this->get_clock()), listener_(buffer_)
+      Localizer() : Node("vision_node"), buffer_(this->get_clock()), listener_(buffer_)
     ```
 
  1. Add code to the existing `localizePart` method to convert the reported target pose from its reference frame ("camera_frame") to the service-request frame:
