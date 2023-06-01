@@ -106,7 +106,7 @@ In this exercise, you will generate a MoveIt package for the UR5 workcell you bu
     ompl_planning.yaml
     ```
 
- 1. Open the ROS2 `config/ompl_planning.yaml` file in a text editor and add the following lines at the bottom, with no indentation:
+ 1. Open the ROS2 `config/ompl_planning.yaml` file in a text editor and add the following lines at the bottom:
 
     ```
     planning_plugin: 'ompl_interface/OMPLPlanner'
@@ -118,6 +118,8 @@ In this exercise, you will generate a MoveIt package for the UR5 workcell you bu
         default_planner_request_adapters/FixStartStatePathConstraints
     start_state_max_bounds_error: 0.1
     ```
+    
+    Make sure your editor does not add extra whitespace to the front of these lines.
 
  1. Create a new `controllers.yaml` file in the ROS2 MoveIt package's `config` directory:
 
