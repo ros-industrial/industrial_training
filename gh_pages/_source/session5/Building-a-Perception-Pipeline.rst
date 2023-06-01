@@ -40,7 +40,7 @@ We will create a new workspace, since this exercise does not overlap with the pr
 
    .. code-block:: bash
 
-      cp ~/industrial_training/exercises/4.2/table.pcd ~/perception_ws
+      cp ~/industrial_training/exercises/4.2/table.pcd ~
 
 #. Import the new workspace into your QTCreator IDE (if using QTCreator):
 
@@ -156,7 +156,7 @@ Viewing Results
 
    .. code-block:: bash
       cd ~/perception_ws
-      ros2 run lesson_perception pcd_to_pointcloud --ros-args -p filename:=table.pcd -p tf_frame:=kinect_link -p topic:=/kinect/depth_registered/points
+      ros2 run lesson_perception pcd_to_pointcloud --ros-args -p filename:=${HOME}/table.pcd -p tf_frame:=kinect_link -p topic:=/kinect/depth_registered/points
       
    .. code-block:: bash
       ros2 run rviz2 rviz2
