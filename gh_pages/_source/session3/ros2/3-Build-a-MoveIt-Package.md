@@ -119,7 +119,7 @@ In this exercise, you will generate a MoveIt package for the UR5 workcell you bu
     start_state_max_bounds_error: 0.1
     ```
     
-    Make sure your editor does not add extra whitespace to the front of these lines.
+    Make sure your editor does not change the amount of whitespace at the front of these lines.
 
  1. Create a new `controllers.yaml` file in the ROS2 MoveIt package's `config` directory:
 
