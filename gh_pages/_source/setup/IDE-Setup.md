@@ -49,5 +49,3 @@ Add the appropriate ROS and user include paths to resolve IDE include errors. Fo
 ```
 
 where `foxy` can be changed to the appropriate distro.
-
-Now you're prepared to work on ROS projects in VS Code.
