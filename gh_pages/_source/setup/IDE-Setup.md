@@ -7,7 +7,7 @@
 You can easily install the editor bundled with the plug-in from the Snap store [here](https://snapcraft.io/qtcreator-ros). Click the green `Install` button in the top right and click `View in Desktop store`. In the window which opens, install the application. Then you can open the IDE by searching for `QT Creator ROS` on your system.
 
 ## VS Code
-[Visual Studio Code](https://code.visualstudio.com/download) is another useful editor for ROS-related files. Download the editor and install the C/C++ extension pack and the ROS extension pack. Both are authored by Microsoft. 
+[Visual Studio Code](https://code.visualstudio.com/download) is a Microsoft editor which can be used for ROS projects. Download the editor and install the C/C++ extension pack and the ROS extension pack. (Make sure you get the right ones - both extensions are authored by Microsoft.)
 
 After opening a workspace folder, navigate to the workspace settings (`Ctrl+shift+P -> "Preferences: Open workspace settings (JSON)"`). Add the key `"ros.distro": "<distro>"`. For example, 
 
