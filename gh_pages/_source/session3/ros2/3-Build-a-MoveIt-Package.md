@@ -31,7 +31,7 @@ In this exercise, you will generate a MoveIt package for the UR5 workcell you bu
    cd ~/ros1_ws/src
    git clone https://github.com/ros-industrial/universal_robot.git
    cd universal_robot
-   git checkout -b industrial-training 3b46483bb5c063f30ddf3bdcad35a170ee19d3ab
+   git checkout -b industrial-training 62011b0d353841c0c219d862c359c540a4bc6aee
    cd ..
    cp -r ~/industrial_training/exercises/3.3/ros1/src/myworkcell_support ~/ros1_ws/src
    
