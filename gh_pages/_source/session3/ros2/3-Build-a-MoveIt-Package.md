@@ -1,7 +1,9 @@
 ﻿# Build a MoveIt! Package
 >In this exercise, we will create a MoveIt! package for an industrial robot. This package creates the configuration and launch files required to use a robot with the MoveIt! Motion-Control nodes. In general, the MoveIt! package does not contain any C++ code.
 
-> **_IMPORTANT: This exercise requires a mix of ROS1 and ROS2 environments. Be careful what ROS environment is sourced in each terminal.  The "MoveIt Setup Assistant" is not yet available in ROS2, so we run the ROS1 version.  But it outputs a ROS1-compatible package, so we need to adapt the output for ROS2._**
+> The "MoveIt Setup Assistant" is not yet available in ROS2, so we run the ROS1 version.  But it outputs a ROS1-compatible package, so we need to adapt the output for ROS2. You can check the status of ROS2 migration [here](https://docs.google.com/spreadsheets/d/1aPb3hNP213iPHQIYgcnCYh9cGFUlZmi_06E_9iTSsOI/edit?usp=sharing).
+
+> **_IMPORTANT: This exercise requires a mix of ROS1 and ROS2 environments. Be careful what ROS environment is sourced in each terminal._**
 
 ## Motivation
 MoveIt! is a free-space motion planning framework for ROS. It’s an incredibly useful and easy-to-use tool for planning motions between two points in space without colliding with anything. Under the hood MoveIt is quite complicated, but (unlike most ROS libraries) it has a really nice GUI Wizard to get you started.
@@ -23,11 +25,14 @@ In this exercise, you will generate a MoveIt package for the UR5 workcell you bu
 
 ### Create a Base Package using the Setup Assistant
 
-1. Open a NEW terminal and setup your ROS1 workspace to run the MoveIt Setup Assistant.  Put copies of the required URDF packages (`ur_description`, `myworkcell_support`) inside this ROS1 workspace, to make them visible to the Setup Assistant:
+1. Open a NEW terminal and setup your ROS1 workspace to run the MoveIt Setup Assistant.  Put copies of the required URDF packages (`ur_description`, `myworkcell_support`) inside this ROS1 workspace, to make them visible to the Setup Assistant. Note that to keep the `ur_description` package compatible with this tutorial, we fix the commit of the Universal Robot repository:
 
    ```
    cd ~/ros1_ws/src
    git clone https://github.com/ros-industrial/universal_robot.git
+   cd universal_robot
+   git checkout -b industrial-training 62011b0d353841c0c219d862c359c540a4bc6aee
+   cd ..
    cp -r ~/industrial_training/exercises/3.3/ros1/src/myworkcell_support ~/ros1_ws/src
    
    <edit ~/ros1_ws/src/myworkcell_support/package.xml & CMakeLists.txt and remove all references to myworkcell_core>
@@ -60,8 +65,8 @@ In this exercise, you will generate a MoveIt package for the UR5 workcell you bu
 
     1. Add a planning group called `manipulator` that names the kinematic chain between `base_link` and `tool0`. Note: Follow [ROS naming guidelines/requirements](http://wiki.ros.org/ROS/Patterns/Conventions) and don't use any whitespace, anywhere.
 
-       a. Set the kinematics solver to `KDLKinematicsPlugin`
-       a. Set the default OMPL planner to `RRTConnect`
+       1. Set the kinematics solver to `KDLKinematicsPlugin`
+       1. Set the default OMPL planner to `RRTConnect`
 
     1. Create a few named positions (e.g. "home", "allZeros", etc.) to test with motion-planning.
 
@@ -113,6 +118,8 @@ In this exercise, you will generate a MoveIt package for the UR5 workcell you bu
         default_planner_request_adapters/FixStartStatePathConstraints
     start_state_max_bounds_error: 0.1
     ```
+    
+    Make sure your editor does not change the amount of whitespace at the front of these lines.
 
  1. Create a new `controllers.yaml` file in the ROS2 MoveIt package's `config` directory:
 
@@ -326,7 +333,10 @@ In this exercise, you will generate a MoveIt package for the UR5 workcell you bu
     ```
     install(DIRECTORY config launch DESTINATION share/${PROJECT_NAME})
     ```
-
+ 1. Install the MoveIt 2 Foxy packages:
+    ```
+    sudo apt install ros-foxy-moveit
+    ```
  1. Rebuild the workspace (`colcon build`) and test a launch file to see if the new package loads without errors:
 
     ```

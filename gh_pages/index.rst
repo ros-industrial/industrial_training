@@ -27,6 +27,7 @@ Setup
 ~~~~~
 
 - :doc:`PC Setup <_source/setup/PC-Setup---ROS>`
+- :doc:`IDE Setup <_source/setup/IDE-Setup>`
 
 Prerequisites
 ~~~~~~~~~~~~~
@@ -152,6 +153,7 @@ Archives
     :maxdepth: 1
 
     PC Setup <_source/setup/PC-Setup---ROS>
+    IDE Setup <_source/setup/IDE-Setup>
 
     MIT Introduction to C++ <http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-096-introduction-to-c-january-iap-2011/assignments/>
     Bruce Eckel Thinking in C++ Vol. 1 <http://vergil.chemistry.gatech.edu/resources/programming/pdf/TIC2Vone.pdf>

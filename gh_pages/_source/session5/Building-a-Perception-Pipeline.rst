@@ -36,7 +36,7 @@ We will create a new workspace, since this exercise does not overlap with the pr
 
       source ~/perception_ws/install/setup.bash
 
-#. Copy the PointCloud file from prior Exercise 4.2 to your home directory (~):
+#. Copy the PointCloud file from prior Exercise 4.2:
 
    .. code-block:: bash
 
@@ -153,8 +153,15 @@ Viewing Results
    .. code-block:: bash
 
       ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 world_frame kinect_link
-      ros2 run lesson_perception pcd_to_pointcloud --ros-args -p filename:=~/table.pcd -p tf_frame:=kinect_link -p topic:=/kinect/depth_registered/points
+
+   .. code-block:: bash
+      cd ~/perception_ws
+      ros2 run lesson_perception pcd_to_pointcloud --ros-args -p filename:=${HOME}/table.pcd -p tf_frame:=kinect_link -p topic:=/kinect/depth_registered/points
+      
+   .. code-block:: bash
       ros2 run rviz2 rviz2
+
+   .. code-block:: bash
       ros2 launch lesson_perception processing_node.launch.py
 
 #. View results
@@ -303,7 +310,7 @@ Plane Segmentation
       // Get the points associated with the planar surface
       extract.filter (*cloud_plane);
       RCLCPP_INFO(this->get_logger(),
-                  "PointCloud2 representing the planar component: '%ul' data points.", cloud_plane->points.size());
+                  "PointCloud2 representing the planar component: '%lu' data points.", cloud_plane->points.size());
 
    Then of course you can subtract or filter out these points from the cloud to get only points above the plane.
 
@@ -387,7 +394,7 @@ Euclidean Cluster Extraction
           cloud_cluster->width = cloud_cluster->points.size ();
           cloud_cluster->height = 1;
           cloud_cluster->is_dense = true;
-          RCLCPP_INFO(this->get_logger(), "Cluster has '%ul' points", cloud_cluster->points.size());
+          RCLCPP_INFO(this->get_logger(), "Cluster has '%lu' points", cloud_cluster->points.size());
           clusters.push_back(cloud_cluster);
           sensor_msgs::msg::PointCloud2::SharedPtr tempROSMsg(new sensor_msgs::msg::PointCloud2);
           pcl::toROSMsg(*cloud_cluster, *tempROSMsg);
@@ -396,6 +403,7 @@ Euclidean Cluster Extraction
           j++;
 
       }
+      RCLCPP_INFO(this->get_logger(), "Largest cluster has '%lu' points", clusters.at(0)->points.size());
 
 #. Find where the publishers are created and make a new one called ``euclidean_publisher_`` that publishes to the topic "euclidean_cluster".
 
