@@ -2,7 +2,7 @@
 > An integrated development environment (IDE) is a text editor with a set of tools for helping you program, like syntax highlighting, autocomplete, and debugging. This section details the installation and setup of two IDEs commonly used for ROS development.
 
 ## QT Creator
-[QT Creator](https://github.com/qt-creator/qt-creator) is a popular cross-platform IDE. ROS-Industrial provides a [ROS QT Creator plug-in](https://github.com/ros-industrial/ros_qtc_plugin) with features like Catkin integration, automatic sourcing of workspaces, and templates for commonly created files.
+[QT Creator](https://github.com/qt-creator/qt-creator) is a popular cross-platform IDE. ROS-Industrial provides a [ROS QT Creator plug-in](https://github.com/ros-industrial/ros_qtc_plugin) with features like ROS build tool integration, automatic sourcing of workspaces, and templates for commonly created files.
 
 You can easily install the editor bundled with the plug-in from the Snap store [here](https://snapcraft.io/qtcreator-ros). Click the green `Install` button in the top right and click `View in Desktop store`. In the window which opens, install the application. Then you can open the IDE by searching for `QT Creator ROS` on your system.
 
