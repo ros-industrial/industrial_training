@@ -1,6 +1,8 @@
 # IDE Setup
 > An integrated development environment (IDE) is a text editor with a set of tools for helping you program, like syntax highlighting, autocomplete, and debugging. This section details the installation and setup of two IDEs commonly used for ROS development.
 
+> **_These tutorials assume you are using QT Creator. If you are not sure which IDE to use, we recommend QT Creator._**
+
 ## QT Creator
 [QT Creator](https://github.com/qt-creator/qt-creator) is a popular cross-platform IDE. ROS-Industrial provides a [ROS QT Creator plug-in](https://github.com/ros-industrial/ros_qtc_plugin) with features like ROS build tool integration, automatic sourcing of workspaces, and templates for commonly created files.
 
