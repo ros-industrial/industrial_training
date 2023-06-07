@@ -65,8 +65,8 @@ In this exercise, you will generate a MoveIt package for the UR5 workcell you bu
 
     1. Add a planning group called `manipulator` that names the kinematic chain between `base_link` and `tool0`. Note: Follow [ROS naming guidelines/requirements](http://wiki.ros.org/ROS/Patterns/Conventions) and don't use any whitespace, anywhere.
 
-       a. Set the kinematics solver to `KDLKinematicsPlugin`
-       a. Set the default OMPL planner to `RRTConnect`
+       1. Set the kinematics solver to `KDLKinematicsPlugin`
+       1. Set the default OMPL planner to `RRTConnect`
 
     1. Create a few named positions (e.g. "home", "allZeros", etc.) to test with motion-planning.
 
