@@ -8,6 +8,12 @@
 
 You can easily install the editor bundled with the plug-in from the Snap store [here](https://snapcraft.io/qtcreator-ros). Click the green `Install` button in the top right and click `View in Desktop store`. In the window which opens, install the application. Then you can open the IDE by searching for `QT Creator ROS` on your system.
 
+To make a new ROS project open QT Creator and go to `File -> New Project` in the toolbar. In the resulting pop-up, navigate to `Other Project` in the left section. Select `ROS Workspace` in the middle section. Next you will be prompted to enter the project details. For the project workspace you must select an existing directory, so you may have to use your system's file explorer to create a new directory for your project.
+
+Once the project is created, you may right click on the project name under the `Projects` window on the left side of the GUI to bring up the project context window. Select `Add New`. You can choose `ROS` in the left section and `Package` in the middle section to create a new ROS package.
+
+Once you have a package, you can build the workspace by selecting `Build` in the toolbar then `Build all projects`.
+
 ## VS Code
 [Visual Studio Code](https://code.visualstudio.com/download) is a Microsoft editor which can be used for ROS projects. Download the editor and install the C/C++ extension pack and the ROS extension pack. (Make sure you get the right ones - both extensions are authored by Microsoft.)
 
