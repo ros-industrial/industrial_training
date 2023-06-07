@@ -1,18 +1,18 @@
 # ROS-Industrial Training Site
 
 ## Building and viewing locally
-<hr>
-<details>
-<summary>(Recommended) Create a python virtual environment for Sphinx packages and dependencies:</summary>
+    <hr>
+    <details>
+    <summary>(Recommended) Create a python virtual environment for Sphinx packages and dependencies:</summary>
  
-    ```
-    cd <industrial_training root directory>
-    python3 -m venv/ venv/
-    source venv/bin/activate
-    ```
+        ```
+        cd <industrial_training root directory>
+        python3 -m venv/ venv/
+        source venv/bin/activate
+        ```
 
-</details>
-<hr>
+    </details>
+    <hr>
 
 - Install Sphinx and dependencies:
     ```
