@@ -5,10 +5,10 @@
 Any ROS project begins with making a workspace. In this workspace, you will put all the things related to this particular project. In this module we will create the workspace where we will build the components of our Scan-N-Plan application.
 
 ## Reference Example
-Steps to creating a workspace: [Creating a Workspace](https://index.ros.org/doc/ros2/Tutorials/Workspace/Creating-A-Workspace)
+Steps to creating a workspace: [Creating a Workspace](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Creating-A-Workspace/Creating-A-Workspace.html)
 
 ## Further Information and Resources
-Additional details on what a ROS environment consists of and some basic checks you can run: [Configuring a ROS2 Environment](https://index.ros.org/doc/ros2/Tutorials/Configuring-ROS2-Environment)
+Additional details on what a ROS environment consists of and some basic checks you can run: [Configuring a ROS2 Environment](https://docs.ros.org/en/humble/Tutorials/Beginner-CLI-Tools/Configuring-ROS2-Environment.html)
 
 ## Scan-N-Plan Application: Problem Statement
 We have a good installation of ROS, and we need to take the first step to setting up our particular application. Your goal is to create a workspace for your application and its supplements.
@@ -17,10 +17,10 @@ We have a good installation of ROS, and we need to take the first step to settin
 
 ### Create a Workspace
 
-1. Close any open terminal windows.  Open a new terminal and source the "foxy" distribution.
+1. Close any open terminal windows.  Open a new terminal and source the "humble" distribution.
 
    ```
-   source /opt/ros/foxy/setup.bash
+   source /opt/ros/humble/setup.bash
    ```
 
 1. Create the root workspace directory. Note that the required structure is a top-level directory and a `src/` directory one level down. The directory name is a completely free choice. We will use `ros2_ws` throughout these tutorials.
