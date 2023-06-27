@@ -6,13 +6,13 @@ The first type of ROS communication that we will explore is a one-way communicat
 
 ## Reference Example
 
-[Creating a Publisher and Subscriber](https://index.ros.org/doc/ros2/Tutorials/Writing-A-Simple-Cpp-Publisher-And-Subscriber)
+[Creating a Publisher and Subscriber](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Cpp-Publisher-And-Subscriber.html)
 
 ## Further Information and Resources
 
-[Understanding Topics](https://index.ros.org/doc/ros2/Tutorials/Topics/Understanding-ROS2-Topics)
+[Understanding Topics](https://docs.ros.org/en/humble/Tutorials/Beginner-CLI-Tools/Understanding-ROS2-Topics/Understanding-ROS2-Topics.html)
 
-[Creating Messages and Services](https://index.ros.org/doc/ros2/Tutorials/Custom-ROS2-Interfaces)
+[Creating Messages and Services](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Custom-ROS2-Interfaces.html)
 
 ## Scan-N-Plan Application: Problem Statement
 We now have a base ROS node and we want to build on this node. Now we want to create a subscriber within our node.
@@ -75,9 +75,9 @@ Your goal is to create your first ROS subscriber:
 
    1. Type `/ar_pose_marker/pose/pose/position/y` in the topic field, and click on the add button.  You will now see both the x and y values being graphed.
 
-     * the plot doesn't look very interesting, since the simulated values are constant.  Use the plot tools to zoom out until you see both X & Y values plotted.  Can you use the plot data to estimate the XYZ position published by fake_ar_publisher?
+     * The plot doesn't look very interesting, since the simulated values are constant.  Use the plot tools to zoom out until you see both X & Y values plotted.  Can you use the plot data to estimate the XYZ position published by fake_ar_publisher?
 
-   1. Close the window
+   1. Close the window.
 
 1. Leave the publisher node running for the next task.
 
