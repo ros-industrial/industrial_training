@@ -7,10 +7,10 @@ By this point in these tutorials (or your career), you've probably typed the wor
 The ROS ecosystem has an analogous system for configuring nodes. It's a key-value storage model that is associated with each node individually. It's best used to pass configuration parameters to nodes at run-time (e.g. to identify which camera a node should subscribe to), but it can be used for much more complicated items.
 
 ## Reference Example
-[Using Parameters](https://index.ros.org/doc/ros2/Tutorials/Using-Parameters-In-A-Class-CPP)
+[Using Parameters](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Using-Parameters-In-A-Class-CPP.html)
 
 ## Further Information and Resource
-[Understanding ROS2 parameters](https://index.ros.org/doc/ros2/Tutorials/Parameters/Understanding-ROS2-Parameters)
+[Understanding ROS2 parameters](https://docs.ros.org/en/humble/Tutorials/Beginner-CLI-Tools/Understanding-ROS2-Parameters/Understanding-ROS2-Parameters.html)
 
 ## Scan-N-Plan Application: Problem Statement
 In previous exercises, we added a service with the following definition:
