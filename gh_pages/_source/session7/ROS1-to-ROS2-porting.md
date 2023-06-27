@@ -332,7 +332,7 @@ We'll now build the `LocalizePart` service type to use in the `myworkcell_core` 
         request->base_frame = base_frame;
 
         auto future = vision_client_->async_send_request(request);
-        if (rclcpp::spin_until_future_complete(this->get_node_base_interface(), future) != rclcpp::executor::FutureReturnCode::SUCCESS)
+        if (rclcpp::spin_until_future_complete(this->get_node_base_interface(), future) != rclcpp::FutureReturnCode::SUCCESS)
         {
             RCLCPP_ERROR(this->get_logger(), "Failed to receive LocalizePart service response");
             return;

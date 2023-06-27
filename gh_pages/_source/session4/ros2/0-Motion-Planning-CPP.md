@@ -155,7 +155,7 @@ In this exercise, your goal is to modify the `myworkcell_core` node to:
     This lets ROS process callbacks in a separate worker thread while the main thread remains available for us to define our application logic.  This implies we can no longer call any spin functions in the main thread now. Replace the call to `spin_until_future_complete` in the `start` function with a function to simply wait for the future to be ready:
 
     ```diff
-    -if (rclcpp::spin_until_future_complete(this->get_node_base_interface(), future) != rclcpp::executor::FutureReturnCode::SUCCESS)
+    -if (rclcpp::spin_until_future_complete(this->get_node_base_interface(), future) != rclcpp::FutureReturnCode::SUCCESS)
     +if (future.wait_for(std::chrono::seconds(3)) == std::future_status::timeout)
     ```
 
