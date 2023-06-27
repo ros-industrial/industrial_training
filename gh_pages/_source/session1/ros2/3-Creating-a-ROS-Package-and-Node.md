@@ -5,11 +5,11 @@
 The basis of ROS communication is that multiple executables called nodes are running in an environment and communicating with each other in various ways. These nodes exist within a structure called a package. In this module we will create a node inside a newly created package.
 
 ## Reference Example
-[Create a Package](https://index.ros.org/doc/ros2/Tutorials/Creating-Your-First-ROS2-Package)
+[Create a Package](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Creating-Your-First-ROS2-Package.html)
 
 ## Further Information and Resources
 * [Package.xml Format](https://ros.org/reps/rep-0149.html#data-representation)
-* [Understanding Nodes](https://index.ros.org/doc/ros2/Tutorials/Understanding-ROS2-Nodes)
+* [Understanding Nodes](https://docs.ros.org/en/humble/Tutorials/Beginner-CLI-Tools/Understanding-ROS2-Nodes/Understanding-ROS2-Nodes.html)
 
 ## Scan-N-Plan Application: Problem Statement
 We've installed ROS, created a workspace, and even built a few times. Now we want to create our own package and our own node to do what we want to do.
@@ -143,7 +143,7 @@ Your goal is to create your first ROS node:
 
    These lines should be place after the section labeled `# find dependencies` and before the `ament_package()` call. The flow of a _CMakeLists.txt_ file is almost always to first find all dependencies the current project requires, then to declare the _targets_ the current project is creating, and finally to specify extra information such as how to test the targets and things that projects making use of this one need to know. Note that the term "project" is used here in the context of CMake. Each ROS package acts as a separate CMake project (notice the `project(myworkcell_core)`) line at the very top of the file). 
 
-  * See [ament_cmake documentation](https://docs.ros.org/en/foxy/How-To-Guides/Ament-CMake-Documentation.html) for more details on common ROS2 CMakeLists rules.
+  * See [ament_cmake documentation](https://docs.ros.org/en/humble/How-To-Guides/Ament-CMake-Documentation.html) for more details on common ROS2 CMakeLists rules.
   * _You're allowed to spread most of the CMakeLists rules across multiple lines, which is often required when a target contains many source files or has many dependencies._
 
 1. We've now told CMake about the _vision_node_ executable and how to build it, but to actually run it, the file must be *installed* along with all the other workspace outputs. Typically, the installation location will be the `install/` directory alongside the `src/` directory. Add the following lines after `ament_target_dependencies` but before `ament_package` into your CMakeLists.txt to declare an installation rule for the _vision_node_ executable:
