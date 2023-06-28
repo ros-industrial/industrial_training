@@ -7,12 +7,12 @@ TF is a fundamental tool that allows for the lookup the transformation between a
 
 
 ## Reference Example
-[ROS TF2 Listener Tutorial](https://docs.ros.org/en/foxy/Tutorials/Tf2/Writing-A-Tf2-Listener-Cpp.html)
+[ROS TF2 Listener Tutorial](https://docs.ros.org/en/humble/Tutorials/Tf2/Writing-A-Tf2-Listener-Cpp.html)
 
 ## Further Information and Resources
  * [Wiki Documentation](http://wiki.ros.org/tf2) - ROS1 version
- * [TF2 Tutorials](https://docs.ros.org/en/foxy/Tutorials/Tf2/Tf2-Main.html)
- * [TF2 Buffer API](http://docs.ros2.org/foxy/api/tf2_ros/classtf2__ros_1_1Buffer.html)
+ * [TF2 Tutorials](https://docs.ros.org/en/humble/Tutorials/Tf2/Tf2-Main.html)
+ * [TF2 Buffer API](http://docs.ros2.org/foxy/api/tf2_ros/classtf2__ros_1_1Buffer.html) - Foxy distro
 
 ## Scan-N-Plan Application: Problem Statement
 The part pose information returned by our (simulated) camera is given in the optical reference frame of the camera itself. For the robot to do something with this data, we need to transform the data into the robot’s reference frame.
