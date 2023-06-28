@@ -1,19 +1,25 @@
 <?xml version="1.0" ?>
 <robot name="myworkcell" xmlns:xacro="http://ros.org/wiki/xacro">
+
   <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro"/>
 
   <!-- ur arm instantiation -->
   <xacro:arg name="ur_type" default="ur5"/>
   <xacro:arg name="use_fake_hardware" default="true"/>
   <xacro:arg name="fake_sensor_commands" default="true"/>
+
   <xacro:ur_robot
+      name="my_ur5"
       prefix=""
+      parent="table"
       joint_limits_parameters_file="$(find ur_description)/config/$(arg ur_type)/joint_limits.yaml"
       kinematics_parameters_file="$(find ur_description)/config/$(arg ur_type)/default_kinematics.yaml"
       physical_parameters_file="$(find ur_description)/config/$(arg ur_type)/physical_parameters.yaml"
       visual_parameters_file="$(find ur_description)/config/$(arg ur_type)/visual_parameters.yaml"
       use_fake_hardware="$(arg use_fake_hardware)"
-      fake_sensor_commands="$(arg fake_sensor_commands)"/>
+      fake_sensor_commands="$(arg fake_sensor_commands)">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </xacro:ur_robot>
 
   <link name="world"/>
 
@@ -29,19 +35,13 @@
       </geometry>
     </collision>
   </link>
-
+  
   <link name="camera_frame"/>
 
   <joint name="world_to_table" type="fixed">
     <parent link="world"/>
     <child link="table"/>
     <origin xyz="0 0 0.5" rpy="0 0 0"/>
-  </joint>
-
-  <joint name="table_to_robot" type="fixed">
-    <parent link="table"/>
-    <child link="base_link"/>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
 
   <joint name="world_to_camera" type="fixed">

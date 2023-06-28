@@ -33,9 +33,9 @@ Specifically, you will need to:
 
        ```
        cd ~/ros2_ws/src
-       git clone -b foxy https://github.com/UniversalRobots/Universal_Robots_ROS2_Driver.git
+       git clone -b humble https://github.com/UniversalRobots/Universal_Robots_ROS2_Driver.git
        git clone -b master https://github.com/UniversalRobots/Universal_Robots_Client_Library.git
-       sudo apt install ros-foxy-ur-msgs
+       sudo apt install ros-humble-ur-msgs
        cd ~/ros2_ws
        rosdep update
        rosdep install --ignore-src --from-paths src -y -r
@@ -60,26 +60,22 @@ Specifically, you will need to:
     <xacro:arg name="use_fake_hardware" default="true"/>
     <xacro:arg name="fake_sensor_commands" default="true"/>
     <xacro:ur_robot
+        name="my_ur5"
         prefix=""
+        parent="table"
         joint_limits_parameters_file="$(find ur_description)/config/$(arg ur_type)/joint_limits.yaml"
         kinematics_parameters_file="$(find ur_description)/config/$(arg ur_type)/default_kinematics.yaml"
         physical_parameters_file="$(find ur_description)/config/$(arg ur_type)/physical_parameters.yaml"
         visual_parameters_file="$(find ur_description)/config/$(arg ur_type)/visual_parameters.yaml"
         use_fake_hardware="$(arg use_fake_hardware)"
-        fake_sensor_commands="$(arg fake_sensor_commands)"/>
-    ```
-
-    >Macros in Xacro are just fancy wrappers around copy-paste. You make a macro and it gets turned into a chunk of links and joints. You still have to connect the rest of your world to that macro’s results. This means you have to look at the macro and see what the base link is and what the end link is. Hopefully your macro follows a standard, like the ROS-Industrial one, that says that base links are named “base_link” and the last link is called “tool0”.
-
- 1. Connect the UR5 `base_link` to your existing static geometry with a fixed link.
-
-    ``` xml
-    <joint name="table_to_robot" type="fixed">
-      <parent link="table"/>
-      <child link="base_link"/>
+        fake_sensor_commands="$(arg fake_sensor_commands)">
       <origin xyz="0 0 0" rpy="0 0 0"/>
-    </joint>
+    </xacro:ur_robot>
     ```
+
+    >Macros in Xacro are just fancy wrappers around copy-paste. You make a macro and it gets turned into a chunk of links and joints. You typically still have to connect the rest of your world to that macro’s results. This means you have to look at the macro and see what the base link is and what the end link is. Hopefully your macro follows a standard, like the ROS-Industrial one, that says that base links are named “base_link” and the last link is called “tool0”.
+
+    >In this example, the `parent` and `origin` parameters passed to the xacro are used to automatically generate a link between the base of the robot and the link we choose. Here we provide `parent="table"` and `<origin xyz="0 0 0" rpy="0 0 0"/>` to make the robot base link connect to our table link without any offset or rotation.
 
  1. Create a new `urdf.launch.py` file (in the `myworkcell_support` package) to load the URDF model and (optionally) display it in rviz. The launch file starts with several utility functions that are useful for assisting the launch process. This particular file uses `get_package_file` to get the path of the `workcell.urdf.xacro` file you've created, and `xacro.process_file` to generate the URDF as a string object. This URDF string is then passed to a `robot_state_publisher` node as a parameter just as was done manually in the previous exercise.
 
