@@ -56,24 +56,24 @@ In this exercise, you will generate a MoveIt package for the UR5 workcell you bu
 
     1. Create a few named positions (e.g. "home", "allZeros", etc.) to test with motion-planning.
 
-    1. Don't worry about adding end effectors/grippers or passive joints for this exercise.
+    1. Don't worry about adding end effectors, passive joints, or ros2_control URDF modifications for this exercise.
     
-    1. In the "ROS 2 Controllers" tab, use the "Auto Add FollowJointsTrajectory" button to define a basic _FollowJointTrajectory_ controller for the entire UR5 arm.
+    1. In the "ROS 2 Controllers" tab, use the "Auto Add JointTrajectoryController" button to define a basic _JointTrajectoryController_ controller for the entire UR5 arm.
 
-    1. In the "MoveIt Controllers" tab,
+    1. In the "MoveIt Controllers" tab,use the "Auto Add FollowJointsTrajectory" button to define a basic _FollowJointTrajectory_ controller for the UR5 arm.
     
-    1. Skip the Simulation and 3D Perception tabs.
+    1. Skip the "Perception" and "Launch Files" tabs.
 
     1. Enter author / maintainer info.
 
-       _Yes, it's required, but doesn't have to be real_
+       _Yes, it's required, but doesn't have to be valid._
 
     1. Generate a new package and name it `myworkcell_moveit_config`.
        * make sure to create the package inside your `ros2_ws/src` directory
 
 ## Update the Setup Assistant Output
 
- The outcome of the Setup Assistant is a new ROS2 package that contains a large number of launch and configuration files.  We need to add a few files to customize this general-purpose package for our application.
+ The outcome of the Setup Assistant is a new ROS2 package that contains a large number of launch and configuration files.  We need to add just a bit more to customize this general-purpose package for our application.
 
  1. Create a new file in your `myworkcell_moveit_config` package named `config/ompl_planning.yaml`. Paste in the following code:
 
@@ -121,13 +121,17 @@ In this exercise, you will generate a MoveIt package for the UR5 workcell you bu
     
     Make sure your editor does not change the amount of whitespace at the front of these lines.
 
- 1. Examine moveit_controllers.yaml, ros2_controllers.yaml, workcell.srdf, kinematics.yaml, ompl_planning.yaml
+ 1. You may wish to examine some key files in your new package:
 
- 1. `moveit_controllers.yaml`: This file will configure MoveIt to use a controller for joint trajectory execution provided by `ros_control`.
+ * `workcell.srdf`: This file defines additional information about the workspace links and joints such as planning groups, end-effectors, virtual joints, and allowed collisions.
 
- 1. `ros2_controllers.yaml`: These parameters configure the controller nodes at startup.
+ * `kinematics.yaml`: These parameters define the kinematics solver used to find joint angles for a given cartesian position.
 
- TODO: the rest
+ * `ompl_planning.yaml`: This informs MoveIt on what planner profiles are available for our manipulator and provides some additional configuration parameters.
+
+ * `moveit_controllers.yaml`: This file will configure MoveIt to use a controller for joint trajectory execution provided by `ros2_control`.
+
+ * `ros2_controllers.yaml`: These parameters configure the ROS 2 Control nodes at startup.
 
  1. Rebuild the workspace (`colcon build`) and test a launch file to see if the new package loads without errors:
 
