@@ -14,18 +14,14 @@ int main(int argc, char** argv)
   rclcpp::init(argc, argv);
   rclcpp::Node::SharedPtr node = std::make_shared<rclcpp::Node>("pcd_to_pointcloud");
 
-  rclcpp::Parameter filename_param, tf_frame_param, topic_param;
-  node->declare_parameter("filename");
-  node->declare_parameter("frame_id");
-  node->declare_parameter("cloud_pcd");
+  std::string filename, tf_frame, topic;
+  node->declare_parameter("filename", "table.pcd");
+  node->declare_parameter("frame_id", "kinect_link");
+  node->declare_parameter("cloud_pcd", "/kinect/depth_registered/points");
 
-  node->get_parameter_or("filename", filename_param, rclcpp::Parameter("", "table.pcd"));
-  node->get_parameter_or("frame_id", tf_frame_param, rclcpp::Parameter("", "kinect_link"));
-  node->get_parameter_or("cloud_pcd", topic_param, rclcpp::Parameter("", "/kinect/depth_registered/points"));
-
-  std::string filename = filename_param.as_string();
-  std::string tf_frame = tf_frame_param.as_string();
-  std::string topic = topic_param.as_string();
+  node->get_parameter("filename", filename);
+  node->get_parameter("frame_id", tf_frame);
+  node->get_parameter("cloud_pcd", topic);
 
   pcl::PointCloud<pcl::PointXYZRGB> cloud;
 
@@ -45,7 +41,7 @@ int main(int argc, char** argv)
     while (rclcpp::ok())
     {
       publisher->publish(cloud_msg);
-      rclcpp::sleep_for(std::chrono::nanoseconds(rclcpp::Duration(5, 0).nanoseconds())); // 5 seconds
+      rclcpp::sleep_for(std::chrono::nanoseconds(rclcpp::Duration(1, 0).nanoseconds())); // 1 second
       rclcpp::spin_some(node);
     }
   }

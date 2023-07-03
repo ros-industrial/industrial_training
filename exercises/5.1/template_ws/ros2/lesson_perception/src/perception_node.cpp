@@ -19,7 +19,7 @@
 #include <pcl/filters/crop_box.h>
 #include <pcl/filters/statistical_outlier_removal.h>
 #include <tf2/convert.h>
-#include <tf2_eigen/tf2_eigen.h>
+#include <tf2_eigen/tf2_eigen.hpp>
 #include <tf2/LinearMath/Quaternion.h>
 #include <pcl/segmentation/extract_polygonal_prism_data.h>
 
@@ -81,7 +81,7 @@ class PerceptionNode : public rclcpp::Node
          */
         void cloud_callback(const sensor_msgs::msg::PointCloud2::ConstSharedPtr recent_cloud)
         {
-            RCLCPP_INFO(this->get_logger(), "Cloud service called; getting a PointCloud2 on topic " + cloud_topic);
+            RCLCPP_INFO_STREAM(this->get_logger(), "Cloud service called; getting a PointCloud2 on topic " + cloud_topic);
 
             /*
              * TRANSFORM PointCloud2 FROM CAMERA FRAME TO WORLD FRAME

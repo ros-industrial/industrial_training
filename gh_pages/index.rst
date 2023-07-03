@@ -87,7 +87,7 @@ Session 4 - Descartes and Perception
 :download:`Slides <_downloads/slides/ROS-I Basic Developers Training (ROS2) - Session 4.pdf>`
 
 - :doc:`4.0 - Motion Planning using C++ <_source/session4/ros2/0-Motion-Planning-CPP>`
-- :doc:`4.1 - Intro to Perception <_source/session4/ros1/2-Introduction-to-Perception>`
+- :doc:`4.1 - Intro to Perception <_source/session4/ros2/2-Introduction-to-Perception>`
 
 Application Demos
 -----------------
@@ -182,7 +182,7 @@ Archives
     3.3 - Build a MoveIt Package <_source/session3/ros2/3-Build-a-MoveIt-Package>
     3.4 - Motion Planning using RViz <_source/session3/ros2/4-Motion-Planning-RVIZ>
     4.0 - Motion Planning using C++ <_source/session4/ros2/0-Motion-Planning-CPP>
-    4.1 - Intro to Perception <_source/session4/ros1/2-Introduction-to-Perception>
+    4.1 - Intro to Perception <_source/session4/ros2/2-Introduction-to-Perception>
 
 .. toctree::
     :hidden:
