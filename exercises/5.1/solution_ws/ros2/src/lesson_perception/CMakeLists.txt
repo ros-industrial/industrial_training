@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
 project(lesson_perception)
-add_definitions(-std=c++14)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)

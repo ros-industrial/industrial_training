@@ -116,7 +116,7 @@ class PerceptionNode : public rclcpp::Node
          */
         void cloud_callback(const sensor_msgs::msg::PointCloud2::ConstSharedPtr recent_cloud)
         {
-            RCLCPP_INFO(this->get_logger(), "Cloud service called; getting a PointCloud2 on topic " + cloud_topic);
+            RCLCPP_INFO_STREAM(this->get_logger(), "Cloud service called; getting a PointCloud2 on topic " + cloud_topic);
 
             /*
              * TRANSFORM PointCloud2 FROM CAMERA FRAME TO WORLD FRAME
@@ -222,7 +222,7 @@ class PerceptionNode : public rclcpp::Node
             // Get the points associated with the planar surface
             extract.filter (*cloud_plane);
             RCLCPP_INFO(this->get_logger(),
-                        "PointCloud2 representing the planar component: '%ul' data points.", cloud_plane->points.size());
+                        "PointCloud2 representing the planar component: '%lu' data points.", cloud_plane->points.size());
 
             // Remove the planar inliers, extract the rest
             extract.setNegative (true);
@@ -260,7 +260,7 @@ class PerceptionNode : public rclcpp::Node
                 cloud_cluster->width = cloud_cluster->points.size ();
                 cloud_cluster->height = 1;
                 cloud_cluster->is_dense = true;
-                RCLCPP_INFO(this->get_logger(), "Cluster has '%ul' points", cloud_cluster->points.size());
+                RCLCPP_INFO(this->get_logger(), "Cluster has '%lu' points", cloud_cluster->points.size());
                 clusters.push_back(cloud_cluster);
                 sensor_msgs::msg::PointCloud2::SharedPtr tempROSMsg(new sensor_msgs::msg::PointCloud2);
                 pcl::toROSMsg(*cloud_cluster, *tempROSMsg);
