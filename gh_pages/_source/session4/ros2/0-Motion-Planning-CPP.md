@@ -6,10 +6,10 @@
 Now that we’ve got a working MoveIt! configuration for your workcell and we’ve played a bit in RViz with the planning tools, let’s perform planning and motion in code. This exercise will introduce you to the basic C++ interface for interacting with the MoveIt! node in your own program. There are lots of ways to use MoveIt!, but for simple applications this is the most straight forward.
 
 ## Reference Example
-[MoveIt-Cpp tutorial](http://moveit2_tutorials.picknik.ai/doc/moveit_cpp/moveitcpp_tutorial.html)
+[MoveIt-Cpp tutorial](https://moveit.picknik.ai/humble/doc/tutorials/your_first_project/your_first_project.html)
 
 ## 3. Further Information and Resources
- * [MoveIt! Tutorials](http://moveit2_tutorials.picknik.ai/)
+ * [MoveIt! Tutorials](https://moveit.picknik.ai/humble/doc/tutorials/tutorials.html)
  * [MoveIt! home-page](http://moveit.ros.org/)
 
 ## Scan-N-Plan Application: Problem Statement
@@ -159,6 +159,12 @@ In this exercise, your goal is to modify the `myworkcell_core` node to:
     +if (future.wait_for(std::chrono::seconds(3)) == std::future_status::timeout)
     ```
 
+    Finally, before calling rclcpp::shtudown(), wait for the thread to rejoin the main process.
+
+    ```
+    worker.join();
+    ```
+
 ### Launch files and testing
 
  1. Open your `workcell.launch.py` and replace it with the following contents:
@@ -199,7 +205,7 @@ In this exercise, your goal is to modify the `myworkcell_core` node to:
         kinematics_file = get_package_file('myworkcell_moveit_config', 'config/kinematics.yaml')
         ompl_config_file = get_package_file('myworkcell_moveit_config', 'config/ompl_planning.yaml')
         joint_limits_file = get_package_file('myworkcell_moveit_config','config/joint_limits.yaml')
-        moveit_controllers_file = get_package_file('myworkcell_moveit_config', 'config/controllers.yaml')
+        moveit_controllers_file = get_package_file('myworkcell_moveit_config', 'config/moveit_controllers.yaml')
 
         robot_description = xacro.process_file(xacro_file).toprettyxml(indent='  ')
         robot_description_semantic = load_file(srdf_file)
@@ -208,10 +214,7 @@ In this exercise, your goal is to modify the `myworkcell_core` node to:
         joint_limits_config = load_yaml(joint_limits_file)
 
         # Setting up MoveitCpp configuration parameters
-        moveit_controllers = {
-            'moveit_simple_controller_manager' : load_yaml(moveit_controllers_file),
-            'moveit_controller_manager': 'moveit_simple_controller_manager/MoveItSimpleControllerManager'
-        }
+        moveit_controllers = load_yaml(moveit_controllers_file)
         trajectory_execution = {
             'moveit_manage_controllers': True,
             'trajectory_execution.allowed_execution_duration_scaling': 1.2,
@@ -296,6 +299,6 @@ In this exercise, your goal is to modify the `myworkcell_core` node to:
     ``` bash
     colcon build
  
-    ros2 launch myworkcell_moveit_config myworkcell_planning_execution.launch.py
+    ros2 launch myworkcell_moveit_config demo.launch.py
     ros2 launch myworkcell_support workcell.launch.py
     ```
