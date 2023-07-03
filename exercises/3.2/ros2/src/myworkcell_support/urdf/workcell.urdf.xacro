@@ -7,10 +7,9 @@
   <xacro:arg name="ur_type" default="ur5"/>
   <xacro:arg name="use_fake_hardware" default="true"/>
   <xacro:arg name="fake_sensor_commands" default="true"/>
-
   <xacro:ur_robot
       name="my_ur5"
-      prefix=""
+      tf_prefix=""
       parent="table"
       joint_limits_parameters_file="$(find ur_description)/config/$(arg ur_type)/joint_limits.yaml"
       kinematics_parameters_file="$(find ur_description)/config/$(arg ur_type)/default_kinematics.yaml"
