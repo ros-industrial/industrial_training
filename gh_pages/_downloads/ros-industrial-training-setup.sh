@@ -10,8 +10,8 @@ sudo apt install -y curl gcc make gnupg2 lsb-release git meld build-essential li
 cd $HOME
 
 # ROS1 packages source
-sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
-curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
+# sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+# curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
 
 # ROS2 packages source
 sudo locale-gen en_US en_US.UTF-8
@@ -22,19 +22,12 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-a
 
 sudo apt update -y
 
-# ROS1 install
-sudo apt install -y ros-noetic-desktop
-sudo apt install -y python3-wstool python3-vcstool python3-catkin-tools
-sudo apt install -y ros-noetic-perception ros-noetic-urdf-tutorial ros-noetic-moveit
-sudo apt install -y ros-noetic-openni-camera ros-noetic-openni-launch ros-noetic-openni2-camera ros-noetic-openni2-launch
-sudo apt install -y ros-noetic-industrial-core
-sudo apt install -y pcl-tools
-
 # ROS2 install
-sudo apt install -y ros-foxy-desktop ros-foxy-moveit
-sudo apt install -y ros-foxy-ros1-bridge ros-foxy-ros2-control ros-foxy-ros2-controllers ros-foxy-xacro ros-foxy-joint-state-publisher-gui
+sudo apt install -y ros-humble-desktop ros-humble-moveit
+sudo apt install -y ros-humble-ros1-bridge ros-humble-ros2-control ros-humble-ros2-controllers ros-humble-xacro ros-humble-joint-state-publisher-gui
 sudo apt install -y python3-colcon-common-extensions python3-argcomplete
-sudo apt install -y ros-foxy-pcl-ros
+sudo apt install -y ros-humble-pcl-ros
+sudo apt install -y pcl-tools
 
 # rosdep setup
 sudo apt install python3-rosdep
