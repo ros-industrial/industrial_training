@@ -1,17 +1,13 @@
 #! /bin/bash
 
-# auto-detect if we're running in AWS.  Set IS_AWS before calling this script to override (IS_AWS=1 script.bash)
-IS_AWS=${IS_AWS:-"$(expr "`head -c 3 /sys/hypervisor/uuid 2>/dev/null`" == "ec2" )" }
+# auto-detect if we're running in AWS.  Set IS_AWS before calling this script to override (export IS_AWS=1; script.bash)
+IS_AWS=${IS_AWS:-"$(expr "`hostname -d`" == "ec2.internal" )" }
 
 sudo apt update -y
 sudo apt upgrade -y
 sudo apt install -y curl gcc make gnupg2 lsb-release git meld build-essential libfontconfig1 mesa-common-dev libglu1-mesa-dev
 
 cd $HOME
-
-# ROS1 packages source
-# sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
-# curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
 
 # ROS2 packages source
 sudo locale-gen en_US en_US.UTF-8
@@ -23,14 +19,13 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-a
 sudo apt update -y
 
 # ROS2 install
-sudo apt install -y ros-humble-desktop ros-humble-moveit
-sudo apt install -y ros-humble-ros1-bridge ros-humble-ros2-control ros-humble-ros2-controllers ros-humble-xacro ros-humble-joint-state-publisher-gui
-sudo apt install -y python3-colcon-common-extensions python3-argcomplete
-sudo apt install -y ros-humble-pcl-ros
-sudo apt install -y pcl-tools
+sudo apt install -y ros-humble-desktop ros-humble-moveit \
+    ros-humble-ros2-control ros-humble-ros2-controllers ros-humble-xacro ros-humble-joint-state-publisher-gui \
+    python3-colcon-common-extensions python3-argcomplete \
+    ros-humble-pcl-ros pcl-tools \
+    python3-rosdep
 
 # rosdep setup
-sudo apt install python3-rosdep
 sudo rosdep init
 rosdep update
 
@@ -44,10 +39,10 @@ if [[ $DISPLAY && ! -d ~/QtCreator ]]; then
   rm $QTFILE
 fi
 
-# disable screen power-off timer
-gsettings set org.gnome.desktop.session idle-delay 0
-
 if [ $IS_AWS -eq 1 ]; then
+  # disable screen power-off timer
+  gsettings set org.gnome.desktop.session idle-delay 0
+
   # setup firefox shortcuts
   xdg-icon-resource install --novendor --context apps --size 256 ~/industrial_training/gh_pages/_downloads/web_shortcuts/ros-i.png
   xdg-icon-resource install --novendor --context apps --size 128 ~/industrial_training/gh_pages/_downloads/web_shortcuts/rosorg.png
@@ -58,6 +53,7 @@ if [ $IS_AWS -eq 1 ]; then
   sudo desktop-file-install ~/industrial_training/gh_pages/_downloads/web_shortcuts/ros2.desktop
 
   sudo apt install -y gnome-terminal gedit
+  gnome-extensions enable ubuntu-dock@ubuntu.com
   gsettings set org.gnome.shell favorite-apps "['firefox.desktop', 'ros-i.desktop', 'ros2.desktop', 'rosorg.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'org.gnome.gedit.desktop', 'QtProject-qtcreator-ros-latest.desktop']"
   gsettings set org.gnome.desktop.wm.preferences button-layout ":minimize,maximize,close"
 
