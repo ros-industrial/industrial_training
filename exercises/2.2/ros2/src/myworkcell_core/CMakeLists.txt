@@ -18,16 +18,17 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "srv/LocalizePart.srv"
   DEPENDENCIES geometry_msgs
 )
+rosidl_get_typesupport_target(cpp_typesupport_target ${PROJECT_NAME} "rosidl_typesupport_cpp")
 
 # The vision_node executable
 add_executable(vision_node src/vision_node.cpp)
 ament_target_dependencies(vision_node rclcpp fake_ar_publisher)
-rosidl_target_interfaces(vision_node ${PROJECT_NAME} "rosidl_typesupport_cpp")
+target_link_libraries(vision_node "${cpp_typesupport_target}")
 
 # The myworkcell_node executable
 add_executable(myworkcell_node src/myworkcell_node.cpp)
 ament_target_dependencies(myworkcell_node rclcpp)
-rosidl_target_interfaces(myworkcell_node ${PROJECT_NAME} "rosidl_typesupport_cpp")
+target_link_libraries(myworkcell_node "${cpp_typesupport_target}")
 
 # Mark executables for installation
 install(TARGETS vision_node myworkcell_node

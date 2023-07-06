@@ -99,10 +99,15 @@ Your goal is to create a more intricate system of nodes:
       )
       ```
 
-   1. Add the following lines after the call to `ament_target_dependencies` for the the _vision_node_. These make the _vision_node_ target depend on the generated interface target so that the generated code can be used in the node:
-     
+   1. Right after `rosidl_generate_interfaces`, add the following line to enable executables in this package to access your generated messages.
+
       ``` cmake
       rosidl_get_typesupport_target(cpp_typesupport_target ${PROJECT_NAME} "rosidl_typesupport_cpp")
+      ```
+
+   1. Add the following line after the call to `ament_target_dependencies` for the the _vision_node_. This make the _vision_node_ target depend on the generated interface target so that the generated code can be used in the node:
+     
+      ``` cmake
       target_link_libraries(vision_node "${cpp_typesupport_target}")
       ```
 
@@ -352,7 +357,6 @@ Your goal is to create a more intricate system of nodes:
    ``` cmake
    add_executable(myworkcell_node src/myworkcell_node.cpp)
    ament_target_dependencies(myworkcell_node rclcpp)
-   rosidl_get_typesupport_target(cpp_typesupport_target ${PROJECT_NAME} "rosidl_typesupport_cpp")
    target_link_libraries(myworkcell_node "${cpp_typesupport_target}")
 
    ``` 
