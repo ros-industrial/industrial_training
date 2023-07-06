@@ -45,9 +45,9 @@ Specifically, you will need to:
     <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro"/>
     ```
 
-    >If you explore the ur_macro definition file, or just about any other file that defines a Xacro macro, you’ll find a lot of uses of `${prefix}` in element names. Xacro evaluates anything inside a “${}” at run-time. It can do basic math, and it can look up variables that come to it via properties (ala-global variables) or macro parameters. Most macros will take a “prefix” parameter to allow a user to create multiple instances of said macro. It’s the mechanism by which we can make the eventual URDF element names unique, otherwise we’d get duplicate link names and URDF would complain.
+    >If you explore the ur_macro definition file, or just about any other file that defines a Xacro macro, you’ll find a lot of uses of `${tf_prefix}` in element names. Xacro evaluates anything inside a “${}” at run-time. It can do basic math, and it can look up variables that come to it via properties (ala-global variables) or macro parameters. Most macros will take a “prefix” parameter to allow a user to create multiple instances of said macro. It’s the mechanism by which we can make the eventual URDF element names unique, otherwise we’d get duplicate link names and URDF would complain.
 
- 1. Including the `ur_macro.xacro` file does not actually create a UR5 robot in our URDF model.  It defines a macro, but we still need to call the macro to create the robot links and joints.  _Note the use of the `prefix` tag, as discussed above.  An additional "ur_type" argument tells the macro which model of UR-robot to generate._
+ 1. Including the `ur_macro.xacro` file does not actually create a UR5 robot in our URDF model.  It defines a macro, but we still need to call the macro to create the robot links and joints.  _Note the use of the `tf_prefix` tag, as discussed above.  An additional "ur_type" argument tells the macro which model of UR-robot to generate._
 
     ``` xml
     <!-- ur arm instantiation -->
