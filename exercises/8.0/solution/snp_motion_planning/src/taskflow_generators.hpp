@@ -98,13 +98,9 @@ protected:
     boost::uuids::uuid min_length_task =
         addNode(std::make_unique<tesseract_planning::MinLengthTask>(input_keys_[0], output_keys_[0]));
 
-    // Setup OMPL
-    boost::uuids::uuid ompl_planner_task =
-        addNode(std::make_unique<tesseract_planning::OMPLMotionPlannerTask>(output_keys_[0], output_keys_[0]));
-
-    // Setup TrajOpt
-    boost::uuids::uuid trajopt_planner_task = addNode(
-        std::make_unique<tesseract_planning::TrajOptMotionPlannerTask>(output_keys_[0], output_keys_[0], false));
+    /* ========================================
+     * Fill Code: CREATE CUSTOM PLANNER NODES
+     * ========================================*/
 
     // Setup post collision check
     boost::uuids::uuid contact_check_task =
@@ -114,10 +110,10 @@ protected:
     boost::uuids::uuid time_parameterization_task = addNode(
         std::make_unique<tesseract_planning::IterativeSplineParameterizationTask>(output_keys_[0], output_keys_[0]));
 
-    // Add edges
-    addEdges(min_length_task, { ompl_planner_task });
-    addEdges(ompl_planner_task, { error_task, trajopt_planner_task });
-    addEdges(trajopt_planner_task, { error_task, contact_check_task });
+    /* =======================
+     * Fill Code: EDIT EDGES
+     * =======================*/
+    addEdges(min_length_task, { contact_check_task });
     addEdges(contact_check_task, { error_task, time_parameterization_task });
     addEdges(time_parameterization_task, { error_task, done_task });
   }
@@ -195,9 +191,9 @@ protected:
     boost::uuids::uuid simple_task =
         addNode(std::make_unique<tesseract_planning::SimpleMotionPlannerTask>(input_keys_[0], output_keys_[0], false));
 
-    // Setup TrajOpt
-    boost::uuids::uuid trajopt_planner_task = addNode(
-        std::make_unique<tesseract_planning::TrajOptMotionPlannerTask>(output_keys_[0], output_keys_[0], false));
+    /* ========================================
+     * Fill Code: CREATE CUSTOM PLANNER NODES
+     * ========================================*/
 
     // Setup post collision check
     boost::uuids::uuid contact_check_task =
@@ -207,10 +203,11 @@ protected:
     boost::uuids::uuid time_parameterization_task = addNode(
         std::make_unique<tesseract_planning::IterativeSplineParameterizationTask>(output_keys_[0], output_keys_[0]));
 
-    // Add edges
+    /* =======================
+     * Fill Code: EDIT EDGES
+     * =======================*/
     addEdges(simple_task, { min_length_task });
-    addEdges(min_length_task, { trajopt_planner_task });
-    addEdges(trajopt_planner_task, { error_task, contact_check_task });
+    addEdges(min_length_task, { contact_check_task });
     addEdges(contact_check_task, { error_task, time_parameterization_task });
     addEdges(time_parameterization_task, { error_task, done_task });
   }
@@ -278,20 +275,15 @@ protected:
     boost::uuids::uuid done_task = addNode(std::make_unique<tesseract_planning::DoneTask>());
     boost::uuids::uuid error_task = addNode(std::make_unique<tesseract_planning::ErrorTask>());
 
-    // Setup Min Length Process Generator
+    // Setup Min Length ProcessDescartes Generator
     // This is required because trajopt requires a minimum length trajectory.
     // This is used to correct the input if it is to short.
     boost::uuids::uuid min_length_task =
         addNode(std::make_unique<tesseract_planning::MinLengthTask>(input_keys_[0], output_keys_[0]));
 
-    //    // Setup Descartes
-    //    boost::uuids::uuid descartes_planner_task =
-    //        addNode(std::make_unique<tesseract_planning::DescartesMotionPlannerTask>(output_keys_[0], output_keys_[0],
-    //        false));
-
-    // Setup TrajOpt
-    boost::uuids::uuid trajopt_planner_task = addNode(
-        std::make_unique<tesseract_planning::TrajOptMotionPlannerTask>(output_keys_[0], output_keys_[0], false));
+    /* ========================================
+     * Fill Code: CREATE CUSTOM PLANNER NODES
+     * ========================================*/
 
     // Setup post collision check
     boost::uuids::uuid contact_check_task =
@@ -301,13 +293,10 @@ protected:
     boost::uuids::uuid time_parameterization_task = addNode(
         std::make_unique<tesseract_planning::IterativeSplineParameterizationTask>(output_keys_[0], output_keys_[0]));
 
-    // Add edges
-    addEdges(min_length_task, { trajopt_planner_task });
-
-    //    addEdges(min_length_task, { descartes_planner_task });
-    //    addEdges(descartes_planner_task, { error_task, trajopt_planner_task });
-
-    addEdges(trajopt_planner_task, { error_task, contact_check_task });
+    /* =======================
+     * Fill Code: EDIT EDGES
+     * =======================*/
+    addEdges(min_length_task, { contact_check_task });
     addEdges(contact_check_task, { error_task, time_parameterization_task });
     addEdges(time_parameterization_task, { error_task, done_task });
   }
@@ -319,9 +308,10 @@ using CustomRasterPipeline = tesseract_planning::RasterMotionTask<snp_planning::
                                                                   snp_planning::CartesianMotionPipelineTask,
                                                                   snp_planning::TransitionMotionPipelineTask>;
 using CustomGlobalRasterGlobalPipeline =
-    tesseract_planning::RasterGlobalPipelineTask<tesseract_planning::SimpleMotionPipelineTask,
-                                                 tesseract_planning::DescartesGlobalMotionPipelineTask,
-                                                 CustomRasterPipeline>;
+          tesseract_planning::RasterGlobalPipelineTask<tesseract_planning::SimpleMotionPipelineTask,
+                                                       tesseract_planning::DescartesGlobalMotionPipelineTask,
+                                                       CustomRasterPipeline>;
+
 
 CustomGlobalRasterGlobalPipeline::UPtr createGlobalRasterPipeline()
 {

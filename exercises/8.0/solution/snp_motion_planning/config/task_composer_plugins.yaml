@@ -1,0 +1,283 @@
+task_composer_plugins:
+  search_paths:
+    - /usr/local/lib
+  search_libraries:
+    - tesseract_task_composer_factories
+    - snp_motion_planning_tasks
+  executors:
+    default: TaskflowExecutor
+    plugins:
+      TaskflowExecutor:
+        class: TaskflowTaskComposerExecutorFactory
+        config:
+          threads: 8
+  tasks:
+    plugins:    
+      SNPCartesianPipeline:
+        class: GraphTaskFactory
+        config:
+          inputs: [input_data]
+          outputs: [output_data]
+          nodes:
+            DoneTask:
+              class: DoneTaskFactory
+              config:
+                conditional: false
+            AbortTask:
+              class: AbortTaskFactory
+              config:
+                conditional: false
+            MinLengthTask:
+              class: MinLengthTaskFactory
+              config:
+                conditional: true
+                inputs: [input_data]
+                outputs: [output_data]
+                format_result_as_input: false
+            #DescartesMotionPlannerTask:
+            #  class: DescartesFMotionPlannerTaskFactory
+            #  config:
+            #    conditional: true
+            #    inputs: [output_data]
+            #    outputs: [output_data]
+            #    format_result_as_input: false
+            TrajOptMotionPlannerTask:
+              class: TrajOptMotionPlannerTaskFactory
+              config:
+                conditional: true
+                inputs: [output_data]
+                outputs: [output_data]
+                format_result_as_input: false
+            DiscreteContactCheckTask:
+              class: DiscreteContactCheckTaskFactory
+              config:
+                conditional: true
+                inputs: [output_data]
+            ConstantTCPSpeedTimeParameterizationTask:
+              class: ConstantTCPSpeedTimeParameterizationTaskFactory
+              config:
+                conditional: true
+                inputs: [output_data]
+                outputs: [output_data]
+            KinematicLimitsCheckTask:
+              class: KinematicLimitsCheckTaskFactory
+              config:
+                conditional: true
+                inputs: [output_data]
+                outputs: [output_data]
+          edges:
+            - source: MinLengthTask
+            #  destinations: [AbortTask, DescartesMotionPlannerTask]
+              destinations: [AbortTask, TrajOptMotionPlannerTask]
+            #- source: DescartesMotionPlannerTask
+            #  destinations: [AbortTask, TrajOptMotionPlannerTask]
+            #  destinations: [AbortTask, DiscreteContactCheckTask]
+            - source: TrajOptMotionPlannerTask
+              destinations: [AbortTask, DiscreteContactCheckTask]
+            - source: DiscreteContactCheckTask
+              destinations: [AbortTask, ConstantTCPSpeedTimeParameterizationTask]
+            - source: ConstantTCPSpeedTimeParameterizationTask # IterativeSplineParameterizationTask
+              destinations: [AbortTask, KinematicLimitsCheckTask]
+            - source: KinematicLimitsCheckTask
+              destinations: [AbortTask, DoneTask]
+          terminals: [AbortTask, DoneTask]
+      SNPFreespacePipeline:
+        class: GraphTaskFactory
+        config:
+          inputs: [input_data]
+          outputs: [output_data]
+          nodes:
+            DoneTask:
+              class: DoneTaskFactory
+              config:
+                conditional: false
+            AbortTask:
+              class: AbortTaskFactory
+              config:
+                conditional: false
+            MinLengthTask:
+              class: MinLengthTaskFactory
+              config:
+                conditional: true
+                inputs: [input_data]
+                outputs: [output_data]
+            OMPLMotionPlannerTask:
+              class: OMPLMotionPlannerTaskFactory
+              config:
+                conditional: true
+                inputs: [output_data]
+                outputs: [output_data]
+                format_result_as_input: true
+            TrajOptMotionPlannerTask:
+              class: TrajOptMotionPlannerTaskFactory
+              config:
+                conditional: true
+                inputs: [output_data]
+                outputs: [output_data]
+                format_result_as_input: false
+            DiscreteContactCheckTask:
+              class: DiscreteContactCheckTaskFactory
+              config:
+                conditional: true
+                inputs: [output_data]
+            IterativeSplineParameterizationTask:
+              class: IterativeSplineParameterizationTaskFactory
+              config:
+                conditional: true
+                inputs: [output_data]
+                outputs: [output_data]
+            KinematicLimitsCheckTask:
+              class: KinematicLimitsCheckTaskFactory
+              config:
+                conditional: true
+                inputs: [output_data]
+                outputs: [output_data]
+          edges:
+            - source: MinLengthTask
+            #  destinations: [AbortTask, TrajOptMotionPlannerTask]
+              destinations: [AbortTask, OMPLMotionPlannerTask]
+            - source: OMPLMotionPlannerTask
+              destinations: [AbortTask, TrajOptMotionPlannerTask]
+            - source: TrajOptMotionPlannerTask
+              destinations: [AbortTask, DiscreteContactCheckTask]
+            - source: DiscreteContactCheckTask
+              destinations: [AbortTask, IterativeSplineParameterizationTask]
+            - source: IterativeSplineParameterizationTask
+              destinations: [AbortTask, KinematicLimitsCheckTask]
+            - source: KinematicLimitsCheckTask
+              destinations: [AbortTask, DoneTask]
+          terminals: [AbortTask, DoneTask]
+      SNPTransitionPipeline:
+        class: GraphTaskFactory
+        config:
+          inputs: [input_data]
+          outputs: [output_data]
+          nodes:
+            DoneTask:
+              class: DoneTaskFactory
+              config:
+                conditional: false
+            AbortTask:
+              class: AbortTaskFactory
+              config:
+                conditional: false
+            MinLengthTask:
+              class: MinLengthTaskFactory
+              config:
+                conditional: true
+                inputs: [input_data]
+                outputs: [output_data]
+            TrajOptMotionPlannerTask:
+              class: TrajOptMotionPlannerTaskFactory
+              config:
+                conditional: true
+                inputs: [output_data]
+                outputs: [output_data]
+                format_result_as_input: false
+            OMPLMotionPlannerTask:
+              class: OMPLMotionPlannerTaskFactory
+              config:
+                conditional: true
+                inputs: [output_data]
+                outputs: [output_data]
+                format_result_as_input: true
+            DiscreteContactCheckTask:
+              class: DiscreteContactCheckTaskFactory
+              config:
+                conditional: true
+                inputs: [output_data]
+            IterativeSplineParameterizationTask:
+              class: IterativeSplineParameterizationTaskFactory
+              config:
+                conditional: true
+                inputs: [output_data]
+                outputs: [output_data]
+            KinematicLimitsCheckTask:
+              class: KinematicLimitsCheckTaskFactory
+              config:
+                conditional: true
+                inputs: [output_data]
+                outputs: [output_data]
+          edges:
+            - source: MinLengthTask
+              destinations: [AbortTask, TrajOptMotionPlannerTask]
+            - source: TrajOptMotionPlannerTask
+              destinations: [OMPLMotionPlannerTask, DiscreteContactCheckTask]
+            - source: OMPLMotionPlannerTask
+              destinations: [AbortTask, DiscreteContactCheckTask]
+            - source: DiscreteContactCheckTask
+              destinations: [AbortTask, IterativeSplineParameterizationTask]
+            - source: IterativeSplineParameterizationTask
+              destinations: [AbortTask, KinematicLimitsCheckTask]
+            - source: KinematicLimitsCheckTask
+              destinations: [AbortTask, DoneTask]
+          terminals: [AbortTask, DoneTask]
+      SNPPipeline:
+        class: GraphTaskFactory
+        config:
+          inputs: [input_data]
+          outputs: [output_data]
+          nodes:
+            DoneTask:
+              class: DoneTaskFactory
+              config:
+                conditional: false
+            AbortTask:
+              class: AbortTaskFactory
+              config:
+                conditional: false
+            SimpleMotionPlannerTask:
+              class: SimpleMotionPlannerTaskFactory
+              config:
+                conditional: true
+                inputs: [input_data]
+                outputs: [output_data]
+                format_result_as_input: true
+            DescartesMotionPlannerTask:
+              class: DescartesFMotionPlannerTaskFactory
+              config:
+                conditional: true
+                inputs: [output_data]
+                outputs: [output_data]
+                format_result_as_input: true
+            RasterMotionTask:
+              class: RasterMotionTaskFactory
+              config:
+                conditional: true
+                inputs: [output_data]
+                outputs: [output_data]
+                freespace:
+                  task: SNPFreespacePipeline
+                  config:
+                    input_remapping:
+                      input_data: output_data
+                    output_remapping:
+                      output_data: output_data
+                    input_indexing: [output_data]
+                    output_indexing: [output_data]
+                raster:
+                  task: SNPCartesianPipeline
+                  config:
+                    input_remapping:
+                      input_data: output_data
+                    output_remapping:
+                      output_data: output_data
+                    input_indexing: [output_data]
+                    output_indexing: [output_data]
+                transition:
+                  task: SNPTransitionPipeline
+                  config:
+                    input_remapping:
+                      input_data: output_data
+                    output_remapping:
+                      output_data: output_data
+                    input_indexing: [output_data]
+                    output_indexing: [output_data]
+          edges:
+            - source: SimpleMotionPlannerTask
+              destinations: [AbortTask, DescartesMotionPlannerTask]
+            - source: DescartesMotionPlannerTask
+              destinations: [AbortTask, RasterMotionTask]
+            - source: RasterMotionTask
+              destinations: [AbortTask, DoneTask]
+          terminals: [AbortTask, DoneTask]

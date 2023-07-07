@@ -8,6 +8,14 @@
 #include <tesseract_motion_planners/trajopt/profile/trajopt_default_composite_profile.h>
 #include <tesseract_motion_planners/simple/profile/simple_planner_lvs_plan_profile.h>
 
+static const std::string TRAJOPT_DEFAULT_NAMESPACE = "TrajOptMotionPlannerTask";
+static const std::string OMPL_DEFAULT_NAMESPACE = "OMPLMotionPlannerTask";
+static const std::string DESCARTES_DEFAULT_NAMESPACE = "DescartesMotionPlannerTask";
+static const std::string SIMPLE_DEFAULT_NAMESPACE = "SimpleMotionPlannerTask";
+static const std::string MIN_LENGTH_DEFAULT_NAMESPACE = "MinLengthTask";
+static const std::string CONTACT_CHECK_DEFAULT_NAMESPACE = "DiscreteContactCheckTask";
+static const std::string ISP_DEFAULT_NAMESPACE = "IterativeSplineParameterizationTask";
+
 template <typename FloatType>
 typename tesseract_planning::DescartesDefaultPlanProfile<FloatType>::Ptr createDescartesPlanProfile()
 {
@@ -80,11 +88,9 @@ std::shared_ptr<tesseract_planning::TrajOptDefaultCompositeProfile> createTrajOp
   // TrajOpt profiles
   auto profile = std::make_shared<tesseract_planning::TrajOptDefaultCompositeProfile>();
   profile->smooth_velocities = true;
-
-  profile->smooth_accelerations = true;
-  profile->smooth_jerks = false;
-  profile->acceleration_coeff = Eigen::VectorXd::Constant(6, 1, 10.0);
-  profile->jerk_coeff = Eigen::VectorXd::Constant(6, 1, 20.0);
+  profile->velocity_coeff = Eigen::VectorXd::Constant(6, 1, 10.0);
+  profile->acceleration_coeff = Eigen::VectorXd::Constant(6, 1, 25.0);
+  profile->jerk_coeff = Eigen::VectorXd::Constant(6, 1, 50.0);
 
   profile->collision_cost_config.enabled = true;
   profile->collision_cost_config.type = trajopt::CollisionEvaluatorType::DISCRETE_CONTINUOUS;
@@ -99,5 +105,5 @@ std::shared_ptr<tesseract_planning::TrajOptDefaultCompositeProfile> createTrajOp
 
 std::shared_ptr<tesseract_planning::SimplePlannerLVSPlanProfile> createSimplePlannerProfile()
 {
-  return std::make_shared<tesseract_planning::SimplePlannerLVSPlanProfile>(5 * M_PI / 180, 0.1, 5 * M_PI / 180, 5);
+  return std::make_shared<tesseract_planning::SimplePlannerLVSPlanProfile>(5 * M_PI / 180, 0.1, 5 * M_PI / 180, 1);
 }
