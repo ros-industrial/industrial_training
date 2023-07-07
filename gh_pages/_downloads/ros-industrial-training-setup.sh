@@ -19,7 +19,7 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-a
 sudo apt update -y
 
 # ROS2 install
-sudo apt install -y ros-humble-desktop ros-humble-moveit \
+sudo apt install -y ros-humble-desktop \
     ros-humble-ros2-control ros-humble-ros2-controllers ros-humble-xacro ros-humble-joint-state-publisher-gui \
     python3-colcon-common-extensions python3-argcomplete \
     ros-humble-pcl-ros pcl-tools \
