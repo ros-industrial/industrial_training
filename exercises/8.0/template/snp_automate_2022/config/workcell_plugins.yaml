@@ -3,7 +3,7 @@ kinematic_plugins:
     - snp_motion_planning_plugins
   inv_kin_plugins:
     manipulator:
-      default: IKFastInvKin
+      default: KDLInvKinChainLMA #IKFastInvKin
       plugins:
         KDLInvKinChainLMA:
           class: KDLInvKinChainLMAFactory

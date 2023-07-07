@@ -19,30 +19,39 @@ find_package(rclcpp_action REQUIRED)
 find_package(snp_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 
-add_executable(${PROJECT_NAME}_simulator_node src/execution_simulator_node.cpp)
-ament_target_dependencies(
-  ${PROJECT_NAME}_simulator_node
-  rclcpp
-  std_srvs
-  rclcpp_action
-  control_msgs
-  snp_msgs)
-
 add_executable(${PROJECT_NAME}_node src/motion_execution_node.cpp)
 ament_target_dependencies(
   ${PROJECT_NAME}_node
-  rclcpp
-  std_srvs
-  rclcpp_action
   control_msgs
+  rclcpp
+  rclcpp_action
+  sensor_msgs
   snp_msgs
-  sensor_msgs)
+  std_srvs)
 
-install(TARGETS ${PROJECT_NAME}_simulator_node ${PROJECT_NAME}_node DESTINATION lib/${PROJECT_NAME})
+add_executable(execution_simulator src/execution_simulator_node.cpp)
+ament_target_dependencies(
+  execution_simulator
+  control_msgs
+  rclcpp
+  rclcpp_action)
+
+add_executable(robot_enable_simulator src/robot_enable_simulator_node.cpp)
+ament_target_dependencies(robot_enable_simulator rclcpp std_srvs)
+
+install(TARGETS ${PROJECT_NAME}_node execution_simulator robot_enable_simulator DESTINATION lib/${PROJECT_NAME})
+install(DIRECTORY launch DESTINATION share/${PROJECT_NAME})
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   ament_lint_auto_find_test_dependencies()
 endif()
 
+ament_export_dependencies(
+  control_msgs
+  rclcpp
+  rclcpp_action
+  snp_msgs
+  std_srvs
+  sensor_msgs)
 ament_package()

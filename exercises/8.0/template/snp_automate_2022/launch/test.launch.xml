@@ -7,12 +7,12 @@
   <arg name="rviz_config" default="$(find-pkg-share snp_automate_2022)/config/rviz_base_config.rviz" if="$(var rviz)"/>
 
   <node pkg="joint_state_publisher" exec="joint_state_publisher">
-    <param name="source_list" value="[robot_joint_states]"/>
+    <param name="source_list" value="[robot_joint_states, joint_state_broadcaster/joint_states]"/>
   </node>
 
   <group if="$(var use_gui)">
     <node pkg="joint_state_publisher_gui" exec="joint_state_publisher_gui" name="joint_state_publisher_gui" output="screen">
-      <remap from="/joint_states" to="/robot_joint_states"/>
+      <remap from="joint_states" to="robot_joint_states"/>
     </node>
   </group>
 

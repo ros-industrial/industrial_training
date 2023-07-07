@@ -3,6 +3,9 @@
   <xacro:include filename="$(find motoman_hc10_support)/urdf/hc10dt_macro.xacro" />
   <xacro:motoman_hc10dt prefix=""/>
 
+  <xacro:include filename="$(find snp_automate_2022)/urdf/ros2_control.xacro"/>
+  <xacro:snp_ros2_control name="SNP ROS2 Control" prefix=""/>
+
   <xacro:property name="dt_flange_width" value="0.040"/>
 
   <!-- Add World -->
@@ -164,5 +167,4 @@
     <child link="sand_tcp"/>
     <origin xyz="-0.26261 0 ${0.08259 + dt_flange_width}" rpy="${radians(-90)} 0 ${radians(90)}"/>
   </joint>
-
 </robot>
