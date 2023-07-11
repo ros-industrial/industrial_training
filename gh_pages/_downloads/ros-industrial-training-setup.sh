@@ -23,7 +23,7 @@ sudo apt install -y ros-humble-desktop \
     ros-humble-ros2-control ros-humble-ros2-controllers ros-humble-xacro ros-humble-joint-state-publisher-gui \
     python3-colcon-common-extensions python3-argcomplete \
     ros-humble-pcl-ros pcl-tools \
-    python3-rosdep
+    python3-rosdep python3-vcstool
 
 # rosdep setup
 sudo rosdep init
