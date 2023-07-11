@@ -92,10 +92,6 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        ee_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
         forearm_link:
           Alpha: 1
           Show Axes: false
@@ -232,8 +228,6 @@ Visualization Manager:
           Value: false
         /cover_part2:
           Value: false
-        /ee_link:
-          Value: false
         /forearm_link:
           Value: false
         /front_wall2:
@@ -316,13 +310,12 @@ Visualization Manager:
                     /wrist_1_link:
                       /wrist_2_link:
                         /wrist_3_link:
-                          /ee_link:
-                            /gripper_frame:
-                              /gripper_body:
+                          /gripper_frame:
+                            /gripper_body:
+                              {}
+                            /tcp_frame:
+                              /attached_object_link:
                                 {}
-                              /tcp_frame:
-                                /attached_object_link:
-                                  {}
                           /wrist_3_padding:
                             {}
             /kinect_keepout:
