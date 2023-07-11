@@ -27,6 +27,8 @@
   <build_depend>pcl_ros</build_depend>
   <build_depend>pcl_conversions</build_depend>
   <build_depend>yaml-cpp</build_depend>
+
+  <depend>perception_pcl</depend>
   
   <exec_depend>rclpy</exec_depend>
   <exec_depend>controller_manager</exec_depend>
@@ -39,6 +41,7 @@
   <exec_depend>moveit_ros_occupancy_map_monitor</exec_depend>
   <exec_depend>moveit_ros_visualization</exec_depend>
   <exec_depend>joint_state_broadcaster</exec_depend>
+  <exec_depend>ur_robot_driver</exec_depend>
 
   <export>
   	<build_type>ament_cmake</build_type>
