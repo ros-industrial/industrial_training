@@ -1,8 +1,7 @@
 #!/bin/bash
 
-TARGET_BRANCH=foxy  # industrial_training git branch
-ROS_RELEASE=noetic     # ROS1 release version
-ROS2_RELEASE=foxy      # ROS2 release version
+TARGET_BRANCH=humble  # industrial_training git branch
+ROS2_RELEASE=humble      # ROS2 release version
 
 #=======================================================================
 # verify that PC configuration matches requirements for training class
@@ -84,29 +83,19 @@ function check_debs() {
   check_deb pcl-tools
   check_deb python3-argcomplete
   check_deb python3-vcstool
-   echo "Checking ROS1 packages:"
-  check_deb python3-catkin-tools
-  check_deb ros-$ROS_RELEASE-desktop
-  check_deb ros-$ROS_RELEASE-perception
-  check_deb ros-$ROS_RELEASE-urdf-tutorial
-  check_deb ros-$ROS_RELEASE-moveit
-  check_deb ros-$ROS_RELEASE-industrial-core
-  disable_deb ros-$ROS_RELEASE-openni-launch
-  disable_deb ros-$ROS_RELEASE-openni-camera
-  disable_deb ros-$ROS_RELEASE-openni2-launch
-  disable_deb ros-$ROS_RELEASE-openni2-launch
+  check_deb python3-rosdep
+
   echo "Checking ROS2 packages:"
   check_deb python3-colcon-bash
   check_deb python3-colcon-core
   check_deb python3-colcon-ros
   check_deb python3-colcon-common-extensions
   check_deb ros-$ROS2_RELEASE-desktop
-  check_deb ros-$ROS2_RELEASE-moveit
-  check_deb ros-$ROS2_RELEASE-ros1-bridge
   check_deb ros-$ROS2_RELEASE-ros2-control
   check_deb ros-$ROS2_RELEASE-ros2-controllers
   check_deb ros-$ROS2_RELEASE-xacro
   check_deb ros-$ROS2_RELEASE-joint-state-publisher-gui
+  check-deb ros-$ROS2_RELEASE-pcl-ros
 }
 
 function check_bashrc() {
