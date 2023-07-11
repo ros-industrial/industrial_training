@@ -155,13 +155,16 @@ Viewing Results
       ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 world_frame kinect_link
 
    .. code-block:: bash
+
       cd ~/perception_ws
       ros2 run lesson_perception pcd_to_pointcloud --ros-args -p filename:=${HOME}/table.pcd -p tf_frame:=kinect_link -p topic:=/kinect/depth_registered/points
       
    .. code-block:: bash
+
       ros2 run rviz2 rviz2
 
    .. code-block:: bash
+
       ros2 launch lesson_perception processing_node.launch.py
 
 #. View results
