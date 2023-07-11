@@ -211,7 +211,7 @@ class MoveItConfigHelper:
         for controller in moveit_config_parameters.ros_controllers_list:
             load_controllers_processes += [
                 ExecuteProcess(
-                    cmd=["ros2 run controller_manager spawner.py {}".format(controller)],
+                    cmd=["ros2 run controller_manager spawner {}".format(controller)],
                     shell=True,
                     output="screen",
                 )

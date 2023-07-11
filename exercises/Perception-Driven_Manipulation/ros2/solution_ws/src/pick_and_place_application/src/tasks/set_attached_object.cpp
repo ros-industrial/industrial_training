@@ -32,7 +32,7 @@ void PickAndPlaceApp::setAttachedObject(bool attach,
 
     // attaching
     current_state->attachBody(
-        cfg.ATTACHED_OBJECT_LINK_NAME, shapes_array, pose_array, cfg.TOUCH_LINKS, cfg.TCP_LINK_NAME);
+        cfg.ATTACHED_OBJECT_LINK_NAME, Eigen::Isometry3d::Identity(), shapes_array, pose_array, cfg.TOUCH_LINKS, cfg.TCP_LINK_NAME);
 
     // update box marker
     cfg.MARKER_MESSAGE.header.frame_id = cfg.TCP_LINK_NAME;

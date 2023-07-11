@@ -45,7 +45,9 @@
 
    <!-- ur arm instantiation -->
    <xacro:ur_robot
-     prefix="${arm_prefix}"
+     name="ur5"
+     tf_prefix="${arm_prefix}"
+     parent="ur5_stand"
      joint_limits_parameters_file="$(arg joint_limit_params)"
      kinematics_parameters_file="$(arg kinematics_params)"
      physical_parameters_file="$(arg physical_params)"
@@ -56,7 +58,9 @@
      safety_k_position="$(arg safety_k_position)"
      use_fake_hardware="$(arg use_fake_hardware)"
      fake_sensor_commands="$(arg fake_sensor_commands)"
-     initial_positions="${initial_positions}" />
+     initial_positions="${initial_positions}" >
+       <origin xyz="0 0 ${robot_stand_height * 0.5}" rpy="0 0 2.355"/>
+    </xacro:ur_robot>
     
     <!-- instantiating robot arm and gripper -->
     <xacro:vacuum_gripper_definition prefix="${arm_prefix}" gripper_adjustment="0.01"/>
@@ -111,13 +115,6 @@
 
 
     <!-- end of arm-workcell link definitions -->
-
-    <!-- arm-workcell joint definitions -->
-    <joint name="stand_to_base" type="fixed">
-            <parent link="ur5_stand"/>
-            <child link="${arm_prefix}base_link"/>
-            <origin xyz="0 0 ${robot_stand_height * 0.5}" rpy="0 0 2.355"/>
-    </joint>
 
     <!-- end of arm workcell joint definitions-->
 

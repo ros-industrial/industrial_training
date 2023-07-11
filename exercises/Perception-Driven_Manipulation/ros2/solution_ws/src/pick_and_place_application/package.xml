@@ -38,7 +38,7 @@
   <exec_depend>moveit_ros_move_group</exec_depend>
   <exec_depend>moveit_ros_occupancy_map_monitor</exec_depend>
   <exec_depend>moveit_ros_visualization</exec_depend>
-  <exec_depend>joint_state_controller</exec_depend>
+  <exec_depend>joint_state_broadcaster</exec_depend>
 
   <export>
   	<build_type>ament_cmake</build_type>
