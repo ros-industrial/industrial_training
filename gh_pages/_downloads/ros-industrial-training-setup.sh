@@ -3,6 +3,11 @@
 # auto-detect if we're running in AWS.  Set IS_AWS before calling this script to override (export IS_AWS=1; script.bash)
 IS_AWS=${IS_AWS:-"$(expr "`hostname -d`" == "ec2.internal" )" }
 
+# we want services to restart automatically without interacting during all the installations
+if [ $IS_AWS -eq 1 ]; then
+    sudo sed -i "/#\$nrconf{restart} = 'i';/s/.*/\$nrconf{restart} = 'a';/" /etc/needrestart/needrestart.conf
+fi
+
 sudo apt update -y
 sudo apt upgrade -y
 sudo apt install -y curl gcc make gnupg2 lsb-release git meld build-essential libfontconfig1 mesa-common-dev libglu1-mesa-dev
