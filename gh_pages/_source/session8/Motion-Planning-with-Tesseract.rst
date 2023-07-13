@@ -14,7 +14,7 @@ We will create a new workspace, since this exercise does not overlap with the pr
 
     .. code-block:: bash
 
-		source /opt/ros/foxy/setup.bash
+		source /opt/ros/humble/setup.bash
 
     .. Note:: If you are using a VM provided by us, please skip to step 7 as a directory called ``tesseract_ws`` should already exist with the dependencies already installed for you.
 
