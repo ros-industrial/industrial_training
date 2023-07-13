@@ -34,3 +34,8 @@
     local-name: ifopt
     uri: https://github.com/ethz-adrl/ifopt.git
     version: 2.1.3
+- git:
+    local-name: taskflow
+    uri: https://github.com/taskflow/taskflow.git
+    version: v3.4.0
+
