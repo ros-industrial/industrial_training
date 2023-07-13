@@ -393,7 +393,7 @@ private:
       tesseract_planning::TaskComposerDataStorage input_data;
       input_data.setData(input_key, program);
       tesseract_planning::TaskComposerProblem::UPtr problem =
-          std::make_unique<tesseract_planning::PlanningTaskComposerProblem>(env_, input_data, profile_dict);
+          std::make_unique<tesseract_planning::PlanningTaskComposerProblem>(planner_env, input_data, profile_dict);
       tesseract_planning::TaskComposerInput input(std::move(problem));
       input.dotgraph = true;
 
