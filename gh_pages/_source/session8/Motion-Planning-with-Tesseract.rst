@@ -70,7 +70,7 @@ Most of the infrastructure for a ROS node has already been completed for you; th
 	* This file contains all of the kinematic plugins and contact manager plugins for our application. A kinematic plugin configuration file like this is required to use Tesseract. Take a look at ``workcell.srdf`` to see how it gets incorporated into the project.
 
 #. ``snp_motion_planning/config/task_composer_plugins.yaml``:
-   * This file contains the custom pipeline we will be using in this exercise. Currently, it is populated with very minimal pipelines. We will be modifying this file heavily to create increasingly complex and capable pipelines that enable solving difficult motion plans.
+	* This file contains the custom pipeline we will be using in this exercise. Currently, it is populated with very minimal pipelines. We will be modifying this file heavily to create increasingly complex and capable pipelines that enable solving difficult motion plans.
 
 #. ``snp_motion_planning/src/planner_profiles.hpp``:
 	* This file contains the planner profiles used to create our motion plan. The configuration of these profiles affect the behavior of the steps in our pipelines. Currently, only the Simple Planner profile is fully populated. This is one of the main files we will be editing in our exercise.
@@ -225,8 +225,8 @@ By following the same process as Descartes go ahead and try to add OMPL to your 
 
    <details>
    <summary>Add OMPL to Pipelines Solution Spoiler</summary>
-   <pre>
    <code>
+   <pre>
    SNPFreespacePipeline:
      class: GraphTaskFactory
      config:
@@ -260,8 +260,8 @@ By following the same process as Descartes go ahead and try to add OMPL to your 
          - source: OMPLMotionPlannerTask
            destinations: [AbortTask, DoneTask]
        terminals: [AbortTask, DoneTask]
-   </code>
    </pre>
+   </code>
    </details>
 
 .. Note:: If you're having problems successfully running try and look at ``/tmp/ScanNPlanPipelineResults.dot`` for help in debugging what's going wrong. You might find that your from_start or to_end motions are failing. This is a common issue people run into because they don't realize the start state of the robot is actually in collision. You can move the robot out of collision with the ``joint_state_publisher_gui`` widget that should be floating around your screen somewhere.
@@ -281,8 +281,8 @@ After Descartes in the Cartesian pipeline and after OMPL in the Transition and F
 
    <details>
    <summary>Add Time Parameterization to Pipelines Solution Spoiler</summary>
-   <pre>
    <code>
+   <pre>
    SNPCartesianPipeline:
      class: GraphTaskFactory
      config:
@@ -325,8 +325,8 @@ After Descartes in the Cartesian pipeline and after OMPL in the Transition and F
          - source: IterativeSplineParameterizationTask
            destinations: [AbortTask, DoneTask]
        terminals: [AbortTask, DoneTask]
-   </code>
    </pre>
+   </code>
    </details>
 
 Once you've properly done this you should have much smoother and more timely trajectories planning.
@@ -337,8 +337,8 @@ Now you have trajectories being produced that `SHOULD` always be collision free,
 
    <details>
    <summary>Add Contact Checking to Pipelines Solution Spoiler</summary>
-   <pre>
    <code>
+   <pre>
    SNPCartesianPipeline:
      class: GraphTaskFactory
      config:
@@ -389,8 +389,8 @@ Now you have trajectories being produced that `SHOULD` always be collision free,
          - source: IterativeSplineParameterizationTask
            destinations: [AbortTask, DoneTask]
        terminals: [AbortTask, DoneTask]
-   </code>
    </pre>
+   </code>
    </details>
 
 Congratulations! You now have a fully functional planning pipeline that can solve a wide range of planning applications. Continue on in this exercise to make this planning pipeline more robust.
@@ -494,8 +494,8 @@ Go ahead and try and remove the Descartes task from the Cartesian pipeline on yo
 
    <details>
    <summary>Remove Descartes from Cartesian Pipeline Solution Spoiler</summary>
-   <pre>
    <code>
+   <pre>
    SNPCartesianPipeline:
      class: GraphTaskFactory
      config:
@@ -537,8 +537,8 @@ Go ahead and try and remove the Descartes task from the Cartesian pipeline on yo
          - source: IterativeSplineParameterizationTask
            destinations: [AbortTask, DoneTask]
        terminals: [AbortTask, DoneTask]
-   </code>
    </pre>
+   </code>
    </details>
 
 Running the application with this latest pipeline should result in the best trajectory you've seen up to this point. There should be much less motion between rasters as they have been globally optimized together.
@@ -613,8 +613,8 @@ First we're going to go back to the yaml file where we'll add a TrajOpt task to 
 
    <details>
    <summary>TrajOpt Added to Cartesian Pipeline Solution Spoiler</summary>
-   <pre>
    <code>
+   <pre>
    SNPCartesianPipeline:
      class: GraphTaskFactory
      config:
@@ -665,16 +665,16 @@ First we're going to go back to the yaml file where we'll add a TrajOpt task to 
          - source: IterativeSplineParameterizationTask
            destinations: [AbortTask, DoneTask]
        terminals: [AbortTask, DoneTask]
-   </code>
    </pre>
+   </code>
    </details>
 
 .. raw:: html
 
    <details>
    <summary>TrajOpt Added to Freespace/Transition Pipeline Solution Spoiler</summary>
-   <pre>
    <code>
+   <pre>
    SNPFreespacePipeline:
      class: GraphTaskFactory
      config:
@@ -733,8 +733,8 @@ First we're going to go back to the yaml file where we'll add a TrajOpt task to 
          - source: IterativeSplineParameterizationTask
            destinations: [AbortTask, DoneTask]
        terminals: [AbortTask, DoneTask]
-   </code>
    </pre>
+   </code>
    </details>
 
 On top of adding this to the pipelines we are going to set up a profile for TrajOpt. TrajOpt is unique in that it has multiple profiles to set it up. Today we will be going over 2 of the 3. The ``TrajOptPlanProfile`` deals with waypoint level optimization and the ``TrajOptCompositeProfile`` deals with trajectory level optimization.
@@ -797,8 +797,8 @@ Also, it's always good to make sure you're staying inside all your kinematic lim
 
    <details>
    <summary>Example Cartesian Pipeline Solution Spoiler</summary>
-   <pre>
    <code>
+   <pre>
    SNPCartesianPipeline:
      class: GraphTaskFactory
      config:
@@ -857,8 +857,8 @@ Also, it's always good to make sure you're staying inside all your kinematic lim
          - source: KinematicLimitsCheckTask
            destinations: [AbortTask, DoneTask]
        terminals: [AbortTask, DoneTask]
-   </code>
    </pre>
+   </code>
    </details>
 
 When running your application with these changes you should notice nice smooth motions and constant speeds on the surface.
