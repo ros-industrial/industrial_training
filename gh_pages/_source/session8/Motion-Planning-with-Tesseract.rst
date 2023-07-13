@@ -49,7 +49,7 @@ We will create a new workspace, since this exercise does not overlap with the pr
     	.. code-block:: bash
 
 		cd ~/tesseract_ws
-		colcon build --cmake-args -DTESSERACT_BUILD_FCL=OFF
+		colcon build --symlink-install --cmake-args -DTESSERACT_BUILD_FCL=OFF
 
 #. Source the workspace
 
@@ -64,365 +64,822 @@ We will create a new workspace, since this exercise does not overlap with the pr
 
 Intro (Review Existing Code)
 ----------------------------
-Most of the infrastructure for a ROS node has already been completed for you; the focus of this exercise are Tesseract planner profiles and taskflow generators. You will notice that many files and packages are already provided for you. You could run the application as is, but you may get errors. At this time we will explore the source code that has been provided. The following are highlights of what is included.
+Most of the infrastructure for a ROS node has already been completed for you; the focus of this exercise are Tesseract custom pipelines and planner profiles. You will notice that many files and packages are already provided for you. You could run the application as is, but it won't do anything intelligent and you may notice some weird behaviors. At this time we will explore the source code that has been provided. The following are highlights of what is included.
 
 #. ``snp_automate_2022/config/worcell_plugins.yaml``:
 	* This file contains all of the kinematic plugins and contact manager plugins for our application. A kinematic plugin configuration file like this is required to use Tesseract. Take a look at ``workcell.srdf`` to see how it gets incorporated into the project.
 
+#. ``snp_motion_planning/config/task_composer_plugins.yaml``:
+   * This file contains the custom pipeline we will be using in this exercise. Currently, it is populated with very minimal pipelines. We will be modifying this file heavily to create increasingly complex and capable pipelines that enable solving difficult motion plans.
+
 #. ``snp_motion_planning/src/planner_profiles.hpp``:
-	* This file contains the planner profiles used to create our motion plan. Currently, only the Simple Planner profile is fully populated. This is one of the main files we will be editing in our exercise.
+	* This file contains the planner profiles used to create our motion plan. The configuration of these profiles affect the behavior of the steps in our pipelines. Currently, only the Simple Planner profile is fully populated. This is one of the main files we will be editing in our exercise.
 
 #. ``snp_motion_planning/src/planning_server.cpp``:
 	* This is where our custom planner profiles will be used by our application. Take a look at the ``createProgram()`` method. This method takes in the toolpath rasters and constructs motion plan requests in a manner usable by Tesseract. These motions include freespace motions, transition motions, and raster (process) motions. The order that they are added is the same order that they will be returned in.
 
-#. ``snp_motion_planning/src/taskflow_generators.hpp``:
-	* This file creates taskflow graphs for planning transition, raster, and freespace motions using our planners. This is another main file we will be editing.
+Running the Application
+-----------------------
+Throughout this exercise we will always follow the same process for running the application.
+
+#. Launch the application with verbose logging on to help with debugging:
+   .. code-block:: bash
+
+         ros2 launch snp_automate_2022 start.launch.xml
+
+   At this point you should see an RVIZ window pop up with an HC10 robot on a table
+
+#. There should also be a `joint_state_publisher_gui` on your screen. Feel free to play around with it as well to create different start states.
+
+#. Click the ``Get Detailed Scan`` button to populate the mesh we will be running process motions on
+
+#. Click the ``Polygon Selection Tool`` on the top row of RVIZ
+
+#. With your mouse draw a region on the yellow mesh where you want to process. 
+   
+   .. Note:: If this area is too small waypoints won't be able to be generated. Also, you can clear your drawing with a press of the middle mouse button.
+
+#. Click back on the ``Interact``  button on the top row of RVIZ to go back to normal RVIZ interaction.
+
+#. Click ``Generate Tool Path Plan`` to create waypoints. If no waypoints show up or you dislike your selected region try redrawing your area with the ``Polygon Selection Tool``
+
+#. Once satisfied with your waypoints click ``Generate Motion Plan``. At this point your terminal should start writing out many lines.
+
+#. Once motion planning is complete, if it is successful, you can see it by going to the ``TesseractWorkbench`` tab in the bottom left of RVIZ then the ``Trajectory`` tab and expose the items under ``general`` by clicking the arrow. Clicking on ``Trajectory Set`` will allow you to plan the planned trajectory and further inspection allows you to look at each individual step in detail.
+
+.. image:: images/TesseractTrajectoryViewer.png
+   :width: 800
+   :align: center
+
+#. To understand what exactly the pipeline did you can go to the ``/tmp`` directory and open the following files:
+   * ScanNPlanPipeline.dot
+   * SNPFreespacePipeline.dot
+   * SNPTransitionPipeline.dot
+   * SNPCartesianPipeline.dot
+   * ScanNPlanPipelineResults.dot
 
 Fill in the Code
 ----------------
-The planner profiles tell Tesseract how to use a given motion planner with specific configurations. These configurations can range from timeout limits to specific pose sampling. For this exercise, we will be implementing the profiles for Descartes, OMPL, and TrajOpt. 
+If you try and run the application right now you'll get a successful plan, but right now it is just interpolated between waypoints naively. If you open the file ``/tmp/SNPCartesianPipeline.dot`` you'll see that only one step was performed and it was just checking that the raster meets a minimum length. 
 
-Currently, only the Simple Planner is set up. Try running the application and see how the motion plan performs.
+.. image:: images/StartingCartesianPipeline.png
+   :width: 800
+   :align: center
 
-	.. code-block:: bash
+.. Note:: In this graph a ``1`` signifies success and a ``0`` signifies failure.
 
-		ros2 launch snp_automate_2022 start.launch.xml
+Let's improve this pipeline by making it use Descartes when planning the Cartesian process motions.
 
-You should see an Rviz window appear with a robot on a table. Click `Get Detailed Scan` to see a model of our work surface appear on the table. Use the `Polygon Selection Tool` at the top to select a region on the work surface. 
+Add Descartes to the Pipeline
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Find the `snp_tpp_app` window that should also have appeared when you launched the application. We can use this to select different tool path planners and modifiers. Add ``ROISelectionMeshModifier`` and ``PlaneSlicerRasterPlanner``. You should see more options appear on the screen after. Feel free to play around with these and see how they affect your tool path plan. For the `Tool Path Modifier` we recommend adding ``SnakeOrganizationModifier`` and ``MovingAverageOrientationSmoothingModifier``.
+Open the ``snp_motion_planning/config/task_composer_plugins.yaml`` file so we can add Descartes to the pipeline. Scroll down until you find the line that says ``SNPCartesianPipeline``. This is the place where the pipeline resides that made that dotgraph you just looked at. If you look at the ``nodes`` field you'll see exactly the nodes you see in the dotgraph.
 
-After making changes on the `snp_tpp_app` return to Rviz and click `Generate Tool Path Plan`. You should now see waypoints appear in your selected region. When you are satisfied with the waypoints, click `Generate Motion Plan` (this may take a few minutes). Before beginning the exercise, you'll notice that the motion plans will all fail.
+.. code-block:: yaml
 
-There should also be a `joint_state_publisher_gui` on your screen. Feel free to play around with it as well to create different start states. Note that the motion plan will fail if your start state is in collision.
+      nodes:
+         DoneTask:
+           class: DoneTaskFactory
+           config:
+             conditional: false
+         AbortTask:
+           class: AbortTaskFactory
+           config:
+             conditional: false
+         MinLengthTask:
+           class: MinLengthTaskFactory
+           config:
+             conditional: true
+             inputs: [input_data]
+             outputs: [output_data]
 
-When a motion plan succeeds you will see a message saying ``perform motion planning completed!``. To see the motion plan play, navigate to the ``TesseractWorkbench`` panel at the bottom right of the Rviz screen and go to the ``Trajectory`` tab. Expand ``general`` and click on ``Trajectory Set``. A play button should appear at the bottom of the panel. You can click it to play through your motion plan. You can also expand the trajectory to see the various states the robot moves to during its motion. 
+And how all of these nodes should be connected is defined in the ``edges`` part.
 
-.. Note:: If the application fails to create a motion plan, try playing around with the settings in `snp_tpp_app`. You may need to change the line and point spacing. 
+.. code-block:: yaml
 
-Implement the Descartes Planner Profile
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      edges:
+         - source: MinLengthTask
+           destinations: [AbortTask, DoneTask]
 
-#. Create the planner profile:
-	
-   Within ``snp_motion_planning/src/planner_profiles.hpp``, find the section
+We want to add a node that is called ``DescartesMotionPlannerTask`` of class ``DescartesFMotionPlannerTaskFactory``. Everything else should look like the ``MinLengthTask`` block, except we will add one additional required field ``format_result_as_input`` under ``config``, which will be set to ``false`` and for  ``inputs:`` we're going to put ``[output_data]`` because we want the input of Descartes to take the output of the previous task. From here on all our ``inputs`` and ``outputs`` will just be ``[output_data]``. The new nodes structure should look like this:
 
-   .. code-block:: c++
+.. code-block:: yaml
+
+      nodes:
+         DoneTask:
+           class: DoneTaskFactory
+           config:
+             conditional: false
+         AbortTask:
+           class: AbortTaskFactory
+           config:
+             conditional: false
+         MinLengthTask:
+           class: MinLengthTaskFactory
+           config:
+             conditional: true
+             inputs: [input_data]
+             outputs: [output_data]
+         DescartesMotionPlannerTask:
+           class: DescartesFMotionPlannerTaskFactory
+           config:
+             conditional: true
+             inputs: [output_data]
+             outputs: [output_data]
+             format_result_as_input: false
+
+Once you've updated the nodes you need to update the edges. to account for this new task. The edges should look like this:
+
+.. code-block:: yaml
+
+      edges:
+         - source: MinLengthTask
+           destinations: [AbortTask, DescartesMotionPlannerTask]
+         - source: DescartesMotionPlannerTask
+           destinations: [AbortTask, DoneTask]
+
+.. Note:: In YAML files whitespace matters, so be very careful when adding to this document as it is easy to make mistakes if tabs don't perfectly align.
+
+Now save this file and trying runnining a motion plan again! 
+
+.. Note:: If you built with ``--symlink-install`` you don't need to rebuild, but if not you need to rebuild your workspace every time you make a change to this file
+
+You should notice a difference in the planned motion with slightly more consistent joint motions with a given raster and if you look at ``/tmp/SNPCartesianPipeline.dot`` you should see this:
+
+.. image:: images/AddDescartesCartesianPipeline.png
+   :width: 800
+   :align: center
+
+Now the process motions look better, but the freespaces and transitions are still just doing joint interpolation. Let's fix that by incorporating OMPL.
+
+Add OMPL to the Pipeline
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Just like we added Descartes to ``SNPCartesianPipeline`` we will add OMPL to ``SNPFreespacePipeline`` and ``SNPTransitionPipeline``. We're going to call this task ``OMPLMotionPlannerTask`` and it will be of class ``OMPLMotionPlannerTaskFactory``.
+
+.. Note:: You can name the tasks whatever you want we just chose ``OMPLMotionPlannerTask`` because it is clear. Make sure your task name matches what you put in ``edges``. However, the class name must strictly match the generated plugins.
+
+By following the same process as Descartes go ahead and try to add OMPL to your Freespace and Transition pipelines.
+
+.. raw:: html
+
+   <details>
+   <summary>Add OMPL to Pipelines Solution Spoiler</summary>
+   <pre>
+   <code>
+   SNPFreespacePipeline:
+     class: GraphTaskFactory
+     config:
+       inputs: [input_data]
+       outputs: [output_data]
+       nodes:
+         DoneTask:
+           class: DoneTaskFactory
+           config:
+             conditional: false
+         AbortTask:
+           class: AbortTaskFactory
+           config:
+             conditional: false
+         MinLengthTask:
+           class: MinLengthTaskFactory
+           config:
+             conditional: true
+             inputs: [input_data]
+             outputs: [output_data]
+         OMPLMotionPlannerTask:
+           class: OMPLMotionPlannerTaskFactory
+           config:
+             conditional: true
+             inputs: [output_data]
+             outputs: [output_data]
+             format_result_as_input: false
+       edges:
+         - source: MinLengthTask
+           destinations: [AbortTask, OMPLMotionPlannerTask]
+         - source: OMPLMotionPlannerTask
+           destinations: [AbortTask, DoneTask]
+       terminals: [AbortTask, DoneTask]
+   </code>
+   </pre>
+   </details>
+
+.. Note:: If you're having problems successfully running try and look at ``/tmp/ScanNPlanPipelineResults.dot`` for help in debugging what's going wrong. You might find that your from_start or to_end motions are failing. This is a common issue people run into because they don't realize the start state of the robot is actually in collision. You can move the robot out of collision with the ``joint_state_publisher_gui`` widget that should be floating around your screen somewhere.
+
+Now your motion planner is using both Descartes and OMPL to intelligently plan motions!
+
+Feel free to try to move the start position around and see if you can give it slightly more complicated motions to force OMPL to move in a way other than just a joint interpolation.
+
+Add Time Parameterization and Collision Checking to the Pipelines
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You might have started to notice that all the motions you're trying to preview seem to move really slow. This is because we haven't done any time parameterization. By default Tesseract just assigns 1 second jumps in time between adjacent states, meaning a trajectory with 60 states is going to take a full minute to execute. Let's resolve this by adding a time parameterization to each of the 3 pipelines we've been modifying.
+
+After Descartes in the Cartesian pipeline and after OMPL in the Transition and Freespace pipelines add a task called ``IterativeSplineParameterizationTask`` of class ``IterativeSplineParameterizationTaskFactory``. This task does not take the field ``format_results_as_input``.
+
+.. raw:: html
+
+   <details>
+   <summary>Add Time Parameterization to Pipelines Solution Spoiler</summary>
+   <pre>
+   <code>
+   SNPCartesianPipeline:
+     class: GraphTaskFactory
+     config:
+       inputs: [input_data]
+       outputs: [output_data]
+       nodes:
+         DoneTask:
+           class: DoneTaskFactory
+           config:
+             conditional: false
+         AbortTask:
+           class: AbortTaskFactory
+           config:
+             conditional: false
+         MinLengthTask:
+           class: MinLengthTaskFactory
+           config:
+             conditional: true
+             inputs: [input_data]
+             outputs: [output_data]
+             format_result_as_input: false
+         DescartesMotionPlannerTask:
+           class: DescartesFMotionPlannerTaskFactory
+           config:
+             conditional: true
+             inputs: [output_data]
+             outputs: [output_data]
+             format_result_as_input: false
+         IterativeSplineParameterizationTask:
+           class: IterativeSplineParameterizationTaskFactory
+           config:
+             conditional: true
+             inputs: [output_data]
+             outputs: [output_data]
+       edges:
+         - source: MinLengthTask
+           destinations: [AbortTask, DescartesMotionPlannerTask]
+         - source: DescartesMotionPlannerTask
+           destinations: [AbortTask, IterativeSplineParameterizationTask]
+         - source: IterativeSplineParameterizationTask
+           destinations: [AbortTask, DoneTask]
+       terminals: [AbortTask, DoneTask]
+   </code>
+   </pre>
+   </details>
+
+Once you've properly done this you should have much smoother and more timely trajectories planning.
+
+Now you have trajectories being produced that `SHOULD` always be collision free, but sometimes things slip through. Let's add a contact checker to make sure each of our pipelines are outputting safe trajectories. Add a ``DiscreteContactCheckTask`` of class ``DiscreteContactCheckTaskFactory`` just before the ``IterativeSplineParameterizationTask`` in each of the 3 pipelines we've been modifying. (Again this is without the ``fromat_result_as_input`` field)
+
+.. raw:: html
+
+   <details>
+   <summary>Add Contact Checking to Pipelines Solution Spoiler</summary>
+   <pre>
+   <code>
+   SNPCartesianPipeline:
+     class: GraphTaskFactory
+     config:
+       inputs: [input_data]
+       outputs: [output_data]
+       nodes:
+         DoneTask:
+           class: DoneTaskFactory
+           config:
+             conditional: false
+         AbortTask:
+           class: AbortTaskFactory
+           config:
+             conditional: false
+         MinLengthTask:
+           class: MinLengthTaskFactory
+           config:
+             conditional: true
+             inputs: [input_data]
+             outputs: [output_data]
+             format_result_as_input: false
+         DescartesMotionPlannerTask:
+           class: DescartesFMotionPlannerTaskFactory
+           config:
+             conditional: true
+             inputs: [output_data]
+             outputs: [output_data]
+             format_result_as_input: false
+         DiscreteContactCheckTask:
+           class: DiscreteContactCheckTaskFactory
+           config:
+             conditional: true
+             inputs: [output_data]
+             outputs: [output_data]
+         IterativeSplineParameterizationTask:
+           class: IterativeSplineParameterizationTaskFactory
+           config:
+             conditional: true
+             inputs: [output_data]
+             outputs: [output_data]
+       edges:
+         - source: MinLengthTask
+           destinations: [AbortTask, DescartesMotionPlannerTask]
+         - source: DescartesMotionPlannerTask
+           destinations: [AbortTask, DiscreteContactCheckTask]
+         - source: DiscreteContactCheckTask
+           destinations: [AbortTask, IterativeSplineParameterizationTask]
+         - source: IterativeSplineParameterizationTask
+           destinations: [AbortTask, DoneTask]
+       terminals: [AbortTask, DoneTask]
+   </code>
+   </pre>
+   </details>
+
+Congratulations! You now have a fully functional planning pipeline that can solve a wide range of planning applications. Continue on in this exercise to make this planning pipeline more robust.
+
+Running Descartes Globally
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You might have noticed that often your robot seems to be doing odd jumps between rasters that seem unnecessary to you. You're right, these are unnecessary, but as of now your pipeline is dictacting that Descartes is used to find the optimal path on each raster by itself, it doesn't take all the waypoints into consideration. To address this we're going to modify the fourth and final pipeline that we've yet to touch, ``SNPPipeline``. This pipeline is the toplevel pipeline that can see every waypoint throughout our process.
+
+As of right now our ``SNPPipeline`` looks like this:
+
+.. image:: images/HighlightedRasterMotionTask.png
+   :width: 800
+   :align: center
+
+The highlighted node is where all the Cartesian, transition and freespace plans occur. More detail of this graph can be found in the ``/tmp/ScanNPlanPipelineResults.dot``, an example of which is shown here:
+
+.. image:: images/TaskComposerGraph.png
+   :width: 800
+   :align: center
+
+By adding a Descartes step before the ``RasterMotionTask`` we can actually generate joint states before any of the other pipelines are run. Then when we get to the Cartesian pipelines it will already have joint solutions, so actually we'll be able to remove the Descartes steps from there.
+
+The new ``SNPPipeline`` with Descartes added should now look like this:
+
+.. code-block:: yaml
+
+      SNPPipeline:
+        class: GraphTaskFactory
+        config:
+          inputs: [input_data]
+          outputs: [output_data]
+          nodes:
+            DoneTask:
+              class: DoneTaskFactory
+              config:
+                conditional: false
+            AbortTask:
+              class: AbortTaskFactory
+              config:
+                conditional: false
+            SimpleMotionPlannerTask:
+              class: SimpleMotionPlannerTaskFactory
+              config:
+                conditional: true
+                inputs: [input_data]
+                outputs: [output_data]
+                format_result_as_input: true
+            DescartesMotionPlannerTask:
+              class: DescartesFMotionPlannerTaskFactory
+              config:
+                conditional: true
+                inputs: [output_data]
+                outputs: [output_data]
+                format_result_as_input: false
+            RasterMotionTask:
+              class: RasterMotionTaskFactory
+              config:
+                conditional: true
+                inputs: [output_data]
+                outputs: [output_data]
+                freespace:
+                  task: SNPFreespacePipeline
+                  config:
+                    input_remapping:
+                      input_data: output_data
+                    output_remapping:
+                      output_data: output_data
+                    input_indexing: [output_data]
+                    output_indexing: [output_data]
+                raster:
+                  task: SNPCartesianPipeline
+                  config:
+                    input_remapping:
+                      input_data: output_data
+                    output_remapping:
+                      output_data: output_data
+                    input_indexing: [output_data]
+                    output_indexing: [output_data]
+                transition:
+                  task: SNPTransitionPipeline
+                  config:
+                    input_remapping:
+                      input_data: output_data
+                    output_remapping:
+                      output_data: output_data
+                    input_indexing: [output_data]
+                    output_indexing: [output_data]
+          edges:
+            - source: SimpleMotionPlannerTask
+              destinations: [AbortTask, DescartesMotionPlannerTask]
+            - source: DescartesMotionPlannerTask
+              destinations: [AbortTask, RasterMotionTask]
+            - source: RasterMotionTask
+              destinations: [AbortTask, DoneTask]
+          terminals: [AbortTask, DoneTask]
+
+Go ahead and try and remove the Descartes task from the Cartesian pipeline on your own. Otherwise you can reveal the spoiler of what it will look like
+
+.. raw:: html
+
+   <details>
+   <summary>Remove Descartes from Cartesian Pipeline Solution Spoiler</summary>
+   <pre>
+   <code>
+   SNPCartesianPipeline:
+     class: GraphTaskFactory
+     config:
+       inputs: [input_data]
+       outputs: [output_data]
+       nodes:
+         DoneTask:
+           class: DoneTaskFactory
+           config:
+             conditional: false
+         AbortTask:
+           class: AbortTaskFactory
+           config:
+             conditional: false
+         MinLengthTask:
+           class: MinLengthTaskFactory
+           config:
+             conditional: true
+             inputs: [input_data]
+             outputs: [output_data]
+             format_result_as_input: false
+         DiscreteContactCheckTask:
+           class: DiscreteContactCheckTaskFactory
+           config:
+             conditional: true
+             inputs: [output_data]
+             outputs: [output_data]
+         IterativeSplineParameterizationTask:
+           class: IterativeSplineParameterizationTaskFactory
+           config:
+             conditional: true
+             inputs: [output_data]
+             outputs: [output_data]
+       edges:
+         - source: MinLengthTask
+           destinations: [AbortTask, DiscreteContactCheckTask]
+         - source: DiscreteContactCheckTask
+           destinations: [AbortTask, IterativeSplineParameterizationTask]
+         - source: IterativeSplineParameterizationTask
+           destinations: [AbortTask, DoneTask]
+       terminals: [AbortTask, DoneTask]
+   </code>
+   </pre>
+   </details>
+
+Running the application with this latest pipeline should result in the best trajectory you've seen up to this point. There should be much less motion between rasters as they have been globally optimized together.
+
+Modifying the Descartes Profile
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Up to this point we've only modified the pipeline by modifying a single yaml file. That will change in this step as we start to get into the weeds to the parameters of all these planners.
+
+Open up the file ``snp_motion_planning/src/planner_profiles.hpp``. You'll see several sections where we are going to put code. Right now focus on the section that looks like:
+
+.. code-block:: c++
 
       /* =======================
        * Fill Code: DESCARTES 
        * =======================*/
 
-   We will be replacing the current contents of the method. We must fist set up some configurations we want our Descartes planner to follow. The following block specifies the number of threads we need for the planner, if we allow redundant joint solutions, and whether or not to allow collisions.
-   Replace the contents with the following:
+It's here that we're going to implement a custom profile for the Descartes step in our planner.
 
-   .. code-block:: c++
+One capability of Descartes is the ability to sample waypoints. For our application we are using a circular tool where orientation around the tool-z does not matter. This means we are only constrained on 5 degrees of freedom and can freely rotate around the z-axis. Replace this fill code comment with the following code:
 
-   	auto profile = std::make_shared<tesseract_planning::DescartesDefaultPlanProfile<FloatType>>();
-	profile->num_threads = static_cast<int>(std::thread::hardware_concurrency());
-	profile->use_redundant_joint_solutions = false;
-	profile->allow_collision = false;
-	profile->enable_collision = true;
-	profile->enable_edge_collision = false;
+ .. code-block:: c++
 
-   Now we will also specify our state and edge evaluators. The state evaluator looks at a given state and gives the state both a cost and a pass or fail. A few things we may choose to evaluate are whether or not the state is valid, the cost of the state, and any biases we may want to give it. The edge evaluator works similarly but evaluates a transition between states. 
+      profile->num_threads = static_cast<int>(std::thread::hardware_concurrency());
 
-   Copy and past the following below the previous block:
+      profile->target_pose_sampler =
+          std::bind(tesseract_planning::sampleToolZAxis, std::placeholders::_1, 30.0 * M_PI / 180.0);
 
-   .. code-block:: c++
+This does 2 things:
 
-	// Use the default state and edge evaluators
-	profile->state_evaluator = nullptr;
-	profile->edge_evaluator = [](const tesseract_planning::DescartesProblem<FloatType>& prob) ->
-	typename descartes_light::EdgeEvaluator<FloatType>::Ptr {
-		auto eval = std::make_shared<descartes_light::CompoundEdgeEvaluator<FloatType>>();
+ #. Allows more use of your computers capabilities by running with multiple threads (here it is set to the number of available threads on your system)
 
-		// Nominal Euclidean distance
-		eval->evaluators.push_back(std::make_shared<descartes_light::EuclideanDistanceEdgeEvaluator<FloatType>>());
+ #. Samples each waypoint at 30 degree increments around the z-axis. This will alllow for more optimal trajectories while still reaching all the waypoints.
 
-		return eval;
-	};
-      	profile->vertex_evaluator = nullptr;
+Rebuild your workspace and relaunch your application to test this out. You should notice a slightly smoother trajectory. Feel free to play with the sampling step size, the smaller the step size the more samples which leads to longer planning times, but potentially better solutions.
 
-   Finally, we set the ``target_pose_sampler`` which takes a given function for sampling. In our example, we specify our pose sampling to allow any rotation along the z-axis as it will not impact our final results. Note that Descartes can only work in discrete space so we are only sampling at increments of 10 degrees around the z-axis.
+   .. Note:: Unlike the yaml file, every time you modify this ``.hpp`` file you will have to rebuild and relaunch your application.
 
-   Copy and past the following below the previous block:
+Modifying the OMPL Profile
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-   .. code-block:: c++
+Just like we improved Descartes we can improve OMPL through a custom profile. Copy and past the following code into your OMPL fill code section:
 
-	profile->target_pose_sampler =
-	std::bind(tesseract_planning::sampleToolZAxis, std::placeholders::_1, 10.0 * M_PI / 180.0);
+ .. code-block:: c++
 
-	return profile;
+   // Give OMPL 15 seconds to plan
+   profile->planning_time = 15.0;
 
-#. Add the planner to the planning server:
-   
-   Within ``snp_motion_planning/src/planning_server.cpp``, find the section
+   // Clear existing planners
+   profile->planners.clear();
 
-   .. code-block:: c++
+   // Add an RRTConnect planner with a small step size for small motions
+   auto rrt_connect_small = std::make_shared<tesseract_planning::RRTConnectConfigurator>();
+   rrt_connect_small->range = 0.05;
+   profile->planners.push_back(rrt_connect_small);
 
-      /* ========================================
-       * Fill Code: ADD CUSTOM PLANNER PROFILES
-       * ========================================*/
+   // Add an RRTConnect planner with a large step size for large motions
+   auto rrt_connect_large = std::make_shared<tesseract_planning::RRTConnectConfigurator>();
+   rrt_connect_large->range = 0.25;
+   profile->planners.push_back(rrt_connect_large);
 
-   Copy and past the following below:
+The comments here do a pretty good job of explaining what is happening. We are modifying the allowed planning time and then replacing the default planners (RRT) with 2 RRTConnect planners that each run in their own thread trying to find a solution. With RRTConnect you might notice your freespace and transition motions look much smoother, this is from RRTConnect's algorithm planning from the start and goal simultaneously. 
 
-   .. code-block:: c++
+Feel free to explore other OMPL planners available in Tesseract which can be found in ``tesseract_motion_planners/include/tesseract_motion_planners/ompl/ompl_planner_configurator.h``.
 
-   	profile_dict_->addProfile<tesseract_planning::DescartesPlanProfile<float>>(
-          tesseract_planning::profile_ns::DESCARTES_DEFAULT_NAMESPACE, PROFILE, createDescartesPlanProfile<float>());
+Adding TrajOpt
+^^^^^^^^^^^^^^
 
-   This line adds your new custom planning profile to the planning server for our motion plan.
+First we're going to go back to the yaml file where we'll add a TrajOpt task to the Cartesian, freespace and transition pipeline. The task should be called ``TrajOptMotionPlannerTask`` and of class ``TrajOptMotionPlannerTaskFactory`` (with ``format_result_as_input: false``) In the Cartesian pipeline this should go right after ``MinLengthTask`` and for the freespace and transition pipelines immediately following ``OMPLMotionPlannerTask``.
 
-#. Add the planner to the taskflow:
-   
-   Navigate to ``snp_motion_planning/taskflow_generators.hpp`` and find the method ``ctor()`` within the class ``CartesianMotionPipelineTask``. Find the following block inside
+.. raw:: html
 
-   .. code-block:: c++
+   <details>
+   <summary>TrajOpt Added to Cartesian Pipeline Solution Spoiler</summary>
+   <pre>
+   <code>
+   SNPCartesianPipeline:
+     class: GraphTaskFactory
+     config:
+       inputs: [input_data]
+       outputs: [output_data]
+       nodes:
+         DoneTask:
+           class: DoneTaskFactory
+           config:
+             conditional: false
+         AbortTask:
+           class: AbortTaskFactory
+           config:
+             conditional: false
+         MinLengthTask:
+           class: MinLengthTaskFactory
+           config:
+             conditional: true
+             inputs: [input_data]
+             outputs: [output_data]
+             format_result_as_input: false
+         TrajOptMotionPlannerTask:
+           class: TrajOptMotionPlannerTaskFactory
+           config:
+             conditional: true
+             inputs: [output_data]
+             outputs: [output_data]
+             format_result_as_input: false
+         DiscreteContactCheckTask:
+           class: DiscreteContactCheckTaskFactory
+           config:
+             conditional: true
+             inputs: [output_data]
+             outputs: [output_data]
+         IterativeSplineParameterizationTask:
+           class: IterativeSplineParameterizationTaskFactory
+           config:
+             conditional: true
+             inputs: [output_data]
+             outputs: [output_data]
+       edges:
+         - source: MinLengthTask
+           destinations: [AbortTask, TrajOptMotionPlannerTask]
+         - source: TrajOptMotionPlannerTask
+           destinations: [AbortTask, DiscreteContactCheckTask]
+         - source: DiscreteContactCheckTask
+           destinations: [AbortTask, IterativeSplineParameterizationTask]
+         - source: IterativeSplineParameterizationTask
+           destinations: [AbortTask, DoneTask]
+       terminals: [AbortTask, DoneTask]
+   </code>
+   </pre>
+   </details>
 
-      /* ========================================
-       * Fill Code: CREATE CUSTOM PLANNER NODES
-       * ========================================*/
+.. raw:: html
 
-   Below the block add the following
+   <details>
+   <summary>TrajOpt Added to Freespace/Transition Pipeline Solution Spoiler</summary>
+   <pre>
+   <code>
+   SNPFreespacePipeline:
+     class: GraphTaskFactory
+     config:
+       inputs: [input_data]
+       outputs: [output_data]
+       nodes:
+         DoneTask:
+           class: DoneTaskFactory
+           config:
+             conditional: false
+         AbortTask:
+           class: AbortTaskFactory
+           config:
+             conditional: false
+         MinLengthTask:
+           class: MinLengthTaskFactory
+           config:
+             conditional: true
+             inputs: [input_data]
+             outputs: [output_data]
+         OMPLMotionPlannerTask:
+           class: OMPLMotionPlannerTaskFactory
+           config:
+             conditional: true
+             inputs: [output_data]
+             outputs: [output_data]
+             format_result_as_input: false
+         TrajOptMotionPlannerTask:
+           class: TrajOptMotionPlannerTaskFactory
+           config:
+             conditional: true
+             inputs: [output_data]
+             outputs: [output_data]
+             format_result_as_input: false
+         DiscreteContactCheckTask:
+           class: DiscreteContactCheckTaskFactory
+           config:
+             conditional: true
+             inputs: [output_data]
+             outputs: [output_data]
+         IterativeSplineParameterizationTask:
+           class: IterativeSplineParameterizationTaskFactory
+           config:
+             conditional: true
+             inputs: [output_data]
+             outputs: [output_data]
+       edges:
+         - source: MinLengthTask
+           destinations: [AbortTask, OMPLMotionPlannerTask]
+         - source: OMPLMotionPlannerTask
+           destinations: [AbortTask, TrajOptMotionPlannerTask]
+         - source: TrajOptMotionPlannerTask
+           destinations: [AbortTask, DiscreteContactCheckTask]
+         - source: DiscreteContactCheckTask
+           destinations: [AbortTask, IterativeSplineParameterizationTask]
+         - source: IterativeSplineParameterizationTask
+           destinations: [AbortTask, DoneTask]
+       terminals: [AbortTask, DoneTask]
+   </code>
+   </pre>
+   </details>
 
-   .. code-block:: c++
+On top of adding this to the pipelines we are going to set up a profile for TrajOpt. TrajOpt is unique in that it has multiple profiles to set it up. Today we will be going over 2 of the 3. The ``TrajOptPlanProfile`` deals with waypoint level optimization and the ``TrajOptCompositeProfile`` deals with trajectory level optimization.
 
-      boost::uuids::uuid descartes_planner_task =
-            addNode(std::make_unique<tesseract_planning::DescartesMotionPlannerTask>(output_keys_[0], output_keys_[0],
-            false));
+Replace
 
-   Now we have created nodes for our planner. Find 
-
-   .. code-block:: c++
+.. code-block:: c++
 
       /* =======================
-       * Fill Code: EDIT EDGES
+       * Fill Code: TRAJOPT PLAN
        * =======================*/
 
-   in the same method and fill in the code to add edges between our nodes. Will need to replace 
+with the following:
 
-   .. code-block:: c++
+.. code-block:: c++
 
-      addEdges(min_length_task, { contact_check_task });
+   profile->cartesian_coeff = Eigen::VectorXd::Constant(6, 1, 5.0);
+   profile->cartesian_coeff(5) = 0.0;
 
-   with
+This tells TrajOpt that Cartesian waypoints all must be followed with a cost of 5.0 in all dimensions except for rotation about Z, which we set to 0.0. This is critical because in our application we can freely rotate around Z and we previously configured Descartes to do just this. If we enforced a cost on rotation about Z then TrajOpt could potentially undermine the results from Descartes.
 
-   .. code-block:: c++
+Next replace the TrajOpt composite section with:
 
-      addEdges(min_length_task, { descartes_planner_task });
+.. code-block:: c++
 
-   and then add the line
+   profile->smooth_velocities = true;
+   profile->velocity_coeff = Eigen::VectorXd::Constant(6, 1, 10.0);
+   profile->acceleration_coeff = Eigen::VectorXd::Constant(6, 1, 25.0);
+   profile->jerk_coeff = Eigen::VectorXd::Constant(6, 1, 50.0);
 
-   .. code-block:: c++
+   profile->collision_cost_config.enabled = true;
+   profile->collision_cost_config.type = trajopt::CollisionEvaluatorType::DISCRETE_CONTINUOUS;
+   profile->collision_cost_config.safety_margin = 0.010;
+   profile->collision_cost_config.safety_margin_buffer = 0.010;
+   profile->collision_cost_config.coeff = 10.0;
 
-      addEdges(descartes_planner_task, { error_task, contact_check_task });
+   profile->collision_constraint_config.enabled = false;
 
-   We have now added Descartes to our raster taskflow. 
+This will enforce smoothing of the motion and set the collision avoidance parameters.
 
-   .. Note:: Pay attention to how the graph's edges and vertices are connected. We have already included post-collision checking for the simple planner and time parameterization. Play around with removing one or both of those and observe how your motion plan changes. 
+Now rebuild and run your application. You should see very smooth motions throughout the whole process. 
 
-#. Run the application:
+Congratulations! You have made a robust planner ready for all sorts of environments.
 
-   Now let's try running our application. Build and source your workspace then run the following
+Bonus Material
+--------------
 
-   .. code-block:: bash
+Continue on if you want to further improve your planning pipelines
 
-      ros2 launch snp_automate_2022 start.launch.xml
-
-   How does the motion plan look? Does it fail to plan often? Does the motion look smooth? 
-
-   Notice that this implementation in the taskflow uses Descartes to resample all waypoints and solves for that single raster again after a global Descartes has already been run. We will fix this later.
-
-   .. Note:: The default starting joint state is likely to be in collision. This will cause all motion plans to fail. Try changing ``joint_3_u`` to about 1.57 to avoid this. If your selected region is too small and/or the waypoints are too far apart from each other, it may also fail to create a motion plan. We recommend lowering the point spacing to 0.010. 
-
-   .. Note:: When re-building your workspace, you may find it useful to only build the package you've edited instead of the entire workspace. You can do this by using the ``--packages-select`` flag with ``colcon``. 
-
-Implement the TrajOpt Planner Profiles
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-#. Create the planner profiles:
- 
-   In ``planner_profiles.hpp`` find the section
-
-   .. code-block:: c++
-
-      /* ==========================
-       * Fill Code: TRAJOPT PLAN
-       * ==========================*/
-
-   TrajOpt is a planner that creates a nonlinear optimization problem to solve until it converges on a solution. As this planner does not have any knowledge of time, it only looks at adjacent states while planning. There are three different profiles you can adjust to setup a TrajOpt planner: plan, composite, and solver. In this application we will be customizing the plan and composite profiles.
-
-   We will begin by filling out the plan profile which focuses on how individual waypoints are handled. Below the above block replace the method's contents with the following code
-
-   .. code-block:: c++
-
-	auto profile = std::make_shared<tesseract_planning::TrajOptDefaultPlanProfile>();
-	profile->cartesian_coeff = Eigen::VectorXd::Constant(6, 1, 5.0);
-	profile->cartesian_coeff(5) = 0.0;
-	return profile;
-
-   This method adds a vector of cost constraints on the cartesian axes of the waypoints in order to make certain motions more or less expensive than others. Here, we have costs in all directions except around the z-axis as rotation in the z-axis will not affect our outcomes. 
-
-   Locate the section
-
-   .. code-block:: c++
-
-     /* ==============================
-      * Fill Code: TRAJOPT COMPOSITE
-      * ==============================*/
-
-   Now we will create the TrajOpt composite profile. Replace that method's code with the following
-
-   .. code-block:: c++
-
-	auto profile = std::make_shared<tesseract_planning::TrajOptDefaultCompositeProfile>();
-	profile->smooth_velocities = false;
-
-	profile->acceleration_coeff = Eigen::VectorXd::Constant(6, 1, 10.0);
-	profile->jerk_coeff = Eigen::VectorXd::Constant(6, 1, 20.0);
-
-	profile->collision_cost_config.enabled = true;
-	profile->collision_cost_config.type = trajopt::CollisionEvaluatorType::DISCRETE_CONTINUOUS;
-	profile->collision_cost_config.safety_margin = 0.010;
-	profile->collision_cost_config.safety_margin_buffer = 0.010;
-	profile->collision_cost_config.coeff = 10.0;
-
-	profile->collision_constraint_config.enabled = false;
-
-	return profile;
-
-   Notice that the composite profile takes more parameters into account than the plan profile. Unlike the plan profile, which only looks at one waypoint at a time, the composite profile looks at the whole motion. You can add costs on velocity, acceleration, and jerk as well as specify how collision checking is to be handled.
-
-#. Add the planners to the planning server:
-   
-   Go back to ``planning_server.cpp`` and add our two new custom profiles to the server
-
-   .. code-block:: c++
-
-      profile_dict_->addProfile<tesseract_planning::TrajOptPlanProfile>(
-          tesseract_planning::profile_ns::TRAJOPT_DEFAULT_NAMESPACE, PROFILE, createTrajOptToolZFreePlanProfile());
-      profile_dict_->addProfile<tesseract_planning::TrajOptCompositeProfile>(
-          tesseract_planning::profile_ns::TRAJOPT_DEFAULT_NAMESPACE, PROFILE, createTrajOptProfile());
-
-#. Add the planners to the taskflow:
-
-   Return to ``taskflow_generators.hpp``. As Trajopt will be used for transition, freespace, and process planning taskflows, we will need to modify the ``ctor()`` method in ``FreespaceMotionPipelineTask``, ``TransitionMotionPipelineTask``, and ``CartesianMotionPipelineTask``.
-
-   Within ``FreespaceMotionPipelineTask`` add the following to create a new node
-
-   .. code-block:: c++
-
-      // Setup TrajOpt
-      boost::uuids::uuid trajopt_planner_task = addNode(
-         std::make_unique<tesseract_planning::TrajOptMotionPlannerTask>(output_keys_[0], output_keys_[0], false));
-
-   Now we need to connect our node through edges. Find where the edges are created and add the following line
-
-   .. code-block:: c++
-
-      addEdges(trajopt_planner_task, { error_task, contact_check_task });
-
-   You will also need to modify the edge connecting ``min_length_task`` to ``contact_check_task`` and instead have it connect to our new ``trajopt_planner_task``.
-   
-   Now navigate down to ``TransitionMotionPipelineTask``. You will need to add the same line as before to create the TrajOpt node. For the edges, change ``min_length_task`` to again connect to ``trajopt_planner_task`` and then add the following line to conenct ``trajopt_planner_task`` to ``error_task`` and ``contact_check_task``.
-
-   ..code-block:: c++
-
-     addEdges(trajopt_planner_task, { error_task, contact_check_task });
-
-   Scroll down to ``CartesianMotionPipelineTask`` and make the same changes to add the TrajOpt node and edges. For the edges, we again want ``min_length_task`` connected to ``trajopt_planner_task`` and ``trajopt_planner_task`` connected to both ``error_task`` and ``contact_check_task``. Additionally, you shoud edit the edge from ``descartes_planner_task`` to go to ``trajopt_planner_task`` instead of ``contact_check_task``.
-
-   Now our TrajOpt planners are connected to our taskflow!
-
-#. Run the application:
-
-   Now try running the application again and notice how our robot's motion plan has changed. Don't forget to build and source your workspace!
-
-   Note that it still might fail frequently since there is nothing to generate good freespace or tranistion motion seeds.
-
-Implement the OMPL Planner Profile
+Add Custom Tasks to Your Pipelines
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-#. Create the planner profile:
-   
-   Go back to ``planner_profiles.hpp`` and find the section
+In this repo we've also created our own custom tasks which can be found in the ``snp_motion_planning/src/plugins/tasks`` directory. These classes are called ``ConstantTCPSpeedTimeParameterizationTaskFactory`` and ``KinematicLimitsCheckTaskFactory``. 
 
-   .. code-block:: c++
+We often want to have a constant TCP speed when performing processes on the surface. In our application with is usually during Cartesian and transition motions. Try replacing ``IterativeSplineParameterizationTask`` with a task using the class ``ConstantTCPSpeedTimeParameterizationTaskFactory`` in the Cartesian and transition pipeline.
 
-      /* ======================
-       * Fill Code: OMPL
-       * ======================*/
+Also, it's always good to make sure you're staying inside all your kinematic limits. Try adding a task using the class ``KinematicLimitsCheckTaskFactory`` to the end of each of the Cartesian, transition, and freespace pipelines.
 
-   OMPL is a libarary containing several different planning algorithms. OMPL allows us to use as many different planners in parallel as we'd like until one has a result. For our implementation, we will choose to use only RRT Connect. 
+.. raw:: html
 
-   Below the above block, replace the current contents with the following
+   <details>
+   <summary>Example Cartesian Pipeline Solution Spoiler</summary>
+   <pre>
+   <code>
+   SNPCartesianPipeline:
+     class: GraphTaskFactory
+     config:
+       inputs: [input_data]
+       outputs: [output_data]
+       nodes:
+         DoneTask:
+           class: DoneTaskFactory
+           config:
+             conditional: false
+         AbortTask:
+           class: AbortTaskFactory
+           config:
+             conditional: false
+         MinLengthTask:
+           class: MinLengthTaskFactory
+           config:
+             conditional: true
+             inputs: [input_data]
+             outputs: [output_data]
+             format_result_as_input: false
+         TrajOptMotionPlannerTask:
+           class: TrajOptMotionPlannerTaskFactory
+           config:
+             conditional: true
+             inputs: [output_data]
+             outputs: [output_data]
+             format_result_as_input: false
+         DiscreteContactCheckTask:
+           class: DiscreteContactCheckTaskFactory
+           config:
+             conditional: true
+             inputs: [output_data]
+             outputs: [output_data]
+         ConstantTCPSpeedTimeParameterizationTask:
+           class: ConstantTCPSpeedTimeParameterizationTaskFactory
+           config:
+             conditional: true
+             inputs: [output_data]
+             outputs: [output_data]
+         KinematicLimitsCheckTask:
+           class: KinematicLimitsCheckTaskFactory
+           config:
+             conditional: true
+             inputs: [output_data]
+             outputs: [output_data]
+       edges:
+         - source: MinLengthTask
+           destinations: [AbortTask, TrajOptMotionPlannerTask]
+         - source: TrajOptMotionPlannerTask
+           destinations: [AbortTask, DiscreteContactCheckTask]
+         - source: DiscreteContactCheckTask
+           destinations: [AbortTask, ConstantTCPSpeedTimeParameterizationTask]
+         - source: ConstantTCPSpeedTimeParameterizationTask
+           destinations: [AbortTask, KinematicLimitsCheckTask]
+         - source: KinematicLimitsCheckTask
+           destinations: [AbortTask, DoneTask]
+       terminals: [AbortTask, DoneTask]
+   </code>
+   </pre>
+   </details>
 
-   .. code-block:: c++
+When running your application with these changes you should notice nice smooth motions and constant speeds on the surface.
 
-      auto n = static_cast<Eigen::Index>(std::thread::hardware_concurrency());
-      auto range = Eigen::VectorXd::LinSpaced(n, 0.005, 0.15);
+CHALLENGE
+^^^^^^^^^
 
-   This implements the number of threads we will have planning in parallel. Now we can add as many planners as available threads.
+Try and recreate the transition pipeline seen here:
 
-   .. code-block:: c++
 
-	auto profile = std::make_shared<tesseract_planning::OMPLDefaultPlanProfile>();
-	profile->planning_time = 10.0;
-	   profile->planners.reserve(static_cast<std::size_t>(n));
-	   for (Eigen::Index i = 0; i < n; ++i)
-	   {
-	     auto rrt_connect = std::make_shared<tesseract_planning::RRTConnectConfigurator>();
-	     rrt_connect->range = range(i);
-	     profile->planners.push_back(rrt_connect);
-	   }
-	return profile;
+.. image:: images/ChallengePipeline.png
+   :width: 800
+   :align: center
 
-   There are many different OMPL planners available to experiment with. Feel free to play around with a few and observe how your application's motion plan changes (don't forget to include your chosen planner(s) in the header!).
+This pipeline will first try and do a TrajOpt solve for transitions because most of the time OMPL is going to be overkill for these small motions. 
 
-#. Add the planner to the planning server:
+You'll have to figure this one out on your own as there is no solution posted for it.
 
-   Return to ``planning_server.cpp`` and find the section where we add in our custom planning profiles.
+.. Hint:: Tasks names have to be unique, but are arbitrary.
 
-   Copy and paste the follwing
-
-   .. code-block:: c++
-
-      profile_dict_->addProfile<tesseract_planning::OMPLPlanProfile>(
-          tesseract_planning::profile_ns::OMPL_DEFAULT_NAMESPACE, PROFILE, createOMPLProfile());
-
-   Now we have added our new OMPL planning profile to the planning server.
-
-#. Add the planner to the taskflow:
-   
-   Go back to ``taskflow_generators.hpp``. Now we need to include our OMPL profile in our motion planning taskflow. Our freepsace taskflow will find a solution using OMPL and then improve that solution using TrajOpt. First, let's create our node for OMPL. Within ``FreespaceMotionPipelineTask`` add
-
-   .. code:: c++
-
-      // Setup OMPL
-      boost::uuids::uuid ompl_planner_task =
-         addNode(std::make_unique<tesseract_planning::OMPLMotionPlannerTask>(output_keys_[0], output_keys_[0]));
-  
-   Now we need to change our graph edges to incorporate these new nodes. Make the following changes to the edges:
-
-   * ``min_length_task`` will connect to ``ompl_planner_task``
-
-   * ``ompl_planner_task`` will connect to ``error_task`` and ``trajopt_planner_task``
-
-   This taskflow now means OMPL will first find planning solutions and then TrajOpt will smooth out the trajectory.
-
-   Now lets return to ``CartesianMotionPipelineTask`` and remove Descartes. Comment out where you created the Descartes node and where you connected ``descartes_planner_task`` to ``error_task`` and ``trajopt_planner_task``. Have ``min_length_task`` connect to ``trajopt_planner_task`` instead of your Descartes node. 
-
-#. Run the application:
-
-   Now try running the full application again with our completed motion planning pipeline. How has the plan changed since step one? Also take a look at our completed taskflow graph again and notice the new taskflow. Try playing around with changing some of the edges and see how the motion plan changes. Here are a few things you could try:
-
-   * Remove TrajOpt and see how Descartes and OMPL perform without it.
-
-   * Remove post-collision checking
-
-      - You should also allow collisions in your planning profiles if you try this
-
-   * Change the profiles of Descartes, OMPL, and TrajOpt
-
-Congratulations! You have completed using Tesseract to create a motion plan for a "scan and plan" application!
+Want to do More?
+----------------
+* Try modifying parameters in the ``snp_tpp_app`` widget to see how different settings effect the generated toolpath and your resulting motion plans.
+* Try to make your own custom pipeline not mentioned here.
