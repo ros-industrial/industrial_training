@@ -6,12 +6,12 @@ The first type of ROS communication that we explored was a one-way interaction c
 
 ## Reference Example
 
-[Create a Service Server/Client](https://index.ros.org/doc/ros2/Tutorials/Writing-A-Simple-Cpp-Service-And-Client)
+[Create a Service Server/Client](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Cpp-Service-And-Client.html)
 
 ## Further Information and Resources
 
- * [Creating Messages & Services](https://index.ros.org/doc/ros2/Tutorials/Custom-ROS2-Interfaces)
- * [Understanding Services](https://index.ros.org/doc/ros2/Tutorials/Services/Understanding-ROS2-Services)
+ * [Creating Messages & Services](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Custom-ROS2-Interfaces.html)
+ * [Understanding Services](https://docs.ros.org/en/humble/Tutorials/Beginner-CLI-Tools/Understanding-ROS2-Services/Understanding-ROS2-Services.html)
 
 ## Scan-N-Plan Application: Problem Statement
 We now have a base ROS node which is subscribing to some information and we want to build on this node. In addition we want this node to serve as a sub-function to another "main" node. The original vision node will now be responsible for subscribing to the AR information and responding to requests from the main workcell node. 
@@ -99,10 +99,16 @@ Your goal is to create a more intricate system of nodes:
       )
       ```
 
-   1. Add the following line after the call to `ament_target_dependencies` for the the _vision_node_. This makes the _vision_node_ target depend on the generated interface target so that the generated code can be used in the node:
+   1. Right after `rosidl_generate_interfaces`, add the following line to enable executables in this package to access your generated messages.
+
+      ``` cmake
+      rosidl_get_typesupport_target(cpp_typesupport_target ${PROJECT_NAME} "rosidl_typesupport_cpp")
+      ```
+
+   1. Add the following line after the call to `ament_target_dependencies` for the the _vision_node_. This make the _vision_node_ target depend on the generated interface target so that the generated code can be used in the node:
      
       ``` cmake
-      rosidl_target_interfaces(vision_node ${PROJECT_NAME} "rosidl_typesupport_cpp")
+      target_link_libraries(vision_node "${cpp_typesupport_target}")
       ```
 
 1. Now you have a service defined in you package and you can attempt to _build_ the code to generate the service:
@@ -113,7 +119,7 @@ Your goal is to create a more intricate system of nodes:
 
 ### Service Server
 
-1. Edit `vision_node.cpp`; remember that the [ros documentation](https://index.ros.org/doc/ros2/Tutorials/Writing-A-Simple-Cpp-Service-And-Client) is a resource.
+1. Edit `vision_node.cpp`; remember that the [ros documentation](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Cpp-Service-And-Client.html) is a resource.
 
 1. Add the header for the service we just created
 
@@ -314,7 +320,7 @@ Your goal is to create a more intricate system of nodes:
 
      auto future = vision_client_->async_send_request(request);
 
-     if (rclcpp::spin_until_future_complete(this->get_node_base_interface(), future) != rclcpp::executor::FutureReturnCode::SUCCESS)
+     if (rclcpp::spin_until_future_complete(this->get_node_base_interface(), future) != rclcpp::FutureReturnCode::SUCCESS)
      {
        RCLCPP_ERROR(this->get_logger(), "Failed to receive LocalizePart service response");
        return;
@@ -351,10 +357,11 @@ Your goal is to create a more intricate system of nodes:
    ``` cmake
    add_executable(myworkcell_node src/myworkcell_node.cpp)
    ament_target_dependencies(myworkcell_node rclcpp)
-   rosidl_target_interfaces(myworkcell_node ${PROJECT_NAME} "rosidl_typesupport_cpp")
+   target_link_libraries(myworkcell_node "${cpp_typesupport_target}")
+
    ``` 
 
-   Be sure to remove the `PUBLIC` keyword from `ament_target_dependencies()`. It conflicts with other CMake calls made under the hood. Also add `myworkcell_node` to the existing call to `install` along with `vision_node`:
+   Also add `myworkcell_node` to the existing call to `install` along with `vision_node`:
 
    ``` cmake
    install(TARGETS vision_node myworkcell_node

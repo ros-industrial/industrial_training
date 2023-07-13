@@ -1,19 +1,8 @@
 Package Setup
 =============
 
-  In this exercise, we will build our package dependencies and configure the
+  In this exercise, we will get dependencies and configure the
   package for the Qt Creator IDE.
-
-
-Download dependencies from source
----------------------------------
-
-In a terminal enter:
-
-.. code-block:: shell
-
-  cd ~/perception_driven_ws/src
-  vcs import < dependencies.repos
 
 
 Download debian dependencies
@@ -34,7 +23,7 @@ Build your workspace
 .. code-block:: shell
 
   cd ~/perception_driven_ws
-  source /opt/ros/foxy/setup.bash
+  source /opt/ros/humble/setup.bash
   colcon build
 
 .. note:: If the build fails then revisit the previous two steps to make sure all the dependencies were downloaded.
@@ -60,7 +49,7 @@ In the dialog that appears, on the left select :guilabel:`Other Project` and
 in the middle section select :guilabel:`ROS Workspace`. Confirm your selection
 with the :guilabel:`Choose` button.
 
-Choose a name for your workspace, select ``/opt/ros/foxy/`` as the ROS distribution,
+Choose a name for your workspace, select ``/opt/ros/humble/`` as the ROS distribution,
 select ``colcon`` as the build system, and provide the path to your ``perception_ws``
 directory as the workspace path. Click :guilabel:`Next` and :guilabel:`Finish` to 
 complete the setup.

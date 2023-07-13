@@ -9,7 +9,7 @@
  1. Bring up the planning environment, with simulated execution:
 
     ```
-    ros2 launch myworkcell_moveit_config myworkcell_planning_execution.launch.py
+    ros2 launch myworkcell_moveit_config demo.launch.py
     ```
 
 ## Plugin Display Options

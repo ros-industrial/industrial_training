@@ -33,7 +33,7 @@ def generate_launch_description():
     kinematics_file = get_package_file('myworkcell_moveit_config', 'config/kinematics.yaml')
     ompl_config_file = get_package_file('myworkcell_moveit_config', 'config/ompl_planning.yaml')
     joint_limits_file = get_package_file('myworkcell_moveit_config','config/joint_limits.yaml')
-    moveit_controllers_file = get_package_file('myworkcell_moveit_config', 'config/controllers.yaml')
+    moveit_controllers_file = get_package_file('myworkcell_moveit_config', 'config/moveit_controllers.yaml')
 
     robot_description = xacro.process_file(xacro_file).toprettyxml(indent='  ')
     robot_description_semantic = load_file(srdf_file)
@@ -42,10 +42,7 @@ def generate_launch_description():
     joint_limits_config = load_yaml(joint_limits_file)
 
     # Setting up MoveitCpp configuration parameters
-    moveit_controllers = {
-        'moveit_simple_controller_manager' : load_yaml(moveit_controllers_file),
-        'moveit_controller_manager': 'moveit_simple_controller_manager/MoveItSimpleControllerManager'
-    }
+    moveit_controllers = load_yaml(moveit_controllers_file)
     trajectory_execution = {
         'moveit_manage_controllers': True,
         'trajectory_execution.allowed_execution_duration_scaling': 1.2,

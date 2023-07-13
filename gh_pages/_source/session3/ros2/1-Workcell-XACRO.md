@@ -27,22 +27,17 @@ Specifically, you will need to:
 ## Scan-N-Plan Application: Guidance
  1. Rename the `workcell.urdf` file from the previous exercise to `workcell.urdf.xacro`
 
- 1. Bring in the `ur_description` package into your ROS environment. For ROS2, it currently must be cloned and built from source
+ 1. We will be including a UR5 as our robot in the workcell. To do this, we're going to bring in resources from UR that already define the robot using xacro.
 
-    1. Search the [UniversalRobots GitHub repositories](https://github.com/UniversalRobots) for the `ur_description` package, to find that it is available in the `Universal_Robots_ROS2_Driver` repository.  Clone the repository and a minimal set of build dependencies into your workspace:
+    1. Install the `ur_description` package into your ROS environment. For ROS 2 Humble, it can be installed as an apt package.
 
        ```
-       cd ~/ros2_ws/src
-       git clone -b foxy https://github.com/UniversalRobots/Universal_Robots_ROS2_Driver.git
-       git clone -b master https://github.com/UniversalRobots/Universal_Robots_Client_Library.git
-       sudo apt install ros-foxy-ur-msgs
+       sudo apt install ros-humble-ur-description
        cd ~/ros2_ws
-       rosdep update
-       rosdep install --ignore-src --from-paths src -y -r
        colcon build
        ```
 
-    > Inspect the UR-provided xacro files at `~/ros2_ws/src/Universal_Robots_ROS2_Driver/ur_description/urdf`.  In particular, compare `ur_macro.xacro` with `ur.urdf.xacro`.  This is a common design pattern: one xacro file defines a macro that can be called to generate a component of the workcell, while a different xacro file _calls_ that macro to actually create the final URDF model.
+    > Inspect the UR-provided xacro files at `/opt/ros/humble/share/ur_description/urdf`.  In particular, compare `ur_macro.xacro` with `ur.urdf.xacro`.  This is a common design pattern: one xacro file defines a macro that can be called to generate a component of the workcell, while a different xacro file _calls_ that macro to actually create the final URDF model.
 
  1. Locate the xacro file that defines the "ur_robot" macro and include it in your newly renamed `workcell.urdf.xacro` file.  Add this include line near the top of your `workcell.urdf.xacro` file, beneath the `<robot>` tag:
 
@@ -50,9 +45,9 @@ Specifically, you will need to:
     <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro"/>
     ```
 
-    >If you explore the ur_macro definition file, or just about any other file that defines a Xacro macro, you’ll find a lot of uses of `${prefix}` in element names. Xacro evaluates anything inside a “${}” at run-time. It can do basic math, and it can look up variables that come to it via properties (ala-global variables) or macro parameters. Most macros will take a “prefix” parameter to allow a user to create multiple instances of said macro. It’s the mechanism by which we can make the eventual URDF element names unique, otherwise we’d get duplicate link names and URDF would complain.
+    >If you explore the ur_macro definition file, or just about any other file that defines a Xacro macro, you’ll find a lot of uses of `${tf_prefix}` in element names. Xacro evaluates anything inside a “${}” at run-time. It can do basic math, and it can look up variables that come to it via properties (ala-global variables) or macro parameters. Most macros will take a “prefix” parameter to allow a user to create multiple instances of said macro. It’s the mechanism by which we can make the eventual URDF element names unique, otherwise we’d get duplicate link names and URDF would complain.
 
- 1. Including the `ur_macro.xacro` file does not actually create a UR5 robot in our URDF model.  It defines a macro, but we still need to call the macro to create the robot links and joints.  _Note the use of the `prefix` tag, as discussed above.  An additional "ur_type" argument tells the macro which model of UR-robot to generate._
+ 1. Including the `ur_macro.xacro` file does not actually create a UR5 robot in our URDF model.  It defines a macro, but we still need to call the macro to create the robot links and joints.  _Note the use of the `tf_prefix` tag, as discussed above.  An additional "ur_type" argument tells the macro which model of UR-robot to generate._
 
     ``` xml
     <!-- ur arm instantiation -->
@@ -60,26 +55,22 @@ Specifically, you will need to:
     <xacro:arg name="use_fake_hardware" default="true"/>
     <xacro:arg name="fake_sensor_commands" default="true"/>
     <xacro:ur_robot
-        prefix=""
+        name="my_ur5"
+        tf_prefix=""
+        parent="table"
         joint_limits_parameters_file="$(find ur_description)/config/$(arg ur_type)/joint_limits.yaml"
         kinematics_parameters_file="$(find ur_description)/config/$(arg ur_type)/default_kinematics.yaml"
         physical_parameters_file="$(find ur_description)/config/$(arg ur_type)/physical_parameters.yaml"
         visual_parameters_file="$(find ur_description)/config/$(arg ur_type)/visual_parameters.yaml"
         use_fake_hardware="$(arg use_fake_hardware)"
-        fake_sensor_commands="$(arg fake_sensor_commands)"/>
-    ```
-
-    >Macros in Xacro are just fancy wrappers around copy-paste. You make a macro and it gets turned into a chunk of links and joints. You still have to connect the rest of your world to that macro’s results. This means you have to look at the macro and see what the base link is and what the end link is. Hopefully your macro follows a standard, like the ROS-Industrial one, that says that base links are named “base_link” and the last link is called “tool0”.
-
- 1. Connect the UR5 `base_link` to your existing static geometry with a fixed link.
-
-    ``` xml
-    <joint name="table_to_robot" type="fixed">
-      <parent link="table"/>
-      <child link="base_link"/>
+        fake_sensor_commands="$(arg fake_sensor_commands)">
       <origin xyz="0 0 0" rpy="0 0 0"/>
-    </joint>
+    </xacro:ur_robot>
     ```
+
+    >Macros in Xacro are just fancy wrappers around copy-paste. You make a macro and it gets turned into a chunk of links and joints. You typically still have to connect the rest of your world to that macro’s results. This means you have to look at the macro and see what the base link is and what the end link is. Hopefully your macro follows a standard, like the ROS-Industrial one, that says that base links are named “base_link” and the last link is called “tool0”.
+
+    >In this example, the `parent` and `origin` parameters passed to the xacro are used to automatically generate a link between the base of the robot and the link we choose. Here we provide `parent="table"` and `<origin xyz="0 0 0" rpy="0 0 0"/>` to make the robot base link connect to our table link without any offset or rotation.
 
  1. Create a new `urdf.launch.py` file (in the `myworkcell_support` package) to load the URDF model and (optionally) display it in rviz. The launch file starts with several utility functions that are useful for assisting the launch process. This particular file uses `get_package_file` to get the path of the `workcell.urdf.xacro` file you've created, and `xacro.process_file` to generate the URDF as a string object. This URDF string is then passed to a `robot_state_publisher` node as a parameter just as was done manually in the previous exercise.
 

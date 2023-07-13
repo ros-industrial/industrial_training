@@ -1,7 +1,7 @@
 [Desktop Entry]
 Version=1.0
 Name=ROS 2 Documentation
-Exec=firefox http://docs.ros.org/en/foxy/index.html
+Exec=firefox http://docs.ros.org/en/humble/index.html
 Icon=ros2
 Terminal=false
 Type=Application

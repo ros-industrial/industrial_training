@@ -182,7 +182,7 @@ as follows to use all four services we previously mapped.
         //RCLCPP_INFO(this->get_logger(),"Requesting pose in base frame: %s", base_frame.c_str()); // TODO: enable this when     printing to console works again
     
         std::shared_future<LocalizePart::Response::SharedPtr> result_future = vision_client_->async_send_request(req);
-        if(rclcpp::spin_until_future_complete(this->get_node_base_interface(),result_future) !=     rclcpp::executor::FutureReturnCode::SUCCESS)
+        if(rclcpp::spin_until_future_complete(this->get_node_base_interface(),result_future) !=     rclcpp::FutureReturnCode::SUCCESS)
         {
           RCLCPP_ERROR(this->get_logger(), "Localize service call failed");
           return false;
@@ -204,7 +204,7 @@ as follows to use all four services we previously mapped.
         move_req->pose.header.frame_id = base_frame;
         move_req->pose.pose = move_target;
         std::shared_future<MoveToPose_Response::SharedPtr> move_future = move_client_->async_send_request(move_req);
-        if(rclcpp::spin_until_future_complete(this->get_node_base_interface(),move_future) !=     rclcpp::executor::FutureReturnCode::SUCCESS)
+        if(rclcpp::spin_until_future_complete(this->get_node_base_interface(),move_future) !=     rclcpp::FutureReturnCode::SUCCESS)
         {
           RCLCPP_ERROR(this->get_logger(),"Failed to move to target");
           return false;
@@ -215,7 +215,7 @@ as follows to use all four services we previously mapped.
         plan_req->pose = move_target;
         std::cout<<"Planning trajectory"<<std::endl;
         std::shared_future<PlanCartesianPath_Response::SharedPtr> plan_future = cartesian_client_->async_send_request(plan_req);
-        if(rclcpp::spin_until_future_complete(this->get_node_base_interface(),plan_future) !=     rclcpp::executor::FutureReturnCode::SUCCESS)
+        if(rclcpp::spin_until_future_complete(this->get_node_base_interface(),plan_future) !=     rclcpp::FutureReturnCode::SUCCESS)
         {
           RCLCPP_ERROR(this->get_logger(),"Could not plan for path");
           return false;
@@ -226,7 +226,7 @@ as follows to use all four services we previously mapped.
         exec_req->trajectory = plan_future.get()->trajectory;
         std::cout<<"Executing trajectory"<<std::endl;
         std::shared_future<ExecuteTrajectory::Response::SharedPtr> exec_future = exec_traj_client_->async_send_request(exec_req);
-        if(rclcpp::spin_until_future_complete(this->get_node_base_interface(), exec_future) !=     rclcpp::executor::FutureReturnCode::SUCCESS)
+        if(rclcpp::spin_until_future_complete(this->get_node_base_interface(), exec_future) !=     rclcpp::FutureReturnCode::SUCCESS)
         {
           RCLCPP_ERROR(this->get_logger(),"Failed to execute trajectory");
           return false;

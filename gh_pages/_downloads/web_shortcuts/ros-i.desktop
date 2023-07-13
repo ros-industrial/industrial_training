@@ -1,7 +1,7 @@
 [Desktop Entry]
 Version=1.0
 Name=ROS Industrial Training
-Exec=firefox https://industrial-training-master.readthedocs.io/en/foxy/
+Exec=firefox https://industrial-training-master.readthedocs.io/en/latest/
 Icon=ros-i
 Terminal=false
 Type=Application

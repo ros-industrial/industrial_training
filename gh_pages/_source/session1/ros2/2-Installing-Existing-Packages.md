@@ -45,7 +45,7 @@ Your goal is to have access to both of these packages' resources within your pac
 1. Use the _APT_ package manager to try to install the package.
 
    ```
-   apt install ros-foxy-nav-2d-msgs
+   apt install ros-humble-nav-2d-msgs
    ```
 
    * Note the naming convention for the APT package name:
@@ -60,7 +60,7 @@ Your goal is to have access to both of these packages' resources within your pac
 1. Install using _sudo_.
 
    ```
-   sudo apt install ros-foxy-nav-2d-msgs
+   sudo apt install ros-humble-nav-2d-msgs
    ```
 
    * Note the use of the _sudo_ command to run a command with "root" (administrator) privileges.
@@ -74,13 +74,13 @@ Your goal is to have access to both of these packages' resources within your pac
    ```
 
    * Linux Tip: use the up/down arrow keys to scroll through previous command history, to avoid re-typing common commands.
-   * This time, you will see a directory output of _/opt/ros/foxy_.
+   * This time, you will see a directory output of _/opt/ros/humble_.
 
 
 1. Remove the package from the system.
 
    ```
-   sudo apt remove ros-foxy-nav-2d-msgs
+   sudo apt remove ros-humble-nav-2d-msgs
    ```
 
    * _Don't worry. We won't be needing this package for any future exercises, so it's safe to remove._

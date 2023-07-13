@@ -110,14 +110,14 @@ def launch_setup(context, *args, **kwargs):
         
         io_and_status_controller_spawner = Node(
             package="controller_manager",
-            executable="spawner.py",
+            executable="spawner",
             arguments=["io_and_status_controller", "-c", "/controller_manager"],
             )
         
         robot_controller = 'manipulator_joint_trajectory_controller' # from ros_controllers.yaml in moveit2_config package
         robot_controller_spawner = Node(
             package="controller_manager",
-            executable="spawner.py",
+            executable="spawner",
             arguments=[robot_controller, "-c", "/controller_manager"],
             )
         

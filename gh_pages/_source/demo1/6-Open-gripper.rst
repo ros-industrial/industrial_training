@@ -83,7 +83,7 @@ Build Code and Run
 API References
 --------------
 
-* `async_send_goal() <https://docs.ros2.org/foxy/api/rclcpp_action/classrclcpp__action_1_1Client.html#ae0cf05dc5dee2a1c5d590569b64cba08>`_
+* `async_send_goal() <http://docs.ros.org/en/humble/p/rclcpp_action/generated/classrclcpp__action_1_1Client.html#_CPPv4N13rclcpp_action6Client15async_send_goalERK4GoalRK15SendGoalOptions>`_
 * `wait_for() <https://en.cppreference.com/w/cpp/thread/shared_future/wait_for>`_
 * `std::chrono::duration <https://en.cppreference.com/w/cpp/chrono/duration>` _
 

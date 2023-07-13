@@ -25,7 +25,7 @@
     <arg name="trajectory_port" value="50003"/>
     <arg name="kinematics_config" value="$(find ur_description)/config/ur5/default_kinematics.yaml"/>
     <arg name="tf_prefix" value=""/>
-    <arg name="controllers" value="joint_state_controller manipulator_controller"/>
+    <arg name="controllers" value="joint_state_broadcaster manipulator_controller"/>
     <arg name="stopped_controllers" value=""/>
     <arg name="headless_mode" value="false"/>
     <arg name="tool_voltage" value="$(arg tool_voltage)"/>

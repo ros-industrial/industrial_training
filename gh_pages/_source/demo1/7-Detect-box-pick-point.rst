@@ -79,4 +79,4 @@ Build Code and Run
 API References
 --------------
 
-* `async_send_request() <https://docs.ros2.org/foxy/api/rclcpp/classrclcpp_1_1Client.html#a7567297f43b72f96e8ec57fa7ff2f4e1>`_
+* `async_send_request() <http://docs.ros.org/en/humble/p/rclcpp/generated/classrclcpp_1_1Client.html#_CPPv4N6rclcpp6Client18async_send_requestE13SharedRequest>`_

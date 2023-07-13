@@ -14,9 +14,9 @@ We will create a new workspace, since this exercise does not overlap with the pr
 
    .. code-block:: bash
 
-			source /opt/ros/foxy/setup.bash
+			source /opt/ros/humble/setup.bash
 
-#. Copy the template workspace layout and files:
+#. Copy the template workspace layout and files (if you haven't done exercise 4.1):
 
    .. code-block:: bash
 
@@ -155,13 +155,16 @@ Viewing Results
       ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 world_frame kinect_link
 
    .. code-block:: bash
+
       cd ~/perception_ws
       ros2 run lesson_perception pcd_to_pointcloud --ros-args -p filename:=${HOME}/table.pcd -p tf_frame:=kinect_link -p topic:=/kinect/depth_registered/points
       
    .. code-block:: bash
+
       ros2 run rviz2 rviz2
 
    .. code-block:: bash
+
       ros2 launch lesson_perception processing_node.launch.py
 
 #. View results
@@ -726,7 +729,7 @@ While this is not a filter method, it is useful when using PCL or other percepti
        * SET UP PARAMETERS (COULD TO BE INPUT FROM LAUNCH FILE/TERMINAL)
        */
 
-   Notice our use of ``rclcpp::NodeOptions()`` at the start of our class declaration. In our node we use ``get_parameter_or(...)`` to get each parameter or give it a default value if no value has been assigned yet. In ROS 2, calling a parameter will return a ``rclcpp::Parameter`` object (unlike in ROS 1 that returned an instance of the parameter's type, i.e. a string). You will then need to retrieve the value of the parameter using ``.value()`` or a more specific ``.as_string()``, ``.as_int()``, ``.as_double()``, etc.
+   Notice our use of ``rclcpp::NodeOptions()`` at the start of our class declaration. In our node we use ``get_parameter_or(...)`` to get each parameter or give it a default value if no value has been assigned yet. This way of calling a parameter will return a ``rclcpp::Parameter`` object (unlike in ROS 1 that returned an instance of the parameter's type, i.e. a string). You will then need to retrieve the value of the parameter using ``.value()`` or a more specific ``.as_string()``, ``.as_int()``, ``.as_double()``, etc.
 
    Take a look at the 3 parameters we have already created for you (cloud_topic, world_frame, camera_frame) and how we have declared them in both our node and launch file. 
    Try creating some new parameters to replace some of our hard-coded values in our filters and test them out. Below is an example of some of the parameters you could have set.

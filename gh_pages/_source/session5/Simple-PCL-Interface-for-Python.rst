@@ -81,7 +81,7 @@ Implement a Voxel Filter
               if (request->pcdfilename.empty())
               {
                   pcl::fromROSMsg(request->input_cloud, *cloud);
-                  RCLCPP_INFO(this->get_logger(), "cloud size: '%ul'", cloud->size());
+                  RCLCPP_INFO(this->get_logger(), "cloud size: '%lu'", cloud->size());
                   if (cloud->empty())
                   {
                       RCLCPP_ERROR(this->get_logger(), "input cloud empty");

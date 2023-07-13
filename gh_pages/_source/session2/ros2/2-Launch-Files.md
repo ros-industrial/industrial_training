@@ -6,11 +6,11 @@ The ROS architecture encourages engineers to use ''nodes'' as a fundamental unit
 
 ## Reference Example
 
-[Launching a ROS System](https://index.ros.org/doc/ros2/Tutorials/Launch-system)
+[Launching a ROS System](https://docs.ros.org/en/humble/Tutorials/Intermediate/Launch/Launch-system.html)
 
 ## Further Information and Resources
 
-[ROS2 python launch Node action](https://github.com/ros2/launch_ros/blob/foxy/launch_ros/launch_ros/actions/node.py#L68-L150)
+[ROS2 python launch Node action](https://github.com/ros2/launch_ros/blob/humble/launch_ros/launch_ros/actions/node.py#L113-L200)
 
 ## Scan-N-Plan Application: Problem Statement
 In this exercise, you will:
@@ -32,9 +32,11 @@ You may also choose to launch `myworkcell_core` node with the others or keep it 
    ``` bash
    cd ~/ros2_ws/src
    ros2 pkg create myworkcell_support --dependencies myworkcell_core
-   
-   <run colcon build in your build terminal>
+   ```
 
+   Then run `colcon build` in your build terminal and source your running terminal.
+
+   ```
    source ~/ros2_ws/install/setup.bash
    ```
 
@@ -116,4 +118,4 @@ You may also choose to launch `myworkcell_core` node with the others or keep it 
    * _Important_: Remember that `ros2` works on the launch file in the `install/` directory and so you won't see the new behavior without running `colcon build` again to reinstall the file. To avoid having to do this for every change during development, you can run `colcon build` with a `--symlink-install` option which will install a link to the file in the `src/` directory so any changes will be seen immediately.
    
 ## Challenge Exercise
-* ROS2 also supports [XML] and YAML launch files.  Review the example [here](https://docs.ros.org/en/foxy/How-To-Guides/Launch-file-different-formats.html) and try to recreate the launch file we just made in XML or YAML instead.
+* ROS2 also supports [XML] and YAML launch files.  Review the example [here](https://docs.ros.org/en/humble/How-To-Guides/Launch-file-different-formats.html) and try to recreate the launch file we just made in XML or YAML instead.

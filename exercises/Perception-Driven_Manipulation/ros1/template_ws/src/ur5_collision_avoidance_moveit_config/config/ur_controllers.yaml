@@ -13,8 +13,8 @@ ur_hardware_interface:
      - wrist_3_joint
 
 # Publish all joint states ----------------------------------
-joint_state_controller:
-   type:         joint_state_controller/JointStateController
+joint_state_broadcaster:
+   type:         joint_state_broadcaster/JointStateController
    publish_rate: *loop_hz
 
 # Publish wrench ----------------------------------
