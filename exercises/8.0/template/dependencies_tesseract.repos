@@ -1,8 +1,4 @@
 - git:
-    local-name: Qt-Advanced-Docking-System
-    uri: https://github.com/Levi-Armstrong/Qt-Advanced-Docking-System.git
-    version: e28bc8e17308ff0ea256c87d44eb566ab9e2b9c1
-- git:
     local-name: ros_industrial_cmake_boilerplate
     uri: https://github.com/ros-industrial/ros_industrial_cmake_boilerplate.git
     version: 0.4.7
@@ -38,4 +34,8 @@
     local-name: taskflow
     uri: https://github.com/taskflow/taskflow.git
     version: v3.4.0
+- git:
+    local-name: tesseract_ros2
+    uri: https://github.com/tesseract-robotics/tesseract_ros2.git
+    version: dd35d0616b7a2d0d608f6ab9d363121f0955ce78
 
