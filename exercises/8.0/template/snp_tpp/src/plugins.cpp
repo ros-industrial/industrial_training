@@ -2,6 +2,8 @@
 
 #include <noether_gui/plugin_interface.h>
 
+#include <yaml-cpp/yaml.h>
+
 namespace snp_tpp
 {
 struct ROISelectionMeshModifierWidgetPlugin : public noether::MeshModifierWidgetPlugin

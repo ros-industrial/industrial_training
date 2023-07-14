@@ -9,6 +9,7 @@
 #include <QStandardPaths>
 #include <QTextStream>
 #include <tf2_eigen/tf2_eigen.h>
+#include <yaml-cpp/yaml.h>
 
 namespace
 {

@@ -18,7 +18,7 @@ using FJT_Goal = control_msgs::action::FollowJointTrajectory_Goal;
 template <typename T>
 T get(rclcpp::Node* node, const std::string& key)
 {
-  node->declare_parameter(key);
+  node->declare_parameter<T>(key);
   T val;
   if (!node->get_parameter(key, val))
     throw std::runtime_error("Failed to get '" + key + "' parameter");
