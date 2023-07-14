@@ -24,25 +24,24 @@ We will create a new workspace, since this exercise does not overlap with the pr
 
 		mkdir -p ~/tesseract_ws/src
 		cp -r ~/industrial_training/exercises/8.0/template/. ~/tesseract_ws/src
-		cd ~/tesseract_ws/
 
-#. Install ``taskflow`` from the ROS-I PPA
-
-	.. code-block:: bash
-
-		sudo add-apt-repository ppa:ros-industrial/ppa
-		sudo apt-get update
-		sudo apt-get install taskflow
-
-#. Install the ROS 2 dependencies (this may take a while)
+#. Install the ROS 2 dependencies (this will take a while if you don't do the shallow tag in the first one, but only do it for the first one)
 
 	.. code-block:: bash
 
 		cd ~/tesseract_ws
-		vcs import src < src/dependencies_tesseract.repos
+		vcs import src --shallow < src/dependencies_tesseract.repos
 		vcs import src < src/dependencies.repos
 		vcs import src < src/snp_automate_2022/dependencies.repos
 		rosdep install --from-paths src --ignore-src -r -y
+
+#. Install extra dependencies that aren't properly caught
+
+   .. code-block:: bash
+
+      sudo ~/tesseract_ws/src/tesseract_ros2/.add-gazebo-ppa
+      sudo apt-get update
+      sudo apt-get install libxmlrpcpp-dev libgz-common5-dev libgz-math7-dev libgz-rendering7-dev
 
 #. Initialize and Build this new workspace (this may take a little while)
 
@@ -83,6 +82,7 @@ Running the Application
 Throughout this exercise we will always follow the same process for running the application.
 
 #. Launch the application with verbose logging on to help with debugging:
+
    .. code-block:: bash
 
          ros2 launch snp_automate_2022 start.launch.xml
@@ -112,11 +112,18 @@ Throughout this exercise we will always follow the same process for running the 
    :align: center
 
 #. To understand what exactly the pipeline did you can go to the ``/tmp`` directory and open the following files:
+
    * ScanNPlanPipeline.dot
+
    * SNPFreespacePipeline.dot
+
    * SNPTransitionPipeline.dot
+
    * SNPCartesianPipeline.dot
+
    * ScanNPlanPipelineResults.dot
+
+.. Note:: If you're having trouble viewing these files install `xdot` with ``sudo apt install xdot``
 
 Fill in the Code
 ----------------
@@ -569,7 +576,7 @@ One capability of Descartes is the ability to sample waypoints. For our applicat
 
 This does 2 things:
 
- #. Allows more use of your computers capabilities by running with multiple threads (here it is set to the number of available threads on your system)
+ #. Allows more use of your computer's capabilities by running with multiple threads (here it is set to the number of available threads on your system)
 
  #. Samples each waypoint at 30 degree increments around the z-axis. This will alllow for more optimal trajectories while still reaching all the waypoints.
 
