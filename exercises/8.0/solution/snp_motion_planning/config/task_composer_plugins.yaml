@@ -12,7 +12,7 @@ task_composer_plugins:
         config:
           threads: 8
   tasks:
-    plugins:    
+    plugins:
       SNPCartesianPipeline:
         class: GraphTaskFactory
         config:
@@ -34,13 +34,6 @@ task_composer_plugins:
                 inputs: [input_data]
                 outputs: [output_data]
                 format_result_as_input: false
-            #DescartesMotionPlannerTask:
-            #  class: DescartesFMotionPlannerTaskFactory
-            #  config:
-            #    conditional: true
-            #    inputs: [output_data]
-            #    outputs: [output_data]
-            #    format_result_as_input: false
             TrajOptMotionPlannerTask:
               class: TrajOptMotionPlannerTaskFactory
               config:
@@ -53,6 +46,7 @@ task_composer_plugins:
               config:
                 conditional: true
                 inputs: [output_data]
+                outputs: [output_data]
             ConstantTCPSpeedTimeParameterizationTask:
               class: ConstantTCPSpeedTimeParameterizationTaskFactory
               config:
@@ -67,16 +61,12 @@ task_composer_plugins:
                 outputs: [output_data]
           edges:
             - source: MinLengthTask
-            #  destinations: [AbortTask, DescartesMotionPlannerTask]
               destinations: [AbortTask, TrajOptMotionPlannerTask]
-            #- source: DescartesMotionPlannerTask
-            #  destinations: [AbortTask, TrajOptMotionPlannerTask]
-            #  destinations: [AbortTask, DiscreteContactCheckTask]
             - source: TrajOptMotionPlannerTask
               destinations: [AbortTask, DiscreteContactCheckTask]
             - source: DiscreteContactCheckTask
               destinations: [AbortTask, ConstantTCPSpeedTimeParameterizationTask]
-            - source: ConstantTCPSpeedTimeParameterizationTask # IterativeSplineParameterizationTask
+            - source: ConstantTCPSpeedTimeParameterizationTask
               destinations: [AbortTask, KinematicLimitsCheckTask]
             - source: KinematicLimitsCheckTask
               destinations: [AbortTask, DoneTask]
@@ -107,7 +97,7 @@ task_composer_plugins:
                 conditional: true
                 inputs: [output_data]
                 outputs: [output_data]
-                format_result_as_input: true
+                format_result_as_input: false
             TrajOptMotionPlannerTask:
               class: TrajOptMotionPlannerTaskFactory
               config:
@@ -120,6 +110,7 @@ task_composer_plugins:
               config:
                 conditional: true
                 inputs: [output_data]
+                outputs: [output_data]
             IterativeSplineParameterizationTask:
               class: IterativeSplineParameterizationTaskFactory
               config:
@@ -134,7 +125,6 @@ task_composer_plugins:
                 outputs: [output_data]
           edges:
             - source: MinLengthTask
-            #  destinations: [AbortTask, TrajOptMotionPlannerTask]
               destinations: [AbortTask, OMPLMotionPlannerTask]
             - source: OMPLMotionPlannerTask
               destinations: [AbortTask, TrajOptMotionPlannerTask]
@@ -167,27 +157,41 @@ task_composer_plugins:
                 conditional: true
                 inputs: [input_data]
                 outputs: [output_data]
-            TrajOptMotionPlannerTask:
+            TrajOptMotionPlannerTask1:
               class: TrajOptMotionPlannerTaskFactory
               config:
                 conditional: true
                 inputs: [output_data]
                 outputs: [output_data]
                 format_result_as_input: false
+            DiscreteContactCheckTask1:
+              class: DiscreteContactCheckTaskFactory
+              config:
+                conditional: true
+                inputs: [output_data]
+                outputs: [output_data]
             OMPLMotionPlannerTask:
               class: OMPLMotionPlannerTaskFactory
               config:
                 conditional: true
                 inputs: [output_data]
                 outputs: [output_data]
-                format_result_as_input: true
-            DiscreteContactCheckTask:
+                format_result_as_input: false
+            TrajOptMotionPlannerTask2:
+              class: TrajOptMotionPlannerTaskFactory
+              config:
+                conditional: true
+                inputs: [output_data]
+                outputs: [output_data]
+                format_result_as_input: false
+            DiscreteContactCheckTask2:
               class: DiscreteContactCheckTaskFactory
               config:
                 conditional: true
                 inputs: [output_data]
-            IterativeSplineParameterizationTask:
-              class: IterativeSplineParameterizationTaskFactory
+                outputs: [output_data]
+            ConstantTCPSpeedTimeParameterizationTask:
+              class: ConstantTCPSpeedTimeParameterizationTaskFactory
               config:
                 conditional: true
                 inputs: [output_data]
@@ -200,14 +204,18 @@ task_composer_plugins:
                 outputs: [output_data]
           edges:
             - source: MinLengthTask
-              destinations: [AbortTask, TrajOptMotionPlannerTask]
-            - source: TrajOptMotionPlannerTask
-              destinations: [OMPLMotionPlannerTask, DiscreteContactCheckTask]
+              destinations: [AbortTask, TrajOptMotionPlannerTask1]
+            - source: TrajOptMotionPlannerTask1
+              destinations: [OMPLMotionPlannerTask, DiscreteContactCheckTask1]
+            - source: DiscreteContactCheckTask1
+              destinations: [OMPLMotionPlannerTask, ConstantTCPSpeedTimeParameterizationTask]
             - source: OMPLMotionPlannerTask
-              destinations: [AbortTask, DiscreteContactCheckTask]
-            - source: DiscreteContactCheckTask
-              destinations: [AbortTask, IterativeSplineParameterizationTask]
-            - source: IterativeSplineParameterizationTask
+              destinations: [AbortTask, TrajOptMotionPlannerTask2]
+            - source: TrajOptMotionPlannerTask2
+              destinations: [AbortTask, DiscreteContactCheckTask2]
+            - source: DiscreteContactCheckTask2
+              destinations: [AbortTask, ConstantTCPSpeedTimeParameterizationTask]
+            - source: ConstantTCPSpeedTimeParameterizationTask
               destinations: [AbortTask, KinematicLimitsCheckTask]
             - source: KinematicLimitsCheckTask
               destinations: [AbortTask, DoneTask]
