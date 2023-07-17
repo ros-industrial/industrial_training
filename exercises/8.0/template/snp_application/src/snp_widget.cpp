@@ -10,7 +10,6 @@
 #include "trajectory_msgs_yaml.h"
 
 static const std::string TOOL_PATH_TOPIC = "toolpath";
-static const std::string MESH_TOPIC = "scan_mesh";
 
 static const std::string CALIBRATION_OBSERVE_SERVICE = "observe";
 static const std::string CALIBRATION_RUN_SERVICE = "run";
@@ -57,11 +56,20 @@ template <typename T>
 T declareAndGet(rclcpp::Node& node, const std::string& key)
 {
   T val;
-  node.declare_parameter(key);
+  node.declare_parameter<T>(key);
   if (!node.get_parameter(key, val))
   {
     throw std::runtime_error("Failed to get '" + key + "' parameter");
   }
+  return val;
+}
+
+template <typename T>
+T declareAndGet(rclcpp::Node& node, const std::string& key, const T& default_value)
+{
+  T val;
+  node.declare_parameter<T>(key);
+  node.get_parameter_or(key, val, default_value);
   return val;
 }
 
@@ -78,6 +86,7 @@ SNPWidget::SNPWidget(rclcpp::Node::SharedPtr node, QWidget* parent)
   , camera_frame_(declareAndGet<std::string>(*node, CAMERA_FRAME_PARAM))
   , scan_traj_(message_serialization::deserialize<trajectory_msgs::msg::JointTrajectory>(
         declareAndGet<std::string>(*node, SCAN_TRAJ_FILE_PARAM)))
+  , start_scan_request_(std::make_shared<industrial_reconstruction_msgs::srv::StartReconstruction::Request>())
 {
   ui_->setupUi(this);
 
@@ -102,7 +111,6 @@ SNPWidget::SNPWidget(rclcpp::Node::SharedPtr node, QWidget* parent)
   connect(this, &SNPWidget::log, this, &SNPWidget::onUpdateLog);
 
   toolpath_pub_ = node->create_publisher<geometry_msgs::msg::PoseArray>(TOOL_PATH_TOPIC, 10);
-  scan_mesh_pub_ = node->create_publisher<visualization_msgs::msg::Marker>(MESH_TOPIC, 10);
 
   // TODO register all service/action clients
   observe_client_ = node->create_client<std_srvs::srv::Trigger>(CALIBRATION_OBSERVE_SERVICE);
@@ -117,6 +125,25 @@ SNPWidget::SNPWidget(rclcpp::Node::SharedPtr node, QWidget* parent)
   tpp_client_ = node->create_client<snp_msgs::srv::GenerateToolPaths>(GENERATE_TOOL_PATHS_SERVICE);
   motion_planning_client_ = node->create_client<snp_msgs::srv::GenerateMotionPlan>(MOTION_PLAN_SERVICE);
   motion_execution_client_ = node->create_client<snp_msgs::srv::ExecuteMotionPlan>(MOTION_EXECUTION_SERVICE);
+
+  // Populate scan request
+  start_scan_request_->tracking_frame = camera_frame_;
+  start_scan_request_->relative_frame = reference_frame_;
+  start_scan_request_->translation_distance = 0;
+  start_scan_request_->rotational_distance = 0;
+  start_scan_request_->live = true;
+  start_scan_request_->rgbd_params.convert_rgb_to_intensity = false;
+  // Configurable parameters
+  start_scan_request_->tsdf_params.voxel_length = declareAndGet<float>(*node, "tsdf.voxel_length", 0.01f);
+  start_scan_request_->tsdf_params.sdf_trunc = declareAndGet<float>(*node, "tsdf.sdf_trunc", 0.03f);
+  start_scan_request_->tsdf_params.min_box_values.x = declareAndGet<double>(*node, "tsdf.min.x", 0.0);
+  start_scan_request_->tsdf_params.min_box_values.y = declareAndGet<double>(*node, "tsdf.min.y", 0.0);
+  start_scan_request_->tsdf_params.min_box_values.z = declareAndGet<double>(*node, "tsdf.min.z", 0.0);
+  start_scan_request_->tsdf_params.max_box_values.x = declareAndGet<double>(*node, "tsdf.max.x", 0.0);
+  start_scan_request_->tsdf_params.max_box_values.y = declareAndGet<double>(*node, "tsdf.max.y", 0.0);
+  start_scan_request_->tsdf_params.max_box_values.z = declareAndGet<double>(*node, "tsdf.max.z", 0.0);
+  start_scan_request_->rgbd_params.depth_scale = declareAndGet<float>(*node, "rgbd.depth_scale", 1000.0);
+  start_scan_request_->rgbd_params.depth_trunc = declareAndGet<float>(*node, "rgbd.depth_trunc", 1.1f);
 }
 
 void SNPWidget::onUpdateStatus(bool success, QString current_process, QString next_process, unsigned step)
@@ -300,34 +327,8 @@ void SNPWidget::onScanApproachDone(FJTResult result)
     return;
   }
 
-  // call reconstruction start
-  auto start_request = std::make_shared<industrial_reconstruction_msgs::srv::StartReconstruction::Request>();
-
-  start_request->tracking_frame = camera_frame_;
-  start_request->relative_frame = reference_frame_;
-
-  // TODO parameters
-  start_request->translation_distance = 0;
-  start_request->rotational_distance = 0;
-  start_request->live = true;
-
-  // TODO other params (currently set to recommended default)
-  start_request->tsdf_params.voxel_length = 0.01f;
-  start_request->tsdf_params.sdf_trunc = 0.03f;
-
-  start_request->tsdf_params.min_box_values.x = 0.21;
-  start_request->tsdf_params.min_box_values.y = -0.45;
-  start_request->tsdf_params.min_box_values.z = 0.112;
-  start_request->tsdf_params.max_box_values.x = 1.51;
-  start_request->tsdf_params.max_box_values.y = 0.45;
-  start_request->tsdf_params.max_box_values.z = 0.527;
-
-  start_request->rgbd_params.depth_scale = 1000.0;
-  start_request->rgbd_params.depth_trunc = 1.1;
-  start_request->rgbd_params.convert_rgb_to_intensity = false;
-
   auto cb = std::bind(&SNPWidget::onScanStartDone, this, std::placeholders::_1);
-  start_reconstruction_client_->async_send_request(start_request, cb);
+  start_reconstruction_client_->async_send_request(start_scan_request_, cb);
 }
 
 void SNPWidget::onScanStartDone(StartScanFuture result)
@@ -409,26 +410,6 @@ void SNPWidget::onScanStopDone(StopScanFuture stop_result)
   {
     emit log("Failed to stop surface reconstruction");
     emit updateStatus(false, STOP_RECONSTRUCTION_ST, SCAN_APPROACH_ST, STATES.at(SCAN_APPROACH_ST));
-  }
-
-  // Publish the mesh
-  {
-    visualization_msgs::msg::Marker mesh_marker;
-    mesh_marker.header.frame_id = reference_frame_;
-
-    mesh_marker.color.r = 200;
-    mesh_marker.color.g = 200;
-    mesh_marker.color.b = 0;
-    mesh_marker.color.a = 1;
-
-    mesh_marker.scale.x = 1;
-    mesh_marker.scale.y = 1;
-    mesh_marker.scale.z = 1;
-
-    mesh_marker.type = visualization_msgs::msg::Marker::MESH_RESOURCE;
-    mesh_marker.mesh_resource = "file://" + mesh_file_;
-
-    scan_mesh_pub_->publish(mesh_marker);
   }
 
   if (!motion_execution_client_->service_is_ready())

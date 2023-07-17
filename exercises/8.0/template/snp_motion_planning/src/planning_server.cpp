@@ -1,15 +1,19 @@
 #include "planner_profiles.hpp"
-#include "taskflow_generators.hpp"
+#include "plugins/tasks/constant_tcp_speed_time_parameterization_profile.hpp"
+#include "plugins/tasks/kinematic_limits_check_profile.hpp"
 
 #include <rclcpp/rclcpp.hpp>
+#include <tesseract_time_parameterization/isp/iterative_spline_parameterization.h>
 #include <tesseract_monitoring/environment_monitor.h>
 #include <tesseract_monitoring/environment_monitor_interface.h>
 #include <tesseract_rosutils/plotting.h>
 #include <tesseract_geometry/mesh_parser.h>
 #include <tesseract_rosutils/utils.h>
+#include <tesseract_collision/bullet/convex_hull_utils.h>
 #include <snp_msgs/srv/generate_motion_plan.hpp>
 #include <tf2_eigen/tf2_eigen.h>
 
+#include <tesseract_time_parameterization/core/instructions_trajectory.h>
 #include <tesseract_motion_planners/core/utils.h>
 #include <tesseract_motion_planners/interface_utils.h>
 #include <tesseract_command_language/composite_instruction.h>
@@ -20,17 +24,34 @@
 #include <tesseract_command_language/profile_dictionary.h>
 #include <tesseract_command_language/utils.h>
 
-#include <tesseract_task_composer/profiles/min_length_profile.h>
-#include <tesseract_task_composer/profiles/interative_spline_parameterization_profile.h>
+#include <tesseract_task_composer/planning/planning_task_composer_problem.h>
+#include <tesseract_task_composer/planning/profiles/min_length_profile.h>
+#include <tesseract_task_composer/planning/profiles/iterative_spline_parameterization_profile.h>
+#include <tesseract_task_composer/planning/profiles/contact_check_profile.h>
+
+#include <tesseract_task_composer/core/task_composer_problem.h>
+#include <tesseract_task_composer/core/task_composer_input.h>
+#include <tesseract_task_composer/core/task_composer_plugin_factory.h>
 
 static const std::string TRANSITION_PLANNER = "TRANSITION";
 static const std::string FREESPACE_PLANNER = "FREESPACE";
 static const std::string RASTER_PLANNER = "RASTER";
 static const std::string PROFILE = "SNPD";
-static const std::string PROFILE2 = "SNPD_FREESPACE";
 static const std::string PLANNING_SERVICE = "create_motion_plan";
 static const std::string TESSERACT_MONITOR_NAMESPACE = "snp_environment";
 static const double MAX_TCP_SPEED = 0.25;  // m/s
+
+static const std::string VERBOSE_PARAM = "verbose";
+static const std::string TOUCH_LINKS_PARAM = "touch_links";
+static const std::string MAX_TRANS_VEL_PARAM = "max_translational_vel";
+static const std::string MAX_ROT_VEL_PARAM = "max_rotational_vel";
+static const std::string MAX_TRANS_ACC_PARAM = "max_translational_acc";
+static const std::string MAX_ROT_ACC_PARAM = "max_rotational_acc";
+static const std::string CHECK_JOINT_ACC_PARAM = "check_joint_accelerations";
+static const std::string VEL_SCALE_PARAM = "velocity_scaling_factor";
+static const std::string ACC_SCALE_PARAM = "acceleration_scaling_factor";
+static const std::string LVS_PARAM = "contact_check_longest_valid_segment";
+static const std::string CONTACT_DIST_PARAM = "contact_check_distance";
 
 tesseract_common::Toolpath fromMsg(const snp_msgs::msg::ToolPaths& msg)
 {
@@ -61,25 +82,29 @@ tesseract_common::Toolpath fromMsg(const snp_msgs::msg::ToolPaths& msg)
 template <typename T>
 T get(rclcpp::Node::SharedPtr node, const std::string& key)
 {
-  node->declare_parameter(key);
   T val;
   if (!node->get_parameter(key, val))
     throw std::runtime_error("Failed to get '" + key + "' parameter");
   return val;
 }
 
+double clamp(const double val, const double min, const double max)
+{
+  return std::min(std::max(val, min), max);
+}
+
 static tesseract_environment::Commands createScanAdditionCommands(const std::string& filename,
                                                                   const std::string& mesh_frame,
                                                                   const std::vector<std::string>& touch_links)
 {
-  std::vector<tesseract_geometry::ConvexMesh::Ptr> geometries =
-      tesseract_geometry::createMeshFromPath<tesseract_geometry::ConvexMesh>(filename);
+  std::vector<tesseract_geometry::Mesh::Ptr> geometries =
+      tesseract_geometry::createMeshFromPath<tesseract_geometry::Mesh>(filename);
 
   tesseract_scene_graph::Link link("scan");
-  for (tesseract_geometry::ConvexMesh::Ptr geometry : geometries)
+  for (tesseract_geometry::Mesh::Ptr geometry : geometries)
   {
     tesseract_scene_graph::Collision::Ptr collision = std::make_shared<tesseract_scene_graph::Collision>();
-    collision->geometry = geometry;
+    collision->geometry = tesseract_collision::makeConvexMesh(*geometry);
     link.collision.push_back(collision);
   }
 
@@ -105,11 +130,23 @@ class PlanningServer
 {
 public:
   PlanningServer(rclcpp::Node::SharedPtr node)
-    : node_(node)
-    , verbose_(get<bool>(node_, "verbose"))
-    , touch_links_(get<std::vector<std::string>>(node_, "touch_links"))
-    , env_(std::make_shared<tesseract_environment::Environment>())
+    : node_(node), env_(std::make_shared<tesseract_environment::Environment>())
   {
+    // Declare ROS parameters
+    node_->declare_parameter<std::string>("robot_description");
+    node_->declare_parameter<std::string>("robot_description_semantic");
+    node_->declare_parameter<bool>(VERBOSE_PARAM, false);
+    node_->declare_parameter<std::vector<std::string>>(TOUCH_LINKS_PARAM, {});
+    node_->declare_parameter<double>(MAX_TRANS_VEL_PARAM);
+    node_->declare_parameter<double>(MAX_ROT_VEL_PARAM);
+    node_->declare_parameter<double>(MAX_TRANS_ACC_PARAM);
+    node_->declare_parameter<double>(MAX_ROT_ACC_PARAM);
+    node_->declare_parameter<bool>(CHECK_JOINT_ACC_PARAM, false);
+    node_->declare_parameter<double>(VEL_SCALE_PARAM, 1.0);
+    node_->declare_parameter<double>(ACC_SCALE_PARAM, 1.0);
+    node_->declare_parameter<double>(LVS_PARAM, 0.05);
+    node_->declare_parameter<double>(CONTACT_DIST_PARAM, 0.0);
+
     {
       auto urdf_string = get<std::string>(node_, "robot_description");
       auto srdf_string = get<std::string>(node_, "robot_description_semantic");
@@ -127,24 +164,6 @@ public:
     tesseract_monitor_->setEnvironmentPublishingFrequency(30.0);
     tesseract_monitor_->startPublishingEnvironment();
     tesseract_monitor_->startStateMonitor("/robot_joint_states", true);
-
-    profile_dict_ = std::make_shared<tesseract_planning::ProfileDictionary>();
-    // Add custom profiles
-    {
-      
-      /* ========================================
-       * Fill Code: ADD CUSTOM PLANNER PROFILES 
-       * ========================================*/
-
-      profile_dict_->addProfile<tesseract_planning::SimplePlannerPlanProfile>(
-          tesseract_planning::profile_ns::SIMPLE_DEFAULT_NAMESPACE, PROFILE, createSimplePlannerProfile());
-      profile_dict_->addProfile<tesseract_planning::MinLengthProfile>(
-          tesseract_planning::node_names::MIN_LENGTH_TASK_NAME, PROFILE,
-          std::make_shared<tesseract_planning::MinLengthProfile>(5));
-      profile_dict_->addProfile<tesseract_planning::IterativeSplineParameterizationProfile>(
-          tesseract_planning::node_names::ITERATIVE_SPLINE_PARAMETERIZATION_TASK_NAME, PROFILE,
-          std::make_shared<tesseract_planning::IterativeSplineParameterizationProfile>());
-    }
 
     // Advertise the ROS2 service
     server_ = node_->create_service<snp_msgs::srv::GenerateMotionPlan>(
@@ -294,35 +313,118 @@ private:
     {
       RCLCPP_INFO_STREAM(node_->get_logger(), "Received motion planning request");
 
+      tesseract_planning::ProfileDictionary::Ptr profile_dict =
+          std::make_shared<tesseract_planning::ProfileDictionary>();
+      // Add custom profiles
+      {
+        profile_dict->addProfile<tesseract_planning::SimplePlannerPlanProfile>(SIMPLE_DEFAULT_NAMESPACE, PROFILE,
+                                                                               createSimplePlannerProfile());
+        profile_dict->addProfile<tesseract_planning::OMPLPlanProfile>(OMPL_DEFAULT_NAMESPACE, PROFILE,
+                                                                      createOMPLProfile());
+        profile_dict->addProfile<tesseract_planning::TrajOptPlanProfile>(TRAJOPT_DEFAULT_NAMESPACE, PROFILE,
+                                                                         createTrajOptToolZFreePlanProfile());
+        profile_dict->addProfile<tesseract_planning::TrajOptCompositeProfile>(TRAJOPT_DEFAULT_NAMESPACE, PROFILE,
+                                                                              createTrajOptProfile());
+        profile_dict->addProfile<tesseract_planning::DescartesPlanProfile<float>>(DESCARTES_DEFAULT_NAMESPACE, PROFILE,
+                                                                                  createDescartesPlanProfile<float>());
+        profile_dict->addProfile<tesseract_planning::MinLengthProfile>(
+            MIN_LENGTH_DEFAULT_NAMESPACE, PROFILE, std::make_shared<tesseract_planning::MinLengthProfile>(6));
+        auto velocity_scaling_factor =
+            clamp(get<double>(node_, VEL_SCALE_PARAM), std::numeric_limits<double>::epsilon(), 1.0);
+        auto acceleration_scaling_factor =
+            clamp(get<double>(node_, ACC_SCALE_PARAM), std::numeric_limits<double>::epsilon(), 1.0);
+
+        // ISP profile
+        profile_dict->addProfile<tesseract_planning::IterativeSplineParameterizationProfile>(
+            ISP_DEFAULT_NAMESPACE, PROFILE,
+            std::make_shared<tesseract_planning::IterativeSplineParameterizationProfile>(velocity_scaling_factor,
+                                                                                         acceleration_scaling_factor));
+
+        // Discrete contact check profile
+        auto contact_check_lvs = get<double>(node_, LVS_PARAM);
+        auto contact_check_dist = get<double>(node_, CONTACT_DIST_PARAM);
+        profile_dict->addProfile<tesseract_planning::ContactCheckProfile>(
+            CONTACT_CHECK_DEFAULT_NAMESPACE, PROFILE,
+            std::make_shared<tesseract_planning::ContactCheckProfile>(contact_check_lvs, contact_check_dist));
+
+        // Constant TCP time parameterization profile
+        auto vel_trans = get<double>(node_, MAX_TRANS_VEL_PARAM);
+        auto vel_rot = get<double>(node_, MAX_ROT_VEL_PARAM);
+        auto acc_trans = get<double>(node_, MAX_TRANS_ACC_PARAM);
+        auto acc_rot = get<double>(node_, MAX_ROT_ACC_PARAM);
+        auto cart_time_param_profile =
+            std::make_shared<snp_motion_planning::ConstantTCPSpeedTimeParameterizationProfile>(
+                vel_trans, vel_rot, acc_trans, acc_rot, velocity_scaling_factor, acceleration_scaling_factor);
+        profile_dict->addProfile<snp_motion_planning::ConstantTCPSpeedTimeParameterizationProfile>(
+            CONSTANT_TCP_SPEED_TIME_PARAM_TASK_NAME, PROFILE, cart_time_param_profile);
+
+        // Kinematic limit check
+        auto check_joint_acc = get<bool>(node_, CHECK_JOINT_ACC_PARAM);
+        auto kin_limit_check_profile =
+            std::make_shared<snp_motion_planning::KinematicLimitsCheckProfile>(true, true, check_joint_acc);
+        profile_dict->addProfile<snp_motion_planning::KinematicLimitsCheckProfile>(KINEMATIC_LIMITS_CHECK_TASK_NAME,
+                                                                                   PROFILE, kin_limit_check_profile);
+      }
+
       // Create a manipulator info and program from the service request
       const std::string& base_frame = req->tool_paths.paths.at(0).segments.at(0).header.frame_id;
       tesseract_common::ManipulatorInfo manip_info(req->motion_group, base_frame, req->tcp_frame);
 
       // Set up composite instruction and environment
       tesseract_planning::CompositeInstruction program = createProgram(manip_info, fromMsg(req->tool_paths));
-      tesseract_environment::Commands env_cmds =
-          createScanAdditionCommands(req->mesh_filename, req->mesh_frame, touch_links_);
+      tesseract_environment::Commands env_cmds = createScanAdditionCommands(
+          req->mesh_filename, req->mesh_frame, get<std::vector<std::string>>(node_, TOUCH_LINKS_PARAM));
       tesseract_environment::Environment::Ptr planner_env = env_->clone();
       planner_env->applyCommands(env_cmds);
 
       // Set up task composer problem
+      std::string config_path = ament_index_cpp::get_package_share_directory("snp_motion_planning");
+      config_path += "/config/task_composer_plugins.yaml";
+      tesseract_planning::TaskComposerPluginFactory factory(YAML::LoadFile(config_path));
+      std::string task_pipeline = "SNPPipeline";
+      auto executor = factory.createTaskComposerExecutor("TaskflowExecutor");
+      tesseract_planning::TaskComposerNode::UPtr task = factory.createTaskComposerNode(task_pipeline);
+      // Save dot graph
+      std::ofstream tc_out_data;
+      tc_out_data.open(tesseract_common::getTempPath() + "ScanNPlanPipeline.dot");
+      task->dump(tc_out_data);
+      const std::string input_key = task->getInputKeys().front();
+      const std::string output_key = task->getOutputKeys().front();
       tesseract_planning::TaskComposerDataStorage input_data;
-      input_data.setData("input_program", program);
-      tesseract_planning::TaskComposerProblem problem(planner_env, input_data);
-      tesseract_planning::TaskComposerInput input(problem, profile_dict_);
-      auto executor = std::make_unique<tesseract_planning::TaskflowTaskComposerExecutor>();
-
-      // Use custom pipeline
-      auto task = createGlobalRasterPipeline();
+      input_data.setData(input_key, program);
+      tesseract_planning::TaskComposerProblem::UPtr problem =
+          std::make_unique<tesseract_planning::PlanningTaskComposerProblem>(planner_env, input_data, profile_dict);
+      tesseract_planning::TaskComposerInput input(std::move(problem));
+      input.dotgraph = true;
 
       // Update log level for debugging
       auto log_level = console_bridge::getLogLevel();
-      if (verbose_)
+      if (get<bool>(node_, VERBOSE_PARAM))
+      {
         console_bridge::setLogLevel(console_bridge::LogLevel::CONSOLE_BRIDGE_LOG_DEBUG);
+        // Create a dump dotgraphs of each task for reference
+        std::ofstream cartesian_pipeline_out_data;
+        cartesian_pipeline_out_data.open(tesseract_common::getTempPath() + "SNPCartesianPipeline.dot");
+        factory.createTaskComposerNode("SNPCartesianPipeline")->dump(cartesian_pipeline_out_data);
+
+        std::ofstream freespace_pipeline_out_data;
+        freespace_pipeline_out_data.open(tesseract_common::getTempPath() + "SNPFreespacePipeline.dot");
+        factory.createTaskComposerNode("SNPFreespacePipeline")->dump(freespace_pipeline_out_data);
+
+        std::ofstream transition_pipeline_out_data;
+        transition_pipeline_out_data.open(tesseract_common::getTempPath() + "SNPTransitionPipeline.dot");
+        factory.createTaskComposerNode("SNPTransitionPipeline")->dump(transition_pipeline_out_data);
+      }
 
       // Run problem
       tesseract_planning::TaskComposerFuture::UPtr exec_fut = executor->run(*task, input);
       exec_fut->wait();
+
+      auto info_map = input.task_infos.getInfoMap();
+      std::ofstream tc_out_results;
+      tc_out_results.open(tesseract_common::getTempPath() + "ScanNPlanPipelineResults.dot");
+      static_cast<const tesseract_planning::TaskComposerGraph&>(*task).dump(tc_out_results, nullptr, info_map);
+      tc_out_results.close();
 
       // Reset the log level
       console_bridge::setLogLevel(log_level);
@@ -333,14 +435,14 @@ private:
 
       // Get results of successful plan
       tesseract_planning::CompositeInstruction program_results =
-          input.data_storage.getData("output_program").as<tesseract_planning::CompositeInstruction>();
+          input.data_storage.getData(output_key).as<tesseract_planning::CompositeInstruction>();
 
       // Convert to joint trajectory
       tesseract_common::JointTrajectory jt = toJointTrajectory(program_results);
       tesseract_common::JointTrajectory tcp_velocity_scaled_jt = tcpSpeedLimiter(jt, MAX_TCP_SPEED, "tool0");
 
       // Send joint trajectory to Tesseract plotter widget
-      plotter_->plotTrajectory(tcp_velocity_scaled_jt, *env_->getStateSolver());
+      plotter_->plotTrajectory(jt, *env_->getStateSolver());
 
       // Return results
       res->motion_plan = tesseract_rosutils::toMsg(tcp_velocity_scaled_jt, env_->getState());
@@ -358,10 +460,7 @@ private:
 
   rclcpp::Node::SharedPtr node_;
 
-  const bool verbose_{ false };
-  const std::vector<std::string> touch_links_;
   tesseract_environment::Environment::Ptr env_;
-  tesseract_planning::ProfileDictionary::Ptr profile_dict_;
   tesseract_monitoring::ROSEnvironmentMonitor::Ptr tesseract_monitor_;
   tesseract_rosutils::ROSPlottingPtr plotter_;
   rclcpp::Service<snp_msgs::srv::GenerateMotionPlan>::SharedPtr server_;

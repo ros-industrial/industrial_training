@@ -30,7 +30,6 @@ find_package(rclcpp_components REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(control_msgs REQUIRED)
-find_package(visualization_msgs REQUIRED)
 find_package(snp_msgs REQUIRED)
 find_package(std_srvs REQUIRED)
 find_package(tf2_eigen REQUIRED)
@@ -57,7 +56,6 @@ ament_target_dependencies(
   control_msgs
   sensor_msgs
   geometry_msgs
-  visualization_msgs
   snp_msgs
   std_srvs
   tf2_eigen

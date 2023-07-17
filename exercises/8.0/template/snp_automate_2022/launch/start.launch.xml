@@ -2,30 +2,47 @@
 <launch>
   <arg name="sim_vision" default="True"/>
   <arg name="sim_robot" default="True"/>
+  <arg name="sim_execution" default="$(var sim_robot)" />
   <arg name="mesh_file" default="$(find-pkg-share snp_automate_2022)/meshes/part_scan.ply"/>
   <arg name="scan_trajectory_file" default="$(find-pkg-share snp_automate_2022)/config/scan_traj.yaml"/>
   <arg name="verbose" default="True"/>
   <arg name="touch_links" default="[table, base_link, floor]"/>
-  <arg name="robot_description" default="$(command 'xacro $(find-pkg-share snp_automate_2022)/urdf/workcell.xacro')"/>
+  <arg name="robot_description_file" default="$(find-pkg-share snp_automate_2022)/urdf/workcell.xacro"/>
+  <arg name="robot_description" default="$(command 'xacro $(var robot_description_file)')"/>
   <arg name="robot_description_semantic" default="$(command 'cat $(find-pkg-share snp_automate_2022)/config/workcell.srdf')"/>
+  <arg name="reference_frame" default="base_link"/>
+  <!-- Set the default name of the follow joint trajectory action depending on whether the robot is simulated (i.e., ros2_control) or real hardware is being used -->
+  <arg name="follow_joint_trajectory_action" default="joint_trajectory_position_controller/follow_joint_trajectory" if="$(var sim_robot)"/>
+  <arg name="follow_joint_trajectory_action" default="joint_trajectory_action" unless="$(var sim_robot)"/>
 
   <!-- URDF, Rviz -->
   <include file="$(find-pkg-share snp_automate_2022)/launch/test.launch.xml">
     <arg name="robot_description" value="$(var robot_description)"/>
     <arg name="robot_description_semantic" value="$(var robot_description_semantic)"/>
     <arg name="rviz" value="False"/>
-    <arg name="use_gui" value="$(var sim_robot)"/>
+    <arg name="use_gui" value="$(var sim_execution)"/>
   </include>
 
   <node pkg="rviz2" exec="rviz2" args="-d $(find-pkg-share snp_automate_2022)/config/app.rviz">
     <param name="mesh_file" value="/tmp/results_mesh.ply"/>
     <param name="motion_group" value="manipulator"/>
-    <param name="reference_frame" value="base_link"/>
+    <param name="reference_frame" value="$(var reference_frame)"/>
     <param name="tcp_frame" value="sand_tcp"/>
     <param name="camera_frame" value="camera_color_optical_frame"/>
     <param name="scan_trajectory_file" value="$(var scan_trajectory_file)"/>
     <param name="robot_description" value="$(var robot_description)"/>
     <param name="robot_description_semantic" value="$(var robot_description_semantic)"/>
+    <!-- TSDF parameters -->
+    <param name="tsdf.voxel_length" value="0.01"/>
+    <param name="tsdf.sdf_trunc" value="0.03"/>
+    <param name="tsdf.min.x" value="0.21"/>
+    <param name="tsdf.min.y" value="-0.45"/>
+    <param name="tsdf.min.z" value="0.112"/>
+    <param name="tsdf.max.x" value="1.51"/>
+    <param name="tsdf.max.y" value="0.45"/>
+    <param name="tsdf.max.z" value="0.527"/>
+    <param name="rgbd.depth_scale" value="1000.0"/>
+    <param name="rgbd.depth_trunc" value="1.1"/>
   </node>
 
   <!-- Launch Calibration Node and Mutable Transform Publisher Node  -->
@@ -53,11 +70,15 @@
   <group if="$(var sim_vision)">
     <node pkg="snp_scanning" exec="open3d_sim_node">
       <param name="mesh_file" value="$(var mesh_file)"/>
+      <param name="reference_frame" value="$(var reference_frame)"/>
+      <remap from="mesh" to="open3d_mesh"/>
     </node>
   </group>
 
   <!-- Launch Toolpath Planning Node -->
-  <node pkg="snp_tpp" exec="snp_tpp_app"/>
+  <node pkg="snp_tpp" exec="snp_tpp_app">
+    <param name="config_file" value="$(find-pkg-share snp_automate_2022)/config/tpp.yaml"/>
+  </node>
 
   <!-- Launch Motion Planning Node -->
   <include file="$(find-pkg-share snp_motion_planning)/launch/planning_server.launch.xml">
@@ -68,13 +89,26 @@
   </include>
 
   <!-- Launch Motion Execution Node -->
-  <node pkg="snp_motion_execution" exec="snp_motion_execution_node"/>
+  <node pkg="snp_motion_execution" exec="snp_motion_execution_node">
+    <param name="follow_joint_trajectory_action" value="$(var follow_joint_trajectory_action)"/>
+  </node>
 
   <group unless="$(var sim_robot)">
     <!-- [[Motoman Driver Goes Here]] -->
   </group>
   <group if="$(var sim_robot)">
-    <node pkg="snp_motion_execution" exec="snp_motion_execution_simulator_node"/>
+    <node pkg="snp_motion_execution" exec="robot_enable_simulator" />
+    <group if="$(var sim_execution)">
+      <node pkg="snp_motion_execution" exec="execution_simulator" >
+        <param name="follow_joint_trajectory_action" value="$(var follow_joint_trajectory_action)"/>
+      </node>
+    </group>
+    <group unless="$(var sim_execution)">
+      <include file="$(find-pkg-share snp_motion_execution)/launch/ros2_control.launch.py">
+        <arg name="robot_description_file" value="$(var robot_description_file)"/>
+        <arg name="controllers_file" value="$(find-pkg-share snp_automate_2022)/config/controllers.yaml"/>
+      </include>
+    </group>
   </group>
 </launch>
 

@@ -112,8 +112,7 @@ public:
     std::transform(free_joint_states_map.begin(), free_joint_states_map.end(), std::back_inserter(free_joint_states),
                    [](const std::pair<const std::size_t, std::vector<double>>& pair) { return pair.second; });
 
-    return std::make_unique<IKFastInvKin>(base_link, tip_link, path.active_joints, redundancy_capable_joint_indices,
-                                          solver_name, free_joint_states);
+    return std::make_unique<IKFastInvKin>(base_link, tip_link, path.active_joints, solver_name, free_joint_states);
   }
 };
 

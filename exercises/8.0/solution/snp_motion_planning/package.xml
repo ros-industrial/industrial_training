@@ -14,6 +14,7 @@
   <depend>snp_msgs</depend>
   <depend>std_msgs</depend>
   <depend>tesseract_command_language</depend>
+  <depend>tesseract_task_composer</depend>
   <depend>tesseract_monitoring</depend>
   <depend>tesseract_support</depend>
   <depend>tesseract_urdf</depend>

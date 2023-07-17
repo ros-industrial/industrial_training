@@ -1,0 +1,103 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="snp_ros2_control" params="name prefix sim:=true">
+    <ros2_control name="${name}" type="system">
+      <hardware>
+        <xacro:if value="${sim}">
+          <plugin>fake_components/GenericSystem</plugin>
+        </xacro:if>
+      </hardware>
+
+      <joint name="${prefix}joint_1_s">
+        <command_interface name="position">
+          <param name="min">${radians(-180)}</param>
+          <param name="max">${radians(180)}</param>
+        </command_interface>
+        <command_interface name="velocity">
+          <param name="min">${radians(-130)}</param>
+          <param name="max">${radians(130)}</param>
+        </command_interface>
+        <command_interface name="acceleration"/>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+        <param name="initial_position">0.0</param>
+        <param name="initial_velocity">0.0</param>
+      </joint>
+      <joint name="${prefix}joint_2_l">
+        <command_interface name="position">
+          <param name="min">${radians(-180)}</param>
+          <param name="max">${radians(180)}</param>
+        </command_interface>
+        <command_interface name="velocity">
+          <param name="min">${radians(-130)}</param>
+          <param name="max">${radians(130)}</param>
+        </command_interface>
+        <command_interface name="acceleration"/>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+        <param name="initial_position">0.0</param>
+        <param name="initial_velocity">0.0</param>
+      </joint>
+      <joint name="${prefix}joint_3_u">
+        <command_interface name="position">
+          <param name="min">${radians(-5)}</param>
+          <param name="max">${radians(355)}</param>
+        </command_interface>
+        <command_interface name="velocity">
+          <param name="min">${radians(-180)}</param>
+          <param name="max">${radians(180)}</param>
+        </command_interface>
+        <command_interface name="acceleration"/>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+        <param name="initial_position">${radians(90)}</param>
+        <param name="initial_velocity">0.0</param>
+      </joint>
+      <joint name="${prefix}joint_4_r">
+        <command_interface name="position">
+          <param name="min">${radians(-180)}</param>
+          <param name="max">${radians(180)}</param>
+        </command_interface>
+        <command_interface name="velocity">
+          <param name="min">${radians(-180)}</param>
+          <param name="max">${radians(180)}</param>
+        </command_interface>
+        <command_interface name="acceleration"/>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+        <param name="initial_position">0.0</param>
+        <param name="initial_velocity">0.0</param>
+      </joint>
+      <joint name="${prefix}joint_5_b">
+        <command_interface name="position">
+          <param name="min">${radians(-180)}</param>
+          <param name="max">${radians(180)}</param>
+        </command_interface>
+        <command_interface name="velocity">
+          <param name="min">${radians(-250)}</param>
+          <param name="max">${radians(250)}</param>
+        </command_interface>
+        <command_interface name="acceleration"/>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+        <param name="initial_position">0.0</param>
+        <param name="initial_velocity">0.0</param>
+      </joint>
+      <joint name="${prefix}joint_6_t">
+        <command_interface name="position">
+          <param name="min">${radians(-180)}</param>
+          <param name="max">${radians(180)}</param>
+        </command_interface>
+        <command_interface name="velocity">
+          <param name="min">${radians(-250)}</param>
+          <param name="max">${radians(250)}</param>
+        </command_interface>
+        <command_interface name="acceleration"/>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+        <param name="initial_position">0.0</param>
+        <param name="initial_velocity">0.0</param>
+      </joint>
+    </ros2_control>
+  </xacro:macro>
+</robot>

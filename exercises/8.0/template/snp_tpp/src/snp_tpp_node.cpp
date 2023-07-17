@@ -41,7 +41,7 @@ template <typename T>
 T declareAndGet(rclcpp::Node* node, const std::string& key)
 {
   T val;
-  node->declare_parameter(key);
+  node->declare_parameter<T>(key);
   if (!node->get_parameter(key, val))
   {
     throw std::runtime_error("Failed to get '" + key + "' parameter");

@@ -1,0 +1,27 @@
+mesh_modifiers:
+  - name: ROISelectionMeshModifier
+    min_cluster_size: 100
+    max_cluster_size: 1000000000
+    cluster_tolerance: 0.1
+    plane_distance_threshold: 0.1
+tool_path_planner:
+  name: PlaneSlicerRasterPlanner
+  direction_generator:
+    name: FixedDirectionGenerator
+    x: 1
+    y: 0
+    z: 0
+  origin_generator:
+    name: FixedOriginGenerator
+    x: 0
+    y: 0
+    z: 0
+  line_spacing: 0.03
+  point_spacing: 0.015
+  min_hole_size: 0.1
+  search_radius: 0.03
+  min_segment_size: 0.1
+tool_path_modifiers:
+  - name: MovingAverageOrientationSmoothingModifier
+    window_size: 5
+  - name: SnakeOrganizationModifier

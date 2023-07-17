@@ -1,11 +1,11 @@
 - git:
     local-name: boost_plugin_loader
     uri: https://github.com/tesseract-robotics/boost_plugin_loader.git
-    version: 2fb0c0db829f6b10fb769e89697e4678fd58ea09
+    version: 0.2.1
 - git:
     local-name: noether
-    uri: https://github.com/marip8/noether.git
-    version: cffcca5e47b3da0eafef2fbcf2a68de881784b46
+    uri: https://github.com/marrts/noether.git
+    version: f8f42d373d8fc63985af585d1ee52b066e943284
 - git:
     local-name: industrial_reconstruction
     uri: https://github.com/ros-industrial/industrial_reconstruction.git
@@ -13,8 +13,8 @@
 - git:
     local-name: rviz_polygon_selection_tool
     uri: https://github.com/marip8/rviz_polygon_selection_tool.git
-    version: 17f6fb2860e73e010ec14a340057b51d5294df38
+    version: c2bff22f4990f04b8b10d64bbbd832618e0b0c02
 - git:
-    local-name: tesseract_ros2
-    uri: https://github.com/tesseract-robotics/tesseract_ros2.git
-    version: ros2-dev
+    local-name: Qt-Advanced-Docking-System
+    uri: https://github.com/Levi-Armstrong/Qt-Advanced-Docking-System.git
+    version: e28bc8e17308ff0ea256c87d44eb566ab9e2b9c1

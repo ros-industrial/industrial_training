@@ -1,0 +1,148 @@
+task_composer_plugins:
+  search_paths:
+    - /usr/local/lib
+  search_libraries:
+    - tesseract_task_composer_factories
+    - snp_motion_planning_tasks
+  executors:
+    default: TaskflowExecutor
+    plugins:
+      TaskflowExecutor:
+        class: TaskflowTaskComposerExecutorFactory
+        config:
+          threads: 8
+  tasks:
+    plugins:
+      SNPCartesianPipeline:
+        class: GraphTaskFactory
+        config:
+          inputs: [input_data]
+          outputs: [output_data]
+          nodes:
+            DoneTask:
+              class: DoneTaskFactory
+              config:
+                conditional: false
+            AbortTask:
+              class: AbortTaskFactory
+              config:
+                conditional: false
+            MinLengthTask:
+              class: MinLengthTaskFactory
+              config:
+                conditional: true
+                inputs: [input_data]
+                outputs: [output_data]
+                format_result_as_input: false
+          edges:
+            - source: MinLengthTask
+              destinations: [AbortTask, DoneTask]
+          terminals: [AbortTask, DoneTask]
+      SNPFreespacePipeline:
+        class: GraphTaskFactory
+        config:
+          inputs: [input_data]
+          outputs: [output_data]
+          nodes:
+            DoneTask:
+              class: DoneTaskFactory
+              config:
+                conditional: false
+            AbortTask:
+              class: AbortTaskFactory
+              config:
+                conditional: false
+            MinLengthTask:
+              class: MinLengthTaskFactory
+              config:
+                conditional: true
+                inputs: [input_data]
+                outputs: [output_data]
+          edges:
+            - source: MinLengthTask
+              destinations: [AbortTask, DoneTask]
+          terminals: [AbortTask, DoneTask]
+      SNPTransitionPipeline:
+        class: GraphTaskFactory
+        config:
+          inputs: [input_data]
+          outputs: [output_data]
+          nodes:
+            DoneTask:
+              class: DoneTaskFactory
+              config:
+                conditional: false
+            AbortTask:
+              class: AbortTaskFactory
+              config:
+                conditional: false
+            MinLengthTask:
+              class: MinLengthTaskFactory
+              config:
+                conditional: true
+                inputs: [input_data]
+                outputs: [output_data]
+          edges:
+            - source: MinLengthTask
+              destinations: [AbortTask, DoneTask]
+          terminals: [AbortTask, DoneTask]
+      SNPPipeline:
+        class: GraphTaskFactory
+        config:
+          inputs: [input_data]
+          outputs: [output_data]
+          nodes:
+            DoneTask:
+              class: DoneTaskFactory
+              config:
+                conditional: false
+            AbortTask:
+              class: AbortTaskFactory
+              config:
+                conditional: false
+            SimpleMotionPlannerTask:
+              class: SimpleMotionPlannerTaskFactory
+              config:
+                conditional: true
+                inputs: [input_data]
+                outputs: [output_data]
+                format_result_as_input: true
+            RasterMotionTask:
+              class: RasterMotionTaskFactory
+              config:
+                conditional: true
+                inputs: [output_data]
+                outputs: [output_data]
+                freespace:
+                  task: SNPFreespacePipeline
+                  config:
+                    input_remapping:
+                      input_data: output_data
+                    output_remapping:
+                      output_data: output_data
+                    input_indexing: [output_data]
+                    output_indexing: [output_data]
+                raster:
+                  task: SNPCartesianPipeline
+                  config:
+                    input_remapping:
+                      input_data: output_data
+                    output_remapping:
+                      output_data: output_data
+                    input_indexing: [output_data]
+                    output_indexing: [output_data]
+                transition:
+                  task: SNPTransitionPipeline
+                  config:
+                    input_remapping:
+                      input_data: output_data
+                    output_remapping:
+                      output_data: output_data
+                    input_indexing: [output_data]
+                    output_indexing: [output_data]
+          edges:
+            - source: SimpleMotionPlannerTask
+              destinations: [AbortTask, RasterMotionTask]
+            - source: RasterMotionTask
+              destinations: [AbortTask, DoneTask]
+          terminals: [AbortTask, DoneTask]

@@ -18,12 +18,15 @@ find_package(Boost REQUIRED COMPONENTS filesystem)
 find_package(ament_cmake REQUIRED)
 find_package(industrial_reconstruction_msgs REQUIRED)
 find_package(rclcpp REQUIRED)
-find_package(ros_industrial_cmake_boilerplate REQUIRED)
-# uncomment the following section in order to fill in further dependencies manually. find_package(<dependency> REQUIRED)
+find_package(visualization_msgs REQUIRED)
 
 add_executable(open3d_sim_node src/open3d_sim_node.cpp)
 target_link_libraries(open3d_sim_node Boost::filesystem)
-ament_target_dependencies(open3d_sim_node rclcpp industrial_reconstruction_msgs)
+ament_target_dependencies(
+  open3d_sim_node
+  rclcpp
+  industrial_reconstruction_msgs
+  visualization_msgs)
 
 install(TARGETS open3d_sim_node DESTINATION lib/${PROJECT_NAME})
 
@@ -32,4 +35,5 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
+ament_export_dependencies(industrial_reconstruction_msgs rclcpp visualization_msgs)
 ament_package()

@@ -10,6 +10,11 @@
     <param name="robot_description_semantic" value="$(var robot_description_semantic)"/>
     <param name="verbose" value="$(var verbose)"/>
     <param name="touch_links" value="$(var touch_links)"/>
+    <param name="max_translational_vel" value="0.050"/>
+    <param name="max_rotational_vel" value="1.571"/>
+    <param name="max_translational_acc" value="0.1"/>
+    <param name="max_rotational_acc" value="3.14159"/>
+    <param name="check_joint_acc" value="false"/>
   </node>
 
 </launch>
