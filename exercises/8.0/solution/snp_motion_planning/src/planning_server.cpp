@@ -133,14 +133,14 @@ public:
     : node_(node), env_(std::make_shared<tesseract_environment::Environment>())
   {
     // Declare ROS parameters
-    node_->declare_parameter("robot_description");
-    node_->declare_parameter("robot_description_semantic");
-    node_->declare_parameter(VERBOSE_PARAM, false);
+    node_->declare_parameter<std::string>("robot_description");
+    node_->declare_parameter<std::string>("robot_description_semantic");
+    node_->declare_parameter<bool>(VERBOSE_PARAM, false);
     node_->declare_parameter<std::vector<std::string>>(TOUCH_LINKS_PARAM, {});
-    node_->declare_parameter(MAX_TRANS_VEL_PARAM);
-    node_->declare_parameter(MAX_ROT_VEL_PARAM);
-    node_->declare_parameter(MAX_TRANS_ACC_PARAM);
-    node_->declare_parameter(MAX_ROT_ACC_PARAM);
+    node_->declare_parameter<double>(MAX_TRANS_VEL_PARAM);
+    node_->declare_parameter<double>(MAX_ROT_VEL_PARAM);
+    node_->declare_parameter<double>(MAX_TRANS_ACC_PARAM);
+    node_->declare_parameter<double>(MAX_ROT_ACC_PARAM);
     node_->declare_parameter<bool>(CHECK_JOINT_ACC_PARAM, false);
     node_->declare_parameter<double>(VEL_SCALE_PARAM, 1.0);
     node_->declare_parameter<double>(ACC_SCALE_PARAM, 1.0);
@@ -393,7 +393,7 @@ private:
       tesseract_planning::TaskComposerDataStorage input_data;
       input_data.setData(input_key, program);
       tesseract_planning::TaskComposerProblem::UPtr problem =
-          std::make_unique<tesseract_planning::PlanningTaskComposerProblem>(env_, input_data, profile_dict);
+          std::make_unique<tesseract_planning::PlanningTaskComposerProblem>(planner_env, input_data, profile_dict);
       tesseract_planning::TaskComposerInput input(std::move(problem));
       input.dotgraph = true;
 
