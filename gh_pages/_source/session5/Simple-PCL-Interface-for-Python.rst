@@ -23,7 +23,7 @@ We will create a new ROS 2 workspace, since this exercise does not overlap with 
 
    .. code-block:: bash
 
-            source /opt/ros/foxy/setup.bash
+            source /opt/ros/humble/setup.bash
             colcon build
 
 

@@ -42,6 +42,8 @@ C++
 Linux Fundamentals
 ******************
 
+:download:`Slides <_downloads/slides/ROS-I Basic Developers Training - Session 0.pdf>`
+
 - :doc:`0.1 - Intro to Ubuntu GUI <_source/prerequisites/Navigating-the-Ubuntu-GUI>`
 - :doc:`0.2 - The Linux File System <_source/prerequisites/Exploring-the-Linux-File-System>`
 - :doc:`0.3 - Using the Terminal <_source/prerequisites/The-Linux-Terminal>`
@@ -81,8 +83,8 @@ Session 3 - Motion Control of Manipulators
 - :doc:`3.3 - Build a MoveIt Package <_source/session3/ros2/3-Build-a-MoveIt-Package>`
 - :doc:`3.4 - Motion Planning using RViz <_source/session3/ros2/4-Motion-Planning-RVIZ>`
 
-Session 4 - Descartes and Perception
-------------------------------------
+Session 4 - Motion Planning and Perception
+------------------------------------------
 
 :download:`Slides <_downloads/slides/ROS-I Basic Developers Training (ROS2) - Session 4.pdf>`
 
