@@ -4,8 +4,6 @@
 
 ## Virtual Machine Configuration (**Recommended**)
 
-A virtual machine is currently in the works for Humble. For now, we ask you use the direct Linux PC Configuration.
-
 The VM method is the most convenient method of utilizing the training materials:
 
  1. [Download virtual box](https://www.virtualbox.org/wiki/Downloads)
