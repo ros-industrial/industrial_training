@@ -6,7 +6,7 @@ The start of most perception processing is ROS message data from a sensor.  In t
 
 1. First, we want to publish the point cloud data as a ROS message to allow display in rviz.
 
-   1. Create a new workspace for this exercise and copy over a point cloud file and some a utility package.
+   1. Create a new workspace for this exercise and copy over a point cloud file and a utility package.
 
       ```
       mkdir -p ~/perception_ws/src

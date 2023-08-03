@@ -21,7 +21,7 @@ After opening a workspace folder, navigate to the workspace settings (`Ctrl+shif
 
 ```
 {
-   "ros.distro": "foxy",
+   "ros.distro": "humble",
 }
 ```
 
@@ -51,9 +51,9 @@ Add the appropriate ROS and user include paths to resolve IDE include errors. Fo
 ```
 "includePath": [
                 "${workspaceFolder}/**",
-                "/opt/ros/foxy/include/**",
+                "/opt/ros/humble/include/**",
                 "/usr/include/**",
             ],
 ```
 
-where `foxy` can be changed to the appropriate distro.
+where `humble` can be changed to the appropriate distro.

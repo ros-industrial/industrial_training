@@ -39,7 +39,7 @@ Your goal is to describe a workcell that features:
    </robot>
    ```
 
-1. Add the required links. See the [irb2400_macro.xacro](https://github.com/ros-industrial/abb/blob/84825661073a18e33b68bb01b5bf371edd2efd49/abb_irb2400_support/urdf/irb2400_macro.xacro#L54-L69) example from an ABB2400.  Remember that all URDF tags must be placed **between** the `<robot> ... </robot>` tags.
+1. Add the required links. See the [irb2400_macro.xacro](https://github.com/ros-industrial/abb/blob/84825661073a18e33b68bb01b5bf371edd2efd49/abb_irb2400_support/urdf/irb2400.urdf#L46-L65) example from an ABB2400.  Remember that all URDF tags must be placed **between** the `<robot> ... </robot>` tags.
 
    1. Add the `world` frame as a "virtual link" (no geometry).
 

@@ -204,7 +204,7 @@ Your goal is to create a more intricate system of nodes:
    }
    ```
 
-1. Following best-practice guidance, we will create a new `ScanNPlan` class (derived from `rclcpp::Node`) to contain the functionality of our new node.  Create a skeleton structure of this class, with an empty constructor and a private area for some internal/private variables.
+1. Following best-practice guidance, we will create a new `ScanNPlan` class (derived from `rclcpp::Node`) to contain the functionality of our new node.  Create a skeleton structure of this class, with an empty constructor and a private area for some internal/private variables. Make sure to place this __above__ your `main` function.
 
    ``` c++
    class ScanNPlan : public rclcpp::Node
@@ -265,7 +265,8 @@ Your goal is to create a more intricate system of nodes:
        RCLCPP_INFO(get_logger(), "Attempting to localize part");
 
        // Wait for service to be available
-       if (!vision_client_->wait_for_service(std::chrono::seconds(5))) {
+       if (!vision_client_->wait_for_service(std::chrono::seconds(5)))
+       {
          RCLCPP_ERROR(get_logger(), "Unable to find localize_part service. Start vision_node first.");
          return;
        }
@@ -285,7 +286,8 @@ Your goal is to create a more intricate system of nodes:
        RCLCPP_INFO(get_logger(), "Attempting to localize part");
 
        // Wait for service to be available
-       if (!vision_client_->wait_for_service(std::chrono::seconds(5))) {
+       if (!vision_client_->wait_for_service(std::chrono::seconds(5)))
+       {
          RCLCPP_ERROR(get_logger(), "Unable to find localize_part service. Start vision_node first.");
          return;
        }
@@ -310,7 +312,8 @@ Your goal is to create a more intricate system of nodes:
      RCLCPP_INFO(get_logger(), "Attempting to localize part");
 
      // Wait for service to be available
-     if (!vision_client_->wait_for_service(std::chrono::seconds(5))) {
+     if (!vision_client_->wait_for_service(std::chrono::seconds(5)))
+     {
        RCLCPP_ERROR(get_logger(), "Unable to find localize_part service. Start vision_node first.");
        return;
      }

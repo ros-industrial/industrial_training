@@ -4,22 +4,20 @@
 
 ## Virtual Machine Configuration (**Recommended**)
 
-A virtual machine is currently in the works for Humble. For now, we ask you use the direct Linux PC Configuration.
-
-<!-- The VM method is the most convenient method of utilizing the training materials:
+The VM method is the most convenient method of utilizing the training materials:
 
  1. [Download virtual box](https://www.virtualbox.org/wiki/Downloads)
- 1. [Download ROS Foxy training VM](https://rosi-images.datasys.swri.edu)
+ 1. [Download ROS Humble training VM](https://rosi-images.datasys.swri.edu)
  1. [Import image into virtual box](https://www.virtualbox.org/manual/ch01.html#ovf)
  1. Start virtual machine
-    1. *Note: If possible, assign two cores in Settings>>System>>Processor to your virtual machine before starting your virtual machine. This setting can be adjusted when the virtual machine is closed and shut down.
+    1. *Note: If possible, assign additional cores in Settings>>System>>Processor to your virtual machine before starting your virtual machine. This setting can be adjusted when the virtual machine is closed and shut down.
  1. Log into virtual machine, user: ```ros-industrial```, pass: ```rosindustrial``` (no spaces or hyphens)
  1. Get the latest changes (Open Terminal).
 
     ```
     cd ~/industrial_training
     git fetch origin
-    git checkout foxy
+    git checkout humble
     git pull
     ./.check_training_config.bash
     ```
@@ -30,8 +28,6 @@ The Virtual Box is limited both in hardware capability(due to VM limitations) an
 ### Common VM Issues
 On most new systems, Virtual Box and VMs work out of the box.  The following is a list of issues others have encountered and solutions:
   * Virtualization must be enabled - Older systems do not have virtualization enabled (by default).  Virtualization must be enabled in the BIOS.  See <http://www.sysprobs.com/disable-enable-virtualization-technology-bios> for more information.
-
--->
 
 ## Direct Linux PC Configuration
 An installation [shell script](https://github.com/ros-industrial/industrial_training/blob/humble/gh_pages/_downloads/ros-industrial-training-setup.sh)

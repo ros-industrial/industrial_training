@@ -95,7 +95,7 @@ function check_debs() {
   check_deb ros-$ROS2_RELEASE-ros2-controllers
   check_deb ros-$ROS2_RELEASE-xacro
   check_deb ros-$ROS2_RELEASE-joint-state-publisher-gui
-  check-deb ros-$ROS2_RELEASE-pcl-ros
+  check_deb ros-$ROS2_RELEASE-pcl-ros
 }
 
 function check_bashrc() {
