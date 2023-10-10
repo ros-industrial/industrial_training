@@ -1,4 +1,4 @@
-GitPython==3.1.31
+GitPython==3.1.37
 recommonmark==0.7.1
 
 # need to stay downgraded because of some bug introduced by later docutils (July 2023)
