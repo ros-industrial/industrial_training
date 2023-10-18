@@ -282,7 +282,7 @@ Add Time Parameterization and Collision Checking to the Pipelines
 
 You might have started to notice that all the motions you're trying to preview seem to move really slow. This is because we haven't done any time parameterization. By default Tesseract just assigns 1 second jumps in time between adjacent states, meaning a trajectory with 60 states is going to take a full minute to execute. Let's resolve this by adding a time parameterization to each of the 3 pipelines we've been modifying.
 
-After Descartes in the Cartesian pipeline and after OMPL in the Transition and Freespace pipelines add a task called ``IterativeSplineParameterizationTask`` of class ``IterativeSplineParameterizationTaskFactory``. This task does not take the field ``format_results_as_input``.
+After Descartes in the Cartesian pipeline and after OMPL in the Transition and Freespace pipelines add a task called ``IterativeSplineParameterizationTask`` of class ``IterativeSplineParameterizationTaskFactory``. This task does not take the field ``format_result_as_input``.
 
 .. raw:: html
 
@@ -452,7 +452,7 @@ The new ``SNPPipeline`` with Descartes added should now look like this:
                 conditional: true
                 inputs: [output_data]
                 outputs: [output_data]
-                format_result_as_input: false
+                format_result_as_input: true
             RasterMotionTask:
               class: RasterMotionTaskFactory
               config:
@@ -494,59 +494,6 @@ The new ``SNPPipeline`` with Descartes added should now look like this:
             - source: RasterMotionTask
               destinations: [AbortTask, DoneTask]
           terminals: [AbortTask, DoneTask]
-
-Go ahead and try and remove the Descartes task from the Cartesian pipeline on your own. Otherwise you can reveal the spoiler of what it will look like
-
-.. raw:: html
-
-   <details>
-   <summary>Remove Descartes from Cartesian Pipeline Solution Spoiler</summary>
-   <code>
-   <pre>
-   SNPCartesianPipeline:
-     class: GraphTaskFactory
-     config:
-       inputs: [input_data]
-       outputs: [output_data]
-       nodes:
-         DoneTask:
-           class: DoneTaskFactory
-           config:
-             conditional: false
-         AbortTask:
-           class: AbortTaskFactory
-           config:
-             conditional: false
-         MinLengthTask:
-           class: MinLengthTaskFactory
-           config:
-             conditional: true
-             inputs: [input_data]
-             outputs: [output_data]
-             format_result_as_input: false
-         DiscreteContactCheckTask:
-           class: DiscreteContactCheckTaskFactory
-           config:
-             conditional: true
-             inputs: [output_data]
-             outputs: [output_data]
-         IterativeSplineParameterizationTask:
-           class: IterativeSplineParameterizationTaskFactory
-           config:
-             conditional: true
-             inputs: [output_data]
-             outputs: [output_data]
-       edges:
-         - source: MinLengthTask
-           destinations: [AbortTask, DiscreteContactCheckTask]
-         - source: DiscreteContactCheckTask
-           destinations: [AbortTask, IterativeSplineParameterizationTask]
-         - source: IterativeSplineParameterizationTask
-           destinations: [AbortTask, DoneTask]
-       terminals: [AbortTask, DoneTask]
-   </pre>
-   </code>
-   </details>
 
 Running the application with this latest pipeline should result in the best trajectory you've seen up to this point. There should be much less motion between rasters as they have been globally optimized together.
 
@@ -614,7 +561,7 @@ Feel free to explore other OMPL planners available in Tesseract which can be fou
 Adding TrajOpt
 ^^^^^^^^^^^^^^
 
-First we're going to go back to the yaml file where we'll add a TrajOpt task to the Cartesian, freespace and transition pipeline. The task should be called ``TrajOptMotionPlannerTask`` and of class ``TrajOptMotionPlannerTaskFactory`` (with ``format_result_as_input: false``) In the Cartesian pipeline this should go right after ``MinLengthTask`` and for the freespace and transition pipelines immediately following ``OMPLMotionPlannerTask``.
+First we're going to go back to the yaml file where we'll add a TrajOpt task to the Cartesian, freespace and transition pipeline. The task should be called ``TrajOptMotionPlannerTask`` and of class ``TrajOptMotionPlannerTaskFactory`` (with ``format_result_as_input: false``). In the Cartesian pipeline this should replace the ``DescartesMotionPlannerTask`` and for the freespace and transition pipelines immediately following ``OMPLMotionPlannerTask``.
 
 .. raw:: html
 
