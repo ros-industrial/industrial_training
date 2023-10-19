@@ -5,7 +5,7 @@
 - git:
     local-name: noether
     uri: https://github.com/marrts/noether.git
-    version: f8f42d373d8fc63985af585d1ee52b066e943284
+    version: a33510e891d1a954b4851896354ffad03de6f3e2
 - git:
     local-name: industrial_reconstruction
     uri: https://github.com/ros-industrial/industrial_reconstruction.git
