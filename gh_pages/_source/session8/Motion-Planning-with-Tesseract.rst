@@ -41,7 +41,7 @@ We will create a new workspace, since this exercise does not overlap with the pr
 
       sudo ~/tesseract_ws/src/tesseract_ros2/.add-gazebo-ppa
       sudo apt-get update
-      sudo apt-get install libxmlrpcpp-dev libgz-common5-dev libgz-math7-dev libgz-rendering7-dev
+      sudo apt-get install libxmlrpcpp-dev libgz-common5-dev libgz-math7-dev libgz-rendering7-dev -y
 
 #. Initialize and Build this new workspace (this may take a little while)
 
@@ -65,7 +65,7 @@ Intro (Review Existing Code)
 ----------------------------
 Most of the infrastructure for a ROS node has already been completed for you; the focus of this exercise are Tesseract custom pipelines and planner profiles. You will notice that many files and packages are already provided for you. You could run the application as is, but it won't do anything intelligent and you may notice some weird behaviors. At this time we will explore the source code that has been provided. The following are highlights of what is included.
 
-#. ``snp_automate_2022/config/worcell_plugins.yaml``:
+#. ``snp_automate_2022/config/workcell_plugins.yaml``:
 	* This file contains all of the kinematic plugins and contact manager plugins for our application. A kinematic plugin configuration file like this is required to use Tesseract. Take a look at ``workcell.srdf`` to see how it gets incorporated into the project.
 
 #. ``snp_motion_planning/config/task_composer_plugins.yaml``:
