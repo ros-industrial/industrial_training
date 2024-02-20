@@ -1,0 +1,25 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: cal_demo_support
+    relative_path: urdf/workcell.urdf.xacro
+  srdf:
+    relative_path: config/demo_workcell.srdf
+  package_settings:
+    author_name: Reid Christopher
+    author_email: reid.christopher@swri.org
+    generated_timestamp: 1708389615
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity
+  modified_urdf:
+    xacros:
+      - control_xacro
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity
