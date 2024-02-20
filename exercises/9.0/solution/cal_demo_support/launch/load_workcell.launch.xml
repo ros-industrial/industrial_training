@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Define URDF file path -->
+  <let name="robot_description" value="$(command 'xacro $(find-pkg-share cal_demo_support)/urdf/workcell.urdf.xacro')" />
+
+  <!-- Load URDF and publish TF -->
+  <node pkg="robot_state_publisher" exec="robot_state_publisher" output="screen">
+      <param name="robot_description" value="$(var robot_description)"/>
+  </node>
+
+  <!-- Start the Joint State Publisher GUI -->
+  <node pkg="joint_state_publisher_gui" exec="joint_state_publisher_gui" name="joint_state_publisher_gui" output="screen" />
+
+  <!-- Start RViz with a configuration file -->
+  <node name="rviz" pkg="rviz2" exec="rviz2" output="screen"/>
+</launch>

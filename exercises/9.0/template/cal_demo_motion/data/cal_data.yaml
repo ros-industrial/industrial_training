@@ -1,0 +1,70 @@
+data:
+  - image: images/0.png
+    pose: poses/0.yaml
+  - pose: poses/1.yaml
+    image: images/1.png
+  - pose: poses/2.yaml
+    image: images/2.png
+  - pose: poses/3.yaml
+    image: images/3.png
+  - image: images/4.png
+    pose: poses/4.yaml
+  - pose: poses/5.yaml
+    image: images/5.png
+  - image: images/6.png
+    pose: poses/6.yaml
+  - image: images/7.png
+    pose: poses/7.yaml
+  - image: images/8.png
+    pose: poses/8.yaml
+  - image: images/9.png
+    pose: poses/9.yaml
+  - image: images/10.png
+    pose: poses/10.yaml
+  - pose: poses/11.yaml
+    image: images/11.png
+  - image: images/12.png
+    pose: poses/12.yaml
+  - image: images/13.png
+    pose: poses/13.yaml
+  - image: images/14.png
+    pose: poses/14.yaml
+  - image: images/15.png
+    pose: poses/15.yaml
+
+# AVT Mako Gig-E camera intrinsics (calibrated)
+intrinsics:
+  fx: 1352.02747
+  fy: 1356.14287
+  cx: 789.67065
+  cy: 627.2995
+
+# Pose guesses
+camera_mount_to_camera_guess:
+  x: -0.0196464  # Note: Until I fix this YOU NEED to make this a DOUBLE! Don't write just '0'.
+  y: 1.27843
+  z: 0.283965
+  qx: -0.0480798
+  qy: -0.558686
+  qz: 0.827604
+  qw: -0.0251035
+target_mount_to_target_guess:
+  x: 0.0633135
+  y: 0.119958
+  z: 0.211056
+  qx: -0.633597
+  qy: 0.262427
+  qz: 0.664998
+  qw: 0.295794
+
+# Other parameters
+homography_threshold: 2.0
+
+# ChArUco grid target finder
+target_finder:
+  type: CharucoGridTargetFinder
+  rows: 7
+  cols: 5
+  chessboard_dim: 0.036195
+  aruco_marker_dim: 0.018256
+  dictionary: 10  # DICT_6X6_250

@@ -131,17 +131,23 @@ Session 8 - Motion Planning
 
 - :doc:`8.0 - Motion Planning with Tesseract <_source/session8/Motion-Planning-with-Tesseract>`
 
+Session 9 - Cameras and Calibration
+
+- :doc:`9.0 - Cameras and Calibration <_source/session9/Cameras-and-Calibration>`
+
 Archives
 --------
-- :doc:`2.1 - Actions <_source/_archives/1-Actions>`
-- :doc:`4.1 - Intro to Descartes <_source/_archives/1-Descartes-Path-Planning>`
-- :doc:`Demo 2 - Descartes Planning and Execution <_source/_archives/index>`
-- :doc:`5.0 - Advanced Descartes Path Planning <_source/_archives/Advanced-Descartes-Path-Planning>`
-- :doc:`5.2 - Introduction to STOMP <_source/_archives/Introduction-to-STOMP>`
-- :doc:`6.1 - Unit Testing <_source/_archives/Unit-Testing>`
-- :doc:`6.3 - ROS Style Guide and ros_lint <_source/_archives/Style-Guide-and-ros_lint>`
-- :doc:`6.4 - Introduction to ROS with Docker and Amazon Web Services (AWS) <_source/_archives/Docker-AWS>`
 
+- :doc:`A.0 - Actions <_source/_archives/1-Actions>`
+- :doc:`A.1 - Intro to Descartes <_source/_archives/1-Descartes-Path-Planning>`
+- :doc:`A.2 - Advanced Descartes Path Planning <_source/_archives/Advanced-Descartes-Path-Planning>`
+- :doc:`A.3 - Introduction to STOMP <_source/_archives/Introduction-to-STOMP>`
+- :doc:`A.4 - Unit Testing <_source/_archives/Unit-Testing>`
+- :doc:`A.5 - ROS Style Guide and ros_lint <_source/_archives/Style-Guide-and-ros_lint>`
+- :doc:`A.6 - Introduction to ROS with Docker and Amazon Web Services (AWS) <_source/_archives/Docker-AWS>`
+- :doc:`A.7 - Using the ROS1-ROS2 bridge <_source/_archives/ROS1-ROS2-bridge>`
+- :doc:`Demo 2 - Descartes Planning and Execution <_source/_archives/demo2/index>`
+- :doc:`Demo 3 - Optimization Based Path Planning <_source/_archives/demo3/index>`
 
 .. toctree::
     :hidden:
@@ -208,18 +214,20 @@ Archives
     7.1 - ROS1 to ROS2 porting <_source/session7/ROS1-to-ROS2-porting>
     7.2 - Using the ROS1-ROS2 bridge <_source/session7/ROS1-ROS2-bridge>
     8.0 - Motion Planning with Tesseract <_source/session8/Motion-Planning-with-Tesseract>
+    9.0 - Cameras and Calibration <_source/session9/Cameras-and-Calibration>
 
 .. toctree::
     :hidden:
     :caption: Archives
     :maxdepth: 1
 
-    9.0 - Actions <_source/_archives/1-Actions>
-    9.1 - Intro to Descartes <_source/_archives/1-Descartes-Path-Planning>
-    ArchivedDemo - Descartes Planning and Execution <_source/_archives/index>
-    9.2 - Advanced Descartes Path Planning <_source/_archives/Advanced-Descartes-Path-Planning>
-    9.3 - Introduction to STOMP <_source/_archives/Introduction-to-STOMP>
-    9.4 - Unit Testing <_source/_archives/Unit-Testing>
-    9.5 - ROS Style Guide and ros_lint <_source/_archives/Style-Guide-and-ros_lint>
-    9.6 - Introduction to ROS with Docker and Amazon Web Services (AWS) <_source/_archives/Docker-AWS>
-    Legacy Material (ROS1) <_source/_archives/legacy>
+    A.0 - Actions <_source/_archives/1-Actions>
+    A.1 - Intro to Descartes <_source/_archives/1-Descartes-Path-Planning>
+    A.2 - Advanced Descartes Path Planning <_source/_archives/Advanced-Descartes-Path-Planning>
+    A.3 - Introduction to STOMP <_source/_archives/Introduction-to-STOMP>
+    A.4 - Unit Testing <_source/_archives/Unit-Testing>
+    A.5 - ROS Style Guide and ros_lint <_source/_archives/Style-Guide-and-ros_lint>
+    A.6 - Introduction to ROS with Docker and Amazon Web Services (AWS) <_source/_archives/Docker-AWS>
+    A.7 - Using the ROS1-ROS2 bridge <_source/_archives/ROS1-ROS2-bridge>
+    Demo 2 - Descartes Planning and Execution <_source/_archives/demo2/index>
+    Demo 3 - Optimization Based Path Planning <_source/_archives/demo3/index>

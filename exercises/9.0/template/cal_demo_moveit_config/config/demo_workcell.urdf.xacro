@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="demo_workcell">
+    <xacro:arg name="initial_positions_file" default="initial_positions.yaml" />
+
+    <!-- Import demo_workcell urdf file -->
+    <xacro:include filename="$(find cal_demo_support)/urdf/workcell.urdf.xacro" />
+
+    <!-- Import control_xacro -->
+    <xacro:include filename="demo_workcell.ros2_control.xacro" />
+
+
+    <xacro:demo_workcell_ros2_control name="FakeSystem" initial_positions_file="$(arg initial_positions_file)"/>
+
+</robot>

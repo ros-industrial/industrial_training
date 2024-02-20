@@ -1,0 +1,7 @@
+geometry_msgs/PoseStamped goal
+
+---
+
+bool success
+string message
+trajectory_msgs/JointTrajectory trajectory
