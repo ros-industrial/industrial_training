@@ -6,24 +6,31 @@ This section will work from it's own workspace seperate from the core training e
 
 1. Create the workspace and copy the template packages.
 
-```
-mkdir ~/calibration_ws/src -p
-cp -r ~/industrial_training/exercises/9.0/template ~/calbration_ws/src
-```
+    ```
+    mkdir ~/calibration_ws/src -p
+    cp -r ~/industrial_training/exercises/9.0/template/* ~/calibration_ws/src
+    ```
 
-2. Clone necessary repositories from github
+1. Clone necessary repositories from github
 
-```
-cd ~/calibration_ws
-vcs import < src/dependencies.repos
-```
+    ```
+    cd ~/calibration_ws/src
+    vcs import < dependencies.repos
+    ```
 
-3. Source and build the workspace
+1. Install apt dependencies
 
-```
-source /opt/ros/humble.setup.bash
-colcon build
-```
+    ```
+    rosdep install --from-paths . -iyr
+    ```
+
+1. Source and build the workspace
+
+    ```
+    source /opt/ros/humble/setup.bash
+    cd ~/calibration_ws/
+    colcon build
+    ```
 
 ## Camera Representation and Parameters
 
@@ -74,7 +81,7 @@ The way we get those parameters is called "Intrinsic Calibration," since those p
     Copy over the bag files.
 
     ```
-    cp -r ~/industrial_training/exercises/9.0/intrinsic_rosbag* ~/calibration_ws
+    cp -r ~/industrial_training/exercises/9.0/intrinsics_rosbag* ~/calibration_ws
     ```
 
 1. Get 2 terminals ready.
@@ -82,7 +89,7 @@ The way we get those parameters is called "Intrinsic Calibration," since those p
     In the first one, run the first rosbag file on loop.
 
     ```
-    ros2 bag play -l ~/calibration_ws/intrinsic_rosbag0
+    ros2 bag play -l ~/calibration_ws/intrinsics_rosbag0
     ```
 
     In the second terminal, run the camera calibration node
@@ -95,7 +102,7 @@ The way we get those parameters is called "Intrinsic Calibration," since those p
 
     ![intrinsic_cal](images/intrinsic_calibration.png)
 
-    Once the calibration is done, you should see a printout of the calibration parameters. Furthermore, the application is now applying the calibration to undistort the incoming images in the pop-up window. You may be able to notice that the straight edges of the checkerboard are now straighter.
+    Once the calibration is done, you should see a printout of the calibration parameters. Furthermore, the application is now applying the calibration to undistort (rectify) the incoming images in the pop-up window. You may be able to notice that the straight edges of the checkerboard are now straighter.
 
     To record these parameters down, click save.
 
@@ -146,7 +153,13 @@ Now that we have the intrinsic calibration parameters, how do we use them? Your 
     
     Look for the sections marked `CODE HERE!`.
 
-1. Once we are publishing the camera info, other ROS nodes know what to do with it. The `image_proc` package is an easy way to put in your raw image and a CameraInfo msg to get out a rectified image. 
+1. `colcon build` and startup your camera info publisher once it's complete.
+
+    ```
+    ros2 run cal_demo_intrinsics camera_info_publisher
+    ```
+
+1. Once we are publishing the camera info, other ROS nodes know what to do with it. The `image_proc` package is an easy way to put in your raw image and a CameraInfo msg to get out a rectified image. Startup a rosbag, and then run the following:
 
     ```
     ros2 run image_proc image_proc --ros-args -r image:=/camera/image_raw -r image_rect:=/camera/image_rect -r camera_info:=/camera/camera_info
@@ -181,10 +194,10 @@ There are lots of tools out there currently, but lots of issues. MoveIt is curre
 1. We then need to launch the data collection node.
 
     ```
-    ros2 launch rct_ros_tools_rclcpp command_line_data_collection.launch.xml target_file:=src/cal_demo_support/config/cal_target.yaml image_topic:=/camera/image_raw base_frame:=base_link tool_frame:=tool0`
+    ros2 launch rct_ros_tools_rclcpp command_line_data_collection.launch.xml target_file:=src/cal_demo_support/config/cal_target.yaml image_topic:=/camera/image_raw base_frame:=base_link tool_frame:=tool0
     ```
 
-1. Step through the motion client window, making sure to trigger a data point collection before moving to each new position
+1. Step through the motion client window, making sure to trigger a data point collection before moving to each new position.
 
     ```
     ros2 service call /collect std_srvs/srv/Trigger {}

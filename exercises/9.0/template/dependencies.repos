@@ -1,21 +1,9 @@
 repositories:
   abb:
     type: git
-    url: git@github.com:reidchristopher/abb.git
-    version: 206d5fb167e48e163af2066c7e4df7820a6f0bcf
-  boost_plugin_loader:
-    type: git
-    url: https://github.com/tesseract-robotics/boost_plugin_loader.git
-    version: 0.2.1
-  industrial_calibration:
-    type: git
-    url: https://github.com/ros-industrial/industrial_calibration.git
-    version: fc8a8bc4de9ec1750f8ee750fc5819f4766789b8
+    url: https://github.com/reidchristopher/abb.git
+    version: 0a37d19df3b0cef9780628edc3ed96c57f45364c
   robot_cal_tools:
     type: git
-    url: git@github.com:reidchristopher/robot_cal_tools.git
+    url: https://github.com/reidchristopher/robot_cal_tools.git
     version: 888ade23e0f4ee00c48c0e73c525cba6e2f51eff
-  ros_industrial_cmake_boilerplate:
-    type: git
-    url: https://github.com/ros-industrial/ros_industrial_cmake_boilerplate.git
-    version: 0.5.4
