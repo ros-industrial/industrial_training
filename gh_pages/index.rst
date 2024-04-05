@@ -95,7 +95,6 @@ Application Demos
 -----------------
 
 - :doc:`Demo 1 - Perception-Driven Manipulation <_source/demo1/index>`
-- :doc:`Demo 2 - Optimization Based Path Planning <_source/demo3/index>`
 
 Advanced Topics
 ---------------
@@ -132,6 +131,9 @@ Session 8 - Motion Planning
 - :doc:`8.0 - Motion Planning with Tesseract <_source/session8/Motion-Planning-with-Tesseract>`
 
 Session 9 - Cameras and Calibration
+-----------------------------------
+
+:download:`Slides <_downloads/slides/ROS-I Advanced Developers Training - Cameras and Calibration.pdf>`
 
 - :doc:`9.0 - Cameras and Calibration <_source/session9/Cameras-and-Calibration>`
 
