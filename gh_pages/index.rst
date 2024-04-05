@@ -10,9 +10,12 @@ application demos, which provide a good sense of what a real ROS application ent
 advanced modules are provided which focus on specific ROS tools or capabilities.
 
 We are currently in the process of updating much of our training content from ROS1 to ROS2.
-Currently, the ROS basics sessions are written to teach ROS2 while the rest of the material still
-uses ROS1. The old ROS1 basic material can still be found under the :doc:`Legacy Material
-<_source/legacy>` page.
+Currently, the ROS basics sessions are written to teach ROS2 while much of the rest of the material still
+uses ROS1. The old ROS1 material can be found by selecting a different version using the tab at the
+bottom left of the page.
+
+.. image:: _static/version_selection.png
+    :alt: Version Selection Tab
 
 ..
    For developers: the site contents are listed in both normal ReST and in Sphinx toctrees below for
@@ -53,57 +56,52 @@ Session 1 - ROS Concepts and Fundamentals (ROS2)
 
 :download:`Slides <_downloads/slides/ROS-I Basic Developers Training (ROS2) - Session 1.pdf>`
 
-- :doc:`1.0 - ROS Setup <_source/session1/ros2/0-ROS-Setup>`
-- :doc:`1.1 - Create a Workspace <_source/session1/ros2/1-Create-ROS-Workspace>`
-- :doc:`1.2 - Installing Packages <_source/session1/ros2/2-Installing-Existing-Packages>`
-- :doc:`1.3 - Packages and Nodes <_source/session1/ros2/3-Creating-a-ROS-Package-and-Node>`
-- :doc:`1.4 - Topics and Messages <_source/session1/ros2/4-Topics-and-Messages>`
-
-For equivalent ROS1 content, see the :doc:`Legacy Material <_source/legacy>` page.
+- :doc:`1.0 - ROS Setup <_source/session1/0-ROS-Setup>`
+- :doc:`1.1 - Create a Workspace <_source/session1/1-Create-ROS-Workspace>`
+- :doc:`1.2 - Installing Packages <_source/session1/2-Installing-Existing-Packages>`
+- :doc:`1.3 - Packages and Nodes <_source/session1/3-Creating-a-ROS-Package-and-Node>`
+- :doc:`1.4 - Topics and Messages <_source/session1/4-Topics-and-Messages>`
 
 Session 2 - Basic ROS Applications (ROS2)
 -----------------------------------------
 
 :download:`Slides <_downloads/slides/ROS-I Basic Developers Training (ROS2) - Session 2.pdf>`
 
-- :doc:`2.0 - Services <_source/session2/ros2/0-Services>`
-- :doc:`2.1 - Launch Files <_source/session2/ros2/2-Launch-Files>`
-- :doc:`2.2 - Parameters <_source/session2/ros2/3-Parameters>`
-
-For equivalent ROS1 content, see the :doc:`Legacy Material <_source/legacy>` page.
+- :doc:`2.0 - Services <_source/session2/0-Services>`
+- :doc:`2.1 - Launch Files <_source/session2/2-Launch-Files>`
+- :doc:`2.2 - Parameters <_source/session2/3-Parameters>`
 
 Session 3 - Motion Control of Manipulators
 ------------------------------------------
 
 :download:`Slides <_downloads/slides/ROS-I Basic Developers Training (ROS2) - Session 3.pdf>`
 
-- :doc:`3.0 - Intro to URDF <_source/session3/ros2/0-Intro-to-URDF>`
-- :doc:`3.1 - Workcell XACRO <_source/session3/ros2/1-Workcell-XACRO>`
-- :doc:`3.2 - Transforms using TF <_source/session3/ros2/2-Coordinate-Transforms-using-TF>`
-- :doc:`3.3 - Build a MoveIt Package <_source/session3/ros2/3-Build-a-MoveIt-Package>`
-- :doc:`3.4 - Motion Planning using RViz <_source/session3/ros2/4-Motion-Planning-RVIZ>`
+- :doc:`3.0 - Intro to URDF <_source/session3/0-Intro-to-URDF>`
+- :doc:`3.1 - Workcell XACRO <_source/session3/1-Workcell-XACRO>`
+- :doc:`3.2 - Transforms using TF <_source/session3/2-Coordinate-Transforms-using-TF>`
+- :doc:`3.3 - Build a MoveIt Package <_source/session3/3-Build-a-MoveIt-Package>`
+- :doc:`3.4 - Motion Planning using RViz <_source/session3/4-Motion-Planning-RVIZ>`
 
 Session 4 - Motion Planning and Perception
 ------------------------------------------
 
 :download:`Slides <_downloads/slides/ROS-I Basic Developers Training (ROS2) - Session 4.pdf>`
 
-- :doc:`4.0 - Motion Planning using C++ <_source/session4/ros2/0-Motion-Planning-CPP>`
-- :doc:`4.1 - Intro to Perception <_source/session4/ros2/2-Introduction-to-Perception>`
+- :doc:`4.0 - Motion Planning using C++ <_source/session4/0-Motion-Planning-CPP>`
+- :doc:`4.1 - Intro to Perception <_source/session4/2-Introduction-to-Perception>`
 
 Application Demos
 -----------------
 
 - :doc:`Demo 1 - Perception-Driven Manipulation <_source/demo1/index>`
-- :doc:`Demo 2 - Optimization Based Path Planning <_source/demo3/index>`
 
 Advanced Topics
 ---------------
 
-Session 5 - Path Planning and Perception
-----------------------------------------
+Session 5 - Perception Pipeline
+-------------------------------
 
-:download:`Slides <_downloads/slides/ROS-I Advanced Developers Training - Session 5.pdf>`
+:download:`Slides <_downloads/slides/ROS-I Advanced Developers Training - Building A Perception Pipeline.pdf>`
 
 - :doc:`5.0 - Building a Perception Pipeline <_source/session5/Building-a-Perception-Pipeline>`
 - :doc:`5.1 - Simple PCL Interface for Python <_source/session5/Simple-PCL-Interface-for-Python>`
@@ -111,8 +109,6 @@ Session 5 - Path Planning and Perception
 
 Session 6 - ROS Tools
 ---------------------
-
-:download:`Slides <_downloads/slides/ROS-I Advanced Developers Training - Session 5.pdf>`
 
 - :doc:`6.0 - Documentation Generation <_source/session6/Documentation-Generation>`
 - :doc:`6.1 - Using rqt tools for Analysis <_source/session6/Using-rqt-tools-for-analysis>`
@@ -122,7 +118,6 @@ Session 7 - ROS2 Topics
 
 - :doc:`7.0 - ROS2 basics <_source/session7/ROS2-Basics>`
 - :doc:`7.1 - ROS1 to ROS2 porting <_source/session7/ROS1-to-ROS2-porting>`
-- :doc:`7.2 - Using the ROS1-ROS2 bridge <_source/session7/ROS1-ROS2-bridge>`
 
 Session 8 - Motion Planning
 ---------------------------
@@ -132,6 +127,9 @@ Session 8 - Motion Planning
 - :doc:`8.0 - Motion Planning with Tesseract <_source/session8/Motion-Planning-with-Tesseract>`
 
 Session 9 - Cameras and Calibration
+-----------------------------------
+
+:download:`Slides <_downloads/slides/ROS-I Advanced Developers Training - Cameras and Calibration.pdf>`
 
 - :doc:`9.0 - Cameras and Calibration <_source/session9/Cameras-and-Calibration>`
 
@@ -170,27 +168,27 @@ Archives
     :caption: ROS Basics (ROS2)
     :maxdepth: 1
 
-    1.0 - ROS Setup <_source/session1/ros2/0-ROS-Setup>
-    1.1 - Create a Workspace <_source/session1/ros2/1-Create-ROS-Workspace>
-    1.2 - Installing Packages <_source/session1/ros2/2-Installing-Existing-Packages>
-    1.3 - Packages and Nodes <_source/session1/ros2/3-Creating-a-ROS-Package-and-Node>
-    1.4 - Topics and Messages <_source/session1/ros2/4-Topics-and-Messages>
-    2.0 - Services <_source/session2/ros2/0-Services>
-    2.1 - Launch Files <_source/session2/ros2/2-Launch-Files>
-    2.2 - Parameters <_source/session2/ros2/3-Parameters>
+    1.0 - ROS Setup <_source/session1/0-ROS-Setup>
+    1.1 - Create a Workspace <_source/session1/1-Create-ROS-Workspace>
+    1.2 - Installing Packages <_source/session1/2-Installing-Existing-Packages>
+    1.3 - Packages and Nodes <_source/session1/3-Creating-a-ROS-Package-and-Node>
+    1.4 - Topics and Messages <_source/session1/4-Topics-and-Messages>
+    2.0 - Services <_source/session2/0-Services>
+    2.1 - Launch Files <_source/session2/2-Launch-Files>
+    2.2 - Parameters <_source/session2/3-Parameters>
 
 .. toctree::
     :hidden:
     :caption: ROS-Industrial Basics (ROS2)
     :maxdepth: 1
 
-    3.0 - Intro to URDF <_source/session3/ros2/0-Intro-to-URDF>
-    3.1 - Workcell XACRO <_source/session3/ros2/1-Workcell-XACRO>
-    3.2 - Transforms using TF <_source/session3/ros2/2-Coordinate-Transforms-using-TF>
-    3.3 - Build a MoveIt Package <_source/session3/ros2/3-Build-a-MoveIt-Package>
-    3.4 - Motion Planning using RViz <_source/session3/ros2/4-Motion-Planning-RVIZ>
-    4.0 - Motion Planning using C++ <_source/session4/ros2/0-Motion-Planning-CPP>
-    4.1 - Intro to Perception <_source/session4/ros2/2-Introduction-to-Perception>
+    3.0 - Intro to URDF <_source/session3/0-Intro-to-URDF>
+    3.1 - Workcell XACRO <_source/session3/1-Workcell-XACRO>
+    3.2 - Transforms using TF <_source/session3/2-Coordinate-Transforms-using-TF>
+    3.3 - Build a MoveIt Package <_source/session3/3-Build-a-MoveIt-Package>
+    3.4 - Motion Planning using RViz <_source/session3/4-Motion-Planning-RVIZ>
+    4.0 - Motion Planning using C++ <_source/session4/0-Motion-Planning-CPP>
+    4.1 - Intro to Perception <_source/session4/2-Introduction-to-Perception>
 
 .. toctree::
     :hidden:
@@ -198,7 +196,6 @@ Archives
     :maxdepth: 1
 
     Demo 1 - Perception-Driven Manipulation <_source/demo1/index>
-    Demo 2 - Optimization Based Path Planning <_source/demo3/index>
 
 .. toctree::
     :hidden:
@@ -212,7 +209,6 @@ Archives
     6.1 - Using rqt tools for Analysis <_source/session6/Using-rqt-tools-for-analysis>
     7.0 - ROS2 basics <_source/session7/ROS2-Basics>
     7.1 - ROS1 to ROS2 porting <_source/session7/ROS1-to-ROS2-porting>
-    7.2 - Using the ROS1-ROS2 bridge <_source/session7/ROS1-ROS2-bridge>
     8.0 - Motion Planning with Tesseract <_source/session8/Motion-Planning-with-Tesseract>
     9.0 - Cameras and Calibration <_source/session9/Cameras-and-Calibration>
 

@@ -1,5 +1,0 @@
-#request
-string base_frame
----
-#response
-geometry_msgs/Pose pose
