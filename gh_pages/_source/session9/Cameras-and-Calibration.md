@@ -2,7 +2,7 @@
 
 ## Getting Setup
 
-This section will work from it's own workspace seperate from the core training exercises. 
+This section will work from it's own workspace seperate from the core training exercises.
 
 1. Create the workspace and copy the template packages.
 
@@ -78,10 +78,13 @@ The way we get those parameters is called "Intrinsic Calibration," since those p
 
 1. The next thing we need is data for the calibration to be run on. Normally, you would be able to use a live camera feed for the intrinsic calibration, but to make this training more universally accessible and repeatable, we will be working from bag files.
 
-    Copy over the bag files.
+    Create and copy over the bag files (running the python script will take some time to complete).
 
     ```
-    cp -r ~/industrial_training/exercises/9.0/intrinsics_rosbag* ~/calibration_ws
+    source /opt/ros/humble/setup.bash
+    cd ~/industrial_training/exercises/9.0
+    python3 images_to_bag.py
+    cp -r ./intrinsics_rosbag* ~/calibration_ws
     ```
 
 1. Get 2 terminals ready.
