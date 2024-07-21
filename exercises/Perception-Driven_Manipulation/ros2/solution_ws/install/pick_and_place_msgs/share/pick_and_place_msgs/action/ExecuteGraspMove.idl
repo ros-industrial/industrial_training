@@ -1,0 +1,39 @@
+// generated from rosidl_adapter/resource/action.idl.em
+// with input from pick_and_place_msgs/action/ExecuteGraspMove.action
+// generated code does not contain a copyright notice
+
+
+module pick_and_place_msgs {
+  module action {
+    module ExecuteGraspMove_Goal_Constants {
+      @verbatim (language="comment", text=
+        "the goal of this action" "\n"        "requests that the hand be set in the pre-grasp posture")
+      const int32 PRE_GRASP = 1;
+      @verbatim (language="comment", text=
+        "requests that the hand execute the actual grasp")
+      const int32 GRASP = 2;
+      @verbatim (language="comment", text=
+        "requests that the hand open to release the object")
+      const int32 RELEASE = 3;
+    };
+    @verbatim (language="comment", text=
+      "an action for requesting a gripper action")
+    struct ExecuteGraspMove_Goal {
+      int32 goal;
+
+      @verbatim (language="comment", text=
+        "the max contact force to use (<=0 if no desired max)")
+      float max_contact_force;
+    };
+    @verbatim (language="comment", text=
+      "the result of the action")
+    struct ExecuteGraspMove_Result {
+      boolean success;
+    };
+    @verbatim (language="comment", text=
+      "empty for now")
+    struct ExecuteGraspMove_Feedback {
+      uint8 structure_needs_at_least_one_member;
+    };
+  };
+};

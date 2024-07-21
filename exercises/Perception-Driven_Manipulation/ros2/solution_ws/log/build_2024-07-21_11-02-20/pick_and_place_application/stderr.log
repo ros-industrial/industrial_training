@@ -1,0 +1,53 @@
+In file included from [01m[K/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/src/pick_and_place_application/src/tasks/set_attached_object.cpp:1[m[K:
+[01m[K/opt/ros/humble/include/tf2_eigen/tf2_eigen/tf2_eigen.h:32:2:[m[K [01;35m[Kwarning: [m[K#warning This header is obsolete, please include tf2_eigen/tf2_eigen.hpp instead [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wcpp-Wcpp]8;;[m[K]
+   32 | #[01;35m[Kwarning[m[K This header is obsolete, please include tf2_eigen/tf2_eigen.hpp instead
+      |  [01;35m[K^~~~~~~[m[K
+In file included from [01m[K/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/src/pick_and_place_application/src/utilities/pick_and_place_utilities.cpp:12[m[K:
+[01m[K/opt/ros/humble/include/tf2_geometry_msgs/tf2_geometry_msgs/tf2_geometry_msgs.h:35:2:[m[K [01;35m[Kwarning: [m[K#warning This header is obsolete, please include tf2_geometry_msgs/tf2_geometry_msgs.hpp instead [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wcpp-Wcpp]8;;[m[K]
+   35 | #[01;35m[Kwarning[m[K This header is obsolete, please include tf2_geometry_msgs/tf2_geometry_msgs.hpp instead
+      |  [01;35m[K^~~~~~~[m[K
+In file included from [01m[K/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/src/pick_and_place_application/src/nodes/generate_point_cloud.cpp:10[m[K:
+[01m[K/opt/ros/humble/include/sensor_msgs/sensor_msgs/point_cloud_conversion.hpp:47:6:[m[K [01;35m[Kwarning: [m[K#warning POINT_CLOUD_DEPRECATION_MESSAGE [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wcpp-Wcpp]8;;[m[K]
+   47 | #    [01;35m[Kwarning[m[K POINT_CLOUD_DEPRECATION_MESSAGE
+      |      [01;35m[K^~~~~~~[m[K
+In file included from [01m[K/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/src/pick_and_place_application/src/tasks/detect_box_pick.cpp:2[m[K:
+[01m[K/opt/ros/humble/include/tf2_geometry_msgs/tf2_geometry_msgs/tf2_geometry_msgs.h:35:2:[m[K [01;35m[Kwarning: [m[K#warning This header is obsolete, please include tf2_geometry_msgs/tf2_geometry_msgs.hpp instead [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wcpp-Wcpp]8;;[m[K]
+   35 | #[01;35m[Kwarning[m[K This header is obsolete, please include tf2_geometry_msgs/tf2_geometry_msgs.hpp instead
+      |  [01;35m[K^~~~~~~[m[K
+[01m[K/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/src/pick_and_place_application/src/nodes/pick_and_place_node.cpp:20:3:[m[K [01;35m[Kwarning: [m[K"/*" within comment [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wcomment-Wcomment]8;;[m[K]
+   20 |   /* =========================================================================================*/
+      |    
+In file included from [01m[K/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/src/pick_and_place_application/src/tasks/create_pick_moves.cpp:2[m[K:
+[01m[K/opt/ros/humble/include/tf2_geometry_msgs/tf2_geometry_msgs/tf2_geometry_msgs.h:35:2:[m[K [01;35m[Kwarning: [m[K#warning This header is obsolete, please include tf2_geometry_msgs/tf2_geometry_msgs.hpp instead [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wcpp-Wcpp]8;;[m[K]
+   35 | #[01;35m[Kwarning[m[K This header is obsolete, please include tf2_geometry_msgs/tf2_geometry_msgs.hpp instead
+      |  [01;35m[K^~~~~~~[m[K
+In file included from [01m[K/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/src/pick_and_place_application/src/tasks/create_place_moves.cpp:2[m[K:
+[01m[K/opt/ros/humble/include/tf2_geometry_msgs/tf2_geometry_msgs/tf2_geometry_msgs.h:35:2:[m[K [01;35m[Kwarning: [m[K#warning This header is obsolete, please include tf2_geometry_msgs/tf2_geometry_msgs.hpp instead [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wcpp-Wcpp]8;;[m[K]
+   35 | #[01;35m[Kwarning[m[K This header is obsolete, please include tf2_geometry_msgs/tf2_geometry_msgs.hpp instead
+      |  [01;35m[K^~~~~~~[m[K
+[01m[K/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/src/pick_and_place_application/src/tasks/detect_box_pick.cpp:[m[K In member function ‘[01m[Kgeometry_msgs::msg::Pose pick_and_place_application::PickAndPlaceApp::detectBox()[m[K’:
+[01m[K/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/src/pick_and_place_application/src/tasks/detect_box_pick.cpp:40:67:[m[K [01;35m[Kwarning: [m[K‘[01m[Krclcpp::Client<ServiceT>::FutureAndRequestId::operator rclcpp::Client<ServiceT>::SharedFuture() [with ServiceT = pick_and_place_msgs::srv::GetTargetPose; rclcpp::Client<ServiceT>::SharedFuture = std::shared_future<std::shared_ptr<pick_and_place_msgs::srv::GetTargetPose_Response_<std::allocator<void> > > >][m[K’ is deprecated: FutureAndRequestId: use .future.share() instead of an implicit conversion [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+   40 |   response_fut = target_recognition_client->async_send_request(req[01;35m[K)[m[K;
+      |                                                                   [01;35m[K^[m[K
+In file included from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/callback_group.hpp:24[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/any_executable.hpp:20[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/memory_strategy.hpp:25[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/memory_strategies.hpp:18[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executor_options.hpp:20[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executor.hpp:37[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executors/multi_threaded_executor.hpp:25[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executors.hpp:21[m[K,
+                 from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/rclcpp.hpp:155[m[K,
+                 from [01m[K/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/src/pick_and_place_application/include/pick_and_place_application/pick_and_place.h:4[m[K,
+                 from [01m[K/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/src/pick_and_place_application/src/tasks/detect_box_pick.cpp:1[m[K:
+[01m[K/opt/ros/humble/include/rclcpp/rclcpp/client.hpp:415:5:[m[K [01;36m[Knote: [m[Kdeclared here
+  415 |     [01;36m[Koperator[m[K SharedFuture() {return this->future.share();}
+      |     [01;36m[K^~~~~~~~[m[K
+[01m[K/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/src/pick_and_place_application/src/tasks/pickup_box.cpp:[m[K In member function ‘[01m[Kvoid pick_and_place_application::PickAndPlaceApp::doBoxPickup(std::vector<geometry_msgs::msg::Pose_<std::allocator<void> > >&, const Pose&)[m[K’:
+[01m[K/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/src/pick_and_place_application/src/tasks/pickup_box.cpp:15:95:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kbox_pose[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   15 |                                                               [01;35m[Kconst geometry_msgs::msg::Pose& box_pose[m[K)
+      |                                                               [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~[m[K
+[01m[K/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/src/pick_and_place_application/src/tasks/set_attached_object.cpp:[m[K In member function ‘[01m[Kvoid pick_and_place_application::PickAndPlaceApp::setAttachedObject(bool, const Pose&, moveit_msgs::msg::RobotState&)[m[K’:
+[01m[K/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/src/pick_and_place_application/src/tasks/set_attached_object.cpp:16:73:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kpose[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+   16 |                                         [01;35m[Kconst geometry_msgs::msg::Pose& pose[m[K,
+      |                                         [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~[m[K

@@ -1,0 +1,1 @@
+perception_pcl;rclpy;controller_manager;robot_state_publisher;tf2_ros;rviz2;moveit_ros_perception;moveit_ros_move_group;moveit_ros_occupancy_map_monitor;moveit_ros_visualization;joint_state_broadcaster;ur_robot_driver

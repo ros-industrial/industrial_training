@@ -1,0 +1,8 @@
+source;share/pick_and_place_application/hook/cmake_prefix_path.ps1
+source;share/pick_and_place_application/hook/cmake_prefix_path.dsv
+source;share/pick_and_place_application/hook/cmake_prefix_path.sh
+source;share/pick_and_place_application/local_setup.bash
+source;share/pick_and_place_application/local_setup.dsv
+source;share/pick_and_place_application/local_setup.ps1
+source;share/pick_and_place_application/local_setup.sh
+source;share/pick_and_place_application/local_setup.zsh

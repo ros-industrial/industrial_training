@@ -1,0 +1,10 @@
+setup.py
+pick_and_place_msgs/__init__.py
+pick_and_place_msgs.egg-info/PKG-INFO
+pick_and_place_msgs.egg-info/SOURCES.txt
+pick_and_place_msgs.egg-info/dependency_links.txt
+pick_and_place_msgs.egg-info/top_level.txt
+pick_and_place_msgs/action/__init__.py
+pick_and_place_msgs/action/_execute_grasp_move.py
+pick_and_place_msgs/srv/__init__.py
+pick_and_place_msgs/srv/_get_target_pose.py

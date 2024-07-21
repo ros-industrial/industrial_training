@@ -1,0 +1,8 @@
+source;share/robot_workcell_support/hook/cmake_prefix_path.ps1
+source;share/robot_workcell_support/hook/cmake_prefix_path.dsv
+source;share/robot_workcell_support/hook/cmake_prefix_path.sh
+source;share/robot_workcell_support/local_setup.bash
+source;share/robot_workcell_support/local_setup.dsv
+source;share/robot_workcell_support/local_setup.ps1
+source;share/robot_workcell_support/local_setup.sh
+source;share/robot_workcell_support/local_setup.zsh

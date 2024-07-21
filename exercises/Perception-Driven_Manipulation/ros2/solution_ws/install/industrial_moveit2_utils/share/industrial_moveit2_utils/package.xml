@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>industrial_moveit2_utils</name>
+  <version>0.0.0</version>
+  <description>Utilities to load a MoveIt2 Planning environment</description>
+  <maintainer email="jrgnichodevel@gmail.com">jnicho</maintainer>
+  <license>BSD</license>
+
+  <depend>rclpy</depend>
+
+  <exec_depend>moveit_simple_controller_manager</exec_depend>
+
+  <test_depend>ament_copyright</test_depend>
+  <test_depend>ament_flake8</test_depend>
+  <test_depend>ament_pep257</test_depend>
+  <test_depend>python3-pytest</test_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

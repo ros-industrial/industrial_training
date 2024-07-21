@@ -1,0 +1,8 @@
+source;share/ur5_workcell_moveit2_config/hook/cmake_prefix_path.ps1
+source;share/ur5_workcell_moveit2_config/hook/cmake_prefix_path.dsv
+source;share/ur5_workcell_moveit2_config/hook/cmake_prefix_path.sh
+source;share/ur5_workcell_moveit2_config/local_setup.bash
+source;share/ur5_workcell_moveit2_config/local_setup.dsv
+source;share/ur5_workcell_moveit2_config/local_setup.ps1
+source;share/ur5_workcell_moveit2_config/local_setup.sh
+source;share/ur5_workcell_moveit2_config/local_setup.zsh

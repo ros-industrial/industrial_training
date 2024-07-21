@@ -1,0 +1,29 @@
+// generated from rosidl_adapter/resource/srv.idl.em
+// with input from pick_and_place_msgs/srv/GetTargetPose.srv
+// generated code does not contain a copyright notice
+
+#include "geometry_msgs/msg/Pose.idl"
+#include "shape_msgs/msg/SolidPrimitive.idl"
+
+module pick_and_place_msgs {
+  module srv {
+    @verbatim (language="comment", text=
+      "empty request target pose")
+    struct GetTargetPose_Request {
+      string world_frame_id;
+
+      string ar_tag_frame_id;
+
+      shape_msgs::msg::SolidPrimitive shape;
+
+      sequence<geometry_msgs::msg::Pose> remove_at_poses;
+    };
+    @verbatim (language="comment", text=
+      "target pose response")
+    struct GetTargetPose_Response {
+      boolean succeeded;
+
+      geometry_msgs::msg::Pose target_pose;
+    };
+  };
+};

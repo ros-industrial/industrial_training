@@ -1,0 +1,31 @@
+[ 11%] Built target fake_grasp_server_node
+[ 22%] Built target generate_cloud_node
+[100%] Built target pick_and_place_node
+-- Install configuration: ""
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/lib/pick_and_place_application/generate_cloud_node
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/lib/pick_and_place_application/pick_and_place_node
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/lib/pick_and_place_application/fake_grasp_server_node
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/lib/pick_and_place_application/fake_recognition_service.py
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application//launch
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application//launch/application_run.launch.py
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application//launch/application_setup.launch.py
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application//config
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application//config/pick_and_place_parameters.yaml
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application//config/rviz_config.rviz
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application//config/fake_obstacles_cloud_description.yaml
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application//config/target_recognition_parameters.yaml
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/ament_index/resource_index/package_run_dependencies/pick_and_place_application
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/ament_index/resource_index/parent_prefix_path/pick_and_place_application
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application/environment/ament_prefix_path.sh
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application/environment/ament_prefix_path.dsv
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application/environment/path.sh
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application/environment/path.dsv
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application/local_setup.bash
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application/local_setup.sh
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application/local_setup.zsh
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application/local_setup.dsv
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application/package.dsv
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/ament_index/resource_index/packages/pick_and_place_application
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application/cmake/pick_and_place_applicationConfig.cmake
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application/cmake/pick_and_place_applicationConfig-version.cmake
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application/package.xml

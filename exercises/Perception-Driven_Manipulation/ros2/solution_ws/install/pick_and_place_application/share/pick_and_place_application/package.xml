@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>pick_and_place_application</name>
+  <version>0.0.0</version>
+  <description>
+     The pick_and_place_application package
+  </description>
+
+  <maintainer email="jnicho@swri.org">jnicho</maintainer> -->
+  <author email="jnicho@swri.org">jnicho</author>
+  <license>BSD</license>
+
+  <url type="website">http://ros.org/wiki/pick_and_place_application</url>
+  
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>ament_cmake_python</buildtool_depend>
+  
+  <build_depend>rclcpp</build_depend>  
+  <build_depend>rclcpp_action</build_depend>
+  <build_depend>moveit_msgs</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>shape_msgs</build_depend>
+  <build_depend>pick_and_place_msgs</build_depend>
+  <build_depend>geometry_msgs</build_depend>
+  <build_depend>moveit_common</build_depend>
+  <build_depend>moveit_ros_planning_interface</build_depend>
+  <build_depend>pcl_ros</build_depend>
+  <build_depend>pcl_conversions</build_depend>
+  <build_depend>yaml-cpp</build_depend>
+
+  <depend>perception_pcl</depend>
+  
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>controller_manager</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+
+  <exec_depend>tf2_ros</exec_depend>
+  <exec_depend>rviz2</exec_depend>  
+  <exec_depend>moveit_ros_perception</exec_depend> 
+  <exec_depend>moveit_ros_move_group</exec_depend>
+  <exec_depend>moveit_ros_occupancy_map_monitor</exec_depend>
+  <exec_depend>moveit_ros_visualization</exec_depend>
+  <exec_depend>joint_state_broadcaster</exec_depend>
+  <exec_depend>ur_robot_driver</exec_depend>
+
+  <export>
+  	<build_type>ament_cmake</build_type>
+  </export>
+
+</package>

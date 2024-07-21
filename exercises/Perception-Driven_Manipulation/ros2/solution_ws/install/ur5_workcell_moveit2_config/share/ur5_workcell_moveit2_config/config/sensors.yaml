@@ -1,0 +1,16 @@
+octomap_resolution: 0.02
+octomap_frame: world_frame
+max_range: 5.0
+sensors: 
+  - point_cloud_octomap_updater
+  
+point_cloud_octomap_updater:  
+  sensor_plugin: occupancy_map_monitor/PointCloudOctomapUpdater
+  point_cloud_topic: /objects_cloud
+  max_range: 5.0
+  point_subsample: 1
+  padding_offset: 0.0
+  padding_scale: 1.0
+  max_update_rate: 0.5
+  filtered_cloud_topic: filtered_cloud
+

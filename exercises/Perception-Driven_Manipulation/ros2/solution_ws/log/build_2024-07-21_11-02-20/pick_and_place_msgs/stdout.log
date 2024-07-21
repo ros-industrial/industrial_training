@@ -1,0 +1,276 @@
+-- The C compiler identification is GNU 11.4.0
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found ament_cmake: 1.3.9 (/opt/ros/humble/share/ament_cmake/cmake)
+-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+-- Found builtin_interfaces: 1.2.1 (/opt/ros/humble/share/builtin_interfaces/cmake)
+-- Found rosidl_generator_c: 3.1.5 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+-- Found rosidl_adapter: 3.1.5 (/opt/ros/humble/share/rosidl_adapter/cmake)
+-- Found rosidl_generator_cpp: 3.1.5 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+-- Found rosidl_default_generators: 1.2.0 (/opt/ros/humble/share/rosidl_default_generators/cmake)
+-- Found action_msgs: 1.2.1 (/opt/ros/humble/share/action_msgs/cmake)
+-- Found shape_msgs: 4.2.4 (/opt/ros/humble/share/shape_msgs/cmake)
+-- Found ament_cmake_ros: 0.10.0 (/opt/ros/humble/share/ament_cmake_ros/cmake)
+-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+-- Found PythonInterp: /usr/bin/python3 (found suitable version "3.10.12", minimum required is "3.6") 
+-- Found python_cmake_module: 0.10.0 (/opt/ros/humble/share/python_cmake_module/cmake)
+-- Found PythonLibs: /usr/lib/x86_64-linux-gnu/libpython3.10.so (found suitable version "3.10.12", minimum required is "3.5") 
+-- Using PYTHON_EXECUTABLE: /usr/bin/python3
+-- Using PYTHON_INCLUDE_DIRS: /usr/include/python3.10
+-- Using PYTHON_LIBRARIES: /usr/lib/x86_64-linux-gnu/libpython3.10.so
+-- Found PythonExtra: .so  
+-- Found ament_lint_auto: 0.12.11 (/opt/ros/humble/share/ament_lint_auto/cmake)
+-- Added test 'copyright' to check source files copyright and LICENSE
+-- Added test 'lint_cmake' to check CMake code style
+-- Added test 'xmllint' to check XML markup files
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/build/pick_and_place_msgs
+[  2%] [34m[1mGenerating C code for ROS interfaces[0m
+[  5%] [34m[1mGenerating C++ code for ROS interfaces[0m
+[  5%] Built target ament_cmake_python_copy_pick_and_place_msgs
+running egg_info
+creating pick_and_place_msgs.egg-info
+writing pick_and_place_msgs.egg-info/PKG-INFO
+writing dependency_links to pick_and_place_msgs.egg-info/dependency_links.txt
+writing top-level names to pick_and_place_msgs.egg-info/top_level.txt
+writing manifest file 'pick_and_place_msgs.egg-info/SOURCES.txt'
+reading manifest file 'pick_and_place_msgs.egg-info/SOURCES.txt'
+writing manifest file 'pick_and_place_msgs.egg-info/SOURCES.txt'
+[  5%] Built target ament_cmake_python_build_pick_and_place_msgs_egg
+[  5%] Built target pick_and_place_msgs__cpp
+[ 17%] [34m[1mGenerating C++ type support dispatch for ROS interfaces[0m
+[ 17%] [32mBuilding C object CMakeFiles/pick_and_place_msgs__rosidl_generator_c.dir/rosidl_generator_c/pick_and_place_msgs/action/detail/execute_grasp_move__functions.c.o[0m
+[ 17%] [34m[1mGenerating C++ type support for eProsima Fast-RTPS[0m
+[ 17%] [32mBuilding C object CMakeFiles/pick_and_place_msgs__rosidl_generator_c.dir/rosidl_generator_c/pick_and_place_msgs/srv/detail/get_target_pose__functions.c.o[0m
+[ 17%] [34m[1mGenerating C++ introspection for ROS interfaces[0m
+[ 20%] [32m[1mLinking C shared library libpick_and_place_msgs__rosidl_generator_c.so[0m
+[ 20%] Built target pick_and_place_msgs__rosidl_generator_c
+[ 28%] [34m[1mGenerating C introspection for ROS interfaces[0m
+[ 28%] [34m[1mGenerating C type support dispatch for ROS interfaces[0m
+[ 28%] [34m[1mGenerating C type support for eProsima Fast-RTPS[0m
+[ 30%] [32mBuilding CXX object CMakeFiles/pick_and_place_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/pick_and_place_msgs/srv/get_target_pose__type_support.cpp.o[0m
+[ 33%] [32mBuilding CXX object CMakeFiles/pick_and_place_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/pick_and_place_msgs/action/execute_grasp_move__type_support.cpp.o[0m
+[ 38%] [32mBuilding CXX object CMakeFiles/pick_and_place_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/pick_and_place_msgs/action/detail/execute_grasp_move__type_support.cpp.o[0m
+[ 38%] [32mBuilding CXX object CMakeFiles/pick_and_place_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/pick_and_place_msgs/srv/detail/get_target_pose__type_support.cpp.o[0m
+[ 43%] [32mBuilding CXX object CMakeFiles/pick_and_place_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/pick_and_place_msgs/srv/detail/dds_fastrtps/get_target_pose__type_support.cpp.o[0m
+[ 43%] [32mBuilding CXX object CMakeFiles/pick_and_place_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/pick_and_place_msgs/action/detail/dds_fastrtps/execute_grasp_move__type_support.cpp.o[0m
+[ 46%] [32mBuilding CXX object CMakeFiles/pick_and_place_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/pick_and_place_msgs/srv/get_target_pose__type_support.cpp.o[0m
+[ 48%] [32mBuilding CXX object CMakeFiles/pick_and_place_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/pick_and_place_msgs/action/execute_grasp_move__type_support.cpp.o[0m
+[ 51%] [32m[1mLinking CXX shared library libpick_and_place_msgs__rosidl_typesupport_c.so[0m
+[ 56%] [32mBuilding C object CMakeFiles/pick_and_place_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/pick_and_place_msgs/action/detail/execute_grasp_move__type_support.c.o[0m
+[ 56%] [32mBuilding C object CMakeFiles/pick_and_place_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/pick_and_place_msgs/srv/detail/get_target_pose__type_support.c.o[0m
+[ 56%] Built target pick_and_place_msgs__rosidl_typesupport_c
+[ 58%] [32mBuilding CXX object CMakeFiles/pick_and_place_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/pick_and_place_msgs/action/detail/execute_grasp_move__type_support_c.cpp.o[0m
+[ 61%] [32mBuilding CXX object CMakeFiles/pick_and_place_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/pick_and_place_msgs/srv/detail/get_target_pose__type_support_c.cpp.o[0m
+[ 64%] [32m[1mLinking C shared library libpick_and_place_msgs__rosidl_typesupport_introspection_c.so[0m
+[ 66%] [32m[1mLinking CXX shared library libpick_and_place_msgs__rosidl_typesupport_cpp.so[0m
+[ 66%] Built target pick_and_place_msgs__rosidl_typesupport_introspection_c
+[ 66%] Built target pick_and_place_msgs__rosidl_typesupport_cpp
+[ 69%] [32m[1mLinking CXX shared library libpick_and_place_msgs__rosidl_typesupport_introspection_cpp.so[0m
+[ 71%] [32m[1mLinking CXX shared library libpick_and_place_msgs__rosidl_typesupport_fastrtps_cpp.so[0m
+[ 74%] [32m[1mLinking CXX shared library libpick_and_place_msgs__rosidl_typesupport_fastrtps_c.so[0m
+[ 74%] Built target pick_and_place_msgs__rosidl_typesupport_introspection_cpp
+[ 74%] Built target pick_and_place_msgs__rosidl_typesupport_fastrtps_cpp
+[ 74%] Built target pick_and_place_msgs__rosidl_typesupport_fastrtps_c
+[ 74%] Built target pick_and_place_msgs
+[ 76%] [34m[1mGenerating Python code for ROS interfaces[0m
+[ 76%] Built target pick_and_place_msgs__py
+[ 82%] [32mBuilding C object CMakeFiles/pick_and_place_msgs__rosidl_generator_py.dir/rosidl_generator_py/pick_and_place_msgs/action/_execute_grasp_move_s.c.o[0m
+[ 82%] [32mBuilding C object CMakeFiles/pick_and_place_msgs__rosidl_generator_py.dir/rosidl_generator_py/pick_and_place_msgs/srv/_get_target_pose_s.c.o[0m
+[ 84%] [32m[1mLinking C shared library rosidl_generator_py/pick_and_place_msgs/libpick_and_place_msgs__rosidl_generator_py.so[0m
+[ 84%] Built target pick_and_place_msgs__rosidl_generator_py
+[ 92%] [32mBuilding C object CMakeFiles/pick_and_place_msgs__rosidl_typesupport_introspection_c__pyext.dir/rosidl_generator_py/pick_and_place_msgs/_pick_and_place_msgs_s.ep.rosidl_typesupport_introspection_c.c.o[0m
+[ 92%] [32mBuilding C object CMakeFiles/pick_and_place_msgs__rosidl_typesupport_fastrtps_c__pyext.dir/rosidl_generator_py/pick_and_place_msgs/_pick_and_place_msgs_s.ep.rosidl_typesupport_fastrtps_c.c.o[0m
+[ 92%] [32mBuilding C object CMakeFiles/pick_and_place_msgs__rosidl_typesupport_c__pyext.dir/rosidl_generator_py/pick_and_place_msgs/_pick_and_place_msgs_s.ep.rosidl_typesupport_c.c.o[0m
+[ 97%] [32m[1mLinking C shared library rosidl_generator_py/pick_and_place_msgs/pick_and_place_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so[0m
+[ 97%] [32m[1mLinking C shared library rosidl_generator_py/pick_and_place_msgs/pick_and_place_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so[0m
+[100%] [32m[1mLinking C shared library rosidl_generator_py/pick_and_place_msgs/pick_and_place_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so[0m
+[100%] Built target pick_and_place_msgs__rosidl_typesupport_fastrtps_c__pyext
+[100%] Built target pick_and_place_msgs__rosidl_typesupport_c__pyext
+[100%] Built target pick_and_place_msgs__rosidl_typesupport_introspection_c__pyext
+-- Install configuration: ""
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/ament_index/resource_index/rosidl_interfaces/pick_and_place_msgs
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/msg
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/msg/rosidl_generator_c__visibility_control.h
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/action
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/action/detail
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/action/detail/execute_grasp_move__type_support.h
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/action/detail/execute_grasp_move__functions.h
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/action/detail/execute_grasp_move__functions.c
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/action/detail/execute_grasp_move__struct.h
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/action/execute_grasp_move.h
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/srv
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/srv/detail
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/srv/detail/get_target_pose__functions.h
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/srv/detail/get_target_pose__type_support.h
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/srv/detail/get_target_pose__functions.c
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/srv/detail/get_target_pose__struct.h
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/srv/get_target_pose.h
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/environment/library_path.sh
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/environment/library_path.dsv
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/lib/libpick_and_place_msgs__rosidl_generator_c.so
+-- Set runtime path of "/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/lib/libpick_and_place_msgs__rosidl_generator_c.so" to ""
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/msg
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/action
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/action/detail
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/action/detail/execute_grasp_move__rosidl_typesupport_fastrtps_c.h
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/srv
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/srv/detail
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/srv/detail/get_target_pose__rosidl_typesupport_fastrtps_c.h
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/lib/libpick_and_place_msgs__rosidl_typesupport_fastrtps_c.so
+-- Set runtime path of "/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/lib/libpick_and_place_msgs__rosidl_typesupport_fastrtps_c.so" to ""
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/action
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/action/detail
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/action/detail/execute_grasp_move__struct.hpp
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/action/detail/execute_grasp_move__traits.hpp
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/action/detail/execute_grasp_move__builder.hpp
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/action/execute_grasp_move.hpp
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/srv
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/srv/get_target_pose.hpp
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/srv/detail
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/srv/detail/get_target_pose__struct.hpp
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/srv/detail/get_target_pose__builder.hpp
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/srv/detail/get_target_pose__traits.hpp
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/msg
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/action
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/action/detail
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/action/detail/dds_fastrtps
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/action/detail/execute_grasp_move__rosidl_typesupport_fastrtps_cpp.hpp
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/srv
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/srv/detail
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/srv/detail/dds_fastrtps
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/srv/detail/get_target_pose__rosidl_typesupport_fastrtps_cpp.hpp
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/lib/libpick_and_place_msgs__rosidl_typesupport_fastrtps_cpp.so
+-- Set runtime path of "/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/lib/libpick_and_place_msgs__rosidl_typesupport_fastrtps_cpp.so" to ""
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/msg
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/msg/rosidl_typesupport_introspection_c__visibility_control.h
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/action
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/action/detail
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/action/detail/execute_grasp_move__type_support.c
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/action/detail/execute_grasp_move__rosidl_typesupport_introspection_c.h
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/srv
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/srv/detail
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/srv/detail/get_target_pose__type_support.c
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/srv/detail/get_target_pose__rosidl_typesupport_introspection_c.h
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/lib/libpick_and_place_msgs__rosidl_typesupport_introspection_c.so
+-- Set runtime path of "/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/lib/libpick_and_place_msgs__rosidl_typesupport_introspection_c.so" to ""
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/lib/libpick_and_place_msgs__rosidl_typesupport_c.so
+-- Set runtime path of "/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/lib/libpick_and_place_msgs__rosidl_typesupport_c.so" to ""
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/action
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/action/detail
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/action/detail/execute_grasp_move__rosidl_typesupport_introspection_cpp.hpp
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/action/detail/execute_grasp_move__type_support.cpp
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/srv
+-- Up-to-date: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/srv/detail
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/srv/detail/get_target_pose__rosidl_typesupport_introspection_cpp.hpp
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/include/pick_and_place_msgs/pick_and_place_msgs/srv/detail/get_target_pose__type_support.cpp
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/lib/libpick_and_place_msgs__rosidl_typesupport_introspection_cpp.so
+-- Set runtime path of "/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/lib/libpick_and_place_msgs__rosidl_typesupport_introspection_cpp.so" to ""
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/lib/libpick_and_place_msgs__rosidl_typesupport_cpp.so
+-- Set runtime path of "/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/lib/libpick_and_place_msgs__rosidl_typesupport_cpp.so" to ""
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/environment/pythonpath.sh
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/environment/pythonpath.dsv
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/local/lib/python3.10/dist-packages/pick_and_place_msgs-0.0.0-py3.10.egg-info
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/local/lib/python3.10/dist-packages/pick_and_place_msgs-0.0.0-py3.10.egg-info/SOURCES.txt
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/local/lib/python3.10/dist-packages/pick_and_place_msgs-0.0.0-py3.10.egg-info/top_level.txt
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/local/lib/python3.10/dist-packages/pick_and_place_msgs-0.0.0-py3.10.egg-info/dependency_links.txt
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/local/lib/python3.10/dist-packages/pick_and_place_msgs-0.0.0-py3.10.egg-info/PKG-INFO
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/local/lib/python3.10/dist-packages/pick_and_place_msgs
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/local/lib/python3.10/dist-packages/pick_and_place_msgs/_pick_and_place_msgs_s.ep.rosidl_typesupport_c.c
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/local/lib/python3.10/dist-packages/pick_and_place_msgs/__init__.py
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/local/lib/python3.10/dist-packages/pick_and_place_msgs/_pick_and_place_msgs_s.ep.rosidl_typesupport_introspection_c.c
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/local/lib/python3.10/dist-packages/pick_and_place_msgs/pick_and_place_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/local/lib/python3.10/dist-packages/pick_and_place_msgs/_pick_and_place_msgs_s.ep.rosidl_typesupport_fastrtps_c.c
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/local/lib/python3.10/dist-packages/pick_and_place_msgs/pick_and_place_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/local/lib/python3.10/dist-packages/pick_and_place_msgs/action
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/local/lib/python3.10/dist-packages/pick_and_place_msgs/action/__init__.py
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/local/lib/python3.10/dist-packages/pick_and_place_msgs/action/_execute_grasp_move.py
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/local/lib/python3.10/dist-packages/pick_and_place_msgs/action/_execute_grasp_move_s.c
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/local/lib/python3.10/dist-packages/pick_and_place_msgs/libpick_and_place_msgs__rosidl_generator_py.so
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/local/lib/python3.10/dist-packages/pick_and_place_msgs/srv
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/local/lib/python3.10/dist-packages/pick_and_place_msgs/srv/__init__.py
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/local/lib/python3.10/dist-packages/pick_and_place_msgs/srv/_get_target_pose_s.c
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/local/lib/python3.10/dist-packages/pick_and_place_msgs/srv/_get_target_pose.py
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/local/lib/python3.10/dist-packages/pick_and_place_msgs/pick_and_place_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so
+Listing '/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/local/lib/python3.10/dist-packages/pick_and_place_msgs'...
+Compiling '/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/local/lib/python3.10/dist-packages/pick_and_place_msgs/__init__.py'...
+Listing '/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/local/lib/python3.10/dist-packages/pick_and_place_msgs/action'...
+Compiling '/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/local/lib/python3.10/dist-packages/pick_and_place_msgs/action/__init__.py'...
+Compiling '/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/local/lib/python3.10/dist-packages/pick_and_place_msgs/action/_execute_grasp_move.py'...
+Listing '/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/local/lib/python3.10/dist-packages/pick_and_place_msgs/srv'...
+Compiling '/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/local/lib/python3.10/dist-packages/pick_and_place_msgs/srv/__init__.py'...
+Compiling '/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/local/lib/python3.10/dist-packages/pick_and_place_msgs/srv/_get_target_pose.py'...
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/local/lib/python3.10/dist-packages/pick_and_place_msgs/pick_and_place_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so
+-- Set runtime path of "/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/local/lib/python3.10/dist-packages/pick_and_place_msgs/pick_and_place_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so" to ""
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/local/lib/python3.10/dist-packages/pick_and_place_msgs/pick_and_place_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so
+-- Set runtime path of "/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/local/lib/python3.10/dist-packages/pick_and_place_msgs/pick_and_place_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so" to ""
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/local/lib/python3.10/dist-packages/pick_and_place_msgs/pick_and_place_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so
+-- Set runtime path of "/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/local/lib/python3.10/dist-packages/pick_and_place_msgs/pick_and_place_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so" to ""
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/lib/libpick_and_place_msgs__rosidl_generator_py.so
+-- Set runtime path of "/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/lib/libpick_and_place_msgs__rosidl_generator_py.so" to ""
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/srv/GetTargetPose.idl
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/action/ExecuteGraspMove.idl
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/srv/GetTargetPose.srv
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/srv/GetTargetPose_Request.msg
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/srv/GetTargetPose_Response.msg
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/action/ExecuteGraspMove.action
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/ament_index/resource_index/package_run_dependencies/pick_and_place_msgs
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/ament_index/resource_index/parent_prefix_path/pick_and_place_msgs
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/environment/ament_prefix_path.sh
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/environment/ament_prefix_path.dsv
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/environment/path.sh
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/environment/path.dsv
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/local_setup.bash
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/local_setup.sh
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/local_setup.zsh
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/local_setup.dsv
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/package.dsv
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/ament_index/resource_index/packages/pick_and_place_msgs
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/cmake/export_pick_and_place_msgs__rosidl_generator_cExport.cmake
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/cmake/export_pick_and_place_msgs__rosidl_generator_cExport-noconfig.cmake
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/cmake/export_pick_and_place_msgs__rosidl_typesupport_fastrtps_cExport.cmake
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/cmake/export_pick_and_place_msgs__rosidl_typesupport_fastrtps_cExport-noconfig.cmake
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/cmake/export_pick_and_place_msgs__rosidl_generator_cppExport.cmake
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/cmake/export_pick_and_place_msgs__rosidl_typesupport_fastrtps_cppExport.cmake
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/cmake/export_pick_and_place_msgs__rosidl_typesupport_fastrtps_cppExport-noconfig.cmake
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/cmake/pick_and_place_msgs__rosidl_typesupport_introspection_cExport.cmake
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/cmake/pick_and_place_msgs__rosidl_typesupport_introspection_cExport-noconfig.cmake
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/cmake/pick_and_place_msgs__rosidl_typesupport_cExport.cmake
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/cmake/pick_and_place_msgs__rosidl_typesupport_cExport-noconfig.cmake
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/cmake/pick_and_place_msgs__rosidl_typesupport_introspection_cppExport.cmake
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/cmake/pick_and_place_msgs__rosidl_typesupport_introspection_cppExport-noconfig.cmake
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/cmake/pick_and_place_msgs__rosidl_typesupport_cppExport.cmake
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/cmake/pick_and_place_msgs__rosidl_typesupport_cppExport-noconfig.cmake
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/cmake/export_pick_and_place_msgs__rosidl_generator_pyExport.cmake
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/cmake/export_pick_and_place_msgs__rosidl_generator_pyExport-noconfig.cmake
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/cmake/rosidl_cmake-extras.cmake
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/cmake/ament_cmake_export_dependencies-extras.cmake
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/cmake/ament_cmake_export_include_directories-extras.cmake
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/cmake/ament_cmake_export_libraries-extras.cmake
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/cmake/ament_cmake_export_targets-extras.cmake
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/cmake/pick_and_place_msgsConfig.cmake
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/cmake/pick_and_place_msgsConfig-version.cmake
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/package.xml

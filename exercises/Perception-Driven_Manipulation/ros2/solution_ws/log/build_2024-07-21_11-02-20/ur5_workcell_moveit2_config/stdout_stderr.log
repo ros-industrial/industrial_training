@@ -1,0 +1,47 @@
+-- The C compiler identification is GNU 11.4.0
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found ament_cmake: 1.3.9 (/opt/ros/humble/share/ament_cmake/cmake)
+-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/build/ur5_workcell_moveit2_config
+-- Install configuration: ""
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/ur5_workcell_moveit2_config/share/ur5_workcell_moveit2_config//config
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/ur5_workcell_moveit2_config/share/ur5_workcell_moveit2_config//config/trajectory_execution.yaml
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/ur5_workcell_moveit2_config/share/ur5_workcell_moveit2_config//config/kinematics.yaml
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/ur5_workcell_moveit2_config/share/ur5_workcell_moveit2_config//config/moveit_cpp.yaml
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/ur5_workcell_moveit2_config/share/ur5_workcell_moveit2_config//config/sensors.yaml
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/ur5_workcell_moveit2_config/share/ur5_workcell_moveit2_config//config/planning_scene_monitor.yaml
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/ur5_workcell_moveit2_config/share/ur5_workcell_moveit2_config//config/ur5_workcell.srdf
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/ur5_workcell_moveit2_config/share/ur5_workcell_moveit2_config//config/joint_limits.yaml
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/ur5_workcell_moveit2_config/share/ur5_workcell_moveit2_config//config/ompl_planning.yaml
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/ur5_workcell_moveit2_config/share/ur5_workcell_moveit2_config//config/controllers.yaml
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/ur5_workcell_moveit2_config/share/ur5_workcell_moveit2_config//config/initial_positions.yaml
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/ur5_workcell_moveit2_config/share/ur5_workcell_moveit2_config//config/ros_controllers.yaml
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/ur5_workcell_moveit2_config/share/ur5_workcell_moveit2_config//config/joint_names.yaml
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/ur5_workcell_moveit2_config/share/ur5_workcell_moveit2_config//config/planning_pipeline.yaml
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/ur5_workcell_moveit2_config/share/ament_index/resource_index/package_run_dependencies/ur5_workcell_moveit2_config
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/ur5_workcell_moveit2_config/share/ament_index/resource_index/parent_prefix_path/ur5_workcell_moveit2_config
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/ur5_workcell_moveit2_config/share/ur5_workcell_moveit2_config/environment/ament_prefix_path.sh
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/ur5_workcell_moveit2_config/share/ur5_workcell_moveit2_config/environment/ament_prefix_path.dsv
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/ur5_workcell_moveit2_config/share/ur5_workcell_moveit2_config/environment/path.sh
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/ur5_workcell_moveit2_config/share/ur5_workcell_moveit2_config/environment/path.dsv
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/ur5_workcell_moveit2_config/share/ur5_workcell_moveit2_config/local_setup.bash
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/ur5_workcell_moveit2_config/share/ur5_workcell_moveit2_config/local_setup.sh
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/ur5_workcell_moveit2_config/share/ur5_workcell_moveit2_config/local_setup.zsh
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/ur5_workcell_moveit2_config/share/ur5_workcell_moveit2_config/local_setup.dsv
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/ur5_workcell_moveit2_config/share/ur5_workcell_moveit2_config/package.dsv
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/ur5_workcell_moveit2_config/share/ament_index/resource_index/packages/ur5_workcell_moveit2_config
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/ur5_workcell_moveit2_config/share/ur5_workcell_moveit2_config/cmake/ur5_workcell_moveit2_configConfig.cmake
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/ur5_workcell_moveit2_config/share/ur5_workcell_moveit2_config/cmake/ur5_workcell_moveit2_configConfig-version.cmake
+-- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/ur5_workcell_moveit2_config/share/ur5_workcell_moveit2_config/package.xml

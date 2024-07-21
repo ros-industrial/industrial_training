@@ -1,0 +1,207 @@
+[0.066s] Invoking command in '/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/build/pick_and_place_application': CMAKE_PREFIX_PATH=/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/template_ws/install/ur5_workcell_moveit2_config:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/template_ws/install/robot_workcell_support:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/template_ws/install/pick_and_place_msgs:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/template_ws/install/pick_and_place_application:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/ur5_workcell_moveit2_config:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/robot_workcell_support:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/template_ws/install/industrial_moveit2_utils:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/industrial_moveit2_utils:/opt/ros/humble LD_LIBRARY_PATH=/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/lib:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/template_ws/install/pick_and_place_msgs/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib /usr/bin/cmake /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/src/pick_and_place_application -DCMAKE_INSTALL_PREFIX=/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application
+[0.158s] -- The C compiler identification is GNU 11.4.0
+[0.528s] -- The CXX compiler identification is GNU 11.4.0
+[0.808s] -- Detecting C compiler ABI info
+[0.913s] -- Detecting C compiler ABI info - done
+[0.918s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.918s] -- Detecting C compile features
+[0.919s] -- Detecting C compile features - done
+[0.921s] -- Detecting CXX compiler ABI info
+[1.033s] -- Detecting CXX compiler ABI info - done
+[1.039s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[1.039s] -- Detecting CXX compile features
+[1.039s] -- Detecting CXX compile features - done
+[1.041s] -- Found ament_cmake: 1.3.9 (/opt/ros/humble/share/ament_cmake/cmake)
+[1.156s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[1.229s] -- Found rclcpp: 16.0.9 (/opt/ros/humble/share/rclcpp/cmake)
+[1.360s] -- Found rosidl_generator_c: 3.1.5 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[1.364s] -- Found rosidl_adapter: 3.1.5 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[1.370s] -- Found rosidl_generator_cpp: 3.1.5 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[1.381s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[1.395s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[1.451s] -- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[1.454s] -- Found rmw_fastrtps_cpp: 6.2.6 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+[2.613s] -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.2")  
+[3.873s] -- Found FastRTPS: /opt/ros/humble/include  
+[6.044s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[6.052s] -- Looking for pthread.h
+[6.164s] -- Looking for pthread.h - found
+[6.164s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[6.270s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+[6.270s] -- Found Threads: TRUE  
+[6.393s] -- Found rclcpp_action: 16.0.9 (/opt/ros/humble/share/rclcpp_action/cmake)
+[6.468s] -- Found sensor_msgs: 4.2.4 (/opt/ros/humble/share/sensor_msgs/cmake)
+[6.570s] -- Found shape_msgs: 4.2.4 (/opt/ros/humble/share/shape_msgs/cmake)
+[6.612s] -- Found pick_and_place_msgs: 0.0.0 (/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/share/pick_and_place_msgs/cmake)
+[6.728s] -- Found pcl_ros: 2.4.0 (/opt/ros/humble/share/pcl_ros/cmake)
+[6.981s] -- Found eigen3_cmake_module: 0.1.1 (/opt/ros/humble/share/eigen3_cmake_module/cmake)
+[6.982s] -- Found Eigen3: TRUE (found version "3.4.0") 
+[6.982s] -- Ensuring Eigen3 include directory is part of orocos-kdl CMake target
+[7.229s] -- Checking for module 'eigen3'
+[7.236s] --   Found eigen3, version 3.4.0
+[7.252s] -- Found Eigen: /usr/include/eigen3 (Required is at least version "3.1") 
+[7.252s] -- Eigen found (include: /usr/include/eigen3, version: 3.4.0)
+[8.376s] -- Checking for module 'flann'
+[8.383s] --   Found flann, version 1.9.1
+[8.684s] -- Found FLANN: /usr/lib/x86_64-linux-gnu/libflann_cpp.so  
+[8.684s] -- FLANN found (include: /usr/include, lib: /usr/lib/x86_64-linux-gnu/libflann_cpp.so)
+[12.620s] -- Checking for module 'libusb-1.0'
+[12.627s] --   Found libusb-1.0, version 1.0.25
+[12.709s] -- Found libusb: /usr/lib/x86_64-linux-gnu/libusb-1.0.so  
+[12.710s] -- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+[12.860s] -- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)
+[14.570s] -- Eigen found (include: /usr/include/eigen3, version: 3.4.0)
+[14.574s] -- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+[14.578s] -- OpenNI2 found (version: 2.2.0.33, include: /usr/include/openni2, lib: /usr/lib/x86_64-linux-gnu/libOpenNI2.so;libusb::libusb)
+[16.247s] -- Found Qhull version 8.0.2
+[17.936s] -- OpenNI found (version: 1.5.4.0, include: /usr/include/ni, lib: /usr/lib/libOpenNI.so;libusb::libusb)
+[19.635s] -- Found PCL_COMMON: /usr/lib/x86_64-linux-gnu/libpcl_common.so  
+[19.635s] -- Found PCL_KDTREE: /usr/lib/x86_64-linux-gnu/libpcl_kdtree.so  
+[19.636s] -- Found PCL_OCTREE: /usr/lib/x86_64-linux-gnu/libpcl_octree.so  
+[19.637s] -- Found PCL_SEARCH: /usr/lib/x86_64-linux-gnu/libpcl_search.so  
+[19.637s] -- Found PCL_SAMPLE_CONSENSUS: /usr/lib/x86_64-linux-gnu/libpcl_sample_consensus.so  
+[19.638s] -- Found PCL_FILTERS: /usr/lib/x86_64-linux-gnu/libpcl_filters.so  
+[19.638s] -- Found PCL_2D: /usr/include/pcl-1.12  
+[19.638s] -- Found PCL_GEOMETRY: /usr/include/pcl-1.12  
+[19.639s] -- Found PCL_IO: /usr/lib/x86_64-linux-gnu/libpcl_io.so  
+[19.640s] -- Found PCL_FEATURES: /usr/lib/x86_64-linux-gnu/libpcl_features.so  
+[19.640s] -- Found PCL_ML: /usr/lib/x86_64-linux-gnu/libpcl_ml.so  
+[19.641s] -- Found PCL_SEGMENTATION: /usr/lib/x86_64-linux-gnu/libpcl_segmentation.so  
+[19.642s] -- Found PCL_VISUALIZATION: /usr/lib/x86_64-linux-gnu/libpcl_visualization.so  
+[19.642s] -- Found PCL_SURFACE: /usr/lib/x86_64-linux-gnu/libpcl_surface.so  
+[19.643s] -- Found PCL_REGISTRATION: /usr/lib/x86_64-linux-gnu/libpcl_registration.so  
+[19.643s] -- Found PCL_KEYPOINTS: /usr/lib/x86_64-linux-gnu/libpcl_keypoints.so  
+[19.644s] -- Found PCL_TRACKING: /usr/lib/x86_64-linux-gnu/libpcl_tracking.so  
+[19.645s] -- Found PCL_RECOGNITION: /usr/lib/x86_64-linux-gnu/libpcl_recognition.so  
+[19.645s] -- Found PCL_STEREO: /usr/lib/x86_64-linux-gnu/libpcl_stereo.so  
+[19.646s] -- Found PCL_APPS: /usr/lib/x86_64-linux-gnu/libpcl_apps.so  
+[19.646s] -- Found PCL_IN_HAND_SCANNER: /usr/include/pcl-1.12  
+[19.647s] -- Found PCL_MODELER: /usr/include/pcl-1.12  
+[19.647s] -- Found PCL_POINT_CLOUD_EDITOR: /usr/include/pcl-1.12  
+[19.648s] -- Found PCL_OUTOFCORE: /usr/lib/x86_64-linux-gnu/libpcl_outofcore.so  
+[19.648s] -- Found PCL_PEOPLE: /usr/lib/x86_64-linux-gnu/libpcl_people.so  
+[19.661s] -- Found moveit_common: 2.5.5 (/opt/ros/humble/share/moveit_common/cmake)
+[19.662s] -- Found moveit_ros_planning_interface: 2.5.5 (/opt/ros/humble/share/moveit_ros_planning_interface/cmake)
+[19.673s] -- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found version "1.74.0") found components: date_time filesystem program_options system thread 
+[20.166s] -- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found version "1.74.0") found components: chrono date_time filesystem iostreams program_options regex serialization system thread 
+[20.176s] -- Found parameter_traits: 0.3.8 (/opt/ros/humble/share/parameter_traits/cmake)
+[20.192s] -- Found rclcpp_lifecycle: 16.0.9 (/opt/ros/humble/share/rclcpp_lifecycle/cmake)
+[20.233s] -- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found version "1.74.0") found components: filesystem 
+[21.430s] -- library: /usr/lib/x86_64-linux-gnu/libcurl.so
+[23.829s] -- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found version "1.74.0") found components: system filesystem date_time program_options thread chrono 
+[24.282s] -- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found version "1.74.0") found components: thread system filesystem regex date_time program_options 
+[24.480s] -- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found version "1.74.0") found components: system filesystem date_time program_options thread 
+[24.846s] -- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0/BoostConfig.cmake (found version "1.74.0") found components: system 
+[24.904s] -- Configuring done
+[24.948s] -- Generating done
+[24.951s] -- Build files have been written to: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/build/pick_and_place_application
+[24.973s] Invoked command in '/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/build/pick_and_place_application' returned '0': CMAKE_PREFIX_PATH=/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/template_ws/install/ur5_workcell_moveit2_config:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/template_ws/install/robot_workcell_support:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/template_ws/install/pick_and_place_msgs:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/template_ws/install/pick_and_place_application:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/ur5_workcell_moveit2_config:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/robot_workcell_support:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/template_ws/install/industrial_moveit2_utils:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/industrial_moveit2_utils:/opt/ros/humble LD_LIBRARY_PATH=/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/lib:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/template_ws/install/pick_and_place_msgs/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib /usr/bin/cmake /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/src/pick_and_place_application -DCMAKE_INSTALL_PREFIX=/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application
+[24.975s] Invoking command in '/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/build/pick_and_place_application': CMAKE_PREFIX_PATH=/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/template_ws/install/ur5_workcell_moveit2_config:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/template_ws/install/robot_workcell_support:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/template_ws/install/pick_and_place_msgs:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/template_ws/install/pick_and_place_application:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/ur5_workcell_moveit2_config:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/robot_workcell_support:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/template_ws/install/industrial_moveit2_utils:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/industrial_moveit2_utils:/opt/ros/humble LD_LIBRARY_PATH=/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/lib:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/template_ws/install/pick_and_place_msgs/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib /usr/bin/cmake --build /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/build/pick_and_place_application -- -j16 -l16
+[25.011s] [ 38%] [32mBuilding CXX object CMakeFiles/fake_grasp_server_node.dir/src/nodes/fake_grasp_action_server.cpp.o[0m
+[25.011s] [ 22%] [32mBuilding CXX object CMakeFiles/generate_cloud_node.dir/src/nodes/generate_point_cloud.cpp.o[0m
+[25.012s] [ 22%] [32mBuilding CXX object CMakeFiles/pick_and_place_node.dir/src/nodes/pick_and_place_node.cpp.o[0m
+[25.012s] [ 22%] [32mBuilding CXX object CMakeFiles/pick_and_place_node.dir/src/tasks/initialize.cpp.o[0m
+[25.012s] [ 55%] [32mBuilding CXX object CMakeFiles/pick_and_place_node.dir/src/tasks/detect_box_pick.cpp.o[0m
+[25.012s] [ 61%] [32mBuilding CXX object CMakeFiles/pick_and_place_node.dir/src/tasks/create_pick_moves.cpp.o[0m
+[25.012s] [ 44%] [32mBuilding CXX object CMakeFiles/pick_and_place_node.dir/src/tasks/create_place_moves.cpp.o[0m
+[25.012s] [ 44%] [32mBuilding CXX object CMakeFiles/pick_and_place_node.dir/src/tasks/set_attached_object.cpp.o[0m
+[25.012s] [ 61%] [32mBuilding CXX object CMakeFiles/pick_and_place_node.dir/src/tasks/reset_world.cpp.o[0m
+[25.012s] [ 61%] [32mBuilding CXX object CMakeFiles/pick_and_place_node.dir/src/tasks/set_gripper.cpp.o[0m
+[25.012s] [ 44%] [32mBuilding CXX object CMakeFiles/pick_and_place_node.dir/src/tasks/move_to_wait_position.cpp.o[0m
+[25.013s] [ 66%] [32mBuilding CXX object CMakeFiles/pick_and_place_node.dir/src/tasks/create_motion_plan.cpp.o[0m
+[25.013s] [ 72%] [32mBuilding CXX object CMakeFiles/pick_and_place_node.dir/src/tasks/place_box.cpp.o[0m
+[25.013s] [ 77%] [32mBuilding CXX object CMakeFiles/pick_and_place_node.dir/src/tasks/pickup_box.cpp.o[0m
+[25.013s] [ 83%] [32mBuilding CXX object CMakeFiles/pick_and_place_node.dir/src/utilities/pick_and_place_utilities.cpp.o[0m
+[25.021s] In file included from [01m[K/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/src/pick_and_place_application/src/tasks/set_attached_object.cpp:1[m[K:
+[25.022s] [01m[K/opt/ros/humble/include/tf2_eigen/tf2_eigen/tf2_eigen.h:32:2:[m[K [01;35m[Kwarning: [m[K#warning This header is obsolete, please include tf2_eigen/tf2_eigen.hpp instead [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wcpp-Wcpp]8;;[m[K]
+[25.022s]    32 | #[01;35m[Kwarning[m[K This header is obsolete, please include tf2_eigen/tf2_eigen.hpp instead
+[25.022s]       |  [01;35m[K^~~~~~~[m[K
+[25.370s] In file included from [01m[K/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/src/pick_and_place_application/src/utilities/pick_and_place_utilities.cpp:12[m[K:
+[25.370s] [01m[K/opt/ros/humble/include/tf2_geometry_msgs/tf2_geometry_msgs/tf2_geometry_msgs.h:35:2:[m[K [01;35m[Kwarning: [m[K#warning This header is obsolete, please include tf2_geometry_msgs/tf2_geometry_msgs.hpp instead [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wcpp-Wcpp]8;;[m[K]
+[25.370s]    35 | #[01;35m[Kwarning[m[K This header is obsolete, please include tf2_geometry_msgs/tf2_geometry_msgs.hpp instead
+[25.370s]       |  [01;35m[K^~~~~~~[m[K
+[25.683s] In file included from [01m[K/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/src/pick_and_place_application/src/nodes/generate_point_cloud.cpp:10[m[K:
+[25.683s] [01m[K/opt/ros/humble/include/sensor_msgs/sensor_msgs/point_cloud_conversion.hpp:47:6:[m[K [01;35m[Kwarning: [m[K#warning POINT_CLOUD_DEPRECATION_MESSAGE [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wcpp-Wcpp]8;;[m[K]
+[25.683s]    47 | #    [01;35m[Kwarning[m[K POINT_CLOUD_DEPRECATION_MESSAGE
+[25.683s]       |      [01;35m[K^~~~~~~[m[K
+[26.834s] In file included from [01m[K/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/src/pick_and_place_application/src/tasks/detect_box_pick.cpp:2[m[K:
+[26.834s] [01m[K/opt/ros/humble/include/tf2_geometry_msgs/tf2_geometry_msgs/tf2_geometry_msgs.h:35:2:[m[K [01;35m[Kwarning: [m[K#warning This header is obsolete, please include tf2_geometry_msgs/tf2_geometry_msgs.hpp instead [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wcpp-Wcpp]8;;[m[K]
+[26.834s]    35 | #[01;35m[Kwarning[m[K This header is obsolete, please include tf2_geometry_msgs/tf2_geometry_msgs.hpp instead
+[26.834s]       |  [01;35m[K^~~~~~~[m[K
+[26.901s] [01m[K/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/src/pick_and_place_application/src/nodes/pick_and_place_node.cpp:20:3:[m[K [01;35m[Kwarning: [m[K"/*" within comment [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wcomment-Wcomment]8;;[m[K]
+[26.902s]    20 |   /* =========================================================================================*/
+[26.902s]       |    
+[26.912s] In file included from [01m[K/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/src/pick_and_place_application/src/tasks/create_pick_moves.cpp:2[m[K:
+[26.913s] [01m[K/opt/ros/humble/include/tf2_geometry_msgs/tf2_geometry_msgs/tf2_geometry_msgs.h:35:2:[m[K [01;35m[Kwarning: [m[K#warning This header is obsolete, please include tf2_geometry_msgs/tf2_geometry_msgs.hpp instead [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wcpp-Wcpp]8;;[m[K]
+[26.913s]    35 | #[01;35m[Kwarning[m[K This header is obsolete, please include tf2_geometry_msgs/tf2_geometry_msgs.hpp instead
+[26.913s]       |  [01;35m[K^~~~~~~[m[K
+[26.913s] In file included from [01m[K/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/src/pick_and_place_application/src/tasks/create_place_moves.cpp:2[m[K:
+[26.913s] [01m[K/opt/ros/humble/include/tf2_geometry_msgs/tf2_geometry_msgs/tf2_geometry_msgs.h:35:2:[m[K [01;35m[Kwarning: [m[K#warning This header is obsolete, please include tf2_geometry_msgs/tf2_geometry_msgs.hpp instead [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wcpp-Wcpp]8;;[m[K]
+[26.913s]    35 | #[01;35m[Kwarning[m[K This header is obsolete, please include tf2_geometry_msgs/tf2_geometry_msgs.hpp instead
+[26.913s]       |  [01;35m[K^~~~~~~[m[K
+[31.017s] [ 88%] [32m[1mLinking CXX executable fake_grasp_server_node[0m
+[31.375s] [ 88%] Built target fake_grasp_server_node
+[37.670s] [01m[K/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/src/pick_and_place_application/src/tasks/detect_box_pick.cpp:[m[K In member function ‘[01m[Kgeometry_msgs::msg::Pose pick_and_place_application::PickAndPlaceApp::detectBox()[m[K’:
+[37.670s] [01m[K/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/src/pick_and_place_application/src/tasks/detect_box_pick.cpp:40:67:[m[K [01;35m[Kwarning: [m[K‘[01m[Krclcpp::Client<ServiceT>::FutureAndRequestId::operator rclcpp::Client<ServiceT>::SharedFuture() [with ServiceT = pick_and_place_msgs::srv::GetTargetPose; rclcpp::Client<ServiceT>::SharedFuture = std::shared_future<std::shared_ptr<pick_and_place_msgs::srv::GetTargetPose_Response_<std::allocator<void> > > >][m[K’ is deprecated: FutureAndRequestId: use .future.share() instead of an implicit conversion [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[37.670s]    40 |   response_fut = target_recognition_client->async_send_request(req[01;35m[K)[m[K;
+[37.670s]       |                                                                   [01;35m[K^[m[K
+[37.671s] In file included from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/callback_group.hpp:24[m[K,
+[37.671s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/any_executable.hpp:20[m[K,
+[37.671s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/memory_strategy.hpp:25[m[K,
+[37.671s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/memory_strategies.hpp:18[m[K,
+[37.671s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executor_options.hpp:20[m[K,
+[37.671s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executor.hpp:37[m[K,
+[37.671s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executors/multi_threaded_executor.hpp:25[m[K,
+[37.671s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/executors.hpp:21[m[K,
+[37.671s]                  from [01m[K/opt/ros/humble/include/rclcpp/rclcpp/rclcpp.hpp:155[m[K,
+[37.672s]                  from [01m[K/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/src/pick_and_place_application/include/pick_and_place_application/pick_and_place.h:4[m[K,
+[37.672s]                  from [01m[K/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/src/pick_and_place_application/src/tasks/detect_box_pick.cpp:1[m[K:
+[37.672s] [01m[K/opt/ros/humble/include/rclcpp/rclcpp/client.hpp:415:5:[m[K [01;36m[Knote: [m[Kdeclared here
+[37.672s]   415 |     [01;36m[Koperator[m[K SharedFuture() {return this->future.share();}
+[37.672s]       |     [01;36m[K^~~~~~~~[m[K
+[37.689s] [01m[K/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/src/pick_and_place_application/src/tasks/pickup_box.cpp:[m[K In member function ‘[01m[Kvoid pick_and_place_application::PickAndPlaceApp::doBoxPickup(std::vector<geometry_msgs::msg::Pose_<std::allocator<void> > >&, const Pose&)[m[K’:
+[37.689s] [01m[K/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/src/pick_and_place_application/src/tasks/pickup_box.cpp:15:95:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kbox_pose[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+[37.689s]    15 |                                                               [01;35m[Kconst geometry_msgs::msg::Pose& box_pose[m[K)
+[37.689s]       |                                                               [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~[m[K
+[37.804s] [01m[K/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/src/pick_and_place_application/src/tasks/set_attached_object.cpp:[m[K In member function ‘[01m[Kvoid pick_and_place_application::PickAndPlaceApp::setAttachedObject(bool, const Pose&, moveit_msgs::msg::RobotState&)[m[K’:
+[37.804s] [01m[K/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/src/pick_and_place_application/src/tasks/set_attached_object.cpp:16:73:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kpose[m[K’ [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-parameter-Wunused-parameter]8;;[m[K]
+[37.804s]    16 |                                         [01;35m[Kconst geometry_msgs::msg::Pose& pose[m[K,
+[37.804s]       |                                         [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~[m[K
+[43.017s] [ 94%] [32m[1mLinking CXX executable generate_cloud_node[0m
+[43.663s] [ 94%] Built target generate_cloud_node
+[44.621s] [100%] [32m[1mLinking CXX executable pick_and_place_node[0m
+[45.274s] [100%] Built target pick_and_place_node
+[45.282s] Invoked command in '/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/build/pick_and_place_application' returned '0': CMAKE_PREFIX_PATH=/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/template_ws/install/ur5_workcell_moveit2_config:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/template_ws/install/robot_workcell_support:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/template_ws/install/pick_and_place_msgs:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/template_ws/install/pick_and_place_application:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/ur5_workcell_moveit2_config:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/robot_workcell_support:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/template_ws/install/industrial_moveit2_utils:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/industrial_moveit2_utils:/opt/ros/humble LD_LIBRARY_PATH=/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/lib:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/template_ws/install/pick_and_place_msgs/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib /usr/bin/cmake --build /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/build/pick_and_place_application -- -j16 -l16
+[45.321s] Invoking command in '/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/build/pick_and_place_application': CMAKE_PREFIX_PATH=/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/template_ws/install/ur5_workcell_moveit2_config:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/template_ws/install/robot_workcell_support:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/template_ws/install/pick_and_place_msgs:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/template_ws/install/pick_and_place_application:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/ur5_workcell_moveit2_config:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/robot_workcell_support:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/template_ws/install/industrial_moveit2_utils:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/industrial_moveit2_utils:/opt/ros/humble LD_LIBRARY_PATH=/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/lib:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/template_ws/install/pick_and_place_msgs/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib /usr/bin/cmake --install /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/build/pick_and_place_application
+[45.326s] -- Install configuration: ""
+[45.326s] -- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/lib/pick_and_place_application/generate_cloud_node
+[45.328s] -- Set runtime path of "/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/lib/pick_and_place_application/generate_cloud_node" to ""
+[45.328s] -- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/lib/pick_and_place_application/pick_and_place_node
+[45.330s] -- Set runtime path of "/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/lib/pick_and_place_application/pick_and_place_node" to ""
+[45.330s] -- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/lib/pick_and_place_application/fake_grasp_server_node
+[45.331s] -- Set runtime path of "/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/lib/pick_and_place_application/fake_grasp_server_node" to ""
+[45.331s] -- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/lib/pick_and_place_application/fake_recognition_service.py
+[45.331s] -- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application//launch
+[45.331s] -- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application//launch/application_run.launch.py
+[45.331s] -- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application//launch/application_setup.launch.py
+[45.331s] -- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application//config
+[45.332s] -- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application//config/pick_and_place_parameters.yaml
+[45.332s] -- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application//config/rviz_config.rviz
+[45.332s] -- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application//config/fake_obstacles_cloud_description.yaml
+[45.332s] -- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application//config/target_recognition_parameters.yaml
+[45.332s] -- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/ament_index/resource_index/package_run_dependencies/pick_and_place_application
+[45.332s] -- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/ament_index/resource_index/parent_prefix_path/pick_and_place_application
+[45.333s] -- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application/environment/ament_prefix_path.sh
+[45.333s] -- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application/environment/ament_prefix_path.dsv
+[45.333s] -- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application/environment/path.sh
+[45.333s] -- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application/environment/path.dsv
+[45.333s] -- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application/local_setup.bash
+[45.333s] -- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application/local_setup.sh
+[45.333s] -- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application/local_setup.zsh
+[45.334s] -- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application/local_setup.dsv
+[45.334s] -- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application/package.dsv
+[45.334s] -- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/ament_index/resource_index/packages/pick_and_place_application
+[45.334s] -- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application/cmake/pick_and_place_applicationConfig.cmake
+[45.334s] -- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application/cmake/pick_and_place_applicationConfig-version.cmake
+[45.334s] -- Installing: /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application/share/pick_and_place_application/package.xml
+[45.336s] Invoked command in '/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/build/pick_and_place_application' returned '0': CMAKE_PREFIX_PATH=/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/template_ws/install/ur5_workcell_moveit2_config:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/template_ws/install/robot_workcell_support:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/template_ws/install/pick_and_place_msgs:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/template_ws/install/pick_and_place_application:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/ur5_workcell_moveit2_config:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/robot_workcell_support:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_application:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/template_ws/install/industrial_moveit2_utils:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/industrial_moveit2_utils:/opt/ros/humble LD_LIBRARY_PATH=/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/install/pick_and_place_msgs/lib:/home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/template_ws/install/pick_and_place_msgs/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib /usr/bin/cmake --install /home/jcampbell9/repos/industrial_training/exercises/Perception-Driven_Manipulation/ros2/solution_ws/build/pick_and_place_application
