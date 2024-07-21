@@ -124,10 +124,5 @@
             <child link="${arm_prefix}gripper_frame"/>
             <origin xyz="0 0 0" rpy="0 0 0"/> <!-- 0 1.57 0 -->
     </joint>
-    <joint name="world_frame_to_world" type="fixed">
-            <parent link="world_frame"/>
-            <child link="world"/>
-            <origin xyz="0 0 0" rpy="0 0 0"/>
-    </joint>
     <!-- end of arm-gripper coupling joint definitions -->  
 </robot>

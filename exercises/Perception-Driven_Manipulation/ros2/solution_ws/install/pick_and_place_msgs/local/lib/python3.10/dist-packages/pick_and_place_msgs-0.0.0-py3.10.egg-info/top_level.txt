@@ -1,1 +1,0 @@
-pick_and_place_msgs
