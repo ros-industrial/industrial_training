@@ -151,5 +151,6 @@
 		<xacro:workcell_element name="cover_part2" parent="world_frame"
 			 length="0.121" width="0.260" height="0.14" offset_x="-0.012" offset_y="-0.465"/>
 	</xacro:macro>
+
 	<!-- end of workcell part2 components macro -->
 </robot>

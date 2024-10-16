@@ -208,6 +208,7 @@
     <disable_collisions link1="shoulder_link" link2="table_base2" reason="Never" />
     <disable_collisions link1="shoulder_link" link2="upper_arm_link" reason="Adjacent" />
     <disable_collisions link1="shoulder_link" link2="ur5_stand" reason="Never" />
+    <disable_collisions link1="shoulder_link" link2="base_link_inertia" reason="Never" />
     <disable_collisions link1="table_base2" link2="upper_arm_link" reason="Never" />
     <disable_collisions link1="table_base2" link2="ur5_stand" reason="Adjacent" />
     <disable_collisions link1="tcp_frame" link2="wrist_1_link" reason="Never" />
