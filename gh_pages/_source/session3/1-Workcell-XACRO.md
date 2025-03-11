@@ -64,13 +64,13 @@ Specifically, you will need to:
         visual_parameters_file="$(find ur_description)/config/$(arg ur_type)/visual_parameters.yaml"
         use_fake_hardware="$(arg use_fake_hardware)"
         fake_sensor_commands="$(arg fake_sensor_commands)">
-      <origin xyz="0 0 0.024" rpy="0 0 0"/>
+      <origin xyz="0 0 0.025" rpy="0 0 0"/>
     </xacro:ur_robot>
     ```
 
     >Macros in Xacro are just fancy wrappers around copy-paste. You make a macro and it gets turned into a chunk of links and joints. You typically still have to connect the rest of your world to that macro’s results. This means you have to look at the macro and see what the base link is and what the end link is. Hopefully your macro follows a standard, like the ROS-Industrial one, that says that base links are named “base_link” and the last link is called “tool0”.
 
-    >In this example, the `parent` and `origin` parameters passed to the xacro are used to automatically generate a link between the base of the robot and the link we choose. Here we provide `parent="table"` and `<origin xyz="0 0 0" rpy="0 0 0"/>` to make the robot base link connect to our table link without any offset or rotation.
+    >In this example, the `parent` and `origin` parameters passed to the xacro are used to automatically generate a link between the base of the robot and the link we choose. Here we provide `parent="table"` and `<origin xyz="0 0 0.025" rpy="0 0 0"/>` to make the robot base link connect to the top of our table link without any rotation.
 
  1. Create a new `urdf.launch.py` file (in the `myworkcell_support` package) to load the URDF model and (optionally) display it in rviz. The launch file starts with several utility functions that are useful for assisting the launch process. This particular file uses `get_package_file` to get the path of the `workcell.urdf.xacro` file you've created, and `xacro.process_file` to generate the URDF as a string object. This URDF string is then passed to a `robot_state_publisher` node as a parameter just as was done manually in the previous exercise.
 
