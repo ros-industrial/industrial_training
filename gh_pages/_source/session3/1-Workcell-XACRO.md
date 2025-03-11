@@ -64,7 +64,7 @@ Specifically, you will need to:
         visual_parameters_file="$(find ur_description)/config/$(arg ur_type)/visual_parameters.yaml"
         use_fake_hardware="$(arg use_fake_hardware)"
         fake_sensor_commands="$(arg fake_sensor_commands)">
-      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <origin xyz="0 0 0.024" rpy="0 0 0"/>
     </xacro:ur_robot>
     ```
 
