@@ -98,7 +98,6 @@ def launch_setup(context, *args, **kwargs):
                          ]
     
     if use_sim_robot.lower() != 'true':
-        ur_launch_path = os.path.join(get_package_share_directory('ur_bringup'),'launch','ur_control.launch.py')
         ur_dashboard_client_node = Node(
             package="ur_robot_driver",
             executable="dashboard_client",
@@ -112,13 +111,6 @@ def launch_setup(context, *args, **kwargs):
             package="controller_manager",
             executable="spawner",
             arguments=["io_and_status_controller", "-c", "/controller_manager"],
-            )
-        
-        robot_controller = 'manipulator_joint_trajectory_controller' # from ros_controllers.yaml in moveit2_config package
-        robot_controller_spawner = Node(
-            package="controller_manager",
-            executable="spawner",
-            arguments=[robot_controller, "-c", "/controller_manager"],
             )
         
         launch_entities += [ur_dashboard_client_node,
