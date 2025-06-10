@@ -56,11 +56,15 @@ In this exercise, you will generate a MoveIt package for the UR5 workcell you bu
 
     1. Create a few named positions (e.g. "home", "allZeros", etc.) to test with motion-planning.
 
-    1. Don't worry about adding end effectors, passive joints, or ros2_control URDF modifications for this exercise.
+    1. Don't worry about adding end effectors or passive joints for this exercise.
+
+    1. In the "ros2_control URDF modifications" tab, click the "Add Interfaces" button. This helps ensure smooth interaction during execution.
     
     1. In the "ROS 2 Controllers" tab, use the "Auto Add JointTrajectoryController" button to define a basic _JointTrajectoryController_ controller for the entire UR5 arm.
 
-    1. In the "MoveIt Controllers" tab,use the "Auto Add FollowJointsTrajectory" button to define a basic _FollowJointTrajectory_ controller for the UR5 arm.
+    1. In the "MoveIt Controllers" tab, use the "Auto Add FollowJointsTrajectory" button to define a basic _FollowJointTrajectory_ controller for the UR5 arm.
+
+       1. Select the controller just added, then use the "Edit Selected" button to change "Action Namespace" to "follow_joint_trajectory".
     
     1. Skip the "Perception" and "Launch Files" tabs.
 
@@ -132,6 +136,12 @@ In this exercise, you will generate a MoveIt package for the UR5 workcell you bu
  * `moveit_controllers.yaml`: This file will configure MoveIt to use a controller for joint trajectory execution provided by `ros2_control`.
 
  * `ros2_controllers.yaml`: These parameters configure the ROS 2 Control nodes at startup.
+
+ 1. Make sure that we have all the dependencies that this new package needs - some of its dependencies might not yet be installed. To do this, run `rosdep` from the `src` directory of your workspace.
+
+    ```
+    rosdep install --from-paths . --ignore-src -y
+    ```
 
  1. Rebuild the workspace (`colcon build`) and test a launch file to see if the new package loads without errors:
 

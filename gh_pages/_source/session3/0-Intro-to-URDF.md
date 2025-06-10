@@ -22,6 +22,7 @@ We have the software skeleton of our Scan-N-Plan application, so let’s take th
 1. Perform collision checking
 1. Understand robot kinematics
 1. Perform transformation math
+
 Your goal is to describe a workcell that features:
 1. An origin frame called `world`
 1. A separate frame with “table” geometry (a flat rectangular prism)

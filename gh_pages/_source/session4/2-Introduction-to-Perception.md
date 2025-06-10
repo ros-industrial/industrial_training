@@ -14,10 +14,11 @@ The start of most perception processing is ROS message data from a sensor.  In t
       cp -r ~/industrial_training/exercises/5.1/template_ws/ros2/lesson_perception ~/perception_ws/src
       ```
 
-      Source and build.
+      Get dependencies with `rosdep`, source, and build.
 
       ```
       cd ~/perception_ws/
+      rosdep install --from-paths . --ignore-src -y
       source /opt/ros/humble/setup.bash
       colcon build
       ```
