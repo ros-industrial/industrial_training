@@ -32,6 +32,9 @@
 	<xacro:arg name="use_fake_hardware" default="true" />
 	<xacro:arg name="fake_sensor_commands" default="false" />
 	<xacro:arg name="robot_ip" default="10.0.1.186"/>
+        <xacro:arg name="script_filename" default="$(find ur_client_library)/resources/external_control.urscript"/>
+        <xacro:arg name="output_recipe_filename" default="$(find ur_robot_driver)/resources/rtde_output_recipe.txt"/>
+        <xacro:arg name="input_recipe_filename" default="$(find ur_robot_driver)/resources/rtde_input_recipe.txt"/>
 	
 	<!-- ros2 fake_components/generic_system  initial joints -->
 	<xacro:arg name="initial_positions_file" default=""/>
@@ -58,7 +61,11 @@
      safety_k_position="$(arg safety_k_position)"
      use_fake_hardware="$(arg use_fake_hardware)"
      fake_sensor_commands="$(arg fake_sensor_commands)"
-     initial_positions="${initial_positions}" >
+     initial_positions="${initial_positions}"
+     robot_ip="$(arg robot_ip)"
+     script_filename="$(arg script_filename)"
+     output_recipe_filename="$(arg output_recipe_filename)"
+     input_recipe_filename="$(arg input_recipe_filename)">
        <origin xyz="0 0 ${robot_stand_height * 0.5}" rpy="0 0 2.355"/>
     </xacro:ur_robot>
     
