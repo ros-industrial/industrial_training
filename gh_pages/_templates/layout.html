@@ -4,7 +4,8 @@
   <script src="{{ pathto('_static/clipboard.min.js', 1) }}"></script>
 {% endblock %}
 
-{% block extracontent %}
+<!-- Copied the 'block content' from the original sphinx_rtd_theme to insert the header -->
+{%- block content %}
   <div class="header-override">
     <a href="http://rosindustrial.org">
       <img src="{{ pathto('_static/logo.jpg', 1) }}"/>
@@ -13,15 +14,21 @@
       <a href="http://rosindustrial.org">ROS-Industrial Website</a>|<a href="http://rosindustrial.org/news">Blog</a>
     </p>
   </div>
-{% endblock %}
+  {{ super() }}
+{%- endblock %}
 
 {% block footer %}
   <script>
-  var pre = document.getElementsByTagName('pre');
-  for (var i = 0; i < pre.length; i++) {
+  // Only select divs with class highlight, to prevent line number columns from
+  // getting a copy button.
+  var hls = document.querySelectorAll('div.highlight');
+  for (var i = 0; i < hls.length; i++) {
     var button = document.createElement('button');
     button.className = 'btn-copyboard fa fa-copy btn';
-    pre[i].before(button);
+    // Reset overflow to 'visible' to prevent double scrollbars from appearing
+    hls[i].childNodes[0].style.overflow = 'visible';
+    // Insert the copy button before the first child of the divs.
+    hls[i].insertBefore(button, hls[i].childNodes[0]);
   }
   var clipboard = new Clipboard('.btn-copyboard', {
     target: function(trigger) {return trigger.nextElementSibling;}
