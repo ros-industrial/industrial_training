@@ -1,0 +1,10 @@
+﻿repositories:
+  fake_ar_publisher:
+    type: git
+    url: https://github.com/ros-industrial/fake_ar_publisher.git
+    version: master
+  
+  universal_robot:
+    type: git
+    url: https://github.com/ros-industrial/universal_robot.git
+    version: kinetic-devel
