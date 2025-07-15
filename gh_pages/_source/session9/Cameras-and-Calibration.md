@@ -2,7 +2,7 @@
 
 ## Getting Setup
 
-This section will work from it's own workspace seperate from the core training exercises.
+This section will work from its own workspace seperate from the core training exercises.
 
 1. Create the workspace and copy the template packages.
 
@@ -34,23 +34,23 @@ This section will work from it's own workspace seperate from the core training e
 
 ## Camera Representation and Parameters
 
-The typical model used to represent cameras is a so-called "Pinhole model." 
+The typical model used to represent cameras is called the Pinhole model. 
 
 ![image](images/Pinhole-camera.webp)
 
-The idea is that light is completely focused through a single point and then projected into our image. When working with this model, there are 3 key factors:
+The idea is that light is completely focused through a single point and then projected onto the sensore. When working with this model, there are 3 key factors:
 
 1. Focal length, or the distance between the focal point and our optics (Fx, Fy)
 
-    - Affects our Field of View (FoV). A smaller focal length will widen the FoV while a larger focal length will narrow it
+    - Affects our Field of View (FoV). A smaller focal length will widen the FoV, while a larger focal length will narrow it.
 
 2. Principal point location (Cx, Cy)
 
-    - Effectively measures how "offset" the pinhole is. It it not required to be right in the center
+    - Effectively measures how "offset" the pinhole is. It it not required to be right in the center.
 
 3. Distortion Parameters (D, or usually 5+ parameters)
 
-    - Describe how the lens is distorting incoming images. Images end up more warped on the outer edges compared to the center, and models exist to counteract that. The goal is to have straight lines in real life be straight in your images.
+    - Describe how the lens is distorting incoming images. Images end up more warped on the outer edges than in the center, and models exist to counteract that. The goal is to have straight lines in the world appear straight in the images.
 
 We need accurate F, C, and D values to be able to extend reasoning from our images to the real world. Without these, you have no information on how your images are scaled, shifted, and warped compared to the real world.
 
@@ -62,13 +62,13 @@ Camera calibration relies on predictably shaped and easy to localize calibration
 ![circle_grid](images/circle_grid.png)
 ![charuco_grid](images/charuco_grid.png)
 
-Popular targets include checkerboard patterns, Aruco markers, Charuco markers, and circle grids, with potential modifications on those few. Checkerboard patterns are simple and easy to use. Circles are easy to spot, but lack some precision in determining exactly what point defines the center. Using Aruco/Charuco markers has the advantage of being able to easily and uniquely identify the various points on the grid - such that you don't need to find every marker to get information on the board's pose. So a marker based target is generally advised if possible, and a specially printed and solid target is especially desirable. (see [here](https://calib.io/pages/camera-calibration-pattern-generator))
+Popular targets include checkerboard patterns, Aruco markers, Charuco markers, and circle grids, with potential modifications on those few. Checkerboard patterns are simple and easy to use. Circles are harder to spot, but enable greater precision in determining exactly what point defines the center. Using Aruco/Charuco markers has the advantage of being able to easily and uniquely identify the various points on the grid - such that you don't need to find every marker to get information on the board's pose. A marker based target is generally advised if possible, and a specially printed and solid target is especially desirable. (see [here](https://calib.io/pages/camera-calibration-pattern-generator))
 
 Every little detail counts, and very small details can throw off image processing results if the calibration isn't quite right.
 
 ## Intrinsic Calibration
 
-The way we get those parameters is called "Intrinsic Calibration," since those parameters are "intrinsic" to the camera, regardless of where it ends up being placed. There are a number of camera calibration tools available to do this calibration, but if you're already working in ROS, one of the easier options is the `camera_calibration` package. 
+The way we get the Focal length, principal point, and distortion  parameters is called "Intrinsic Calibration," since those parameters are intrinsic to the camera, regardless of where it is placed. There are a number of camera calibration tools available to do this calibration, but if you're already working in ROS, one of the easier options is the `camera_calibration` package. 
 
 1. To start, we can simply apt install the package
 
@@ -130,9 +130,9 @@ Try repeating the calibration, but vary the amount of data you let it have befor
 
 ### Performing with your own data
 
-This is a note to be weary, because even "good" looking calibrations may be lacking. 
+Be wary, because calibrations that appear correct may be lacking. 
 
-Notice that there were still distortions once the calibration was applied in our earlier example. This is in part because the data collection did not place the target across the entire image space of the camera. The `camera_calibration` GUI was even indicating to us that our `x` component was not adequately covered in our data - a visual insepection of the images coming from the bag file should confirm this.
+There were still distortions once the calibration was applied in our earlier example. This is in part because the data collection did not place the target across the entire image space of the camera. The `camera_calibration` GUI was even indicating to us that our `x` component was not adequately covered in our data - a visual insepection of the images coming from the bag file should confirm this.
 
 All of this is to say: _get full coverage of your camera._ You want to go along all the outer edges with your pattern, especially because that's where the distortions are most notable. 
 
@@ -168,7 +168,7 @@ Now that we have the intrinsic calibration parameters, how do we use them? Your 
     ros2 run image_proc image_proc --ros-args -r image:=/camera/image_raw -r image_rect:=/camera/image_rect -r camera_info:=/camera/camera_info
     ```
 
-1. Now open a window in Rviz and add two image plugins: `/camera/image_raw` and `/camera/image_rect`. 
+1. Now open a window in Rviz and add two image displays: `/camera/image_raw` and `/camera/image_rect`. 
 
     Pause the rosbag at any time by pressing space in its terminal, and examine the difference. The `/camera/image_rect` should have removed the distortions from the original image, giving us straight lines on our checkerboard. From here, we could use that rectified image being produced to do whatever our image processing is.
 
@@ -176,11 +176,11 @@ Now that we have the intrinsic calibration parameters, how do we use them? Your 
 
 Once we have the intrinsic calibration of a camera, that is good to go for as long as the camera doesn't severely degrade. But while a camera will only need one _intrinsic_ calibration, it may need multiple _extrinsic_ calibrations over the course of its use. An extrinsic calibration is simply determining where the camera is in 3D space, relative to whatever components it is attached to. If you ever move the camera, you'll need to perform another extrinsic calibration. 
 
-In order to do an extrinsic calibration, you need an a camera with an intrinsic calibration, and a camera target along with something that moves with you getting its precise transforms. Either the camera or the target needs to be attached to the moving item (hand-eye vs eye-in-hand), and the goal is to capture image/pose pairs. The collected data will be corresponding images and poses that occured at the same time for the optimization to perform its work.
+In order to do an extrinsic calibration, you need an a camera with an intrinsic calibration, and a camera target along with something that provides precise movements. Either the camera or the target needs to be attached to the moving item (hand-eye vs eye-in-hand), and the goal is to capture image/pose pairs. The collected data will be corresponding images and poses that occured at the same time for the optimization to perform its work.
 
 ### robot_cal_tools calibration
 
-There are lots of tools out there currently, but lots of issues. MoveIt is currently still ROS 1, with a ROS 2 port in progress but not ready yet. The `industrial_calibration` is a good ROS agnostic library with lots of functionality, but requires considerable setup, so it can be hard to spin up quickly. On the other hand, `robot_cal_tools` offers a ROS-y way of performing the calibration, so the barrier to entry isn't quite as high.
+There are a variety of extrinsic calibration tools available. MoveIt has tools with decent GUIs in ROS 1 and ROS 2, but is currently community-supported. The `industrial_calibration` is a good ROS-agnostic library with lots of functionality, and has recently been refactored to reduce the setup required. We will still be using `robot_cal_tools`, which offers a ROS-y way of performing the calibration with minimal setup required.
 
 1. Most of the setup has been done for you, but since extrinsic calibration needs poses, we are launching a simulation of the robot moving through space with our image data.
 
@@ -232,7 +232,7 @@ There are lots of tools out there currently, but lots of issues. MoveIt is curre
 
     Go ahead and use the results to fill in the transforms in `cal_demo_support/urdf/workcell.xacro`. There are joints `tool_to_target` and `base_to_camera` that should be updated on the new calibration.
 
-    _Challenge_: If you have good knowledge of launch files and xacros, consider putting things together such that the extrinsic calibration is loaded on runtime, rather than hardcoded. This can be useful in a real environment if the camera has to move reasonably frequently.
+    _Challenge_: If you have good knowledge of launch files and xacros, consider putting things together such that the extrinsic calibration is loaded on runtime, rather than hardcoded. This can be useful in a real environment if the camera has to move reasonably frequently. You may consider using [mutable transform publisher](https://github.com/jmeyer1292/mutable_transform_publisher] or similar tools.
 
 1. Rerun the motion client to step through the images and motions, but open up a _camera_ plugin in Rviz to see the images. You should see the simulated robot align with the actual images taken at each pose.
 
