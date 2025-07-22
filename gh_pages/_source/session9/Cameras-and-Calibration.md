@@ -2,7 +2,7 @@
 
 ## Getting Setup
 
-This section will work from its own workspace seperate from the core training exercises.
+This section will work from its own workspace separate from the core training exercises.
 
 1. Create the workspace and copy the template packages.
 
