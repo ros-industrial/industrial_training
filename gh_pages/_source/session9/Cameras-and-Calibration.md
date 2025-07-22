@@ -38,7 +38,7 @@ The typical model used to represent cameras is called the Pinhole model.
 
 ![image](images/Pinhole-camera.webp)
 
-The idea is that light is completely focused through a single point and then projected onto the sensore. When working with this model, there are 3 key factors:
+The idea is that light is completely focused through a single point and then projected onto the sensor. When working with this model, there are 3 key factors:
 
 1. Focal length, or the distance between the focal point and our optics (Fx, Fy)
 
