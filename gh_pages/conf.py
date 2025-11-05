@@ -19,6 +19,7 @@
 from sphinx import version_info as sphinx_version_info
 import os
 import git
+import datetime
 curr_path = os.path.abspath('.')
 # The try catch is need because of the subversion tool when it creates the master.
 try:
@@ -58,7 +59,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Industrial Training'
-copyright = u'2020, ROS-Industrial'
+copyright = u'{date}, ROS-Industrial'.format(date = datetime.date.today().year)
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
