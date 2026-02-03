@@ -1,5 +1,5 @@
 #include <pick_and_place_application/pick_and_place.h>
-#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
 
 /*    CREATE PLACE MOVES
   Goal:
