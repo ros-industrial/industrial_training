@@ -83,7 +83,7 @@ The way we get the Focal length, principal point, and distortion  parameters is 
     ```
     source /opt/ros/humble/setup.bash
     cd ~/industrial_training/exercises/9.0
-    python3 images_to_bag.py
+    python3 images_to_bags.py
     cp -r ./intrinsics_rosbag* ~/calibration_ws
     ```
 
